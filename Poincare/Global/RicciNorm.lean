@@ -1070,6 +1070,149 @@ theorem diagonalPinchingReactionQuotient3_one_two_three :
     diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
     diagonalScalar3]
 
+/-- Cubic trace for a diagonal 3D Ricci operator. -/
+noncomputable def diagonalRicciCubicTrace3 (a b c : ℝ) : ℝ :=
+  a ^ 3 + b ^ 3 + c ^ 3
+
+/--
+The pinned diagonal `|Ric|^2` reaction/motion trace as a polynomial in the
+Ricci eigenvalues: `N_react = 10 R N - 2 R^3 - 8 tr(Ric^3)`.
+-/
+theorem diagonalRicciNormReactionMotionTrace3_eq_cubic (a b c : ℝ) :
+    diagonalRicciNormReactionMotionTrace3 a b c =
+      10 * diagonalScalar3 a b c * diagonalRicciNormSq3 a b c
+        - 2 * (diagonalScalar3 a b c) ^ 3
+        - 8 * diagonalRicciCubicTrace3 a b c := by
+  unfold diagonalRicciNormReactionMotionTrace3 diagonalRicciNormEvolutionReactionTrace3
+    diagonalRicciEvolutionReaction3Entry1 diagonalRicciEvolutionReaction3Entry2
+    diagonalRicciEvolutionReaction3Entry3 diagonalTwoLichnerowiczPure3Entry1
+    diagonalTwoLichnerowiczPure3Entry2 diagonalTwoLichnerowiczPure3Entry3
+    diagonalRicciNormMetricMotionNegTwoRicci3 diagonalRicciCubicTrace3
+    diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+/--
+The numerator whose nonpositivity gives the quotient reaction sign:
+`R * N_react - 4 * N^2`, with `R = tr Ric`, `N = |Ric|^2`.
+-/
+noncomputable def diagonalPinchingReactionSignNumerator3 (a b c : ℝ) : ℝ :=
+  diagonalScalar3 a b c * diagonalRicciNormReactionMotionTrace3 a b c
+    - 4 * (diagonalRicciNormSq3 a b c) ^ 2
+
+/-- Schur-form expansion of the diagonal 3D reaction-sign numerator. -/
+theorem diagonalPinchingReactionSignNumerator3_eq_schur (a b c : ℝ) :
+    diagonalPinchingReactionSignNumerator3 a b c =
+      -4 * (a ^ 2 * (a - b) * (a - c)
+        + b ^ 2 * (b - a) * (b - c)
+        + c ^ 2 * (c - a) * (c - b)) := by
+  rw [diagonalPinchingReactionSignNumerator3,
+    diagonalRicciNormReactionMotionTrace3_eq_cubic]
+  unfold diagonalRicciCubicTrace3 diagonalRicciNormSq3 diagonalScalar3
+  ring
+
+/--
+Hamilton's 3D diagonal reaction-sign algebra.  This is stronger than the
+nonnegative-Ricci use case: the numerator is nonpositive for all real triples.
+-/
+theorem diagonalPinchingReactionSignNumerator3_nonpos (a b c : ℝ) :
+    diagonalPinchingReactionSignNumerator3 a b c ≤ 0 := by
+  rw [diagonalPinchingReactionSignNumerator3_eq_schur]
+  nlinarith [sq_nonneg (a - b), sq_nonneg (b - c), sq_nonneg (c - a),
+    sq_nonneg (a + b - c), sq_nonneg (a + c - b), sq_nonneg (b + c - a)]
+
+/-- The pinned remainder is `(R / 2)` times the reaction-sign numerator. -/
+theorem diagonalPinchingReactionRemainder3_eq_scalar_mul_signNumerator3
+    (a b c : ℝ) :
+    diagonalPinchingReactionRemainder3 a b c =
+      (diagonalScalar3 a b c / 2) * diagonalPinchingReactionSignNumerator3 a b c := by
+  rw [diagonalPinchingReactionSignNumerator3]
+  unfold diagonalPinchingReactionRemainder3 diagonalScalarSqReaction3 diagonalScalarReaction3
+  ring
+
+/-- Positive scalar curvature transfers the numerator sign to the pinned remainder. -/
+theorem diagonalPinchingReactionRemainder3_nonpos_of_scalar_pos
+    {a b c : ℝ} (hR : 0 < diagonalScalar3 a b c) :
+    diagonalPinchingReactionRemainder3 a b c ≤ 0 := by
+  rw [diagonalPinchingReactionRemainder3_eq_scalar_mul_signNumerator3]
+  exact mul_nonpos_of_nonneg_of_nonpos (div_nonneg hR.le (by norm_num))
+    (diagonalPinchingReactionSignNumerator3_nonpos a b c)
+
+/-- Positive scalar curvature gives the nonpositive quotient reaction term. -/
+theorem diagonalPinchingReactionQuotient3_nonpos_of_scalar_pos
+    {a b c : ℝ} (hR : 0 < diagonalScalar3 a b c) :
+    diagonalRicciNormReactionMotionTrace3 a b c /
+        (diagonalScalar3 a b c) ^ 2
+      - diagonalRicciNormSq3 a b c *
+        diagonalScalarSqReaction3 a b c / (diagonalScalar3 a b c) ^ 4
+      ≤ 0 := by
+  rw [diagonalPinchingReactionQuotient_eq_remainder3 hR.ne']
+  exact mul_nonpos_of_nonneg_of_nonpos
+    (div_nonneg (by norm_num) (pow_nonneg hR.le 4))
+    (diagonalPinchingReactionRemainder3_nonpos_of_scalar_pos hR)
+
+theorem diagonalPinchingReactionSignNumerator3_one_one_two :
+    diagonalPinchingReactionSignNumerator3 1 1 2 = -16 := by
+  norm_num [diagonalPinchingReactionSignNumerator3,
+    diagonalRicciNormReactionMotionTrace3_one_one_two, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalPinchingReactionSignNumerator3_one_two_three :
+    diagonalPinchingReactionSignNumerator3 1 2 3 = -64 := by
+  norm_num [diagonalPinchingReactionSignNumerator3,
+    diagonalRicciNormReactionMotionTrace3_one_two_three, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalRicciNormReactionMotionTrace3_one_one_one :
+    diagonalRicciNormReactionMotionTrace3 1 1 1 = 12 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
+theorem diagonalPinchingReactionSignNumerator3_one_one_one :
+    diagonalPinchingReactionSignNumerator3 1 1 1 = 0 := by
+  norm_num [diagonalPinchingReactionSignNumerator3,
+    diagonalRicciNormReactionMotionTrace3_one_one_one, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalRicciNormReactionMotionTrace3_one_zero_zero :
+    diagonalRicciNormReactionMotionTrace3 1 0 0 = 0 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3,
+    diagonalRicciNormEvolutionReactionTrace3, diagonalRicciEvolutionReaction3Entry1,
+    diagonalRicciEvolutionReaction3Entry2, diagonalRicciEvolutionReaction3Entry3,
+    diagonalTwoLichnerowiczPure3Entry1, diagonalTwoLichnerowiczPure3Entry2,
+    diagonalTwoLichnerowiczPure3Entry3, diagonalRicciNormMetricMotionNegTwoRicci3,
+    diagonalRicciNormSq3, diagonalScalar3]
+
+theorem diagonalPinchingReactionSignNumerator3_one_zero_zero :
+    diagonalPinchingReactionSignNumerator3 1 0 0 = -4 := by
+  norm_num [diagonalPinchingReactionSignNumerator3,
+    diagonalRicciNormReactionMotionTrace3_one_zero_zero, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalPinchingReactionRemainder3_one_zero_zero :
+    diagonalPinchingReactionRemainder3 1 0 0 = -2 := by
+  norm_num [diagonalPinchingReactionRemainder3,
+    diagonalRicciNormReactionMotionTrace3, diagonalScalarSqReaction3,
+    diagonalScalarReaction3, diagonalRicciNormEvolutionReactionTrace3,
+    diagonalRicciEvolutionReaction3Entry1, diagonalRicciEvolutionReaction3Entry2,
+    diagonalRicciEvolutionReaction3Entry3, diagonalTwoLichnerowiczPure3Entry1,
+    diagonalTwoLichnerowiczPure3Entry2, diagonalTwoLichnerowiczPure3Entry3,
+    diagonalRicciNormMetricMotionNegTwoRicci3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
+theorem diagonalPinchingReactionQuotient3_one_zero_zero :
+    diagonalRicciNormReactionMotionTrace3 1 0 0 /
+        (diagonalScalar3 1 0 0) ^ 2
+      - diagonalRicciNormSq3 1 0 0 *
+        diagonalScalarSqReaction3 1 0 0 / (diagonalScalar3 1 0 0) ^ 4
+      = -4 := by
+  norm_num [diagonalRicciNormReactionMotionTrace3_one_zero_zero,
+    diagonalScalarSqReaction3, diagonalScalarReaction3, diagonalRicciNormSq3,
+    diagonalScalar3]
+
 end PinchingAlgebra
 
 end Poincare
