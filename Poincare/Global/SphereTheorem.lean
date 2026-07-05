@@ -103,4 +103,90 @@ theorem sphere_of_pinched_limit
     exact div_pos hx₀pos (by norm_num)
   exact hSpaceForm g (R₀ / 6) hcurv hκpos
 
+/--
+The named upstream Hamilton-convergence interface needed by the sphere
+recognition endgame.
+
+This is the honest limit-output boundary for the analytic Ricci-flow work: it
+does not construct a flow or prove convergence.  It says that the upstream
+Hamilton estimates and convergence theory have produced a closed smooth limit
+metric whose scalar curvature is differentiable, whose traceless Ricci tensor
+vanishes everywhere, and whose scalar curvature is positive somewhere.  Those
+are exactly the concrete hypotheses consumed by `sphere_of_pinched_limit`.
+-/
+def HamiltonConvergencePinchedLimit3 (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ g : ClosedSmoothRiemannianMetric 3 M,
+    (∀ x : M,
+      MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
+        (fun y : M ↦ g.scalarAt y) x) ∧
+    (∀ x : M, g.tracelessRicciNormSqAt x = 0) ∧
+    (∃ x : M, 0 < g.scalarAt x)
+
+/-- The Hamilton-convergence interface expands to its limit-metric payload. -/
+theorem hamiltonConvergencePinchedLimit3_eq :
+    HamiltonConvergencePinchedLimit3 M =
+      (∃ g : ClosedSmoothRiemannianMetric 3 M,
+        (∀ x : M,
+          MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
+            (fun y : M ↦ g.scalarAt y) x) ∧
+        (∀ x : M, g.tracelessRicciNormSqAt x = 0) ∧
+        (∃ x : M, 0 < g.scalarAt x)) :=
+  rfl
+
+/--
+Statement-layer conclusion for one manifold under the two honest interfaces.
+
+Interfaces used:
+* `HamiltonConvergencePinchedLimit3`: upstream Ricci-flow estimates/convergence
+  provide a pinched positive scalar limit metric.
+* `PositiveConstantCurvatureSpaceForm3`: the Killing-Hopf positive
+  space-form recognition theorem identifies positive constant-curvature,
+  simply connected closed 3-manifolds with the round sphere.
+
+The conclusion is exactly the per-manifold target appearing in
+`PoincareConjecture` from `Poincare/Global/Statement.lean`.
+-/
+theorem poincareConjecture_conclusion_of_hamiltonConvergencePinchedLimit3
+    (hHamilton : HamiltonConvergencePinchedLimit3 M)
+    (hSpaceForm : PositiveConstantCurvatureSpaceForm3 M) :
+    Nonempty
+      (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  rcases hHamilton with ⟨g, hScalarDiff, htr, hpos⟩
+  exact sphere_of_pinched_limit
+    (g := g) hScalarDiff htr hpos hSpaceForm
+
+/--
+Universal statement-chain composition.
+
+If the Hamilton convergence interface and the positive space-form recognition
+interface are available for every manifold in the `PoincareConjecture` context,
+then the repository's frozen `PoincareConjecture` statement follows.  This is a
+conditional assembly theorem only; both named interfaces remain explicit
+hypotheses.
+-/
+theorem poincareConjecture_of_hamiltonConvergencePinchedLimit3
+    (hHamilton :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [SecondCountableTopology N]
+        [ChartedSpace (ClosedSmoothModel 3) N]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+        [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+          HamiltonConvergencePinchedLimit3 N)
+    (hSpaceForm :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [SecondCountableTopology N]
+        [ChartedSpace (ClosedSmoothModel 3) N]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+        [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+          PositiveConstantCurvatureSpaceForm3 N) :
+    PoincareConjecture.{u} := by
+  intro N _top _t2 _second _charted _smooth _compact _connected _simply
+  exact
+    poincareConjecture_conclusion_of_hamiltonConvergencePinchedLimit3
+      (M := N) (hHamilton N) (hSpaceForm N)
+
 end Poincare
