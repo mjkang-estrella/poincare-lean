@@ -11132,6 +11132,46 @@ theorem covTensor2DerivAt_scalar_metric
   simp [P, Q]
   ring
 
+theorem tensorDivergenceOneFormAt_scalar_metric
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (w : TM x) :
+    tensorDivergenceOneFormAt g (fun y p q ↦ f y * g.inner y p q) x w =
+      extDerivFun f x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hrepr :
+      (∑ i, g.inner x w (b i) • sharp i) = w := by
+    simpa [b, sharp] using
+      sum_inner_basis_smul_metricDualVectorAt (g := g) (x := x) (v := w)
+  have hmap :
+      extDerivFun f x (∑ i, g.inner x w (b i) • sharp i) =
+        ∑ i, g.inner x w (b i) * extDerivFun f x (sharp i) := by
+    have h :=
+      map_sum (extDerivFun f x)
+        (fun i ↦ g.inner x w (b i) • sharp i) Finset.univ
+    simpa [smul_eq_mul] using h
+  unfold tensorDivergenceOneFormAt
+  calc
+    (∑ i, covTensor2DerivAt g (fun y p q ↦ f y * g.inner y p q) x
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+        ((Module.finBasis ℝ (TM x)) i) w) =
+        ∑ i, extDerivFun f x (sharp i) * g.inner x (b i) w := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          simpa [b, sharp] using
+            covTensor2DerivAt_scalar_metric (g := g) (f := f) hf (sharp i) (b i) w
+    _ = ∑ i, g.inner x w (b i) * extDerivFun f x (sharp i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [g.inner_symm x (b i) w]
+          ring
+    _ = extDerivFun f x (∑ i, g.inner x w (b i) • sharp i) := hmap.symm
+    _ = extDerivFun f x w := by rw [hrepr]
+
 theorem tensorDivergenceOneFormAt_ricciVariationField_swap
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
