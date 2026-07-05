@@ -6,7 +6,7 @@
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
     "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
-    "current_goal": "GOAL 6 ACHIEVED 2026-07-04: hamilton_pinching_improvement on main (gate PASS) — on closed 3D Ricci flow with eigenvalue-pinched positive Ricci, the max of |Ric°|^2/R^(2-δ) is nonincreasing for explicit admissible δ(ε) (Hamilton 1982 roundness estimate), with eigenvalue pinching-floor preservation. Next horizons: (a) the gradient estimate |∇R| → roundness convergence chain (Hamilton §11-17), (b) the M2 short-time existence wall, (c) consolidate/audit."
+    "current_goal": "GOAL 7 OPEN 2026-07-04 (per M-frontier-survey): the sphere-recognition endgame — pinched limit -> global Einstein -> Schur (constant scalar) -> 3D constant sectional curvature -> narrow PositiveConstantCurvatureSpaceForm3 interface -> conditional (simply connected + closed + const positive curvature -> M ≃ S^3). Fronts A (Hamilton convergence: needs manifold Sobolev/integration) and B (short-time existence: needs parabolic PDE library) deferred as honest upstream interfaces."
   },
   "tiers": {
     "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
