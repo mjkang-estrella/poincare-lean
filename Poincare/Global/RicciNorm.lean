@@ -250,6 +250,71 @@ theorem tracelessRicciNormSqAt_eq_zero_iff_ricciEndoAt_eq_smul_id
       linarith
     rw [g.tracelessRicciNormSqAt_eq_pinchingGapAt_div x hn.ne', hgap, zero_div]
 
+section DimensionThree
+
+variable [ChartedSpace (ClosedSmoothModel 3) M]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+
+variable (g3 : ClosedSmoothRiemannianMetric 3 M)
+variable [CovariantDerivative.ContMDiffCovariantDerivative g3.leviCivita 1]
+
+/--
+Global scalar-normalized Einstein condition in dimension three.
+
+This is the non-vacuous bilinear form `Ric = (R/3) g` at every point.
+-/
+def IsEinstein3 : Prop :=
+  ∀ x : M, ∀ u w : TangentSpace (closedSmoothModelWithCorners 3) x,
+    g3.ricciAt x u w = (g3.scalarAt x / 3) * g3.inner x u w
+
+theorem isEinstein3_iff :
+    g3.IsEinstein3 ↔
+      ∀ x : M, ∀ u w : TangentSpace (closedSmoothModelWithCorners 3) x,
+        g3.ricciAt x u w = (g3.scalarAt x / 3) * g3.inner x u w :=
+  Iff.rfl
+
+/--
+The pointwise zero-iff-Einstein traceless-Ricci certificate globalizes in
+dimension three.
+-/
+theorem isEinstein3_iff_forall_tracelessRicciNormSqAt_eq_zero :
+    g3.IsEinstein3 ↔ ∀ x : M, g3.tracelessRicciNormSqAt x = 0 := by
+  constructor
+  · intro hEin x
+    refine
+      (g3.tracelessRicciNormSqAt_eq_zero_iff_ricciEndoAt_eq_smul_id
+        x (by norm_num : 0 < (3 : ℝ))).mpr ?_
+    ext u
+    apply sub_eq_zero.mp
+    refine LeviCivitaExistence.metric_nondegenerate g3 x
+      (g3.ricciEndoAt x u - ((g3.scalarAt x / 3) • LinearMap.id) u) ?_
+    intro w
+    rw [map_sub]
+    change
+      g3.inner x (g3.ricciEndoAt x u) w -
+          g3.inner x (((g3.scalarAt x / 3) • LinearMap.id) u) w = 0
+    rw [g3.inner_ricciEndoAt, hEin x u w]
+    simp [smul_eq_mul]
+  · intro htr x u w
+    have hEnd :
+        g3.ricciEndoAt x = (g3.scalarAt x / 3) • LinearMap.id :=
+      (g3.tracelessRicciNormSqAt_eq_zero_iff_ricciEndoAt_eq_smul_id
+        x (by norm_num : 0 < (3 : ℝ))).mp (htr x)
+    rw [← g3.inner_ricciEndoAt x u w, hEnd]
+    simp [smul_eq_mul]
+
+theorem isEinstein3_of_forall_tracelessRicciNormSqAt_eq_zero
+    (htr : ∀ x : M, g3.tracelessRicciNormSqAt x = 0) :
+    g3.IsEinstein3 :=
+  (g3.isEinstein3_iff_forall_tracelessRicciNormSqAt_eq_zero).2 htr
+
+theorem forall_tracelessRicciNormSqAt_eq_zero_of_isEinstein3
+    (hEin : g3.IsEinstein3) :
+    ∀ x : M, g3.tracelessRicciNormSqAt x = 0 :=
+  (g3.isEinstein3_iff_forall_tracelessRicciNormSqAt_eq_zero).1 hEin
+
+end DimensionThree
+
 /-- The improved traceless-Ricci pinching quantity `|Ric°|^2 / R^(2 - delta)`. -/
 noncomputable def tracelessPinchingAt (x : M) (δ : ℝ) : ℝ :=
   g.tracelessRicciNormSqAt x / (g.scalarAt x) ^ (2 - δ)
