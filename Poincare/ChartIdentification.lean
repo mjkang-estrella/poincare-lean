@@ -12,6 +12,7 @@ the model space to manifolds.
 -/
 
 import Mathlib.Geometry.Manifold.VectorField.LieBracket
+import Mathlib.Analysis.Calculus.MeanValue
 import Poincare.FlatModelConnection
 
 noncomputable section
@@ -148,6 +149,92 @@ theorem extDerivFun_apply_fixed_chart {f : M → 𝕜} {x₀ y : M}
     exact mfderiv_eq_fderiv
   simp only [extDerivFun, ContinuousLinearMap.comp_apply, hcomp]
   rfl
+
+omit [IsManifold I 1 M] in
+/--
+If the exterior derivative of a real-valued function vanishes at every point
+and the function is manifold-differentiable everywhere, then it is locally
+constant.
+
+The proof is chart-local: on a boundaryless chart target, `extDerivFun` is the
+Fréchet derivative of the chart representative, so Mathlib's mean-value
+constancy lemma makes chart-level fibers open; pulling them back gives
+manifold-local constancy.
+-/
+theorem isLocallyConstant_of_extDerivFun_eq_zero
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    {H : Type*} [TopologicalSpace H] {I : ModelWithCorners ℝ E H}
+    {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
+    [IsManifold I 1 M] [I.Boundaryless] {f : M → ℝ}
+    (hf : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) f x)
+    (hzero : ∀ x : M, ∀ w : TangentSpace I x, extDerivFun f x w = 0) :
+    IsLocallyConstant f := by
+  rw [IsLocallyConstant.iff_eventually_eq]
+  intro x
+  let e := extChartAt I x
+  let F : E → ℝ := f ∘ e.symm
+  let z0 : E := e x
+  have hFdiffAt : ∀ z ∈ e.target, DifferentiableAt ℝ F z := by
+    intro z hz
+    have hsmWithin :
+        ContMDiffWithinAt 𝓘(ℝ, E) I 1 (e.symm : E → M) (range I) z := by
+      simpa [e] using
+        contMDiffWithinAt_extChartAt_symm_range (I := I) (n := 1) x hz
+    have hsm : ContMDiffAt 𝓘(ℝ, E) I 1 (e.symm : E → M) z := by
+      rwa [I.range_eq_univ, contMDiffWithinAt_univ] at hsmWithin
+    have hcomp : MDifferentiableAt 𝓘(ℝ, E) 𝓘(ℝ) F z := by
+      simpa [F] using
+        (hf (e.symm z)).comp z (hsm.mdifferentiableAt one_ne_zero)
+    exact mdifferentiableAt_iff_differentiableAt.mp hcomp
+  have hFdiffOn : DifferentiableOn ℝ F e.target := by
+    intro z hz
+    exact (hFdiffAt z hz).differentiableWithinAt
+  have hFderivZero : e.target.EqOn (fderiv ℝ F) 0 := by
+    intro z hz
+    ext v
+    let y : M := e.symm z
+    have hySrc : y ∈ e.source := e.map_target hz
+    have hz_eq : e y = z := e.right_inv hz
+    let L : TangentSpace I y →L[ℝ] E :=
+      mfderiv I 𝓘(ℝ, E) (e : M → E) y
+    have hInv : L.IsInvertible := by
+      simpa [L, e, y] using
+        (isInvertible_mfderiv_extChartAt (I := I) (x := x) (y := y) hySrc :
+          (mfderiv I 𝓘(ℝ, E)
+            ((extChartAt I x : PartialEquiv M E) : M → E) y).IsInvertible)
+    let w : TangentSpace I y := L.inverse v
+    have hLv : L w = v := by
+      simpa [w] using hInv.self_apply_inverse v
+    have hchart :=
+      extDerivFun_apply_fixed_chart (I := I) (f := f) (x₀ := x) (y := y)
+        (by simpa [e, y] using hySrc) (hf y) w
+    have hzro : extDerivFun f y w = 0 := hzero y w
+    rw [hchart] at hzro
+    have hzro' : fderiv ℝ F (e y) (L w) = 0 := by
+      simpa [F, L] using hzro
+    rw [hz_eq, hLv] at hzro'
+    exact hzro'
+  have hLevelOpen : IsOpen (e.target ∩ F ⁻¹' {F z0}) :=
+    (isOpen_extChartAt_target (I := I) x).isOpen_inter_preimage_of_fderiv_eq_zero
+      hFdiffOn hFderivZero {F z0}
+  have hz0Level : z0 ∈ e.target ∩ F ⁻¹' {F z0} := by
+    constructor
+    · simp [e, z0]
+    · simp [z0]
+  have hpre : (fun y : M ↦ e y) ⁻¹' (e.target ∩ F ⁻¹' {F z0}) ∈ 𝓝 x :=
+    (continuousAt_extChartAt (I := I) x).preimage_mem_nhds
+      (hLevelOpen.mem_nhds hz0Level)
+  have hsrc : e.source ∈ 𝓝 x := by
+    simpa [e] using
+      (isOpen_extChartAt_source (I := I) x).mem_nhds
+        (mem_extChartAt_source (I := I) x)
+  filter_upwards [hsrc, hpre] with y hySrc hyLevel
+  have hFy : F (e y) = F z0 := by
+    simpa using hyLevel.2
+  have hyLeft : e.symm (e y) = y := e.left_inv hySrc
+  have hxLeft : e.symm z0 = x := by
+    simp [e, z0]
+  simpa [F, z0, hyLeft, hxLeft] using hFy
 
 end Boundaryless
 
