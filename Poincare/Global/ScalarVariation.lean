@@ -11095,6 +11095,83 @@ noncomputable def tensorDivergenceOneFormAt
     (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
     ((Module.finBasis ℝ (TM x)) i) w
 
+theorem covTensor2DerivAt_scalar_metric
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (v p q : TM x) :
+    covTensor2DerivAt g (fun y p q ↦ f y * g.inner y p q) x v p q =
+      extDerivFun f x v * g.inner x p q := by
+  let P : ∀ y : M, TM y := extend E p
+  let Q : ∀ y : M, TM y := extend E q
+  have hP : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% P) x := by
+    simpa [P] using (mdifferentiableAt_extend I E p)
+  have hQ : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Q) x := by
+    simpa [Q] using (mdifferentiableAt_extend I E q)
+  have hMetricDiff :
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ g.inner y (P y) (Q y)) x :=
+    g.metric_pairing_mdiffAt hP hQ
+  have hProd :
+      extDerivFun (fun y : M ↦ f y * g.inner y (P y) (Q y)) x v =
+        f x * extDerivFun (fun y : M ↦ g.inner y (P y) (Q y)) x v +
+          extDerivFun f x v * g.inner x p q := by
+    have hmul := CovariantDerivative.extDerivFun_mul
+      (p := f) (q := fun y : M ↦ g.inner y (P y) (Q y))
+      (x := x) hf hMetricDiff v
+    simpa [P, Q, mul_comm, mul_left_comm, mul_assoc] using hmul
+  have hCompat :
+      extDerivFun (fun y : M ↦ g.inner y (P y) (Q y)) x v =
+        g.inner x (g.leviCivita P x v) q +
+          g.inner x p (g.leviCivita Q x v) := by
+    have h := g.leviCivita_metricCompatibleAt x
+      (by simpa [MDiffAtTangentField] using hP)
+      (by simpa [MDiffAtTangentField] using hQ) v
+    simpa [P, Q] using h
+  unfold covTensor2DerivAt
+  rw [hProd, hCompat]
+  simp [P, Q]
+  ring
+
+theorem tensorDivergenceOneFormAt_scalar_metric
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (w : TM x) :
+    tensorDivergenceOneFormAt g (fun y p q ↦ f y * g.inner y p q) x w =
+      extDerivFun f x w := by
+  classical
+  letI : FiniteDimensional ℝ (TM x) :=
+    inferInstanceAs (FiniteDimensional ℝ E)
+  let b := Module.finBasis ℝ (TM x)
+  let sharp : Fin (Module.finrank ℝ (TM x)) → TM x :=
+    fun i ↦ metricDualVectorAt g x (b.coord i)
+  have hrepr :
+      (∑ i, g.inner x w (b i) • sharp i) = w := by
+    simpa [b, sharp] using
+      sum_inner_basis_smul_metricDualVectorAt (g := g) (x := x) (v := w)
+  have hmap :
+      extDerivFun f x (∑ i, g.inner x w (b i) • sharp i) =
+        ∑ i, g.inner x w (b i) * extDerivFun f x (sharp i) := by
+    have h :=
+      map_sum (extDerivFun f x)
+        (fun i ↦ g.inner x w (b i) • sharp i) Finset.univ
+    simpa [smul_eq_mul] using h
+  unfold tensorDivergenceOneFormAt
+  calc
+    (∑ i, covTensor2DerivAt g (fun y p q ↦ f y * g.inner y p q) x
+        (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
+        ((Module.finBasis ℝ (TM x)) i) w) =
+        ∑ i, extDerivFun f x (sharp i) * g.inner x (b i) w := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          simpa [b, sharp] using
+            covTensor2DerivAt_scalar_metric (g := g) (f := f) hf (sharp i) (b i) w
+    _ = ∑ i, g.inner x w (b i) * extDerivFun f x (sharp i) := by
+          refine Finset.sum_congr rfl fun i _ ↦ ?_
+          rw [g.inner_symm x (b i) w]
+          ring
+    _ = extDerivFun f x (∑ i, g.inner x w (b i) • sharp i) := hmap.symm
+    _ = extDerivFun f x w := by rw [hrepr]
+
 theorem tensorDivergenceOneFormAt_ricciVariationField_swap
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
@@ -19363,6 +19440,98 @@ theorem eventually_closedContractedBianchiOneFormAt_canonical
   exact ClosedContractedBianchiOneFormAt.of_closed_trace_contraction
     (g := g) (x := y) hyDiv hyScalar hyTrace
 
+section DimensionThreeSchur
+
+variable {M3 : Type u}
+variable [TopologicalSpace M3] [T2Space M3]
+variable [ChartedSpace (ClosedSmoothModel 3) M3]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M3]
+
+local notation "I3" => closedSmoothModelWithCorners 3
+local notation "E3" => ClosedSmoothModel 3
+local notation "TM3" => (TangentSpace I3 : M3 → Type _)
+
+/--
+Schur's coefficient step in dimension three, with the scalar differentiability
+input kept explicit.
+
+Substituting `Ric = (R / 3) g` into the one-form contracted Bianchi identity
+gives `(1 / 3) dR = (1 / 2) dR`, hence `dR = 0`.
+-/
+theorem extDerivFun_scalarAt_eq_zero_of_isEinstein3
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hScalarDiff : ∀ x : M3,
+      MDifferentiableAt I3 𝓘(ℝ) (fun y : M3 ↦ g.scalarAt y) x)
+    (hEin : g.IsEinstein3)
+    (x : M3) (w : TM3 x) :
+    extDerivFun (fun y : M3 ↦ g.scalarAt y) x w = 0 := by
+  let R : M3 → ℝ := fun y ↦ g.scalarAt y
+  let f : M3 → ℝ := fun y ↦ R y / 3
+  have hf : MDifferentiableAt I3 𝓘(ℝ) f x := by
+    have hR : MDifferentiableAt I3 𝓘(ℝ) R x := by
+      simpa [R] using hScalarDiff x
+    have hscale :
+        MDifferentiableAt I3 𝓘(ℝ)
+          (fun y : M3 ↦ (1 / 3 : ℝ) * R y) x :=
+      mdifferentiableAt_const.mul hR
+    simpa [f, R, div_eq_mul_inv, one_div, mul_comm, mul_left_comm, mul_assoc] using hscale
+  have hEinField :
+      ∀ᶠ y in nhds x, ∀ u v : TM3 y,
+        ricciVariationField g y u v =
+          (fun z p q ↦ f z * g.inner z p q) y u v := by
+    exact Filter.Eventually.of_forall fun y u v ↦ by
+      simpa [ricciVariationField, f, R] using hEin y u v
+  have hDivCongr :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        tensorDivergenceOneFormAt g
+          (fun y p q ↦ f y * g.inner y p q) x w :=
+    tensorDivergenceOneFormAt_congr_of_eventuallyEq
+      (g := g) (h := ricciVariationField g)
+      (k := fun y p q ↦ f y * g.inner y p q)
+      (x := x) hEinField w
+  have hScalarDiv :
+      tensorDivergenceOneFormAt g
+          (fun y p q ↦ f y * g.inner y p q) x w =
+        extDerivFun f x w :=
+    tensorDivergenceOneFormAt_scalar_metric (g := g) (f := f) hf w
+  have hScaleDeriv :
+      extDerivFun f x w =
+        (1 / 3 : ℝ) *
+          extDerivFun R x w := by
+    have hR : MDifferentiableAt I3 𝓘(ℝ) R x := by
+      simpa [R] using hScalarDiff x
+    have hsmul := congrArg (fun L : TM3 x →L[ℝ] ℝ ↦ L w)
+      (extDerivFun_const_smul_at (n := 3) (M := M3)
+        (f := R) (x := x) hR (1 / 3 : ℝ))
+    simpa [f, R, Pi.smul_apply, smul_eq_mul, div_eq_mul_inv, one_div,
+      mul_comm, mul_left_comm, mul_assoc] using hsmul
+  have hDivThird :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        (1 / 3 : ℝ) * extDerivFun R x w := by
+    calc
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+          tensorDivergenceOneFormAt g
+            (fun y p q ↦ f y * g.inner y p q) x w := hDivCongr
+      _ = extDerivFun f x w := hScalarDiv
+      _ = (1 / 3 : ℝ) * extDerivFun R x w := hScaleDeriv
+  have hBianchiAt : ClosedContractedBianchiOneFormAt g x :=
+    (eventually_closedContractedBianchiOneFormAt_canonical
+      (g := g) (x := x)).self_of_nhds
+  have hDivHalf :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        (1 / 2 : ℝ) * extDerivFun R x w := by
+    simpa [R] using hBianchiAt w
+  have hcoeff :
+      (1 / 3 : ℝ) * extDerivFun R x w =
+        (1 / 2 : ℝ) * extDerivFun R x w := by
+    linarith
+  have hzero : extDerivFun R x w = 0 := by
+    linarith
+  simpa [R] using hzero
+
+end DimensionThreeSchur
+
 set_option maxHeartbeats 5000000 in
 /--
 Differentiated one-form contracted Bianchi identity.
@@ -22126,6 +22295,97 @@ theorem closedCurvatureFourLinearAt_spaceForm_coeff
           (n := n) (M := M) x
           (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b := by
           exact g.riemannFromRicci3At_spaceForm_coeff hRic hScal u w a b
+
+section ConstantSectionalCurvatureThree
+
+variable {M3 : Type u}
+variable [TopologicalSpace M3] [T2Space M3]
+variable [ChartedSpace (ClosedSmoothModel 3) M3]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M3]
+
+local notation "I3" => closedSmoothModelWithCorners 3
+local notation "E3" => ClosedSmoothModel 3
+local notation "TM3" => (TangentSpace I3 : M3 → Type _)
+
+/--
+Dimension-three constant sectional curvature in the repository's four-linear
+curvature sign convention.
+
+The factor `-(κ / 2)` matches
+`closedCurvatureFourLinearAt_spaceForm_coeff`: in dimension three,
+`Ric = 2κ g` and `R = 6κ`.
+-/
+def HasConstantSectionalCurvature3
+    (g : ClosedSmoothRiemannianMetric 3 M3) (κ : ℝ) : Prop :=
+  ∀ x : M3, ∀ u w a b : TM3 x,
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E3 u) (extend E3 w) (extend E3 a) x) b =
+      -(κ / 2) *
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := 3) (M := M3) x
+          (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b
+
+/-- A direct falsifier for `HasConstantSectionalCurvature3`. -/
+theorem not_hasConstantSectionalCurvature3_of_exists_curvature_mismatch
+    (g : ClosedSmoothRiemannianMetric 3 M3) {κ : ℝ}
+    (hbad :
+      ∃ x : M3, ∃ u w a b : TM3 x,
+        g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E3 u) (extend E3 w) (extend E3 a) x) b ≠
+          -(κ / 2) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := 3) (M := M3) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              u w a b) :
+    ¬ HasConstantSectionalCurvature3 g κ := by
+  intro hcurv
+  rcases hbad with ⟨x, u, w, a, b, hneq⟩
+  exact hneq (hcurv x u w a b)
+
+/--
+Einstein plus constant scalar curvature collapses to the dimension-three space
+form curvature tensor.
+-/
+theorem hasConstantSectionalCurvature3_of_isEinstein3_of_scalar_const
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {R₀ : ℝ} (hEin : g.IsEinstein3)
+    (hScalar : ∀ x : M3, g.scalarAt x = R₀) :
+    HasConstantSectionalCurvature3 g (R₀ / 6) := by
+  intro x u w a b
+  have hRic : ∀ p q : TM3 x, g.ricciAt x p q = (R₀ / 3) * g.inner x p q := by
+    intro p q
+    calc
+      g.ricciAt x p q = (g.scalarAt x / 3) * g.inner x p q := hEin x p q
+      _ = (R₀ / 3) * g.inner x p q := by rw [hScalar x]
+  have hScal : g.scalarAt x = 3 * (R₀ / 3) := by
+    rw [hScalar x]
+    ring
+  have hcurv := closedCurvatureFourLinearAt_spaceForm_coeff
+    (g := g) (hn := rfl) (x := x) (lam := R₀ / 3)
+    hRic hScal u w a b
+  rw [hcurv]
+  ring
+
+/--
+Conditional chain theorem: zero traceless Ricci gives constant sectional
+curvature once the scalar constant has been supplied.
+-/
+theorem hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_of_scalar_const
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {R₀ : ℝ}
+    (htr : ∀ x : M3, g.tracelessRicciNormSqAt x = 0)
+    (hScalar : ∀ x : M3, g.scalarAt x = R₀) :
+    HasConstantSectionalCurvature3 g (R₀ / 6) :=
+  hasConstantSectionalCurvature3_of_isEinstein3_of_scalar_const
+    (g := g)
+    (hEin := g.isEinstein3_of_forall_tracelessRicciNormSqAt_eq_zero htr)
+    hScalar
+
+end ConstantSectionalCurvatureThree
 
 /--
 Contracting the metric Kulkarni-Nomizu term against the raised Ricci endomorphism
