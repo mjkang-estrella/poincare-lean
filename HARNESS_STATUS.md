@@ -67,6 +67,28 @@ germ locality + `inCoordinates` gluing (`Global/LeviCivitaRegularity.lean`,
   Bianchi. Two proposed intermediate identities were REFUTED by flat-torus
   counterexamples and rerouted — no false statement survived.
 
+### Tier M5 — the sphere endgame (CONDITIONAL POINCARÉ PATH, 2026-07-04)
+- `poincareConjecture_of_hamiltonConvergencePinchedLimit3`
+  (`Global/SphereTheorem.lean`): the first end-to-end conditional path from
+  Ricci-flow estimates to `PoincareConjecture`, conditional on exactly two
+  named interfaces (hypotheses, never axioms):
+  `HamiltonConvergencePinchedLimit3` (analytic convergence wall) and
+  `PositiveConstantCurvatureSpaceForm3` (Killing–Hopf recognition).
+  Proven links: vanishing traceless Ricci → Einstein → Schur (via the goal-2
+  contracted Bianchi) → connected constancy → constant sectional curvature →
+  `sphere_of_pinched_limit`.
+
+### Tier M4 — pinching (HAMILTON 1982 ESTIMATES PROVEN, 2026-07-04)
+- `hamilton_pinching_preserved`: max of |Ric|²/R² nonincreasing (R > 0, 3D).
+- `hamilton_pinching_improvement`: max of |Ric°|²/R^(2−δ) nonincreasing for
+  the sharp admissible δ(ε) = 6ε²/(1−2ε+3ε²) under eigenvalue pinching, with
+  `hamilton_eigenvalue_pinching_floor_preserved`.
+- Foundations: tensor Bochner identity, parabolic |Ric|² inequality, corrected
+  quotient evolution, spectral reaction sign, closed parabolic max principle.
+- Consolidation audit (M4-audit-1..5): axiom sets clean; bump-function
+  globalization closed the extension-regularity gap; static witnesses
+  (Ricci-flat / space-form) certify non-vacuity of the scalar chain.
+
 ### Tier M4 — tensor evolution (RICCI EVOLUTION EQUATION PROVEN 2026-07-03)
 - `satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity`
   (`Global/ScalarVariation.lean`): under Ricci flow,
