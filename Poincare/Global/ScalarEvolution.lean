@@ -4064,6 +4064,70 @@ theorem pinchingQuotientAt_le_pinchingMaximumAt
   rw [pinchingMaximumAt_eq_of_isMaxOn (g := g) hx₀max]
   exact hx₀max trivial
 
+/-- A pointwise-constant pinching quotient is `C²` as a spatial function. -/
+theorem contMDiffAt_pinchingQuotientAt_two_of_eq_const
+    (g : ClosedSmoothRiemannianMetric n M) {q : ℝ}
+    (hQ : ∀ y : M, g.pinchingQuotientAt y = q) (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.pinchingQuotientAt y) x := by
+  have hfun : (fun y : M ↦ g.pinchingQuotientAt y) = fun _ : M ↦ q := by
+    funext y
+    exact hQ y
+  rw [hfun]
+  exact contMDiffAt_const
+
+/-- A static pointwise-constant pinching quotient has a continuous maximum-principle track. -/
+theorem continuous_static_pinchingQuotientTrack_of_eq_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) {q : ℝ}
+    (hQ : ∀ y : M, g.pinchingQuotientAt y = q) :
+    Continuous ↿(fun τ (x : M) ↦
+      ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) := by
+  have hfun :
+      ↿(fun τ (x : M) ↦
+        ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) =
+      fun _ : ℝ × M ↦ q := by
+    funext p
+    rcases p with ⟨τ, y⟩
+    simpa using hQ y
+  rw [hfun]
+  exact continuous_const
+
+/--
+The static positive-Einstein/space-form quotient identity supplies the spatial
+`C²` member of the pinching maximum-track package.
+-/
+theorem contMDiffAt_pinchingQuotientAt_two_of_ricciEndoAt_eq_smul_id
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hnpos : 0 < (n : ℝ))
+    (hR : ∀ y : M, g.scalarAt y ≠ 0)
+    (hEin : ∀ y : M,
+      g.ricciEndoAt y = (g.scalarAt y / (n : ℝ)) • LinearMap.id)
+    (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.pinchingQuotientAt y) x :=
+  contMDiffAt_pinchingQuotientAt_two_of_eq_const (g := g)
+    (q := (1 : ℝ) / (n : ℝ))
+    (fun y ↦
+      g.pinchingQuotientAt_eq_inv_nat_of_ricciEndoAt_eq_smul_id
+        y hnpos (hR y) (hEin y))
+    x
+
+/--
+The static positive-Einstein/space-form quotient identity supplies the
+continuity member of the pinching maximum-track package.
+-/
+theorem continuous_static_pinchingQuotientTrack_of_ricciEndoAt_eq_smul_id
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (hnpos : 0 < (n : ℝ))
+    (hR : ∀ y : M, g.scalarAt y ≠ 0)
+    (hEin : ∀ y : M,
+      g.ricciEndoAt y = (g.scalarAt y / (n : ℝ)) • LinearMap.id) :
+    Continuous ↿(fun τ (x : M) ↦
+      ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) :=
+  continuous_static_pinchingQuotientTrack_of_eq_const (g := g) (t₀ := t₀)
+    (q := (1 : ℝ) / (n : ℝ))
+    (fun y ↦
+      g.pinchingQuotientAt_eq_inv_nat_of_ricciEndoAt_eq_smul_id
+        y hnpos (hR y) (hEin y))
+
 /-- On a compact closed manifold, the improved traceless quotient attains a global maximum. -/
 theorem exists_tracelessPinchingAt_isMaxOn
     [CompactSpace M] [Nonempty M]
