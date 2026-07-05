@@ -3341,6 +3341,358 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'
           (g := gt t₀) (x := y))
       hRicDivDiff
 
+section StaticRicciFlatWitness
+
+/-- The metric-raise map of a time-constant metric family has zero time derivative. -/
+theorem hasDerivAt_metricRaiseContinuousAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    HasDerivAt (fun _ : ℝ ↦ g.metricRaiseContinuousAt x) 0 t₀ := by
+  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
+  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  simpa using hasDerivAt_const t₀ (g.metricRaiseContinuousAt x)
+
+/-- The static time-variation tensor is definitionally the zero `(0,2)` field. -/
+theorem timeDerivAt_const_eq_zero_field
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) :
+    timeDerivAt (fun _ : ℝ ↦ g) t₀ =
+      (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  funext y v w
+  simp
+
+/--
+Static metric families satisfy the neighborhood metric-flow regularity and
+canonical-extension time/spatial derivative commutation package.
+-/
+theorem eventually_metricFlowRegularAt_const_and_ext_deriv
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    ∀ᶠ y in nhds x,
+      MetricFlowRegularAt (fun _ : ℝ ↦ g) t₀ y ∧
+      (∀ a b c : TM y,
+        HasDerivAt
+          (fun t ↦
+            extDerivFun
+              (fun z : M ↦ ((fun _ : ℝ ↦ g) t).inner z
+                (extend E b z) (extend E c z)) y a)
+          (extDerivFun
+            (fun z : M ↦
+              timeDerivAt (fun _ : ℝ ↦ g) t₀ z
+                (extend E b z) (extend E c z)) y a) t₀) :=
+  Filter.Eventually.of_forall fun y ↦ by
+    refine ⟨metricFlowRegularAt_const g t₀ y, ?_⟩
+    intro a b c
+    have htarget :
+        extDerivFun
+          (fun z : M ↦
+            timeDerivAt (fun _ : ℝ ↦ g) t₀ z
+              (extend E b z) (extend E c z)) y a = 0 := by
+      have hzero :
+          (fun z : M ↦
+            timeDerivAt (fun _ : ℝ ↦ g) t₀ z
+              (extend E b z) (extend E c z)) =
+          fun _ : M ↦ (0 : ℝ) := by
+        funext z
+        simp
+      rw [hzero]
+      unfold extDerivFun
+      rw [(hasMFDerivAt_const (0 : ℝ) y).mfderiv]
+      simp
+    simpa [htarget] using
+      (hasDerivAt_const t₀
+        (extDerivFun
+          (fun z : M ↦ g.inner z (extend E b z) (extend E c z)) y a))
+
+/-- Static metric families have spatially differentiable zero time variation. -/
+theorem covTensor2ExtDifferentiableAt_timeDerivAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    CovTensor2ExtDifferentiableAt (timeDerivAt (fun _ : ℝ ↦ g) t₀) x := by
+  simpa [timeDerivAt_const_eq_zero_field (n := n) (M := M) g t₀]
+    using covTensor2ExtDifferentiableAt_zero (n := n) (M := M) x
+
+/-- Static metric families have second spatial differentiability for zero time variation. -/
+theorem covTensor2DerivExtDifferentiableAt_timeDerivAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    CovTensor2DerivExtDifferentiableAt g (timeDerivAt (fun _ : ℝ ↦ g) t₀) x := by
+  simpa [timeDerivAt_const_eq_zero_field (n := n) (M := M) g t₀]
+    using covTensor2DerivExtDifferentiableAt_zero (n := n) (M := M) g x
+
+/-- Bilinear Ricci-flatness implies the section-tested Ricci trace vanishes. -/
+theorem ricciTraceAt_eq_zero_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    (y : M) {Z : ∀ z : M, TM z} (hZ : ClosedC2TangentField Z)
+    (hreg : CovariantDerivative.DerivRegularAt g.leviCivita Z y)
+    (w : TM y) :
+    CovariantDerivative.ricciTraceAt g.leviCivita hreg w = 0 := by
+  have htrace :=
+    CovariantDerivative.ricciTraceAt_eq_ricciBilinearAt
+      (cov := g.leviCivita) (Z := Z) (x := y) (hZ y) hreg w
+  calc
+    CovariantDerivative.ricciTraceAt g.leviCivita hreg w =
+        g.ricciAt y w (Z y) := by
+          simpa [ClosedSmoothRiemannianMetric.ricciAt] using htrace
+    _ = 0 := hric y w (Z y)
+
+/--
+Bilinear Ricci-flatness supplies the static Ricci-flow neighborhood package
+used by the scalar-evolution chain.
+-/
+theorem eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    ∀ᶠ y in nhds x,
+      IsClosedRicciFlowSolutionAt (fun _ : ℝ ↦ g) t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt (fun _ : ℝ ↦ g) t₀ y :=
+  eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciFlat
+    (g := g) (t₀ := t₀) (x := x)
+    (fun y {Z} hZ hreg w ↦
+      ricciTraceAt_eq_zero_of_ricciAt_eq_zero
+        (g := g) hric y hZ hreg w)
+
+/-- Ricci-flatness identifies the raw Ricci variation field with zero. -/
+theorem ricciVariationField_eq_zero_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    ricciVariationField g = (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  funext y u w
+  simpa [ricciVariationField] using hric y u w
+
+/-- Ricci-flatness identifies the `-2 Ric` variation field with zero. -/
+theorem negTwoRicciVariationField_eq_zero_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    negTwoRicciVariationField g = (fun y : M ↦ fun _ _ : TM y ↦ (0 : ℝ)) := by
+  funext y u w
+  simp [negTwoRicciVariationField, hric y u w]
+
+/-- Ricci-flat static metrics have `C²` scalar curvature entries: they are constant zero. -/
+theorem contMDiffAt_scalarAt_two_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.scalarAt y) x := by
+  have hscalar : (fun y : M ↦ g.scalarAt y) = fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    exact g.scalarAt_eq_zero_of_ricciAt_eq_zero (hric y)
+  rw [hscalar]
+  exact contMDiffAt_const
+
+/--
+Ricci-flat static metrics have the scalar exterior-derivative regularity used
+by the canonical contracted-Bianchi wrapper.
+-/
+theorem scalarAt_extDerivFun_mDifferentiableAt_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    {x : M} (w : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x := by
+  have hscalar : (fun z : M ↦ g.scalarAt z) = fun _ : M ↦ (0 : ℝ) := by
+    funext z
+    exact g.scalarAt_eq_zero_of_ricciAt_eq_zero (hric z)
+  rw [hscalar]
+  have hzero :
+      (fun y : M ↦
+        extDerivFun (fun _ : M ↦ (0 : ℝ)) y (extend E w y)) =
+      fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    unfold extDerivFun
+    rw [(hasMFDerivAt_const (0 : ℝ) y).mfderiv]
+    simp
+  rw [hzero]
+  exact mdifferentiableAt_const
+
+/-- Ricci-flat static metrics have `C²` Ricci-norm entries: they are constant zero. -/
+theorem contMDiffAt_ricciNormSqAt_two_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.ricciNormSqAt y) x := by
+  have hnorm : (fun y : M ↦ g.ricciNormSqAt y) = fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    exact g.ricciNormSqAt_eq_zero (hric y)
+  rw [hnorm]
+  exact contMDiffAt_const
+
+/-- Ricci-flatness makes the Ricci variation second-derivative package zero. -/
+theorem covTensor2DerivExtDifferentiableAt_ricciVariationField_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    (x : M) :
+    CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x := by
+  simpa [ricciVariationField_eq_zero_of_ricciAt_eq_zero (g := g) hric]
+    using covTensor2DerivExtDifferentiableAt_zero (n := n) (M := M) g x
+
+/-- Ricci-flatness makes the Ricci divergence one-form entries differentiable as zero. -/
+theorem ricciVariationField_divergence_mDifferentiableAt_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0)
+    {x : M} (w : TM x) :
+    MDifferentiableAt I 𝓘(ℝ)
+      (fun y : M ↦
+        tensorDivergenceOneFormAt g (ricciVariationField g) y
+          (extend E w y)) x := by
+  have hfield :=
+    ricciVariationField_eq_zero_of_ricciAt_eq_zero
+      (g := g) hric
+  rw [hfield]
+  have hzero :
+      (fun y : M ↦
+        tensorDivergenceOneFormAt g
+          (fun z : M ↦ fun _ _ : TM z ↦ (0 : ℝ)) y
+          (extend E w y)) =
+      fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    simp
+  rw [hzero]
+  exact mdifferentiableAt_const
+
+/-- Static Ricci-flat flows satisfy the double-divergence substitution predicate. -/
+theorem tensorDoubleDivergenceTimeDerivNegTwoRicciAt_const_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    TensorDoubleDivergenceTimeDerivNegTwoRicciAt (fun _ : ℝ ↦ g) t₀ x := by
+  unfold TensorDoubleDivergenceTimeDerivNegTwoRicciAt
+  rw [timeDerivAt_const_eq_zero_field (n := n) (M := M) g t₀]
+  rw [negTwoRicciVariationField_eq_zero_of_ricciAt_eq_zero (g := g) hric]
+
+/-- Static Ricci-flat flows satisfy the trace-Laplacian substitution predicate. -/
+theorem traceMetricVariationLaplacianTimeDerivNegTwoRicciAt_const_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt (fun _ : ℝ ↦ g) t₀ x := by
+  unfold TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt
+  have hH := timeDerivAt_const_eq_zero_field (n := n) (M := M) g t₀
+  have hTraceZero :
+      (fun y : M ↦
+        traceMetricVariationAt g (timeDerivAt (fun _ : ℝ ↦ g) t₀) y) =
+      fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    rw [hH]
+    simp
+  have hScalarZero : (fun y : M ↦ g.scalarAt y) = fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    exact g.scalarAt_eq_zero_of_ricciAt_eq_zero (hric y)
+  rw [hTraceZero, hScalarZero]
+  simp [ClosedSmoothRiemannianMetric.laplacianAt_const]
+
+/-- Static Ricci-flat metrics satisfy `div div (-2 Ric) = -2 div div Ric` by zero reduction. -/
+theorem tensorDoubleDivergenceNegTwoRicciLinearityAt_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    TensorDoubleDivergenceNegTwoRicciLinearityAt g x := by
+  unfold TensorDoubleDivergenceNegTwoRicciLinearityAt ricciDoubleDivergenceAt
+  rw [negTwoRicciVariationField_eq_zero_of_ricciAt_eq_zero (g := g) hric]
+  rw [ricciVariationField_eq_zero_of_ricciAt_eq_zero (g := g) hric]
+  simp
+
+/-- Static Ricci-flat metrics satisfy the contracted-Bianchi scalar predicate by zero reduction. -/
+theorem closedContractedBianchiAt_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    ClosedContractedBianchiAt g x := by
+  unfold ClosedContractedBianchiAt ricciDoubleDivergenceAt
+  rw [ricciVariationField_eq_zero_of_ricciAt_eq_zero (g := g) hric]
+  have hScalarZero : (fun y : M ↦ g.scalarAt y) = fun _ : M ↦ (0 : ℝ) := by
+    funext y
+    exact g.scalarAt_eq_zero_of_ricciAt_eq_zero (hric y)
+  rw [hScalarZero]
+  simp [ClosedSmoothRiemannianMetric.laplacianAt_const]
+
+/--
+The bundled scalar-variation predicate package is inhabited on a static
+Ricci-flat flow.
+-/
+theorem hamiltonScalarEvolutionTraceDerivativePredicatesAt_const_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    HamiltonScalarEvolutionTraceDerivativePredicatesAt (fun _ : ℝ ↦ g) t₀ x := by
+  letI : ∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (((fun _ : ℝ ↦ g) t).leviCivita) 1 :=
+    fun _ ↦ inferInstance
+  refine ⟨0,
+    closedRicciFlowExtensionRegularAt_const (g := g) t₀ x,
+    metricFlowRegularAt_const g t₀ x,
+    timeDifferentiableAt_const g t₀ x,
+    hasDerivAt_metricRaiseContinuousAt_const (g := g) t₀ x,
+    deltaGammaDivergenceTraceInnerHessianDerivativeAt_const (g := g) t₀ x,
+    deltaGammaContractionTraceHessianDerivativeAt_const (g := g) t₀ x,
+    tensorDoubleDivergenceTimeDerivNegTwoRicciAt_const_of_ricciAt_eq_zero
+      (g := g) t₀ x hric,
+    traceMetricVariationLaplacianTimeDerivNegTwoRicciAt_const_of_ricciAt_eq_zero
+      (g := g) t₀ x hric,
+    tensorDoubleDivergenceNegTwoRicciLinearityAt_of_ricciAt_eq_zero
+      (g := g) x hric,
+    closedContractedBianchiAt_of_ricciAt_eq_zero (g := g) x hric⟩
+
+/-- The primary scalar-variation predicate package is inhabited on a static Ricci-flat flow. -/
+theorem hamiltonScalarEvolutionPredicatesAt_const_of_ricciAt_eq_zero
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    HamiltonScalarEvolutionPredicatesAt (fun _ : ℝ ↦ g) t₀ x := by
+  letI : ∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (((fun _ : ℝ ↦ g) t).leviCivita) 1 :=
+    fun _ ↦ inferInstance
+  exact hamiltonScalarEvolutionPredicatesAt_of_traceDerivativePredicates
+    (hamiltonScalarEvolutionTraceDerivativePredicatesAt_const_of_ricciAt_eq_zero
+      (g := g) t₀ x hric)
+
+/--
+Capstone non-vacuity certificate: the headline scalar-evolution Ricci-flow
+theorem applies end-to-end to the static Ricci-flat flow.
+-/
+theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_static_ricciFlat
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ u w : TM y, g.ricciAt y u w = 0) :
+    SatisfiesHamiltonScalarEvolutionAt (fun _ : ℝ ↦ g) t₀ x := by
+  letI : ∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (((fun _ : ℝ ↦ g) t).leviCivita) 1 :=
+    fun _ ↦ inferInstance
+  exact satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'
+    (gt := fun _ : ℝ ↦ g) (t₀ := t₀) (x := x) (raise' := 0)
+    (eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciAt_eq_zero
+      (g := g) t₀ x hric)
+    (eventually_metricFlowRegularAt_const_and_ext_deriv (g := g) t₀ x)
+    (fun y ↦ timeDifferentiableAt_const g t₀ y)
+    (hasDerivAt_metricRaiseContinuousAt_const (g := g) t₀ x)
+    (deltaGammaEntryDerivativeBridgeAt_const (g := g) t₀ x)
+    (covTensor2DerivExtDifferentiableAt_timeDerivAt_const (g := g) t₀ x)
+    (fun y ↦ covTensor2ExtDifferentiableAt_timeDerivAt_const (g := g) t₀ y)
+    (timeVariationTraceEntriesExtContMDiffAt_const (g := g) t₀ x)
+    (fun y ↦ contMDiffAt_scalarAt_two_of_ricciAt_eq_zero (g := g) hric y)
+    (fun w ↦
+      ricciVariationField_divergence_mDifferentiableAt_of_ricciAt_eq_zero
+        (g := g) hric w)
+
+end StaticRicciFlatWitness
+
 /--
 Hamilton scalar evolution from the Hessian-trace form of the two `δΓ`
 assemblies.
@@ -3711,6 +4063,70 @@ theorem pinchingQuotientAt_le_pinchingMaximumAt
   obtain ⟨x₀, hx₀max⟩ := exists_pinchingQuotientAt_isMaxOn (g := g) hQ
   rw [pinchingMaximumAt_eq_of_isMaxOn (g := g) hx₀max]
   exact hx₀max trivial
+
+/-- A pointwise-constant pinching quotient is `C²` as a spatial function. -/
+theorem contMDiffAt_pinchingQuotientAt_two_of_eq_const
+    (g : ClosedSmoothRiemannianMetric n M) {q : ℝ}
+    (hQ : ∀ y : M, g.pinchingQuotientAt y = q) (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.pinchingQuotientAt y) x := by
+  have hfun : (fun y : M ↦ g.pinchingQuotientAt y) = fun _ : M ↦ q := by
+    funext y
+    exact hQ y
+  rw [hfun]
+  exact contMDiffAt_const
+
+/-- A static pointwise-constant pinching quotient has a continuous maximum-principle track. -/
+theorem continuous_static_pinchingQuotientTrack_of_eq_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) {q : ℝ}
+    (hQ : ∀ y : M, g.pinchingQuotientAt y = q) :
+    Continuous ↿(fun τ (x : M) ↦
+      ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) := by
+  have hfun :
+      ↿(fun τ (x : M) ↦
+        ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) =
+      fun _ : ℝ × M ↦ q := by
+    funext p
+    rcases p with ⟨τ, y⟩
+    simpa using hQ y
+  rw [hfun]
+  exact continuous_const
+
+/--
+The static positive-Einstein/space-form quotient identity supplies the spatial
+`C²` member of the pinching maximum-track package.
+-/
+theorem contMDiffAt_pinchingQuotientAt_two_of_ricciEndoAt_eq_smul_id
+    (g : ClosedSmoothRiemannianMetric n M)
+    (hnpos : 0 < (n : ℝ))
+    (hR : ∀ y : M, g.scalarAt y ≠ 0)
+    (hEin : ∀ y : M,
+      g.ricciEndoAt y = (g.scalarAt y / (n : ℝ)) • LinearMap.id)
+    (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ g.pinchingQuotientAt y) x :=
+  contMDiffAt_pinchingQuotientAt_two_of_eq_const (g := g)
+    (q := (1 : ℝ) / (n : ℝ))
+    (fun y ↦
+      g.pinchingQuotientAt_eq_inv_nat_of_ricciEndoAt_eq_smul_id
+        y hnpos (hR y) (hEin y))
+    x
+
+/--
+The static positive-Einstein/space-form quotient identity supplies the
+continuity member of the pinching maximum-track package.
+-/
+theorem continuous_static_pinchingQuotientTrack_of_ricciEndoAt_eq_smul_id
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (hnpos : 0 < (n : ℝ))
+    (hR : ∀ y : M, g.scalarAt y ≠ 0)
+    (hEin : ∀ y : M,
+      g.ricciEndoAt y = (g.scalarAt y / (n : ℝ)) • LinearMap.id) :
+    Continuous ↿(fun τ (x : M) ↦
+      ((fun _ : ℝ ↦ g) (t₀ + τ)).pinchingQuotientAt x) :=
+  continuous_static_pinchingQuotientTrack_of_eq_const (g := g) (t₀ := t₀)
+    (q := (1 : ℝ) / (n : ℝ))
+    (fun y ↦
+      g.pinchingQuotientAt_eq_inv_nat_of_ricciEndoAt_eq_smul_id
+        y hnpos (hR y) (hEin y))
 
 /-- On a compact closed manifold, the improved traceless quotient attains a global maximum. -/
 theorem exists_tracelessPinchingAt_isMaxOn
