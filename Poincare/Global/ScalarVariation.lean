@@ -11095,6 +11095,43 @@ noncomputable def tensorDivergenceOneFormAt
     (metricDualVectorAt g x ((Module.finBasis ℝ (TM x)).coord i))
     ((Module.finBasis ℝ (TM x)) i) w
 
+theorem covTensor2DerivAt_scalar_metric
+    (g : ClosedSmoothRiemannianMetric n M)
+    {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I 𝓘(ℝ) f x)
+    (v p q : TM x) :
+    covTensor2DerivAt g (fun y p q ↦ f y * g.inner y p q) x v p q =
+      extDerivFun f x v * g.inner x p q := by
+  let P : ∀ y : M, TM y := extend E p
+  let Q : ∀ y : M, TM y := extend E q
+  have hP : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% P) x := by
+    simpa [P] using (mdifferentiableAt_extend I E p)
+  have hQ : MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% Q) x := by
+    simpa [Q] using (mdifferentiableAt_extend I E q)
+  have hMetricDiff :
+      MDifferentiableAt I 𝓘(ℝ) (fun y : M ↦ g.inner y (P y) (Q y)) x :=
+    g.metric_pairing_mdiffAt hP hQ
+  have hProd :
+      extDerivFun (fun y : M ↦ f y * g.inner y (P y) (Q y)) x v =
+        f x * extDerivFun (fun y : M ↦ g.inner y (P y) (Q y)) x v +
+          extDerivFun f x v * g.inner x p q := by
+    have hmul := CovariantDerivative.extDerivFun_mul
+      (p := f) (q := fun y : M ↦ g.inner y (P y) (Q y))
+      (x := x) hf hMetricDiff v
+    simpa [P, Q, mul_comm, mul_left_comm, mul_assoc] using hmul
+  have hCompat :
+      extDerivFun (fun y : M ↦ g.inner y (P y) (Q y)) x v =
+        g.inner x (g.leviCivita P x v) q +
+          g.inner x p (g.leviCivita Q x v) := by
+    have h := g.leviCivita_metricCompatibleAt x
+      (by simpa [MDiffAtTangentField] using hP)
+      (by simpa [MDiffAtTangentField] using hQ) v
+    simpa [P, Q] using h
+  unfold covTensor2DerivAt
+  rw [hProd, hCompat]
+  simp [P, Q]
+  ring
+
 theorem tensorDivergenceOneFormAt_ricciVariationField_swap
     (g : ClosedSmoothRiemannianMetric n M)
     [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
