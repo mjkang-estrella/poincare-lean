@@ -22296,6 +22296,97 @@ theorem closedCurvatureFourLinearAt_spaceForm_coeff
           (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b := by
           exact g.riemannFromRicci3At_spaceForm_coeff hRic hScal u w a b
 
+section ConstantSectionalCurvatureThree
+
+variable {M3 : Type u}
+variable [TopologicalSpace M3] [T2Space M3]
+variable [ChartedSpace (ClosedSmoothModel 3) M3]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M3]
+
+local notation "I3" => closedSmoothModelWithCorners 3
+local notation "E3" => ClosedSmoothModel 3
+local notation "TM3" => (TangentSpace I3 : M3 → Type _)
+
+/--
+Dimension-three constant sectional curvature in the repository's four-linear
+curvature sign convention.
+
+The factor `-(κ / 2)` matches
+`closedCurvatureFourLinearAt_spaceForm_coeff`: in dimension three,
+`Ric = 2κ g` and `R = 6κ`.
+-/
+def HasConstantSectionalCurvature3
+    (g : ClosedSmoothRiemannianMetric 3 M3) (κ : ℝ) : Prop :=
+  ∀ x : M3, ∀ u w a b : TM3 x,
+    g.inner x
+        (CovariantDerivative.curvatureOp g.leviCivita
+          (extend E3 u) (extend E3 w) (extend E3 a) x) b =
+      -(κ / 2) *
+        ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+          (n := 3) (M := M3) x
+          (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q) u w a b
+
+/-- A direct falsifier for `HasConstantSectionalCurvature3`. -/
+theorem not_hasConstantSectionalCurvature3_of_exists_curvature_mismatch
+    (g : ClosedSmoothRiemannianMetric 3 M3) {κ : ℝ}
+    (hbad :
+      ∃ x : M3, ∃ u w a b : TM3 x,
+        g.inner x
+            (CovariantDerivative.curvatureOp g.leviCivita
+              (extend E3 u) (extend E3 w) (extend E3 a) x) b ≠
+          -(κ / 2) *
+            ClosedSmoothRiemannianMetric.tensorKulkarniNomizuAt
+              (n := 3) (M := M3) x
+              (fun p q ↦ g.inner x p q) (fun p q ↦ g.inner x p q)
+              u w a b) :
+    ¬ HasConstantSectionalCurvature3 g κ := by
+  intro hcurv
+  rcases hbad with ⟨x, u, w, a, b, hneq⟩
+  exact hneq (hcurv x u w a b)
+
+/--
+Einstein plus constant scalar curvature collapses to the dimension-three space
+form curvature tensor.
+-/
+theorem hasConstantSectionalCurvature3_of_isEinstein3_of_scalar_const
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {R₀ : ℝ} (hEin : g.IsEinstein3)
+    (hScalar : ∀ x : M3, g.scalarAt x = R₀) :
+    HasConstantSectionalCurvature3 g (R₀ / 6) := by
+  intro x u w a b
+  have hRic : ∀ p q : TM3 x, g.ricciAt x p q = (R₀ / 3) * g.inner x p q := by
+    intro p q
+    calc
+      g.ricciAt x p q = (g.scalarAt x / 3) * g.inner x p q := hEin x p q
+      _ = (R₀ / 3) * g.inner x p q := by rw [hScalar x]
+  have hScal : g.scalarAt x = 3 * (R₀ / 3) := by
+    rw [hScalar x]
+    ring
+  have hcurv := closedCurvatureFourLinearAt_spaceForm_coeff
+    (g := g) (hn := rfl) (x := x) (lam := R₀ / 3)
+    hRic hScal u w a b
+  rw [hcurv]
+  ring
+
+/--
+Conditional chain theorem: zero traceless Ricci gives constant sectional
+curvature once the scalar constant has been supplied.
+-/
+theorem hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_of_scalar_const
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {R₀ : ℝ}
+    (htr : ∀ x : M3, g.tracelessRicciNormSqAt x = 0)
+    (hScalar : ∀ x : M3, g.scalarAt x = R₀) :
+    HasConstantSectionalCurvature3 g (R₀ / 6) :=
+  hasConstantSectionalCurvature3_of_isEinstein3_of_scalar_const
+    (g := g)
+    (hEin := g.isEinstein3_of_forall_tracelessRicciNormSqAt_eq_zero htr)
+    hScalar
+
+end ConstantSectionalCurvatureThree
+
 /--
 Contracting the metric Kulkarni-Nomizu term against the raised Ricci endomorphism
 gives `2 Ric - 2 R g`.
