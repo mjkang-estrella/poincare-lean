@@ -32,6 +32,7 @@ tangent fields.
 -/
 theorem ricciTraceAt_congr_of_eventuallyEq
     (cov : CovariantDerivative I E TM)
+    [CovariantDerivative.ContMDiffCovariantDerivative cov 1]
     {Z Z' : ∀ y : M, TM y} {x : M}
     (hZ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z) x)
     (hZ' : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Z') x)

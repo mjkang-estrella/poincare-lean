@@ -226,6 +226,36 @@ theorem closedRicciFlowExtensionRegularAt_const_of_closedC2_extend
     (cov := g.leviCivita) (hExtend v) x
 
 /--
+Time-constant metric families satisfy the local extension-regularity bundle.
+
+This is the non-vacuous static witness unlocked by the bump globalization:
+canonical extensions are only required to be locally regular at the anchor.
+-/
+theorem closedRicciFlowExtensionRegularAt_const
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    ClosedRicciFlowExtensionRegularAt (fun _ : ℝ ↦ g) t₀ x := by
+  intro v
+  exact CovariantDerivative.derivRegularAt_extend
+    (cov := g.leviCivita) (x := x) v
+
+/--
+Static Ricci-flat closed metric families supply the neighborhood flow-plus-
+extension package consumed by the scalar-evolution chain.
+-/
+theorem eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciFlat
+    (g : ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M)
+    (hric : ∀ y : M, ∀ {Z : ∀ z : M, TM z}, ClosedC2TangentField Z →
+      ∀ (hreg : CovariantDerivative.DerivRegularAt g.leviCivita Z y) (w : TM y),
+        CovariantDerivative.ricciTraceAt g.leviCivita hreg w = 0) :
+    ∀ᶠ y in nhds x,
+      IsClosedRicciFlowSolutionAt (fun _ : ℝ ↦ g) t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt (fun _ : ℝ ↦ g) t₀ y :=
+  Filter.Eventually.of_forall fun y ↦
+    ⟨isClosedRicciFlowSolutionAt_const_of_ricciFlat
+      (g := g) (x := y) (hric y) t₀,
+     closedRicciFlowExtensionRegularAt_const (g := g) t₀ y⟩
+
+/--
 Under the closed Ricci-flow equation, the metric time derivative is
 pointwise `-2 Ric` on tangent vectors once canonical extensions are admissible.
 -/
