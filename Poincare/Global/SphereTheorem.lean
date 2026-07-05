@@ -72,4 +72,35 @@ theorem positiveConstantCurvatureSpaceForm3_roundSphere_target_nonempty :
         Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) :=
   ⟨Homeomorph.refl _⟩
 
+/--
+The conditional sphere theorem for a pinched limit metric.
+
+The proved geometry input
+`hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_connected`
+turns vanishing traceless Ricci, scalar regularity, and connectedness into
+constant sectional curvature `κ = R0 / 6`.  Positivity of the scalar curvature
+at one point gives `κ > 0`, and the named space-form recognition interface
+then supplies the statement-layer homeomorphism to the literal round `S^3`.
+-/
+theorem sphere_of_pinched_limit
+    (g : ClosedSmoothRiemannianMetric 3 M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hScalarDiff : ∀ x : M,
+      MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
+        (fun y : M ↦ g.scalarAt y) x)
+    (htr : ∀ x : M, g.tracelessRicciNormSqAt x = 0)
+    (hpos : ∃ x : M, 0 < g.scalarAt x)
+    (hSpaceForm : PositiveConstantCurvatureSpaceForm3 M) :
+    Nonempty
+      (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ)) := by
+  rcases hpos with ⟨x₀, hx₀pos⟩
+  let R₀ : ℝ := g.scalarAt x₀
+  have hR₀ : ∃ x₀ : M, g.scalarAt x₀ = R₀ := ⟨x₀, rfl⟩
+  have hcurv : HasConstantSectionalCurvature3 g (R₀ / 6) :=
+    hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_connected
+      (g := g) (R₀ := R₀) hScalarDiff htr hR₀
+  have hκpos : 0 < R₀ / 6 := by
+    exact div_pos hx₀pos (by norm_num)
+  exact hSpaceForm g (R₀ / 6) hcurv hκpos
+
 end Poincare
