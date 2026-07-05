@@ -29,6 +29,7 @@ import Poincare.Global.RicciFlow
 import Poincare.Global.MetricVariation
 import Poincare.Global.ScalarEvolution
 import Poincare.Global.ScalarVariation
+import Poincare.Global.SphereTheorem
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
