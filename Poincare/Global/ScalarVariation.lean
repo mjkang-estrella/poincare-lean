@@ -19440,6 +19440,98 @@ theorem eventually_closedContractedBianchiOneFormAt_canonical
   exact ClosedContractedBianchiOneFormAt.of_closed_trace_contraction
     (g := g) (x := y) hyDiv hyScalar hyTrace
 
+section DimensionThreeSchur
+
+variable {M3 : Type u}
+variable [TopologicalSpace M3] [T2Space M3]
+variable [ChartedSpace (ClosedSmoothModel 3) M3]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M3]
+
+local notation "I3" => closedSmoothModelWithCorners 3
+local notation "E3" => ClosedSmoothModel 3
+local notation "TM3" => (TangentSpace I3 : M3 → Type _)
+
+/--
+Schur's coefficient step in dimension three, with the scalar differentiability
+input kept explicit.
+
+Substituting `Ric = (R / 3) g` into the one-form contracted Bianchi identity
+gives `(1 / 3) dR = (1 / 2) dR`, hence `dR = 0`.
+-/
+theorem extDerivFun_scalarAt_eq_zero_of_isEinstein3
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (hScalarDiff : ∀ x : M3,
+      MDifferentiableAt I3 𝓘(ℝ) (fun y : M3 ↦ g.scalarAt y) x)
+    (hEin : g.IsEinstein3)
+    (x : M3) (w : TM3 x) :
+    extDerivFun (fun y : M3 ↦ g.scalarAt y) x w = 0 := by
+  let R : M3 → ℝ := fun y ↦ g.scalarAt y
+  let f : M3 → ℝ := fun y ↦ R y / 3
+  have hf : MDifferentiableAt I3 𝓘(ℝ) f x := by
+    have hR : MDifferentiableAt I3 𝓘(ℝ) R x := by
+      simpa [R] using hScalarDiff x
+    have hscale :
+        MDifferentiableAt I3 𝓘(ℝ)
+          (fun y : M3 ↦ (1 / 3 : ℝ) * R y) x :=
+      mdifferentiableAt_const.mul hR
+    simpa [f, R, div_eq_mul_inv, one_div, mul_comm, mul_left_comm, mul_assoc] using hscale
+  have hEinField :
+      ∀ᶠ y in nhds x, ∀ u v : TM3 y,
+        ricciVariationField g y u v =
+          (fun z p q ↦ f z * g.inner z p q) y u v := by
+    exact Filter.Eventually.of_forall fun y u v ↦ by
+      simpa [ricciVariationField, f, R] using hEin y u v
+  have hDivCongr :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        tensorDivergenceOneFormAt g
+          (fun y p q ↦ f y * g.inner y p q) x w :=
+    tensorDivergenceOneFormAt_congr_of_eventuallyEq
+      (g := g) (h := ricciVariationField g)
+      (k := fun y p q ↦ f y * g.inner y p q)
+      (x := x) hEinField w
+  have hScalarDiv :
+      tensorDivergenceOneFormAt g
+          (fun y p q ↦ f y * g.inner y p q) x w =
+        extDerivFun f x w :=
+    tensorDivergenceOneFormAt_scalar_metric (g := g) (f := f) hf w
+  have hScaleDeriv :
+      extDerivFun f x w =
+        (1 / 3 : ℝ) *
+          extDerivFun R x w := by
+    have hR : MDifferentiableAt I3 𝓘(ℝ) R x := by
+      simpa [R] using hScalarDiff x
+    have hsmul := congrArg (fun L : TM3 x →L[ℝ] ℝ ↦ L w)
+      (extDerivFun_const_smul_at (n := 3) (M := M3)
+        (f := R) (x := x) hR (1 / 3 : ℝ))
+    simpa [f, R, Pi.smul_apply, smul_eq_mul, div_eq_mul_inv, one_div,
+      mul_comm, mul_left_comm, mul_assoc] using hsmul
+  have hDivThird :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        (1 / 3 : ℝ) * extDerivFun R x w := by
+    calc
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+          tensorDivergenceOneFormAt g
+            (fun y p q ↦ f y * g.inner y p q) x w := hDivCongr
+      _ = extDerivFun f x w := hScalarDiv
+      _ = (1 / 3 : ℝ) * extDerivFun R x w := hScaleDeriv
+  have hBianchiAt : ClosedContractedBianchiOneFormAt g x :=
+    (eventually_closedContractedBianchiOneFormAt_canonical
+      (g := g) (x := x)).self_of_nhds
+  have hDivHalf :
+      tensorDivergenceOneFormAt g (ricciVariationField g) x w =
+        (1 / 2 : ℝ) * extDerivFun R x w := by
+    simpa [R] using hBianchiAt w
+  have hcoeff :
+      (1 / 3 : ℝ) * extDerivFun R x w =
+        (1 / 2 : ℝ) * extDerivFun R x w := by
+    linarith
+  have hzero : extDerivFun R x w = 0 := by
+    linarith
+  simpa [R] using hzero
+
+end DimensionThreeSchur
+
 set_option maxHeartbeats 5000000 in
 /--
 Differentiated one-form contracted Bianchi identity.
