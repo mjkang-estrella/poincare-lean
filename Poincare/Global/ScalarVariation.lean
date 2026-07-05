@@ -22385,6 +22385,54 @@ theorem hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_of_scal
     (hEin := g.isEinstein3_of_forall_tracelessRicciNormSqAt_eq_zero htr)
     hScalar
 
+/--
+On a preconnected closed three-manifold, a scalar field with vanishing exterior
+derivative is globally constant.
+-/
+theorem scalarAt_constant_of_extDerivFun_eq_zero_connected
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [PreconnectedSpace M3]
+    (hScalarDiff : ∀ x : M3,
+      MDifferentiableAt I3 𝓘(ℝ) (fun y : M3 ↦ g.scalarAt y) x)
+    (hzero : ∀ x : M3, ∀ w : TM3 x,
+      extDerivFun (fun y : M3 ↦ g.scalarAt y) x w = 0)
+    (x x₀ : M3) :
+    g.scalarAt x = g.scalarAt x₀ := by
+  have hloc : IsLocallyConstant (fun y : M3 ↦ g.scalarAt y) :=
+    _root_.isLocallyConstant_of_extDerivFun_eq_zero hScalarDiff hzero
+  exact hloc.apply_eq_of_preconnectedSpace x x₀
+
+/--
+Unconditional scalar-constancy chain: zero traceless Ricci gives constant
+sectional curvature.  The witness `hR₀` only names the scalar value `R₀`; the
+global scalar constancy is derived from Schur and connectedness.
+-/
+theorem hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_connected
+    (g : ClosedSmoothRiemannianMetric 3 M3)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    [PreconnectedSpace M3]
+    {R₀ : ℝ}
+    (hScalarDiff : ∀ x : M3,
+      MDifferentiableAt I3 𝓘(ℝ) (fun y : M3 ↦ g.scalarAt y) x)
+    (htr : ∀ x : M3, g.tracelessRicciNormSqAt x = 0)
+    (hR₀ : ∃ x₀ : M3, g.scalarAt x₀ = R₀) :
+    HasConstantSectionalCurvature3 g (R₀ / 6) := by
+  rcases hR₀ with ⟨x₀, hx₀⟩
+  have hEin : g.IsEinstein3 :=
+    g.isEinstein3_of_forall_tracelessRicciNormSqAt_eq_zero htr
+  have hzero : ∀ x : M3, ∀ w : TM3 x,
+      extDerivFun (fun y : M3 ↦ g.scalarAt y) x w = 0 :=
+    extDerivFun_scalarAt_eq_zero_of_isEinstein3
+      (g := g) hScalarDiff hEin
+  have hScalar : ∀ x : M3, g.scalarAt x = R₀ := by
+    intro x
+    exact
+      (scalarAt_constant_of_extDerivFun_eq_zero_connected
+        (g := g) hScalarDiff hzero x x₀).trans hx₀
+  exact
+    hasConstantSectionalCurvature3_of_tracelessRicciNormSqAt_eq_zero_of_scalar_const
+      (g := g) (R₀ := R₀) htr hScalar
+
 end ConstantSectionalCurvatureThree
 
 /--
