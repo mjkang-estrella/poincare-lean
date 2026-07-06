@@ -190,3 +190,65 @@ theorem poincareConjecture_of_hamiltonConvergencePinchedLimit3
       (M := N) (hHamilton N) (hSpaceForm N)
 
 end Poincare
+
+namespace Poincare
+
+variable {M' : Type u}
+variable [TopologicalSpace M'] [T2Space M'] [SecondCountableTopology M']
+variable [ChartedSpace (ClosedSmoothModel 3) M']
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M']
+variable [CompactSpace M'] [ConnectedSpace M'] [SimplyConnectedSpace M']
+
+/--
+Unit-curvature sphere recognition: the Killing-Hopf interface specialized to
+sectional curvature exactly `1`.  This is one of the two independently
+attackable factors of `PositiveConstantCurvatureSpaceForm3`: it removes the
+curvature-scale quantifier and asks only for recognition of the unit round
+metric.  It remains a named hypothesis interface.
+-/
+def UnitConstantCurvatureSphereRecognition3 (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∀ g : ClosedSmoothRiemannianMetric 3 M,
+    HasConstantSectionalCurvature3 g 1 →
+      Nonempty
+        (M ≃ₜ Metric.sphere (0 : EuclideanSpace ℝ (Fin 4)) (1 : ℝ))
+
+/--
+Constant-curvature normalization: from any metric of constant positive
+sectional curvature `κ`, produce a metric of constant sectional curvature `1`
+on the same manifold.  Classically this is the rescaling `g' = κ • g`, whose
+Levi-Civita connection agrees with that of `g` and whose four-linear curvature
+scales by `κ`, so the sectional curvature scales by `1 / κ`.  This factor is
+pure tensor calculus with no topological content, and is therefore a strictly
+easier target than the full space-form theorem.  It remains a named
+hypothesis interface until the rescaling construction is formalized.
+-/
+def ConstantCurvatureNormalization3 (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∀ (g : ClosedSmoothRiemannianMetric 3 M) (κ : ℝ),
+    HasConstantSectionalCurvature3 g κ →
+      0 < κ →
+        ∃ g' : ClosedSmoothRiemannianMetric 3 M,
+          HasConstantSectionalCurvature3 g' 1
+
+/--
+Composition of the two factors: normalization plus unit-curvature recognition
+discharge the full positive space-form interface.  This shrinks the remaining
+Killing-Hopf obligation to the unit case and separates out the (much easier)
+rescaling lemma.
+-/
+theorem positiveConstantCurvatureSpaceForm3_of_normalization_of_unitRecognition
+    (hnorm : ConstantCurvatureNormalization3 M')
+    (hunit : UnitConstantCurvatureSphereRecognition3 M') :
+    PositiveConstantCurvatureSpaceForm3 M' := by
+  intro g κ hcurv hκpos
+  rcases hnorm g κ hcurv hκpos with ⟨g', hg'⟩
+  exact hunit g' hg'
+
+end Poincare
