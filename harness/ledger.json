@@ -634,7 +634,33 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): bundle tie-in — roundSphereMetric3 chart coefficients = conformal factor * euclidean inner, via stereographic' identification + mfderiv chain rule."
+    },
+    {
+      "id": "M5-geo-5",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-4"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialDomain.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3c): uniform Picard-Lindelof existence time on a velocity ball + expAt on the ball via homogeneity reparametrization."
+    },
+    {
+      "id": "M2-deturck-3",
+      "tier": "M2",
+      "deps": [
+        "M2-deturck-2"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DeTurckFieldRegularity.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3c): discharge DeTurckVectorFieldRegularAt (ClosedC2TangentField of the connection-difference trace) from the C2 chain + Gram/dual smoothness."
     }
   ],
-  "current_goal": "GOAL 9 (2026-07-05/06): waves 1-2 COMPLETE — 11 gated merges (7 worker, 4 orchestrator-direct), zero rejections, zero fabrications. Landed: Hamilton interface Core shrinkage; PositiveEinsteinMetric3 + normalization bridge to unit curvature; chart geodesic ODE layer + chart Christoffel for g.leviCivita + local geodesics through every point; closed=>complete; roundSphereMetric3 COMPLETE; constSMul functional transport; RicciFlowShortTimeExistence3 interface + parabolic inventory (Sobolev partial, Schauder/heat ABSENT in Mathlib). Wave 3 running: M5-geo-3 (geodesic germ + uniqueness), M2-deturck-1 (honest DeTurck vocabulary, legacy forbidden), M5-model-3 (stereographic conformal factor). Goal-10 candidates from wave-3 reports: exponential germ + Gauss-lemma prerequisites; DeTurck vector field construction; sphere curvature computation."
+  "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
 }

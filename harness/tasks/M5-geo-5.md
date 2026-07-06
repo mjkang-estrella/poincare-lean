@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-geo-5: GOAL 9 — uniform existence time and the exponential map on a velocity ball
+
+Context: the geodesic layer now has `geodesicGermAt` / `expRayAt` with zero, spec, initial-velocity, zero-velocity, and homogeneity laws (`Poincare/Global/GeodesicGerm.lean`, `Poincare/Global/ExponentialGerm.lean`, reports M5-geo-3/4; namespace `Poincare.GeodesicTransport`). The germ's existence time depends on the velocity; the classical exponential map needs a UNIFORM time on a small velocity ball, then homogeneity converts time to velocity scale.
+
+Deliverables, in a NEW file `Poincare/Global/ExponentialDomain.lean` (do NOT edit any existing file, incl. `Poincare.lean`):
+
+1. UNIFORM LOCAL EXISTENCE: for `g : ClosedSmoothRiemannianMetric n M`, `x₀ : M`: there exist `δ > 0` and `ε > 0` such that for every `v₀ : ClosedSmoothModel n` with `‖v₀‖ < δ`, there is a chart solution `γ : ℝ → E × E` with `γ 0 = (extChartAt I x₀ x₀, v₀)` and the geodesic system (`geodesicFlowField (chartChristoffelField g x₀)`) on `Ioo (-ε) ε`. Route: Mathlib's quantitative Picard–Lindelöf (`Mathlib/Analysis/ODE/PicardLindelof.lean` — the `IsPicardLindelof` structure carries explicit time/bound/Lipschitz data; build it from local boundedness + local Lipschitz of the `C¹` flow field near `(extChartAt I x₀ x₀, 0)`, with the ball radius chosen inside the neighborhood). If the pinned API only exposes per-point existence, extracting the uniform statement from `IsPicardLindelof` directly is the intended work; a blocked report isolating the exact missing quantitative lemma is a valid outcome.
+2. THE EXPONENTIAL MAP ON A BALL: using (1) + homogeneity (`geodesicGermAt_smul_eventually`), define `expAt g x₀ : ClosedSmoothModel n → M` on the ball `‖v‖ < δ'` (any honest `δ' > 0` derived from (1); outside the ball the def may return `x₀` or use junk-value convention — DOCUMENT it) with proven: `expAt g x₀ 0 = x₀`; the ray property `expAt g x₀ (t • v) = geodesicGermAt g x₀ v t` for `t` small and `‖v‖` small (exact quantifier shape free, semantics frozen: exp restricted to rays IS the geodesic germ up to the homogeneity reparametrization); and membership `expAt g x₀ v ∈ (extChartAt I x₀).source` for `‖v‖` small.
+3. Report `harness/reports/M5-geo-5_{done|blocked}.md`: final signatures + next decomposition (continuity/smoothness of `expAt` in `v` — flag honestly whether Mathlib has ODE smooth-dependence-on-initial-conditions; derivative of `expAt` at `0`; Gauss lemma; injectivity radius on compact manifolds).
+
+No vacuous wrappers; hypotheses used or removed. Verify: `lake build Poincare.Global.ExponentialDomain` and report the actual result. Commit your work.

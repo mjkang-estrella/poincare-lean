@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M2-deturck-3: GOAL 9 — discharge the DeTurck field regularity
+
+Context: `Poincare/Global/DeTurckField.lean` (report `harness/reports/M2-deturck-2_done.md`) defines `deTurckConnectionDifferenceAt g bg x u w = (g.leviCivita (extend E w) x) u − (bg.leviCivita (extend E w) x) u`, the invariant trace `deTurckVectorFieldAt` (finBasis + `metricDualVectorAt` contraction), the family `deTurckVectorField gt bg t`, and the honest Prop `DeTurckVectorFieldRegularAt gt bg t := ClosedC2TangentField (deTurckVectorField gt bg t)`. That Prop is currently undischargeable-by-construction only because nobody proved the field is `C²`.
+
+Deliverable, in a NEW file `Poincare/Global/DeTurckFieldRegularity.lean` (do NOT edit existing files, incl. `Poincare.lean`):
+
+1. MAIN TARGET: `theorem deTurckVectorFieldRegularAt_holds (gt : ℝ → ClosedSmoothRiemannianMetric n M) (bg : ClosedSmoothRiemannianMetric n M) (t : ℝ) : DeTurckVectorFieldRegularAt gt bg t` — i.e. the DeTurck field of smooth closed metrics is a `ClosedC2TangentField`, UNCONDITIONALLY (general `n`; specialize to 3 only if genuinely blocked, and say so). Ingredients in the repo: the `C²` connection regularity instances `leviCivita_contMDiff₂` (`Global/Curvature.lean:50`); hom-bundle section smoothness and application lemmas from the Levi-Civita regularity chain (`Global/LeviCivitaRegularity.lean`, `Global/LeviCivitaTransport.lean`); smoothness of canonical `extend` fields near their anchor + germ locality (`Global/BumpExtend.lean`, extend machinery); Gram/metric-dual smoothness from the M3 campaign (`metricDualVectorAt` — locate its definition and any existing regularity lemmas; grep `ScalarVariation.lean`/`RicciNorm.lean`). First check the exact definition of `ClosedC2TangentField` (grep `Global/`) and target precisely what it demands.
+2. DECOMPOSE: prove the summand regularity first (each `x ↦ deTurckConnectionDifferenceAt g bg x (b i) (dual i x)` as a named lemma), then close under the finite sum. Prefer many small lemmas.
+3. If blocked: commit the proven partial lemmas + `harness/reports/M2-deturck-3_blocked.md` isolating the single missing regularity statement (this becomes the next task verbatim). Success report: `harness/reports/M2-deturck-3_done.md` + note the payoff: with regularity discharged, `IsDeTurckGaugedFlowAt` families have a legitimate `Wt` for the `IsClosedRicciDeTurckSolutionAt.deTurckField` clause — state whether a small glue lemma to that effect is now provable and, if trivial, include it.
+
+No vacuous wrappers; hypotheses used or removed. Verify: `lake build Poincare.Global.DeTurckFieldRegularity` and report the actual result. Commit your work.
