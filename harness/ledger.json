@@ -798,12 +798,12 @@
       "deps": [
         "M5-geo-9"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ExponentialRayLaw.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): interval flow-germ identification -> full-interval ray law -> right-derivative corollary."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): expAt_chart_hasDerivWithinAt_of_norm_lt (right-derivative corollary — Gauss-lemma seed) + strengthened eventual form. Full interval ray law blocked ARCHITECTURALLY: choose-based expAt spec exports too little; new-file-only rule prevented strengthening -> M5-geo-13 with sanctioned single-file edit."
     },
     {
       "id": "M5-vol-1",
@@ -830,6 +830,20 @@
       ],
       "difficulty": "wall",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): THE chart-manifold curvature bridge at the anchor (germ locality + transport definition + chain rule) — discharges the sphere witness and siblings the reanchor ODE law."
+    },
+    {
+      "id": "M5-geo-13",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-12"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialFixedTime.lean",
+        "Poincare/Global/ExponentialRayLawFull.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): sanctioned single-file edit to enrich expAt spec exports, then the full closed-interval ray law."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
