@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-geo-8: GOAL 9 — chart-overlap transformation of geodesics
+
+Context: the geodesic layer (`Poincare/Global/{GeodesicChart,GeodesicTransport,GeodesicGerm,ExponentialGerm,ExponentialDomain,ExponentialMap}.lean`, namespace `Poincare.GeodesicTransport`) defines chart geodesics via `chartChristoffelField g x₀` anchored at `x₀`'s preferred chart, with the eventual-agreement bridge `chartLeviCivita_eventuallyEq_closed` tying each anchor's transported connection to the same `g.leviCivita`. Chart-overlap coherence — a geodesic in `x₀`'s chart, transported through the transition map, solves `y₀`'s chart system — is the missing coherence law (needed for extending geodesics across charts and, later, geodesic completeness on compact `M`).
+
+Deliverables, in a NEW file `Poincare/Global/GeodesicOverlap.lean` (do NOT edit any existing file, incl. `Poincare.lean`):
+
+1. TRANSITION TRANSPORT OF SOLUTIONS: let `x₀ y₀ : M` with `x₀ ∈ (extChartAt I y₀).source`. For a chart solution `γ` of `x₀`'s geodesic system near `t = 0` whose pulled-back curve `c` stays in BOTH chart sources, define the transported state `η t := (τ (γ t).1, (fderiv-of-transition at (γ t).1) (γ t).2)` where `τ := extChartAt I y₀ ∘ (extChartAt I x₀).symm` (spelling via `PartialEquiv`/`mfderivWithin` free — document), and prove: `η` eventually solves `y₀`'s geodesic system (`geodesicFlowField (chartChristoffelField g y₀)`) near `0`. Route options (pick what the repo supports; document): (a) both transported connections eventually agree with `g.leviCivita` near a common point (`chartLeviCivita_eventuallyEq_closed` at both anchors) — derive the Christoffel transformation on the overlap from the two agreement bridges + the uniqueness machinery, avoiding a bare-hands second-derivative computation; (b) direct chain-rule computation. Option (a) is the intended reuse-first route.
+2. GERM COHERENCE COROLLARY: for `x₀ ∈ (extChartAt I y₀).source`... the germ `geodesicGermAt g x₀ v₀`, read through `y₀`'s chart near `t = 0`, solves `y₀`'s system with the transition-transported initial velocity. (Directly from 1 + `geodesicGermAt_spec`.)
+3. Report `harness/reports/M5-geo-8_{done|blocked}.md`: final signatures; next decomposition (geodesic extension across charts, compactness → uniform extension step, geodesic completeness on closed `M`). Strict-partial with a precisely isolated blocker is valid — this is a known-hard coherence step.
+
+No vacuous wrappers; hypotheses used or removed. Verify: `lake build Poincare.Global.GeodesicOverlap` and report the actual result. Commit your work.
