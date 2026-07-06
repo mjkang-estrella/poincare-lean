@@ -1,0 +1,12 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-model-9: GOAL 9 coda — constant curvature contracts to Einstein; the PositiveEinsteinMetric3 witness
+
+Context: THE SPHERE WITNESS is proven: `roundSphereMetric3_hasConstantSectionalCurvature_one : HasConstantSectionalCurvature3 roundSphereMetric3 1` (`Poincare/Global/RoundSphereWitness.lean`). `HasConstantSectionalCurvature3 g κ` says (`ScalarVariation.lean:22318`): `g.inner x (curvatureOp … (extend u) (extend w) (extend a) x) b = -(κ/2) * tensorKulkarniNomizuAt … (g.inner x) (g.inner x) u w a b`. The repo has the Einstein→constant-curvature direction (`EinsteinNormalization.lean`); MISSING is the contraction direction: constant curvature κ (n = 3) ⟹ `ricciAt = 2κ · inner` pointwise, i.e. `g.IsEinsteinAt (2 * κ)` everywhere (in 3D, Ric = (n−1)κ·g).
+
+Deliverables, in a NEW file `Poincare/Global/ConstantCurvatureEinstein.lean` (do NOT edit any existing file, incl. `Poincare.lean`):
+1. THE CONTRACTION: `theorem isEinsteinAt_of_hasConstantSectionalCurvature3 (g : ClosedSmoothRiemannianMetric 3 M) {κ : ℝ} (h : HasConstantSectionalCurvature3 g κ) (x : M) : g.IsEinsteinAt (2 * κ) x`. Route: `ricciAt` is `CovariantDerivative.ricciBilinearAt` — the trace of the curvature operator; contract the KN identity over the Gram frame (the trace machinery from the M3/M4 campaigns: how `ricciBilinearAt` is computed against `extend`-frame Gram inverses — mine `CurvatureTensoriality.lean` / `ScalarVariation.lean` for the ricci-trace expansion lemmas; the KN trace is pure Gram algebra: `tr_g KN(g,g)(·,u,·,w) = ... = 2·(n−1)·g(u,w)`-shaped with the repo's slot conventions — DERIVE the constant against the actual definitions first; sanctioned-adjustable with derivation documented, the Einstein-with-SOME-positive-constant shape is frozen for κ > 0).
+2. THE WITNESS COROLLARIES: `∀ x, roundSphereMetric3.IsEinsteinAt 2 x` (κ = 1) and `theorem positiveEinsteinMetric3_roundSphere : PositiveEinsteinMetric3 RoundSphere3` (`EinsteinInterface.lean`; needs `0 < 2` and the instance context — RoundSphere3 has CompactSpace/ConnectedSpace/SimplyConnectedSpace instances via Mathlib's sphere; if any instance is missing, isolate it precisely).
+3. Report `harness/reports/M5-model-9_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.ConstantCurvatureEinstein` and report the actual result. Commit your work.

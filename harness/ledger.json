@@ -923,6 +923,19 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): THE SPHERE WITNESS — roundSphereMetric3_hasConstantSectionalCurvature_one : HasConstantSectionalCurvature3 roundSphereMetric3 1. First concrete-geometry theorem certifying the M5 chain non-vacuous. Einstein corollaries deliberately deferred (constant-curvature->Einstein direction not yet a short interface)."
+    },
+    {
+      "id": "M5-model-9",
+      "tier": "M5",
+      "deps": [
+        "M5-model-8"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ConstantCurvatureEinstein.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 coda): KN contraction (const curvature kappa -> IsEinsteinAt (2*kappa)) -> roundSphereMetric3 Einstein -> PositiveEinsteinMetric3 RoundSphere3 witness."
     }
   ],
   "current_goal": "GOAL 9 SUBSTANTIALLY COMPLETE (2026-07-05/06): 39 gated merges, zero rejections, zero fabrications. HEADLINES: (1) Hamilton interface shrunk to Core + PositiveEinsteinMetric3 formulation + unit-curvature normalization bridge; (2) geodesic layer from nothing to expAt with ray/derivative laws; (3) roundSphereMetric3 constructed AND ITS CONSTANT CURVATURE 1 PROVEN (the sphere witness; via the 6-iteration chart-manifold curvature bridge, THE reusable transport asset); (4) DeTurck statement layer + vector field; (5) volume gateway. PARKED (plans recorded): DeTurck raw-basis regularity, reanchor ODE law, full-interval ray law. GOAL 10 CANDIDATES: constant-curvature->Einstein on the witness -> PositiveEinsteinMetric3 RoundSphere3; Gauss lemma from expAt right-derivative; volume measure via Hausdorff; unit-recognition road continues (needs completeness+exp+rigidity); M2 parabolic scoping."
