@@ -43,9 +43,26 @@ clean:
   `ricciNormSqAt`/`tracelessRicciNormSqAt` by `c⁻²`, plus the
   constant-independent pinched-payload preservation
   (`Global/MetricRescaleCurvature.lean`).
-- In flight (wave 2): M5-model-2 (finish `roundSphereMetric3`), M5-geo-2
-  (chart Christoffel for `g.leviCivita` + local geodesics on `M`), M2-scope-1
-  (parabolic asset inventory + `RicciFlowShortTimeExistence3` interface).
+- **Wave 2 (2026-07-05/06), all gate PASS — 11 gated merges total for goal 9**:
+  `roundSphereMetric3` COMPLETE (`contMDiff` section smoothness via
+  `inTangentCoordinates`/`mfderiv_const` + hom-bundle trivialization congr) —
+  the repo's first concrete closed Riemannian metric; chart Christoffel field
+  for `g.leviCivita` (`Global/GeodesicTransport.lean`, christoffelOneForm of
+  the blended chart metric with the PROVEN eventual-agreement bridge
+  `chartLeviCivita_eventuallyEq_closed`) with `C¹` regularity and local
+  geodesics through every point in every chart direction
+  (`exists_local_geodesic_chart_solution`); `RicciFlowShortTimeExistence3`
+  honest interface + static Ricci-flat shape checks + the flow-half transfer
+  into the Hamilton evolution input (`Global/ShortTimeInterface.lean`), with
+  the parabolic inventory verdict (Sobolev/Hölder partial; heat kernel,
+  Schauder, linear parabolic theory ABSENT from pinned Mathlib) and a 5-step
+  DeTurck statement-layer roadmap (`harness/reports/M2-scope-1_assets.md`).
+- In flight (wave 3): M5-geo-3 (Grönwall uniqueness on `M` + `geodesicGermAt`
+  + initial-velocity reading), M2-deturck-1 (Lie-derivative-of-metric,
+  Ricci–DeTurck pointwise equation, zero-field reduction iff, DeTurck
+  short-time + pullback interfaces with composition — legacy layer forbidden),
+  M5-model-3 (stereographic conformal factor of the round metric — road to
+  the Einstein witness).
 
 ## Verified progress (2026-07-01)
 
