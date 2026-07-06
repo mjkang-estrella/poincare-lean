@@ -595,6 +595,32 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): stereographic conformal factor of the round metric (fderiv of stereoInvFunAux, explicit rational factor), optional bundle tie-in; road to the Einstein/constant-curvature witness."
+    },
+    {
+      "id": "M5-geo-4",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialGerm.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): zero-velocity germ constant, homogeneity law (reparametrized state (pos, s*vel) + Gronwall), expRayAt packaging."
+    },
+    {
+      "id": "M2-deturck-2",
+      "tier": "M2",
+      "deps": [
+        "M2-deturck-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DeTurckField.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): deTurckVectorFieldAt = g-Gram trace of connection difference vs background, self-difference zero, family + gauged-flow specialization, static sanity."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): waves 1-2 COMPLETE — 11 gated merges (7 worker, 4 orchestrator-direct), zero rejections, zero fabrications. Landed: Hamilton interface Core shrinkage; PositiveEinsteinMetric3 + normalization bridge to unit curvature; chart geodesic ODE layer + chart Christoffel for g.leviCivita + local geodesics through every point; closed=>complete; roundSphereMetric3 COMPLETE; constSMul functional transport; RicciFlowShortTimeExistence3 interface + parabolic inventory (Sobolev partial, Schauder/heat ABSENT in Mathlib). Wave 3 running: M5-geo-3 (geodesic germ + uniqueness), M2-deturck-1 (honest DeTurck vocabulary, legacy forbidden), M5-model-3 (stereographic conformal factor). Goal-10 candidates from wave-3 reports: exponential germ + Gauss-lemma prerequisites; DeTurck vector field construction; sphere curvature computation."
