@@ -824,12 +824,12 @@
       "deps": [
         "M5-model-7"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ChartCurvatureBridge.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): THE chart-manifold curvature bridge at the anchor (germ locality + transport definition + chain rule) — discharges the sphere witness and siblings the reanchor ODE law."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): fderiv_clm_family_apply, chartCurvatureOf_eq_fderiv_apply, christoffelOneForm symmetry germ, slot rewrite. Blocker now PURE PACKAGING (dependent model connection vs plain family) — reports/M5-bridge-1_blocked.md -> M5-bridge-2 (state bridge against chartChristoffelField directly)."
     },
     {
       "id": "M5-geo-13",
@@ -844,7 +844,20 @@
       ],
       "difficulty": "medium",
       "result": "STRICT-PARTIAL 2026-07-06 (gate PASS), refinement PARKED: expAt_uniform_pl_flow_eq_on_Icc exported (sanctioned edit preserved downstream), full PL closed-interval law + conditional germ step proven. Last gap: geodesicGermChartSolution spec under-exports uniform ball control (same pattern one level deeper). Resume = same sanctioned-edit move on GeodesicGerm.lean. Eventual ray law + right-derivative suffice for current frontier."
+    },
+    {
+      "id": "M5-bridge-2",
+      "tier": "M5",
+      "deps": [
+        "M5-bridge-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ChartCurvatureBridge2.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): the packaging step — bridge stated against the plain chartChristoffelField family; sphere assembly if cheap."
     }
   ],
-  "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
+  "current_goal": "GOAL 9 (2026-07-05/06): 33 gated merges (zero rejections, zero fabrications, 3 orchestrator re-scopes/parks with recorded reroutes). Landed highlights: Hamilton interface -> Core; PositiveEinsteinMetric3 + unit normalization bridge; expAt DEFINED with eventual ray law + right-derivative; roundSphereMetric3 complete with chart coefficients AND chart-level kappa=1; DeTurck statement layer + field; volume gateway (chart density + Hausdorff verdict); closed=>complete. IN FLIGHT: M5-bridge-2 (the packaging step of THE curvature bridge — one lemma from the sphere witness). PARKED with recorded plans: DeTurck raw-basis regularity (suspect-false conjunct), geodesic reanchor ODE law (3-orbit, Koszul plan), full-interval ray law (spec-export pattern). NEXT after bridge-2: sphere witness assembly -> IsEinsteinAt 2 -> PositiveEinsteinMetric3 RoundSphere3 witness; then goal 10 selection (Gauss lemma vs volume measure vs M2 parabolic scoping)."
 }

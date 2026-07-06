@@ -51,6 +51,7 @@ import Poincare.Global.RoundSphereCurvature
 import Poincare.Global.ExponentialRayLaw
 import Poincare.Global.VolumeDensity
 import Poincare.Global.ExponentialRayLawFull
+import Poincare.Global.ChartCurvatureBridge
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
