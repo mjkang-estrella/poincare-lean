@@ -46,6 +46,7 @@ import Poincare.Global.GeodesicOverlap
 import Poincare.Global.ExponentialFixedTime
 import Poincare.Global.ConformalCurvature
 import Poincare.Global.GeodesicReanchor
+import Poincare.Global.GeodesicReanchorLaw
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
