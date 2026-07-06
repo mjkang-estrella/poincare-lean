@@ -50,6 +50,7 @@ import Poincare.Global.GeodesicReanchorLaw
 import Poincare.Global.RoundSphereCurvature
 import Poincare.Global.ExponentialRayLaw
 import Poincare.Global.VolumeDensity
+import Poincare.Global.VolumeMeasure
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
 import Poincare.Global.ChartCurvatureBridge2
