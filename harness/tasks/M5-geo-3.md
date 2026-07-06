@@ -1,0 +1,14 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-geo-3: GOAL 9 — geodesic uniqueness + the geodesic germ on M
+
+Context: `Poincare/Global/GeodesicTransport.lean` (task M5-geo-2, report `harness/reports/M5-geo-2_done.md`) provides, in namespace `Poincare.GeodesicTransport`: `chartChristoffelField g x₀` (the chart Christoffel field of `g.leviCivita` at the anchor), `chartChristoffelField_contDiffAt`, `geodesicFlowField_chartChristoffelField_contDiffAt`, and `exists_local_geodesic_chart_solution` (local chart geodesic through every `x₀ : M` with every chart velocity `v₀`, with pulled-back curve `c t = (extChartAt I x₀).symm (γ t).1`). `Poincare/Global/GeodesicChart.lean` provides Grönwall uniqueness `geodesicFlowField_eventuallyEq_of_contDiffAt`.
+
+Deliverables, in a NEW file `Poincare/Global/GeodesicGerm.lean` (do NOT edit any existing file, incl. `Poincare.lean`):
+
+1. SAME-ANCHOR UNIQUENESS: for `g : ClosedSmoothRiemannianMetric n M`, `x₀ : M`, `v₀ : ClosedSmoothModel n`: any two curves `γ η : ℝ → E × E` that both eventually (near `0`) solve `HasDerivAt · (geodesicFlowField (chartChristoffelField g x₀) ·) t` with `γ 0 = η 0 = (extChartAt I x₀ x₀, v₀)` satisfy `γ =ᶠ[𝓝 0] η` — instantiating the Grönwall theorem with `geodesicFlowField_chartChristoffelField_contDiffAt`. Conclude the pulled-back manifold curves also agree near `0`.
+2. THE GEODESIC GERM: `noncomputable def geodesicGermAt (g) (x₀ : M) (v₀ : ClosedSmoothModel n) : ℝ → M` chosen (via `Classical.choose` on `exists_local_geodesic_chart_solution`) so that provable lemmas include: `geodesicGermAt g x₀ v₀ 0 = x₀`; `∀ᶠ t in 𝓝 0, geodesicGermAt g x₀ v₀ t ∈ (extChartAt I x₀).source`; and a defining-property lemma exposing the chosen chart solution `γ` (existence of `ε > 0` and `γ` with the system clause on `Ioo (-ε) ε`, `γ 0 = (extChartAt I x₀ x₀, v₀)`, and `geodesicGermAt g x₀ v₀ t = (extChartAt I x₀).symm (γ t).1` for `t ∈ Ioo (-ε) ε`). Packaging freedom sanctioned (e.g. choose ε and γ jointly); the three lemma contents are frozen.
+3. INITIAL VELOCITY: for the chosen chart solution, `HasDerivAt (fun t => (γ t).1) v₀ 0` (from `geodesic_position_hasDerivAt` + the initial condition). If reachable, also the germ-level chart spelling `HasDerivAt (fun t => extChartAt I x₀ (geodesicGermAt g x₀ v₀ t)) v₀ 0` (using the eventual source membership + `PartialEquiv.left_inv`); if that costs disproportionate effort, deliver the chart-solution form and record the germ-level form as the next task.
+4. Report `harness/reports/M5-geo-3_{done|blocked}.md`: final signatures + next decomposition (chart-overlap/choice independence, velocity-smoothness of the germ family, exponential germ `exp_{x₀}(t·v₀)` reparametrization, Gauss lemma prerequisites).
+
+No vacuous wrappers; hypotheses used or removed. Verify: `lake build Poincare.Global.GeodesicGerm` and report the actual result. Commit your work.

@@ -429,12 +429,12 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "partial",
+      "status": "done",
       "files": [
         "Poincare/Global/RoundSphereMetric.lean"
       ],
       "difficulty": "hard",
-      "result": "STRICT-PARTIAL 2026-07-05 (gate PASS on 4 lemmas): roundSphereMetric3_inner pullback tensor + _mfderiv_eq + _symm + _pos (mfderiv_coe_sphere_injective) + _isVonNBounded (antilipschitz). Missing ONLY contMDiff of the section; exact statement + 4-step plan in reports/M5-model-1_blocked.md -> task M5-model-2."
+      "result": "STRICT-PARTIAL 2026-07-05 (gate PASS on 4 lemmas): roundSphereMetric3_inner pullback tensor + _mfderiv_eq + _symm + _pos (mfderiv_coe_sphere_injective) + _isVonNBounded (antilipschitz). Missing ONLY contMDiff of the section; exact statement + 4-step plan in reports/M5-model-1_blocked.md -> task M5-model-2. SUPERSEDED-COMPLETE: M5-model-2 finished the missing field."
     },
     {
       "id": "M5-rescale-6",
@@ -482,12 +482,12 @@
       "deps": [
         "M5-model-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/RoundSphereMetric.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-05 (goal 9 wave 2): the contMDiff section field via inTangentCoordinates + contMDiffAt_section per blocked-report plan; assemble frozen roundSphereMetric3."
+      "result": "DONE 2026-07-06 (gate PASS): roundSphereMetric3 COMPLETE — contMDiff via contMDiffAt_hom_bundle + inTangentCoordinates mfderiv_const smoothness + model-space pullback operation ContDiff + trivialization congr; assembled all 5 fields. First concrete closed Riemannian metric in the repo."
     },
     {
       "id": "M5-geo-2",
@@ -556,7 +556,46 @@
       ],
       "difficulty": "small",
       "result": "DONE 2026-07-05 (orchestrator-direct, gate PASS): hasConstantSectionalCurvature_of_forall_isEinsteinAt (Einstein lam>0 => sec = lam/2 via Schur route, regularity free), exists_unitConstantCurvature_of_positiveEinsteinMetric3 (constSMul normalization), sphereConclusion_of_positiveEinstein_of_unitRecognition (direct two-step, no space-form interface indirection)."
+    },
+    {
+      "id": "M5-geo-3",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-2"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicGerm.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): same-anchor Gronwall uniqueness on M + geodesicGermAt via choice + initial-velocity reading."
+    },
+    {
+      "id": "M2-deturck-1",
+      "tier": "M2",
+      "deps": [
+        "M2-scope-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DeTurck.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): lieDerivMetricAt via LC connection, IsClosedRicciDeTurckSolutionAt, zero-field reduction iff, RicciDeTurckShortTimeExistence3 + pullback interface + composition, static sanity. Legacy layer forbidden."
+    },
+    {
+      "id": "M5-model-3",
+      "tier": "M5",
+      "deps": [
+        "M5-model-2"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RoundSphereChart.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): stereographic conformal factor of the round metric (fderiv of stereoInvFunAux, explicit rational factor), optional bundle tie-in; road to the Einstein/constant-curvature witness."
     }
   ],
-  "current_goal": "GOAL 9 IN PROGRESS (2026-07-05): wave 1 COMPLETE — 4 worker merges + 1 orchestrator-direct merge, all gate PASS, ~35 min wall-clock. Headlines: Hamilton interface SHRUNK (differentiability payload discharged unconditionally via scalarAt_mdifferentiableAt); PositiveEinsteinMetric3 reduction (Einstein-existence formulation of the analytic wall); chart geodesic ODE layer live; round S3 metric 4/5 fields. Wave 2 running: M5-model-2 (finish roundSphereMetric3), M5-geo-2 (Levi-Civita chart Christoffel + local geodesics on M). Orchestrator-direct queue: sphere_of_pinched_limit differentiability-free variant; Einstein->Core corollary. Goal-10 candidates: sphere Einstein computation (needs model-2), exponential map germs (needs geo-2), M2 short-time scoping."
+  "current_goal": "GOAL 9 (2026-07-05/06): waves 1-2 COMPLETE — 11 gated merges (7 worker, 4 orchestrator-direct), zero rejections, zero fabrications. Landed: Hamilton interface Core shrinkage; PositiveEinsteinMetric3 + normalization bridge to unit curvature; chart geodesic ODE layer + chart Christoffel for g.leviCivita + local geodesics through every point; closed=>complete; roundSphereMetric3 COMPLETE; constSMul functional transport; RicciFlowShortTimeExistence3 interface + parabolic inventory (Sobolev partial, Schauder/heat ABSENT in Mathlib). Wave 3 running: M5-geo-3 (geodesic germ + uniqueness), M2-deturck-1 (honest DeTurck vocabulary, legacy forbidden), M5-model-3 (stereographic conformal factor). Goal-10 candidates from wave-3 reports: exponential germ + Gauss-lemma prerequisites; DeTurck vector field construction; sphere curvature computation."
 }
