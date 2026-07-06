@@ -725,6 +725,32 @@
       ],
       "difficulty": "wall",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 4b): chart-overlap transformation of geodesic solutions via double eventual-agreement bridges (reuse-first route), germ coherence corollary."
+    },
+    {
+      "id": "M5-geo-7",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-6"
+      ],
+      "status": "partial",
+      "files": [
+        "Poincare/Global/ExponentialMapDef.lean"
+      ],
+      "difficulty": "hard",
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS; dispatched same-day, registration was late): target-shrunk endpoint flow (positions in chart target on the whole Icc) + flow-germ eventual identification near 0. Remaining single blocker: flow-level homogeneity on Icc (exact proof plan in reports/M5-geo-7_blocked.md) -> M5-geo-9."
+    },
+    {
+      "id": "M5-geo-9",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-7"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialFixedTime.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4c): flow homogeneity on Icc via reparametrized solution + interval uniqueness, then expAt (fixed-time endpoint, ray law, source membership) — the exp-map closer."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
