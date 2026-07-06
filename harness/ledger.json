@@ -1015,6 +1015,19 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): radial-radial Gauss UNCONDITIONAL (expAt_radialRadial_gauss_eventually from constant speed + ray law). Transverse case honestly blocked on named interface ChartGeodesicInitialVelocitySmoothDependence (= the Mathlib ODE smooth-dependence gap, now a citable repo interface)."
+    },
+    {
+      "id": "M5-vol-6",
+      "tier": "M5",
+      "deps": [
+        "M5-vol-5"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/NormalizedFlow.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): normalizedRicciFlowRHSAt + IsClosedNormalizedRicciFlowSolutionAt + relation to unnormalized + volume positivity + Einstein-static fixed-point sanity."
     }
   ],
   "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 46 gated merges across goals 9-10, zero rejections. Latest: totalScalar/meanScalar functionals (normalized Ricci flow equation now STATEABLE), radial-radial Gauss lemma unconditional, transverse Gauss blocked on the named ODE-smooth-dependence interface. Queue: M5-vol-6 (normalized-flow equation statement + volume positivity), M5-geo-16 (transverse Gauss modulo the named interface, or smooth-dependence construction), M2 parabolic scoping, parked-thread resumption. Walls unchanged: unit Killing-Hopf rigidity, parabolic existence."
