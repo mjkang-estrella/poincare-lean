@@ -62,6 +62,7 @@ import Poincare.Global.GeodesicDependence
 import Poincare.Global.GeodesicLinearized
 import Poincare.Global.GeodesicDerivative
 import Poincare.Global.GeodesicDerivativeFinal
+import Poincare.Global.GeodesicFlowDerivative
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
 import Poincare.Global.ChartCurvatureBridge2
