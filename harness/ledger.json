@@ -667,12 +667,12 @@
       "deps": [
         "M2-deturck-3"
       ],
-      "status": "running",
+      "status": "parked",
       "files": [
         "Poincare/Global/DeTurckSummandRegularity.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): the single blocked lemma deTurckVectorFieldSummand_closedC2 (difference-section C2 + raised-basis C2 bridges) + unconditional regularity payoff."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS), then PARKED by orchestrator: bridge reducers + ClosedC2ConnectionDifferenceSection def + gramMatrix_inv_entry_contMDiffAt_two + rewrite proven. ORCHESTRATOR FLAG: the bridge conjunct ClosedC2TangentField(deTurckModelBasisField i) matches the predicates-11 REFUTATION pattern (raw constant sections non-differentiable; extend frame exists for this reason) — SUSPECT FALSE. Reroute when resumed: prove summand C2 directly via extend-frame local representation + germ locality (basis-independence of the trace makes the local rewrite available), do NOT attempt the raw-basis bridge. Two-task orbit -> parked; not on the critical path (M2 wall is parabolic theory)."
     },
     {
       "id": "M5-geo-6",
@@ -693,12 +693,12 @@
       "deps": [
         "M5-model-4"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ConformalChristoffel.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): classical conformal Christoffel formula against the repo christoffelOneForm convention + sphere factor specialization hook."
+      "result": "DONE 2026-07-06 (gate PASS): christoffelAt_conformalFlatMetric + christoffelOneForm_conformalFlatMetric_apply (classical conformal formula, repo slot-flip convention documented) + stereoInvFunAuxConformalFactorFDeriv/fderiv hook. Next: curvature coefficients of the conformal chart metric -> sphere constant."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
