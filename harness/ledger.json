@@ -1346,6 +1346,19 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS, 851k tokens, REROUTE VALIDATED): exists_chart_ball_pairwise_pathELength_lower_bound (the 4-orbit blocker), exists_extChartAt_symm_antilipschitz_ball, localChartAntilipschitzLowerBound_mathlib, volumeMeasure_univ_ne_zero_mathlib (VOLUME POSITIVITY — vol-7 discharged), exists_expAt_dist_lower_bound_ball. LOCAL DISTANCE REALIZATION COMPLETE (both bounds)."
+    },
+    {
+      "id": "M5-geo-36",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-35"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/UniformNormalRadius.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06: uniform normal radius on compact M via Lebesgue-number route -> common normal neighborhoods for near pairs."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
