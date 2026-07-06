@@ -890,12 +890,25 @@
       "deps": [
         "M5-bridge-4"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ChartCurvatureBridge5.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): the outer glue by the four-bullet plan -> assembled link -> full bridge -> SPHERE WITNESS."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): outer glue COMPLETE — section/hom congr_of_eventuallyEq locality lemmas + arbitrary-field hom naturality (chartTransportedLeviCivitaSection_hom_apply_chart). ONE theorem remains, stated verbatim in reports/M5-bridge-5_blocked.md: chartLeviCivita_curvatureOp_extend_eq_chartTransported_curvatureOp -> M5-bridge-6."
+    },
+    {
+      "id": "M5-bridge-6",
+      "tier": "M5",
+      "deps": [
+        "M5-bridge-5"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ChartCurvatureBridge6.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): THE single remaining theorem (term-by-term via the complete proven toolkit) -> full bridge -> sphere witness."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 33 gated merges (zero rejections, zero fabrications, 3 orchestrator re-scopes/parks with recorded reroutes). Landed highlights: Hamilton interface -> Core; PositiveEinsteinMetric3 + unit normalization bridge; expAt DEFINED with eventual ray law + right-derivative; roundSphereMetric3 complete with chart coefficients AND chart-level kappa=1; DeTurck statement layer + field; volume gateway (chart density + Hausdorff verdict); closed=>complete. IN FLIGHT: M5-bridge-2 (the packaging step of THE curvature bridge — one lemma from the sphere witness). PARKED with recorded plans: DeTurck raw-basis regularity (suspect-false conjunct), geodesic reanchor ODE law (3-orbit, Koszul plan), full-interval ray law (spec-export pattern). NEXT after bridge-2: sphere witness assembly -> IsEinsteinAt 2 -> PositiveEinsteinMetric3 RoundSphere3 witness; then goal 10 selection (Gauss lemma vs volume measure vs M2 parabolic scoping)."

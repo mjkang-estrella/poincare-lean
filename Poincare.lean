@@ -55,6 +55,7 @@ import Poincare.Global.ChartCurvatureBridge
 import Poincare.Global.ChartCurvatureBridge2
 import Poincare.Global.ChartCurvatureBridge3
 import Poincare.Global.ChartCurvatureBridge4
+import Poincare.Global.ChartCurvatureBridge5
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
