@@ -315,3 +315,39 @@ theorem positiveConstantCurvatureSpaceForm3_of_unitRecognition
     constantCurvatureNormalization3_holds hunit
 
 end Poincare
+
+namespace Poincare
+
+variable {W : Type u}
+variable [TopologicalSpace W] [T2Space W] [SecondCountableTopology W]
+variable [ChartedSpace (ClosedSmoothModel 3) W]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ W]
+variable [CompactSpace W] [ConnectedSpace W] [SimplyConnectedSpace W]
+
+/--
+Minimal-interface statement-chain composition: with normalization discharged,
+the repository's frozen `PoincareConjecture` statement follows from exactly
+two named hypotheses — the upstream Hamilton convergence interface and
+unit-curvature sphere recognition.
+-/
+theorem poincareConjecture_of_hamiltonConvergence_of_unitRecognition
+    (hHamilton :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [SecondCountableTopology N]
+        [ChartedSpace (ClosedSmoothModel 3) N]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+        [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+          HamiltonConvergencePinchedLimit3 N)
+    (hUnit :
+      ∀ (N : Type u) [TopologicalSpace N] [T2Space N]
+        [SecondCountableTopology N]
+        [ChartedSpace (ClosedSmoothModel 3) N]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+        [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+          UnitConstantCurvatureSphereRecognition3 N) :
+    PoincareConjecture.{u} :=
+  poincareConjecture_of_hamiltonConvergencePinchedLimit3 hHamilton
+    (fun N _ _ _ _ _ _ _ _ =>
+      positiveConstantCurvatureSpaceForm3_of_unitRecognition (hUnit N))
+
+end Poincare
