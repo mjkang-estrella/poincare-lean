@@ -680,12 +680,12 @@
       "deps": [
         "M5-geo-5"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ExponentialMap.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): PL flow with closed-ball endpoint control + interval uniqueness (ODE.FunSpace internals), then expAt + ray law."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): endpoint-controlled PL flow (IsPicardLindelof.exists_forall_mem_closedBall_eq_forall_mem_Icc_hasDerivWithinAt_mem_closedBall — exposes the ball invariant the exported wrapper drops), Gronwall interval uniqueness among ball-staying solutions (eqOn_Icc_of_mem_closedBall), geodesic specialization with common delta/eps/ball. expAt still blocked: germ-vs-flow identification + chart-target shrinking (reports/M5-geo-6_blocked.md) -> next task."
     },
     {
       "id": "M5-model-5",
