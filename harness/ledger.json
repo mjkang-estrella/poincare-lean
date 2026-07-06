@@ -495,12 +495,12 @@
       "deps": [
         "M5-geo-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GeodesicTransport.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-05 (goal 9 wave 2): chart Christoffel field for g.leviCivita via extChartAt transport, ContDiffAt 1 regularity, instantiate local geodesic existence on M (roadmap steps 1-3)."
+      "result": "DONE 2026-07-05 (gate PASS): chartChristoffelField (christoffelOneForm of the blended chart metric, reusing the LC-regularity transport machinery), chartLeviCivita_eventuallyEq_closed bridge to g.leviCivita near the anchor (proven, C2-section form), ContDiffAt 1 regularity at the anchor image, exists_local_geodesic_chart_solution (every point, every chart velocity; pulled-back curve with eventual chart membership). Next decomposition: chart-overlap uniqueness, manifold geodesic germ API, exponential germ. Bonus general lemma contDiffAt_clm_of_apply."
     },
     {
       "id": "M5-shrink-2",
@@ -522,12 +522,12 @@
       "deps": [
         "M4-pinching-improvement"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ShortTimeInterface.lean"
       ],
       "difficulty": "medium",
-      "result": "DISPATCHED 2026-07-05 (goal 9 wave 2b): Mathlib parabolic-PDE asset inventory + RicciFlowShortTimeExistence3 honest interface + static shape checks + DeTurck statement-layer roadmap."
+      "result": "DONE 2026-07-05 (gate PASS): RicciFlowShortTimeExistence3 honest interface (forall g0 exists T>0 family flow-clause on Ico), constant-family + static Ricci-flat shape checks (reusing isClosedRicciFlowSolutionAt_const_of_ricciFlat), flow-half transfer into the Hamilton scalar-evolution input shape with explicit not-derived list. reports/M2-scope-1_assets.md: Mathlib parabolic inventory (Sobolev/Schauder/heat-kernel ABSENT) + 5-step DeTurck statement-layer roadmap."
     },
     {
       "id": "M5-complete-1",
