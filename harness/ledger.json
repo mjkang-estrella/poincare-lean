@@ -621,6 +621,19 @@
       ],
       "difficulty": "medium-hard",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): deTurckVectorFieldAt = g-Gram trace of connection difference vs background, self-difference zero, family + gauged-flow specialization, static sanity."
+    },
+    {
+      "id": "M5-model-4",
+      "tier": "M5",
+      "deps": [
+        "M5-model-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RoundSphereChartMetric.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): bundle tie-in — roundSphereMetric3 chart coefficients = conformal factor * euclidean inner, via stereographic' identification + mfderiv chain rule."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): waves 1-2 COMPLETE — 11 gated merges (7 worker, 4 orchestrator-direct), zero rejections, zero fabrications. Landed: Hamilton interface Core shrinkage; PositiveEinsteinMetric3 + normalization bridge to unit curvature; chart geodesic ODE layer + chart Christoffel for g.leviCivita + local geodesics through every point; closed=>complete; roundSphereMetric3 COMPLETE; constSMul functional transport; RicciFlowShortTimeExistence3 interface + parabolic inventory (Sobolev partial, Schauder/heat ABSENT in Mathlib). Wave 3 running: M5-geo-3 (geodesic germ + uniqueness), M2-deturck-1 (honest DeTurck vocabulary, legacy forbidden), M5-model-3 (stereographic conformal factor). Goal-10 candidates from wave-3 reports: exponential germ + Gauss-lemma prerequisites; DeTurck vector field construction; sphere curvature computation."
