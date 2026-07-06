@@ -178,4 +178,41 @@ theorem constSMul_leviCivita_apply
 
 end ClosedSmoothRiemannianMetric
 
+namespace ClosedSmoothRiemannianMetric
+
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M] [T2Space M]
+variable [ChartedSpace (ClosedSmoothModel n) M]
+variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+
+open CovariantDerivative in
+/--
+Eventual agreement near the anchor: the two Levi-Civita covariant derivatives
+of a canonical extension, contracted against a second extension, agree on a
+neighborhood of the anchor point.
+-/
+theorem constSMul_leviCivita_extend_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric n M) (c : ℝ) (hc : 0 < c)
+    (x : M) (a w : TangentSpace (closedSmoothModelWithCorners n) x) :
+    (fun y : M ↦ (g.constSMul c hc).leviCivita
+        (FiberBundle.extend (ClosedSmoothModel n) a) y
+        (FiberBundle.extend (ClosedSmoothModel n) w y)) =ᶠ[nhds x]
+      (fun y : M ↦ g.leviCivita
+        (FiberBundle.extend (ClosedSmoothModel n) a) y
+        (FiberBundle.extend (ClosedSmoothModel n) w y)) := by
+  obtain ⟨s, hs, hdiff⟩ :=
+    FiberBundle.exists_mdifferentiableOn_extend
+      (I := closedSmoothModelWithCorners n) (ClosedSmoothModel n) a
+  rcases mem_nhds_iff.mp hs with ⟨t, hts, htopen, hxt⟩
+  filter_upwards [htopen.mem_nhds hxt] with y hyt
+  have hsy : s ∈ nhds y := mem_nhds_iff.mpr ⟨t, hts, htopen, hyt⟩
+  have hMy : MDiffAtTangentField
+      (FiberBundle.extend (ClosedSmoothModel n) a) y :=
+    (hdiff y (hts hyt)).mdifferentiableAt hsy
+  have := constSMul_leviCivita_apply g c hc (x := y) hMy
+  exact congrFun (congrArg DFunLike.coe this)
+    (FiberBundle.extend (ClosedSmoothModel n) w y)
+
+end ClosedSmoothRiemannianMetric
+
 end Poincare
