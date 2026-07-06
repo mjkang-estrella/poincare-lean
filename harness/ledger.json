@@ -719,12 +719,12 @@
       "deps": [
         "M5-geo-3"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GeodesicOverlap.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4b): chart-overlap transformation of geodesic solutions via double eventual-agreement bridges (reuse-first route), germ coherence corollary."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): chartTransition/Deriv/State defs, transported initial-state lemmas, germ first-component coherence, component-assembly ODE boundary (chartTransitionState_eventually_solves_of_components). BLOCKED on the chart-overlap Christoffel naturality theorem (from the two chartLeviCivita_eventuallyEq_closed bridges); 6-step roadmap to geodesic completeness in reports/M5-geo-8_blocked.md."
     },
     {
       "id": "M5-geo-7",
