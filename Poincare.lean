@@ -66,6 +66,7 @@ import Poincare.Global.GeodesicFlowDerivative
 import Poincare.Global.GaussLemmaIntegrated
 import Poincare.Global.ExponentialDerivativeZero
 import Poincare.Global.ExponentialFrechet
+import Poincare.Global.ExponentialLocalHomeo
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge

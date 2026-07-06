@@ -1222,13 +1222,13 @@
       "deps": [
         "M5-geo-25"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ExponentialLocalHomeo.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06: two-variable strict derivative -> HasStrictFDerivAt.toPartialHomeomorph -> expAt local homeomorphism at 0 (injectivity radius seed)."
+      "result": "DONE 2026-07-06 (gate PASS, 490k tokens): NORMAL NEIGHBORHOODS — expAt_chart_hasStrictFDerivAt_zero (two-variable strict derivative), expAtChartOpenPartialHomeomorph (inverse function theorem payoff), expAt_chart_map_nhds_zero_eq, expAt_injective_open_image_smallBall (injective on small ball, open image, neighborhood of x0). The rigidity road's entry hall is open."
     }
   ],
-  "current_goal": "GOALS 9-10 (2026-07-05/06): 55 GATED MERGES, zero rejections, zero fabrications, ~46 new Global/ modules. SESSION CROWNS: (1) sphere witness + Einstein + PositiveEinsteinMetric3 RoundSphere3 (both conditional-path interfaces inhabited); (2) the 6-iteration chart-manifold curvature bridge; (3) ODE smooth-dependence built from scratch (geo-17..21) culminating in the flow derivative; (4) THE GAUSS LEMMA in chart form (integrated transverse law + orthogonal corollary); (5) normalized Ricci flow stated with Einstein fixed points; (6) volume theory through finite measure + scalar functionals; (7) Hamilton interface Core-shrunk; (8) expAt continuous with ray laws. NEXT QUEUE: d(expAt)|0 = id (from the flow derivative — Jacobi at t: J(t) = t·w + o(t) gives the derivative-at-zero identification); injectivity radius road; M2 parabolic scoping; 5 parked threads with recorded plans (DeTurck raw-basis, reanchor ODE, ray-law spec, anti-Lipschitz positivity, transverse-interface refinement now largely superseded by the proven flow derivative)."
+  "current_goal": "CONTINUOUS OPERATION (2026-07-06, 61 gated merges): user directive — do not stop before complete formalization. LATEST: NORMAL NEIGHBORHOODS (expAt local homeo + injective open small-ball image); d(exp)|0 = id; Gauss lemma; 1D heat equation; heat-3 (n-dim) running. RIGIDITY ROAD next: uniform normal radius over compact M (compactness on strict-derivative data); geodesics realize distance locally (Gauss lemma consumer); then local isometry construction (Cartan) toward UnitConstantCurvatureSphereRecognition3. PARABOLIC ROAD next: n-dim heat equation, integral-one, convolution smoothing, maximum principle. Honest ceiling: full Poincare needs surgery/Perelman/topology tiers absent everywhere; progression continues wave by wave, gate by gate."
 }
