@@ -1,31 +1,31 @@
 {
   "meta": {
-    "goal": "Full formalization of the Poincaré Conjecture (Perelman program) in Lean 4 / Mathlib",
+    "goal": "Full formalization of the Poincar\u00e9 Conjecture (Perelman program) in Lean 4 / Mathlib",
     "created": "2026-07-01",
     "orchestrator": "Claude Fable 5",
     "workers": "codex exec, gpt-5.5, reasoning=xhigh",
     "prime_directive": "Never fabricate completion. The gate (compile + no sorry/axiom + non-vacuity + frozen statement) is the only judge.",
     "structural_finding": "The single-chart model (Poincare/ModelLaplacian.lean etc., ~710 thms) is at its structural ceiling: it cannot state global objects (closed 3-manifold, S^3, homeomorphism, integration, Betti numbers). The whole proof requires a new manifold-level layer (tier M) built on Mathlib's smooth-manifold library, with the local model results ported as chart-level lemmas.",
-    "current_goal": "GOAL 7 ACHIEVED 2026-07-04: poincareConjecture_of_hamiltonConvergencePinchedLimit3 on main (gate PASS) — the first end-to-end conditional path from Ricci-flow estimates to the PoincareConjecture statement, conditional on exactly TWO named honest interfaces: HamiltonConvergencePinchedLimit3 (the analytic convergence wall, fronts A+B) and PositiveConstantCurvatureSpaceForm3 (Killing-Hopf recognition). Everything else in the chain is proven: pinched limit -> Einstein -> Schur -> constant scalar -> constant sectional curvature -> sphere_of_pinched_limit -> Poincare conclusion. Next: discharge the interfaces (the true remaining walls) or further consolidation."
+    "current_goal": "GOAL 7 ACHIEVED 2026-07-04: poincareConjecture_of_hamiltonConvergencePinchedLimit3 on main (gate PASS) \u2014 the first end-to-end conditional path from Ricci-flow estimates to the PoincareConjecture statement, conditional on exactly TWO named honest interfaces: HamiltonConvergencePinchedLimit3 (the analytic convergence wall, fronts A+B) and PositiveConstantCurvatureSpaceForm3 (Killing-Hopf recognition). Everything else in the chain is proven: pinched limit -> Einstein -> Schur -> constant scalar -> constant sectional curvature -> sphere_of_pinched_limit -> Poincare conclusion. Next: discharge the interfaces (the true remaining walls) or further consolidation."
   },
   "tiers": {
-    "L": "Local model (single chart) — finish remaining genuine local threads; the porting source",
-    "M0": "Global statement layer — state Poincaré + Ricci flow on Mathlib manifolds, no proofs",
-    "M1": "Riemannian geometry on manifolds — metric, connection, curvature, integration",
-    "M2": "Ricci flow PDE — short-time existence/uniqueness (Hamilton/DeTurck)",
+    "L": "Local model (single chart) \u2014 finish remaining genuine local threads; the porting source",
+    "M0": "Global statement layer \u2014 state Poincar\u00e9 + Ricci flow on Mathlib manifolds, no proofs",
+    "M1": "Riemannian geometry on manifolds \u2014 metric, connection, curvature, integration",
+    "M2": "Ricci flow PDE \u2014 short-time existence/uniqueness (Hamilton/DeTurck)",
     "M3": "Maximum principles + evolution equations on closed manifolds",
     "M4": "Hamilton-Ivey pinching, curvature estimates, blow-up limits",
     "M5": "Perelman entropy/no-local-collapsing, kappa-solutions",
     "M6": "Canonical neighborhoods + surgery",
     "M7": "Finite extinction (Perelman/Colding-Minicozzi)",
-    "M8": "Assembly: extinction + surgery classification => Poincaré"
+    "M8": "Assembly: extinction + surgery classification => Poincar\u00e9"
   },
   "tasks": [
     {
       "id": "L-schur-1",
       "tier": "L",
       "title": "Schur lemma piece: field-level covRicciDeriv for Einstein metric field",
-      "statement_spec": "In Poincare/ModelLaplacian.lean: for a metric field G with coordRicci = (R/n)·G as fields (Einstein), prove covRicciDeriv = d(R/n)·G using metric compatibility (∇g=0). Building block for Schur: Einstein => R constant (n≥3).",
+      "statement_spec": "In Poincare/ModelLaplacian.lean: for a metric field G with coordRicci = (R/n)\u00b7G as fields (Einstein), prove covRicciDeriv = d(R/n)\u00b7G using metric compatibility (\u2207g=0). Building block for Schur: Einstein => R constant (n\u22653).",
       "context": "sum_raised_pair_eq (26480fb1) done; combine with contracted Bianchi dR = 2 div Ric (42dfd302). See DEPENDENCY notes in memory/frontier.",
       "deps": [],
       "status": "done",
@@ -38,15 +38,15 @@
     {
       "id": "M0-statement",
       "tier": "M0",
-      "title": "Manifold-level statement of the Poincaré Conjecture",
-      "statement_spec": "New file Poincare/Global/Statement.lean: using Mathlib (ChartedSpace, IsManifold, CompactSpace, SimplyConnectedSpace, Homeomorph), define PoincareConjecture : Prop := for every M [TopologicalSpace M] [T2Space M] with a smooth 3-manifold structure, compact, connected, simply connected => Nonempty (M ≃ₜ (EuclideanSpace ℝ (Fin 4)) sphere 1). Must compile with NO sorry; it is a def of a Prop, not a theorem. Also state RicciFlow existence skeleton as Prop defs. Every def must be genuinely quantified (vacuity audit: no opaque Prop fields, no True-instantiable certificate structures).",
+      "title": "Manifold-level statement of the Poincar\u00e9 Conjecture",
+      "statement_spec": "New file Poincare/Global/Statement.lean: using Mathlib (ChartedSpace, IsManifold, CompactSpace, SimplyConnectedSpace, Homeomorph), define PoincareConjecture : Prop := for every M [TopologicalSpace M] [T2Space M] with a smooth 3-manifold structure, compact, connected, simply connected => Nonempty (M \u2243\u209c (EuclideanSpace \u211d (Fin 4)) sphere 1). Must compile with NO sorry; it is a def of a Prop, not a theorem. Also state RicciFlow existence skeleton as Prop defs. Every def must be genuinely quantified (vacuity audit: no opaque Prop fields, no True-instantiable certificate structures).",
       "deps": [],
       "status": "done",
       "files": [
         "Poincare/Global/Statement.lean"
       ],
       "difficulty": "medium",
-      "result": "PROVEN 2026-07-01, commit fbb9a98f, gate PASS. def Poincare.PoincareConjecture (universe-polymorphic, inline instance hypotheses, IsManifold (𝓡 3) ∞); sphere instances verified inhabited."
+      "result": "PROVEN 2026-07-01, commit fbb9a98f, gate PASS. def Poincare.PoincareConjecture (universe-polymorphic, inline instance hypotheses, IsManifold (\ud835\udce1 3) \u221e); sphere instances verified inhabited."
     },
     {
       "id": "M0-gap-survey",
@@ -59,7 +59,7 @@
         "harness/reports/mathlib_gaps.md"
       ],
       "difficulty": "research",
-      "result": "DONE 2026-07-01, commit 0cb9cf22. Key: Mathlib has RiemannianMetric bundles + CovariantDerivative/torsion (M1 cheaper than feared); integration on manifolds ABSENT; Mathlib has proof_wanted Poincaré stubs in Geometry/Manifold/PoincareConjecture.lean; no prior geometric-flow art."
+      "result": "DONE 2026-07-01, commit 0cb9cf22. Key: Mathlib has RiemannianMetric bundles + CovariantDerivative/torsion (M1 cheaper than feared); integration on manifolds ABSENT; Mathlib has proof_wanted Poincar\u00e9 stubs in Geometry/Manifold/PoincareConjecture.lean; no prior geometric-flow art."
     },
     {
       "id": "M0-align-mathlib",
@@ -108,7 +108,7 @@
       "id": "M2-short-time",
       "tier": "M2",
       "title": "Short-time existence of Ricci flow (DeTurck)",
-      "statement_spec": "Decompose after M1. Requires parabolic PDE theory absent from Mathlib — expect a multi-quarter subtree.",
+      "statement_spec": "Decompose after M1. Requires parabolic PDE theory absent from Mathlib \u2014 expect a multi-quarter subtree.",
       "deps": [
         "M1-levi-civita"
       ],
@@ -189,7 +189,7 @@
       "id": "M1-lc-regularity",
       "tier": "M1",
       "title": "C^1 regularity of the Koszul Levi-Civita connection",
-      "statement_spec": "Prove instance CovariantDerivative.ContMDiffCovariantDerivative (LeviCivitaExistence.closedLeviCivitaConnection g) 1 (and ideally ∞) from g's smoothness, discharging the carried hypothesis in Poincare/Global/Curvature.lean. Route: smoothness of the Koszul RHS + smooth dependence of the metric inverse.",
+      "statement_spec": "Prove instance CovariantDerivative.ContMDiffCovariantDerivative (LeviCivitaExistence.closedLeviCivitaConnection g) 1 (and ideally \u221e) from g's smoothness, discharging the carried hypothesis in Poincare/Global/Curvature.lean. Route: smoothness of the Koszul RHS + smooth dependence of the metric inverse.",
       "deps": [
         "M1-levi-civita"
       ],
@@ -281,7 +281,7 @@
       ],
       "difficulty": "hard",
       "title": "Covariant Hessian symmetry",
-      "result": "Symmetry thm DONE (16005044, gate PASS) under genuine gradient-differentiability hypothesis. Remaining: smooth sharp-map bridge (inverse-metric bundle hom C^1 from smooth metric, or local-frame G^{-1} coefficient lemma) to discharge it from f C^2 — report filed. | COMPLETE (1655958e..ddd1500b, gate PASS): mdifferentiableAt_gradient (sharp-map bridge), hessianAt_symm-prime from C2 alone, Laplacian linearity corollaries. Goal-2 step (a) closed."
+      "result": "Symmetry thm DONE (16005044, gate PASS) under genuine gradient-differentiability hypothesis. Remaining: smooth sharp-map bridge (inverse-metric bundle hom C^1 from smooth metric, or local-frame G^{-1} coefficient lemma) to discharge it from f C^2 \u2014 report filed. | COMPLETE (1655958e..ddd1500b, gate PASS): mdifferentiableAt_gradient (sharp-map bridge), hessianAt_symm-prime from C2 alone, Laplacian linearity corollaries. Goal-2 step (a) closed."
     },
     {
       "id": "M3-evolution-ingredients",
@@ -309,7 +309,7 @@
       ],
       "difficulty": "hard",
       "title": "Scalar variation foundation",
-      "result": "DONE 2026-07-01, commit 7a1612e4, gate PASS. RicciEndoHasDerivAt layer, deriv_scalarAt_eq_trace (dR/dt = tr d(RicciEndo)/dt), deltaGammaAt + linearity + static-zero. 6-subtask roadmap to satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation in harness/reports/M3-scalar-variation_notes.md. | Subtasks 1-2 DONE, 3 conditional (cc2aedc6..ff0547ca, gate PASS): endo lift, deltaGammaAt right tensoriality, covDeltaGammaDerivAt/deltaRicciAt vocabulary, ricciVariation_eq_deltaGamma_contractions modulo hCurv (curvature-variation formula dRm/dt = antisym ∇δΓ). Next: discharge hCurv + subtask 4 (tensorDoubleDivergenceAt). | Subtask 4 DONE (07bf4550, gate PASS): tensorDoubleDivergenceAt, traceMetricVariationAt, metricVariationRicciPairingAt, covTensor2DerivAt + sanity/linearity. hCurv NOT discharged: needs JOINT time/space regularity class (pointwise-in-t hypotheses insufficient to differentiate curvature spatial terms) — notes updated with subtask-5 Bianchi assessment. | hCurv DISCHARGED (5b02d089..159dfad8, gate PASS): MetricFlowRegularAt class (const witness), curvatureVariation_hasDerivAt, ricciVariation unconditional-modulo-class, deriv_scalarAt_eq_trace_deltaRicciAt. Remaining: subtasks 5 (Lichnerowicz formula: trace(deltaRicci) = div div h - Lap(tr h) - <h,Ric>) and 6 (Ricci-flow specialization). | Subtask 5 assembly DONE (db94c13c, gate PASS): scalarVariation_lichnerowicz_shape modulo TWO named obligations: hRaiseTrace (raise-deriv = -<h,Ric> pairing) and hDeltaGammaTrace (raised deltaRicci trace = div div h - Lap(tr h)) — the keystone analogue. Next: deltaGamma_koszul master identity + contractions to discharge both. | deltaGamma_koszul + hRaiseTrace DISCHARGED (8edb14f6/b5e34df6, gate PASS): metricRaiseDerivAt = -sharp h-flat sharp, scalarVariation_lichnerowicz_shape-prime carries ONLY hDeltaGammaTrace. Final obligations: contract deltaGamma_koszul (inner trace, divergence trace) => hDeltaGammaTrace, then subtask 6 Ricci-flow substitution. | variation-7 (ef3cd02a, gate PASS): raised-trace unpack + deltaGamma_innerTrace_eq proven modulo hTraceSwap + hTraceDeriv (first-order metric-compat trace facts; model analogues sum_raised_contraction_swap, fderiv_tensorMetricTrace_eq). Remaining: those two + divergence-of-inner-trace assembly + subtask 6. | variation-8 (709bfcfc..347a5799, gate PASS): hTraceSwap DISCHARGED, hDeltaGammaTrace proven modulo assembly predicates, scalarVariation_lichnerowicz FINAL WRAPPER exists. Remaining honest predicates: TraceMetricVariationDerivAt (nabla-commutes-with-trace), DeltaGammaDivergenceTraceAssemblyAt, DeltaGammaContractionTraceAssemblyAt, covTensor2DerivAt slot-linearity. | SUBTASK 6 DONE (c2d0fe68..6a8b1228, gate PASS): satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation + hamiltonScalarEvolutionProgram_of_predicates. Hamilton dR/dt = LapR + 2|Ric|^2 PROVEN on closed manifolds modulo HamiltonScalarEvolutionPredicatesAt = {TraceMetricVariationDerivAt, 2 divergence assemblies, ClosedContractedBianchiAt, 2 substitution predicates}. Remaining backlog = discharge each predicate (all have proven model analogues). | ANALYTIC CHAIN COMPLETE 2026-07-02 (predicates-15..31, all gate PASS): both Hessian assemblies discharged (trace block = Hessian trace; positive block = double divergence), hDeltaGammaTrace PROVEN. Lichnerowicz formula stands on honest regularity classes + 4 algebraic predicates: TensorDoubleDivergenceTimeDerivNegTwoRicciAt, TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt, TensorDoubleDivergenceNegTwoRicciLinearityAt, ClosedContractedBianchiAt. Includes 2 REFUTED false intermediates caught by torus counterexamples (predicates-27/28)."
+      "result": "DONE 2026-07-01, commit 7a1612e4, gate PASS. RicciEndoHasDerivAt layer, deriv_scalarAt_eq_trace (dR/dt = tr d(RicciEndo)/dt), deltaGammaAt + linearity + static-zero. 6-subtask roadmap to satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation in harness/reports/M3-scalar-variation_notes.md. | Subtasks 1-2 DONE, 3 conditional (cc2aedc6..ff0547ca, gate PASS): endo lift, deltaGammaAt right tensoriality, covDeltaGammaDerivAt/deltaRicciAt vocabulary, ricciVariation_eq_deltaGamma_contractions modulo hCurv (curvature-variation formula dRm/dt = antisym \u2207\u03b4\u0393). Next: discharge hCurv + subtask 4 (tensorDoubleDivergenceAt). | Subtask 4 DONE (07bf4550, gate PASS): tensorDoubleDivergenceAt, traceMetricVariationAt, metricVariationRicciPairingAt, covTensor2DerivAt + sanity/linearity. hCurv NOT discharged: needs JOINT time/space regularity class (pointwise-in-t hypotheses insufficient to differentiate curvature spatial terms) \u2014 notes updated with subtask-5 Bianchi assessment. | hCurv DISCHARGED (5b02d089..159dfad8, gate PASS): MetricFlowRegularAt class (const witness), curvatureVariation_hasDerivAt, ricciVariation unconditional-modulo-class, deriv_scalarAt_eq_trace_deltaRicciAt. Remaining: subtasks 5 (Lichnerowicz formula: trace(deltaRicci) = div div h - Lap(tr h) - <h,Ric>) and 6 (Ricci-flow specialization). | Subtask 5 assembly DONE (db94c13c, gate PASS): scalarVariation_lichnerowicz_shape modulo TWO named obligations: hRaiseTrace (raise-deriv = -<h,Ric> pairing) and hDeltaGammaTrace (raised deltaRicci trace = div div h - Lap(tr h)) \u2014 the keystone analogue. Next: deltaGamma_koszul master identity + contractions to discharge both. | deltaGamma_koszul + hRaiseTrace DISCHARGED (8edb14f6/b5e34df6, gate PASS): metricRaiseDerivAt = -sharp h-flat sharp, scalarVariation_lichnerowicz_shape-prime carries ONLY hDeltaGammaTrace. Final obligations: contract deltaGamma_koszul (inner trace, divergence trace) => hDeltaGammaTrace, then subtask 6 Ricci-flow substitution. | variation-7 (ef3cd02a, gate PASS): raised-trace unpack + deltaGamma_innerTrace_eq proven modulo hTraceSwap + hTraceDeriv (first-order metric-compat trace facts; model analogues sum_raised_contraction_swap, fderiv_tensorMetricTrace_eq). Remaining: those two + divergence-of-inner-trace assembly + subtask 6. | variation-8 (709bfcfc..347a5799, gate PASS): hTraceSwap DISCHARGED, hDeltaGammaTrace proven modulo assembly predicates, scalarVariation_lichnerowicz FINAL WRAPPER exists. Remaining honest predicates: TraceMetricVariationDerivAt (nabla-commutes-with-trace), DeltaGammaDivergenceTraceAssemblyAt, DeltaGammaContractionTraceAssemblyAt, covTensor2DerivAt slot-linearity. | SUBTASK 6 DONE (c2d0fe68..6a8b1228, gate PASS): satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_variation + hamiltonScalarEvolutionProgram_of_predicates. Hamilton dR/dt = LapR + 2|Ric|^2 PROVEN on closed manifolds modulo HamiltonScalarEvolutionPredicatesAt = {TraceMetricVariationDerivAt, 2 divergence assemblies, ClosedContractedBianchiAt, 2 substitution predicates}. Remaining backlog = discharge each predicate (all have proven model analogues). | ANALYTIC CHAIN COMPLETE 2026-07-02 (predicates-15..31, all gate PASS): both Hessian assemblies discharged (trace block = Hessian trace; positive block = double divergence), hDeltaGammaTrace PROVEN. Lichnerowicz formula stands on honest regularity classes + 4 algebraic predicates: TensorDoubleDivergenceTimeDerivNegTwoRicciAt, TraceMetricVariationLaplacianTimeDerivNegTwoRicciAt, TensorDoubleDivergenceNegTwoRicciLinearityAt, ClosedContractedBianchiAt. Includes 2 REFUTED false intermediates caught by torus counterexamples (predicates-27/28)."
     },
     {
       "id": "M3-predicates-1",
@@ -323,7 +323,7 @@
       ],
       "difficulty": "hard",
       "title": "Predicate discharge: trace swap + slot linearity",
-      "result": "DONE 2026-07-02, commit d803f146, gate PASS. covTensor2DerivAt slot-linearity, CovTensor2DerivTraceSwapAt discharged, hTraceSwap eliminated downstream, zero/static witnesses. TraceMetricVariationDerivAt blocked on SPATIAL raised-basis derivative bridge (spatial metricRaiseDerivAt analogue + Christoffel cancellation) — report filed. | GRAM ROUTE BREAKTHROUGH (predicates-12, 6 commits, gate PASS): gramMatrix + inverse-entry differentiability + gramFrameBasis + trace identity traceMetricVariationAt_eq_sum_gram_inv + differentiability half + extDerivFun Gram RHS. Remaining for TraceMetricVariationDerivAt: product-rule expansion + covariant cancellation (pure algebra). | TraceMetricVariationDerivAt DISCHARGED (predicates-14, 1f494a05, gate PASS): gramMatrix_inv_extDerivFun_eq_neg_sum + gram_inv_deriv_contraction_eq_leviCivita_corrections + traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt. 14-task siege complete. Remaining predicates: 2 divergence assemblies, ClosedContractedBianchiAt, 2 substitution predicates."
+      "result": "DONE 2026-07-02, commit d803f146, gate PASS. covTensor2DerivAt slot-linearity, CovTensor2DerivTraceSwapAt discharged, hTraceSwap eliminated downstream, zero/static witnesses. TraceMetricVariationDerivAt blocked on SPATIAL raised-basis derivative bridge (spatial metricRaiseDerivAt analogue + Christoffel cancellation) \u2014 report filed. | GRAM ROUTE BREAKTHROUGH (predicates-12, 6 commits, gate PASS): gramMatrix + inverse-entry differentiability + gramFrameBasis + trace identity traceMetricVariationAt_eq_sum_gram_inv + differentiability half + extDerivFun Gram RHS. Remaining for TraceMetricVariationDerivAt: product-rule expansion + covariant cancellation (pure algebra). | TraceMetricVariationDerivAt DISCHARGED (predicates-14, 1f494a05, gate PASS): gramMatrix_inv_extDerivFun_eq_neg_sum + gram_inv_deriv_contraction_eq_leviCivita_corrections + traceMetricVariationDerivAt_of_covTensor2ExtDifferentiableAt. 14-task siege complete. Remaining predicates: 2 divergence assemblies, ClosedContractedBianchiAt, 2 substitution predicates."
     },
     {
       "id": "M3-hamilton-theorem",
@@ -392,7 +392,7 @@
         "Poincare/Global/RicciNorm.lean"
       ],
       "difficulty": "wall",
-      "result": "DONE 2026-07-04 (M4-ivey-1..7, all gate PASS): hamilton_pinching_improvement via sharp eigenvalue improvement lemma (Schur boundary factorization), rpow quotient calculus, gradient-defect absorption into the |∇Ric|^2 reserve (one over-strong frozen damping predicate refuted by pure-trace pin and sanctioned-corrected), spectral transport, eigenvalue-floor preservation, max principle."
+      "result": "DONE 2026-07-04 (M4-ivey-1..7, all gate PASS): hamilton_pinching_improvement via sharp eigenvalue improvement lemma (Schur boundary factorization), rpow quotient calculus, gradient-defect absorption into the |\u2207Ric|^2 reserve (one over-strong frozen damping predicate refuted by pure-trace pin and sanctioned-corrected), spectral transport, eigenvalue-floor preservation, max principle."
     },
     {
       "id": "M5-sphere-endgame",
@@ -410,5 +410,6 @@
       "difficulty": "hard",
       "result": "DONE 2026-07-04 (M5-sphere-1..4): global Einstein criterion, formalized Schur lemma (via the goal-2 contracted Bianchi), locally-constant glue, unconditional 3D constant-sectional-curvature theorem, PositiveConstantCurvatureSpaceForm3 + HamiltonConvergencePinchedLimit3 honest interfaces, sphere_of_pinched_limit, and the Poincare composition."
     }
-  ]
+  ],
+  "current_goal": "GOAL 8 PARTIAL (orchestrator-direct, 2026-07-05): Killing-Hopf interface factored and ConstantCurvatureNormalization3 DISCHARGED via constSMul rescaling (6 gated merges while codex fleet rate-limited). Minimal conditional path: poincareConjecture_of_hamiltonConvergence_of_unitRecognition (Hamilton convergence + UNIT-curvature recognition only). Remaining walls: front A/B (Sobolev/parabolic PDE for Hamilton convergence) and unit Killing-Hopf recognition (geodesic/exponential-map theory). On fleet return (Jul 6 ~18:48): dispatch a scoping run on Mathlib geodesic frontier for unit recognition, or pivot to M2 short-time existence."
 }
