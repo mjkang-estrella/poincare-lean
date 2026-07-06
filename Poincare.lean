@@ -32,6 +32,7 @@ import Poincare.Global.ScalarVariation
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
 import Poincare.Global.PinchedLimitInterface
+import Poincare.Global.PinchedLimitCore
 import Poincare.Global.GeodesicChart
 import Poincare.Global.MetricRescaleCurvature
 import Poincare.Global.RoundSphereMetric
