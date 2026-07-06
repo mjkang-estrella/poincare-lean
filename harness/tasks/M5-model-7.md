@@ -1,0 +1,15 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-model-7: GOAL 9 — THE SPHERE WITNESS: transport the chart constant to the manifold
+
+Context: everything is staged. (a) `roundSphereMetric3 : ClosedSmoothRiemannianMetric 3 RoundSphere3` complete (`Poincare/Global/RoundSphereMetric.lean`). (b) Its chart coefficients: `roundSphereMetric3_inner_chartAt_symm_eq` (`RoundSphereChartMetric.lean`) — conformal factor × Euclidean on `mfderiv`-pushed vectors. (c) The chart curvature constant: `conformalChartMetric_chartCurvatureOf_sphereChristoffel` (`ConformalCurvature.lean`) — `-(1/2)·KN` form, κ = 1, matching the `HasConstantSectionalCurvature3` convention (`ScalarVariation.lean:22318`: `g.inner x (curvatureOp … (extend E3 u) (extend E3 w) (extend E3 a) x) b = -(κ/2) * tensorKulkarniNomizuAt …`). (d) Bridges between chart and manifold connections: `chartLeviCivita_eventuallyEq_closed` (`GeodesicTransport.lean`, works for ANY closed metric incl. `roundSphereMetric3`), the curvature-transport germ-locality patterns from the rescale campaign (`MetricRescale.lean:226` `constSMul_curvatureOp_extend_apply` — study its proof technique: germ locality via `congr_of_eventuallyEq` + eventual differentiability), the near-anchor coefficient representation ideas (see also `harness/tasks/M5-geo-10.md` context), and model-6's transport roadmap in `harness/reports/M5-model-6_done.md`.
+
+FROZEN TARGET, in a NEW file `Poincare/Global/RoundSphereCurvature.lean` (do NOT edit existing files, incl. `Poincare.lean`):
+
+`theorem roundSphereMetric3_hasConstantSectionalCurvature_one : HasConstantSectionalCurvature3 roundSphereMetric3 1`
+
+This is the non-vacuity witness for the entire M5 sphere-recognition chain. Suggested route (adapt freely; document): fix `x : RoundSphere3`; express `curvatureOp roundSphereMetric3.leviCivita` applied to `extend`-fields at `x` through the chart-transported connection near `x` (the eventual-agreement bridge + curvature germ locality — curvature at `x` depends only on the connection germ near `x`); rewrite the transported connection's Christoffel data on the cutoff-1 zone as the conformal `sphereChristoffel` via (b) (the blended metric equals the transported metric there — if a small representation lemma is missing, prove it here); apply (c); convert the chart KN form back through (b) to `tensorKulkarniNomizuAt` of `roundSphereMetric3.inner`. Intermediate lemmas welcome and reusable.
+
+Strict-partial: if the full transport blocks, commit the proven intermediates + `harness/reports/M5-model-7_blocked.md` isolating the single missing bridge. Success: `harness/reports/M5-model-7_done.md` — and note the two immediate corollaries for the NEXT task (do not prove them unless trivial): `IsEinstein3` / `∀ x, roundSphereMetric3.IsEinsteinAt 2 x` (via the constant-curvature → Einstein algebra) and `PositiveEinsteinMetric3 RoundSphere3`.
+
+No vacuous wrappers; hypotheses used or removed. Verify: `lake build Poincare.Global.RoundSphereCurvature` and report the actual result. Commit your work.
