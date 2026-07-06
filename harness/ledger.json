@@ -988,6 +988,33 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): the inverse-chart Lipschitz comparison (PathELength segment route) + volumeMeasure_isFiniteMeasure — closed manifolds have finite Riemannian volume. Volume road ready for total/mean scalar curvature integration."
+    },
+    {
+      "id": "M5-vol-5",
+      "tier": "M5",
+      "deps": [
+        "M5-vol-4",
+        "M5-shrink-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ScalarIntegral.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DISPATCHED 2026-07-06 (goal 10): scalarAt continuity/integrability, totalScalar/meanScalar functionals, Einstein specialization; normalized-flow equation now stateable."
+    },
+    {
+      "id": "M5-geo-15",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-14"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GaussLemmaRadial.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): radial-radial Gauss unconditionally (constant speed + ray law, no variation theory); transverse case honestly scoped against Mathlib ODE-dependence gap."
     }
   ],
   "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 44 gated merges total across goals 9-10. Goal-10 progress: constant-speed law (Gauss prerequisite 1, radial form sketched); volumeMeasure defined AND finite on closed manifolds (Hausdorff route complete through finiteness). Next moves: total/mean scalar curvature integral (vol-5, needs scalarAt measurability/integrability — scalarAt is continuous? check regularity chain); radial Gauss lemma (geo-15, from constant speed + pairing identity + expAt ray law); resume parked threads as templates allow. Remaining walls unchanged: unit Killing-Hopf recognition (rigidity), M2 parabolic existence."
