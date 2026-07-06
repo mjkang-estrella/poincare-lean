@@ -996,12 +996,12 @@
         "M5-vol-4",
         "M5-shrink-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ScalarIntegral.lean"
       ],
       "difficulty": "medium",
-      "result": "DISPATCHED 2026-07-06 (goal 10): scalarAt continuity/integrability, totalScalar/meanScalar functionals, Einstein specialization; normalized-flow equation now stateable."
+      "result": "DONE 2026-07-06 (gate PASS): scalarAt_continuous, scalarAt_integrable, totalScalar, meanScalar, Einstein total/mean lemmas. Normalized-flow RHS sketched (normalizedRicciFlowRHSAt = -2 Ric + (2/n) meanScalar g). Isolated next: volume positivity on nonempty closed M."
     },
     {
       "id": "M5-geo-15",
@@ -1009,13 +1009,13 @@
       "deps": [
         "M5-geo-14"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GaussLemmaRadial.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10): radial-radial Gauss unconditionally (constant speed + ray law, no variation theory); transverse case honestly scoped against Mathlib ODE-dependence gap."
+      "result": "DONE 2026-07-06 (gate PASS): radial-radial Gauss UNCONDITIONAL (expAt_radialRadial_gauss_eventually from constant speed + ray law). Transverse case honestly blocked on named interface ChartGeodesicInitialVelocitySmoothDependence (= the Mathlib ODE smooth-dependence gap, now a citable repo interface)."
     }
   ],
-  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 44 gated merges total across goals 9-10. Goal-10 progress: constant-speed law (Gauss prerequisite 1, radial form sketched); volumeMeasure defined AND finite on closed manifolds (Hausdorff route complete through finiteness). Next moves: total/mean scalar curvature integral (vol-5, needs scalarAt measurability/integrability — scalarAt is continuous? check regularity chain); radial Gauss lemma (geo-15, from constant speed + pairing identity + expAt ray law); resume parked threads as templates allow. Remaining walls unchanged: unit Killing-Hopf recognition (rigidity), M2 parabolic existence."
+  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 46 gated merges across goals 9-10, zero rejections. Latest: totalScalar/meanScalar functionals (normalized Ricci flow equation now STATEABLE), radial-radial Gauss lemma unconditional, transverse Gauss blocked on the named ODE-smooth-dependence interface. Queue: M5-vol-6 (normalized-flow equation statement + volume positivity), M5-geo-16 (transverse Gauss modulo the named interface, or smooth-dependence construction), M2 parabolic scoping, parked-thread resumption. Walls unchanged: unit Killing-Hopf rigidity, parabolic existence."
 }
