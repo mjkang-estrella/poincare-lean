@@ -344,8 +344,30 @@ theorem exists_expAt_fixed_time_package
         ∀ v : E, ‖v‖ < δ →
           ∀ᶠ t in 𝓝[Icc (0 : ℝ) τ] (0 : ℝ),
             exp (t • v) = geodesicGermAt g x₀ v t) ∧
-      ∃ ρ > (0 : ℝ), ∀ w : E, ‖w‖ < ρ →
-        exp w ∈ (extChartAt I x₀).source := by
+      (∃ ρ > (0 : ℝ), ∀ w : E, ‖w‖ < ρ →
+        exp w ∈ (extChartAt I x₀).source) ∧
+      ∃ τ > (0 : ℝ), ∃ δ > (0 : ℝ), ∃ ε > (0 : ℝ), ∃ a : ℝ≥0,
+        ∃ α : E × E → ℝ → E × E,
+          (∀ v₀ : E, ‖v₀‖ < δ →
+            α (extChartAt I x₀ x₀, v₀) 0 = (extChartAt I x₀ x₀, v₀) ∧
+              (∀ t ∈ Icc (-ε) ε,
+                HasDerivWithinAt (α (extChartAt I x₀ x₀, v₀))
+                  (geodesicFlowField (chartChristoffelField g x₀)
+                    (α (extChartAt I x₀ x₀, v₀) t))
+                  (Icc (-ε) ε) t) ∧
+              (∀ t ∈ Icc (-ε) ε,
+                α (extChartAt I x₀ x₀, v₀) t ∈
+                  closedBall (extChartAt I x₀ x₀, (0 : E)) a) ∧
+              (∀ t ∈ Icc (-ε) ε,
+                (α (extChartAt I x₀ x₀, v₀) t).1 ∈
+                  (extChartAt I x₀).target) ∧
+              ∀ s ∈ Icc (0 : ℝ) 1, ∀ σ ∈ Icc (-ε) ε,
+                α (extChartAt I x₀ x₀, s • v₀) σ =
+                  ((α (extChartAt I x₀ x₀, v₀) (s * σ)).1,
+                    s • (α (extChartAt I x₀ x₀, v₀) (s * σ)).2)) ∧
+          ∀ v : E, ‖v‖ < δ → ∀ t ∈ Icc (0 : ℝ) τ,
+            exp (t • v) =
+              (extChartAt I x₀).symm (α (extChartAt I x₀ x₀, v) t).1 := by
   rcases
       exists_uniform_local_geodesic_chart_flow_with_mem_closedBall_mem_target_homogeneous
         (g := g) (x₀ := x₀) with
@@ -359,7 +381,7 @@ theorem exists_expAt_fixed_time_package
     if hw : ‖τ⁻¹ • w‖ < δ then
       (extChartAt I x₀).symm (α (z₀, τ⁻¹ • w) τ).1
     else x₀
-  refine ⟨exp, ?_, ?_, ?_⟩
+  refine ⟨exp, ?_, ?_, ?_, ?_⟩
   · have hzero_small : ‖τ⁻¹ • (0 : E)‖ < δ := by
       simpa using hδ
     have hzero_vel : ‖(0 : E)‖ < δ := by
@@ -467,6 +489,43 @@ theorem exists_expAt_fixed_time_package
         (α (z₀, τ⁻¹ • w) τ).1 ∈ (extChartAt I x₀).target := by
       simpa [z₀] using hspec.2.2.2.1 τ hτmem
     simpa [exp, hsmall] using (extChartAt I x₀).map_target htarget
+  · refine ⟨τ, hτ, δ, hδ, ε, hε, a, α, ?_, ?_⟩
+    · simpa [z₀] using hα
+    · intro v hv t ht
+      rcases hα v hv with ⟨hα0, hαder, hαmem, hαtarget, hhom⟩
+      have hsmall : ‖τ⁻¹ • (t • v)‖ < δ :=
+        inv_smul_smul_norm_lt_of_mem_Icc (v := v) hτ ht hv
+      have hs : τ⁻¹ * t ∈ Icc (0 : ℝ) 1 :=
+        inv_mul_mem_Icc_zero_one hτ ht
+      have hτmem : τ ∈ Icc (-ε) ε := by
+        dsimp [τ]
+        exact half_mem_Icc_neg_self_self hε
+      have hscaled :
+          τ⁻¹ • (t • v) = (τ⁻¹ * t) • v := by
+        rw [smul_smul]
+      have hhomτ :
+          α (z₀, τ⁻¹ • (t • v)) τ =
+            ((α (z₀, v) t).1, (τ⁻¹ * t) • (α (z₀, v) t).2) := by
+        calc
+          α (z₀, τ⁻¹ • (t • v)) τ
+              = α (z₀, (τ⁻¹ * t) • v) τ := by rw [hscaled]
+          _ = ((α (z₀, v) ((τ⁻¹ * t) * τ)).1,
+                (τ⁻¹ * t) • (α (z₀, v) ((τ⁻¹ * t) * τ)).2) := by
+                exact hhom (τ⁻¹ * t) hs τ hτmem
+          _ = ((α (z₀, v) t).1,
+                (τ⁻¹ * t) • (α (z₀, v) t).2) := by
+                field_simp [ne_of_gt hτ]
+      have hpos_eq :
+          (α (z₀, τ⁻¹ • (t • v)) τ).1 = (α (z₀, v) t).1 := by
+        simpa using congrArg Prod.fst hhomτ
+      change
+        (if hw : ‖τ⁻¹ • (t • v)‖ < δ then
+          (extChartAt I x₀).symm (α (z₀, τ⁻¹ • (t • v)) τ).1
+        else x₀) =
+          (extChartAt I x₀).symm (α (extChartAt I x₀ x₀, v) t).1
+      rw [dif_pos hsmall]
+      simpa [z₀] using
+        congrArg (fun z : E => (extChartAt I x₀).symm z) hpos_eq
 
 /--
 The fixed-time local exponential map at `x₀`.
@@ -505,7 +564,42 @@ theorem expAt_mem_source_of_norm_lt
     (g : ClosedSmoothRiemannianMetric n M) (x₀ : M) :
     ∃ ρ > (0 : ℝ), ∀ v : E, ‖v‖ < ρ →
       expAt g x₀ v ∈ (extChartAt I x₀).source :=
-  (Classical.choose_spec (exists_expAt_fixed_time_package g x₀)).2.2
+  (Classical.choose_spec (exists_expAt_fixed_time_package g x₀)).2.2.1
+
+/--
+The chosen fixed-time exponential agrees, on one uniform closed ray interval,
+with the target-controlled PL chart flow used to package it.
+
+This exposes the closed-ball, target, and homogeneity data for the chosen
+`expAt` witness.  It is deliberately a PL-flow statement; comparison with the
+independently chosen `geodesicGermChartSolution` still requires an interval
+identification for that germ.
+-/
+theorem expAt_uniform_pl_flow_eq_on_Icc
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M) :
+    ∃ τ > (0 : ℝ), ∃ δ > (0 : ℝ), ∃ ε > (0 : ℝ), ∃ a : ℝ≥0,
+      ∃ α : E × E → ℝ → E × E,
+        (∀ v₀ : E, ‖v₀‖ < δ →
+          α (extChartAt I x₀ x₀, v₀) 0 = (extChartAt I x₀ x₀, v₀) ∧
+            (∀ t ∈ Icc (-ε) ε,
+              HasDerivWithinAt (α (extChartAt I x₀ x₀, v₀))
+                (geodesicFlowField (chartChristoffelField g x₀)
+                  (α (extChartAt I x₀ x₀, v₀) t))
+                (Icc (-ε) ε) t) ∧
+            (∀ t ∈ Icc (-ε) ε,
+              α (extChartAt I x₀ x₀, v₀) t ∈
+                closedBall (extChartAt I x₀ x₀, (0 : E)) a) ∧
+            (∀ t ∈ Icc (-ε) ε,
+              (α (extChartAt I x₀ x₀, v₀) t).1 ∈
+                (extChartAt I x₀).target) ∧
+            ∀ s ∈ Icc (0 : ℝ) 1, ∀ σ ∈ Icc (-ε) ε,
+              α (extChartAt I x₀ x₀, s • v₀) σ =
+                ((α (extChartAt I x₀ x₀, v₀) (s * σ)).1,
+                  s • (α (extChartAt I x₀ x₀, v₀) (s * σ)).2)) ∧
+        ∀ v : E, ‖v‖ < δ → ∀ t ∈ Icc (0 : ℝ) τ,
+          expAt g x₀ (t • v) =
+            (extChartAt I x₀).symm (α (extChartAt I x₀ x₀, v) t).1 :=
+  (Classical.choose_spec (exists_expAt_fixed_time_package g x₀)).2.2.2
 
 end GeodesicTransport
 end Poincare
