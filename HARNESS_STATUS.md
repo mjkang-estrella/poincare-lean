@@ -67,6 +67,16 @@ germ locality + `inCoordinates` gluing (`Global/LeviCivitaRegularity.lean`,
   Bianchi. Two proposed intermediate identities were REFUTED by flat-torus
   counterexamples and rerouted — no false statement survived.
 
+### Tier M5 — the sphere endgame: interface shrinkage (orchestrator-direct, 2026-07-05)
+- While the codex fleet was rate-limited, the orchestrator executed six gated
+  merges directly: the Killing–Hopf interface factored into normalization +
+  unit recognition; the constant rescaling `c•g` constructed; Levi-Civita
+  invariance and curvature transport under rescaling proven; and
+  **`ConstantCurvatureNormalization3` DISCHARGED** (`constSMul` + Kulkarni–
+  Nomizu κ² algebra). The minimal conditional Poincaré path is now
+  `poincareConjecture_of_hamiltonConvergence_of_unitRecognition`: exactly two
+  named hypotheses — Hamilton convergence and UNIT-curvature recognition.
+
 ### Tier M5 — the sphere endgame (CONDITIONAL POINCARÉ PATH, 2026-07-04)
 - `poincareConjecture_of_hamiltonConvergencePinchedLimit3`
   (`Global/SphereTheorem.lean`): the first end-to-end conditional path from
