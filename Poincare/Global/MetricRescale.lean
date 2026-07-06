@@ -213,6 +213,98 @@ theorem constSMul_leviCivita_extend_eventuallyEq
   exact congrFun (congrArg DFunLike.coe this)
     (FiberBundle.extend (ClosedSmoothModel n) w y)
 
+
+open CovariantDerivative in
+/--
+Curvature transport under constant rescaling: on canonical extensions, the
+curvature operator of the rescaled metric agrees with that of the base metric
+at the anchor.  Term by term: the inner covariant-derivative fields agree on a
+neighborhood of the anchor (so the outer derivatives agree by germ locality),
+and the remaining outer/bracket applications agree by pointwise Levi-Civita
+equality on fields differentiable at the anchor.
+-/
+theorem constSMul_curvatureOp_extend_apply
+    (g : ClosedSmoothRiemannianMetric n M) (c : ℝ) (hc : 0 < c)
+    (x : M) (u w a : TangentSpace (closedSmoothModelWithCorners n) x) :
+    curvatureOp (g.constSMul c hc).leviCivita
+        (FiberBundle.extend (ClosedSmoothModel n) u)
+        (FiberBundle.extend (ClosedSmoothModel n) w)
+        (FiberBundle.extend (ClosedSmoothModel n) a) x =
+      curvatureOp g.leviCivita
+        (FiberBundle.extend (ClosedSmoothModel n) u)
+        (FiberBundle.extend (ClosedSmoothModel n) w)
+        (FiberBundle.extend (ClosedSmoothModel n) a) x := by
+  set LC' := (g.constSMul c hc).leviCivita with hLC'
+  set LC := g.leviCivita with hLC
+  have hMa : MDiffAtTangentField
+      (FiberBundle.extend (ClosedSmoothModel n) a) x :=
+    FiberBundle.mdifferentiableAt_extend (closedSmoothModelWithCorners n) (ClosedSmoothModel n) a
+  -- pointwise map equality of the two connections on the extension of `a`
+  have hpt : ∀ y : M,
+      MDiffAtTangentField (FiberBundle.extend (ClosedSmoothModel n) a) y →
+        LC' (FiberBundle.extend (ClosedSmoothModel n) a) y =
+          LC (FiberBundle.extend (ClosedSmoothModel n) a) y :=
+    fun y hy => constSMul_leviCivita_apply g c hc hy
+  -- the two inner covariant fields, in each contraction slot
+  have hfw := constSMul_leviCivita_extend_eventuallyEq g c hc x a w
+  have hfu := constSMul_leviCivita_extend_eventuallyEq g c hc x a u
+  -- differentiability at the anchor of the base-metric inner fields
+  have hregLC : DerivRegularAt LC
+      (FiberBundle.extend (ClosedSmoothModel n) a) x :=
+    CovariantDerivative.derivRegularAt_extend LC a
+  have hregLC' : DerivRegularAt LC'
+      (FiberBundle.extend (ClosedSmoothModel n) a) x :=
+    CovariantDerivative.derivRegularAt_extend LC' a
+  have hMw : MDiffAtTangentField
+      (FiberBundle.extend (ClosedSmoothModel n) w) x :=
+    FiberBundle.mdifferentiableAt_extend (closedSmoothModelWithCorners n) (ClosedSmoothModel n) w
+  have hMu : MDiffAtTangentField
+      (FiberBundle.extend (ClosedSmoothModel n) u) x :=
+    FiberBundle.mdifferentiableAt_extend (closedSmoothModelWithCorners n) (ClosedSmoothModel n) u
+  -- first curvature term
+  have hterm1 :
+      LC' (fun y ↦ LC' (FiberBundle.extend (ClosedSmoothModel n) a) y
+          (FiberBundle.extend (ClosedSmoothModel n) w y)) x =
+        LC (fun y ↦ LC (FiberBundle.extend (ClosedSmoothModel n) a) y
+          (FiberBundle.extend (ClosedSmoothModel n) w y)) x := by
+    have hswap :
+        LC' (fun y ↦ LC' (FiberBundle.extend (ClosedSmoothModel n) a) y
+            (FiberBundle.extend (ClosedSmoothModel n) w y)) x =
+          LC' (fun y ↦ LC (FiberBundle.extend (ClosedSmoothModel n) a) y
+            (FiberBundle.extend (ClosedSmoothModel n) w y)) x := by
+      apply LC'.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+      · exact hregLC' hMw
+      · exact hregLC hMw
+      · exact Filter.univ_mem
+      · exact hfw
+    rw [hswap]
+    exact constSMul_leviCivita_apply g c hc (hregLC hMw)
+  -- second curvature term
+  have hterm2 :
+      LC' (fun y ↦ LC' (FiberBundle.extend (ClosedSmoothModel n) a) y
+          (FiberBundle.extend (ClosedSmoothModel n) u y)) x =
+        LC (fun y ↦ LC (FiberBundle.extend (ClosedSmoothModel n) a) y
+          (FiberBundle.extend (ClosedSmoothModel n) u y)) x := by
+    have hswap :
+        LC' (fun y ↦ LC' (FiberBundle.extend (ClosedSmoothModel n) a) y
+            (FiberBundle.extend (ClosedSmoothModel n) u y)) x =
+          LC' (fun y ↦ LC (FiberBundle.extend (ClosedSmoothModel n) a) y
+            (FiberBundle.extend (ClosedSmoothModel n) u y)) x := by
+      apply LC'.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+      · exact hregLC' hMu
+      · exact hregLC hMu
+      · exact Filter.univ_mem
+      · exact hfu
+    rw [hswap]
+    exact constSMul_leviCivita_apply g c hc (hregLC hMu)
+  -- third (bracket) term
+  have hterm3 :
+      LC' (FiberBundle.extend (ClosedSmoothModel n) a) x =
+        LC (FiberBundle.extend (ClosedSmoothModel n) a) x :=
+    hpt x hMa
+  rw [curvatureOp_apply, curvatureOp_apply, hterm1, hterm2, hterm3]
+
+
 end ClosedSmoothRiemannianMetric
 
 end Poincare
