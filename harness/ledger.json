@@ -660,6 +660,45 @@
       ],
       "difficulty": "medium-hard",
       "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): tensorial rewrite + bilinearity + finite-sum decomposition + reducer deTurckVectorFieldRegularAt_holds_of_summand_regularity + gauged-flow glue extractor. BLOCKED on single lemma deTurckVectorFieldSummand_closedC2 (reports/M2-deturck-3_blocked.md) -> next task."
+    },
+    {
+      "id": "M2-deturck-4",
+      "tier": "M2",
+      "deps": [
+        "M2-deturck-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DeTurckSummandRegularity.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): the single blocked lemma deTurckVectorFieldSummand_closedC2 (difference-section C2 + raised-basis C2 bridges) + unconditional regularity payoff."
+    },
+    {
+      "id": "M5-geo-6",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-5"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialMap.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): PL flow with closed-ball endpoint control + interval uniqueness (ODE.FunSpace internals), then expAt + ray law."
+    },
+    {
+      "id": "M5-model-5",
+      "tier": "M5",
+      "deps": [
+        "M5-model-4"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ConformalChristoffel.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4): classical conformal Christoffel formula against the repo christoffelOneForm convention + sphere factor specialization hook."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
