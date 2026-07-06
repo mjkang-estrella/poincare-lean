@@ -917,13 +917,13 @@
         "M5-bridge-6",
         "M5-model-7"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/RoundSphereWitness.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): ASSEMBLE THE SPHERE WITNESS — two named glue pieces + kappa=1 composition -> HasConstantSectionalCurvature3 roundSphereMetric3 1 (+ Einstein corollaries if cheap)."
+      "result": "DONE 2026-07-06 (gate PASS): THE SPHERE WITNESS — roundSphereMetric3_hasConstantSectionalCurvature_one : HasConstantSectionalCurvature3 roundSphereMetric3 1. First concrete-geometry theorem certifying the M5 chain non-vacuous. Einstein corollaries deliberately deferred (constant-curvature->Einstein direction not yet a short interface)."
     }
   ],
-  "current_goal": "GOAL 9 (2026-07-05/06): 33 gated merges (zero rejections, zero fabrications, 3 orchestrator re-scopes/parks with recorded reroutes). Landed highlights: Hamilton interface -> Core; PositiveEinsteinMetric3 + unit normalization bridge; expAt DEFINED with eventual ray law + right-derivative; roundSphereMetric3 complete with chart coefficients AND chart-level kappa=1; DeTurck statement layer + field; volume gateway (chart density + Hausdorff verdict); closed=>complete. IN FLIGHT: M5-bridge-2 (the packaging step of THE curvature bridge — one lemma from the sphere witness). PARKED with recorded plans: DeTurck raw-basis regularity (suspect-false conjunct), geodesic reanchor ODE law (3-orbit, Koszul plan), full-interval ray law (spec-export pattern). NEXT after bridge-2: sphere witness assembly -> IsEinsteinAt 2 -> PositiveEinsteinMetric3 RoundSphere3 witness; then goal 10 selection (Gauss lemma vs volume measure vs M2 parabolic scoping)."
+  "current_goal": "GOAL 9 SUBSTANTIALLY COMPLETE (2026-07-05/06): 39 gated merges, zero rejections, zero fabrications. HEADLINES: (1) Hamilton interface shrunk to Core + PositiveEinsteinMetric3 formulation + unit-curvature normalization bridge; (2) geodesic layer from nothing to expAt with ray/derivative laws; (3) roundSphereMetric3 constructed AND ITS CONSTANT CURVATURE 1 PROVEN (the sphere witness; via the 6-iteration chart-manifold curvature bridge, THE reusable transport asset); (4) DeTurck statement layer + vector field; (5) volume gateway. PARKED (plans recorded): DeTurck raw-basis regularity, reanchor ODE law, full-interval ray law. GOAL 10 CANDIDATES: constant-curvature->Einstein on the witness -> PositiveEinsteinMetric3 RoundSphere3; Gauss lemma from expAt right-derivative; volume measure via Hausdorff; unit-recognition road continues (needs completeness+exp+rigidity); M2 parabolic scoping."
 }
