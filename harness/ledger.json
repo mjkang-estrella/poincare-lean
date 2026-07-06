@@ -969,12 +969,25 @@
       "deps": [
         "M5-vol-2"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/VolumeFiniteness.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10): IsFiniteMeasure (volumeMeasure g) via finite bi-Lipschitz chart cover + Hausdorff-Lipschitz image bounds; PathELength local estimates as the comparison source."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): exists_compact_lipschitz_extChartAt_symm_image_nhds + hausdorffMeasure_image_lt_top_of_lipschitzOnWith + assembly reductions. ONE missing: inverse-chart Lipschitz comparison vs induced distance (5-step PathELength route in reports/M5-vol-3_blocked.md) -> M5-vol-4."
+    },
+    {
+      "id": "M5-vol-4",
+      "tier": "M5",
+      "deps": [
+        "M5-vol-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/VolumeFinitenessComparison.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): the comparison lemma via the eventually_riemannianEDist_le_edist_extChartAt internal pattern -> IsFiniteMeasure (volumeMeasure g)."
     }
   ],
   "current_goal": "GOAL 9 COMPLETE (2026-07-05/06): 40 gated merges, zero rejections, zero fabrications. CROWN: the round metric on the statement-layer S^3 constructed, its constant sectional curvature 1 PROVEN (6-iteration chart-manifold curvature bridge = THE reusable transport asset), contracted to Einstein lambda=2, yielding positiveEinsteinMetric3_roundSphere — the PositiveEinsteinMetric3 interface (and hence HamiltonConvergencePinchedLimit3 via the proven reduction) is INHABITED at the model space: the two-interface conditional Poincare path is certified non-vacuous end-to-end. Plus: Hamilton Core shrinkage, expAt with ray laws, DeTurck layer, volume gateway, closed=>complete. GOAL 10 MENU: Gauss lemma; volume measure (Hausdorff route); unit-recognition rigidity road (completeness+exp exist; needs local isometry/comparison); M2 parabolic scoping; resume parked threads (reanchor ODE law — use the curvature bridge as template)."
