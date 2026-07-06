@@ -864,12 +864,25 @@
       "deps": [
         "M5-bridge-2"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ChartCurvatureBridge3.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): curvature naturality under chart transport (definitional relationship + germ locality), assembled bridge, sphere witness if cheap."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): chartTransportedLeviCivitaSection_extend_eventuallyEq_const + chartTransportedLeviCivitaHom_extend_eventuallyEq_closed. Blocker refined to ONE inner-field naturality eventuallyEq (reports/M5-bridge-3_blocked.md, with verbatim term-by-term assembly plan) -> M5-bridge-4."
+    },
+    {
+      "id": "M5-bridge-4",
+      "tier": "M5",
+      "deps": [
+        "M5-bridge-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ChartCurvatureBridge4.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): inner-field naturality + term-by-term assembly + full bridge + sphere witness if it closes."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 33 gated merges (zero rejections, zero fabrications, 3 orchestrator re-scopes/parks with recorded reroutes). Landed highlights: Hamilton interface -> Core; PositiveEinsteinMetric3 + unit normalization bridge; expAt DEFINED with eventual ray law + right-derivative; roundSphereMetric3 complete with chart coefficients AND chart-level kappa=1; DeTurck statement layer + field; volume gateway (chart density + Hausdorff verdict); closed=>complete. IN FLIGHT: M5-bridge-2 (the packaging step of THE curvature bridge — one lemma from the sphere witness). PARKED with recorded plans: DeTurck raw-basis regularity (suspect-false conjunct), geodesic reanchor ODE law (3-orbit, Koszul plan), full-interval ray law (spec-export pattern). NEXT after bridge-2: sphere witness assembly -> IsEinsteinAt 2 -> PositiveEinsteinMetric3 RoundSphere3 witness; then goal 10 selection (Gauss lemma vs volume measure vs M2 parabolic scoping)."
