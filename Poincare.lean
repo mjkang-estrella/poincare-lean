@@ -55,6 +55,7 @@ import Poincare.Global.VolumeFiniteness
 import Poincare.Global.GeodesicSpeed
 import Poincare.Global.VolumeFinitenessComparison
 import Poincare.Global.ScalarIntegral
+import Poincare.Global.NormalizedFlow
 import Poincare.Global.GaussLemmaRadial
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge

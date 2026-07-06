@@ -1022,13 +1022,13 @@
       "deps": [
         "M5-vol-5"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/NormalizedFlow.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10): normalizedRicciFlowRHSAt + IsClosedNormalizedRicciFlowSolutionAt + relation to unnormalized + volume positivity + Einstein-static fixed-point sanity."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): normalizedRicciFlowRHSAt + symmetry + IsClosedNormalizedRicciFlowSolutionAt (section-tested style) + relation to unnormalized + EINSTEIN STATIC FIXED-POINT CHECK (constant Einstein family solves the normalized flow — the right fixed-point formulation confirmed). Volume positivity conditional on isolated LocalChartAntilipschitzLowerBound (mirror of vol-4's Lipschitz direction) -> M5-vol-7."
     }
   ],
-  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 46 gated merges across goals 9-10, zero rejections. Latest: totalScalar/meanScalar functionals (normalized Ricci flow equation now STATEABLE), radial-radial Gauss lemma unconditional, transverse Gauss blocked on the named ODE-smooth-dependence interface. Queue: M5-vol-6 (normalized-flow equation statement + volume positivity), M5-geo-16 (transverse Gauss modulo the named interface, or smooth-dependence construction), M2 parabolic scoping, parked-thread resumption. Walls unchanged: unit Killing-Hopf rigidity, parabolic existence."
+  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 47 gated merges across goals 9-10. NORMALIZED RICCI FLOW STATED with Einstein fixed-point sanity (constant Einstein families solve it) — the convergence-target formulation of front A now exists in the repo. Queue: M5-vol-7 (anti-Lipschitz lower bound -> volume positivity), M5-geo-16 (transverse Gauss modulo ChartGeodesicInitialVelocitySmoothDependence, or construct smooth dependence), M2 parabolic scoping, parked threads (DeTurck raw-basis, reanchor ODE law, full ray law). Walls: unit Killing-Hopf rigidity, parabolic existence."
 }
