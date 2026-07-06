@@ -1100,12 +1100,25 @@
       "deps": [
         "M5-geo-19"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GeodesicDerivativeFinal.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10): the Gronwall residual -> HasDerivAt of the geodesic flow in initial velocity -> (if cheap) integrated transverse Gauss."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): abstract Gronwall residual layer + uniform little-o spelling + initialVelocity_hasDerivAt_of_gronwall_residual_bound. Remaining: PL-flow instantiation of the residual hypotheses -> M5-geo-21."
+    },
+    {
+      "id": "M5-geo-21",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-20"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicFlowDerivative.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): instantiate residual derivative hypotheses for the uniform geodesic flow -> the flow derivative HasDerivAt lands."
     }
   ],
   "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 51 gated merges across goals 9-10. Jacobi machinery landed (linearized flow exists; pointwise Taylor remainder o-estimate); exp differentiability = ONE uniform-remainder packaging step (geo-19). Full queue: geo-19 (uniform Taylor remainder -> Gronwall comparison -> HasDerivAt of flow in velocity), M2 parabolic scoping, 5 parked threads with recorded plans. Session totals 2026-07-05/06: 51 gated merges, zero rejections, zero fabrications."
