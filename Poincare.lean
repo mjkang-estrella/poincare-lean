@@ -77,6 +77,7 @@ import Poincare.Global.RoundSphereWitness
 import Poincare.Global.ConstantCurvatureEinstein
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.HeatKernel
+import Poincare.Global.HeatKernelPDE
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity
