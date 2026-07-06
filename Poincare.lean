@@ -74,6 +74,7 @@ import Poincare.Global.GeodesicLengthFinal
 import Poincare.Global.GeodesicDistanceLower
 import Poincare.Global.AntilipschitzBall
 import Poincare.Global.AntilipschitzBallFinal
+import Poincare.Global.AntilipschitzClose
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
