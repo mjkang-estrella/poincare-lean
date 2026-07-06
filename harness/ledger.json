@@ -589,12 +589,12 @@
       "deps": [
         "M5-model-2"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/RoundSphereChart.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): stereographic conformal factor of the round metric (fderiv of stereoInvFunAux, explicit rational factor), optional bundle tie-in; road to the Einstein/constant-curvature witness."
+      "result": "DONE 2026-07-06 (gate PASS, strict-partial part 1 = the core): fderiv of stereoInvFunAux computed (explicit CLM), conformal pullback formula on the orthogonal complement with factor 16/(||z||^2+4)^2 (expected constant CONFIRMED by derivation). Bundle tie-in to roundSphereMetric3.inner roadmapped precisely (chartAt = stereographic' via OrthonormalBasis.fromOrthogonalSpanSingleton identification). Curvature path: conformal Christoffels -> curvatureOp coefficients -> HasConstantSectionalCurvature3 roundSphereMetric3 1."
     },
     {
       "id": "M5-geo-4",
