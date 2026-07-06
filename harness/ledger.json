@@ -751,6 +751,19 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 4c): flow homogeneity on Icc via reparametrized solution + interval uniqueness, then expAt (fixed-time endpoint, ray law, source membership) — the exp-map closer."
+    },
+    {
+      "id": "M5-geo-10",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-8"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicReanchor.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4c): ORCHESTRATOR RE-SCOPE of geo-8 blocker — general-overlap naturality likely FALSE for blended fields (cutoff-1 zones only); re-anchoring form instead: near-anchor coefficient representation, double-good-zone transition law, germ re-anchoring corollary (the geodesic-extension step)."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
