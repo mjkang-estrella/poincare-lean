@@ -57,12 +57,33 @@ clean:
   the parabolic inventory verdict (Sobolev/Hölder partial; heat kernel,
   Schauder, linear parabolic theory ABSENT from pinned Mathlib) and a 5-step
   DeTurck statement-layer roadmap (`harness/reports/M2-scope-1_assets.md`).
-- In flight (wave 3): M5-geo-3 (Grönwall uniqueness on `M` + `geodesicGermAt`
-  + initial-velocity reading), M2-deturck-1 (Lie-derivative-of-metric,
-  Ricci–DeTurck pointwise equation, zero-field reduction iff, DeTurck
-  short-time + pullback interfaces with composition — legacy layer forbidden),
-  M5-model-3 (stereographic conformal factor of the round metric — road to
-  the Einstein witness).
+- **Waves 3-4 (2026-07-06), all gate PASS — 26 gated merges total for goal 9**:
+  - *Geodesic/exponential track*: `geodesicGermAt` (spec-based germ, zero,
+    source, initial-velocity at germ level) → zero-velocity + HOMOGENEITY law
+    (`expRayAt`) → uniform Picard–Lindelöf existence on velocity balls →
+    endpoint-controlled PL flow + interval uniqueness (the ball invariant the
+    exported Mathlib wrapper drops) → target-shrunk flow + flow-germ
+    identification → **`expAt` DEFINED** (`ExponentialFixedTime.lean`: flow
+    homogeneity on `Icc`, `expAt_zero`, eventual ray law, source membership).
+    Chart-overlap scaffold landed; general-overlap naturality re-scoped by the
+    orchestrator to the RE-ANCHORING law (blended fields represent `g` only on
+    cutoff-1 zones) — in flight as M5-geo-10.
+  - *Round-sphere track*: stereographic conformal factor `16/(‖z‖²+4)²`
+    proven → chart coefficients of `roundSphereMetric3` = conformal ×
+    Euclidean (`RoundSphereChartMetric.lean`) → conformal chart Christoffel
+    formula → **chart-level sphere constant κ = 1 in the `-(κ/2)·KN` form**
+    (`ConformalCurvature.lean`). The manifold transport
+    (`HasConstantSectionalCurvature3 roundSphereMetric3 1` — the sphere
+    witness) is in flight as M5-model-7.
+  - *DeTurck track*: Lie-derivative vocabulary + Ricci–DeTurck pointwise
+    predicate + zero-field reduction iff + short-time/pullback interfaces +
+    composition; the DeTurck vector field as the invariant `g`-trace of the
+    connection difference + gauged-flow predicate + static sanity; regularity
+    reduced to one summand lemma, whose raw-basis conjunct the orchestrator
+    flagged SUSPECT-FALSE (predicates-11 pattern) — thread PARKED with the
+    extend-frame reroute recorded (not on the M2 critical path).
+- In flight (wave 4d): M5-geo-10 (re-anchoring), M5-model-7 (sphere witness
+  transport).
 
 ## Verified progress (2026-07-01)
 
