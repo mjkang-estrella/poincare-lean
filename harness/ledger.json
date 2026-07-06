@@ -1196,12 +1196,12 @@
       "deps": [
         "M5-geo-23"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ExponentialFrechet.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: the uniform velocity-variable little-o remainder (Heine-Cantor/compact-tube pattern from geo-19) -> expAt Frechet derivative id at 0."
+      "result": "DONE 2026-07-06 (gate PASS): expAt_chart_remainder_isLittleO_zero (uniform velocity remainder) + expAt_chart_hasFDerivAt_zero — d(expAt)|0 = id PROVEN. Inverse-function gap noted honestly (needs strict derivative) -> geo-26."
     },
     {
       "id": "M2-heat-3",
@@ -1215,6 +1215,19 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06: the n-dimensional heat equation via Mathlib's Delta API (Gaussian second Frechet derivative / coordinate reduction)."
+    },
+    {
+      "id": "M5-geo-26",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-25"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialLocalHomeo.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06: two-variable strict derivative -> HasStrictFDerivAt.toPartialHomeomorph -> expAt local homeomorphism at 0 (injectivity radius seed)."
     }
   ],
   "current_goal": "GOALS 9-10 (2026-07-05/06): 55 GATED MERGES, zero rejections, zero fabrications, ~46 new Global/ modules. SESSION CROWNS: (1) sphere witness + Einstein + PositiveEinsteinMetric3 RoundSphere3 (both conditional-path interfaces inhabited); (2) the 6-iteration chart-manifold curvature bridge; (3) ODE smooth-dependence built from scratch (geo-17..21) culminating in the flow derivative; (4) THE GAUSS LEMMA in chart form (integrated transverse law + orthogonal corollary); (5) normalized Ricci flow stated with Einstein fixed points; (6) volume theory through finite measure + scalar functionals; (7) Hamilton interface Core-shrunk; (8) expAt continuous with ray laws. NEXT QUEUE: d(expAt)|0 = id (from the flow derivative — Jacobi at t: J(t) = t·w + o(t) gives the derivative-at-zero identification); injectivity radius road; M2 parabolic scoping; 5 parked threads with recorded plans (DeTurck raw-basis, reanchor ODE, ray-law spec, anti-Lipschitz positivity, transverse-interface refinement now largely superseded by the proven flow derivative)."
