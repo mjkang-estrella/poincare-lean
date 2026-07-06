@@ -1128,13 +1128,13 @@
         "M5-geo-16",
         "M5-geo-14"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GaussLemmaIntegrated.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10): integrated transverse Gauss — compose flow derivative + pointwise pairing identity + constant speed -> the Gauss lemma in chart form."
+      "result": "DONE 2026-07-06 (gate PASS): THE GAUSS LEMMA in chart form — chart_initialVelocity_integrated_transverse_gauss: G(gamma t)(J t, gamma' t) = t * G(z0)(v,w) (constant honestly derived: Jacobi position starts at 0, so no constant term) + orthogonal corollary (pairing stays 0). Composed from the flow derivative + pointwise variation identity + constant speed."
     }
   ],
-  "current_goal": "GOAL 10 SUBSTANTIAL (2026-07-06): 54 gated merges across goals 9-10, zero rejections, zero fabrications. LATEST CROWN: geodesic flow differentiable in initial velocity (Jacobi derivative; 5-task chain built ODE smooth-dependence Mathlib lacks). exp is continuous with radial Gauss and the derivative machinery ready for the full Gauss lemma. Queue: geo-22 = integrated transverse Gauss glue (pointwise identity + flow derivative + constant speed compose); then mfderiv of expAt at 0 = id; injectivity radius road. Other fronts: normalized flow stated (Einstein fixed points), M2 parabolic scoping pending, 5 parked threads with plans. Session 2026-07-05/06 grand totals: 54 gated merges, ~45 new Global/ modules."
+  "current_goal": "GOALS 9-10 (2026-07-05/06): 55 GATED MERGES, zero rejections, zero fabrications, ~46 new Global/ modules. SESSION CROWNS: (1) sphere witness + Einstein + PositiveEinsteinMetric3 RoundSphere3 (both conditional-path interfaces inhabited); (2) the 6-iteration chart-manifold curvature bridge; (3) ODE smooth-dependence built from scratch (geo-17..21) culminating in the flow derivative; (4) THE GAUSS LEMMA in chart form (integrated transverse law + orthogonal corollary); (5) normalized Ricci flow stated with Einstein fixed points; (6) volume theory through finite measure + scalar functionals; (7) Hamilton interface Core-shrunk; (8) expAt continuous with ray laws. NEXT QUEUE: d(expAt)|0 = id (from the flow derivative — Jacobi at t: J(t) = t·w + o(t) gives the derivative-at-zero identification); injectivity radius road; M2 parabolic scoping; 5 parked threads with recorded plans (DeTurck raw-basis, reanchor ODE, ray-law spec, anti-Lipschitz positivity, transverse-interface refinement now largely superseded by the proven flow derivative)."
 }
