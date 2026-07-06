@@ -811,12 +811,12 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/VolumeDensity.lean"
       ],
       "difficulty": "medium",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): manifold-integration asset survey (incl. Hausdorff-measure shortcut assessment) + chart volume density sqrt|det| with conformal specialization."
+      "result": "DONE 2026-07-06 (gate PASS): chartVolumeDensity (sqrt|det| via Gram matrix), positivity under posDef, conformal specialization (density^2 = c^n), continuity, conformalInnerScale bridge. VERDICT: pinned Mathlib has Hausdorff-measure infrastructure but no Riemannian volume; induced-metric Hausdorff measure = plausible shortcut pending local sqrt(det G) equivalence. Roadmap in reports/M5-vol-1_assets.md."
     },
     {
       "id": "M5-bridge-1",

@@ -49,6 +49,7 @@ import Poincare.Global.GeodesicReanchor
 import Poincare.Global.GeodesicReanchorLaw
 import Poincare.Global.RoundSphereCurvature
 import Poincare.Global.ExponentialRayLaw
+import Poincare.Global.VolumeDensity
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
