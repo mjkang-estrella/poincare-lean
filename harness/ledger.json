@@ -1249,12 +1249,25 @@
       "deps": [
         "M5-geo-27"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GeodesicPathLength.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: germ curve MDifferentiableOn + pathELength = t*speed via constant speed -> sharp distance upper bound."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): PL-flow state/position C1 on closed intervals, inverse-chart curve ContMDiffOn, interior derivative identification, constant interior speed, expAt curve packaged. ONE bridge left: fiber e-norm integrand vs chart speed -> geo-29."
+    },
+    {
+      "id": "M5-geo-29",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-28"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicLength.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06: integrand identification (mfderiv chain rule + fiber_inner_eq + chart transport) -> length formula -> sharp distance upper bound."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 61 gated merges): user directive — do not stop before complete formalization. LATEST: NORMAL NEIGHBORHOODS (expAt local homeo + injective open small-ball image); d(exp)|0 = id; Gauss lemma; 1D heat equation; heat-3 (n-dim) running. RIGIDITY ROAD next: uniform normal radius over compact M (compactness on strict-derivative data); geodesics realize distance locally (Gauss lemma consumer); then local isometry construction (Cartan) toward UnitConstantCurvatureSphereRecognition3. PARABOLIC ROAD next: n-dim heat equation, integral-one, convolution smoothing, maximum principle. Honest ceiling: full Poincare needs surgery/Perelman/topology tiers absent everywhere; progression continues wave by wave, gate by gate."

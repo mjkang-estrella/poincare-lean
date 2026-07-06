@@ -68,6 +68,7 @@ import Poincare.Global.ExponentialDerivativeZero
 import Poincare.Global.ExponentialFrechet
 import Poincare.Global.ExponentialLocalHomeo
 import Poincare.Global.GeodesicDistance
+import Poincare.Global.GeodesicPathLength
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
