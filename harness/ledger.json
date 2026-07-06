@@ -1142,12 +1142,12 @@
         "M5-geo-21",
         "M5-geo-22"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ExponentialDerivativeZero.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: Jacobi short-time expansion J = t w + o(t) -> derivative of expAt at 0 (directional; Frechet if closes)."
+      "result": "DONE 2026-07-06 (gate PASS): Jacobi short-time derivative + expAt_chart_hasDerivAt_zero_smul (two-sided directional derivative at 0, ALL directions) + continuity at zero + Frechet criterion expAt_chart_hasFDerivAt_zero_of_remainder (one uniform little-o upgrade isolated -> geo-25)."
     },
     {
       "id": "M2-heat-1",
@@ -1155,12 +1155,12 @@
       "deps": [
         "M2-scope-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/HeatKernel.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06: front-A wall campaign opener — Gaussian heat kernel on the model space, positivity/smoothness/PDE (1D unconditional fallback), Mathlib Gaussian/convolution/Fourier inventory + 5-task roadmap."
+      "result": "DONE 2026-07-06 (gate PASS): heatKernel defined (finrank exponent), positivity + spatial ContDiff proven; PDE identity + integral-one honestly deferred; Mathlib Gaussian/convolution/Fourier inventory + 5-task roadmap in reports/M2-heat-1_assets.md."
     },
     {
       "id": "M5-geo-24",
@@ -1170,12 +1170,38 @@
         "M5-bridge-6",
         "M5-geo-21"
       ],
-      "status": "running",
+      "status": "parked",
       "files": [
         "Poincare/Global/GeodesicReanchorClose.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06: RESUME parked reanchor thread with curvature-bridge naturality templates -> transition law -> unconditional re-anchoring (geodesic extension step)."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS), thread RE-PARKED (4th orbit): chartTransition hasFDerivAt identification, metric transport restated, position-component transition law, reducer isolating the velocity/Christoffel component. Still blocked: double-anchor acceleration law (curvature-bridge templates supplied first-order transport, not the second-order law; analysis in reports/M5-geo-24_blocked.md). Not on the rigidity critical path."
+    },
+    {
+      "id": "M2-heat-2",
+      "tier": "M2",
+      "deps": [
+        "M2-heat-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/HeatKernelPDE.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06: the heat equation identity for the model kernel (1D unconditional, n-dim if closes) + time smoothness, per the heat-1 roadmap."
+    },
+    {
+      "id": "M5-geo-25",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-23"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialFrechet.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06: the uniform velocity-variable little-o remainder (Heine-Cantor/compact-tube pattern from geo-19) -> expAt Frechet derivative id at 0."
     }
   ],
   "current_goal": "GOALS 9-10 (2026-07-05/06): 55 GATED MERGES, zero rejections, zero fabrications, ~46 new Global/ modules. SESSION CROWNS: (1) sphere witness + Einstein + PositiveEinsteinMetric3 RoundSphere3 (both conditional-path interfaces inhabited); (2) the 6-iteration chart-manifold curvature bridge; (3) ODE smooth-dependence built from scratch (geo-17..21) culminating in the flow derivative; (4) THE GAUSS LEMMA in chart form (integrated transverse law + orthogonal corollary); (5) normalized Ricci flow stated with Einstein fixed points; (6) volume theory through finite measure + scalar functionals; (7) Hamilton interface Core-shrunk; (8) expAt continuous with ray laws. NEXT QUEUE: d(expAt)|0 = id (from the flow derivative — Jacobi at t: J(t) = t·w + o(t) gives the derivative-at-zero identification); injectivity radius road; M2 parabolic scoping; 5 parked threads with recorded plans (DeTurck raw-basis, reanchor ODE, ray-law spec, anti-Lipschitz positivity, transverse-interface refinement now largely superseded by the proven flow derivative)."

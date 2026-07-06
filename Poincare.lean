@@ -64,6 +64,8 @@ import Poincare.Global.GeodesicDerivative
 import Poincare.Global.GeodesicDerivativeFinal
 import Poincare.Global.GeodesicFlowDerivative
 import Poincare.Global.GaussLemmaIntegrated
+import Poincare.Global.ExponentialDerivativeZero
+import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
 import Poincare.Global.ChartCurvatureBridge2
@@ -74,6 +76,7 @@ import Poincare.Global.ChartCurvatureBridge6
 import Poincare.Global.RoundSphereWitness
 import Poincare.Global.ConstantCurvatureEinstein
 import Poincare.Global.ShortTimeInterface
+import Poincare.Global.HeatKernel
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity
