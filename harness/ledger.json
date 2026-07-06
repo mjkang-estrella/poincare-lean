@@ -936,6 +936,32 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): isEinsteinAt_of_hasConstantSectionalCurvature3 (KN trace via metricKulkarniNomizuAt_finBasis_trace_eq: tr = -4*g, so -(kappa/2)*(-4) = 2*kappa — expected constant CONFIRMED), roundSphereMetric3_isEinsteinAt_two, positiveEinsteinMetric3_roundSphere — THE ANALYTIC-WALL INTERFACE WITNESS. GOAL 9 CODA COMPLETE: 40 gated merges."
+    },
+    {
+      "id": "M5-geo-14",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-9"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicSpeed.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10 opener): constant-speed law along chart geodesics (compatibility identity + chain rule) — Gauss-lemma prerequisite 1."
+    },
+    {
+      "id": "M5-vol-2",
+      "tier": "M5",
+      "deps": [
+        "M5-vol-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/VolumeMeasure.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10 opener): volumeMeasure via Hausdorff measure of the induced metric space + sanity lemmas + integration roadmap."
     }
   ],
   "current_goal": "GOAL 9 COMPLETE (2026-07-05/06): 40 gated merges, zero rejections, zero fabrications. CROWN: the round metric on the statement-layer S^3 constructed, its constant sectional curvature 1 PROVEN (6-iteration chart-manifold curvature bridge = THE reusable transport asset), contracted to Einstein lambda=2, yielding positiveEinsteinMetric3_roundSphere — the PositiveEinsteinMetric3 interface (and hence HamiltonConvergencePinchedLimit3 via the proven reduction) is INHABITED at the model space: the two-interface conditional Poincare path is certified non-vacuous end-to-end. Plus: Hamilton Core shrinkage, expAt with ray laws, DeTurck layer, volume gateway, closed=>complete. GOAL 10 MENU: Gauss lemma; volume measure (Hausdorff route); unit-recognition rigidity road (completeness+exp exist; needs local isometry/comparison); M2 parabolic scoping; resume parked threads (reanchor ODE law — use the curvature bridge as template)."

@@ -82,8 +82,26 @@ clean:
     reduced to one summand lemma, whose raw-basis conjunct the orchestrator
     flagged SUSPECT-FALSE (predicates-11 pattern) — thread PARKED with the
     extend-frame reroute recorded (not on the M2 critical path).
-- In flight (wave 4d): M5-geo-10 (re-anchoring), M5-model-7 (sphere witness
-  transport).
+- **GOAL 9 CROWN (2026-07-06, merges #38-40)**: the six-iteration
+  chart↔manifold CURVATURE BRIDGE completed
+  (`ChartCurvatureBridge6.lean` — chart Christoffel computations now certify
+  manifold `curvatureOp` facts at anchors, for any closed metric); the
+  SPHERE WITNESS assembled:
+  `roundSphereMetric3_hasConstantSectionalCurvature_one :
+  HasConstantSectionalCurvature3 roundSphereMetric3 1`
+  (`RoundSphereWitness.lean`) — the repo's first concrete-geometry theorem;
+  and the KN contraction `isEinsteinAt_of_hasConstantSectionalCurvature3`
+  (κ ⇒ Einstein `2κ`, trace constant confirmed) yielding
+  `roundSphereMetric3_isEinsteinAt_two` and
+  **`positiveEinsteinMetric3_roundSphere`**
+  (`ConstantCurvatureEinstein.lean`): the `PositiveEinsteinMetric3`
+  interface — hence `HamiltonConvergencePinchedLimit3` via the proven
+  reduction — is INHABITED at the model space. The two-interface conditional
+  Poincaré path is certified non-vacuous end-to-end.
+- Goal 9 totals: 40 gated merges (zero rejections, zero fabrications); three
+  suspect routes intercepted by orchestrator review; three threads parked
+  with recorded plans (DeTurck raw-basis regularity, reanchor ODE law,
+  full-interval ray law).
 
 ## Verified progress (2026-07-01)
 
