@@ -1041,6 +1041,19 @@
       ],
       "difficulty": "hard",
       "result": "BLOCKED 2026-07-06 (report-only, honest no-progress): exists_extChartAt_symm_antilipschitz_ball isolated with route (bounded chart derivative + short-paths-stay-local + diameter/margin split) in reports/M5-vol-7_blocked.md. PARKED: volume positivity is a well-definedness nicety for meanScalar (junk-value harmless at statement level); the same estimate class serves the future Hopf-Rinow road — resume there."
+    },
+    {
+      "id": "M5-geo-16",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-15"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GaussLemmaTransverse.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): transverse Gauss variation identity conditional on ChartGeodesicInitialVelocitySmoothDependence; interface refinement + discharge route in report."
     }
   ],
   "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 47 gated merges across goals 9-10. NORMALIZED RICCI FLOW STATED with Einstein fixed-point sanity (constant Einstein families solve it) — the convergence-target formulation of front A now exists in the repo. Queue: M5-vol-7 (anti-Lipschitz lower bound -> volume positivity), M5-geo-16 (transverse Gauss modulo ChartGeodesicInitialVelocitySmoothDependence, or construct smooth dependence), M2 parabolic scoping, parked threads (DeTurck raw-basis, reanchor ODE law, full ray law). Walls: unit Killing-Hopf rigidity, parabolic existence."
