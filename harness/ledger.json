@@ -706,12 +706,12 @@
       "deps": [
         "M5-model-5"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ConformalCurvature.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4b): chart curvature from Christoffel field + conformal curvature formula + THE SPHERE CONSTANT kappa=1 for 16/(|z|^2+4)^2 in KN chart form."
+      "result": "DONE 2026-07-06 (gate PASS): chartCurvatureOf (repo curvatureOp orientation), sphereChristoffel + derivative lemmas, THE CHART SPHERE CONSTANT: conformalChartMetric_chartCurvatureOf_sphereChristoffel = -(1/2)*KN(G,G) — kappa=1 exactly in the HasConstantSectionalCurvature3 convention. Remaining: manifold transport (curvatureOp of roundSphereMetric3 in chart coordinates) -> the sphere witness."
     },
     {
       "id": "M5-geo-8",
@@ -745,12 +745,12 @@
       "deps": [
         "M5-geo-7"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ExponentialFixedTime.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4c): flow homogeneity on Icc via reparametrized solution + interval uniqueness, then expAt (fixed-time endpoint, ray law, source membership) — the exp-map closer."
+      "result": "DONE 2026-07-06 (gate PASS; ray law in eventual right-neighborhood form): flow homogeneity on Icc, expAt DEFINED (fixed-time endpoint of rescaled-velocity flow), expAt_zero, expAt_eventually_eq_geodesicGermAt, expAt_mem_source_of_norm_lt. Full [0,tau) ray law needs interval germ identification (reports/M5-geo-9_blocked.md) — refinement, not redesign."
     },
     {
       "id": "M5-geo-10",
