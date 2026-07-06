@@ -903,12 +903,26 @@
       "deps": [
         "M5-bridge-5"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ChartCurvatureBridge6.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): THE single remaining theorem (term-by-term via the complete proven toolkit) -> full bridge -> sphere witness."
+      "result": "DONE 2026-07-06 (gate PASS): THE CURVATURE BRIDGE COMPLETE after 6 monotone iterations — chartLeviCivita_curvatureOp_extend_eq_chartTransported_curvatureOp + composed full bridge chartCurvatureOf_chartChristoffelField_eq_chartTransported_curvatureOp. Sphere witness = 2 named glue pieces (reports/M5-bridge-6_done.md)."
+    },
+    {
+      "id": "M5-model-8",
+      "tier": "M5",
+      "deps": [
+        "M5-bridge-6",
+        "M5-model-7"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RoundSphereWitness.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): ASSEMBLE THE SPHERE WITNESS — two named glue pieces + kappa=1 composition -> HasConstantSectionalCurvature3 roundSphereMetric3 1 (+ Einstein corollaries if cheap)."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 33 gated merges (zero rejections, zero fabrications, 3 orchestrator re-scopes/parks with recorded reroutes). Landed highlights: Hamilton interface -> Core; PositiveEinsteinMetric3 + unit normalization bridge; expAt DEFINED with eventual ray law + right-derivative; roundSphereMetric3 complete with chart coefficients AND chart-level kappa=1; DeTurck statement layer + field; volume gateway (chart density + Hausdorff verdict); closed=>complete. IN FLIGHT: M5-bridge-2 (the packaging step of THE curvature bridge — one lemma from the sphere witness). PARKED with recorded plans: DeTurck raw-basis regularity (suspect-false conjunct), geodesic reanchor ODE law (3-orbit, Koszul plan), full-interval ray law (spec-export pattern). NEXT after bridge-2: sphere witness assembly -> IsEinsteinAt 2 -> PositiveEinsteinMetric3 RoundSphere3 witness; then goal 10 selection (Gauss lemma vs volume measure vs M2 parabolic scoping)."
