@@ -416,12 +416,12 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GeodesicChart.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-05 (goal 9): chart-level geodesic ODE foundations (first-order system field, Picard-Lindelof local existence, Gronwall uniqueness, second-order geodesic reading) + Mathlib geodesic-frontier assets report. Road to UnitConstantCurvatureSphereRecognition3."
+      "result": "DONE 2026-07-05 (gate PASS): geodesicFlowField + Picard-Lindelof local existence (exists_geodesicFlowField_solution, ContDiffAt level) + Gronwall local uniqueness (geodesicFlowField_eventuallyEq_of_contDiffAt) + second-order component readings. Mathlib inventory + 5-step roadmap to manifold geodesics in reports/M5-geo-1_assets.md. No finite-dim needed; CompleteSpace only."
     },
     {
       "id": "M5-model-1",
@@ -429,12 +429,12 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/RoundSphereMetric.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-05 (goal 9): round metric on the statement-layer S^3 as ClosedSmoothRiemannianMetric 3 (pullback of ambient inner product along inclusion mfderiv). Model space for Killing-Hopf + non-vacuity witness."
+      "result": "STRICT-PARTIAL 2026-07-05 (gate PASS on 4 lemmas): roundSphereMetric3_inner pullback tensor + _mfderiv_eq + _symm + _pos (mfderiv_coe_sphere_injective) + _isVonNBounded (antilipschitz). Missing ONLY contMDiff of the section; exact statement + 4-step plan in reports/M5-model-1_blocked.md -> task M5-model-2."
     },
     {
       "id": "M5-rescale-6",
@@ -442,12 +442,12 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/MetricRescaleCurvature.lean"
       ],
       "difficulty": "medium",
-      "result": "DISPATCHED 2026-07-05 (goal 9): power-law transport of ricciAt/scalarAt/ricciNormSqAt/tracelessRicciNormSqAt under constSMul + constant-independent pinched-limit payload preservation corollary."
+      "result": "DONE 2026-07-05 (gate PASS): constSMul transport laws — ricciAt invariant, ricciEndoAt c^-1 (toDual inverse-Gram route), scalarAt c^-1, ricciNormSqAt/tracelessRicciNormSqAt c^-2, plus hard-frozen constSMul_pinchedLimitPayload. Expected constants all confirmed by derivation."
     },
     {
       "id": "M5-shrink-1",
@@ -455,14 +455,53 @@
       "deps": [
         "M5-sphere-endgame"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ScalarRegularity.lean",
         "Poincare/Global/PinchedLimitInterface.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-05 (goal 9): unconditional scalarAt MDifferentiableAt (via C^2 connection chain) + HamiltonConvergencePinchedLimit3Core shrinkage (drop differentiability payload) + core minimal-interface Poincare composition."
+      "result": "DONE 2026-07-05 (gate PASS): scalarAt_mdifferentiableAt UNCONDITIONAL at general n (composed existing Gram-frame trace route: traceMetricVariationAt_mdiffAt + covTensor2ExtDifferentiableAt_ricciVariationField_canonical + traceMetricVariationAt_ricci). HamiltonConvergencePinchedLimit3Core defined, iff proven, core minimal-interface Poincare composition poincareConjecture_of_hamiltonConvergenceCore_of_unitRecognition on main."
+    },
+    {
+      "id": "M5-einstein-1",
+      "tier": "M5",
+      "deps": [
+        "M5-sphere-endgame"
+      ],
+      "status": "done",
+      "files": [
+        "Poincare/Global/EinsteinInterface.lean"
+      ],
+      "difficulty": "small",
+      "result": "DONE 2026-07-05 (orchestrator-direct, gate PASS): PositiveEinsteinMetric3 interface + hamiltonConvergencePinchedLimit3_of_positiveEinsteinMetric3 (constant-scalar trick discharges the differentiability payload; traceless vanishing = pinching equality case) + poincareConjecture_of_positiveEinstein_of_unitRecognition. The analytic wall now has the classical Einstein-existence formulation."
+    },
+    {
+      "id": "M5-model-2",
+      "tier": "M5",
+      "deps": [
+        "M5-model-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RoundSphereMetric.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-05 (goal 9 wave 2): the contMDiff section field via inTangentCoordinates + contMDiffAt_section per blocked-report plan; assemble frozen roundSphereMetric3."
+    },
+    {
+      "id": "M5-geo-2",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicTransport.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-05 (goal 9 wave 2): chart Christoffel field for g.leviCivita via extChartAt transport, ContDiffAt 1 regularity, instantiate local geodesic existence on M (roadmap steps 1-3)."
     }
   ],
-  "current_goal": "GOAL 9 (2026-07-05, fleet returned early — probe OK): four-worker parallel wave on disjoint new files. M5-geo-1 chart geodesic ODE foundations (Killing-Hopf road), M5-model-1 round metric on statement-layer S^3 (model space + non-vacuity), M5-rescale-6 curvature-functional transport under constSMul, M5-shrink-1 unconditional scalarAt regularity + Hamilton-interface payload shrinkage. Orchestrator wires root imports at merge; gate.sh is the only judge. Next selection (goal 10) from this wave's reports: manifold-level geodesics vs sphere-metric curvature computation vs M2 short-time existence scoping."
+  "current_goal": "GOAL 9 IN PROGRESS (2026-07-05): wave 1 COMPLETE — 4 worker merges + 1 orchestrator-direct merge, all gate PASS, ~35 min wall-clock. Headlines: Hamilton interface SHRUNK (differentiability payload discharged unconditionally via scalarAt_mdifferentiableAt); PositiveEinsteinMetric3 reduction (Einstein-existence formulation of the analytic wall); chart geodesic ODE layer live; round S3 metric 4/5 fields. Wave 2 running: M5-model-2 (finish roundSphereMetric3), M5-geo-2 (Levi-Civita chart Christoffel + local geodesics on M). Orchestrator-direct queue: sphere_of_pinched_limit differentiability-free variant; Einstein->Core corollary. Goal-10 candidates: sphere Einstein computation (needs model-2), exponential map germs (needs geo-2), M2 short-time scoping."
 }

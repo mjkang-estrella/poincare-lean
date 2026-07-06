@@ -30,6 +30,12 @@ import Poincare.Global.MetricVariation
 import Poincare.Global.ScalarEvolution
 import Poincare.Global.ScalarVariation
 import Poincare.Global.SphereTheorem
+import Poincare.Global.ScalarRegularity
+import Poincare.Global.PinchedLimitInterface
+import Poincare.Global.GeodesicChart
+import Poincare.Global.MetricRescaleCurvature
+import Poincare.Global.RoundSphereMetric
+import Poincare.Global.EinsteinInterface
 import Poincare.Milestones
 import Poincare.Assembly
 import Poincare.CanonicalBridges
