@@ -1,0 +1,12 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M2-heat-1: front A's wall — model-space heat equation: scoping + first genuine lemmas
+
+Context: `RicciFlowShortTimeExistence3` (`Poincare/Global/ShortTimeInterface.lean`) and the DeTurck layer (`DeTurck*.lean`) reduce front A to parabolic existence, ABSENT from Mathlib (verdict in `harness/reports/M2-scope-1_assets.md`: Sobolev partial — Bessel `TemperedDistribution.memSobolev` + Gagliardo–Nirenberg exist; heat kernel/semigroup/Schauder absent). The campaign strategy that worked for geodesics/curvature: MODEL SPACE FIRST. The model-space seed: the scalar heat equation on `EuclideanSpace ℝ (Fin n)` (or ℝⁿ/torus) with the explicit Gaussian heat kernel.
+
+Deliverables:
+1. REPORT `harness/reports/M2-heat-1_assets.md`: inventory pinned Mathlib for: the Gaussian function and its integral (`Mathlib/Analysis/SpecialFunctions/Gaussian/*` — `integral_gaussian`, Fourier transform of Gaussians), convolution (`MeasureTheory.convolution` — exists with derivative theorems?), Fourier transform machinery, Schwartz space, `TemperedDistribution` heat facts if any. Honest verdict + a 5-task roadmap for: heat kernel definition → smoothing → solves heat equation → initial data recovery (convolution approximate identity) → uniqueness (energy/maximum principle).
+2. FIRST LEMMAS, in a NEW file `Poincare/Global/HeatKernel.lean` (do NOT edit existing files, incl. `Poincare.lean`): define the Gaussian heat kernel `heatKernel (t : ℝ) (x : E) : ℝ := (4 * π * t) ^ (-(n:ℝ)/2) * Real.exp (-‖x‖² / (4 * t))` for `t > 0` on a finite-dimensional inner-product space (spelling free), and prove the FIRST genuine facts that close: positivity for `t > 0`; smoothness in `x` for fixed `t > 0`; the pointwise heat equation `∂ₜ heatKernel = Δ heatKernel` IF the Laplacian spelling is manageable (use iterated `fderiv`/`deriv` coordinates or Mathlib's `laplacian` if available for inner-product spaces — check `Mathlib/Analysis/InnerProductSpace/laplacian`-adjacent; if the full PDE identity is heavy, deliver the 1-dimensional case unconditionally + the n-dimensional statement isolated). Total-integral-one is a bonus (`integral_gaussian` change of variables).
+3. Report `harness/reports/M2-heat-1_{done|blocked}.md` (may merge with assets file).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.HeatKernel` and report the actual result. Commit your work.
