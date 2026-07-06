@@ -7,6 +7,46 @@ xhigh in isolated worktrees. Every entry below passed `harness/gate.sh`
 See `harness/ledger.json` for the task DAG and `harness/reports/` for audits
 and blocked-decompositions.
 
+## Verified progress (2026-07-01 — 2026-07-05)
+
+### Goal 9 (2026-07-05, fleet returned): interface shrinkage + geodesic campaign opened
+Eight gated merges (5 codex-worker, 3 orchestrator-direct), all axiom-closure
+clean:
+- **Hamilton interface shrunk**: `scalarAt_mdifferentiableAt` proven
+  UNCONDITIONALLY at general `n` (`Global/ScalarRegularity.lean`, composing the
+  M3 Gram-frame trace route), so `HamiltonConvergencePinchedLimit3Core`
+  (`Global/PinchedLimitInterface.lean`) drops the differentiability payload;
+  `iff` + core minimal-interface Poincaré composition proven; the
+  differentiability-free `sphere_of_pinched_limit_core`
+  (`Global/PinchedLimitCore.lean`).
+- **Einstein formulation of the analytic wall**: `PositiveEinsteinMetric3`
+  (`Global/EinsteinInterface.lean`) with
+  `hamiltonConvergencePinchedLimit3_of_positiveEinsteinMetric3` (constant-scalar
+  trick) and `poincareConjecture_of_positiveEinstein_of_unitRecognition`; the
+  normalization bridge `exists_unitConstantCurvature_of_positiveEinsteinMetric3`
+  (Einstein `lam > 0` ⇒ sec ≡ `lam/2` by the Schur route ⇒ `constSMul` to unit
+  curvature, `Global/EinsteinNormalization.lean`) connects it DIRECTLY to unit
+  recognition.
+- **Geodesic campaign opened** (road to unit Killing–Hopf):
+  `Global/GeodesicChart.lean` — chart geodesic flow field, Picard–Lindelöf
+  local existence, Grönwall local uniqueness, second-order readings; Mathlib
+  inventory confirms NO geodesic/exp-map/Hopf–Rinow layer exists upstream
+  (`harness/reports/M5-geo-1_assets.md` + 5-step roadmap).
+  `Global/MetricCompleteness.lean` — closed ⇒ complete for the induced
+  distance (Hopf–Rinow prerequisite).
+- **Round S³ model metric**: pullback tensor + `symm`/`pos`/`isVonNBounded`
+  proven (`Global/RoundSphereMetric.lean`, via `mfderiv_coe_sphere_injective`
+  + antilipschitz); only the `contMDiff` section field remains (exact statement
+  + plan in `harness/reports/M5-model-1_blocked.md`).
+- **Rescaling functional calculus**: `constSMul` transport —
+  `ricciAt` invariant, `ricciEndoAt`/`scalarAt` scale by `c⁻¹`,
+  `ricciNormSqAt`/`tracelessRicciNormSqAt` by `c⁻²`, plus the
+  constant-independent pinched-payload preservation
+  (`Global/MetricRescaleCurvature.lean`).
+- In flight (wave 2): M5-model-2 (finish `roundSphereMetric3`), M5-geo-2
+  (chart Christoffel for `g.leviCivita` + local geodesics on `M`), M2-scope-1
+  (parabolic asset inventory + `RicciFlowShortTimeExistence3` interface).
+
 ## Verified progress (2026-07-01)
 
 ### Tier M0 — global statement layer (complete)
