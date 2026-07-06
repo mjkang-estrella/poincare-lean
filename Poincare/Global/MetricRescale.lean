@@ -1,5 +1,5 @@
 import Mathlib.Geometry.Manifold.VectorBundle.SmoothSection
-import Poincare.Global.RiemannianContext
+import Poincare.Global.Curvature
 
 /-!
 # Constant rescaling of a closed smooth Riemannian metric
@@ -97,6 +97,84 @@ theorem constSMul_inner (g : ClosedSmoothRiemannianMetric n M)
     (c : ℝ) (hc : 0 < c) (x : M) (v w : TM x) :
     (g.constSMul c hc).inner x v w = c * g.inner x v w := by
   simp [constSMul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+
+end ClosedSmoothRiemannianMetric
+
+end Poincare
+
+namespace Poincare
+
+namespace ClosedSmoothRiemannianMetric
+
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M] [T2Space M]
+variable [ChartedSpace (ClosedSmoothModel n) M]
+variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+
+local notation "I'" => closedSmoothModelWithCorners n
+local notation "TM'" => (TangentSpace (closedSmoothModelWithCorners n) : M → Type _)
+
+private theorem rescale_extDerivFun_const {c : ℝ} {x : M} :
+    (extDerivFun (I := I') (fun _ : M ↦ c) x : TM' x →L[ℝ] ℝ) = 0 := by
+  unfold extDerivFun
+  rw [(hasMFDerivAt_const c x).mfderiv]
+  ext v
+  simp
+
+private theorem rescale_extDerivFun_const_mul {f : M → ℝ} {x : M}
+    (hf : MDifferentiableAt I' 𝓘(ℝ) f x) (c : ℝ) (v : TM' x) :
+    extDerivFun (I := I') (fun y : M ↦ c * f y) x v =
+      c * extDerivFun (I := I') f x v := by
+  have hmul := CovariantDerivative.extDerivFun_mul
+    (p := fun _ : M ↦ c) (q := f) (x := x) mdifferentiableAt_const hf v
+  simpa [rescale_extDerivFun_const] using hmul
+
+/--
+The Levi-Civita connection of the base metric is compatible with any constant
+positive rescaling of the metric: both sides of the compatibility identity
+scale linearly by the constant.
+-/
+theorem constSMul_metricCompatible_base_leviCivita
+    (g : ClosedSmoothRiemannianMetric n M) (c : ℝ) (hc : 0 < c) :
+    IsMetricCompatible (g.constSMul c hc) g.leviCivita := by
+  intro x X Y hX hY v
+  have hpair := LeviCivitaExistence.metric_pairing_mdiffAt g hX hY
+  have hg := g.leviCivita_metricCompatible hX hY v
+  have hfun :
+      (fun y : M ↦ (g.constSMul c hc).inner y (X y) (Y y)) =
+        (fun y : M ↦ c * g.inner y (X y) (Y y)) := by
+    funext y
+    simp [constSMul_inner]
+  calc extDerivFun (I := I')
+        (fun y : M ↦ (g.constSMul c hc).inner y (X y) (Y y)) x v
+      = extDerivFun (I := I')
+          (fun y : M ↦ c * g.inner y (X y) (Y y)) x v := by rw [hfun]
+    _ = c * extDerivFun (I := I')
+          (fun y : M ↦ g.inner y (X y) (Y y)) x v :=
+        rescale_extDerivFun_const_mul hpair c v
+    _ = c * (g.inner x (g.leviCivita X x v) (Y x)
+          + g.inner x (X x) (g.leviCivita Y x v)) := by rw [hg]
+    _ = (g.constSMul c hc).inner x (g.leviCivita X x v) (Y x)
+          + (g.constSMul c hc).inner x (X x) (g.leviCivita Y x v) := by
+        simp [constSMul_inner]
+        ring
+
+/--
+Levi-Civita invariance under constant rescaling: at any point, on any tangent
+field differentiable there, the Levi-Civita connection of `c • g` agrees with
+that of `g`.  Both are torsion-free and compatible with `c • g`, so uniqueness
+applies.
+-/
+theorem constSMul_leviCivita_apply
+    (g : ClosedSmoothRiemannianMetric n M) (c : ℝ) (hc : 0 < c)
+    {x : M} {X : ∀ y : M, TangentSpace (closedSmoothModelWithCorners n) y}
+    (hX : MDiffAtTangentField X x) :
+    (g.constSMul c hc).leviCivita X x = g.leviCivita X x :=
+  levi_civita_unique (g.constSMul c hc)
+    ((g.constSMul c hc).leviCivita_metricCompatible)
+    (constSMul_metricCompatible_base_leviCivita g c hc)
+    ((g.constSMul c hc).leviCivita_torsion)
+    (g.leviCivita_torsion) hX
 
 end ClosedSmoothRiemannianMetric
 
