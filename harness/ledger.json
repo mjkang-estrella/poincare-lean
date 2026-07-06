@@ -791,6 +791,32 @@
       ],
       "difficulty": "wall",
       "result": "STRICT-PARTIAL 2026-07-06 (gate PASS), then thread PARKED by orchestrator: chartMetric_chartTransitionMFDeriv transport identity proven (both chart metrics = same g.inner on overlap). ODE-transport core now a 3-task orbit (geo-8/10/11); 5-step closure plan recorded in reports/M5-geo-11_blocked.md. Resume when exp-map layer stabilizes or as orchestrator-direct; serves geodesic completeness (post-exp-map infrastructure)."
+    },
+    {
+      "id": "M5-geo-12",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-9"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExponentialRayLaw.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): interval flow-germ identification -> full-interval ray law -> right-derivative corollary."
+    },
+    {
+      "id": "M5-vol-1",
+      "tier": "M5",
+      "deps": [
+        "M5-sphere-endgame"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/VolumeDensity.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): manifold-integration asset survey (incl. Hausdorff-measure shortcut assessment) + chart volume density sqrt|det| with conformal specialization."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
