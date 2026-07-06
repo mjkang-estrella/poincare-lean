@@ -1074,13 +1074,13 @@
       "deps": [
         "M5-geo-17"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GeodesicLinearized.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 10): linearized (Jacobi) system along chart geodesics + difference-quotient comparison (Gronwall on the Taylor remainder) -> derivative of the flow in initial velocity."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): coordinate Jacobi operator, linearized geodesic flow field, linear-ODE existence/uniqueness, chart-Christoffel linearized flow, POINTWISE Taylor remainder isLittleO. Blocked on compact-tube UNIFORM remainder (modulus packaging) -> geo-19 in queue (reports/M5-geo-18_blocked.md)."
     }
   ],
-  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 50 gated merges across goals 9-10, zero rejections, zero fabrications. Geodesic road: expAt CONTINUOUS on its ball (Lipschitz dependence via Gronwall); pointwise transverse Gauss identity unconditional; radial Gauss done; differentiability = Jacobi comparison interface (spec ready). Volume road: normalized flow stated with Einstein fixed-point sanity; positivity parked (anti-Lipschitz). Queue: Jacobi/linearized comparison (geo-18), M2 parabolic scoping, parked threads (DeTurck raw-basis, reanchor ODE, ray-law spec, anti-Lipschitz). Walls: unit Killing-Hopf rigidity (exp-machinery growing beneath it), parabolic existence."
+  "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 51 gated merges across goals 9-10. Jacobi machinery landed (linearized flow exists; pointwise Taylor remainder o-estimate); exp differentiability = ONE uniform-remainder packaging step (geo-19). Full queue: geo-19 (uniform Taylor remainder -> Gronwall comparison -> HasDerivAt of flow in velocity), M2 parabolic scoping, 5 parked threads with recorded plans. Session totals 2026-07-05/06: 51 gated merges, zero rejections, zero fabrications."
 }
