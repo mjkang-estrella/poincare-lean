@@ -628,12 +628,12 @@
       "deps": [
         "M5-model-3"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/RoundSphereChartMetric.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): bundle tie-in — roundSphereMetric3 chart coefficients = conformal factor * euclidean inner, via stereographic' identification + mfderiv chain rule."
+      "result": "DONE 2026-07-06 (gate PASS): roundSphereMetric3_inner_chartAt_symm_eq — metric chart coefficients = stereoInvFunAuxConformalFactor * euclidean inner, via chart-inverse = stereoInvFunAux identification (coe_chartAt_symm_eq_stereoInvFunAux), mfderiv/fderiv bridge, LinearIsometryEquiv transport. Curvature roadmap: norm identification ||U.symm z||=||z||, conformal Christoffels, curvature coefficients."
     },
     {
       "id": "M5-geo-5",
@@ -641,12 +641,12 @@
       "deps": [
         "M5-geo-4"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ExponentialDomain.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3c): uniform Picard-Lindelof existence time on a velocity ball + expAt on the ball via homogeneity reparametrization."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): exists_uniform_local_geodesic_chart_solution via quantitative Picard-Lindelof closed-ball theorem. expAt BLOCKED on endpoint closed-ball control + interval uniqueness (reports/M5-geo-5_blocked.md) -> next task."
     },
     {
       "id": "M2-deturck-3",
@@ -654,12 +654,12 @@
       "deps": [
         "M2-deturck-2"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/DeTurckFieldRegularity.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3c): discharge DeTurckVectorFieldRegularAt (ClosedC2TangentField of the connection-difference trace) from the C2 chain + Gram/dual smoothness."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): tensorial rewrite + bilinearity + finite-sum decomposition + reducer deTurckVectorFieldRegularAt_holds_of_summand_regularity + gauged-flow glue extractor. BLOCKED on single lemma deTurckVectorFieldSummand_closedC2 (reports/M2-deturck-3_blocked.md) -> next task."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."

@@ -39,12 +39,15 @@ import Poincare.Global.GeodesicChart
 import Poincare.Global.GeodesicTransport
 import Poincare.Global.GeodesicGerm
 import Poincare.Global.ExponentialGerm
+import Poincare.Global.ExponentialDomain
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
+import Poincare.Global.DeTurckFieldRegularity
 import Poincare.Global.MetricRescaleCurvature
 import Poincare.Global.RoundSphereMetric
 import Poincare.Global.RoundSphereChart
+import Poincare.Global.RoundSphereChartMetric
 import Poincare.Global.EinsteinInterface
 import Poincare.Milestones
 import Poincare.Assembly
