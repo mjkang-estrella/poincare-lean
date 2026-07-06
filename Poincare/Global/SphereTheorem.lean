@@ -1,4 +1,5 @@
 import Poincare.Global.ScalarVariation
+import Poincare.Global.MetricRescale
 import Poincare.Global.Statement
 
 /-!
@@ -250,5 +251,67 @@ theorem positiveConstantCurvatureSpaceForm3_of_normalization_of_unitRecognition
   intro g κ hcurv hκpos
   rcases hnorm g κ hcurv hκpos with ⟨g', hg'⟩
   exact hunit g' hg'
+
+end Poincare
+
+namespace Poincare
+
+namespace ClosedSmoothRiemannianMetric
+
+variable {M3 : Type u}
+variable [TopologicalSpace M3] [T2Space M3]
+variable [ChartedSpace (ClosedSmoothModel 3) M3]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M3]
+
+/--
+Rescaling normalizes constant sectional curvature: if `g` has constant
+sectional curvature `κ > 0`, then `κ • g` has constant sectional curvature
+`1`.  The curvature operator is invariant under the rescaling (proved in
+`MetricRescale`), the inner product scales by `κ`, and the Kulkarni-Nomizu
+square of the metric scales by `κ²`.
+-/
+theorem constSMul_hasConstantSectionalCurvature3_one
+    (g : ClosedSmoothRiemannianMetric 3 M3) {κ : ℝ} (hκ : 0 < κ)
+    (hcurv : HasConstantSectionalCurvature3 g κ) :
+    HasConstantSectionalCurvature3 (g.constSMul κ hκ) 1 := by
+  intro x u w a b
+  have htransport :=
+    constSMul_curvatureOp_extend_apply g κ hκ x u w a
+  have hbase := hcurv x u w a b
+  rw [htransport, constSMul_inner, hbase]
+  unfold tensorKulkarniNomizuAt
+  simp only [constSMul_inner]
+  ring
+
+end ClosedSmoothRiemannianMetric
+
+variable {M'' : Type u}
+variable [TopologicalSpace M''] [T2Space M''] [SecondCountableTopology M'']
+variable [ChartedSpace (ClosedSmoothModel 3) M'']
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M'']
+variable [CompactSpace M''] [ConnectedSpace M''] [SimplyConnectedSpace M'']
+
+/--
+DISCHARGED: constant-curvature normalization holds unconditionally, via the
+constant conformal rescaling `κ • g`.  Of the two factors of the positive
+space-form interface, only unit-curvature recognition now remains a
+hypothesis.
+-/
+theorem constantCurvatureNormalization3_holds :
+    ConstantCurvatureNormalization3 M'' := by
+  intro g κ hcurv hκ
+  exact ⟨g.constSMul κ hκ,
+    ClosedSmoothRiemannianMetric.constSMul_hasConstantSectionalCurvature3_one
+      g hκ hcurv⟩
+
+/--
+With normalization discharged, the full positive space-form interface follows
+from unit-curvature recognition alone.
+-/
+theorem positiveConstantCurvatureSpaceForm3_of_unitRecognition
+    (hunit : UnitConstantCurvatureSphereRecognition3 M'') :
+    PositiveConstantCurvatureSpaceForm3 M'' :=
+  positiveConstantCurvatureSpaceForm3_of_normalization_of_unitRecognition
+    constantCurvatureNormalization3_holds hunit
 
 end Poincare
