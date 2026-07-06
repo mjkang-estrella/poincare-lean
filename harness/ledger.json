@@ -1119,6 +1119,21 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): THE FLOW DERIVATIVE — chartChristoffel_initialVelocity_hasDerivAt_of_uniform_geodesicFlow: the geodesic flow is DIFFERENTIABLE in initial velocity with derivative the linearized (Jacobi) solution. The 5-task smooth-dependence chain (geo-17..21) built Mathlib's missing ODE smooth-dependence from scratch. Remaining glue: integrated transverse Gauss (queue)."
+    },
+    {
+      "id": "M5-geo-22",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-21",
+        "M5-geo-16",
+        "M5-geo-14"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GaussLemmaIntegrated.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06 (goal 10): integrated transverse Gauss — compose flow derivative + pointwise pairing identity + constant speed -> the Gauss lemma in chart form."
     }
   ],
   "current_goal": "GOAL 10 SUBSTANTIAL (2026-07-06): 54 gated merges across goals 9-10, zero rejections, zero fabrications. LATEST CROWN: geodesic flow differentiable in initial velocity (Jacobi derivative; 5-task chain built ODE smooth-dependence Mathlib lacks). exp is continuous with radial Gauss and the derivative machinery ready for the full Gauss lemma. Queue: geo-22 = integrated transverse Gauss glue (pointwise identity + flow derivative + constant speed compose); then mfderiv of expAt at 0 = id; injectivity radius road. Other fronts: normalized flow stated (Einstein fixed points), M2 parabolic scoping pending, 5 parked threads with plans. Session 2026-07-05/06 grand totals: 54 gated merges, ~45 new Global/ modules."
