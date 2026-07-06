@@ -602,12 +602,12 @@
       "deps": [
         "M5-geo-3"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ExponentialGerm.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): zero-velocity germ constant, homogeneity law (reparametrized state (pos, s*vel) + Gronwall), expRayAt packaging."
+      "result": "DONE 2026-07-06 (gate PASS): geodesicGermAt_zero_velocity_eventually_const (constant-curve uniqueness), geodesicGermAt_smul_eventually (homogeneity: scalar velocity = scalar time reparametrization, via reparametrized state + Gronwall), expRayAt + zero + homogeneity laws. Next: velocity smoothness, exp derivative at 0 = id, Gauss lemma prerequisites, chart-overlap independence."
     },
     {
       "id": "M2-deturck-2",
@@ -615,12 +615,12 @@
       "deps": [
         "M2-deturck-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/DeTurckField.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3b): deTurckVectorFieldAt = g-Gram trace of connection difference vs background, self-difference zero, family + gauged-flow specialization, static sanity."
+      "result": "DONE 2026-07-06 (gate PASS): deTurckConnectionDifferenceAt (extend-frame nabla difference), deTurckVectorFieldAt = invariant g-trace (finBasis + metricDualVectorAt contraction = g^ij D_ij), self-difference zero, family + DeTurckVectorFieldRegularAt + IsDeTurckGaugedFlowAt + unfolding, const-self iff + static Ricci-flat sanity. General n. Next: chart coordinate formula, regularity discharge, strict-parabolicity target."
     },
     {
       "id": "M5-model-4",
