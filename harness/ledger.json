@@ -1281,6 +1281,19 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-06 (gate PASS): cutoff-one shrink package, THE LENGTH FORMULA (pathELength of the radial curve via constant speed), sharp distance bounds expAt_dist_le_time_mul_chartGeodesicMetric_sqrt + expAt_dist_le_chartGeodesicMetric_sqrt. The geo-27..30 distance chain CLOSED — geodesics realize distance from above; expAt has metric control."
+    },
+    {
+      "id": "M5-geo-31",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-30"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicDistanceLower.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06: the lower/anti-Lipschitz bound (uniform eigenvalue + integrand comparison + exit argument) — discharges the parked vol-7 estimate too; volume positivity payoff if cheap."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 65 gated merges): distance chain CLOSED (sharp upper bound via length formula). Exp map now has: local homeo + normal neighborhoods + metric control + Gauss pairing laws + derivative theory. NEXT on rigidity road: minimality/lower bound (Gauss polar decomposition; shares its core estimate with parked vol-7 anti-Lipschitz) — geo-31; then uniform injectivity radius on compact M; then the Cartan local-isometry campaign toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 (n-dim heat equation) running. Honest ceiling unchanged; progression continues gate by gate."
