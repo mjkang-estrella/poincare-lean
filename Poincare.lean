@@ -37,7 +37,9 @@ import Poincare.Global.MetricCompleteness
 import Poincare.Global.EinsteinNormalization
 import Poincare.Global.GeodesicChart
 import Poincare.Global.GeodesicTransport
+import Poincare.Global.GeodesicGerm
 import Poincare.Global.ShortTimeInterface
+import Poincare.Global.DeTurck
 import Poincare.Global.MetricRescaleCurvature
 import Poincare.Global.RoundSphereMetric
 import Poincare.Global.EinsteinInterface

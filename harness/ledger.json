@@ -563,12 +563,12 @@
       "deps": [
         "M5-geo-2"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GeodesicGerm.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): same-anchor Gronwall uniqueness on M + geodesicGermAt via choice + initial-velocity reading."
+      "result": "DONE 2026-07-06 (gate PASS): same-anchor Gronwall uniqueness (chart + pulled-back manifold form), geodesicGermAt via spec-based choice (radius/solution split), zero/source/spec lemmas, chart-solution AND germ-level initial-velocity HasDerivAt. Next: choice/chart-overlap independence, velocity smoothness, exp germ reparametrization, Gauss lemma prerequisites."
     },
     {
       "id": "M2-deturck-1",
@@ -576,12 +576,12 @@
       "deps": [
         "M2-scope-1"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/DeTurck.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 3): lieDerivMetricAt via LC connection, IsClosedRicciDeTurckSolutionAt, zero-field reduction iff, RicciDeTurckShortTimeExistence3 + pullback interface + composition, static sanity. Legacy layer forbidden."
+      "result": "DONE 2026-07-06 (gate PASS): lieDerivMetricAt (LC symmetrized form) + symmetry + zero-field vanishing, IsClosedRicciDeTurckSolutionAt structure mirroring the flow predicate, zero-field reduction IFF, RicciDeTurckShortTimeExistence3 + DeTurckPullbackToRicciFlow3 interfaces + composition to RicciFlowShortTimeExistence3, static Ricci-flat zero-field sanity. Legacy layer untouched (single import: ShortTimeInterface). Next: DeTurck vector field construction (connection-difference trace)."
     },
     {
       "id": "M5-model-3",
