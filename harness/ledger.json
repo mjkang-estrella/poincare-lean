@@ -772,12 +772,12 @@
         "M5-model-6",
         "M5-model-4"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/RoundSphereCurvature.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06 (goal 9 wave 4d): THE SPHERE WITNESS — HasConstantSectionalCurvature3 roundSphereMetric3 1 via chart-manifold curvature transport (eventual-agreement bridge + germ locality + chart coefficients + chart kappa=1)."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): christoffelOneForm_congr_of_eventuallyEq (general germ locality), roundSphereMetric3_chartMetric_eq (chart metric IS the conformal metric), blended-eq-conformal cutoff-1 lemmas, christoffelOneForm of the sphere factor, chartChristoffelField anchor = sphereChristoffel. SINGLE missing bridge: chart curvature of transported connection at anchor = pulled-back curvatureOp on extend fields -> M5-bridge-1 (general-purpose; also unblocks the parked reanchor thread)."
     },
     {
       "id": "M5-geo-11",
@@ -817,6 +817,19 @@
       ],
       "difficulty": "medium",
       "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): manifold-integration asset survey (incl. Hausdorff-measure shortcut assessment) + chart volume density sqrt|det| with conformal specialization."
+    },
+    {
+      "id": "M5-bridge-1",
+      "tier": "M5",
+      "deps": [
+        "M5-model-7"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ChartCurvatureBridge.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06 (goal 9 wave 5): THE chart-manifold curvature bridge at the anchor (germ locality + transport definition + chain rule) — discharges the sphere witness and siblings the reanchor ODE law."
     }
   ],
   "current_goal": "GOAL 9 (2026-07-05/06): 16 gated merges landed (11 worker, 5 orchestrator-direct), zero rejections. Frontier movement: Hamilton interface -> Core; Einstein formulation + unit-curvature normalization bridge; geodesic layer from chart ODE to expRayAt with homogeneity; roundSphereMetric3 complete + stereographic conformal factor 16/(|z|^2+4)^2; DeTurck layer: Lie-derivative vocabulary, gauged-flow predicate, vector field as g-trace of connection difference; RicciFlowShortTimeExistence3 + composition. Wave 3b/c running: M5-model-4 (chart coefficients tie-in), M5-geo-5 (uniform existence + expAt on ball), M2-deturck-3 (field regularity discharge). Standing goal-10 candidates: sphere curvature via conformal Christoffels; exp smoothness (Mathlib smooth-dependence gap?); Gauss lemma; DeTurck chart formula + strict-parabolicity statement."
