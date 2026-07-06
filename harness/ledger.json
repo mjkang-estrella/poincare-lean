@@ -943,12 +943,12 @@
       "deps": [
         "M5-geo-9"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/GeodesicSpeed.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06 (goal 10 opener): constant-speed law along chart geodesics (compatibility identity + chain rule) — Gauss-lemma prerequisite 1."
+      "result": "DONE 2026-07-06 (gate PASS): chartChristoffelField_pairing_eq_blendedChartMetric (compatibility identity, everywhere), chart_geodesic_speed_hasDerivAt_zero, chart_geodesic_speed_constantOn (+ Ioo specialization + germ initial-speed corollary). Next Gauss-lemma decomposition in reports/M5-geo-14_done.md incl. the radial form G(exp v)(d exp w)(d exp v) = G(w,v)."
     },
     {
       "id": "M5-vol-2",
