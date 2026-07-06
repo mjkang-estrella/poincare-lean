@@ -1080,6 +1080,19 @@
       ],
       "difficulty": "wall",
       "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): coordinate Jacobi operator, linearized geodesic flow field, linear-ODE existence/uniqueness, chart-Christoffel linearized flow, POINTWISE Taylor remainder isLittleO. Blocked on compact-tube UNIFORM remainder (modulus packaging) -> geo-19 in queue (reports/M5-geo-18_blocked.md)."
+    },
+    {
+      "id": "M5-geo-19",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-18"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GeodesicDerivative.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06 (goal 10): uniform Taylor remainder (Heine-Cantor on the compact tube) -> Gronwall comparison -> HasDerivAt of the geodesic flow in initial velocity; integrated transverse Gauss if cheap."
     }
   ],
   "current_goal": "GOAL 10 IN PROGRESS (2026-07-06): 51 gated merges across goals 9-10. Jacobi machinery landed (linearized flow exists; pointwise Taylor remainder o-estimate); exp differentiability = ONE uniform-remainder packaging step (geo-19). Full queue: geo-19 (uniform Taylor remainder -> Gronwall comparison -> HasDerivAt of flow in velocity), M2 parabolic scoping, 5 parked threads with recorded plans. Session totals 2026-07-05/06: 51 gated merges, zero rejections, zero fabrications."
