@@ -1035,12 +1035,12 @@
       "deps": [
         "M5-vol-6"
       ],
-      "status": "parked",
+      "status": "done",
       "files": [
         "Poincare/Global/VolumePositivity.lean"
       ],
       "difficulty": "hard",
-      "result": "BLOCKED 2026-07-06 (report-only, honest no-progress): exists_extChartAt_symm_antilipschitz_ball isolated with route (bounded chart derivative + short-paths-stay-local + diameter/margin split) in reports/M5-vol-7_blocked.md. PARKED: volume positivity is a well-definedness nicety for meanScalar (junk-value harmless at statement level); the same estimate class serves the future Hopf-Rinow road — resume there."
+      "result": "DISCHARGED 2026-07-06 by M5-geo-35 (the shared estimate closed via the Mathlib reroute): volumeMeasure_univ_ne_zero_mathlib on main."
     },
     {
       "id": "M5-geo-16",
@@ -1340,13 +1340,13 @@
       "deps": [
         "M5-geo-34"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/AntilipschitzMathlib.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06 (reroute): consume/replay Mathlib's lower-comparison -> pairwise bound or anti-Lipschitz ball directly -> three payoffs."
+      "result": "DONE 2026-07-06 (gate PASS, 851k tokens, REROUTE VALIDATED): exists_chart_ball_pairwise_pathELength_lower_bound (the 4-orbit blocker), exists_extChartAt_symm_antilipschitz_ball, localChartAntilipschitzLowerBound_mathlib, volumeMeasure_univ_ne_zero_mathlib (VOLUME POSITIVITY — vol-7 discharged), exists_expAt_dist_lower_bound_ball. LOCAL DISTANCE REALIZATION COMPLETE (both bounds)."
     }
   ],
-  "current_goal": "CONTINUOUS OPERATION (2026-07-06, 65 gated merges): distance chain CLOSED (sharp upper bound via length formula). Exp map now has: local homeo + normal neighborhoods + metric control + Gauss pairing laws + derivative theory. NEXT on rigidity road: minimality/lower bound (Gauss polar decomposition; shares its core estimate with parked vol-7 anti-Lipschitz) — geo-31; then uniform injectivity radius on compact M; then the Cartan local-isometry campaign toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 (n-dim heat equation) running. Honest ceiling unchanged; progression continues gate by gate."
+  "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
 }
