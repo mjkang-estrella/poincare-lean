@@ -41,6 +41,7 @@ import Poincare.Global.GeodesicGerm
 import Poincare.Global.ExponentialGerm
 import Poincare.Global.ExponentialDomain
 import Poincare.Global.ExponentialMap
+import Poincare.Global.ExponentialMapDef
 import Poincare.Global.ShortTimeInterface
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
