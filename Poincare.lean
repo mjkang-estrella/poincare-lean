@@ -210,6 +210,7 @@ import Poincare.Global.TargetRayIdentity
 import Poincare.Global.LCNaturality
 import Poincare.Global.DifferentialField
 import Poincare.Global.FTransition
+import Poincare.Global.GermAndField
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

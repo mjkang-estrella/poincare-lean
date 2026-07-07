@@ -3345,12 +3345,25 @@
       "deps": [
         "M5-glob-28"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GermAndField.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: the germ (open-ball eventually) + the differentiable D field (strict derivatives / C2 as demanded) -> F-TRANSITION UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the derivative + eventual pullback germs for fderiv F. HONEST CORE: F's C^2 = second-order smooth dependence -> glob-30 (the augmented/second-variation system, replaying the first-order chain)."
+    },
+    {
+      "id": "M5-glob-30",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-29"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/SecondVariation.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the second-variation system + PL package (coefficients from smooth Gamma) + existence/uniqueness -> toward F C^2."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
