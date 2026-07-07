@@ -80,6 +80,7 @@ import Poincare.Global.UniformNormalRadius
 import Poincare.Global.CartanMap
 import Poincare.Global.TangentAlignmentExists
 import Poincare.Global.JacobiConstantCurvature
+import Poincare.Global.JacobiInstantiate
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
@@ -96,6 +97,7 @@ import Poincare.Global.HeatKernelPDE
 import Poincare.Global.HeatKernelPDEn
 import Poincare.Global.HeatKernelIntegral
 import Poincare.Global.HeatApproxIdentity
+import Poincare.Global.HeatCauchy
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity
