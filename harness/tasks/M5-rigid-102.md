@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-102: ⚠️ PIN the scalar identity — then thread the side conditions
+
+Context: `harness/reports/M5-rigid-101_blocked.md` (READ FIRST). TWO ITEMS: (1) ⚠️ THE SCALAR: `speedPinnedScale speed T * (T⁻¹ * T⁻¹) = 1` — SUSPECT FALSE as an identity (`speedPinnedScale` is the transverse sine scale — `sin²(sT)/(sT)²`-shaped per `JacobiNormSystem/RadialBlock.lean`'s unfolding; times `T⁻²` is not identically 1). PIN FIRST: unfold the definition and evaluate at a concrete value (e.g. `s = 1, T = 1`: `sin²(1) ≠ 1`). IF FALSE: the demanding adapter in `PullbackFeed.lean`'s consumption chain mis-normalized — find the TRUE scalar relation the pullback needs (the anchor pairing on the source side carries `anchorMetric(T⁻¹b, T⁻¹b') = T⁻²·anchorMetric(b,b')` and the pinned formula carries `sin²(sT)·(…)` — the TRUE cancellation is between the SOURCE and TARGET sine factors (equal via the alignment-invariant `sT`), NOT against `T⁻²`; restate the adapter's scalar step with the two-sided cancellation (`EqualityChain.lean`'s pattern — its `hosted_source_target_normalized_sin_sq_eq` did exactly this)). (2) thread the transverse-block side conditions (`hplNorm/hqBound/hgronwallRadius/hpinnedRadius` + initial norm identities) from the proven packages (`BoundedPackage/GronwallMembership/UniformShrink.lean`) at the selector's datum. Then the pullback identities land → the upgrade → 🎯 `cartanMap_isLocalIsometry`. If ONE resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/ScalarPin.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-102_{done|blocked}.md` with the pin outcome FIRST.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.ScalarPin` and report the actual result. Commit your work.

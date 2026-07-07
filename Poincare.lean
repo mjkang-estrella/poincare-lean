@@ -173,6 +173,7 @@ import Poincare.Global.UniformShrink
 import Poincare.Global.UniformFlowExport
 import Poincare.Global.LocalIsometryTheorem
 import Poincare.Global.PairingUpgrade
+import Poincare.Global.PullbackFeed
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

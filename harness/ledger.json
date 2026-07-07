@@ -2861,12 +2861,25 @@
       "deps": [
         "M5-rigid-100"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/PullbackFeed.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: block theorems at the selector's families -> full pullback identities -> the upgrade -> A/B -> cartanMap_isLocalIsometry."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): pullback assembly adapters feeding PairingUpgrade. Isolated scalar SUSPECT FALSE (speedPinnedScale * T^-2 = 1) + transverse side conditions to thread -> rigid-102 (pin first; two-sided sine cancellation is the true relation)."
+    },
+    {
+      "id": "M5-rigid-102",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-101"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ScalarPin.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: pin the scalar (suspect false); two-sided cancellation restatement; thread side conditions -> pullback identities -> cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
