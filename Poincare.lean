@@ -94,6 +94,7 @@ import Poincare.Global.CartanSourceExpansion
 import Poincare.Global.CartanPunctured
 import Poincare.Global.CartanSourceFinal
 import Poincare.Global.SmoothDependenceDischarge
+import Poincare.Global.CartanAssembly
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
 import Poincare.Global.CartanChain
