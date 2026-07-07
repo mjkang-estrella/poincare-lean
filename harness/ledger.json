@@ -1406,12 +1406,12 @@
       "deps": [
         "M5-rigid-2"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/JacobiConstantCurvature.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06: curvature-to-linearized link + constant-curvature reduction (J''=-J) + the sin solution — the metric-preservation seed."
+      "result": "DONE 2026-07-06 (gate PASS): linearized-derivative = Jacobi operator identity, covariant second identities, KN contraction R(v,J)v = -J seed, sin/cos oscillator + PL uniqueness. Next: manifold instantiation along constant-curvature geodesics -> rigid-4."
     },
     {
       "id": "M2-heat-5",
@@ -1425,6 +1425,19 @@
       ],
       "difficulty": "medium-hard",
       "result": "DISPATCHED 2026-07-06: cpow/rpow normalization identification -> the approximate identity (initial-data recovery)."
+    },
+    {
+      "id": "M5-rigid-4",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-3"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/JacobiInstantiate.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06: forward curvature transport (const-curv-1 -> chart KN) + oscillator instantiation -> J = sin t * w along geodesics of any constant-curvature-1 metric."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
