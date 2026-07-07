@@ -1550,12 +1550,25 @@
         "M5-rigid-7",
         "M5-rigid-2"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanIsometry.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: D(exp) on transverse = Jacobi value -> pullback identity (sin factors cancel both sides) -> cartanMap LOCAL ISOMETRY."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): expAt_chart_initialVelocity_hasDerivAt_eq_sin_smul — D(exp) on transverse = sin t * w. Remaining: radial/transverse Gram decomposition + full D(exp) action + Cartan chain rule -> rigid-9."
+    },
+    {
+      "id": "M5-rigid-9",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-8"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanPullback.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: decomposition + full D(exp) factors + chain rule -> THE PULLBACK IDENTITY (cartanMap local isometry)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."

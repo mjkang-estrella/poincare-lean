@@ -84,6 +84,7 @@ import Poincare.Global.JacobiInstantiate
 import Poincare.Global.ChartCurvatureBridgeZone
 import Poincare.Global.ChartCurvatureBridgeZoneClose
 import Poincare.Global.JacobiOscillator
+import Poincare.Global.CartanIsometry
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
