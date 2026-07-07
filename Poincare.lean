@@ -96,6 +96,7 @@ import Poincare.Global.CartanSourceFinal
 import Poincare.Global.SmoothDependenceDischarge
 import Poincare.Global.CartanAssembly
 import Poincare.Global.CoefficientEvolution
+import Poincare.Global.CartanSourceOwned
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

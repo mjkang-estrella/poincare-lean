@@ -1818,13 +1818,13 @@
         "M5-rigid-21",
         "M5-rigid-20"
       ],
-      "status": "running",
+      "status": "parked",
       "files": [
         "Poincare/Global/CartanSourceOwned.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: construct the source weight via the coefficient ODE -> source-owned expansion -> THE UNCONDITIONAL LOCAL ISOMETRY (weight-canceling consumer)."
+      "result": "BOUNDARY 2026-07-07 (4th orbit on the endpoint-pairing core) — CORE PARKED with ORCHESTRATOR ANALYSIS: the scalar-weight ansatz (pairing = weight(t) * anchor pairing) is itself suspect for general charts — the coefficient evolution is a MATRIX conjugation ODE (rigid-20's derivative identity has Gamma-pairing RHS not proportional to the coefficient); the transverse block need not stay conformal. RESUMPTION DECISION (fresh context): either (a) matrix-weight generalization of the bundle + matrix cancellation in the pullback (the map conjugates both evolutions), or (b) restrict to geodesic normal coordinates for the source chart (where the scalar form holds classically) — build normal-coordinate charts from expAt (local homeo exists!) and restate the expansion there. Option (b) is likely correct-and-shortest: the exp chart IS available and the weight in exp-normal coordinates is the classical sin^2 form on BOTH sides. All 22-task architecture (anchor isometry, refutations, consumers, ODE machinery) remains valid and reusable."
     }
   ],
-  "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
+  "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
 }
