@@ -165,6 +165,44 @@ theorem weightedEndpointExpansionBundle_of_sourceExpansion_and_roundSphere
   targetExpansion := roundSphere_targetWeightedEndpointExpansion L v
 
 /--
+Punctured restatement of the round-sphere target expansion.  The proof still
+comes from the unconditional conformal-weight identity.
+-/
+theorem roundSphere_targetPuncturedWeightedEndpointExpansion
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀) :
+    CartanLocalIsometry.PuncturedWeightedTargetEndpointExpansion L
+      (fun v : E =>
+        roundSphereEndpointChartWeight p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))) where
+  metric := by
+    intro v _hvne u u'
+    exact (roundSphere_targetWeightedEndpointExpansion L v).metric u u'
+
+/--
+Both-side punctured corrected endpoint bundle once the source side is proved on
+the punctured normal-coordinate domain with the same round-sphere endpoint
+chart weight.
+-/
+theorem puncturedWeightedEndpointExpansionBundle_of_sourceExpansion_and_roundSphere
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀)
+    (hsource :
+      CartanLocalIsometry.PuncturedWeightedSourceEndpointExpansion g x₀
+        (fun v : E =>
+          roundSphereEndpointChartWeight p₀
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p₀) (L v)))) :
+    CartanLocalIsometry.PuncturedWeightedEndpointExpansionBundle L
+      (fun v : E =>
+        roundSphereEndpointChartWeight p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))) where
+  sourceExpansion := hsource
+  targetExpansion := roundSphere_targetPuncturedWeightedEndpointExpansion L
+
+/--
 Corrected-form Cartan local-isometry consumer: after the source endpoint
 expansion is proved with the pinned round-sphere endpoint weight, the target
 side is instantiated unconditionally and the weighted pullback identity applies.
@@ -215,6 +253,59 @@ theorem cartanMap_isLocalIsometry_on_normalBall_of_sourceExpansion_and_roundSphe
     hvsrc hsourceDeriv htargetDeriv u u' hDu hDu'
     (weightedEndpointExpansionBundle_of_sourceExpansion_and_roundSphere
       (g := g) (x₀ := x₀) (p₀ := p₀) L v hsourceExpansion)
+
+/--
+Corrected-form nonzero Cartan local-isometry consumer from the punctured source
+expansion.  The anchor case is handled separately in `CartanPunctured`.
+-/
+theorem cartanMap_isLocalIsometry_on_punctured_normalBall_of_sourceExpansion_and_roundSphere
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀)
+    {v : E} {A B : E ≃L[ℝ] E}
+    (hvsrc : v ∈
+      (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source)
+    (hvne : v ≠ 0)
+    (hsourceDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀)
+        (A : E →L[ℝ] E) v)
+    (htargetDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p₀)
+        (B : E →L[ℝ] E) (L v))
+    (u u' : E)
+    (hDu :
+      CartanLocalIsometry.cartanChartDifferential L A B u =
+        CartanLocalIsometry.targetScaledNormalVector L
+          1 (CartanLocalIsometry.transverseScale v) v u)
+    (hDu' :
+      CartanLocalIsometry.cartanChartDifferential L A B u' =
+        CartanLocalIsometry.targetScaledNormalVector L
+          1 (CartanLocalIsometry.transverseScale v) v u')
+    (hsourceExpansion :
+      CartanLocalIsometry.PuncturedWeightedSourceEndpointExpansion g x₀
+        (fun v : E =>
+          roundSphereEndpointChartWeight p₀
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p₀) (L v)))) :
+    HasStrictFDerivAt
+        (CartanDifferential.cartanChartMap g x₀ p₀ L)
+        (CartanLocalIsometry.cartanChartDifferential L A B)
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v) ∧
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))
+          (CartanLocalIsometry.cartanChartDifferential L A B u)
+          (CartanLocalIsometry.cartanChartDifferential L A B u') =
+        CovariantDerivative.chartMetric g.inner x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          u u' :=
+  CartanLocalIsometry.cartanMap_isLocalIsometry_on_punctured_normalBall_of_puncturedEndpointExpansionBundle
+    (g := g) (x₀ := x₀) (p₀ := p₀) L
+    hvsrc hvne hsourceDeriv htargetDeriv u u' hDu hDu'
+    (puncturedWeightedEndpointExpansionBundle_of_sourceExpansion_and_roundSphere
+      (g := g) (x₀ := x₀) (p₀ := p₀) L hsourceExpansion)
 
 end CartanExpansionBridge
 end Poincare
