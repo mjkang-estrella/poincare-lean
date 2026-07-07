@@ -1,0 +1,12 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-2: the global map — continuation of the Cartan germ
+
+Context: the globalization skeleton is COMPLETE (`CoveringSkeleton.lean`: one global `IsLocalHomeomorph Φ : M → RoundSphere3` + standard instances ⟹ `M ≃ₜ RoundSphere3` — READ its consumer spec in `harness/reports/M5-glob-1_done.md`). The per-anchor Cartan maps exist (`CartanMap.lean` + `TangentAlignmentExists.lean`: source-target homeos on normal balls at EVERY anchor pair, radii uniform by `UniformNormalRadius.lean`). MISSING: ONE GLOBAL `Φ`. The classical construction (Cartan–Ambrose–Hicks continuation): fix `(x₀, p₀, L₀)`; extend along paths by re-anchoring (each step composes local Cartan maps; the constant-curvature hypothesis makes overlapping local maps AGREE where both defined — agreement follows from local isometries with matching 1-jet being equal on connected overlaps, an exp-uniqueness fact: two maps agreeing at a point with the same differential and both commuting with exp coincide); well-definedness (path-independence) via homotopy invariance + `SimplyConnectedSpace M`.
+
+HONEST SLICING (this is a campaign opener — statement + first genuine lemmas):
+1. THE UNIQUENESS/AGREEMENT SEED: two Cartan-type local maps with the same value and tangent action at a point agree on the common normal ball (both conjugate exp: `Φ = expAt_{Φx} ∘ DΦ ∘ exp⁻¹` — from the Cartan construction's defining property; state against the repo's actual `cartanMap` API: `cartanMap` at anchor `(x, Φx, L)` determined by `(x, Φx, L)` — so agreement = the re-anchored data matches, which the differential action supplies).
+2. TWO-STEP COMPOSITION: re-anchor the Cartan map at a point inside its ball (new anchor data from the map's value + differential; uses rigid-10's differential surface when it lands — if not yet on main, state the composition against a differential-action hypothesis with the exact rigid-10 target shape, clearly documented as the staging interface).
+3. Report `harness/reports/M5-glob-2_{done|blocked}.md` with the full continuation roadmap (chain along paths via uniform radius; homotopy invariance; the global Φ definition).
+
+Deliverables in a NEW file `Poincare/Global/CartanContinuation.lean` (do NOT edit existing files, incl. `Poincare.lean`). No vacuous wrappers. Verify: `lake build Poincare.Global.CartanContinuation` and report the actual result. Commit your work.

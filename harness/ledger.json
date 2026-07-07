@@ -1634,6 +1634,20 @@
       ],
       "difficulty": "hard",
       "result": "DONE 2026-07-07 (gate PASS): THE GLOBALIZATION SKELETON — compact local homeo => IsCoveringMap, clopen surjectivity, covering over simply-connected loc-path-connected base + connected total => IsHomeomorph, bundled E ≃ₜ X. Consumer spec: one global IsLocalHomeomorph Phi : M -> RoundSphere3 + standard instances."
+    },
+    {
+      "id": "M5-glob-2",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-1",
+        "M5-rigid-2"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanContinuation.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: Cartan continuation opener — agreement seed + re-anchoring composition + full continuation roadmap toward the global Phi."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
