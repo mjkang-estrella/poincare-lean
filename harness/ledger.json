@@ -1684,12 +1684,26 @@
         "M5-model-8",
         "M5-rigid-7"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanIsometryFinal.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: discharge both shared-factor expansions -> THE UNCONDITIONAL LOCAL ISOMETRY."
+      "result": "HONEST BLOCKER 2026-07-07 (report-only): hypothesis-shape chasm — rigid-11's expansion bundle lacks a constructor from interval-scoped facts -> rigid-13 (sanctioned additive edit, geo-13 precedent)."
+    },
+    {
+      "id": "M5-rigid-13",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-12"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanLocalIsometry.lean",
+        "Poincare/Global/CartanIsometryFinal.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: mediating constructor (sanctioned additive edit) + both expansions + THE UNCONDITIONAL LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
