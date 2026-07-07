@@ -2004,12 +2004,25 @@
       "deps": [
         "M5-rigid-35"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ExponentialStrictAt.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the strict Frechet derivative at every nonzero v on a shrunk ball (two-variable remainder replayed at v), linearized-flow derivative value."
+      "result": "HONEST REFUSAL 2026-07-07: strict-derivative prerequisites decomposed — (a) CLM packaging of the linearized map, (b) two-variable shifted-base remainder -> rigid-37 (CLM: additivity+homogeneity by uniqueness, continuity FREE by finite dim)."
+    },
+    {
+      "id": "M5-rigid-37",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-36"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/LinearizedCLM.lean"
+      ],
+      "difficulty": "medium-hard",
+      "result": "DISPATCHED 2026-07-07: linearized endpoint map as ContinuousLinearMap (uniqueness-route linearity + finite-dim automatic continuity)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
