@@ -3527,12 +3527,25 @@
       "deps": [
         "M5-glob-42"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/AugmentedC1.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: augmented Lipschitz + Gronwall dependence + remainders + the flow derivative (second-variation endpoint) -> the derivative-field package -> ContDiffAt 2 F."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the augmented field ContDiff 1 + closed-ball Lipschitz. Stages 2-4 -> glob-44 (dependence, remainders, the augmented flow derivative -> the package)."
+    },
+    {
+      "id": "M5-glob-44",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-43"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/AugmentedDependence.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: Gronwall dependence + remainders + the augmented flow derivative -> the neighborhood derivative-field package -> ContDiffAt 2 F."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

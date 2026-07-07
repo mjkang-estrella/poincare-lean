@@ -224,6 +224,7 @@ import Poincare.Global.FTransitionDone
 import Poincare.Global.EndpointBridge
 import Poincare.Global.ContDiffTwo
 import Poincare.Global.ExpChartC2
+import Poincare.Global.AugmentedC1
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
