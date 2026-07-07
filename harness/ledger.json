@@ -1621,6 +1621,19 @@
       ],
       "difficulty": "wall",
       "result": "STRICT-PARTIAL 2026-07-07 (gate PASS), CAUCHY CLOSER PARKED per pre-commitment (7-iteration chain): uniform translate envelopes orders 1-3 + integrability + first Frechet operator domination. RESUMPTION SPEC: explicit second/third Frechet operator-norm formulas for the Gaussian kernel (explicit calculus), then the two dominated interchanges + Laplacian identification + the theorem are staged in HeatCauchy*.lean. Heat campaign assets fully usable: certified fundamental solution + envelope calculus (9 gated modules)."
+    },
+    {
+      "id": "M5-glob-1",
+      "tier": "M5",
+      "deps": [
+        "M5-geo-36"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CoveringSkeleton.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: Mathlib covering-space inventory + abstract globalization skeleton (covering of simply connected -> homeo; clopen surjectivity)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
