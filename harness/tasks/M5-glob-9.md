@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-9: off-anchor naturality — the parked reanchor thread returns
+
+Context: `harness/reports/M5-glob-8_blocked.md` (READ FIRST) + the PARKED reanchor thread (`harness/reports/M5-geo-11_blocked.md` if present; `GeodesicReanchor.lean`, `GeodesicReanchorLaw.lean`, `GeodesicReanchorClose.lean` — READ what they PROVED: the re-anchoring laws for geodesic germs/exponentials). PROVEN: the anchor-based naturality (`GeodesicPreservation.lean`). THE OFF-ANCHOR CASE: the carried chain germ is the PREVIOUS anchor's Cartan germ — near the NEW anchor `x₁` it must equal `exp_{Φx₁} ∘ L_ind ∘ exp_{x₁}⁻¹`. THE ROUTE: `Φ_{x₀} = exp_{p₀} ∘ L ∘ exp_{x₀}⁻¹` (the conjugation); near `x₁`, compose with the REANCHORING LAW — `exp_{x₀}⁻¹` near `x₁` relates to `exp_{x₁}⁻¹` through the re-anchored germ data (the proven reanchor laws + `CartanContinuation.lean`'s re-anchored germs — READ what glob-2 proved about re-anchored germ construction); on the SPHERE side the same reanchoring holds (metric-generic). If the parked reanchor gap (the double-anchor ODE law) genuinely blocks, TRY THE DETERMINACY ROUTE instead: both maps near `x₁` are local isometries (the carried one by the pullback identity restricted; the re-anchored one by the theorem at `x₁`) agreeing at `x₁` with the same differential (the induced alignment) — apply `GermDeterminacy`'s overlap agreement... CHECK whether its hypotheses (same-anchor form) can host the two maps via the conjugations. Pick what closes. → the re-centering EqOn → the chain fires → toward the global Φ. Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-9_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/OffAnchorNaturality.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.OffAnchorNaturality` and report the actual result. Commit your work.
