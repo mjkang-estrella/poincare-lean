@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-45: THE CASCADE — from the linear family to the local isometry
+
+Context: `harness/reports/M5-rigid-44_done.md` (READ FIRST). EVERYTHING IS DISCHARGED: `exists_hosted_rescaled_linearized_solution_family_endpoint_linear` (`LinearizedAdditivity.lean` — the family with endpoint additivity + homogeneity). THE CASCADE (each arrow is a proven theorem awaiting application): (1) the family + linearity → `linearizedEndpointCLM` at each shrunk-ball `v` (`LinearizedCLM.lean`); (2) → `exists_shrunk_expAtChartOpenPartialHomeomorph_hasStrictFDerivAt_of_linearized_family` (`CartanIsometryClose.lean`) → the strict derivative `A` at each `v` with the CLM value — SOURCE; and the same generic route at `roundSphereMetric3` → `B` at `L v` — TARGET; (3) the action equations: `linearizedEndpointCLM_apply_sourceScaledNormalVector_of_radial_and_rescaled_harmonic` (`CartanActionEquations.lean`) with the hosted radial derivative (`CartanHomogeneity.lean`) + the oscillator discharge (REUSE `CartanIsometryTheorem.lean`'s interval discharge) → `hDu`/`hDu'` both sides; (4) the source endpoint pairing blocks at `(u,T)` (`CartanIsometryPackage.lean` pairing + constant speed + integrated Gauss — the rigid-30/31/32 conversions); (5) 🎯 feed `cartanMap_isLocalIsometry_on_punctured_normalBall_of_hosted_scale_endpoint_pairings` (`CartanScaleGeneric.lean`): THE LOCAL ISOMETRY, unconditional, on the shrunk punctured ball.
+
+Deliverables in a NEW file `Poincare/Global/CartanCascade.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per cascade stage; ONE isolated statement max. Report `harness/reports/M5-rigid-45_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CartanCascade` and report the actual result. Commit your work.
