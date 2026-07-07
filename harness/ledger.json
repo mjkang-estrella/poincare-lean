@@ -3761,12 +3761,25 @@
       "deps": [
         "M5-glob-60"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ContinuityPackages.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the CLM field continuous (Lipschitz) + the canonical packages both sides -> the bridges -> THE F-TRANSITION LAW UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): Gronwall->Lipschitz->ContinuousOn conversions + package constructors + the Gronwall-accepting consumer. Remaining: the indexed selection -> glob-62 (choice over the ball + uniqueness transfers the bound)."
+    },
+    {
+      "id": "M5-glob-62",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-61"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/IndexedSelection.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: choice-select (zeta, Omega, D) over the ball + uniqueness-transferred Gronwall bounds -> the consumer -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

@@ -242,6 +242,7 @@ import Poincare.Global.EndpointContinuity
 import Poincare.Global.OmegaGronwall
 import Poincare.Global.TransitionLands
 import Poincare.Global.HostedCLM
+import Poincare.Global.ContinuityPackages
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
