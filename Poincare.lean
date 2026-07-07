@@ -228,6 +228,7 @@ import Poincare.Global.AugmentedC1
 import Poincare.Global.AugmentedDependence
 import Poincare.Global.AugmentedPackage
 import Poincare.Global.PackageLands
+import Poincare.Global.FieldProducer
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

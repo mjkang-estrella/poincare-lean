@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-48: MINE MATHLIB FIRST — flow smoothness in initial conditions
+
+Context: `harness/reports/M5-glob-47_blocked.md` (READ FIRST — the demand: `ContDiffAt ℝ 1 sourceD/targetD` — the fields' own regularity, threatening a third-variation replay). ⚠️ BEFORE any replay: MINE MATHLIB (the geo-35 pattern that closed the anti-Lipschitz wall in one run): the pinned Mathlib may have ODE FLOW SMOOTHNESS — search `Mathlib/Analysis/ODE/` and beyond for: `ContDiff` of Picard–Lindelöf/Grönwall flows in initial conditions (`ODE_solution`… `ContDiffOn`… `flow`… `IsPicardLindelof.contDiff`…, the `flow` library `Mathlib/Dynamics/Flow`, recent `ODE` additions — grep the Mathlib source in `.lake/packages/mathlib` for `contDiff.*flow|flow.*contDiff|ContDiff.*ODE|smooth.*dependence` etc.). IF FOUND: the augmented field is `ContDiff ∞`-grade (Γ smooth — extend `AugmentedC1`'s export if needed as a NEW lemma), the flow is `ContDiff k` in initial data ⟹ `sourceD` (the flow-derivative field) is `ContDiffAt 1` DIRECTLY — instantiate, feed `ExpChartC2 → … → FTransitionDone` → 🎯 THE F-TRANSITION LAW. IF GENUINELY ABSENT (report the searched names): choose and START the fallback — (b) the SYMMETRIZED-ODE route (the second variation symmetric in its two slots by ODE uniqueness on the symmetrized difference — avoids field-C¹ if the consumers only need symmetry: RE-CHECK `FTransitionDone`'s exact needs) or (c) the third-variation replay (the well-oiled pattern). Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-48_{done|blocked}.md` with the MINING OUTCOME FIRST.
+
+Deliverables in a NEW file `Poincare/Global/FlowSmoothness.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.FlowSmoothness` and report the actual result. Commit your work.
