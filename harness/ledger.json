@@ -2366,12 +2366,25 @@
         "M5-rigid-62",
         "M5-rigid-61"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/SourcePackage.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: mirror TargetPackage at the source + discharge the scalar normalizations -> everything fed -> cartanMap_isLocalIsometry."
+      "result": "DONE 2026-07-07 (gate PASS): source package mirror + scalar normalizations + cartanMap_isLocalIsometry_on_normalBall_of_common_rescaled_anchor_pairings — the consumer needs exactly hSourceRescaled + hTargetRescaled. -> rigid-64 (discharge the two package feeds at the hosted data)."
+    },
+    {
+      "id": "M5-rigid-64",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-63"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/IsometryInstantiate.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: discharge the interval/norm packages at the hosted data -> the two feeds -> THE LOCAL ISOMETRY with no pairing hypotheses."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

@@ -135,6 +135,7 @@ import Poincare.Global.EqualityChain
 import Poincare.Global.CascadePinned
 import Poincare.Global.TargetPackage
 import Poincare.Global.UnscaledFeed
+import Poincare.Global.SourcePackage
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
