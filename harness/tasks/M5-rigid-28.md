@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-28: polarize and package — the exp-chart local isometry
+
+Context: `harness/reports/M5-rigid-27_done.md` (READ FIRST). PROVEN: `actual_jacobi_norms_eq_pinned_on_cutoff_one_Icc` (`CartanIsometryTheorem.lean`) — the actual Jacobi scalars `(a,b,c)` of any constant-curvature-1 `g` equal `(sin²·q, sincos·q, cos²·q)` on the cutoff-one interval. REMAINING (the report's boundary): (1) POLARIZE — `J` is linear in `w` (prove `J_{w+w'} = J_w + J_{w'}` from linearized-flow uniqueness, `GeodesicLinearized.lean`, if not exported), so the polarization algebra (`JacobiNormSystem.lean`) converts the quadratic `a`-identities into `G(z t)(J_w t, J_{w'} t) = sin²t·⟨w,w'⟩_anchor`; (2) THE COEFFICIENT FORMULAS — combine with radial-radial (constant speed, `GeodesicSpeed.lean`/`GeodesicLengthFinal.lean`) and radial-transverse (integrated Gauss, `GaussLemmaIntegrated.lean`) into the exp-chart metric coefficient statement (the flow derivative `GeodesicFlowDerivative.lean` identifies `D(expAt)` images with `J` values — the coefficients ARE these pairings); (3) THE PACKAGE — both sides (source `g` by hypothesis; target `roundSphereMetric3` by the witness) + the conjugation `expChart_symm_cartanChartMap_expChart_eq_tangentAlignment` (`CartanNormalCoords.lean`) + the alignment's intertwining ⟹ 🎯 `cartanMap` IS A LOCAL ISOMETRY (exp-chart formulation; state cleanly).
+
+Deliverables in a NEW file `Poincare/Global/CartanIsometryPackage.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-rigid-28_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CartanIsometryPackage` and report the actual result. Commit your work.

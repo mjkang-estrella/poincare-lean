@@ -1885,12 +1885,25 @@
         "M5-rigid-25",
         "M5-rigid-23"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/CartanIsometryTheorem.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: THE ASSEMBLY — bridge along the flow + integrated system + polarization + Gauss/speed + conjugation -> cartanMap IS A LOCAL ISOMETRY."
+      "result": "DONE 2026-07-07 (gate PASS): actual_jacobi_norms_eq_pinned_on_cutoff_one_Icc — the ACTUAL Jacobi scalars of constant-curvature-1 metrics equal the pinned sin/cos solution on the interval. Polarize + package -> rigid-28."
+    },
+    {
+      "id": "M5-rigid-28",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-27"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanIsometryPackage.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: J-linearity + polarization -> pairing identity -> coefficient formulas -> conjugation package -> cartanMap LOCAL ISOMETRY (exp-chart form)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
