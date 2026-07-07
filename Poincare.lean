@@ -178,6 +178,7 @@ import Poincare.Global.ScalarPin
 import Poincare.Global.ScaledUpgrade
 import Poincare.Global.SinSqInstantiate
 import Poincare.Global.BlockDiagonal
+import Poincare.Global.TransverseExport
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
