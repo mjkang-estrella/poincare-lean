@@ -87,6 +87,7 @@ import Poincare.Global.JacobiOscillator
 import Poincare.Global.CartanIsometry
 import Poincare.Global.CartanPullback
 import Poincare.Global.CartanDifferential
+import Poincare.Global.CartanLocalIsometry
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
 import Poincare.Global.CartanChain
