@@ -3735,12 +3735,25 @@
       "deps": [
         "M5-glob-58"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/TransitionLands.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: assemble Omega + residual + Gronwall through the bridge chain, both sides -> THE F-TRANSITION LAW UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS, 514 lines): the eventual residual bridge + doubly-augmented AND projected second-variation endpoint derivatives. Final packaging -> glob-60 (the hosted CLM + continuity packages)."
+    },
+    {
+      "id": "M5-glob-60",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-59"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/HostedCLM.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the third-variation endpoint CLM (uniqueness linearity) + Gronwall-to-continuity + the packages both sides -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
