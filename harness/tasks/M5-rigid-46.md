@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-46: the equivalence upgrade — invertibility from the diagonal action
+
+Context: `harness/reports/M5-rigid-45_blocked.md` (READ FIRST). PROVEN: `exists_common_shrunk_source_target_strictDeriv_of_hosted_linearized_pl` (`CartanCascade.lean` — strict derivatives via `linearizedEndpointCLM : E →L[ℝ] E`, both sides, common radius). THE GAP: the hosted bridge (`CartanScaleGeneric.lean`) wants `A B : E ≃L[ℝ] E` (equivalences) + `hDu`/`hDu'` actions + source blocks. THE UPGRADE ROUTE: (1) INVERTIBILITY: the CLM acts on the radial/transverse decomposition diagonally — radial ↦ (radial scale)·radial with scale 1-shaped (hosted endpoint derivative), transverse ↦ (sin(sT)/s)·transverse with NONZERO factor on the shrunk ball (`sT < π` for small radius — shrink to guarantee) — a linear endomorphism of a finite-dim space acting with nonzero diagonal factors on a spanning decomposition is BIJECTIVE (`CartanPullback.lean`'s Gram/decomposition algebra gives the spanning; build the explicit inverse or use `LinearMap.injective→bijective` finite-dim); package `ContinuousLinearEquiv` via `ContinuousLinearEquiv.ofBijective`-shaped API. PREREQUISITE: the ACTION EQUATIONS themselves (`CartanActionEquations.lean`'s theorem + hosted radial + oscillator discharge reuse from `CartanIsometryTheorem.lean`) — these are simultaneously the `hDu` feeds. (2) the source blocks at `(u,T)` (pairing facts, `CartanIsometryPackage.lean`). (3) 🎯 feed the bridge: THE LOCAL ISOMETRY.
+
+Deliverables in a NEW file `Poincare/Global/CartanEquivUpgrade.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-rigid-46_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CartanEquivUpgrade` and report the actual result. Commit your work.

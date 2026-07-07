@@ -2124,12 +2124,25 @@
       "deps": [
         "M5-rigid-44"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanCascade.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: THE CASCADE — CLM -> strict derivatives A/B -> action equations -> source blocks -> THE LOCAL ISOMETRY (hosted-scale bridge)."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): common-radius strict derivatives (CLM form) both sides. Gap: bridge wants equivalences + hDu + blocks -> rigid-46 (invertibility from the diagonal action, nonzero sin factors on shrunk ball)."
+    },
+    {
+      "id": "M5-rigid-46",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-45"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanEquivUpgrade.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: action equations -> diagonal invertibility -> ContinuousLinearEquiv upgrade -> blocks -> THE LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
