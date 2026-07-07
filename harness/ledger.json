@@ -1655,12 +1655,12 @@
       "deps": [
         "M5-glob-2"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanChain.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: subdivision + germ chaining + refinement independence — continuation along paths."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): subdivision + uniform-normal subdivision + chain-state iteration + rigid-step staging + single-insertion comparison. Blocked: normal-image-to-germ-source connection + alignment determinacy (both likely fall out of rigid-10's differential surface) -> resume after rigid-10."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
