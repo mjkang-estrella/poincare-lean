@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-29: the germ and the smooth field — F-transition unconditional
+
+Context: `harness/reports/M5-glob-28_blocked.md` (READ FIRST — the VERBATIM two inputs: the chart-indexed differentiable `D` field, the eventual pullback germ). PROVEN: the F-transition composition (`FTransition.lean`) + the pointwise field (`DifferentialField.lean`). INPUT (1) THE EVENTUAL GERM: the pointwise pullback holds at EVERY point of the OPEN punctured ball — at any fixed `v₀` of the ball, the ball is a neighborhood, so `∀ᶠ v in 𝓝 v₀, pullback v` is `eventually_of_mem (isOpen.mem_nhds …) (pointwise)` — one-liner-shaped. INPUT (2) THE DIFFERENTIABLE D FIELD: `F = cartanChartMap = (target chart stuff) ∘ L ∘ (source chart stuff)` — its SMOOTHNESS: the exp charts are C¹ (strict derivatives everywhere — `ExponentialStrictClose/DifferentialField`) and the germ flow is smooth in the PL sense (`GeodesicChart`'s contDiff exports — CHECK what regularity the flow machinery exports: if `ContDiff ℝ 1`-level facts exist, `fderiv F` is continuous; if the LCNaturality demand is only `Differentiable`, the strict derivatives give it directly — a strict derivative at every point of an open set makes F differentiable there with `fderiv = DF`, and DF's OWN differentiability may reduce to F being C² — check the DEMAND first; if C² is genuinely needed, derive from the smooth-dependence machinery (`GeodesicDerivative/SmoothDependenceDischarge` — the flow's higher regularity) or isolate). FEED both → 🎯 THE F-TRANSITION LAW unconditional on the ball → geodesic preservation next. Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-29_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/GermAndField.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.GermAndField` and report the actual result. Commit your work.
