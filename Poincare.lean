@@ -99,6 +99,7 @@ import Poincare.Global.CoefficientEvolution
 import Poincare.Global.CartanSourceOwned
 import Poincare.Global.CartanNormalCoords
 import Poincare.Global.JacobiNormSystem
+import Poincare.Global.JacobiNormClose
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
