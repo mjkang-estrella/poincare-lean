@@ -3826,12 +3826,25 @@
       "deps": [
         "M5-glob-65"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/CenteredMembership.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the enlarged-ball membership -> HostedCLM package -> D unconditional + transfer -> THE F-TRANSITION LAW UNCONDITIONAL."
+      "result": "DONE 2026-07-07 (gate PASS, 412 lines): centered membership (enlarged radius) + additive/smul variants + HostedCLMPackage at EVERY hosted endpoint. -> glob-67 (THE SELECTOR ASSEMBLY -> THE F-TRANSITION LAW)."
+    },
+    {
+      "id": "M5-glob-67",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-66"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/SelectorAssembly.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: D unconditional + transfer + indexed packages both sides -> IndexedSelection consumer -> THE F-TRANSITION LAW UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
