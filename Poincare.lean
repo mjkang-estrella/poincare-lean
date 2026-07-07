@@ -149,6 +149,7 @@ import Poincare.Global.CorrectedRadial
 import Poincare.Global.RayIdentification
 import Poincare.Global.IsometryFinal
 import Poincare.Global.SpeedReconcile
+import Poincare.Global.CombinedFeed
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
