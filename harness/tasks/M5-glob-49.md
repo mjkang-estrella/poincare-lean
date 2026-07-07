@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-49: the doubly-augmented chain — third variation, same pattern
+
+Context: `harness/reports/M5-glob-48_blocked.md` (READ FIRST — mining empty; fallback opened: the augmented field is `ContDiff ℝ 2` + Lipschitz on tubes, `FlowSmoothness.lean`). THE REPLAY AT LEVEL THREE (the glob-30/31/32 pattern EXACTLY, one system up): (1) THE DOUBLY-AUGMENTED SYSTEM: (augmented state, its first variation) — the field built from the augmented field and ITS derivative (both `ContDiff 1`-grade since the augmented field is `ContDiff 2`); its linearization (the third-variation system) + the PL package (the `SecondVariation.lean` pattern — the coefficients bounded on tubes); (2) the residual/Grönwall theorem for the doubly-augmented flow (the `SecondFlowDerivative.lean` pattern — or instantiate its ABSTRACT layer if field-generic); (3) the discharge at the hosted data (the `SecondDischarge.lean` pattern) ⟹ the SECOND-variation endpoints are differentiable in the base — i.e. `sourceD/targetD` are `ContDiffAt 1` (via `contDiffAt_succ_iff_hasFDerivAt` at level 1: the field has a neighborhood derivative field (the third-variation endpoints) — continuity of THAT field is NOT needed for ContDiffAt 1: `contDiffAt_one_iff`… CHECK the exact characterization: C¹ needs the derivative CONTINUOUS — the third-variation dependence estimate gives it — the Grönwall continuity, cheap). FEED → `FieldProducer`'s fields upgraded → `ExpChartC2 → … → FTransitionDone` → 🎯 THE F-TRANSITION LAW. Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-glob-49_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/ThirdVariation.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.ThirdVariation` and report the actual result. Commit your work.

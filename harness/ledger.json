@@ -3592,12 +3592,25 @@
       "deps": [
         "M5-glob-47"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/FlowSmoothness.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: Mathlib mining for ODE flow ContDiff in initial conditions; if found -> collapse the tower -> THE F-TRANSITION LAW; else start the chosen fallback."
+      "result": "MINING EMPTY (recorded) + FALLBACK OPENED 2026-07-07 (gate PASS): the augmented field ContDiff 2 + Lipschitz on tubes. -> glob-49 (the doubly-augmented/third-variation chain, glob-30..32 pattern)."
+    },
+    {
+      "id": "M5-glob-49",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-48"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ThirdVariation.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: doubly-augmented system + PL + residual + discharge -> sourceD/targetD ContDiffAt 1 -> the F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
