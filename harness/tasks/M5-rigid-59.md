@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-59: the equality chain — sin² on both sides, L preserves anchors
+
+Context: `harness/reports/M5-rigid-58_blocked.md` (READ FIRST — the VERBATIM hosted endpoint pairing equality). PROVEN: the feed consumers (`cartanMap_isLocalIsometry_on_normalBall_of_hosted_endpoint_pairing_feed` etc., `PairingFeed.lean`). THE ONE STATEMENT: source `Ψ.1`-pairings at the hosted endpoint = target `Ψ.1`-pairings at the aligned hosted endpoint. THE CHAIN (three proven links): (1) SOURCE pairing = pinned value: `actual_jacobi_pairing_eq_pinned_of_quadratic_and_linearized_unique` + `actual_jacobi_norms_eq_pinned_on_cutoff_one_Icc` (+ radial/cross via speed + Gauss) — `sin²(sT)·⟨w,w'⟩_source-anchor`-shaped; (2) TARGET pairing = pinned value: THE SAME generic theorems at `roundSphereMetric3` (witness: `roundSphereMetric3_hasConstantSectionalCurvature_one`) — `sin²(s'T')·⟨Lw,Lw'⟩_target-anchor`; (3) THE ALIGNMENT: `L` preserves anchor pairings (`CartanMap.TangentAlignment`'s defining metric-intertwining property — READ the structure fields in `CartanMap.lean`) and the hosted speeds/times agree through `L` (the hosted data is built from `v` and `Lv` with matching norms via the alignment — `CartanHomogeneity.lean` construction + rigid-47's scale normalization, `CartanFinalComposition.lean`). CHAIN: source = sin²·anchor = sin²·(aligned anchor) = target. Feed rigid-58's consumer → 🎯 `cartanMap_isLocalIsometry`. If ONE sub-equality resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/EqualityChain.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-59_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.EqualityChain` and report the actual result. Commit your work.
