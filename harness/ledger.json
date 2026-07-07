@@ -3253,12 +3253,25 @@
       "deps": [
         "M5-glob-21"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/RaysToBall.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: pointwise assembly via the homeo inverse -> ball EqOn -> RigidStepCompatibleWith -> THE CHAIN."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the RigidStepCompatibleWith assembler from ray-cover data. Inputs -> glob-23 (homeo-inverse decomposition + velocity identification via the induced alignment)."
+    },
+    {
+      "id": "M5-glob-23",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-22"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RayCoverInputs.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: pointwise ray decomposition (homeo symm) + velocity identification (induced alignment) -> the assembler fires -> THE CHAIN THEOREM."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
