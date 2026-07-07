@@ -1764,12 +1764,26 @@
         "M5-rigid-17",
         "M5-geo-21"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/SmoothDependenceDischarge.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: discharge the smooth-dependence interface from the proven flow derivative + linearized system -> unconditional transverse Gauss -> the weight identity."
+      "result": "DONE 2026-07-07 (gate PASS): THE SMOOTH-DEPENDENCE PAYLOAD DISCHARGED (geo-15 interface retired) — fixed-time derivatives from the flow derivative, mixed J'=K from the linearized system, payload-fed pointwise transverse Gauss, uniform package, integrated Gauss bridge. Endpoint assembly isolated -> rigid-19."
+    },
+    {
+      "id": "M5-rigid-19",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-18",
+        "M5-rigid-16"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanAssembly.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the weight identity (integrated payload-fed Gauss + sin formulas) -> punctured source expansion -> THE UNCONDITIONAL LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
