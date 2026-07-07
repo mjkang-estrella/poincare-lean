@@ -2418,12 +2418,25 @@
       "deps": [
         "M5-rigid-66"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/SpeedGeneric.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: speed-s norm system + package variants (additive) -> discharge at hosted small-velocity data -> feeds -> THE LOCAL ISOMETRY."
+      "result": "DONE 2026-07-07 (gate PASS, 1839 lines): THE SPEED-GENERIC LAYER — speed-s oscillator/norm system/pinned solutions/packages/bridges + common-speed feed & consumer; hosted transverse scale sin(sT)^2/(sT)^2 native. -> rigid-68 (THE INSTANTIATION)."
+    },
+    {
+      "id": "M5-rigid-68",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-67"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TheLocalIsometry.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: hosted data + cascade families + speed values + interval discharges into the speed-generic consumer -> cartanMap_isLocalIsometry (curvature-only hypotheses)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

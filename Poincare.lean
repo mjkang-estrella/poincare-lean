@@ -139,6 +139,7 @@ import Poincare.Global.SourcePackage
 import Poincare.Global.IsometryInstantiate
 import Poincare.Global.SpeedPackage
 import Poincare.Global.NormalizedHosting
+import Poincare.Global.SpeedGeneric
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
