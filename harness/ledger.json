@@ -3670,12 +3670,25 @@
       "deps": [
         "M5-glob-53"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/DoublyResidual.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: LASER — the doubly-augmented ODE facts + the residual theorem fed -> the canonical field's derivative at hosted data. Nothing else."
+      "result": "DONE 2026-07-07 (gate PASS, 544 lines, LASER): chartChristoffel_doublyAugmented_endpoint_hasFDerivAt_of_thirdVariation_data + the full Frechet residual layer. -> glob-55 (discharge + continuity + C1 assembly -> THE F-TRANSITION LAW)."
+    },
+    {
+      "id": "M5-glob-55",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-54"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TowerClosed.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: discharge the third-variation data + derivative continuity -> canonical C1 -> the bridges -> THE F-TRANSITION LAW UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
