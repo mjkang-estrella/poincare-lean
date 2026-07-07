@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-8: geodesic preservation — the isometry transports the equation
+
+Context: `harness/reports/M5-glob-7_blocked.md` (READ FIRST — the VERBATIM charted exp-naturality identity demanded). PROVEN: the consumer (`rigidStepCompatibleWith_of_target_chart_exp_naturality`, `ExpNaturality.lean`). THE CLASSICAL PRODUCER: `Φ ∘ γ` satisfies the TARGET geodesic equation when `γ` is a source geodesic — THE CHART ROUTE: (1) differentiate `Φ∘γ` in charts via the chain rule (the strict derivative from `RigidityComplete/IsometryConsumers.lean` — along the curve, the differential is the `cartanChartDifferential`); (2) the second derivative picks up the differential of the differential — BUT in EXP CHARTS the map is LINEAR (`expChart_symm_cartanChartMap_expChart_eq_tangentAlignment`, `CartanNormalCoords.lean` — the conjugation!) so the composed curve IN TARGET EXP CHARTS is `L ∘ (source curve in source exp charts)` — LINEAR image; (3) the source geodesic through the anchor in ITS exp chart is the RAY `t·v` (the ray law/exp definition!) — so the image is the ray `t·(Lv)` — which IS the target geodesic through the anchor by the target exp/ray law. THE NATURALITY IS DEFINITIONAL-modulo-the-conjugation for ANCHOR-BASED geodesics: `Φ(exp_{x₁}(tv)) = exp_{Φx₁}(t·L_ind v)` — ASSEMBLE from the conjugation + both ray laws + the germ machinery (`ExponentialGerm/ExponentialRayLaw.lean`). Produce the demanded charted identity → the consumer fires → `RigidStepCompatibleWith` → the chain → toward the global `Φ`. Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-8_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/GeodesicPreservation.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.GeodesicPreservation` and report the actual result. Commit your work.
