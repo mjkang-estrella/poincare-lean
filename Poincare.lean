@@ -98,6 +98,7 @@ import Poincare.Global.HeatKernelPDEn
 import Poincare.Global.HeatKernelIntegral
 import Poincare.Global.HeatApproxIdentity
 import Poincare.Global.HeatCauchy
+import Poincare.Global.HeatCauchyClose
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity

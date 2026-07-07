@@ -1458,12 +1458,12 @@
       "deps": [
         "M2-heat-6"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/HeatCauchyClose.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: the two interchange lemmas (Gaussian domination) -> the model linear Cauchy problem unconditional."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): pointwise time-derivative window domination. Missing: fixed integrable Gaussian-polynomial envelopes (time + second-spatial) -> heat-8."
     },
     {
       "id": "M5-rigid-5",
@@ -1477,6 +1477,19 @@
       ],
       "difficulty": "wall",
       "result": "DISPATCHED 2026-07-06: extend the curvature bridge to the cutoff-one zone -> zone KN identity -> oscillator along the curve."
+    },
+    {
+      "id": "M2-heat-8",
+      "tier": "M2",
+      "deps": [
+        "M2-heat-7"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/HeatEnvelopes.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-06: the two integrable envelopes (Gaussian moments) -> interchange facts -> THE UNCONDITIONAL MODEL CAUCHY THEOREM."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
