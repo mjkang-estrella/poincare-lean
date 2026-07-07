@@ -217,6 +217,7 @@ import Poincare.Global.SecondDischarge
 import Poincare.Global.SecondFrechet
 import Poincare.Global.DFrechetUpgrade
 import Poincare.Global.ConcreteResidual
+import Poincare.Global.DerivativeUnique
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
