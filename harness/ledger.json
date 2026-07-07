@@ -3123,12 +3123,25 @@
       "deps": [
         "M5-glob-11"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/KoszulNaturality.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: metric pullback transition + LC uniqueness (sign-pinned) + second-order chain rule -> the transition inputs -> the reanchor law -> the chain."
+      "result": "DONE-AS-PIN 2026-07-07 (gate PASS, refutation #10): plus-sign transition FALSE (B=2 vs -2); minus-sign is the truth under gamma''=-Gamma -> glob-13 (the abstract law, LC-uniqueness route, sign-certain)."
+    },
+    {
+      "id": "M5-glob-13",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-12"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TransitionLaw.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: transported field compatible + torsion-free -> LC uniqueness -> the minus-sign transition -> the reanchor law -> the chain."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
