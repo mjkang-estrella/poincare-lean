@@ -1497,12 +1497,12 @@
       "deps": [
         "M5-rigid-5"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ChartCurvatureBridgeZoneClose.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: field-choice naturality via curvature tensoriality -> unconditional zone bridge -> interval oscillator if reachable."
+      "result": "DONE 2026-07-06 (gate PASS, 912 lines): field-choice naturality at zone points, THE UNCONDITIONAL ZONE BRIDGE, constant-curvature-1 zone KN identity. Oscillator assembly unblocked -> rigid-7."
     },
     {
       "id": "M2-heat-9",
@@ -1516,6 +1516,19 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06: two pointwise dominations -> interchanges -> THE UNCONDITIONAL MODEL CAUCHY THEOREM."
+    },
+    {
+      "id": "M5-rigid-7",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-6"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/JacobiOscillator.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: orthogonality propagation + J''=-J on the interval + J = sin t * w — the Jacobi formula along geodesics of ANY constant-curvature-1 closed metric."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."

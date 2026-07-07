@@ -82,6 +82,7 @@ import Poincare.Global.TangentAlignmentExists
 import Poincare.Global.JacobiConstantCurvature
 import Poincare.Global.JacobiInstantiate
 import Poincare.Global.ChartCurvatureBridgeZone
+import Poincare.Global.ChartCurvatureBridgeZoneClose
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
