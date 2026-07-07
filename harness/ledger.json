@@ -3657,12 +3657,25 @@
       "deps": [
         "M5-glob-52"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CanonicalC1.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the residual applied at the doubly-augmented data + Gronwall continuity -> canonical fderiv field C1 -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the canonical-C1 transition bridge. 3-task perimeter on the level-three residual -> glob-54 (LASER: the SecondDischarge replay one level up, ONLY)."
+    },
+    {
+      "id": "M5-glob-54",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-53"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DoublyResidual.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: LASER — the doubly-augmented ODE facts + the residual theorem fed -> the canonical field's derivative at hosted data. Nothing else."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
