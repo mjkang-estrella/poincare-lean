@@ -2483,12 +2483,25 @@
       "deps": [
         "M5-rigid-71"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/RadialBlock.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: radial Psi_v = ray variation (uniqueness) -> pairing = T^2 speed^2 -> match speedPinnedScale -> ALL BLOCKS -> cartanMap_isLocalIsometry."
+      "result": "DONE-AS-CATCH 2026-07-07 (gate PASS): speedPinnedScale unfolds to the TRANSVERSE sine scale — rigid-70's radial hypothesis wrong-shaped (definition-level catch #7); ray variation has plain T^2 speed^2. -> rigid-73 (corrected-radial consumer variant + full discharge)."
+    },
+    {
+      "id": "M5-rigid-73",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-72"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CorrectedRadial.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: corrected radial scalar (plain time scale) consumer + ray-variation identification + all blocks -> cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
