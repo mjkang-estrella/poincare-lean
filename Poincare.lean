@@ -113,6 +113,7 @@ import Poincare.Global.LinearizedCLM
 import Poincare.Global.ExponentialStrictAtV
 import Poincare.Global.ExponentialStrictClose
 import Poincare.Global.CartanIsometryClose
+import Poincare.Global.CartanActionEquations
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
