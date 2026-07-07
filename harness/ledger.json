@@ -3501,12 +3501,25 @@
       "deps": [
         "M5-glob-40"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ContDiffTwo.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: augmented flow C^1 (first-order chain replayed) + contDiffAt_succ_iff_hasFDerivAt -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the C2 composition assembly (eS o L o eM.symm). Remaining: the chart-side C2 facts -> glob-42 (augmented flow C1 replay + IFT C2 regularity for the inverse)."
+    },
+    {
+      "id": "M5-glob-42",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-41"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExpChartC2.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: exp chart C2 (augmented chain replay) + inverse C2 (IFT regularity) both sides -> ContDiffTwo assembly -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
