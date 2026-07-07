@@ -198,6 +198,7 @@ import Poincare.Global.TransitionLaw
 import Poincare.Global.TransportedCompatibility
 import Poincare.Global.DifferentiatedCompat
 import Poincare.Global.PullbackDifferentiate
+import Poincare.Global.HdiffInstantiate
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
