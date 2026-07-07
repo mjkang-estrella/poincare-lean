@@ -1978,12 +1978,25 @@
       "deps": [
         "M5-rigid-33"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/CartanScaleGeneric.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: scale-generic bridge (additive) + hosted honest scales + alignment invariance -> THE LOCAL ISOMETRY."
+      "result": "DONE 2026-07-07 (gate PASS): scale-generic bridge (additive) + hosted scale defs + cartanMap_isLocalIsometry_on_punctured_normalBall_of_hosted_scale_endpoint_pairings (parameterized by strict derivatives at v and differential actions). Discharge -> rigid-35."
+    },
+    {
+      "id": "M5-rigid-35",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-34"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanHostedDischarge.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: strict derivatives at general v (two-variable remainder at shifted base) + differential actions (endpoint surface at (u,T)) -> THE LOCAL ISOMETRY instantiated."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
