@@ -237,6 +237,7 @@ import Poincare.Global.LevelThreeFeed
 import Poincare.Global.CanonicalC1
 import Poincare.Global.DoublyResidual
 import Poincare.Global.TowerClosed
+import Poincare.Global.ThirdFamily
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
