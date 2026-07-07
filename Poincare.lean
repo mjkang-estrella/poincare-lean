@@ -90,6 +90,7 @@ import Poincare.Global.CartanDifferential
 import Poincare.Global.CartanLocalIsometry
 import Poincare.Global.CartanIsometryFinal
 import Poincare.Global.CartanExpansionBridge
+import Poincare.Global.CartanSourceExpansion
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
 import Poincare.Global.CartanChain
