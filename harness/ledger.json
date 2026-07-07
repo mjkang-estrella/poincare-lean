@@ -3032,12 +3032,25 @@
       "deps": [
         "M5-glob-4"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/GermDeterminacy.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: overlap agreement via conjugation (L_1 = L_2) -> RigidStepCompatible -> the chain fires -> toward the global Phi."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): cartanGerm_determinacy_of_tangentAlignment_apply_eq — overlap agreement given equal alignments. Gap: ChainState.next uses arbitrary Classical.choice alignment -> glob-6 (the INDUCED alignment from the pullback at the new anchor; compatible step by construction)."
+    },
+    {
+      "id": "M5-glob-6",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-5"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/InducedAlignment.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: induced TangentAlignment from the pullback at x1 -> compatible chain step -> the chain fires -> toward the global Phi."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
