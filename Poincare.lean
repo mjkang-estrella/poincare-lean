@@ -108,6 +108,7 @@ import Poincare.Global.HeatEnvelopes
 import Poincare.Global.HeatCauchyFinal
 import Poincare.Global.HeatCauchyTheorem
 import Poincare.Global.HeatCauchyDirectional
+import Poincare.Global.HeatCauchyFrechet
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity

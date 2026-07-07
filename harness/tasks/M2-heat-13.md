@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M2-heat-13: ONE estimate — the uniform translate envelope, then everything downstream
+
+Context: `harness/reports/M2-heat-12_blocked.md` (READ FIRST). The entire remaining Cauchy closure hangs on ONE estimate family: for `x` ranging over a closed ball `closedBall x₀ R` and `t` in the compact window, a FIXED integrable envelope in `y` dominating the OPERATOR NORMS `‖fderiv (heatKernel t) (x−y)‖` (and the second/third analogues). THE MATH IS ELEMENTARY: `‖x−y‖ ≥ ‖y‖ − ‖x₀‖ − R`, so a Gaussian in `x−y` is dominated by a widened Gaussian in `y` times a constant, and the polynomial prefactors shift by `(‖y‖+‖x₀‖+R)^k` — all within the proven Gaussian-polynomial integrability family (`HeatEnvelopes.lean` accepts any degree; the pointwise derivative formulas/estimates are in `HeatCauchyTheorem.lean`/`HeatCauchyFrechet.lean`/`HeatKernelPDEn.lean`). Prove the translate estimates, then run the two `hasFDerivAt_integral_of_dominated_loc_of_lip` applications (the Lipschitz hypothesis = mean-value inequality from the NEXT-order envelope on the ball), the Laplacian identification (`laplacian_eq_iteratedFDeriv_orthonormalBasis`), and 🎯 THE UNCONDITIONAL MODEL CAUCHY THEOREM (conditional package `HeatCauchy.lean` + proven time interchange).
+
+Deliverables, in a NEW file `Poincare/Global/HeatCauchyUniform.lean` (do NOT edit any existing file, incl. `Poincare.lean`): the translate envelopes (orders 1-3), the two Fréchet interchanges, the Laplacian identification, THE THEOREM. Strict-partial: deliver the envelopes unconditionally even if the interchanges resist; ONE isolated statement max. Report `harness/reports/M2-heat-13_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.HeatCauchyUniform` and report the actual result. Commit your work.
