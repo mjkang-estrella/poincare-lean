@@ -3631,12 +3631,25 @@
       "deps": [
         "M5-glob-50"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/TowerCloses.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: level-three dependence + residual + continuity -> the fields C^1 -> ContDiffAt 2 F -> THE F-TRANSITION LAW UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the tower bridge threaded (C1 fields => THE F-TRANSITION LAW). The feed -> glob-52 (level-three dependence + residual + continuity -> the fields C1)."
+    },
+    {
+      "id": "M5-glob-52",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-51"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/LevelThreeFeed.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the level-three feed (dependence, residual, continuity) -> ContDiffAt 1 fields -> THE F-TRANSITION LAW UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
