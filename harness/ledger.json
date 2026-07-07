@@ -2259,12 +2259,25 @@
       "deps": [
         "M5-rigid-54"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/PositionRoute.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: audit JacobiOscillator's chart/equation form; likely route: position formula applies to Psi.1 directly (positions agree; covariant-vs-coordinate differs only in derivatives) -> action equation without haccCollapse."
+      "result": "DONE 2026-07-07 (gate PASS): AUDIT CONFIRMED — oscillator is covariant/abstract; coordinate collapse was a false route. PositionRoute.lean: action equation FROM transverse endpoint position equality (2 theorems). ONE statement remains: the position bridge (Psi.1 = covariant harmonic position) -> rigid-56."
+    },
+    {
+      "id": "M5-rigid-56",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-55"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/PositionBridge.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: covariant state from Psi (same position) + oscillator discharge reuse + jacobi_position -> the bridge -> action equations -> compose."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

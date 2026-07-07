@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-56: the position bridge — Ψ.1 IS the covariant Jacobi position
+
+Context: `harness/reports/M5-rigid-55_blocked.md` (READ FIRST — the audit + the verbatim missing statement). PROVEN: the position-route theorems (`PositionRoute.lean` — the action equation FROM a transverse endpoint position equality; no coordinate-collapse claims). THE ONE MISSING STATEMENT: the vector-level endpoint position bridge — hosted `Ψ_w(T).1 = sin(s·T)/s · w`-shaped (the covariant harmonic position at the hosted state). THE KEY OBSERVATION: `Ψ = (J, K)` (the chart-linearized state) and the covariant Jacobi state `(J, D)` with `D = K + Γ(γ)(γ', J)` share the SAME position component `J` — the bridge is not a new ODE fact but an APPLICATION: (1) the covariant state built from `Ψ` satisfies the covariant oscillator hypotheses along the cutoff-one flow — this discharge EXISTS (inside `CartanIsometryTheorem.lean`'s proof of `actual_jacobi_norms_eq_pinned_on_cutoff_one_Icc` — it fed the SAME covariant facts; extract/replay its hypothesis-feeding steps); (2) `jacobi_position_eq_sin_smul_on_Icc` (`JacobiOscillator.lean` — the abstract covariant-state position formula, per the audit) applied to that covariant state gives the position value; (3) position of the covariant state = `Ψ.1` definitionally. ASSEMBLE the bridge, feed `PositionRoute.lean`'s theorems → THE ACTION EQUATIONS, then onward (equivalence upgrade → blocks → the bridge → 🎯 `cartanMap_isLocalIsometry`).
+
+Deliverables in a NEW file `Poincare/Global/PositionBridge.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial: the bridge alone is the prize; ONE isolated statement max. Report `harness/reports/M5-rigid-56_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.PositionBridge` and report the actual result. Commit your work.
