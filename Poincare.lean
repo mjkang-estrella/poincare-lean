@@ -202,6 +202,7 @@ import Poincare.Global.HdiffInstantiate
 import Poincare.Global.TransitionLawFires
 import Poincare.Global.SideConditions
 import Poincare.Global.ChainRuleInput
+import Poincare.Global.NaturalityCascade
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
