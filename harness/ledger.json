@@ -1523,12 +1523,12 @@
       "deps": [
         "M5-rigid-6"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/JacobiOscillator.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: orthogonality propagation + J''=-J on the interval + J = sin t * w — the Jacobi formula along geodesics of ANY constant-curvature-1 closed metric."
+      "result": "DONE 2026-07-07 (gate PASS): THE JACOBI FORMULA — jacobi_position_eq_sin_smul_on_Icc: J = sin t * w along unit-speed geodesics of any constant-curvature-1 closed metric (orthogonality propagation + oscillator assembly + uniqueness)."
     },
     {
       "id": "M2-heat-10",
@@ -1542,6 +1542,20 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-07: first-derivative envelope + two-step dominated differentiation + orthonormal sum -> THE UNCONDITIONAL MODEL CAUCHY THEOREM."
+    },
+    {
+      "id": "M5-rigid-8",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-7",
+        "M5-rigid-2"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanIsometry.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: D(exp) on transverse = Jacobi value -> pullback identity (sin factors cancel both sides) -> cartanMap LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
