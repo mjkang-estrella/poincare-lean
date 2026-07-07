@@ -3097,12 +3097,25 @@
       "deps": [
         "M5-glob-9"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ReanchorLawFinal.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: THE PARKED WALL — chart-covariance of the geodesic ODE (Christoffel transition) + PL uniqueness -> the reanchor law -> the chain fires."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): reanchor law GIVEN the velocity-component Christoffel transition -> glob-11 (the chart-change law via Levi-Civita uniqueness in the target chart)."
+    },
+    {
+      "id": "M5-glob-11",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-10"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ChristoffelTransition.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the Christoffel transition (Koszul naturality / LC uniqueness route) -> the reanchor law -> the chain fires."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
