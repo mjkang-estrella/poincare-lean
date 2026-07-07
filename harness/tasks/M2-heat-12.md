@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M2-heat-12: Fréchet dominated differentiation twice — the Cauchy theorem
+
+Context: `harness/reports/M2-heat-11_blocked.md` (READ FIRST): Mathlib's `InnerProductSpace.laplacian_eq_iteratedFDeriv_orthonormalBasis` consumes the Fréchet `iteratedFDeriv`, so the route is FRÉCHET dominated differentiation: Mathlib's `hasFDerivAt_integral_of_dominated_loc_of_lip` (`Mathlib/Analysis/Calculus/ParametricIntegral.lean` — READ its exact hypotheses: a.e. Lipschitz bound near the point + integrable bound + a.e. HasFDerivAt of the integrand) applied TWICE to `x ↦ heatSolution t f x = ∫ heatKernel t (x−y) f y`: (1) first application with the proven first-spatial envelope (`HeatCauchyTheorem.lean` — Fréchet derivative formula + domination; the Lipschitz bound comes from the mean-value inequality with the SECOND-derivative envelope); (2) second application to `x ↦ (first Fréchet derivative)` with the second/third-level envelopes (`HeatCauchyFinal.lean`'s Laplacian envelope family; derive a third-derivative envelope in the same Gaussian-polynomial family if the Lipschitz bound of the second derivative needs it — the integrability layer accepts any degree). Output: `iteratedFDeriv 2` of `heatSolution` = the integral Hessian; feed `laplacian_eq_iteratedFDeriv_orthonormalBasis` + the kernel PDE + the proven time interchange → 🎯 THE UNCONDITIONAL MODEL CAUCHY THEOREM.
+
+Deliverables, in a NEW file `Poincare/Global/HeatCauchyFrechet.lean` (do NOT edit any existing file, incl. `Poincare.lean`): the two Fréchet interchanges, the Laplacian identification, THE THEOREM. Strict-partial: ONE isolated estimate. Report `harness/reports/M2-heat-12_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.HeatCauchyFrechet` and report the actual result. Commit your work.

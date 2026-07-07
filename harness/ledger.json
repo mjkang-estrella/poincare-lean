@@ -1576,12 +1576,12 @@
       "deps": [
         "M2-heat-10"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/HeatCauchyDirectional.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: twice-dominated directional derivatives + orthonormal sum -> Laplacian identification -> THE UNCONDITIONAL MODEL CAUCHY THEOREM."
+      "result": "PARTIAL 2026-07-07 (gate PASS): kernel directional second-derivative facts. STRUCTURAL FINDING: Laplacian lemma consumes iteratedFDeriv, not directional data -> Frechet dominated route (hasFDerivAt_integral_of_dominated_loc_of_lip twice) -> heat-12."
     },
     {
       "id": "M5-rigid-10",
@@ -1595,6 +1595,19 @@
       ],
       "difficulty": "wall",
       "result": "DISPATCHED 2026-07-07: the endpoint D(expAt) surface (radial 1, transverse sin/t, zero cross) + chain rule -> pullback identity if reachable."
+    },
+    {
+      "id": "M2-heat-12",
+      "tier": "M2",
+      "deps": [
+        "M2-heat-11"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/HeatCauchyFrechet.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: two Frechet dominated interchanges (ParametricIntegral API + Gaussian envelopes) -> Laplacian identification -> THE CAUCHY THEOREM."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
