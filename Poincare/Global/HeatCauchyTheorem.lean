@@ -19,7 +19,7 @@ namespace Poincare
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E]
 
-omit [FiniteDimensional ℝ E] in
+omit [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] in
 /-- A norm is controlled by the quadratic polynomial used in the heat envelopes. -/
 theorem norm_sub_left_le_translate_bound (x y : E) :
     ‖x - y‖ ≤ (3 + 2 * ‖x‖ ^ 2) * (1 + ‖y‖ ^ 2) := by
@@ -46,15 +46,16 @@ theorem hasDerivAt_heatKernel_spatial_line {t : ℝ} (ht : t ≠ 0)
         (-(⟪x + r • v - y, v⟫_ℝ / (2 * t)))) r := by
   let u : E := x + r • v - y
   have hline_smul : HasDerivAt (fun ρ : ℝ => ρ • v) v r := by
-    simpa [toSpanSingleton_apply_one] using (toSpanSingleton ℝ v).hasDerivAt r
+    simpa [ContinuousLinearMap.toSpanSingleton_apply_one] using
+      ((toSpanSingleton ℝ v).hasDerivAt (x := r))
   have hline : HasDerivAt (fun ρ : ℝ => x + ρ • v - y) v r :=
     (hline_smul.const_add x).sub_const y
   have hcomp :=
     (hasFDerivAt_heatKernel_spatial (E := E) ht u).comp_hasDerivAt r hline
   convert hcomp using 1
-  · simp [u]
-  · simp [u, heatKernel, innerSL_apply, smul_eq_mul]
-    ring
+  · simp [u, heatKernel, innerSL_apply_apply, smul_eq_mul, inner_sub_left,
+      inner_add_left, real_inner_smul_left]
+    ring_nf
 
 /-- Derivative form of `hasDerivAt_heatKernel_spatial_line`. -/
 theorem deriv_heatKernel_spatial_line {t : ℝ} (ht : t ≠ 0) (x y v : E) (r : ℝ) :
@@ -62,6 +63,33 @@ theorem deriv_heatKernel_spatial_line {t : ℝ} (ht : t ≠ 0) (x y v : E) (r : 
       heatKernel (E := E) t (x + r • v - y) *
         (-(⟪x + r • v - y, v⟫_ℝ / (2 * t))) :=
   (hasDerivAt_heatKernel_spatial_line (E := E) ht x y v r).deriv
+
+omit [FiniteDimensional ℝ E] in
+/--
+Second derivative along an affine line, expressed as the corresponding
+diagonal second Fréchet derivative.
+-/
+theorem iteratedDeriv_two_affine_line_eq_iteratedFDeriv (f : E → ℝ)
+    (hf : ContDiff ℝ 2 f) (x v : E) :
+    iteratedDeriv 2 (fun r : ℝ => f (x + r • v)) 0 =
+      iteratedFDeriv ℝ 2 f x ![v, v] := by
+  let L : ℝ →L[ℝ] E := toSpanSingleton ℝ v
+  have hfun : (fun r : ℝ => f (x + r • v)) = (fun z : E => f (x + z)) ∘ L := by
+    funext r
+    simp [L, ContinuousLinearMap.toSpanSingleton_apply]
+  rw [hfun]
+  rw [iteratedDeriv_eq_iteratedFDeriv]
+  rw [ContinuousLinearMap.iteratedFDeriv_comp_right (g := L) (f := fun z : E => f (x + z))]
+  · simp [ContinuousMultilinearMap.compContinuousLinearMap_apply, L,
+      ContinuousLinearMap.toSpanSingleton_apply]
+    rw [iteratedFDeriv_comp_add_left]
+    have hvec : (fun _ : Fin 2 => v) = ![v, v] := by
+      funext i
+      fin_cases i <;> rfl
+    rw [hvec]
+    simp
+  · exact hf.comp (contDiff_const.add contDiff_id)
+  · norm_num
 
 section Measurable
 
@@ -80,7 +108,7 @@ theorem integrable_heatKernelFirstSpatialEnvelope {t : ℝ} (ht : 0 < t) (A : �
     Integrable (fun y : E => heatKernelFirstSpatialEnvelope (E := E) t A x y) := by
   exact integrable_heatKernelGaussianPolynomialEnvelope (E := E) ht A x
 
-omit [MeasurableSpace E] [BorelSpace E] in
+omit [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] in
 /-- Directional first-spatial Gaussian factor bounded by the envelope polynomial. -/
 theorem heatKernel_first_spatial_factor_abs_le {t : ℝ} (ht : 0 < t) (x y v : E) :
     |-(⟪x - y, v⟫_ℝ / (2 * t))| ≤
