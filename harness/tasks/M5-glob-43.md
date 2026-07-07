@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-43: the augmented C¹ — the one analysis fact
+
+Context: `harness/reports/M5-glob-42_blocked.md` (READ FIRST — the VERBATIM derivative-field package demanded). PROVEN: everything downstream (`ExpChartC2 → ContDiffTwo → EndpointBridge → FTransitionDone`). THE ONE FACT: the exp chart's derivative field is C¹ — i.e. the AUGMENTED flow (geodesic + first variation, `SecondVariation.lean`) is C¹ in its initial data. THE REPLAY (the first-order chain, concretely): (1) the augmented field is Lipschitz-with-derivative on the compact tube (Γ, DΓ smooth — `LocalConnectionRegularity.lean`); (2) Lipschitz dependence of the augmented flow (`GeodesicDependence.lean`'s Grönwall pattern — READ its proof; the argument is field-generic: two solutions' difference obeys Grönwall under the field's Lipschitz bound — replay with the augmented field); (3) the uniform Taylor remainders for the augmented field (`GeodesicDerivative.lean`'s compact-tube pattern); (4) the augmented flow derivative (`GeodesicFlowDerivative.lean`'s pattern — the linearized-of-augmented system is glob-30's second-variation system, its PL package PROVEN) — conclude `HasFDerivAt (augmented flow) … ` at each hosted datum with the second-variation endpoint as derivative — THE DERIVATIVE-FIELD PACKAGE `ExpChartC2` wants; the canonical-fderiv identification by uniqueness (`DerivativeUnique` pattern). FEED → 🎯 `ContDiffAt 2 F` → THE F-TRANSITION LAW. Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-glob-43_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/AugmentedC1.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.AugmentedC1` and report the actual result. Commit your work.
