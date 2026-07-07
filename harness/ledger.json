@@ -1209,12 +1209,12 @@
       "deps": [
         "M2-heat-2"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/HeatKernelPDEn.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-06: the n-dimensional heat equation via Mathlib's Delta API (Gaussian second Frechet derivative / coordinate reduction)."
+      "result": "DONE 2026-07-06 (gate PASS; late dispatch caught by orchestrator audit): heatKernel_heatEquation_laplacian — THE n-DIMENSIONAL HEAT EQUATION (deriv_t K = Delta K) on any finite-dim inner-product space + reusable Gaussian derivative/Laplacian helpers."
     },
     {
       "id": "M5-geo-26",
