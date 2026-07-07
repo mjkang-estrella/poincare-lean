@@ -3488,12 +3488,25 @@
       "deps": [
         "M5-glob-39"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/EndpointBridge.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: SecondDischarge at the ball points + directional-to-Frechet + ContDiffAt 2 -> FTransitionDone fires -> F-TRANSITION UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the endpoint bridge — ContDiffAt 2 F canonically supplies everything; ONE producer left -> glob-41 (the augmented flow's C^1, non-circular, first-order chain at the augmented field)."
+    },
+    {
+      "id": "M5-glob-41",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-40"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ContDiffTwo.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: augmented flow C^1 (first-order chain replayed) + contDiffAt_succ_iff_hasFDerivAt -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

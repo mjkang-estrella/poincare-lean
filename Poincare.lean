@@ -221,6 +221,7 @@ import Poincare.Global.DerivativeUnique
 import Poincare.Global.ResidualExport
 import Poincare.Global.CongruenceStep
 import Poincare.Global.FTransitionDone
+import Poincare.Global.EndpointBridge
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
