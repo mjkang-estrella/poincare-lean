@@ -152,6 +152,7 @@ import Poincare.Global.SpeedReconcile
 import Poincare.Global.CombinedFeed
 import Poincare.Global.HostedPayload
 import Poincare.Global.OneSidedPayload
+import Poincare.Global.BundleDischarge
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
