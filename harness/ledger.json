@@ -2059,12 +2059,25 @@
         "M5-rigid-38",
         "M5-rigid-34"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanIsometryClose.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: discharge the Gronwall side conditions (rigid-38 estimates) -> unconditional A/B -> differential actions (CLM = linearized endpoint, hosted scales) -> THE LOCAL ISOMETRY instantiated."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): exists_shrunk_..._hasStrictFDerivAt_of_linearized_family — Gronwall side conditions discharged, strict derivative on shrunk ball GIVEN a linearized family. Remaining: family construction + action equations -> rigid-41."
+    },
+    {
+      "id": "M5-rigid-41",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-40"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanActionEquations.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: linearized family export + action equations (ray law radial, sin-smul transverse via jacobi_position) -> bridge -> THE LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

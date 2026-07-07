@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-41: the linearized family + the action equations
+
+Context: `harness/reports/M5-rigid-40_blocked.md` (READ FIRST). PROVEN: `exists_shrunk_expAtChartOpenPartialHomeomorph_hasStrictFDerivAt_of_linearized_family` (`CartanIsometryClose.lean`) — the strict derivative on a shrunk ball GIVEN a linearized family. REMAINING, per the report: (1) THE LINEARIZED-FAMILY CONSTRUCTION: the concrete `Ψ` family for the flow at each `v`'s hosted data — it EXISTS from the flow-derivative machinery (`GeodesicFlowDerivative.lean` constructed `Ψ` at hosted initial data; `GeodesicLinearized.lean` the system; `CartanHomogeneity.lean` hosts `(u,T)` for each `v`) — export the family with the hypotheses the existence theorem needs; (2) THE ACTION EQUATIONS (`hDu`-family): the CLM's action on radial/transverse decomposed vectors with the hosted scales — radial: `Ψ_v(T)` along the ray IS the ray-law derivative (hosted endpoint formula, `CartanHomogeneity.lean`); transverse: `Ψ_w(T) = (sin(sT)/s)·w`-shaped from the PINNED scalars — careful: the pinned facts give the METRIC VALUES of `Ψ_w(T)`, and rigid-27/28's route gives norm and pairing — the ACTION equation needs the chart-coordinate VALUE, which `jacobi_position_eq_sin_smul_on_Icc` (`JacobiOscillator.lean`) supplies directly in chart coordinates at the `(u,T)` parameterization; (3) feed both into the hosted-scale bridge (`CartanScaleGeneric.lean`) with the source blocks (pairing facts at `(u,T)`) → 🎯 THE LOCAL ISOMETRY.
+
+Deliverables in a NEW file `Poincare/Global/CartanActionEquations.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per item; ONE isolated statement max. Report `harness/reports/M5-rigid-41_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CartanActionEquations` and report the actual result. Commit your work.
