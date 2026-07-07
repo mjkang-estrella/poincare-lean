@@ -192,6 +192,7 @@ import Poincare.Global.ExpNaturality
 import Poincare.Global.GeodesicPreservation
 import Poincare.Global.OffAnchorNaturality
 import Poincare.Global.ReanchorLawFinal
+import Poincare.Global.ChristoffelTransition
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

@@ -3110,12 +3110,25 @@
       "deps": [
         "M5-glob-10"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ChristoffelTransition.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the Christoffel transition (Koszul naturality / LC uniqueness route) -> the reanchor law -> the chain fires."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): transition+chain-rule => reanchor bridge, sign issue documented -> glob-12 (Koszul naturality via LC uniqueness; PIN the signs on explicit charts first)."
+    },
+    {
+      "id": "M5-glob-12",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-11"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/KoszulNaturality.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: metric pullback transition + LC uniqueness (sign-pinned) + second-order chain rule -> the transition inputs -> the reanchor law -> the chain."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
