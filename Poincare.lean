@@ -155,6 +155,7 @@ import Poincare.Global.OneSidedPayload
 import Poincare.Global.BundleDischarge
 import Poincare.Global.PLNormFeed
 import Poincare.Global.UniformPL
+import Poincare.Global.BoundedPackage
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
