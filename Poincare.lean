@@ -110,6 +110,7 @@ import Poincare.Global.CartanHomogeneity
 import Poincare.Global.CartanBlocksFinal
 import Poincare.Global.CartanScaleGeneric
 import Poincare.Global.LinearizedCLM
+import Poincare.Global.ExponentialStrictAtV
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
