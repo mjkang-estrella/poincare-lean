@@ -158,6 +158,7 @@ import Poincare.Global.UniformPL
 import Poincare.Global.BoundedPackage
 import Poincare.Global.TheIsometry
 import Poincare.Global.SolutionsFeed
+import Poincare.Global.IsometryAssembly
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
