@@ -2991,12 +2991,25 @@
       "deps": [
         "M5-rigid-110"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/AopBound.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: compute/bound ||Aop|| (absolute or speed-scaled constant) + one ball term -> floors fire -> cartanMap_isLocalIsometry."
+      "result": "DONE 2026-07-07 (gate PASS): ||Aop|| <= 4 max(1,speed^2) + unit specialization + time-shrink corollaries (||Aop||*T <= 1/2). ALL QUANTITATIVE FACTS PROVEN -> rigid-112 (ASSEMBLE)."
+    },
+    {
+      "id": "M5-rigid-112",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-111"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/RigidityComplete.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the final min term + end-to-end instantiation -> cartanMap_isLocalIsometry (curvature-only)."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

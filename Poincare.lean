@@ -183,6 +183,7 @@ import Poincare.Global.RadiusTuple
 import Poincare.Global.CoefficientShrink
 import Poincare.Global.ThreeBounds
 import Poincare.Global.FinalSelector
+import Poincare.Global.AopBound
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
