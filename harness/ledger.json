@@ -3371,12 +3371,25 @@
       "deps": [
         "M5-glob-30"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/SecondFlowDerivative.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: solutions + uniform second-order remainders (base-agnostic residual layer) + THE SECOND FLOW DERIVATIVE."
+      "result": "DONE 2026-07-07 (gate PASS): augmentedFlow_hasDerivAt_of_secondVariation_gronwall — the second-order flow derivative from the residual layer. -> glob-32 (discharge at the geodesic data -> F C^2)."
+    },
+    {
+      "id": "M5-glob-32",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-31"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/SecondDischarge.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: augmented ODE + PL solutions + augmented remainders + Lipschitz -> the derivative at geodesic data -> fderiv F differentiable."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
