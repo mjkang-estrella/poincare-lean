@@ -1251,6 +1251,297 @@ theorem source_hosted_rescaled_endpoint_pairing_eq_speed_pinned_of_interval_norm
       hzero hplLinear hΨderWithin hmem_add hmem_sum hΨ0 hT hcutT
       hendpoint hquad
 
+/--
+Transverse-only source quadratic package at arbitrary constant speed.
+
+The older family theorem asks for endpoint orthogonality for every input
+direction.  The norm-system proof only uses that hypothesis for the specific
+input under consideration, so this variant restricts it to directions
+orthogonal to the endpoint radial vector in the anchor chart metric.
+-/
+theorem source_hosted_transverse_quadratic_normA_eq_speed_pinned_on_cutoff_one_Icc
+    (g : ClosedSmoothRiemannianMetric 3 M) (hcurv : HasConstantSectionalCurvature3 g 1)
+    (x₀ : M) {γ : ℝ → E3 × E3} {Ψ : E3 → ℝ → E3 × E3}
+    {v : E3} {T tmin tmax speed : ℝ} (hspeed_ne : speed ≠ 0)
+    (hzero : (0 : ℝ) ∈ Icc tmin tmax)
+    (hT : T ∈ Icc tmin tmax)
+    (Aop : (ℝ × ℝ × ℝ) →L[ℝ] (ℝ × ℝ × ℝ))
+    {radius r L K : ℝ≥0}
+    (hpl : ∀ w : E3,
+      IsPicardLindelof
+        (fun _ : ℝ => fun x : ℝ × ℝ × ℝ => Aop x)
+        (tmin := tmin) (tmax := tmax) ⟨(0 : ℝ), hzero⟩
+        ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius r L K)
+    (hAop : ∀ x : ℝ × ℝ × ℝ,
+      Aop x = (2 * x.2.1, x.2.2 - speed ^ 2 * x.1, -2 * speed ^ 2 * x.2.1))
+    (hγ : ∀ s ∈ Icc tmin tmax,
+      HasDerivAt γ
+        (geodesicFlowField (chartChristoffelField g x₀) (γ s)) s)
+    (hΨ : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      HasDerivAt (Ψ w)
+        (linearizedGeodesicFlowFieldAlong
+          (chartChristoffelField g x₀) γ s (Ψ w s)) s)
+    (htarget : ∀ s ∈ Icc tmin tmax,
+      (γ s).1 ∈ (extChartAt I3 x₀).target)
+    (hχone : ∀ s ∈ Icc tmin tmax,
+      ∀ᶠ z' in 𝓝 (γ s).1, cutoff (n := 3) x₀ z' = 1)
+    (hspeed : ∀ s ∈ Icc tmin tmax,
+      CovariantDerivative.chartMetric g.inner x₀
+        (γ s).1 (γ s).2 (γ s).2 = speed ^ 2)
+    (horth : ∀ w : E3,
+      CartanMap.sourceAnchorChartMetric g x₀ v w = 0 →
+        ∀ s ∈ Icc tmin tmax,
+          CovariantDerivative.chartMetric g.inner x₀
+            (γ s).1 (Ψ w s).1 (γ s).2 = 0)
+    (hGd : ∀ s ∈ Icc tmin tmax,
+      DifferentiableAt ℝ (chartGeodesicMetric g x₀) (γ s).1)
+    (hmem : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.normA g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) s,
+        JacobiNormSystem.normB g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) s,
+        JacobiNormSystem.normC g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) s) ∈
+        closedBall ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (hpinnedmem : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.speedPinnedA speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedB speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedC speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s) ∈
+          closedBall ((0 : ℝ), (0 : ℝ),
+            chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+              (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (ha0 : ∀ w : E3,
+      JacobiNormSystem.normA g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) 0 = 0)
+    (hb0 : ∀ w : E3,
+      JacobiNormSystem.normB g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) 0 = 0)
+    (hc0 : ∀ w : E3,
+      JacobiNormSystem.normC g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) 0 =
+        chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+          (T⁻¹ • w) (T⁻¹ • w)) :
+    ∀ w : E3, CartanMap.sourceAnchorChartMetric g x₀ v w = 0 →
+      JacobiNormSystem.normA g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) T =
+        JacobiNormSystem.speedPinnedScale speed T *
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w) := by
+  intro w hw
+  exact
+    source_normA_eq_speed_pinned_on_cutoff_one_Icc
+      (g := g) hcurv (x₀ := x₀) (γ := γ) (Ψ := Ψ w)
+      (tmin := tmin) (tmax := tmax) (speed := speed)
+      (q := chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+        (T⁻¹ • w) (T⁻¹ • w))
+      hspeed_ne hzero Aop (hpl w) hAop hγ (hΨ w) htarget hχone hspeed
+      (horth w hw) hGd (hmem w) (hpinnedmem w) (ha0 w) (hb0 w) (hc0 w) hT
+
+/--
+Speed-generic source endpoint formula for transverse hosted inputs.
+
+This is the non-all-direction replacement for the endpoint feed: the conclusion
+is only for pairs of inputs orthogonal to the radial endpoint vector in the
+source anchor chart metric.
+-/
+theorem source_hosted_transverse_rescaled_endpoint_pairing_eq_speed_pinned_of_interval_norm_package
+    (g : ClosedSmoothRiemannianMetric 3 M) (hcurv : HasConstantSectionalCurvature3 g 1)
+    (x₀ : M) {γ : ℝ → E3 × E3} {Ψ : E3 → ℝ → E3 × E3}
+    {v : E3} {T tmin tmax speed : ℝ} (hspeed_ne : speed ≠ 0)
+    (hzero : (0 : ℝ) ∈ Icc tmin tmax)
+    {aLin rLin LipLin KLin : ℝ≥0}
+    (hplLinear : ∀ w w' : E3,
+      IsPicardLindelof
+        (fun s : ℝ => fun ψ : E3 × E3 =>
+          linearizedGeodesicFlowOperator
+            (chartChristoffelField g x₀) (γ s) ψ)
+        (tmin := tmin) (tmax := tmax) ⟨(0 : ℝ), hzero⟩
+        ((0 : E3), T⁻¹ • (w + w')) aLin rLin LipLin KLin)
+    (hΨderWithin : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      HasDerivWithinAt (Ψ w)
+        (linearizedGeodesicFlowFieldAlong
+          (chartChristoffelField g x₀) γ s (Ψ w s))
+        (Icc tmin tmax) s)
+    (hmem_add : ∀ w w' : E3, ∀ s ∈ Icc tmin tmax,
+      Ψ (w + w') s ∈ closedBall ((0 : E3), T⁻¹ • (w + w')) aLin)
+    (hmem_sum : ∀ w w' : E3, ∀ s ∈ Icc tmin tmax,
+      Ψ w s + Ψ w' s ∈ closedBall ((0 : E3), T⁻¹ • (w + w')) aLin)
+    (hΨ0 : ∀ w : E3, Ψ w 0 = ((0 : E3), T⁻¹ • w))
+    (hT : T ∈ Icc tmin tmax)
+    (hendpoint :
+      (γ T).1 =
+        (expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+    (Aop : (ℝ × ℝ × ℝ) →L[ℝ] (ℝ × ℝ × ℝ))
+    {radius rNorm LNorm KNorm : ℝ≥0}
+    (hplNorm : ∀ w : E3,
+      IsPicardLindelof
+        (fun _ : ℝ => fun x : ℝ × ℝ × ℝ => Aop x)
+        (tmin := tmin) (tmax := tmax) ⟨(0 : ℝ), hzero⟩
+        ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius rNorm LNorm KNorm)
+    (hAop : ∀ x : ℝ × ℝ × ℝ,
+      Aop x = (2 * x.2.1, x.2.2 - speed ^ 2 * x.1, -2 * speed ^ 2 * x.2.1))
+    (hγ : ∀ s ∈ Icc tmin tmax,
+      HasDerivAt γ
+        (geodesicFlowField (chartChristoffelField g x₀) (γ s)) s)
+    (hΨderAt : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      HasDerivAt (Ψ w)
+        (linearizedGeodesicFlowFieldAlong
+          (chartChristoffelField g x₀) γ s (Ψ w s)) s)
+    (htarget : ∀ s ∈ Icc tmin tmax,
+      (γ s).1 ∈ (extChartAt I3 x₀).target)
+    (hχone : ∀ s ∈ Icc tmin tmax,
+      ∀ᶠ z' in 𝓝 (γ s).1, cutoff (n := 3) x₀ z' = 1)
+    (hspeed : ∀ s ∈ Icc tmin tmax,
+      CovariantDerivative.chartMetric g.inner x₀
+        (γ s).1 (γ s).2 (γ s).2 = speed ^ 2)
+    (horth : ∀ w : E3,
+      CartanMap.sourceAnchorChartMetric g x₀ v w = 0 →
+        ∀ s ∈ Icc tmin tmax,
+          CovariantDerivative.chartMetric g.inner x₀
+            (γ s).1 (Ψ w s).1 (γ s).2 = 0)
+    (hGd : ∀ s ∈ Icc tmin tmax,
+      DifferentiableAt ℝ (chartGeodesicMetric g x₀) (γ s).1)
+    (hmemNorm : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.normA g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) s,
+        JacobiNormSystem.normB g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) s,
+        JacobiNormSystem.normC g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) s) ∈
+        closedBall ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (hpinnedmem : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.speedPinnedA speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedB speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedC speed
+          (chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s) ∈
+          closedBall ((0 : ℝ), (0 : ℝ),
+            chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+              (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (ha0 : ∀ w : E3,
+      JacobiNormSystem.normA g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) 0 = 0)
+    (hb0 : ∀ w : E3,
+      JacobiNormSystem.normB g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) 0 = 0)
+    (hc0 : ∀ w : E3,
+      JacobiNormSystem.normC g x₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField g x₀ (γ τ).1) (γ τ).2 (Ψ w τ).1) 0 =
+        chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+          (T⁻¹ • w) (T⁻¹ • w)) :
+    ∀ w w' : E3,
+      CartanMap.sourceAnchorChartMetric g x₀ v w = 0 →
+      CartanMap.sourceAnchorChartMetric g x₀ v w' = 0 →
+        CovariantDerivative.chartMetric g.inner x₀
+            ((expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+            (Ψ w T).1 (Ψ w' T).1 =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.sourceAnchorChartMetric g x₀ (T⁻¹ • w) (T⁻¹ • w') := by
+  intro w w' hw hw'
+  have hcutT : cutoff (n := 3) x₀ (γ T).1 = 1 :=
+    (hχone T hT).self_of_nhds
+  have hquad :
+      ∀ z : E3, CartanMap.sourceAnchorChartMetric g x₀ v z = 0 →
+        JacobiNormSystem.normA g x₀
+            (fun τ : ℝ => (γ τ).1)
+            (fun τ : ℝ => (Ψ z τ).1) T =
+          JacobiNormSystem.speedPinnedScale speed T *
+            chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+              (T⁻¹ • z) (T⁻¹ • z) :=
+    source_hosted_transverse_quadratic_normA_eq_speed_pinned_on_cutoff_one_Icc
+      (g := g) hcurv (x₀ := x₀) (γ := γ) (Ψ := Ψ)
+      (v := v) (T := T) (tmin := tmin) (tmax := tmax) (speed := speed)
+      hspeed_ne hzero hT Aop hplNorm hAop hγ hΨderAt htarget hχone hspeed
+      horth hGd hmemNorm hpinnedmem ha0 hb0 hc0
+  have hwadd : CartanMap.sourceAnchorChartMetric g x₀ v (w + w') = 0 := by
+    simp [hw, hw']
+  have hΨadd0 :
+      Ψ (w + w') 0 = ((0 : E3), T⁻¹ • w + T⁻¹ • w') := by
+    rw [hΨ0 (w + w')]
+    simp [smul_add]
+  have hPairBlended :
+      chartGeodesicMetric g x₀ (γ T).1 (Ψ w T).1 (Ψ w' T).1 =
+        JacobiNormSystem.speedPinnedScale speed T *
+          chartGeodesicMetric g x₀ (extChartAt I3 x₀ x₀)
+            (T⁻¹ • w) (T⁻¹ • w') :=
+    CascadePinned.actual_jacobi_pairing_eq_scalar_of_quadratic_and_linearized_uniqueOn_Icc
+      (g := g) (x₀ := x₀) (γ := γ)
+      (Ψw := Ψ w) (Ψw' := Ψ w') (Ψadd := Ψ (w + w'))
+      (w := T⁻¹ • w) (w' := T⁻¹ • w')
+      (tmin := tmin) (tmax := tmax)
+      (S := JacobiNormSystem.speedPinnedScale speed T) hzero
+      (a := aLin) (r := rLin) (L := LipLin) (K := KLin)
+      (hpl := by simpa [smul_add] using hplLinear w w')
+      (hΨw := hΨderWithin w) (hΨw' := hΨderWithin w')
+      (hΨadd := hΨderWithin (w + w'))
+      (hmem_add := by simpa [smul_add] using hmem_add w w')
+      (hmem_sum := by simpa [smul_add] using hmem_sum w w')
+      (hΨw0 := hΨ0 w) (hΨw'0 := hΨ0 w') (hΨadd0 := hΨadd0)
+      (ht := hT) (hquad_w := hquad w hw) (hquad_w' := hquad w' hw')
+      (hquad_add := by simpa [smul_add] using hquad (w + w') hwadd)
+  have hPairChart :
+      CovariantDerivative.chartMetric g.inner x₀ (γ T).1
+          (Ψ w T).1 (Ψ w' T).1 =
+        JacobiNormSystem.speedPinnedScale speed T *
+          CartanMap.sourceAnchorChartMetric g x₀ (T⁻¹ • w) (T⁻¹ • w') :=
+    CascadePinned.chartMetric_pairing_eq_pinned_of_blended_pairing
+      (g := g) (x₀ := x₀) (z := (γ T).1)
+      (J := (Ψ w T).1) (J' := (Ψ w' T).1)
+      (w := T⁻¹ • w) (w' := T⁻¹ • w')
+      (S := JacobiNormSystem.speedPinnedScale speed T) hcutT hPairBlended
+  simpa [hendpoint] using hPairChart
+
 end SpeedSource
 
 end SourcePackage
@@ -1580,6 +1871,156 @@ theorem target_hosted_rescaled_endpoint_pairing_eq_speed_pinned_of_interval_norm
   intro w w'
   simpa [CartanMap.sourceAnchorChartMetric, CartanMap.targetAnchorChartMetric]
     using h w w'
+
+/--
+Speed-generic target endpoint formula for transverse hosted inputs.
+
+This mirrors the source transverse variant, with transversality measured by the
+round-sphere anchor chart metric.
+-/
+theorem target_hosted_transverse_rescaled_endpoint_pairing_eq_speed_pinned_of_interval_norm_package
+    (p₀ : RoundSphere3) {γ : ℝ → E3 × E3} {Ψ : E3 → ℝ → E3 × E3}
+    {v : E3} {T tmin tmax speed : ℝ} (hspeed_ne : speed ≠ 0)
+    (hzero : (0 : ℝ) ∈ Icc tmin tmax)
+    {aLin rLin LipLin KLin : ℝ≥0}
+    (hplLinear : ∀ w w' : E3,
+      IsPicardLindelof
+        (fun s : ℝ => fun ψ : E3 × E3 =>
+          linearizedGeodesicFlowOperator
+            (chartChristoffelField roundSphereMetric3 p₀) (γ s) ψ)
+        (tmin := tmin) (tmax := tmax) ⟨(0 : ℝ), hzero⟩
+        ((0 : E3), T⁻¹ • (w + w')) aLin rLin LipLin KLin)
+    (hΨderWithin : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      HasDerivWithinAt (Ψ w)
+        (linearizedGeodesicFlowFieldAlong
+          (chartChristoffelField roundSphereMetric3 p₀) γ s (Ψ w s))
+        (Icc tmin tmax) s)
+    (hmem_add : ∀ w w' : E3, ∀ s ∈ Icc tmin tmax,
+      Ψ (w + w') s ∈ closedBall ((0 : E3), T⁻¹ • (w + w')) aLin)
+    (hmem_sum : ∀ w w' : E3, ∀ s ∈ Icc tmin tmax,
+      Ψ w s + Ψ w' s ∈ closedBall ((0 : E3), T⁻¹ • (w + w')) aLin)
+    (hΨ0 : ∀ w : E3, Ψ w 0 = ((0 : E3), T⁻¹ • w))
+    (hT : T ∈ Icc tmin tmax)
+    (hendpoint :
+      (γ T).1 =
+        (expAtChartOpenPartialHomeomorph (g := roundSphereMetric3) p₀) v)
+    (Aop : (ℝ × ℝ × ℝ) →L[ℝ] (ℝ × ℝ × ℝ))
+    {radius rNorm LNorm KNorm : ℝ≥0}
+    (hplNorm : ∀ w : E3,
+      IsPicardLindelof
+        (fun _ : ℝ => fun x : ℝ × ℝ × ℝ => Aop x)
+        (tmin := tmin) (tmax := tmax) ⟨(0 : ℝ), hzero⟩
+        ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius rNorm LNorm KNorm)
+    (hAop : ∀ x : ℝ × ℝ × ℝ,
+      Aop x = (2 * x.2.1, x.2.2 - speed ^ 2 * x.1, -2 * speed ^ 2 * x.2.1))
+    (hγ : ∀ s ∈ Icc tmin tmax,
+      HasDerivAt γ
+        (geodesicFlowField (chartChristoffelField roundSphereMetric3 p₀) (γ s)) s)
+    (hΨderAt : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      HasDerivAt (Ψ w)
+        (linearizedGeodesicFlowFieldAlong
+          (chartChristoffelField roundSphereMetric3 p₀) γ s (Ψ w s)) s)
+    (htarget : ∀ s ∈ Icc tmin tmax,
+      (γ s).1 ∈ (extChartAt I3 p₀).target)
+    (hχone : ∀ s ∈ Icc tmin tmax,
+      ∀ᶠ z' in 𝓝 (γ s).1, cutoff (n := 3) p₀ z' = 1)
+    (hspeed : ∀ s ∈ Icc tmin tmax,
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+        (γ s).1 (γ s).2 (γ s).2 = speed ^ 2)
+    (horth : ∀ w : E3,
+      CartanMap.targetAnchorChartMetric p₀ v w = 0 →
+        ∀ s ∈ Icc tmin tmax,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            (γ s).1 (Ψ w s).1 (γ s).2 = 0)
+    (hGd : ∀ s ∈ Icc tmin tmax,
+      DifferentiableAt ℝ (chartGeodesicMetric roundSphereMetric3 p₀) (γ s).1)
+    (hmemNorm : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.normA roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) s,
+        JacobiNormSystem.normB roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField roundSphereMetric3 p₀ (γ τ).1)
+                (γ τ).2 (Ψ w τ).1) s,
+        JacobiNormSystem.normC roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField roundSphereMetric3 p₀ (γ τ).1)
+                (γ τ).2 (Ψ w τ).1) s) ∈
+        closedBall ((0 : ℝ), (0 : ℝ),
+          chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+            (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (hpinnedmem : ∀ w : E3, ∀ s ∈ Icc tmin tmax,
+      (JacobiNormSystem.speedPinnedA speed
+          (chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedB speed
+          (chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s,
+        JacobiNormSystem.speedPinnedC speed
+          (chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+            (T⁻¹ • w) (T⁻¹ • w)) s) ∈
+          closedBall ((0 : ℝ), (0 : ℝ),
+            chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+              (T⁻¹ • w) (T⁻¹ • w)) radius)
+    (ha0 : ∀ w : E3,
+      JacobiNormSystem.normA roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1) 0 = 0)
+    (hb0 : ∀ w : E3,
+      JacobiNormSystem.normB roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ => (Ψ w τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField roundSphereMetric3 p₀ (γ τ).1)
+                (γ τ).2 (Ψ w τ).1) 0 = 0)
+    (hc0 : ∀ w : E3,
+      JacobiNormSystem.normC roundSphereMetric3 p₀
+          (fun τ : ℝ => (γ τ).1)
+          (fun τ : ℝ =>
+            (Ψ w τ).2 +
+              (chartChristoffelField roundSphereMetric3 p₀ (γ τ).1)
+                (γ τ).2 (Ψ w τ).1) 0 =
+        chartGeodesicMetric roundSphereMetric3 p₀ (extChartAt I3 p₀ p₀)
+          (T⁻¹ • w) (T⁻¹ • w)) :
+    ∀ w w' : E3,
+      CartanMap.targetAnchorChartMetric p₀ v w = 0 →
+      CartanMap.targetAnchorChartMetric p₀ v w' = 0 →
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            ((expAtChartOpenPartialHomeomorph (g := roundSphereMetric3) p₀) v)
+            (Ψ w T).1 (Ψ w' T).1 =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.targetAnchorChartMetric p₀ (T⁻¹ • w) (T⁻¹ • w') := by
+  have horthSource : ∀ w : E3,
+      CartanMap.sourceAnchorChartMetric roundSphereMetric3 p₀ v w = 0 →
+        ∀ s ∈ Icc tmin tmax,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            (γ s).1 (Ψ w s).1 (γ s).2 = 0 := by
+    intro w hw
+    exact horth w (by
+      simpa [CartanMap.sourceAnchorChartMetric, CartanMap.targetAnchorChartMetric] using hw)
+  have hsource :=
+    SourcePackage.source_hosted_transverse_rescaled_endpoint_pairing_eq_speed_pinned_of_interval_norm_package
+      (g := roundSphereMetric3) roundSphereMetric3_hasConstantSectionalCurvature_one
+      (x₀ := p₀) (γ := γ) (Ψ := Ψ) (v := v)
+      (T := T) (tmin := tmin) (tmax := tmax) (speed := speed)
+      hspeed_ne hzero hplLinear hΨderWithin hmem_add hmem_sum hΨ0 hT
+      hendpoint Aop hplNorm hAop hγ hΨderAt htarget hχone hspeed
+      horthSource hGd hmemNorm hpinnedmem ha0 hb0 hc0
+  intro w w' hw hw'
+  have hws : CartanMap.sourceAnchorChartMetric roundSphereMetric3 p₀ v w = 0 := by
+    simpa [CartanMap.sourceAnchorChartMetric, CartanMap.targetAnchorChartMetric] using hw
+  have hw's : CartanMap.sourceAnchorChartMetric roundSphereMetric3 p₀ v w' = 0 := by
+    simpa [CartanMap.sourceAnchorChartMetric, CartanMap.targetAnchorChartMetric] using hw'
+  simpa [CartanMap.sourceAnchorChartMetric, CartanMap.targetAnchorChartMetric]
+    using hsource w w' hws hw's
 
 end SpeedTarget
 
