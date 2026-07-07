@@ -213,6 +213,7 @@ import Poincare.Global.FTransition
 import Poincare.Global.GermAndField
 import Poincare.Global.SecondVariation
 import Poincare.Global.SecondFlowDerivative
+import Poincare.Global.SecondDischarge
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

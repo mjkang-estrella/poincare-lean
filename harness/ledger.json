@@ -3384,12 +3384,25 @@
       "deps": [
         "M5-glob-31"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/SecondDischarge.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: augmented ODE + PL solutions + augmented remainders + Lipschitz -> the derivative at geodesic data -> fderiv F differentiable."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): augmented ODE instantiation + compact Lipschitz discharged. Remaining: directional-to-Frechet for the D field -> glob-33 (the first-order upgrade pattern at order two)."
+    },
+    {
+      "id": "M5-glob-33",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-32"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/SecondFrechet.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: second-variation CLM (linearity by uniqueness) + direction-uniform remainders -> HasFDerivAt D -> THE F-TRANSITION UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
