@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-40: the endpoint bridge — the augmented data at the ball points
+
+Context: `harness/reports/M5-glob-39_blocked.md` (READ FIRST — the VERBATIM demands: the open endpoint field agreement + `HasFDerivAt endpoint CLM (eM v)` + `ContDiffAt ℝ 2 F (eM v)` from the augmented data). PROVEN: the full assembly GIVEN these (`FTransitionDone.lean`); the augmented derivative theorem at the geodesic data (`SecondDischarge.lean` — its conclusion form); the ballwise identification (`DerivativeUnique.lean`). THE BRIDGE: (1) instantiate `SecondDischarge`'s theorem AT the ball points `eM v` (the hosted data covers them — the radius intersections from the selector chain; supply the side conditions the theorem carries — the `UniformShrink/CoefficientShrink` bounds); (2) convert its conclusion form to `HasFDerivAt (endpoint family) (CLM) (eM v)` (the directional-to-Fréchet machinery — `ConcreteResidual/DFrechetUpgrade` + `SecondFrechet`'s CLM — the shapes were built to match); (3) `ContDiffAt ℝ 2 F` — F differentiable (strict derivatives) with differentiable derivative (the bridge's own conclusion) ⟹ `ContDiffAt 2` via `contDiffAt_two_iff`-shaped characterization (or the `ContDiffAt.of_hasFDerivAt` chain — check Mathlib's API for assembling C² from two derivative levels; continuity of the second derivative from the residual bounds if demanded). FEED → `FTransitionDone`'s assembly → 🎯 THE F-TRANSITION LAW UNCONDITIONAL. Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-40_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/EndpointBridge.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.EndpointBridge` and report the actual result. Commit your work.
