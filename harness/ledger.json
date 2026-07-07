@@ -2233,12 +2233,25 @@
       "deps": [
         "M5-rigid-52"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ChristoffelCollapse.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: haccCollapse (definitional term-match or pinned cancellation) -> action equations unconditional -> compose onward."
+      "result": "DONE-AS-REFUTATION 2026-07-07 (gate PASS, 4th refutation): haccCollapse FALSE at general states (sphere pin: -5/8 vs -4). Resolution: the collapse is RAY-RESTRICTED (cutoff-one zone Gamma structure along the central ray, where the sin formula was proven) -> rigid-54."
+    },
+    {
+      "id": "M5-rigid-54",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-53"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CollapseOnRay.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: ray-restricted collapse from the zone facts (pin at the ray state first) -> feed rigid-52 -> compose to cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

@@ -125,6 +125,7 @@ import Poincare.Global.CartanIsometryDone
 import Poincare.Global.HarmonicHosted
 import Poincare.Global.AccelerationIdentity
 import Poincare.Global.CartanTheIsometry
+import Poincare.Global.ChristoffelCollapse
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

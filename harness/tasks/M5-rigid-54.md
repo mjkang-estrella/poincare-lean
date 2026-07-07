@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-54: the collapse ON THE RAY — where the zone makes it true
+
+Context: `harness/reports/M5-rigid-53_blocked.md` (READ FIRST): `haccCollapse` is REFUTED at general states (`sphereChristoffel_refutes_haccCollapse_at_unit_transverse_state`, `ChristoffelCollapse.lean` — correction −5/8 vs −4). THE RESOLUTION: the harmonic/Jacobi sin formula (`jacobi_position_eq_sin_smul_on_Icc`, `JacobiOscillator.lean`) was proven IN THE CUTOFF-ONE ZONE — READ its proof context and `ChartCurvatureBridgeZone/ZoneClose.lean`: the zone construction gives special Christoffel structure ALONG THE CENTRAL RAY (Γ-vanishing or the KN normalization along the anchor ray). The TRUE collapse statement is RAY-RESTRICTED: at states `(z(t), V(t), Φ(t), Φ'(t))` ALONG the cutoff-one central geodesic ray — where the zone identities make the corrections collapse. RESTATE `haccCollapse` on the ray (the hosted flow IS the central ray — the `(u,T)` data lives there, `CartanHomogeneity.lean`), prove it from the zone facts, and feed rigid-52's theorems (their hypotheses quantify at the hosted states — exactly the ray states). ⚠️ PIN FIRST on the sphere AT THE RAY STATE: verify the collapse value matches there (it must — the sin formula holds on the sphere). Then compose onward: action equations → equivalence upgrade → blocks → the bridge → 🎯 `cartanMap_isLocalIsometry`.
+
+Deliverables in a NEW file `Poincare/Global/CollapseOnRay.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial: the ray collapse alone is the prize; ONE isolated statement max. Report `harness/reports/M5-rigid-54_{done|blocked}.md` with the pin outcome.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CollapseOnRay` and report the actual result. Commit your work.
