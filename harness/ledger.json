@@ -1367,12 +1367,12 @@
         "M5-geo-36",
         "M5-model-8"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanMap.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-06: RIGIDITY OPENER — tangent-aligning LinearIsometryEquiv + cartanMap through the two exp local homeos + local-homeo properties; Jacobi comparison roadmapped."
+      "result": "STRICT-PARTIAL 2026-07-06 (gate PASS): cartanMap opener COMPLETE parameterized — TangentAlignment structure, source/target metric lemmas, composed OpenPartialHomeomorph, anchor lemmas, source-target homeomorphism. Blocked only on Nonempty(TangentAlignment) (Gram-Schmidt linear algebra) -> rigid-2. Jacobi sin-comparison roadmap recorded."
     },
     {
       "id": "M2-heat-4",
@@ -1386,6 +1386,19 @@
       ],
       "difficulty": "hard",
       "result": "DISPATCHED 2026-07-06: integral-one + convolution heatSolution + approximate identity (fundamental-solution properties)."
+    },
+    {
+      "id": "M5-rigid-2",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-1"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TangentAlignmentExists.lean"
+      ],
+      "difficulty": "medium",
+      "result": "DISPATCHED 2026-07-06: alignment existence (two pos-def forms are linearly isometric) -> unconditional Cartan opener."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."
