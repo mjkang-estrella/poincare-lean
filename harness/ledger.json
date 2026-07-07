@@ -3084,12 +3084,25 @@
       "deps": [
         "M5-glob-8"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/OffAnchorNaturality.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: off-anchor naturality (reanchor laws or determinacy route) -> re-centering EqOn -> the chain fires."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the off-anchor bridge (naturality FROM compatibility). THE CRITICAL PATH = the parked double-anchor reanchor law -> glob-10 (Koszul plan; the derivative/uniqueness arsenal built since parking)."
+    },
+    {
+      "id": "M5-glob-10",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-9"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ReanchorLawFinal.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: THE PARKED WALL — chart-covariance of the geodesic ODE (Christoffel transition) + PL uniqueness -> the reanchor law -> the chain fires."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
