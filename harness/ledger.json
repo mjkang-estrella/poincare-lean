@@ -2731,12 +2731,25 @@
       "deps": [
         "M5-rigid-90"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/AssemblyDone.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: membership into SolutionsFeed -> transverse blocks complete -> the assembly -> cartanMap_isLocalIsometry."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS, 746 lines): BOTH enriched transverse blocks with Gronwall membership. ONE mismatch: separate Ts/Tt hosted times -> rigid-92 (common-time re-export or retiming; speed*time is alignment-invariant)."
+    },
+    {
+      "id": "M5-rigid-92",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-91"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CommonTime.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: common working scale (min delta / metric-norm time) or retiming via invariant speed*time -> the consumer fires -> cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
