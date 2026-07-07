@@ -248,6 +248,7 @@ import Poincare.Global.TheSelector
 import Poincare.Global.TwoConnectors
 import Poincare.Global.OmegaRescale
 import Poincare.Global.CenteredMembership
+import Poincare.Global.SelectorAssembly
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
