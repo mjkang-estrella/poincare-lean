@@ -2379,12 +2379,25 @@
       "deps": [
         "M5-rigid-63"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/IsometryInstantiate.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: discharge the interval/norm packages at the hosted data -> the two feeds -> THE LOCAL ISOMETRY with no pairing hypotheses."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): instantiation helpers (germ packaging, derivative upgrades). ONE field: hunit (speed package for actual hosted curves) -> rigid-65 (constant speed + normalization, or speed-s package variant)."
+    },
+    {
+      "id": "M5-rigid-65",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-64"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/SpeedPackage.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: discharge hunit (constant speed + anchor-norm hosting or speed-s variant) -> the feeds instantiate -> THE LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
