@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-27: the differential field — pointwise derivatives assembled
+
+Context: `harness/reports/M5-glob-26_blocked.md` (READ FIRST — the VERBATIM neighborhood-level demand). PROVEN: the generic LC naturality algebra (`LCNaturality.lean`); THE POINTWISE DATA EXISTS QUANTIFIED: `RigidityComplete.cartanMap_isLocalIsometry` gives, for EVERY `v` in the punctured shrunk ball, equivalences `A_v B_v` with the strict derivative at `v` AND the pullback at `v` (choice over the quantifier: `Classical.choice`/`fun v => (theorem v).choose`-shaped selection). THE FIELD: define `DF : v ↦ (cartanChartDifferential L (A_v) (B_v))` by choice; its DEFINING properties hold pointwise (each `v`'s strict derivative + pullback — the `choose_spec`s); the differentiated-pullback hypothesis of `LCNaturality`'s theorem needs the pullback identity DIFFERENTIATED — the pullback holds on the OPEN punctured ball as a function identity (each side evaluated with the FIELD — check `LCNaturality`'s exact hypothesis: if it demands `fderiv` of the composite metric expression, derive from the pointwise strict derivatives via `PullbackDifferentiate.lean`'s pattern — the abstract hdiff with `sigma := cartanChartMap`, whose derivative is the FIELD at each point — strict derivatives give the local `HasFDerivAt` everywhere on the ball, hence the differentiability of the composite). ASSEMBLE → `LCNaturality` instantiated at the Cartan data → THE F-TRANSITION LAW → geodesic preservation (`SideConditions/ChainRuleInput` pattern with F) → exp-naturality anywhere. Strict-partial; ONE isolated statement max. Report `harness/reports/M5-glob-27_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/DifferentialField.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.DifferentialField` and report the actual result. Commit your work.

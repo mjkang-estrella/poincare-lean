@@ -3306,12 +3306,25 @@
         "M5-glob-25",
         "M5-glob-18"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/LCNaturality.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the transition-law machinery replayed with F and the proven pullback -> F-transition law -> geodesics to geodesics -> exp-naturality anywhere -> RigidStepCompatibleWith."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the generic LC/Christoffel signed-transport algebra from a differentiated pullback. Missing: the Cartan differential FIELD -> glob-27 (choice-assemble the quantified pointwise derivatives)."
+    },
+    {
+      "id": "M5-glob-27",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-26"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DifferentialField.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: DF by choice + pointwise specs -> differentiated pullback on the ball -> LCNaturality instantiated -> F-transition -> geodesic preservation."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

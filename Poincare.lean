@@ -207,6 +207,7 @@ import Poincare.Global.RaysToBall
 import Poincare.Global.RayCoverInputs
 import Poincare.Global.TwoBridges
 import Poincare.Global.TargetRayIdentity
+import Poincare.Global.LCNaturality
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
