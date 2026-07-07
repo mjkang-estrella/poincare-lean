@@ -3266,12 +3266,25 @@
       "deps": [
         "M5-glob-22"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/RayCoverInputs.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: pointwise ray decomposition (homeo symm) + velocity identification (induced alignment) -> the assembler fires -> THE CHAIN THEOREM."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): chart-coordinate ray identities. Two bridges -> glob-24 (chart-to-manifold expAt identity + pointwise velocity identification)."
+    },
+    {
+      "id": "M5-glob-24",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-23"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TwoBridges.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: expAt definition unfolding + InducedAlignment's defining action -> the assembler fires -> RigidStepCompatibleWith -> the chain."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

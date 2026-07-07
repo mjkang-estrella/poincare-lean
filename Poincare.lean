@@ -204,6 +204,7 @@ import Poincare.Global.SideConditions
 import Poincare.Global.ChainRuleInput
 import Poincare.Global.NaturalityCascade
 import Poincare.Global.RaysToBall
+import Poincare.Global.RayCoverInputs
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
