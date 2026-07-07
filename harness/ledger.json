@@ -3410,12 +3410,25 @@
       "deps": [
         "M5-glob-33"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/DFrechetUpgrade.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: residual upgrade at order two (ExponentialStrictClose pattern) -> HasFDerivAt D -> THE F-TRANSITION UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): clmField_hasFDerivAt_of_residual_norm_le — the abstract upgrade. Remaining: the concrete residual for DF -> glob-35 (augmented remainders + opNorm over directions)."
+    },
+    {
+      "id": "M5-glob-35",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-34"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ConcreteResidual.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: DF differences = flow-derivative differences controlled by the augmented remainders -> the upgrade fires -> F-TRANSITION UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
