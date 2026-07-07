@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-103: the scaled upgrade — positive scale preserves injectivity
+
+Context: `harness/reports/M5-rigid-102_blocked.md` (READ FIRST — the pin outcome + the corrected two-sided relation + the remaining equivalence demand). PROVEN: the exact-unscaled pullback is FALSE (refutation #8); the TRUE relation is the sin²-scaled two-sided identity (`ScalarPin.lean`'s corrected adapter); `PairingUpgrade.lean`'s theorem demands the EXACT unscaled form. THE FIX (additive variant): the SCALED positive-definite upgrade — if `G_target(Φu, Φu') = c·G_source(u, u')` with `c > 0` (the shared sine-square factor — nonzero on the shrunk ball where `sT < π`), then `Φu = 0 ⟹ c·G_source(u,u) = 0 ⟹ u = 0` — the SAME injectivity/bijectivity/CLE argument with one positive scalar threaded (replay `PairingUpgrade.lean`'s proof with `c`; `c > 0` from `Real.sin_pos` on the shrunk interval — shrink so `sT < π`, the hosted data allows). Also (if the final consumer's `hA/hB` shapes demand the exact-unscaled pullbacks downstream, check whether the CONSUMER equally accepts the scaled form — the pullback identity target is itself scaled consistently — restate additively as needed). Then: the equivalences exist at the selector's datum (the corrected adapter + the threaded side conditions from `ScalarPin.lean`'s `hplNorm` constructors + `UniformShrink/GronwallMembership.lean`) → 🎯 `cartanMap_isLocalIsometry` (curvature-only). If ONE resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/ScaledUpgrade.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-103_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.ScaledUpgrade` and report the actual result. Commit your work.
