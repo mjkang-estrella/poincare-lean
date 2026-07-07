@@ -3800,12 +3800,25 @@
       "deps": [
         "M5-glob-63"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/TwoConnectors.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: Xi selector + homogeneous rescale of Omega to all perturbations -> the transfer unconditional -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the Xi selector on the PL ball. The Omega rescale -> glob-65 (the SolutionsFeed dissolution at level three: additivity + homogeneous extension)."
+    },
+    {
+      "id": "M5-glob-65",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-64"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/OmegaRescale.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: third-variation additivity + rescale -> all-perturbation family -> the CLM package -> the transfer -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

@@ -245,6 +245,7 @@ import Poincare.Global.HostedCLM
 import Poincare.Global.ContinuityPackages
 import Poincare.Global.IndexedSelection
 import Poincare.Global.TheSelector
+import Poincare.Global.TwoConnectors
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
