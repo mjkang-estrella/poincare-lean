@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-24: THE NORM-SYSTEM ODE — the classical route to the Jacobi norm
+
+Context: five tasks have sought the bilinear endpoint pairing as a primitive; the classical proof goes through the CLOSED SCALAR SYSTEM instead. ORCHESTRATOR ROUTE (follow it):
+1. QUADRATIC FIRST: for a transverse Jacobi field `J` along a unit-speed geodesic of `g` with `HasConstantSectionalCurvature3 g 1`, define the three scalars `a(t) = G(z t)(J t, J t)`, `b(t) = G(z t)(J t, J' t)`, `c(t) = G(z t)(J' t, J' t)` (the ENDPOINT metric on the TIME-VARYING field values — J and J' are explicit chart curves from the linearized flow `GeodesicLinearized/GeodesicFlowDerivative.lean`). Their derivatives CLOSE: `a' = 2b` (metric compatibility along the curve applied to the FIELD — the same compatibility pairing identity that proved constant speed, `chartChristoffelField_pairing_eq_blendedChartMetric` in `GeodesicSpeed.lean`, now with the Jacobi field in the slots — the Γ-corrections are exactly what compatibility supplies); `b' = c − a` (compatibility + the Jacobi equation `J'' = −J`, `JacobiOscillator.lean`'s covariant oscillator); `c' = −2b` (same). MIND the covariant-vs-coordinate bookkeeping: the compatibility identity converts coordinate derivatives of the metric pairing into covariant-derivative pairings — the covariant J-derivatives are what the oscillator controls; derive carefully on paper first and PIN the system against the sphere (a=sin², b=sin·cos, c=cos² must solve it: a'=2b ✓, b'=cos²−sin² ✓, c'=−2 sin cos ✓).
+2. UNIQUENESS: the linear 3×3 system with initial data `(0, |w|²_anchor, |w|²_anchor)`... derive the correct initial values (J(0)=0, J'(0)=w gives a(0)=0, b(0)=0? b(0)=G(z0)(0,w)=0, c(0)=|w|²_anchor) — solution `(sin²·|w|², sin·cos·|w|², cos²·|w|²)` by the ODE uniqueness machinery (`GeodesicLinearized.lean`/`CoefficientEvolution.lean`).
+3. POLARIZE: the flow derivative is LINEAR in the direction (`Ψ` linear in `w` — the linearized system is linear; check/prove `J_{w+w'} = J_w + J_{w'}` from linearized-flow uniqueness), so bilinear pairings = polarization of the quadratic `a`-values: `G(J_w, J_{w'}) = ½(a_{w+w'} − a_w − a_{w'}) = sin²t·⟨w,w'⟩_anchor`.
+4. THE COEFFICIENT FORMULAS + (if it closes) the exp-chart pullback and the local isometry (`CartanNormalCoords.lean`'s conjugation makes the map linear there).
+
+Deliverables in a NEW file `Poincare/Global/JacobiNormSystem.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per stage; report `harness/reports/M5-rigid-24_{done|blocked}.md` with the pinning outcome.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.JacobiNormSystem` and report the actual result. Commit your work.
