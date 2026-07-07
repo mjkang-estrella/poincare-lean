@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-69: horth — pin the all-direction claim, prove the transverse truth
+
+Context: `harness/reports/M5-rigid-68_blocked.md` (READ FIRST — the verbatim `horth`): all-direction endpoint orthogonality `G((γ s))(Ψ_w(s).1, (γ s).2) = 0` for ∀ w. ⚠️ PIN FIRST: for RADIAL `w` (w ∥ the initial velocity), the Jacobi field is the radial variation (`Ψ_v(t) ~ t·γ'(t)`-shaped by homogeneity differentiation) and its pairing with the velocity is `t·speed²` ≠ 0 — the ∀-w claim is likely FALSE (verify on the sphere or via the ray-law derivative + constant speed — cheap). THE TRUTH: orthogonality holds for TRANSVERSE `w` (`G(anchor)(w, v) = 0`) — this IS the integrated transverse Gauss law: `GaussLemmaIntegrated.lean` + the payload-discharged versions (`SmoothDependenceDischarge.lean` — the pointwise transverse Gauss + integrated bridge were proven THERE for exactly this). THE FIX: (1) locate `horth`'s consumer in `SpeedGeneric.lean` — check whether its PROOF only needs transverse `w` (the norm-system/pairing arguments decompose radial/transverse — the radial part is handled by the speed facts); if so ADD the transverse-restricted variant (additive edit to `SpeedGeneric.lean` — new variant, no changes to existing statements); (2) DISCHARGE the transverse `horth` from the integrated Gauss machinery at the hosted data; (3) continue the instantiation (`TheLocalIsometry.lean`'s facts + the new variant) → 🎯 `cartanMap_isLocalIsometry`. If ONE resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/OrthogonalityFeed.lean` (+ sanctioned additive edits to `SpeedGeneric.lean` only). Report `harness/reports/M5-rigid-69_{done|blocked}.md` with the pin outcome.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.OrthogonalityFeed Poincare.Global.SpeedGeneric` (BOTH must pass) and report the actual result. Commit your work.
