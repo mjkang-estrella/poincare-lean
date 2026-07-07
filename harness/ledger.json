@@ -1844,12 +1844,25 @@
       "deps": [
         "M5-rigid-23"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/JacobiNormSystem.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: the (|J|^2, <J,J'>, |J'|^2) closed system (compatibility-along-curve + oscillator) + uniqueness + polarization -> the coefficient formulas -> local isometry."
+      "result": "DONE 2026-07-07 (gate PASS): THE NORM SYSTEM — chart compatibility for time-varying fields, a'=2b / b'=c-a / c'=-2b, sine/cosine pinning (initial tuple corrected to (0,0,|w|^2)), polarization algebra. The 5-task bilinear orbit BROKEN by the scalar route. Glue: (J,K) vs (J,D_tJ) identification -> rigid-25."
+    },
+    {
+      "id": "M5-rigid-25",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-24"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/JacobiNormClose.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: state identification + oscillator through the bookkeeping + ODE packaging -> a = sin^2 |w|^2 -> coefficient formulas -> local isometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-25: the state identification — the norm system feeds the coefficients
+
+Context: `harness/reports/M5-rigid-24_blocked.md` (READ FIRST). THE NORM SYSTEM IS PROVEN (`JacobiNormSystem.lean`: chart compatibility for time-varying fields, `a'=2b`, `b'=c−a`, `c'=−2b`, sine/cosine pinning with initial tuple `(0,0,|w|²)`, polarization algebra). The remaining glue, per the report: (i) identify the chart-linearized state `(J, K)` (`GeodesicLinearized/GeodesicFlowDerivative.lean`) with the covariant pair `(J, D_t J)` that `normB`/`normC` use — the covariant/coordinate bookkeeping (the zone machinery `ChartCurvatureBridgeZoneClose.lean` and `SmoothDependenceDischarge.lean`'s mixed `J' = K` are the tools; K IS the coordinate derivative, and D_t J = K + Γ-correction — the correction is exactly what the compatibility identity already accounts for — CHECK whether the norm system was stated against coordinate or covariant derivatives and reconcile); (ii) run the oscillator input (`coordinateCovariantJacobiSecond_chartChristoffelField_eq_neg_at_state`, `JacobiOscillator.lean`) through that bookkeeping on the honest interval; (iii) package via the ODE uniqueness (`CoefficientEvolution.lean`) into: `a(t) = sin²t·|w|²`, then polarize (proven algebra) → THE EXP-CHART COEFFICIENT FORMULAS; (iv) if it closes: the exp-chart pullback via the linearity conjugation (`CartanNormalCoords.lean`) → 🎯 THE LOCAL ISOMETRY.
+
+Deliverables in a NEW file `Poincare/Global/JacobiNormClose.lean` (do NOT edit existing files, incl. `Poincare.lean`). Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-rigid-25_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.JacobiNormClose` and report the actual result. Commit your work.
