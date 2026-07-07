@@ -165,6 +165,7 @@ import Poincare.Global.MembershipBound
 import Poincare.Global.GronwallMembership
 import Poincare.Global.AssemblyDone
 import Poincare.Global.CommonTime
+import Poincare.Global.MasterBundle
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
