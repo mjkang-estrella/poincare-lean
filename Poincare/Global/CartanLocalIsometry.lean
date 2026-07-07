@@ -50,6 +50,77 @@ def targetScaledNormalVector
 def transverseScale (v : E) : ℝ :=
   Real.sin ‖v‖ / ‖v‖
 
+/--
+Source endpoint metric expansion at one normal-coordinate vector.  This is the
+exact source-side field required by the Cartan pullback algebra.
+-/
+structure SourceEndpointExpansion
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) (v : E) : Prop where
+  metric :
+    ∀ u u' : E,
+      CovariantDerivative.chartMetric g.inner x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          u u' =
+        CartanMap.sourceAnchorChartMetric g x₀
+          (sourceScaledNormalVector g x₀ 1 (transverseScale v) v u)
+          (sourceScaledNormalVector g x₀ 1 (transverseScale v) v u')
+
+/--
+Target endpoint metric expansion at the aligned round-sphere endpoint.  This
+is stated on the scaled target vectors, before substituting the chain-rule
+differential.
+-/
+structure TargetEndpointExpansion
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀) (v : E) : Prop where
+  metric :
+    ∀ u u' : E,
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))
+          (targetScaledNormalVector L 1 (transverseScale v) v u)
+          (targetScaledNormalVector L 1 (transverseScale v) v u') =
+        CartanMap.targetAnchorChartMetric p₀
+          (targetScaledNormalVector L 1 (transverseScale v) v u)
+          (targetScaledNormalVector L 1 (transverseScale v) v u')
+
+/--
+The endpoint expansion bundle consumed by the rigid-11 Cartan local-isometry
+proof: source and target endpoint metrics have the same radial factor `1` and
+transverse factor `sin ‖v‖ / ‖v‖`.
+-/
+structure EndpointExpansionBundle
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀) (v : E) : Prop where
+  sourceExpansion : SourceEndpointExpansion g x₀ v
+  targetExpansion : TargetEndpointExpansion L v
+
+/-- Constructor for the endpoint expansion bundle from its two metric fields. -/
+theorem endpointExpansionBundle_of_metric_expansions
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀) (v : E)
+    (hsource :
+      ∀ u u' : E,
+        CovariantDerivative.chartMetric g.inner x₀
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+            u u' =
+          CartanMap.sourceAnchorChartMetric g x₀
+            (sourceScaledNormalVector g x₀ 1 (transverseScale v) v u)
+            (sourceScaledNormalVector g x₀ 1 (transverseScale v) v u'))
+    (htarget :
+      ∀ u u' : E,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p₀) (L v))
+            (targetScaledNormalVector L 1 (transverseScale v) v u)
+            (targetScaledNormalVector L 1 (transverseScale v) v u') =
+          CartanMap.targetAnchorChartMetric p₀
+            (targetScaledNormalVector L 1 (transverseScale v) v u)
+            (targetScaledNormalVector L 1 (transverseScale v) v u')) :
+    EndpointExpansionBundle L v where
+  sourceExpansion := ⟨hsource⟩
+  targetExpansion := ⟨htarget⟩
+
 /-- The strict chart differential obtained from the Cartan chain rule. -/
 def cartanChartDifferential
     {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
@@ -151,6 +222,26 @@ theorem cartanMap_chart_pullback_identity
     hsource htarget
 
 /--
+Pointwise Cartan pullback identity from the bundled endpoint expansions.
+-/
+theorem cartanMap_chart_pullback_identity_of_endpointExpansionBundle
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀)
+    (v u u' : E) (hexpansion : EndpointExpansionBundle L v) :
+    CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p₀) (L v))
+        (targetScaledNormalVector L 1 (transverseScale v) v u)
+        (targetScaledNormalVector L 1 (transverseScale v) v u') =
+      CovariantDerivative.chartMetric g.inner x₀
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+        u u' :=
+  cartanMap_chart_pullback_identity
+    (g := g) (x₀ := x₀) (p₀ := p₀) L v u u'
+    (hexpansion.sourceExpansion.metric u u')
+    (hexpansion.targetExpansion.metric u u')
+
+/--
 Packaged chart-local-isometry statement for the Cartan map on a normal
 coordinate point: the strict chain-rule differential is retained, and its
 pointwise metric pullback is the source chart metric.
@@ -226,6 +317,55 @@ theorem cartanMap_isLocalIsometry_on_normalBall
         (g := g) (x₀ := x₀) (p₀ := p₀) L v u u'
         hsourceMetric htargetExpanded
     simpa [hDu, hDu'] using hpull
+
+/--
+Packaged chart-local-isometry statement using the endpoint expansion bundle.
+This is the same rigid-11 proof pattern as
+`cartanMap_isLocalIsometry_on_normalBall`, with the source and target metric
+expansions supplied through one reusable constructor surface.
+-/
+theorem cartanMap_isLocalIsometry_on_normalBall_of_endpointExpansionBundle
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀)
+    {v : E} {A B : E ≃L[ℝ] E}
+    (hvsrc : v ∈
+      (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source)
+    (hsourceDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀)
+        (A : E →L[ℝ] E) v)
+    (htargetDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p₀)
+        (B : E →L[ℝ] E) (L v))
+    (u u' : E)
+    (hDu :
+      cartanChartDifferential L A B u =
+        targetScaledNormalVector L 1 (transverseScale v) v u)
+    (hDu' :
+      cartanChartDifferential L A B u' =
+        targetScaledNormalVector L 1 (transverseScale v) v u')
+    (hexpansion : EndpointExpansionBundle L v) :
+    HasStrictFDerivAt
+        (CartanDifferential.cartanChartMap g x₀ p₀ L)
+        (cartanChartDifferential L A B)
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v) ∧
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))
+          (cartanChartDifferential L A B u)
+          (cartanChartDifferential L A B u') =
+        CovariantDerivative.chartMetric g.inner x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          u u' := by
+  refine
+    cartanMap_isLocalIsometry_on_normalBall
+      (g := g) (x₀ := x₀) (p₀ := p₀) L
+      (v := v) (A := A) (B := B)
+      hvsrc hsourceDeriv htargetDeriv u u' hDu hDu'
+      (hexpansion.sourceExpansion.metric u u') ?_
+  simpa [hDu, hDu'] using hexpansion.targetExpansion.metric u u'
 
 end CartanLocalIsometry
 end Poincare
