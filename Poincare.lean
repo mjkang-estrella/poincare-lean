@@ -103,6 +103,7 @@ import Poincare.Global.JacobiNormClose
 import Poincare.Global.JacobiIntegrated
 import Poincare.Global.CartanIsometryTheorem
 import Poincare.Global.CartanIsometryPackage
+import Poincare.Global.CartanCoefficientBridge
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
