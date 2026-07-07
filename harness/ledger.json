@@ -3605,12 +3605,25 @@
       "deps": [
         "M5-glob-48"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/ThirdVariation.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: doubly-augmented system + PL + residual + discharge -> sourceD/targetD ContDiffAt 1 -> the F-TRANSITION LAW."
+      "result": "DONE 2026-07-07 (gate PASS): the third-variation PL opener (linearized ODE of the doubly-augmented field). -> glob-50 (remainders + dependence + the residual feed -> sourceD/targetD ContDiffAt 1 -> THE F-TRANSITION LAW)."
+    },
+    {
+      "id": "M5-glob-50",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-49"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/FieldC1.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: level-three remainders + dependence + residual feed -> the fields C^1 -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

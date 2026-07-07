@@ -230,6 +230,7 @@ import Poincare.Global.AugmentedPackage
 import Poincare.Global.PackageLands
 import Poincare.Global.FieldProducer
 import Poincare.Global.FlowSmoothness
+import Poincare.Global.ThirdVariation
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
