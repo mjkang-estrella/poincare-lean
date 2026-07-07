@@ -3566,12 +3566,25 @@
       "deps": [
         "M5-glob-45"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/PackageLands.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: feed SecondFlowDerivative -> the augmented derivative -> the neighborhood package (both sides) -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the full consumer — fields => THE F-TRANSITION LAW. Producer -> glob-47 (define sourceD/targetD from second-variation endpoints; HasFDerivAt via the fed residual theorem; check the exact regularity demand — flag a third level if it threatens)."
+    },
+    {
+      "id": "M5-glob-47",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-46"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/FieldProducer.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: construct the derivative fields + feed the residual theorem + continuity from dependence -> the consumer fires -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
