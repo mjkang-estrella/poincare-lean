@@ -198,5 +198,231 @@ theorem cartanMap_isLocalIsometry_on_punctured_normalBall_of_source_endpoint_pai
       hvsrc hvne hsourceDeriv htargetDeriv u u' hDu hDu'
       hsourceExpansion hpairing
 
+/--
+Scale-generic coefficient bridge.
+
+The proof is the same Gram-decomposition algebra as
+`cartanMap_isLocalIsometry_on_punctured_normalBall_of_source_endpoint_pairings`,
+but the radial and transverse factors are arbitrary functions `ρ` and `σ`.
+The only required compatibility is that the source blocks, target block, and
+weighted anchor comparison use those same two factors.
+-/
+theorem cartanMap_isLocalIsometry_on_punctured_normalBall_of_scale_generic_endpoint_pairings
+    {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x₀ p₀)
+    {v : E} {A B : E ≃L[ℝ] E} {κsource κtarget ρ σ : E → ℝ}
+    (hvsrc : v ∈
+      (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source)
+    (hvne : v ≠ 0)
+    (hsourceDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀)
+        (A : E →L[ℝ] E) v)
+    (htargetDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p₀)
+        (B : E →L[ℝ] E) (L v))
+    (u u' : E)
+    (hDu :
+      CartanLocalIsometry.cartanChartDifferential L A B u =
+        CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+    (hDu' :
+      CartanLocalIsometry.cartanChartDifferential L A B u' =
+        CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u')
+    (hRadialRadial :
+      ∀ {v : E},
+        v ∈ (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source →
+        v ≠ 0 →
+        ∀ u u' : E,
+          CovariantDerivative.chartMetric g.inner x₀
+              ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+              (CartanPullback.radialPart (CartanMap.sourceAnchorChartMetric g x₀) v u)
+              (CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x₀) v u') =
+            κsource v *
+              CartanMap.sourceAnchorChartMetric g x₀
+                ((ρ v) •
+                  CartanPullback.radialPart
+                    (CartanMap.sourceAnchorChartMetric g x₀) v u)
+                ((ρ v) •
+                  CartanPullback.radialPart
+                    (CartanMap.sourceAnchorChartMetric g x₀) v u'))
+    (hRadialTransverse :
+      ∀ {v : E},
+        v ∈ (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source →
+        v ≠ 0 →
+        ∀ u u' : E,
+          CovariantDerivative.chartMetric g.inner x₀
+              ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+              (CartanPullback.radialPart (CartanMap.sourceAnchorChartMetric g x₀) v u)
+              (CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x₀) v u') = 0)
+    (hTransverseTransverse :
+      ∀ {v : E},
+        v ∈ (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀).source →
+        v ≠ 0 →
+        ∀ u u' : E,
+          CovariantDerivative.chartMetric g.inner x₀
+              ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+              (CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x₀) v u)
+              (CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x₀) v u') =
+            κsource v *
+              CartanMap.sourceAnchorChartMetric g x₀
+                ((σ v) •
+                  CartanPullback.transversePart
+                    (CartanMap.sourceAnchorChartMetric g x₀) v u)
+                ((σ v) •
+                  CartanPullback.transversePart
+                    (CartanMap.sourceAnchorChartMetric g x₀) v u'))
+    (hTargetMetric :
+      ∀ {v : E}, v ≠ 0 →
+        ∀ u u' : E,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+              ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+                (g := roundSphereMetric3) p₀) (L v))
+              (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+              (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u') =
+            κtarget v *
+              CartanMap.targetAnchorChartMetric p₀
+                (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+                (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u'))
+    (hAnchorPairing :
+      ∀ {v : E}, v ≠ 0 →
+        ∀ u u' : E,
+          κtarget v *
+              CartanMap.targetAnchorChartMetric p₀
+                (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+                (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u') =
+            κsource v *
+              CartanMap.sourceAnchorChartMetric g x₀
+                (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u)
+                (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u')) :
+    HasStrictFDerivAt
+        (CartanDifferential.cartanChartMap g x₀ p₀ L)
+        (CartanLocalIsometry.cartanChartDifferential L A B)
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v) ∧
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))
+          (CartanLocalIsometry.cartanChartDifferential L A B u)
+          (CartanLocalIsometry.cartanChartDifferential L A B u') =
+        CovariantDerivative.chartMetric g.inner x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          u u' := by
+  let G : E →L[ℝ] E →L[ℝ] ℝ :=
+    CovariantDerivative.chartMetric g.inner x₀
+      ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+  let S : E →L[ℝ] E →L[ℝ] ℝ := CartanMap.sourceAnchorChartMetric g x₀
+  let r : E := CartanPullback.radialPart S v u
+  let t : E := CartanPullback.transversePart S v u
+  let r' : E := CartanPullback.radialPart S v u'
+  let t' : E := CartanPullback.transversePart S v u'
+  let ρv : ℝ := ρ v
+  let σv : ℝ := σ v
+  have hu : u = r + t := by
+    show u = CartanPullback.radialPart S v u + CartanPullback.transversePart S v u
+    rw [CartanPullback.radialPart_add_transversePart]
+  have hu' : u' = r' + t' := by
+    show u' =
+      CartanPullback.radialPart S v u' + CartanPullback.transversePart S v u'
+    rw [CartanPullback.radialPart_add_transversePart]
+  have hrr : G r r' = κsource v * S (ρv • r) (ρv • r') := by
+    simpa [G, S, r, r', ρv] using hRadialRadial hvsrc hvne u u'
+  have hrt : G r t' = 0 := by
+    simpa [G, S, r, t'] using hRadialTransverse hvsrc hvne u u'
+  have htr : G t r' = 0 := by
+    have hsymm :
+        G t r' = G r' t := by
+      simpa [G] using
+        (CovariantDerivative.chartMetric_symm g.inner
+          (fun y a b => g.symm y a b) x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          t r')
+    have hzero : G r' t = 0 := by
+      simpa [G, S, r', t] using hRadialTransverse hvsrc hvne u' u
+    exact hsymm.trans hzero
+  have htt : G t t' = κsource v * S (σv • t) (σv • t') := by
+    simpa [G, S, t, t', σv] using hTransverseTransverse hvsrc hvne u u'
+  have hSrt' : S (ρv • r) (σv • t') = 0 := by
+    simp [r, t', S, CartanPullback.radialPart_transversePart_pair
+      (B := S) (v := v) (u := u) (u' := u')
+      (CartanMap.sourceAnchorChartMetric_symm g x₀)
+      (CartanPullback.sourceAnchorChartMetric_self_ne_zero
+        (g := g) (x₀ := x₀) hvne)]
+  have hStr' : S (σv • t) (ρv • r') = 0 := by
+    simp [r', t, S, CartanPullback.transversePart_radialPart_pair
+      (B := S) (v := v) (u := u) (u' := u')
+      (CartanPullback.sourceAnchorChartMetric_self_ne_zero
+        (g := g) (x₀ := x₀) hvne)]
+  have hSscaled :
+      S (ρv • r + σv • t) (ρv • r' + σv • t') =
+        S (ρv • r) (ρv • r') + S (σv • t) (σv • t') := by
+    simp only [map_add, ContinuousLinearMap.add_apply, hSrt', hStr',
+      zero_add, add_zero]
+  have hsourceMetric :
+      G u u' =
+        κsource v *
+          S (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u)
+            (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u') := by
+    calc
+      G u u' = G (r + t) (r' + t') := by rw [hu, hu']
+      _ = G r r' + G r t' + G t r' + G t t' := by
+        simp only [map_add, ContinuousLinearMap.add_apply]
+        ring
+      _ = κsource v * S (ρv • r) (ρv • r') + 0 + 0 +
+          κsource v * S (σv • t) (σv • t') := by
+        rw [hrr, hrt, htr, htt]
+      _ =
+          κsource v *
+            (S (ρv • r) (ρv • r') + S (σv • t) (σv • t')) := by ring
+      _ = κsource v * S (ρv • r + σv • t) (ρv • r' + σv • t') := by
+        rw [hSscaled]
+      _ =
+          κsource v *
+            S (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u)
+              (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u') := by
+        simp [CartanLocalIsometry.sourceScaledNormalVector, S, r, t, r', t', ρv, σv]
+  constructor
+  · simpa [CartanLocalIsometry.cartanChartDifferential] using
+      CartanDifferential.cartanChartMap_hasStrictFDerivAt_of_expAtChart
+        (g := g) (x₀ := x₀) (p₀ := p₀) (L := L)
+        (v := v) (A := A) (B := B)
+        hvsrc hsourceDeriv htargetDeriv
+  · have htargetExpanded :
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p₀) (L v))
+            (CartanLocalIsometry.cartanChartDifferential L A B u)
+            (CartanLocalIsometry.cartanChartDifferential L A B u') =
+          κtarget v *
+            CartanMap.targetAnchorChartMetric p₀
+              (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+              (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u') := by
+      simpa [hDu, hDu'] using hTargetMetric hvne u u'
+    have hanchor := hAnchorPairing hvne u u'
+    calc
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀) (L v))
+          (CartanLocalIsometry.cartanChartDifferential L A B u)
+          (CartanLocalIsometry.cartanChartDifferential L A B u') =
+        κtarget v *
+          CartanMap.targetAnchorChartMetric p₀
+            (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u)
+            (CartanLocalIsometry.targetScaledNormalVector L (ρ v) (σ v) v u') := htargetExpanded
+      _ =
+        κsource v *
+          CartanMap.sourceAnchorChartMetric g x₀
+            (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u)
+            (CartanLocalIsometry.sourceScaledNormalVector g x₀ (ρ v) (σ v) v u') := hanchor
+      _ =
+        CovariantDerivative.chartMetric g.inner x₀
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
+          u u' := by
+        simpa [G, S] using hsourceMetric.symm
+
 end CartanCoefficientBridge
 end Poincare
