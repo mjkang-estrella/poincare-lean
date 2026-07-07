@@ -27,9 +27,18 @@ local notation "I3" => closedSmoothModelWithCorners 3
 def plainRadialScale (speed T : ℝ) : ℝ :=
   T ^ 2 * speed ^ 2
 
+/-- Speed-free radial consumer scale for rescaled-anchor radial pairings. -/
+def timeRadialScale (T : ℝ) : ℝ :=
+  T ^ 2
+
 /-- The corrected radial scale unfolds to the ordinary time-speed square. -/
 theorem plainRadialScale_unfold (speed T : ℝ) :
     plainRadialScale speed T = T ^ 2 * speed ^ 2 := by
+  rfl
+
+/-- The speed-free radial consumer scale unfolds to the ordinary time square. -/
+theorem timeRadialScale_unfold (T : ℝ) :
+    timeRadialScale T = T ^ 2 := by
   rfl
 
 /--
@@ -607,6 +616,471 @@ theorem cartanMap_isLocalIsometry_on_normalBall_of_common_speed_corrected_radial
       hA hB hvsrc hsourceDeriv htargetDeriv u u' ?_
   exact
     hosted_endpoint_pairing_feed_of_common_speed_corrected_radial_decomposed_blocks
+      (g := g) (x0 := x0) (p0 := p0) L
+      (v := v) (PsiS := PsiS) (PsiT := PsiT) (speed := speed) (T := T)
+      hadds haddt
+      hSourceRadialRadial hSourceRadialTransverse hSourceTransverseTransverse
+      hTargetRadialRadial hTargetRadialTransverse hTargetTransverseTransverse
+
+/-- Source endpoint assembly with the speed-free radial consumer scalar. -/
+theorem source_hosted_rescaled_endpoint_pairing_eq_of_time_radial_transverse_blocks
+    (g : ClosedSmoothRiemannianMetric 3 M) (x0 : M)
+    {Psi : E3 → ℝ → E3 × E3} {v : E3} {T speed : ℝ}
+    (hadd : ∀ w w' : E3,
+      (Psi (w + w') T).1 = (Psi w T).1 + (Psi w' T).1)
+    (hRadialRadial :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) =
+          timeRadialScale T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u'))
+    (hRadialTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) = 0)
+    (hTransverseTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u')) :
+    ∀ u u' : E3,
+      CovariantDerivative.chartMetric g.inner x0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+          (Psi u T).1 (Psi u' T).1 =
+        timeRadialScale T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u') +
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u') :=
+  hosted_rescaled_endpoint_pairing_eq_of_corrected_radial_transverse_blocks
+    (G := CovariantDerivative.chartMetric g.inner x0
+      ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v))
+    (S := CartanMap.sourceAnchorChartMetric g x0)
+    (Psi := Psi) (v := v) (T := T)
+    (radialScale := timeRadialScale T)
+    (transverseScale := JacobiNormSystem.speedPinnedScale speed T)
+    (by
+      intro x y
+      exact
+        CovariantDerivative.chartMetric_symm g.inner
+          (fun z a b => g.symm z a b) x0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+          x y)
+    hadd hRadialRadial hRadialTransverse hTransverseTransverse
+
+/-- Target endpoint assembly with the speed-free radial consumer scalar. -/
+theorem target_hosted_rescaled_endpoint_pairing_eq_of_time_radial_transverse_blocks
+    (p0 : RoundSphere3)
+    {Psi : E3 → ℝ → E3 × E3} {v : E3} {T speed : ℝ}
+    (hadd : ∀ w w' : E3,
+      (Psi (w + w') T).1 = (Psi w T).1 + (Psi w' T).1)
+    (hRadialRadial :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) v)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) v u) T).1)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) v u') T).1) =
+          timeRadialScale T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) v u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) v u'))
+    (hRadialTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) v)
+            ((Psi (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) v u) T).1)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) v u') T).1) = 0)
+    (hTransverseTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) v)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) v u) T).1)
+            ((Psi (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) v u') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) v u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) v u')) :
+    ∀ u u' : E3,
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p0) v)
+          (Psi u T).1 (Psi u' T).1 =
+        timeRadialScale T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) v u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) v u') +
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) v u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) v u') :=
+  hosted_rescaled_endpoint_pairing_eq_of_corrected_radial_transverse_blocks
+    (G := CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+      ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+        (g := roundSphereMetric3) p0) v))
+    (S := CartanMap.targetAnchorChartMetric p0)
+    (Psi := Psi) (v := v) (T := T)
+    (radialScale := timeRadialScale T)
+    (transverseScale := JacobiNormSystem.speedPinnedScale speed T)
+    (by
+      intro x y
+      exact
+        CovariantDerivative.chartMetric_symm roundSphereMetric3.inner
+          (fun z a b => roundSphereMetric3.symm z a b) p0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p0) v)
+          x y)
+    hadd hRadialRadial hRadialTransverse hTransverseTransverse
+
+/--
+Common-speed endpoint feed with the speed-free radial consumer scalar and the
+speed-pinned transverse scalar.
+-/
+theorem hosted_endpoint_pairing_feed_of_common_speed_time_radial_decomposed_blocks
+    {g : ClosedSmoothRiemannianMetric 3 M} {x0 : M} {p0 : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x0 p0)
+    {v : E3} {PsiS PsiT : E3 → ℝ → E3 × E3} {speed T : ℝ}
+    (hadds : ∀ w w' : E3,
+      (PsiS (w + w') T).1 = (PsiS w T).1 + (PsiS w' T).1)
+    (haddt : ∀ w w' : E3,
+      (PsiT (w + w') T).1 = (PsiT w T).1 + (PsiT w' T).1)
+    (hSourceRadialRadial :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) =
+          timeRadialScale T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v u'))
+    (hSourceRadialTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) = 0)
+    (hSourceTransverseTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u) T).1)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v u') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v u'))
+    (hTargetRadialRadial :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u) T).1)
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u') T).1) =
+          timeRadialScale T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) (L v) u)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) (L v) u'))
+    (hTargetRadialTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u) T).1)
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u') T).1) = 0)
+    (hTargetTransverseTransverse :
+      ∀ u u' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u) T).1)
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) u') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) (L v) u)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) (L v) u')) :
+    ∀ a a' : E3,
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p0) (L v))
+          (PsiT (L a) T).1 (PsiT (L a') T).1 =
+        CovariantDerivative.chartMetric g.inner x0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+          (PsiS a T).1 (PsiS a' T).1 := by
+  have hSourceSplit :=
+    source_hosted_rescaled_endpoint_pairing_eq_of_time_radial_transverse_blocks
+      (g := g) (x0 := x0) (Psi := PsiS) (v := v) (T := T) (speed := speed)
+      hadds hSourceRadialRadial hSourceRadialTransverse hSourceTransverseTransverse
+  have hTargetSplit :=
+    target_hosted_rescaled_endpoint_pairing_eq_of_time_radial_transverse_blocks
+      (p0 := p0) (Psi := PsiT) (v := L v) (T := T) (speed := speed)
+      haddt hTargetRadialRadial hTargetRadialTransverse hTargetTransverseTransverse
+  intro a a'
+  have hRadialAnchor :
+      CartanMap.targetAnchorChartMetric p0
+          (T⁻¹ • CartanPullback.radialPart
+            (CartanMap.targetAnchorChartMetric p0) (L v) (L a))
+          (T⁻¹ • CartanPullback.radialPart
+            (CartanMap.targetAnchorChartMetric p0) (L v) (L a')) =
+        CartanMap.sourceAnchorChartMetric g x0
+          (T⁻¹ • CartanPullback.radialPart
+            (CartanMap.sourceAnchorChartMetric g x0) v a)
+          (T⁻¹ • CartanPullback.radialPart
+            (CartanMap.sourceAnchorChartMetric g x0) v a') := by
+    simpa [CartanPullback.tangentAlignment_radialPart_map] using
+      CartanMap.TangentAlignment.map_app L
+        (T⁻¹ • CartanPullback.radialPart
+          (CartanMap.sourceAnchorChartMetric g x0) v a)
+        (T⁻¹ • CartanPullback.radialPart
+          (CartanMap.sourceAnchorChartMetric g x0) v a')
+  have hTransverseAnchor :
+      CartanMap.targetAnchorChartMetric p0
+          (T⁻¹ • CartanPullback.transversePart
+            (CartanMap.targetAnchorChartMetric p0) (L v) (L a))
+          (T⁻¹ • CartanPullback.transversePart
+            (CartanMap.targetAnchorChartMetric p0) (L v) (L a')) =
+        CartanMap.sourceAnchorChartMetric g x0
+          (T⁻¹ • CartanPullback.transversePart
+            (CartanMap.sourceAnchorChartMetric g x0) v a)
+          (T⁻¹ • CartanPullback.transversePart
+            (CartanMap.sourceAnchorChartMetric g x0) v a') := by
+    simpa [CartanPullback.tangentAlignment_transversePart_map] using
+      CartanMap.TangentAlignment.map_app L
+        (T⁻¹ • CartanPullback.transversePart
+          (CartanMap.sourceAnchorChartMetric g x0) v a)
+        (T⁻¹ • CartanPullback.transversePart
+          (CartanMap.sourceAnchorChartMetric g x0) v a')
+  calc
+    CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p0) (L v))
+        (PsiT (L a) T).1 (PsiT (L a') T).1 =
+      timeRadialScale T *
+          CartanMap.targetAnchorChartMetric p0
+            (T⁻¹ • CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) (L a))
+            (T⁻¹ • CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) (L a')) +
+        JacobiNormSystem.speedPinnedScale speed T *
+          CartanMap.targetAnchorChartMetric p0
+            (T⁻¹ • CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) (L a))
+            (T⁻¹ • CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) (L a')) :=
+        hTargetSplit (L a) (L a')
+    _ =
+      timeRadialScale T *
+          CartanMap.sourceAnchorChartMetric g x0
+            (T⁻¹ • CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v a)
+            (T⁻¹ • CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v a') +
+        JacobiNormSystem.speedPinnedScale speed T *
+          CartanMap.sourceAnchorChartMetric g x0
+            (T⁻¹ • CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v a)
+            (T⁻¹ • CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v a') := by
+        rw [hRadialAnchor, hTransverseAnchor]
+    _ =
+      CovariantDerivative.chartMetric g.inner x0
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+        (PsiS a T).1 (PsiS a' T).1 := (hSourceSplit a a').symm
+
+/--
+Final Cartan local-isometry consumer fed by decomposed blocks whose radial
+consumer scalar is the speed-free time square.
+-/
+theorem cartanMap_isLocalIsometry_on_normalBall_of_common_speed_time_radial_decomposed_blocks
+    {g : ClosedSmoothRiemannianMetric 3 M} {x0 : M} {p0 : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x0 p0)
+    {v : E3} {A B : E3 ≃L[ℝ] E3}
+    {PsiS PsiT : E3 → ℝ → E3 × E3} {speed T : ℝ}
+    {hadds : ∀ w w' : E3,
+      (PsiS (w + w') T).1 = (PsiS w T).1 + (PsiS w' T).1}
+    {hsmuls : ∀ (c : ℝ) (w : E3),
+      (PsiS (c • w) T).1 = c • (PsiS w T).1}
+    {haddt : ∀ w w' : E3,
+      (PsiT (w + w') T).1 = (PsiT w T).1 + (PsiT w' T).1}
+    {hsmult : ∀ (c : ℝ) (w : E3),
+      (PsiT (c • w) T).1 = c • (PsiT w T).1}
+    (hA :
+      (A : E3 →L[ℝ] E3) =
+        linearizedEndpointCLM (Ψ := PsiS) T hadds hsmuls)
+    (hB :
+      (B : E3 →L[ℝ] E3) =
+        linearizedEndpointCLM (Ψ := PsiT) T haddt hsmult)
+    (hvsrc : v ∈
+      (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0).source)
+    (hsourceDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0)
+        (A : E3 →L[ℝ] E3) v)
+    (htargetDeriv :
+      HasStrictFDerivAt
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := roundSphereMetric3) p0)
+        (B : E3 →L[ℝ] E3) (L v))
+    (u u' : E3)
+    (hSourceRadialRadial :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v a) T).1)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v a') T).1) =
+          timeRadialScale T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v a)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.sourceAnchorChartMetric g x0) v a'))
+    (hSourceRadialTransverse :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.radialPart
+              (CartanMap.sourceAnchorChartMetric g x0) v a) T).1)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v a') T).1) = 0)
+    (hSourceTransverseTransverse :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric g.inner x0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v a) T).1)
+            ((PsiS (CartanPullback.transversePart
+              (CartanMap.sourceAnchorChartMetric g x0) v a') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.sourceAnchorChartMetric g x0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v a)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.sourceAnchorChartMetric g x0) v a'))
+    (hTargetRadialRadial :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a) T).1)
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a') T).1) =
+          timeRadialScale T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) (L v) a)
+              (T⁻¹ • CartanPullback.radialPart
+                (CartanMap.targetAnchorChartMetric p0) (L v) a'))
+    (hTargetRadialTransverse :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.radialPart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a) T).1)
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a') T).1) = 0)
+    (hTargetTransverseTransverse :
+      ∀ a a' : E3,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+            ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+              (g := roundSphereMetric3) p0) (L v))
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a) T).1)
+            ((PsiT (CartanPullback.transversePart
+              (CartanMap.targetAnchorChartMetric p0) (L v) a') T).1) =
+          JacobiNormSystem.speedPinnedScale speed T *
+            CartanMap.targetAnchorChartMetric p0
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) (L v) a)
+              (T⁻¹ • CartanPullback.transversePart
+                (CartanMap.targetAnchorChartMetric p0) (L v) a')) :
+    HasStrictFDerivAt
+        (CartanDifferential.cartanChartMap g x0 p0 L)
+        (CartanLocalIsometry.cartanChartDifferential L A B)
+        ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v) ∧
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p0) (L v))
+          (CartanLocalIsometry.cartanChartDifferential L A B u)
+          (CartanLocalIsometry.cartanChartDifferential L A B u') =
+        CovariantDerivative.chartMetric g.inner x0
+          ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x0) v)
+          u u' := by
+  refine
+    PairingFeed.cartanMap_isLocalIsometry_on_normalBall_of_hosted_endpoint_pairing_feed
+      (g := g) (x₀ := x0) (p₀ := p0) L
+      (v := v) (A := A) (B := B) (Ψs := PsiS) (Ψt := PsiT)
+      (Ts := T) (Tt := T)
+      hA hB hvsrc hsourceDeriv htargetDeriv u u' ?_
+  exact
+    hosted_endpoint_pairing_feed_of_common_speed_time_radial_decomposed_blocks
       (g := g) (x0 := x0) (p0 := p0) L
       (v := v) (PsiS := PsiS) (PsiT := PsiT) (speed := speed) (T := T)
       hadds haddt
