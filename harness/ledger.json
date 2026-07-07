@@ -3423,12 +3423,25 @@
       "deps": [
         "M5-glob-34"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/ConcreteResidual.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: DF differences = flow-derivative differences controlled by the augmented remainders -> the upgrade fires -> F-TRANSITION UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): directional-to-operator residual bridge. Identification -> glob-36 (derivative uniqueness: selected DF = fderiv F = canonical endpoint)."
+    },
+    {
+      "id": "M5-glob-36",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-35"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DerivativeUnique.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: DF q = fderiv F q by uniqueness -> augmented residuals apply -> HasFDerivAt DF -> F-TRANSITION UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
