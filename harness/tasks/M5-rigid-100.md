@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-100: the pairing-based upgrade — injectivity from positive-definiteness
+
+Context: `harness/reports/M5-rigid-99_blocked.md` (READ FIRST — the VERBATIM `A B : E3 ≃L[ℝ] E3` + `hA/hB` coercion equalities + action-equation demands). ⚠️ the ACTION-equation route is refuted territory (vector-level transverse actions need parallel frames — reports 56/57). THE PAIRING ROUTE TO INVERTIBILITY: the selected `linearizedEndpointCLM` `Φ` satisfies the PAIRING identity (the proven endpoint pairing facts: `G_target(Φu, Φu') = G_source(u, u')`-shaped through the chain — `AssemblyDone/EqualityChain/PairingFeed.lean`); the source pairing is POSITIVE-DEFINITE (the anchor/endpoint chart metric — positive-definiteness lemmas in `CartanPullback/CartanMap.lean`, `VolumeDensity.lean`-adjacent); a linear map whose pullback pairing is positive-definite is INJECTIVE (`Φu = 0 ⟹ G_source(u,u) = G_target(0,0) = 0 ⟹ u = 0`), hence BIJECTIVE (finite dim, `LinearMap.injective_iff_surjective`), hence `ContinuousLinearEquiv` (`ContinuousLinearEquiv.ofBijective`/`LinearEquiv.ofBijective` + `toContinuousLinearEquiv` finite-dim). CHECK what `hA/hB` actually demand (coercion to the selected CLM — the construction gives it definitionally) and whether the consumer's remaining hypotheses are the pairing facts themselves (they should be — the bridge was pairing-parameterized). BUILD the upgrade, feed `A/B/hA/hB` → 🎯 `cartanMap_isLocalIsometry` (curvature-only). If ONE resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/PairingUpgrade.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-100_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.PairingUpgrade` and report the actual result. Commit your work.
