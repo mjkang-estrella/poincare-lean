@@ -3553,12 +3553,25 @@
       "deps": [
         "M5-glob-44"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/AugmentedPackage.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: compact-tube remainders + SecondFlowDerivative fed -> the neighborhood derivative-field package -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the compact-convex uniform Taylor remainder with the second-variation operator. ALL residual-theorem hypotheses now exist -> glob-46 (feed + the neighborhood package)."
+    },
+    {
+      "id": "M5-glob-46",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-45"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/PackageLands.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: feed SecondFlowDerivative -> the augmented derivative -> the neighborhood package (both sides) -> ContDiffAt 2 F -> THE F-TRANSITION LAW."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
