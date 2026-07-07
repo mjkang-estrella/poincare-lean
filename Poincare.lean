@@ -168,6 +168,7 @@ import Poincare.Global.CommonTime
 import Poincare.Global.MasterBundle
 import Poincare.Global.PLPackages
 import Poincare.Global.IntervalAlign
+import Poincare.Global.SmallTCommon
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
