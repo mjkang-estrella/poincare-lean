@@ -3397,12 +3397,25 @@
       "deps": [
         "M5-glob-32"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/SecondFrechet.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: second-variation CLM (linearity by uniqueness) + direction-uniform remainders -> HasFDerivAt D -> THE F-TRANSITION UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the second-variation endpoint CLM (uniqueness linearity + finite-dim). Remaining: the HasFDerivAt D upgrade -> glob-34 (residual comparison with direction-uniform remainders)."
+    },
+    {
+      "id": "M5-glob-34",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-33"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/DFrechetUpgrade.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: residual upgrade at order two (ExponentialStrictClose pattern) -> HasFDerivAt D -> THE F-TRANSITION UNCONDITIONAL."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
