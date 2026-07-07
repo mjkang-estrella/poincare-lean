@@ -118,6 +118,7 @@ import Poincare.Global.LinearizedFamilyExport
 import Poincare.Global.LinearizedRescale
 import Poincare.Global.LinearizedAdditivity
 import Poincare.Global.CartanCascade
+import Poincare.Global.CartanEquivUpgrade
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
