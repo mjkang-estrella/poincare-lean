@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-72: the radial-radial block — the ray variation
+
+Context: `harness/reports/M5-rigid-71_blocked.md` (READ FIRST — the VERBATIM `hSourceRadialRadial` with the `speedPinnedScale speed T` scalar). PROVEN: the mixed blocks + alignment facts (`BlocksDischarge.lean`). THE ONE BLOCK: the radial-radial endpoint pairing — `G(endpoint)(Ψ_v(T).1, Ψ_v(T).1) = speedPinnedScale`-shaped. THE MATHEMATICS: the radial-direction linearized solution IS the ray variation — differentiate the homogeneity law `exp(s·v)` in `s` (`ExponentialRayLaw/ExponentialRayLawFull.lean`; the germ scaling laws): `Ψ_v(t) ~ t·(velocity)`-shaped — so its endpoint pairing = `T²·speed²` (constant speed, `SpeedPackage.lean`'s transported values). ROUTE: (a) identify the radial `Ψ_v` with the explicit ray-derivative curve by LINEARIZED UNIQUENESS (`linearODE_solution_uniqueOn_Icc`: the ray-derivative curve solves the linearized ODE — differentiate the geodesic equation along the scale parameter; its state pair and initial data match), OR (b) if `SpeedGeneric/DecomposedAssembly`'s radial machinery already has the radial solution shape, feed it. Then check `speedPinnedScale speed T` equals `T²·speed²`-shaped (READ its definition — sin-free radial scale; unfold and match; if the definition disagrees with the true value, PIN on the sphere and report). BOTH sides (target aligned). Feed rigid-70's consumer with ALL blocks → 🎯 `cartanMap_isLocalIsometry`. If ONE resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/RadialBlock.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-72_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.RadialBlock` and report the actual result. Commit your work.

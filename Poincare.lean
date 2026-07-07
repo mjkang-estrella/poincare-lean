@@ -143,6 +143,7 @@ import Poincare.Global.SpeedGeneric
 import Poincare.Global.TheLocalIsometry
 import Poincare.Global.OrthogonalityFeed
 import Poincare.Global.DecomposedAssembly
+import Poincare.Global.BlocksDischarge
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
