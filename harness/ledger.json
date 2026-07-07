@@ -3774,12 +3774,25 @@
       "deps": [
         "M5-glob-61"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/IndexedSelection.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: choice-select (zeta, Omega, D) over the ball + uniqueness-transferred Gronwall bounds -> the consumer -> THE F-TRANSITION LAW."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the indexed-package consumer. LASER -> glob-63 (the selector: choice + specs + uniqueness-transferred cross-point bounds, ONLY)."
+    },
+    {
+      "id": "M5-glob-63",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-62"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TheSelector.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: LASER — zeta/Omega/D selectors + choose_specs + the uniqueness Gronwall transfer. Nothing else."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
