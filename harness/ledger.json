@@ -1737,12 +1737,25 @@
       "deps": [
         "M5-rigid-15"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanPunctured.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: punctured expansion predicate + case-split consumer + punctured target + source expansion -> THE UNCONDITIONAL LOCAL ISOMETRY."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS, MERGE #100): punctured surfaces + punctured target restatement + nonzero consumer + anchor/nonzero case-split theorem. ONE input remains: the punctured source expansion -> rigid-17 (target proof as template)."
+    },
+    {
+      "id": "M5-rigid-17",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-16"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanSourceFinal.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: THE FINAL INPUT — punctured source expansion from Jacobi/Gauss/ray facts -> THE UNCONDITIONAL LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 90 gated merges): RIGIDITY chain at the endpoint-differential assembly (rigid-10 running) -> pullback identity -> local isometry -> globalization -> UnitConstantCurvatureSphereRecognition3. HEAT campaign: fundamental solution certified, time interchange proven, Cauchy closer PARKED (resumption: 2nd/3rd operator-norm formulas). PARKED THREADS (all with precise specs): Cauchy closer, DeTurck raw-basis, reanchor ODE law, ray-law spec refinement. Next fronts after rigid-10: pullback assembly (rigid-11), globalization campaign (local isometry -> covering -> homeomorphism), volume/mean-scalar consumers, M2 maximum principle."
