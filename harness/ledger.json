@@ -2085,12 +2085,25 @@
       "deps": [
         "M5-rigid-41"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/LinearizedFamilyExport.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: export the concrete hosted Psi family (flow-derivative internals + oscillator discharge reuse) -> both consumers instantiated -> THE LOCAL ISOMETRY."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): exists_hosted_linearized_solution_family_on_pl_closedBall — the concrete family (initial value, ODE, membership). Remaining: rescale to all directions + CLM hypotheses + instantiations -> rigid-43."
+    },
+    {
+      "id": "M5-rigid-43",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-42"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/LinearizedRescale.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: rescaling extension (linear-system homogeneity) -> full-space family + CLM hypotheses -> instantiations -> THE LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
