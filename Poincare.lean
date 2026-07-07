@@ -233,6 +233,7 @@ import Poincare.Global.FlowSmoothness
 import Poincare.Global.ThirdVariation
 import Poincare.Global.FieldC1
 import Poincare.Global.TowerCloses
+import Poincare.Global.LevelThreeFeed
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
