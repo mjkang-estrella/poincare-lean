@@ -131,6 +131,7 @@ import Poincare.Global.PositionRoute
 import Poincare.Global.PositionBridge
 import Poincare.Global.PairingRoute
 import Poincare.Global.PairingFeed
+import Poincare.Global.EqualityChain
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

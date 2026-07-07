@@ -2313,12 +2313,25 @@
       "deps": [
         "M5-rigid-58"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/EqualityChain.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: source pinned = anchor = aligned anchor = target pinned -> feed the consumer -> cartanMap_isLocalIsometry."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the equality chain — speeds/sin^2 agree through L; pinned-both-sides implies the feed; consumer wired. LAST LINK: the pinned formulas for the ACTUAL cascade Psi (hypothesis alignment or uniqueness identification) -> rigid-60."
+    },
+    {
+      "id": "M5-rigid-60",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-59"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CascadePinned.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: apply/identify the pairing theorems for the cascade families (both sides) -> the chain fires -> cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
