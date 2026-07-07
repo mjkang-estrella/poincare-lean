@@ -2705,12 +2705,25 @@
       "deps": [
         "M5-rigid-88"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/MembershipBound.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: membership from the pinned explicit values (sin/cos bounds) -> SolutionsFeed completes -> the assembly -> cartanMap_isLocalIsometry."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): pinned closed-ball bound + adapters; CIRCULARITY caught (pinned theorem consumes hmem) -> rigid-90 (a-priori Gronwall membership on the bounded w-ball, homogeneous extension)."
+    },
+    {
+      "id": "M5-rigid-90",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-89"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/GronwallMembership.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: Gronwall a-priori bound (no pinned circularity) + q_max on the ball -> membership -> SolutionsFeed completes -> cartanMap_isLocalIsometry."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."

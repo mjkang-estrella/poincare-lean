@@ -161,6 +161,7 @@ import Poincare.Global.SolutionsFeed
 import Poincare.Global.IsometryAssembly
 import Poincare.Global.EnrichedCascade
 import Poincare.Global.IsometryComplete
+import Poincare.Global.MembershipBound
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
