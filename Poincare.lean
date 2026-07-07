@@ -146,6 +146,7 @@ import Poincare.Global.DecomposedAssembly
 import Poincare.Global.BlocksDischarge
 import Poincare.Global.RadialBlock
 import Poincare.Global.CorrectedRadial
+import Poincare.Global.RayIdentification
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
