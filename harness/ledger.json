@@ -1898,12 +1898,25 @@
       "deps": [
         "M5-rigid-27"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanIsometryPackage.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: J-linearity + polarization -> pairing identity -> coefficient formulas -> conjugation package -> cartanMap LOCAL ISOMETRY (exp-chart form)."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): THE PAIRING THEOREM — Jacobi additivity (linearized uniqueness) + polarization of the quadratic identities into the bilinear endpoint pairing. Remaining: the coefficient bridge/package -> rigid-29 (option b: direct exp-chart pullback, bypassing old bundles)."
+    },
+    {
+      "id": "M5-rigid-29",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-28"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanCoefficientBridge.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: package the three pairing facts -> direct exp-chart pullback through the conjugation -> THE LOCAL ISOMETRY."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
