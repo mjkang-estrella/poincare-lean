@@ -3709,12 +3709,25 @@
       "deps": [
         "M5-glob-56"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/EndpointContinuity.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: feed Omega + endpoint Lipschitz continuity -> ContDiffAt 1 -> the bridges -> THE F-TRANSITION LAW UNCONDITIONAL."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the endpoint-continuity C1 bridge. LASER next -> glob-58 (Omega instantiation + the Gronwall endpoint bound, ONLY)."
+    },
+    {
+      "id": "M5-glob-58",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-57"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/OmegaGronwall.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: LASER — the concrete Omega + the Gronwall endpoint Lipschitz bound. Nothing else."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
