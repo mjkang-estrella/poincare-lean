@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-57: THE PAIRING ROUTE — feed the pairing bridge directly
+
+Context: `harness/reports/M5-rigid-56_blocked.md` (READ FIRST): the vector-level sine formula needs a parallel frame (the corrected state has irreducible Γ-terms — `correctedCoordinateState_hasDerivAt`, `PositionBridge.lean`). ORCHESTRATOR REROUTE: the pullback identity is a PAIRING statement — vector-level action equations were only a route. THE PAIRING-PARAMETERIZED BRIDGE EXISTS: `cartanMap_isLocalIsometry_on_punctured_normalBall_of_source_endpoint_pairings` (`CartanCoefficientBridge.lean`, rigid-29 — READ its exact hypothesis shapes: three endpoint-pairing blocks) and/or the scale-generic variant. THE PAIRING FACTS ARE PROVEN: transverse-transverse `actual_jacobi_pairing_eq_pinned_of_quadratic_and_linearized_unique` (`CartanIsometryPackage.lean`); quadratic norms `actual_jacobi_norms_eq_pinned_on_cutoff_one_Icc` (`CartanIsometryTheorem.lean`); radial (constant speed, `GeodesicSpeed/GeodesicLengthFinal.lean`); cross (integrated Gauss, `GaussLemmaIntegrated/SmoothDependenceDischarge.lean`); the strict derivatives with CLM values (`CartanCascade.lean`) identify `D(exp)` images with `Ψ.1` values — and the PAIRINGS of `Ψ.1` values are exactly what the pairing theorems compute (the norm system was stated on the actual hosted scalars!). THE TASK: align the endpoint conversions (`t = ‖v‖` hosted `(u,T)`, `CartanHomogeneity/CartanDomainShrink.lean`) and FEED the pairing blocks — both sides — into the pairing bridge. 🎯 `cartanMap_isLocalIsometry`-shaped. If ONE hypothesis emerges, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/PairingRoute.lean` (do NOT edit existing files, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-57_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.PairingRoute` and report the actual result. Commit your work.
