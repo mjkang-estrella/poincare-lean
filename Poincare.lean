@@ -170,6 +170,7 @@ import Poincare.Global.PLPackages
 import Poincare.Global.IntervalAlign
 import Poincare.Global.SmallTCommon
 import Poincare.Global.UniformShrink
+import Poincare.Global.UniformFlowExport
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
