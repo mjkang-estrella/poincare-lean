@@ -3045,12 +3045,25 @@
       "deps": [
         "M5-glob-5"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/InducedAlignment.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: induced TangentAlignment from the pullback at x1 -> compatible chain step -> the chain fires -> toward the global Phi."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): induced TangentAlignment from pullback + chart transport; choice-free compatible-step definitions. LAST IDENTITY: the re-centering EqOn = EXP-NATURALITY -> glob-7 (geodesic preservation + uniqueness)."
+    },
+    {
+      "id": "M5-glob-7",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-6"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/ExpNaturality.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: Phi maps geodesics to geodesics (pullback kills the correction) + PL uniqueness -> exp-naturality -> re-centering EqOn -> the chain fires."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."

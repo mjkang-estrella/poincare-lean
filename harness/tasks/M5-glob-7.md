@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-glob-7: exp-naturality — the local isometry commutes with exponentials
+
+Context: `harness/reports/M5-glob-6_blocked.md` (READ FIRST — the VERBATIM re-centering EqOn). PROVEN: the induced alignment + choice-free compatible step (`InducedAlignment.lean`); germ determinacy (`GermDeterminacy.lean`). THE CLASSICAL LAST IDENTITY: the old Cartan germ near `x₁` EQUALS the `x₁`-anchored Cartan germ with the induced alignment — i.e. `Φ ∘ exp_{x₁} = exp_{Φ x₁} ∘ dΦ_{x₁}` (EXP-NATURALITY of local isometries). THE PROOF ROUTE (geodesic preservation + uniqueness): (1) `Φ` maps geodesics to geodesics — `Φ ∘ γ` satisfies the target geodesic equation because `Φ`'s pullback identity transports the Christoffel structure (the chart form: the composed curve's acceleration = the image of the source acceleration under the differential + the correction that the pullback kills — derive from the strict derivative + the metric identity; ALTERNATIVELY the variational route: `Φ` preserves lengths/energy locally (the pullback identity IS energy preservation), and geodesics through the IFT-homeomorphism correspond); (2) both sides of the naturality equation are geodesics with the same initial data (`Φx₁`, `dΦ v`) — GEODESIC UNIQUENESS (`GeodesicGerm/GeodesicChart.lean`'s PL uniqueness) identifies them. ASSEMBLE on a small ball → the re-centering EqOn → `RigidStepCompatibleWith` by construction → the chain fires → toward the global `Φ`. Strict-partial per stage; ONE isolated statement max. Report `harness/reports/M5-glob-7_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/ExpNaturality.lean` (do NOT edit existing files, incl. `Poincare.lean`).
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.ExpNaturality` and report the actual result. Commit your work.
