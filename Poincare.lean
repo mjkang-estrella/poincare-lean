@@ -87,6 +87,7 @@ import Poincare.Global.JacobiOscillator
 import Poincare.Global.CartanIsometry
 import Poincare.Global.CartanPullback
 import Poincare.Global.CoveringSkeleton
+import Poincare.Global.CartanContinuation
 import Poincare.Global.GeodesicReanchorClose
 import Poincare.Global.ExponentialRayLawFull
 import Poincare.Global.ChartCurvatureBridge
