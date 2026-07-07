@@ -106,6 +106,7 @@ import Poincare.Global.CartanIsometryPackage
 import Poincare.Global.CartanCoefficientBridge
 import Poincare.Global.CartanBlocksInstantiate
 import Poincare.Global.CartanDomainShrink
+import Poincare.Global.CartanHomogeneity
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation

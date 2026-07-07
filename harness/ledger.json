@@ -1952,12 +1952,25 @@
       "deps": [
         "M5-rigid-31"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/CartanHomogeneity.lean"
       ],
       "difficulty": "hard",
-      "result": "DISPATCHED 2026-07-07: homogeneity conversion (u, T) -> block hypotheses hosted -> THE LOCAL ISOMETRY on the reshrunk ball."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): the homogeneity conversion HOSTED — (u,T) with T.u=v, |u|<delta, cutoff-one PL hypotheses at (u,T), expAt v endpoint formula, radial endpoint derivative. Remaining: the blocks at (u,T) -> rigid-33."
+    },
+    {
+      "id": "M5-rigid-33",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-32"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanBlocksFinal.lean"
+      ],
+      "difficulty": "hard",
+      "result": "DISPATCHED 2026-07-07: feed the hosted (u,T) data into the pairing blocks (honest sin normalization) -> THE LOCAL ISOMETRY via the bridge."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
