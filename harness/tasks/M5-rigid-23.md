@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-23: THE NORMAL-COORDINATE REROUTE — the expansion where it is classically true
+
+Context: the rigid-22 park note (`harness/ledger.json` M5-rigid-22 entry + `harness/reports/M5-rigid-2{0,1,2}_blocked.md`, READ ALL): the scalar-weight endpoint expansion is chart-dependent; in ARBITRARY atlas charts the coefficient evolution is a matrix ODE. THE REROUTE: work in EXP-NORMAL COORDINATES — the chart `v ↦ expAt g x₀ v` itself (`expAtChartOpenPartialHomeomorph`, `ExponentialLocalHomeo.lean` — a genuine PartialHomeomorph!). In THIS chart, the metric coefficients along radial geodesics have the CLASSICAL form: radial-radial = 1 (constant speed + ray law: the radial direction IS the geodesic), radial-transverse = 0 (integrated Gauss — `GaussLemmaIntegrated.lean`'s law IS this statement), transverse-transverse = the Jacobi pairing `sin²‖v‖/‖v‖²`-weighted (the Jacobi fields ARE the coordinate fields of the exp chart — the flow derivative `GeodesicFlowDerivative.lean` says exactly this: `D(expAt)` in velocity = `Ψ`). I.e., THE EXP-CHART METRIC COEFFICIENTS ARE ALREADY COMPUTED by the proven lemmas — no new ODE needed. The Cartan map IN EXP CHARTS is literally `L` (exp-conjugation makes it linear!): `exp⁻¹_{p₀} ∘ Φ ∘ exp_{x₀} = L` by construction — so the pullback identity in exp charts reduces to comparing the two exp-chart metric coefficient formulas, IDENTICAL by the shared sin machinery.
+
+Deliverables, in a NEW file `Poincare/Global/CartanNormalCoords.lean` (do NOT edit any existing file, incl. `Poincare.lean`):
+1. THE EXP-CHART METRIC COEFFICIENTS for constant-curvature-1 `g`: the three formulas (radial-radial 1, mixed 0, transverse sin²-weighted) as evaluations of `g` on `D(expAt)` images — assembling ray-law derivative + constant speed + integrated Gauss + flow derivative + Jacobi sin (READ each cited file's exact exports; the pieces were built for this).
+2. THE PULLBACK IN EXP CHARTS: both sides' coefficients agree through `L` (the anchor alignment handles the linear comparison) — the pullback identity WITHOUT any chart weight (the exp charts absorb it).
+3. 🎯 THE LOCAL ISOMETRY in the exp-chart formulation (a new clean statement; the existing consumers' chart-weight machinery becomes unnecessary on this route — do NOT delete it, just build the direct route).
+4. Report `harness/reports/M5-rigid-23_{done|blocked}.md`; strict-partial per formula; ONE isolated statement max.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.CartanNormalCoords` and report the actual result. Commit your work.

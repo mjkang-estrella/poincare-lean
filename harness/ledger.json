@@ -1824,6 +1824,19 @@
       ],
       "difficulty": "wall",
       "result": "BOUNDARY 2026-07-07 (4th orbit on the endpoint-pairing core) — CORE PARKED with ORCHESTRATOR ANALYSIS: the scalar-weight ansatz (pairing = weight(t) * anchor pairing) is itself suspect for general charts — the coefficient evolution is a MATRIX conjugation ODE (rigid-20's derivative identity has Gamma-pairing RHS not proportional to the coefficient); the transverse block need not stay conformal. RESUMPTION DECISION (fresh context): either (a) matrix-weight generalization of the bundle + matrix cancellation in the pullback (the map conjugates both evolutions), or (b) restrict to geodesic normal coordinates for the source chart (where the scalar form holds classically) — build normal-coordinate charts from expAt (local homeo exists!) and restate the expansion there. Option (b) is likely correct-and-shortest: the exp chart IS available and the weight in exp-normal coordinates is the classical sin^2 form on BOTH sides. All 22-task architecture (anchor isometry, refutations, consumers, ODE machinery) remains valid and reusable."
+    },
+    {
+      "id": "M5-rigid-23",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-22"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/CartanNormalCoords.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07 (REROUTE option b): exp-normal coordinates — the exp-chart metric coefficients from the proven lemma set (no new ODE), the Cartan map is linear in exp charts, pullback = coefficient comparison -> THE LOCAL ISOMETRY directly."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
