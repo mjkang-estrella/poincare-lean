@@ -1419,12 +1419,12 @@
       "deps": [
         "M2-heat-4"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/HeatApproxIdentity.lean"
       ],
       "difficulty": "medium-hard",
-      "result": "DISPATCHED 2026-07-06: cpow/rpow normalization identification -> the approximate identity (initial-data recovery)."
+      "result": "DONE 2026-07-06 (gate PASS): heatKernel_fourier_complex_eq_ofReal (cpow/rpow bridge) + tendsto_heatSolution_nhdsGT_zero — THE APPROXIMATE IDENTITY. Heat kernel = certified fundamental solution."
     },
     {
       "id": "M5-rigid-4",
@@ -1438,6 +1438,19 @@
       ],
       "difficulty": "wall",
       "result": "DISPATCHED 2026-07-06: forward curvature transport (const-curv-1 -> chart KN) + oscillator instantiation -> J = sin t * w along geodesics of any constant-curvature-1 metric."
+    },
+    {
+      "id": "M2-heat-6",
+      "tier": "M2",
+      "deps": [
+        "M2-heat-5"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/HeatCauchy.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-06: differentiation under the convolution (time + Laplacian, Gaussian domination) -> the model linear Cauchy problem solved."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-06, 70 gated merges): ANTI-LIPSCHITZ CLUSTER CLOSED — local distance realization complete (sharp upper + c*|v| lower), VOLUME POSITIVITY proven (meanScalar well-defined), exp is a bi-Lipschitz-controlled local homeo with normal neighborhoods. NEXT: uniform injectivity radius over compact M (compactness sweep of the per-anchor radii); then the Cartan local-isometry campaign (two constant-curvature-1 manifolds, exp-conjugation) toward UnitConstantCurvatureSphereRecognition3. Parabolic road: M2-heat-3 running. Session totals: 70 gated merges, zero rejections, zero fabrications."

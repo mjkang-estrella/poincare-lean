@@ -95,6 +95,7 @@ import Poincare.Global.HeatKernel
 import Poincare.Global.HeatKernelPDE
 import Poincare.Global.HeatKernelPDEn
 import Poincare.Global.HeatKernelIntegral
+import Poincare.Global.HeatApproxIdentity
 import Poincare.Global.DeTurck
 import Poincare.Global.DeTurckField
 import Poincare.Global.DeTurckFieldRegularity
