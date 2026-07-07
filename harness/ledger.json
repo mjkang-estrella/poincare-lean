@@ -3136,12 +3136,25 @@
       "deps": [
         "M5-glob-12"
       ],
-      "status": "running",
+      "status": "partial",
       "files": [
         "Poincare/Global/TransitionLaw.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: transported field compatible + torsion-free -> LC uniqueness -> the minus-sign transition -> the reanchor law -> the chain."
+      "result": "STRICT-PARTIAL 2026-07-07 (gate PASS): transported torsion-freeness. Remaining: compatibility packaging + inverse-coordinate packaging + velocity chain-rule -> glob-14 (the pullback metric law + differentiated compatibility)."
+    },
+    {
+      "id": "M5-glob-14",
+      "tier": "M5",
+      "deps": [
+        "M5-glob-13"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/TransportedCompatibility.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: the metric pullback transition (definitional) + differentiated compatibility -> transported field compatible -> LC uniqueness ready."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, merge #196): THE LOCAL ISOMETRY IS PROVEN (cartanMap_isLocalIsometry, curvature-only). GLOBALIZATION LIVE (glob-4): IFT local homeo -> continuation (glob-2/3 staged) -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. Other fronts: heat parked (operator-norm spec), M2 maximum principle unstarted, parked threads with specs in ledger."
