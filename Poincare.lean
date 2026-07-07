@@ -196,6 +196,7 @@ import Poincare.Global.ChristoffelTransition
 import Poincare.Global.KoszulNaturality
 import Poincare.Global.TransitionLaw
 import Poincare.Global.TransportedCompatibility
+import Poincare.Global.DifferentiatedCompat
 import Poincare.Global.CartanWeightInvariant
 import Poincare.Global.CoveringSkeleton
 import Poincare.Global.CartanContinuation
