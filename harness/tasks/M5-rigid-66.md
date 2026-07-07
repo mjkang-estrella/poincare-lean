@@ -1,0 +1,9 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-66: G-normalized hosting — speed exactly 1
+
+Context: `harness/reports/M5-rigid-65_blocked.md` (READ FIRST). PROVEN: the hosted curves have constant transported speed = the anchor value `G(anchor)(T⁻¹•v, T⁻¹•v)` with aligned target rewriting (`SpeedPackage.lean`); the packages demand speed EXACTLY 1. THE FIX (normalization choice): host with the ANCHOR-METRIC normalization — working time `T := Real.sqrt (G(x₀-anchor)(v, v))` and working velocity `u := T⁻¹ • v` — then the anchor speed value is `G(T⁻¹v, T⁻¹v) = T⁻²·G(v,v) = 1` EXACTLY (sqrt algebra; `G(v,v) > 0` for `v ≠ 0` by positive-definiteness — the anchor metric lemmas in `CartanMap/CartanPullback.lean`). CHECK the hosting machinery (`CartanHomogeneity.lean`): its construction was parameterized by the Euclidean choice `δ/2` — REPLAY the construction with the G-normalized `(u, T)` (the homogeneity laws `T•u = v` hold identically; the PL radius conditions need `‖u‖_Euclid ≤ δ`-shaped bounds — relate the anchor-metric and Euclidean norms by the metric's continuity/coercivity on the compact anchor: uniform equivalence of norms on finite-dim, `SpeedPackage/AntilipschitzMathlib.lean`-adjacent bounds — shrink `v` further so `‖u‖_Euclid < δ` holds). TARGET side: `L` preserves the anchor metric (TangentAlignment) so `G_target(Lv, Lv) = G_source(v,v)` — the SAME `T` works, aligned. Then `hunit` holds by construction → the packages fire → the feeds → 🎯 `cartanMap_isLocalIsometry`. If ONE bound resists, isolate verbatim.
+
+Deliverables in a NEW file `Poincare/Global/NormalizedHosting.lean` (do NOT edit any existing file, incl. `Poincare.lean`). Report `harness/reports/M5-rigid-66_{done|blocked}.md`.
+
+No vacuous wrappers. Verify: `lake build Poincare.Global.NormalizedHosting` and report the actual result. Commit your work.
