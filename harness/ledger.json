@@ -2246,12 +2246,25 @@
       "deps": [
         "M5-rigid-53"
       ],
-      "status": "running",
+      "status": "done",
       "files": [
         "Poincare/Global/CollapseOnRay.lean"
       ],
       "difficulty": "wall",
-      "result": "DISPATCHED 2026-07-07: ray-restricted collapse from the zone facts (pin at the ray state first) -> feed rigid-52 -> compose to cartanMap_isLocalIsometry."
+      "result": "DONE-AS-REFUTATION 2026-07-07 (gate PASS, refutation #5): ray collapse ALSO false (1/10 vs -4/5 at radial state) — the coordinate harmonic does not solve the hosted system ANYWHERE in the raw chart; the oscillator is COVARIANT. -> rigid-55 (forensic audit: position-formula route bypassing the coordinate-harmonic claim)."
+    },
+    {
+      "id": "M5-rigid-55",
+      "tier": "M5",
+      "deps": [
+        "M5-rigid-54"
+      ],
+      "status": "running",
+      "files": [
+        "Poincare/Global/PositionRoute.lean"
+      ],
+      "difficulty": "wall",
+      "result": "DISPATCHED 2026-07-07: audit JacobiOscillator's chart/equation form; likely route: position formula applies to Psi.1 directly (positions agree; covariant-vs-coordinate differs only in derivatives) -> action equation without haccCollapse."
     }
   ],
   "current_goal": "CONTINUOUS OPERATION (2026-07-07, 106 gated merges): rigidity campaign at the endpoint-pairing core — PARKED with the matrix-vs-scalar-weight analysis and the NORMAL-COORDINATE reroute recorded (option (b): restate the expansion in expAt-normal coordinates where the scalar sin^2 weight is classical — the exp local homeo makes these charts available; likely the correct architecture, resumable immediately). PROVEN so far on the road: anchor local isometry, Cartan map, Jacobi formula, globalization skeleton, continuation staging, 3 formal refutations. OTHER FRONTS: heat campaign parked (operator-norm spec); volume/normalized-flow live; M2 maximum principle unstarted; parked threads each with specs. NEXT WAKE: decide/dispatch the normal-coordinate reroute (rigid-23) or another front per ledger."
