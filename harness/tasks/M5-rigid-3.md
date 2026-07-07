@@ -1,0 +1,13 @@
+Read harness/worker_contract.md first and obey it strictly.
+
+# Task M5-rigid-3: the constant-curvature Jacobi equation — the sin-comparison seed
+
+Context: the metric-preservation step of the Cartan program (roadmap in `harness/reports/M5-rigid-2_done.md`, READ FIRST) needs: along a unit-speed geodesic of a constant-curvature-1 metric, the Jacobi (linearized) equation for orthogonal variations reduces to `J'' = −J`, whose solution with `J(0)=0, J'(0)=w` is `sin(t)·w` — THE SAME on `M` and on `RoundSphere3`, which is why `cartanMap` preserves the metric. Available machinery: the linearized system along chart geodesics (`GeodesicLinearized.lean`: the linearized flow field involves `DΓ` and `Γ` terms), the flow derivative (`GeodesicFlowDerivative.lean`: `Ψ = (J, K)` IS the derivative), the chart curvature identity for constant curvature (`chartCurvatureOf` in `ConformalCurvature.lean`; the constant-curvature hypothesis in chart form via the curvature bridge `ChartCurvatureBridge6.lean` + `HasConstantSectionalCurvature3` — the chart curvature of the transported Christoffel field is `-(1/2)·KN`-shaped with κ=1), and the Gauss/orthogonality laws (`GaussLemmaIntegrated.lean`).
+
+HONEST SLICING (deliver in order; strict-partial valid):
+1. THE CURVATURE-TO-LINEARIZED LINK: express the linearized flow field's coefficient combination along a geodesic (`DΓ(γ')(J)(γ') + Γ-quadratic terms`-shaped, from the linearized system definition) through `chartCurvatureOf` — i.e. prove the classical identity "the Jacobi operator = curvature term" at the chart level: the second t-derivative of `J` along the flow equals `−(chart curvature)(γ', J)γ'` + (terms vanishing for geodesics). This is a computation on the definitions in `GeodesicLinearized.lean` + `ConformalCurvature.lean` — derive on paper first, document conventions.
+2. CONSTANT-CURVATURE REDUCTION: under the chart constant-curvature-1 identity (KN form), for `J ⊥ γ'` (chart metric) and unit-speed `γ`: the curvature term is `−J`-shaped (KN contraction — mirror the `conformalChartMetric_chartCurvatureOf_sphereChristoffel` algebra).
+3. THE SIN SOLUTION: the unique solution with `J(0)=0, J'(0)=w` is `t ↦ sin t · w` (solve the scalar ODE via uniqueness — `eqOn_Icc_of_mem_closedBall`/linear ODE uniqueness from `GeodesicLinearized.lean`; the candidate solves by direct differentiation).
+4. Report `harness/reports/M5-rigid-3_{done|blocked}.md`.
+
+Deliverables in a NEW file `Poincare/Global/JacobiConstantCurvature.lean` (do NOT edit existing files, incl. `Poincare.lean`). No vacuous wrappers. Verify: `lake build Poincare.Global.JacobiConstantCurvature` and report the actual result. Commit your work.
