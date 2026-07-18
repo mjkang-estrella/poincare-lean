@@ -673,6 +673,12 @@ theorem cartanMap_isLocalIsometry
       ∀ v : E3, ‖v‖ < ρ → v ≠ 0 →
         ∃ A B : E3 ≃L[ℝ] E3,
           HasStrictFDerivAt
+            (expAtChartOpenPartialHomeomorph (g := g) x₀)
+            (A : E3 →L[ℝ] E3) v ∧
+          HasStrictFDerivAt
+            (expAtChartOpenPartialHomeomorph (g := roundSphereMetric3) p₀)
+            (B : E3 →L[ℝ] E3) (L v) ∧
+          HasStrictFDerivAt
             (CartanDifferential.cartanChartMap g x₀ p₀ L)
             (CartanLocalIsometry.cartanChartDifferential L A B)
             ((expAtChartOpenPartialHomeomorph (g := g) x₀) v) ∧
@@ -922,8 +928,20 @@ theorem cartanMap_isLocalIsometry
         hT_pos hTscalar hAngle hvsrc hbaseSlin hlinS hadds hsmuls hstrictS hRayS
         hbaseTlin hlinT haddt hsmult hstrictT hRayT hspeed_ne
         hsourceAnchorSpeed htargetAnchorSpeed hspeed_sq with
-    ⟨A, B, _hA, _hB, hderiv, hpullback⟩
-  exact ⟨A, B, hderiv, hpullback⟩
+    ⟨A, B, hA, hB, hderiv, hpullback⟩
+  have hsourceStrict :
+      HasStrictFDerivAt
+        (expAtChartOpenPartialHomeomorph (g := g) x₀)
+        (A : E3 →L[ℝ] E3) v := by
+    rw [hA]
+    exact hstrictS
+  have htargetStrict :
+      HasStrictFDerivAt
+        (expAtChartOpenPartialHomeomorph (g := roundSphereMetric3) p₀)
+        (B : E3 →L[ℝ] E3) (L v) := by
+    rw [hB]
+    exact hstrictT
+  exact ⟨A, B, hsourceStrict, htargetStrict, hderiv, hpullback⟩
 
 end RigidityComplete
 end Poincare

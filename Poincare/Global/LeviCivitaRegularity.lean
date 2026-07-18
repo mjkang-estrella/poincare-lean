@@ -733,7 +733,7 @@ theorem closedLeviCivitaConnection_contMDiff
     change ((innerSL ℝ) v) w = ((innerSL ℝ) w) v
     rw [innerSL_apply_apply, innerSL_apply_apply]
     exact real_inner_comm w v
-  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone⟩ :=
+  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone, _hχcanonical⟩ :=
     @CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀
   have hsupp : ∀ z, χ z ≠ 0 →
       (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
@@ -830,7 +830,7 @@ theorem closedLeviCivitaConnection_contMDiff₂
     change ((innerSL ℝ) v) w = ((innerSL ℝ) w) v
     rw [innerSL_apply_apply, innerSL_apply_apply]
     exact real_inner_comm w v
-  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone⟩ :=
+  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone, _hχcanonical⟩ :=
     @CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀
   have hsupp : ∀ z, χ z ≠ 0 →
       (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)

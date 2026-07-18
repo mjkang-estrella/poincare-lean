@@ -96,7 +96,8 @@ theorem exists_cartanChartMap_christoffelAt_F_transition_law_on_punctured_ball
   let G₁ : E3 → E3 →L[ℝ] E3 →L[ℝ] ℝ :=
     fun z => CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ z
   intro hvsrc D hD_at hD hD2symm hpull_germ hG₀ hG₁ b₀ b₁ hb₀ hb₁ hb₀G hb₁G u w
-  rcases hfield v hv hvne with ⟨hDFinv, hFstrict, hpullDF⟩
+  rcases hfield v hv hvne with
+    ⟨_hsourceStrict, _htargetStrict, hDFinv, hFstrict, hpullDF⟩
   have hFz : F (eM v) = eS (L v) := by
     change eS (L (eM.symm (eM v))) = eS (L v)
     rw [eM.left_inv hvsrc]

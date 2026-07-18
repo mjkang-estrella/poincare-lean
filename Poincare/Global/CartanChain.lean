@@ -12,11 +12,11 @@ subdivision whose consecutive image points are closer than any prescribed
 positive radius.  Applying the uniform normal-radius theorem gives the same
 subdivision with a common normal-coordinate image for each consecutive pair.
 
-The Cartan-chain layer is intentionally staged at the same boundary as
-`CartanContinuation`: the missing rigid-10 theorem is represented by an
-explicit `EqOn` compatibility between a Cartan germ and its re-anchored
-successor.  The definitions below then iterate re-anchored germs and prove the
-single-insertion endpoint comparison that later refinement induction will use.
+The Cartan-chain layer stages the local-isometry theorem as an explicit `EqOn`
+compatibility between a Cartan germ and its re-anchored successor.  The
+definitions below iterate re-anchored germs and prove a low-level
+single-insertion comparison.  `CartanChainRigidity` shows that the endpoint
+alignment side condition follows automatically from target equality.
 -/
 
 noncomputable section
@@ -286,9 +286,10 @@ theorem endpoint_target_eq_insert
   simpa [ChainState.next] using hmap.symm
 
 /--
-Single-insertion endpoint germ comparison.  The two endpoint targets agree by
-two-step compatibility; equality of the endpoint tangent-alignment data is the
-remaining rigid/determinacy input needed to identify the endpoint germs.
+Low-level single-insertion endpoint germ comparison.  The two endpoint targets
+agree by two-step compatibility.  This theorem accepts dependent equality of
+the endpoint tangent-alignment data explicitly; `CartanChainRigidity` derives
+it from target equality for the choices made by `next`.
 -/
 theorem endpoint_germ_eq_insert_of_alignment
     {s : ChainState g} {y z : M}

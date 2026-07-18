@@ -26,6 +26,124 @@ namespace SelectorAssembly
 
 universe u
 
+/--
+Pairwise derivative witnesses with a uniform Gronwall bound determine one
+coherent endpoint field on the whole neighborhood.
+
+The point is that no compatibility between the pairwise choices is required:
+uniqueness of the Frechet derivative identifies every witness with the
+canonical field `q ↦ fderiv ℝ f q`.  This is the selection-coherence step needed
+before the source and target third-variation estimates can feed
+`IndexedSelection`.
+-/
+theorem exists_canonical_endpoint_gronwall_package_of_pairwise
+    {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {f : E → F} {U : Set E} {x : E} {K : ℝ≥0}
+    (hU : U ∈ 𝓝 x)
+    (hpairs : ∀ q ∈ U, ∀ q' ∈ U,
+      ∃ D D' : E →L[ℝ] F,
+        HasFDerivAt f D q ∧
+          HasFDerivAt f D' q' ∧
+            ‖D' - D‖ ≤ (K : ℝ) * dist q' q) :
+    ∃ endpoint : E → E →L[ℝ] F,
+      U ∈ 𝓝 x ∧
+        (∀ q ∈ U, ∀ q' ∈ U,
+          ‖endpoint q' - endpoint q‖ ≤ (K : ℝ) * dist q' q) ∧
+        ∀ q ∈ U, HasFDerivAt f (endpoint q) q := by
+  let endpoint : E → E →L[ℝ] F := fun q => fderiv ℝ f q
+  have hbound : ∀ q ∈ U, ∀ q' ∈ U,
+      ‖endpoint q' - endpoint q‖ ≤ (K : ℝ) * dist q' q := by
+    intro q hq q' hq'
+    rcases hpairs q hq q' hq' with ⟨D, D', hD, hD', hbound⟩
+    simpa [endpoint, hD.fderiv, hD'.fderiv] using hbound
+  have hderiv : ∀ q ∈ U, HasFDerivAt f (endpoint q) q := by
+    intro q hq
+    rcases hpairs q hq q hq with ⟨D, _D', hD, _hD', _hbound⟩
+    simpa [endpoint, hD.fderiv] using hD
+  exact ⟨endpoint, hU, hbound, hderiv⟩
+
+/--
+The coherent endpoint package gives `C¹` regularity without making a global
+choice of pairwise third-variation endpoints.
+-/
+theorem contDiffAt_one_of_pairwise_fderiv_gronwall
+    {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {f : E → F} {U : Set E} {x : E} {K : ℝ≥0}
+    (hU : U ∈ 𝓝 x)
+    (hpairs : ∀ q ∈ U, ∀ q' ∈ U,
+      ∃ D D' : E →L[ℝ] F,
+        HasFDerivAt f D q ∧
+          HasFDerivAt f D' q' ∧
+            ‖D' - D‖ ≤ (K : ℝ) * dist q' q) :
+    ContDiffAt ℝ 1 f x := by
+  rcases
+      exists_canonical_endpoint_gronwall_package_of_pairwise
+        (f := f) hU hpairs with
+    ⟨endpoint, hU', hbound, hderiv⟩
+  rw [contDiffAt_one_iff]
+  exact
+    ⟨endpoint, U, hU',
+      ContinuityPackages.normedField_continuousOn_of_norm_sub_le hbound,
+      hderiv⟩
+
+/--
+A Gronwall bound for the full third-variation endpoint operator survives fixed
+input and output projections.  This is the operator-norm adapter needed when
+the doubly-augmented endpoint derivative is projected and curried into the
+derivative of the first-variation endpoint field.
+-/
+theorem projected_endpoint_sub_norm_le
+    {E X Y Z : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup X] [NormedSpace ℝ X]
+    [NormedAddCommGroup Y] [NormedSpace ℝ Y]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    (post : Y →L[ℝ] Z) (pre : E →L[ℝ] X)
+    (D₁ D₂ : X →L[ℝ] Y) :
+    ‖(post.comp D₂).comp pre - (post.comp D₁).comp pre‖ ≤
+      ‖post‖ * ‖D₂ - D₁‖ * ‖pre‖ := by
+  have hrewrite :
+      (post.comp D₂).comp pre - (post.comp D₁).comp pre =
+        (post.comp (D₂ - D₁)).comp pre := by
+    ext x
+    simp
+  rw [hrewrite]
+  calc
+    ‖(post.comp (D₂ - D₁)).comp pre‖ ≤
+        ‖post.comp (D₂ - D₁)‖ * ‖pre‖ :=
+      ContinuousLinearMap.opNorm_comp_le _ _
+    _ ≤ (‖post‖ * ‖D₂ - D₁‖) * ‖pre‖ :=
+      mul_le_mul_of_nonneg_right
+        (ContinuousLinearMap.opNorm_comp_le _ _) (norm_nonneg pre)
+
+/-- Fixed projections turn a full endpoint Gronwall estimate into another
+Gronwall estimate with a fixed, explicitly nonnegative constant. -/
+theorem projected_endpoint_gronwall_bound
+    {E X Y Z : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [NormedAddCommGroup X] [NormedSpace ℝ X]
+    [NormedAddCommGroup Y] [NormedSpace ℝ Y]
+    [NormedAddCommGroup Z] [NormedSpace ℝ Z]
+    (post : Y →L[ℝ] Z) (pre : E →L[ℝ] X)
+    (D₁ D₂ : X →L[ℝ] Y) {C δ : ℝ}
+    (hC : 0 ≤ C) (hD : ‖D₂ - D₁‖ ≤ C * δ) :
+    0 ≤ ‖post‖ * C * ‖pre‖ ∧
+      ‖(post.comp D₂).comp pre - (post.comp D₁).comp pre‖ ≤
+        (‖post‖ * C * ‖pre‖) * δ := by
+  constructor
+  · positivity
+  calc
+    ‖(post.comp D₂).comp pre - (post.comp D₁).comp pre‖ ≤
+        ‖post‖ * ‖D₂ - D₁‖ * ‖pre‖ :=
+      projected_endpoint_sub_norm_le post pre D₁ D₂
+    _ ≤ ‖post‖ * (C * δ) * ‖pre‖ := by
+      gcongr
+    _ = (‖post‖ * C * ‖pre‖) * δ := by ring
+
 variable {n : ℕ} {M : Type u}
 variable [TopologicalSpace M] [T2Space M]
 variable [ChartedSpace (ClosedSmoothModel n) M]

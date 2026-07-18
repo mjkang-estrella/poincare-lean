@@ -1,0 +1,127 @@
+import Poincare.Global.CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction
+import Poincare.Global.PoincareAutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundary
+
+/-!
+# Automatic finite-nerve Poincare boundary from the ODE overlap tail
+
+This end boundary replaces the moving target-chart ODE primitive by the exact
+four overlap residuals remaining after the selector's automatic positive
+initial good interval.  Finite-nerve selection, tetrahedral-star smoothing,
+subordinate-partition analysis, and compact-history feedback are unchanged.
+
+The dependent feedback field is indexed directly by the old minimal moving
+input applied to the tail-to-ODE conversion, making its copy into the
+verified predecessor boundary definitional.
+-/
+
+noncomputable section
+
+open Bundle FiberBundle Filter MeasureTheory Set
+open scoped Manifold ContDiff MeasureTheory Topology ENNReal NNReal
+
+universe u v
+
+namespace Poincare
+
+open CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction
+open CartanFixedTargetMovingGenericInverseEndpointODEPrimitiveProviderReduction
+open CartanGenericPostRealizationCompactHistoryReduction
+open SmoothabilityFiniteTetrahedralStarReduction
+
+/-- The strongest automatic finite-nerve boundary with only the exact
+post-initial-time overlap tail retained at the moving endpoint. -/
+structure
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ambientChartedSpace : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [CompactSpace M] [SimplyConnectedSpace M] where
+  tetrahedralStarProvider : FiniteTetrahedralStarPresentationProvider3 M
+  analytic :
+    FixedTargetNormalizedFlowSphereCompactReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v}
+      M
+  genericInverseEndpointODEMovingTailOverlapInputs :
+    FixedTargetMovingGenericSuccessorGenericInverseEndpointODETailOverlapInputs3 M
+  compactHistoryFeedback :
+    FixedTargetMovingCompactHistoryPostRealizationFeedback3 M
+      (fixedTargetMovingGenericSuccessorInputs3_of_genericInverseEndpointODEPrimitiveInputs
+        (fixedTargetMovingGenericSuccessorGenericInverseEndpointODEPrimitiveInputs3_of_tailInputs
+          genericInverseEndpointODEMovingTailOverlapInputs))
+
+/-- Convert only the tail moving input and copy every other field into the
+verified automatic finite-nerve ODE-primitive boundary. -/
+noncomputable def
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.toODEPrimitiveBoundary
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ambientChartedSpace : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [CompactSpace M] [SimplyConnectedSpace M]
+    (data :
+      AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.{u, v}
+        M) :
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.{u, v}
+      M := by
+  let tetrahedralStarProvider : FiniteTetrahedralStarPresentationProvider3 M :=
+    @AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.tetrahedralStarProvider
+      M _ _ ambientChartedSpace _ _ data
+  let analytic :
+      FixedTargetNormalizedFlowSphereCompactReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v}
+        M :=
+    @AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.analytic
+      M _ _ ambientChartedSpace _ _ data
+  let tailOverlap :
+      FixedTargetMovingGenericSuccessorGenericInverseEndpointODETailOverlapInputs3 M :=
+    @AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.genericInverseEndpointODEMovingTailOverlapInputs
+      M _ _ ambientChartedSpace _ _ data
+  let odePrimitive :
+      FixedTargetMovingGenericSuccessorGenericInverseEndpointODEPrimitiveInputs3 M :=
+    fixedTargetMovingGenericSuccessorGenericInverseEndpointODEPrimitiveInputs3_of_tailInputs
+      tailOverlap
+  let compactHistoryFeedback :
+      FixedTargetMovingCompactHistoryPostRealizationFeedback3 M
+        (fixedTargetMovingGenericSuccessorInputs3_of_genericInverseEndpointODEPrimitiveInputs
+          odePrimitive) :=
+    @AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.compactHistoryFeedback
+      M _ _ ambientChartedSpace _ _ data
+  exact {
+    tetrahedralStarProvider := tetrahedralStarProvider
+    analytic := analytic
+    genericInverseEndpointODEMovingPrimitiveInputs := odePrimitive
+    compactHistoryFeedback := compactHistoryFeedback }
+
+/-- The tail-overlap boundary reaches the sphere conclusion through the
+verified strongest automatic finite-nerve boundary. -/
+theorem
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.sphereConclusion
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ambientChartedSpace : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [CompactSpace M] [SimplyConnectedSpace M]
+    (data :
+      AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.{u, v}
+        M) :
+    Nonempty (M ≃ₜ ThreeSphere) :=
+  data.toODEPrimitiveBoundary.sphereConclusion
+
+def
+    UniversalAutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3 :
+    Prop :=
+  ∀ (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M],
+      Nonempty
+        (AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.{u, v}
+          M)
+
+/-- A universal producer of the exact tail-overlap boundary implies the
+repository's canonical topological Poincare statement. -/
+theorem
+    poincareConjectureStatement_of_universalAutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3
+    (provider :
+      UniversalAutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.{u, v}) :
+    PoincareConjectureStatement.{u} := by
+  apply
+    poincareConjectureStatement_of_universalAutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3
+  intro M _topologicalSpace _t2Space _ambientChartedSpace
+    _simplyConnectedSpace _compactSpace
+  rcases provider M with ⟨data⟩
+  exact ⟨data.toODEPrimitiveBoundary⟩
+
+end Poincare

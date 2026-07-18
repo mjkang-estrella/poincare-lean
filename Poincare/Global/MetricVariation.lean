@@ -214,6 +214,29 @@ def ClosedRicciFlowExtensionRegularAt
     CovariantDerivative.DerivRegularAt (gt t₀).leviCivita (extend E v) x
 
 /--
+Canonical tangent extensions are locally regular for every smooth metric
+slice.  Consequently extension regularity is automatic for an arbitrary
+closed smooth metric family; it is not additional Ricci-flow data.
+-/
+theorem closedRicciFlowExtensionRegularAt_canonical
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ) (x : M) :
+    ClosedRicciFlowExtensionRegularAt gt t₀ x := by
+  intro v
+  exact CovariantDerivative.derivRegularAt_extend
+    (cov := (gt t₀).leviCivita) (x := x) v
+
+/-- A global closed Ricci-flow equation supplies the former flow-plus-extension
+package because the extension component is canonical. -/
+theorem global_isClosedRicciFlowSolutionAt_and_extensionRegularAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M) (t₀ : ℝ)
+    (hFlow : ∀ x : M, IsClosedRicciFlowSolutionAt gt t₀ x) :
+    ∀ x : M,
+      IsClosedRicciFlowSolutionAt gt t₀ x ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ x :=
+  fun x ↦ ⟨hFlow x,
+    closedRicciFlowExtensionRegularAt_canonical gt t₀ x⟩
+
+/--
 Legacy constructor: global `C²` canonical extensions still imply the local
 extension-regularity bundle.
 -/

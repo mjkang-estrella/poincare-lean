@@ -115,7 +115,17 @@ omit [T2Space M] in
 theorem cutoff_eventuallyEq_one :
     ∀ᶠ z in 𝓝 (extChartAt I x₀ x₀), cutoff (n := n) x₀ z = 1 :=
   (Classical.choose_spec
-    (@CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀)).2.2.2.2
+    (@CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀)).2.2.2.2.1
+
+omit [T2Space M] in
+/-- If the anchor chart target is the whole model space, the chosen blending
+cutoff is canonically the constant function `1`. -/
+theorem cutoff_eq_one_of_target_eq_univ
+    (htarget : (extChartAt I x₀).target = Set.univ) :
+    cutoff (n := n) x₀ = fun _ : E ↦ (1 : ℝ) :=
+  (Classical.choose_spec
+    (@CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀)).2.2.2.2.2
+      htarget
 
 omit [T2Space M] in
 theorem cutoff_support_invertible (z : E) (hz : cutoff (n := n) x₀ z ≠ 0) :

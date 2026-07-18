@@ -32209,6 +32209,36 @@ These record theorem surface names without changing the proved statements.
 
 namespace RicciFlow
 
+/-- Theorem contract for `differentiableAt_coordScalar_of_christoffel`. -/
+theorem differentiableAt_coordScalar_of_christoffel_eq :
+    @RicciFlow.differentiableAt_coordScalar_of_christoffel =
+      @RicciFlow.differentiableAt_coordScalar_of_christoffel :=
+  rfl
+
+/-- Theorem contract for `covTensor2Deriv_smul_metric_field`. -/
+theorem covTensor2Deriv_smul_metric_field_eq :
+    @RicciFlow.covTensor2Deriv_smul_metric_field =
+      @RicciFlow.covTensor2Deriv_smul_metric_field :=
+  rfl
+
+/-- Theorem contract for `covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field`. -/
+theorem covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field_eq :
+    @RicciFlow.covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field =
+      @RicciFlow.covRicciDeriv_eq_fderiv_coordScalar_div_finrank_mul_metric_of_einstein_field :=
+  rfl
+
+/-- Theorem contract for `ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field`. -/
+theorem ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field_eq :
+    @RicciFlow.ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field =
+      @RicciFlow.ricciDivergence_eq_one_div_finrank_mul_fderiv_coordScalar_of_einstein_field :=
+  rfl
+
+/-- Theorem contract for `schur_fderiv_coordScalar_eq_zero_of_einstein_field`. -/
+theorem schur_fderiv_coordScalar_eq_zero_of_einstein_field_eq :
+    @RicciFlow.schur_fderiv_coordScalar_eq_zero_of_einstein_field =
+      @RicciFlow.schur_fderiv_coordScalar_eq_zero_of_einstein_field :=
+  rfl
+
 /-- Theorem contract for `modelLaplacian_add`. -/
 theorem modelLaplacian_add_eq :
     @RicciFlow.modelLaplacian_add = @RicciFlow.modelLaplacian_add :=

@@ -1020,6 +1020,11 @@ theorem modelLeviCivita_contMDiff_eq :
     @modelLeviCivita_contMDiff = @modelLeviCivita_contMDiff :=
   rfl
 
+/-- Theorem contract for `leviCivitaConnection_contMDiff`. -/
+theorem leviCivitaConnection_contMDiff_eq :
+    @leviCivitaConnection_contMDiff = @leviCivitaConnection_contMDiff :=
+  rfl
+
 /-- Theorem contract for `modelLeviCivita_ricciBilinearAt_symm`. -/
 theorem modelLeviCivita_ricciBilinearAt_symm_eq :
     @modelLeviCivita_ricciBilinearAt_symm = @modelLeviCivita_ricciBilinearAt_symm :=

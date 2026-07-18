@@ -68,7 +68,8 @@ theorem exists_cartanChartMap_ift_partialHomeomorph_on_punctured_ball
     ⟨ρ, hρ_pos, _T, _hT_pos, hlocal⟩
   refine ⟨ρ, hρ_pos, ?_⟩
   intro v hv hvne
-  rcases hlocal v hv hvne with ⟨A, B, hderiv, hpullback⟩
+  rcases hlocal v hv hvne with
+    ⟨A, B, _hsourceStrict, _htargetStrict, hderiv, hpullback⟩
   let D : E3 ≃L[ℝ] E3 := (A.symm.trans L.toContinuousLinearEquiv).trans B
   have hD :
       (D : E3 →L[ℝ] E3) =

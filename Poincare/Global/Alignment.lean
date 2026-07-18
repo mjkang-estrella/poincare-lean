@@ -16,9 +16,10 @@ open scoped Manifold ContDiff
 namespace Poincare
 
 /--
-Mathlib's `SimplyConnectedSpace.nonempty_homeomorph_sphere_three`
-`proof_wanted` body, restated because `proof_wanted` declarations are not
-available as importable proof terms.
+Mathlib's statement-only three-dimensional Poincare `proof_wanted` body,
+restated because `proof_wanted` declarations are not available as importable
+proof terms.  This definition deliberately avoids depending on that upstream
+placeholder declaration.
 -/
 def MathlibPoincareStatement : Prop :=
   ∀ (M : Type u) [TopologicalSpace M] [T2Space M]

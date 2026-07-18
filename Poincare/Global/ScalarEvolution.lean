@@ -3,6 +3,9 @@ import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
 import Poincare.Global.RicciFlow
 import Poincare.Global.ScalarVariation
+import Poincare.Global.MetricRaiseTimeDerivative
+import Poincare.Global.DeltaGammaFieldRegularity
+import Poincare.Global.RicciFlowScalarRegularity
 import Poincare.MaximumPrinciple
 
 /-!
@@ -3340,6 +3343,68 @@ theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'
         covTensor2ExtDifferentiableAt_ricciVariationField_canonical
           (g := gt t₀) (x := y))
       hRicDivDiff
+
+/--
+Hamilton scalar evolution with the inverse-metric derivative discharged from
+the existing pointwise metric time differentiability.  Compared with
+`satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'`, this theorem has no
+independent `hRaise` premise and reconstructs the scalar `δΓ` entry bridge
+from the Koszul identity.  A single global C² entry hypothesis now also
+supplies both first and second spatial regularity of the metric variation,
+and the Ricci-flow equation derives the formerly separate scalar C² premise.
+-/
+theorem satisfiesHamiltonScalarEvolutionAt_of_ricciFlow_no_raise_hypothesis
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    [∀ t : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative (gt t).leviCivita 1]
+    (hFlow : ∀ y : M, IsClosedRicciFlowSolutionAt gt t₀ y)
+    (hNearRegExt :
+      ∀ᶠ y in nhds x,
+        MetricFlowRegularAt gt t₀ y ∧
+        (∀ a b c : TM y,
+          HasDerivAt
+            (fun t ↦
+              extDerivFun
+                (fun z : M ↦ (gt t).inner z (extend E b z) (extend E c z))
+                y a)
+            (extDerivFun
+              (fun z : M ↦ timeDerivAt gt t₀ z (extend E b z) (extend E c z))
+              y a) t₀))
+    (hgt : ∀ y : M, TimeDifferentiableAt gt t₀ y)
+    (hEntries : ∀ y : M,
+      TimeVariationExtContMDiffAt gt t₀ y 2) :
+    SatisfiesHamiltonScalarEvolutionAt gt t₀ x := by
+  have hNearFlow :
+      ∀ᶠ y in nhds x,
+        IsClosedRicciFlowSolutionAt gt t₀ y ∧
+        ClosedRicciFlowExtensionRegularAt gt t₀ y :=
+    Filter.Eventually.of_forall
+      (global_isClosedRicciFlowSolutionAt_and_extensionRegularAt gt t₀ hFlow)
+  have hTraceEntries : ∀ y : M,
+      TimeVariationTraceEntriesExtContMDiffAt gt t₀ y 2 := fun y ↦
+    ⟨hEntries y, metricExtContMDiffAt_two (gt t₀) y⟩
+  have hScalar₂ : ∀ y : M,
+      ContMDiffAt I 𝓘(ℝ) 2 (fun z : M ↦ (gt t₀).scalarAt z) y :=
+    scalarAt_contMDiffAt_two_of_ricciFlow hFlow hEntries
+  have hTimeCovDiff :
+      ∀ y : M, CovTensor2ExtDifferentiableAt (timeDerivAt gt t₀) y := fun y ↦
+    (timeVariationTraceEntriesExtContMDiffAt_two_old_regularities
+      (hTraceEntries y)).1
+  have hSecond :
+      CovTensor2DerivExtDifferentiableAt
+        (gt t₀) (timeDerivAt gt t₀) x :=
+    covTensor2DerivExtDifferentiableAt_timeDeriv_of_global_entries
+      hgt hTraceEntries
+  exact satisfiesHamiltonScalarEvolutionAt_of_ricciFlow'
+    (gt := gt) (t₀ := t₀) (x := x)
+    (raise' := metricRaiseDerivAt gt t₀ x (hgt x))
+    hNearFlow hNearRegExt hgt
+    (hasDerivAt_metricRaiseContinuousAt_of_timeDifferentiableAt (hgt x))
+    (deltaGammaEntryDerivativeBridgeAt_of_koszul_regular
+      hgt hNearRegExt hSecond)
+    hSecond hTimeCovDiff (hTraceEntries x) hScalar₂
+    (ricciDivergenceOneForm_mdifferentiableAt_of_ricciFlow
+      hFlow hEntries x)
 
 section StaticRicciFlatWitness
 

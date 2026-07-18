@@ -35,10 +35,10 @@ underlying linear tangent action.
 The first conjunct is the explicit normal-coordinate overlap statement:
 after conjugating by the source and target exponential partial homeomorphisms,
 both chart Cartan maps read as the same linear map.  The second conjunct is the
-corresponding strict germ agreement on the common source.  The remaining
-globalization gap is to identify the re-anchored `Classical.choice` alignment
-used by `CartanChain.ChainState.next` with the linear action induced by the
-previous germ at the new anchor.
+corresponding strict germ agreement on the common source.  For successors made
+by `CartanChain.ChainState.next`, equality of the target indices identifies the
+two `Classical.choice` alignments automatically; the remaining geometric input
+is compatibility of each carried germ with its re-anchored successor.
 -/
 theorem cartanGerm_determinacy_of_tangentAlignment_apply_eq
     {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {p₀ : RoundSphere3}

@@ -573,6 +573,17 @@ theorem extDerivFun_apply_chart_eq :
     @extDerivFun_apply_chart = @extDerivFun_apply_chart :=
   rfl
 
+/-- Theorem contract for `extDerivFun_apply_fixed_chart`. -/
+theorem extDerivFun_apply_fixed_chart_eq :
+    @extDerivFun_apply_fixed_chart = @extDerivFun_apply_fixed_chart :=
+  rfl
+
+/-- Theorem contract for `isLocallyConstant_of_extDerivFun_eq_zero`. -/
+theorem isLocallyConstant_of_extDerivFun_eq_zero_eq :
+    @isLocallyConstant_of_extDerivFun_eq_zero =
+      @isLocallyConstant_of_extDerivFun_eq_zero :=
+  rfl
+
 /-- Theorem contract for `extDerivFun_apply_mlieBracket_chart`. -/
 theorem extDerivFun_apply_mlieBracket_chart_eq :
     @extDerivFun_apply_mlieBracket_chart = @extDerivFun_apply_mlieBracket_chart :=

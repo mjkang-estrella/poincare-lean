@@ -221,7 +221,7 @@ theorem mdifferentiableAt_gradient (g : ClosedSmoothRiemannianMetric n M)
     change 0 < ((innerSL ℝ) v) v
     rw [innerSL_apply_apply]
     exact (real_inner_self_pos).2 hv
-  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone⟩ :=
+  obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone, _hχcanonical⟩ :=
     @CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x
   have hsupp : ∀ z, χ z ≠ 0 →
       (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x).symm)

@@ -148,7 +148,13 @@ private theorem exists_lipschitzOnWith_chartChristoffel_thirdVariation_coefficie
       (by norm_num) (convex_closedBall p (a + 1))
       (isCompact_closedBall p (a + 1))
 
-private theorem linearODE_endpoint_clm_lipschitz_of_coefficients
+/--
+Endpoint operators of two linear ODEs are Lipschitz in a uniform coefficient
+perturbation.  This generic estimate is also the direct bridge from
+first-variation endpoint families to a Lipschitz derivative field for the
+fixed-time geodesic flow.
+-/
+theorem linearODE_endpoint_clm_lipschitz_of_coefficients
     {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
     {A₁ A₂ : ℝ → X →L[ℝ] X}
     {Ω₁ Ω₂ : X → ℝ → X} {D₁ D₂ : X →L[ℝ] X}
@@ -328,6 +334,113 @@ theorem exists_hosted_thirdVariation_solution_family_on_paired_base
 
 omit [T2Space M] in
 /--
+Uniform Grönwall constant for all hosted third-variation endpoint CLMs whose
+bases remain in one fixed closed ball.  In contrast with
+`chartChristoffel_thirdVariation_endpoint_gronwall_bound`, the constant is
+chosen before the two base curves, solution families, endpoint CLMs, their
+separation bound, and the evaluation time.
+-/
+theorem exists_uniform_chartChristoffel_thirdVariation_endpoint_gronwall_constant
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M)
+    (T a : ℝ) (p : A × A) (hT : 0 ≤ T) :
+    ∃ C : ℝ, 0 ≤ C ∧
+      ∀ {ζ₁ ζ₂ : ℝ → A × A}
+        {Ω₁ Ω₂ : A × A → ℝ → A × A}
+        {D₁ D₂ : (A × A) →L[ℝ] (A × A)}
+        {δnorm t : ℝ},
+        0 ≤ δnorm →
+        (∀ τ ∈ Ico (0 : ℝ) T, ζ₁ τ ∈ closedBall p (a + 1)) →
+        (∀ τ ∈ Ico (0 : ℝ) T, ζ₂ τ ∈ closedBall p (a + 1)) →
+        (∀ τ ∈ Ico (0 : ℝ) T, ‖ζ₂ τ - ζ₁ τ‖ ≤ δnorm) →
+        (∀ h : A × A, Ω₁ h 0 = h) →
+        (∀ h : A × A, Ω₂ h 0 = h) →
+        (∀ h : A × A, ∀ τ ∈ Icc (0 : ℝ) T,
+          HasDerivWithinAt (Ω₁ h)
+            (fderiv ℝ
+              (fun y' : A × A =>
+                let F : A → A :=
+                  augmentedGeodesicFlowField (chartChristoffelField g x₀)
+                (F y'.1, (fderiv ℝ F y'.1) y'.2))
+              (ζ₁ τ) (Ω₁ h τ))
+            (Icc (0 : ℝ) T) τ) →
+        (∀ h : A × A, ∀ τ ∈ Icc (0 : ℝ) T,
+          HasDerivWithinAt (Ω₂ h)
+            (fderiv ℝ
+              (fun y' : A × A =>
+                let F : A → A :=
+                  augmentedGeodesicFlowField (chartChristoffelField g x₀)
+                (F y'.1, (fderiv ℝ F y'.1) y'.2))
+              (ζ₂ τ) (Ω₂ h τ))
+            (Icc (0 : ℝ) T) τ) →
+        (∀ h : A × A, Ω₁ h t = D₁ h) →
+        (∀ h : A × A, Ω₂ h t = D₂ h) →
+        t ∈ Icc (0 : ℝ) T →
+        ‖D₂ - D₁‖ ≤ C * δnorm := by
+  let Γ : E → E →L[ℝ] E →L[ℝ] E := chartChristoffelField g x₀
+  let F : A → A := augmentedGeodesicFlowField Γ
+  let doubleF : A × A → A × A := fun y => (F y.1, (fderiv ℝ F y.1) y.2)
+  rcases
+      exists_lipschitzOnWith_chartChristoffel_thirdVariation_coefficient_closedBall
+        (g := g) (x₀ := x₀) (p := p) (a := a) with
+    ⟨hdouble, L, hLipCoeff⟩
+  rcases
+      (isCompact_closedBall p (a + 1)).exists_bound_of_continuousOn
+        ((hdouble.continuous_fderiv (by norm_num)).continuousOn) with
+    ⟨K₀, hK₀⟩
+  let K : ℝ := max K₀ 0
+  have hK_nonneg : 0 ≤ K := le_max_right K₀ 0
+  let C : ℝ := (L : ℝ) * Real.exp (K * T) * gronwallBound 0 K 1 T
+  have hC_nonneg : 0 ≤ C := by
+    have hCgr_nonneg : 0 ≤ gronwallBound 0 K 1 T := by
+      have hmono : Monotone (gronwallBound 0 K 1) :=
+        gronwallBound_mono (by norm_num) (by norm_num) hK_nonneg
+      have h0T := hmono hT
+      simpa [gronwallBound_x0] using h0T
+    exact mul_nonneg (mul_nonneg L.2 (Real.exp_pos _).le) hCgr_nonneg
+  use C
+  constructor
+  · exact hC_nonneg
+  intro ζ₁ ζ₂ Ω₁ Ω₂ D₁ D₂ δnorm t hδ hζ₁mem hζ₂mem hζdist
+    hΩ₁0 hΩ₂0 hΩ₁der hΩ₂der hD₁ hD₂ ht
+  have hA₁op : ∀ τ ∈ Ico (0 : ℝ) T,
+      ‖fderiv ℝ doubleF (ζ₁ τ)‖ ≤ K := by
+    intro τ hτ
+    exact (hK₀ (ζ₁ τ) (hζ₁mem τ hτ)).trans (le_max_left K₀ 0)
+  have hA₂op : ∀ τ ∈ Ico (0 : ℝ) T,
+      ‖fderiv ℝ doubleF (ζ₂ τ)‖ ≤ K := by
+    intro τ hτ
+    exact (hK₀ (ζ₂ τ) (hζ₂mem τ hτ)).trans (le_max_left K₀ 0)
+  have hAdiff : ∀ τ ∈ Ico (0 : ℝ) T,
+      ‖fderiv ℝ doubleF (ζ₂ τ) - fderiv ℝ doubleF (ζ₁ τ)‖ ≤
+        (L : ℝ) * δnorm := by
+    intro τ hτ
+    calc
+      ‖fderiv ℝ doubleF (ζ₂ τ) - fderiv ℝ doubleF (ζ₁ τ)‖ =
+          dist (fderiv ℝ doubleF (ζ₂ τ)) (fderiv ℝ doubleF (ζ₁ τ)) := by
+            rw [dist_eq_norm]
+      _ ≤ (L : ℝ) * dist (ζ₂ τ) (ζ₁ τ) :=
+          hLipCoeff.dist_le_mul (ζ₂ τ) (hζ₂mem τ hτ) (ζ₁ τ) (hζ₁mem τ hτ)
+      _ = (L : ℝ) * ‖ζ₂ τ - ζ₁ τ‖ := by
+          rw [dist_eq_norm]
+      _ ≤ (L : ℝ) * δnorm :=
+          mul_le_mul_of_nonneg_left (hζdist τ hτ) L.2
+  simpa [C, doubleF, F, Γ] using
+    linearODE_endpoint_clm_lipschitz_of_coefficients
+      (A₁ := fun τ : ℝ => fderiv ℝ doubleF (ζ₁ τ))
+      (A₂ := fun τ : ℝ => fderiv ℝ doubleF (ζ₂ τ))
+      (Ω₁ := Ω₁) (Ω₂ := Ω₂) (D₁ := D₁) (D₂ := D₂)
+      (K := K) (L := (L : ℝ)) (δnorm := δnorm) (T := T) (t := t)
+      hT hK_nonneg L.2 hδ hA₁op hA₂op hAdiff hΩ₁0 hΩ₂0
+      (by
+        intro h τ hτ
+        simpa [doubleF, F, Γ] using hΩ₁der h τ hτ)
+      (by
+        intro h τ hτ
+        simpa [doubleF, F, Γ] using hΩ₂der h τ hτ)
+      hD₁ hD₂ ht
+
+omit [T2Space M] in
+/--
 Grönwall endpoint bound for two third-variation endpoint CLMs based at nearby
 doubly-augmented curves.  The coefficient Lipschitz constant is obtained from
 one higher chart-Christoffel regularity of the doubly-augmented field.
@@ -366,69 +479,13 @@ theorem chartChristoffel_thirdVariation_endpoint_gronwall_bound
     (hD₂ : ∀ h : A × A, Ω₂ h t = D₂ h)
     (ht : t ∈ Icc (0 : ℝ) T) :
     ∃ C : ℝ, 0 ≤ C ∧ ‖D₂ - D₁‖ ≤ C * δnorm := by
-  let Γ : E → E →L[ℝ] E →L[ℝ] E := chartChristoffelField g x₀
-  let F : A → A := augmentedGeodesicFlowField Γ
-  let doubleF : A × A → A × A := fun y => (F y.1, (fderiv ℝ F y.1) y.2)
   rcases
-      exists_lipschitzOnWith_chartChristoffel_thirdVariation_coefficient_closedBall
-        (g := g) (x₀ := x₀) (p := p) (a := a) with
-    ⟨hdouble, L, hLipCoeff⟩
-  rcases
-      (isCompact_closedBall p (a + 1)).exists_bound_of_continuousOn
-        ((hdouble.continuous_fderiv (by norm_num)).continuousOn) with
-    ⟨K₀, hK₀⟩
-  let K : ℝ := max K₀ 0
-  have hK_nonneg : 0 ≤ K := le_max_right K₀ 0
-  have hA₁op : ∀ τ ∈ Ico (0 : ℝ) T,
-      ‖fderiv ℝ doubleF (ζ₁ τ)‖ ≤ K := by
-    intro τ hτ
-    exact (hK₀ (ζ₁ τ) (hζ₁mem τ hτ)).trans (le_max_left K₀ 0)
-  have hA₂op : ∀ τ ∈ Ico (0 : ℝ) T,
-      ‖fderiv ℝ doubleF (ζ₂ τ)‖ ≤ K := by
-    intro τ hτ
-    exact (hK₀ (ζ₂ τ) (hζ₂mem τ hτ)).trans (le_max_left K₀ 0)
-  have hAdiff : ∀ τ ∈ Ico (0 : ℝ) T,
-      ‖fderiv ℝ doubleF (ζ₂ τ) - fderiv ℝ doubleF (ζ₁ τ)‖ ≤
-        (L : ℝ) * δnorm := by
-    intro τ hτ
-    calc
-      ‖fderiv ℝ doubleF (ζ₂ τ) - fderiv ℝ doubleF (ζ₁ τ)‖ =
-          dist (fderiv ℝ doubleF (ζ₂ τ)) (fderiv ℝ doubleF (ζ₁ τ)) := by
-            rw [dist_eq_norm]
-      _ ≤ (L : ℝ) * dist (ζ₂ τ) (ζ₁ τ) :=
-          hLipCoeff.dist_le_mul (ζ₂ τ) (hζ₂mem τ hτ) (ζ₁ τ) (hζ₁mem τ hτ)
-      _ = (L : ℝ) * ‖ζ₂ τ - ζ₁ τ‖ := by
-          rw [dist_eq_norm]
-      _ ≤ (L : ℝ) * δnorm :=
-          mul_le_mul_of_nonneg_left (hζdist τ hτ) L.2
-  let C : ℝ := (L : ℝ) * Real.exp (K * T) * gronwallBound 0 K 1 T
-  have hC_nonneg : 0 ≤ C := by
-    have hCgr_nonneg : 0 ≤ gronwallBound 0 K 1 T := by
-      have hmono : Monotone (gronwallBound 0 K 1) :=
-        gronwallBound_mono (by norm_num) (by norm_num) hK_nonneg
-      have h0T := hmono hT
-      simpa [gronwallBound_x0] using h0T
-    exact mul_nonneg (mul_nonneg L.2 (Real.exp_pos _).le) hCgr_nonneg
-  use C
-  constructor
-  · exact hC_nonneg
-  have hmain :
-      ‖D₂ - D₁‖ ≤ C * δnorm := by
-    simpa [C, doubleF, F, Γ] using
-      linearODE_endpoint_clm_lipschitz_of_coefficients
-        (A₁ := fun τ : ℝ => fderiv ℝ doubleF (ζ₁ τ))
-        (A₂ := fun τ : ℝ => fderiv ℝ doubleF (ζ₂ τ))
-        (Ω₁ := Ω₁) (Ω₂ := Ω₂) (D₁ := D₁) (D₂ := D₂)
-        (K := K) (L := (L : ℝ)) (δnorm := δnorm) (T := T) (t := t)
-        hT hK_nonneg L.2 hδ hA₁op hA₂op hAdiff hΩ₁0 hΩ₂0
-        (by
-          intro h τ hτ
-          simpa [doubleF, F, Γ] using hΩ₁der h τ hτ)
-        (by
-          intro h τ hτ
-          simpa [doubleF, F, Γ] using hΩ₂der h τ hτ)
-        hD₁ hD₂ ht
-  exact hmain
+      exists_uniform_chartChristoffel_thirdVariation_endpoint_gronwall_constant
+        (g := g) (x₀ := x₀) T a p hT with
+    ⟨C, hC_nonneg, hC⟩
+  exact
+    ⟨C, hC_nonneg,
+      hC hδ hζ₁mem hζ₂mem hζdist hΩ₁0 hΩ₂0 hΩ₁der hΩ₂der hD₁ hD₂ ht⟩
 
 end GeodesicTransport
 end Poincare

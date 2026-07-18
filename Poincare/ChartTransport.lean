@@ -347,24 +347,34 @@ theorem blendedChartMetric_nondegenerate (χ : E → ℝ)
 /--
 **A blending cutoff exists**: a smooth `[0,1]`-valued function supported in
 the chart target and identically `1` near the chart centre — the cutoff
-with which `blendedChartMetric` satisfies all its hypotheses.
+with which `blendedChartMetric` satisfies all its hypotheses.  When the chart
+target is all of model space, the witness is canonically the constant `1`.
 -/
 theorem exists_blending_cutoff [I.Boundaryless] (x₀ : M) :
     ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ (∀ z, 0 ≤ χ z) ∧ (∀ z, χ z ≤ 1) ∧
       (tsupport χ ⊆ (extChartAt I x₀).target) ∧
-      (∀ᶠ z in nhds (extChartAt I x₀ x₀), χ z = 1) := by
-  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp
-    (isOpen_extChartAt_target x₀) (extChartAt I x₀ x₀)
-    (mem_extChartAt_target x₀)
-  let f : ContDiffBump (extChartAt I x₀ x₀) :=
-    ⟨ε / 4, ε / 2, by positivity, by linarith⟩
-  refine ⟨f, f.contDiff, fun z ↦ f.nonneg, fun z ↦ f.le_one, ?_, ?_⟩
-  · rw [f.tsupport_eq]
-    exact subset_trans (Metric.closedBall_subset_ball
-      (show (ε / 2 : ℝ) < ε by linarith)) hball
-  · filter_upwards [Metric.closedBall_mem_nhds _ (by positivity :
-      (0 : ℝ) < ε / 4)] with z hz
-    exact f.one_of_mem_closedBall hz
+      (∀ᶠ z in nhds (extChartAt I x₀ x₀), χ z = 1) ∧
+      ((extChartAt I x₀).target = Set.univ →
+        χ = fun _ : E ↦ (1 : ℝ)) := by
+  by_cases htarget : (extChartAt I x₀).target = Set.univ
+  · refine ⟨fun _ : E ↦ (1 : ℝ), contDiff_const, fun _ ↦ by positivity,
+      fun _ ↦ by norm_num, ?_, ?_, fun _ ↦ rfl⟩
+    · rw [htarget]
+      exact subset_univ _
+    · exact Filter.Eventually.of_forall fun _ ↦ rfl
+  · obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp
+      (isOpen_extChartAt_target x₀) (extChartAt I x₀ x₀)
+      (mem_extChartAt_target x₀)
+    let f : ContDiffBump (extChartAt I x₀ x₀) :=
+      ⟨ε / 4, ε / 2, by positivity, by linarith⟩
+    refine ⟨f, f.contDiff, fun z ↦ f.nonneg, fun z ↦ f.le_one, ?_, ?_, ?_⟩
+    · rw [f.tsupport_eq]
+      exact subset_trans (Metric.closedBall_subset_ball
+        (show (ε / 2 : ℝ) < ε by linarith)) hball
+    · filter_upwards [Metric.closedBall_mem_nhds _ (by positivity :
+        (0 : ℝ) < ε / 4)] with z hz
+      exact f.one_of_mem_closedBall hz
+    · exact fun h ↦ (htarget h).elim
 
 /--
 **The global chart metric exists**: for any positive-definite symmetric
@@ -384,7 +394,8 @@ theorem exists_global_chart_metric [I.Boundaryless]
       (∀ (z : E) (v w : E), Ghat z v w = Ghat z w v) ∧
       (∀ (z : E) (v : E), v ≠ 0 → 0 < Ghat z v v) ∧
       (∀ᶠ z in nhds (extChartAt I x₀ x₀), Ghat z = chartMetric g x₀ z) := by
-  obtain ⟨χ, hχsm, hχ0, hχ1, hχsupp, hχone⟩ := exists_blending_cutoff (I := I) x₀
+  obtain ⟨χ, hχsm, hχ0, hχ1, hχsupp, hχone, _hχcanonical⟩ :=
+    exists_blending_cutoff (I := I) x₀
   refine ⟨blendedChartMetric χ G₀ g x₀,
     fun z v w ↦ blendedChartMetric_symm χ G₀ hG₀symm g hgsymm x₀ z v w,
     fun z v hv ↦ blendedChartMetric_posDef χ G₀ hG₀pos g hgpos x₀

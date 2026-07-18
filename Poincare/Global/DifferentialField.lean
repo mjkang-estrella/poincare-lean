@@ -47,7 +47,14 @@ theorem exists_cartanChartDifferential_field_on_punctured_ball
           DF v =
             CartanLocalIsometry.cartanChartDifferential L (Afield v) (Bfield v)) ∧
         ∀ v : E3, ‖v‖ < ρ → v ≠ 0 →
-          (DF v).IsInvertible ∧
+          HasStrictFDerivAt
+              (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀)
+              (Afield v : E3 →L[ℝ] E3) v ∧
+            HasStrictFDerivAt
+              (GeodesicTransport.expAtChartOpenPartialHomeomorph
+                (g := roundSphereMetric3) p₀)
+              (Bfield v : E3 →L[ℝ] E3) (L v) ∧
+            (DF v).IsInvertible ∧
             HasStrictFDerivAt
               (CartanDifferential.cartanChartMap g x₀ p₀ L)
               (DF v)
@@ -97,7 +104,21 @@ theorem exists_cartanChartDifferential_field_on_punctured_ball
               ((GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀) v)
               u u' := by
       simpa [Afield, Bfield, hdomain] using
-        Classical.choose_spec (Classical.choose_spec (hlocal v hv hvne))
+        (Classical.choose_spec (Classical.choose_spec (hlocal v hv hvne))).2.2
+    have hsourceStrict :
+        HasStrictFDerivAt
+          (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x₀)
+          (Afield v : E3 →L[ℝ] E3) v := by
+      simpa [Afield, hdomain] using
+        (Classical.choose_spec (Classical.choose_spec (hlocal v hv hvne))).1
+    have htargetStrict :
+        HasStrictFDerivAt
+          (GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := roundSphereMetric3) p₀)
+          (Bfield v : E3 →L[ℝ] E3) (L v) := by
+      simpa [Afield, Bfield, hdomain] using
+        (Classical.choose_spec (Classical.choose_spec (hlocal v hv hvne))).2.1
+    refine ⟨hsourceStrict, htargetStrict, ?_⟩
     constructor
     · let Dequiv : E3 ≃L[ℝ] E3 :=
         ((Afield v).symm.trans L.toContinuousLinearEquiv).trans (Bfield v)

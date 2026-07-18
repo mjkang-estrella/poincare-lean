@@ -95,14 +95,16 @@ theorem exists_cartanChartMap_fderiv_eventual_pullback_germ_on_punctured_ball
     exact ⟨hqtarget, hqU⟩
   constructor
   · filter_upwards [hnear] with q hq
-    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with ⟨_, hstrict, _⟩
+    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with
+      ⟨_, _, _, hstrict, _⟩
     have hq_eq : eM (eM.symm q) = q := eM.right_inv hq.1
     have hderiv : HasFDerivAt F (DF (eM.symm q)) (eM (eM.symm q)) := by
       simpa [F] using hstrict.hasFDerivAt
     rwa [hq_eq] at hderiv
   · intro a b
     filter_upwards [hnear] with q hq
-    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with ⟨_, hstrict, hpull⟩
+    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with
+      ⟨_, _, _, hstrict, hpull⟩
     have hq_eq : eM (eM.symm q) = q := eM.right_inv hq.1
     have hderiv : HasFDerivAt F (DF (eM.symm q)) q := by
       have hderiv' :

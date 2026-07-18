@@ -277,6 +277,12 @@ theorem leviCivita_unique_at_eq :
     @CovariantDerivative.leviCivita_unique_at = @CovariantDerivative.leviCivita_unique_at :=
   rfl
 
+/-- Theorem contract for `leviCivita_unique_at_values`. -/
+theorem leviCivita_unique_at_values_eq :
+    @CovariantDerivative.leviCivita_unique_at_values =
+      @CovariantDerivative.leviCivita_unique_at_values :=
+  rfl
+
 /-- Theorem contract for `koszul_formula`. -/
 theorem koszul_formula_eq :
     @CovariantDerivative.koszul_formula = @CovariantDerivative.koszul_formula :=

@@ -57,27 +57,28 @@ theorem exists_cartanChartMap_christoffelAt_F_transition_law_of_endpoint_hasFDer
             fun z => CovariantDerivative.chartMetric g.inner x₀ z
           let G₁ : E3 → E3 →L[ℝ] E3 →L[ℝ] ℝ :=
             fun z => CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ z
-          v ∈ eM.source →
-          ∀ (endpoint : E3 → E3 →L[ℝ] E3)
-            (CLM : E3 →L[ℝ] E3 →L[ℝ] E3) (U : Set E3),
-            IsOpen U →
-            eM v ∈ U →
-            Set.EqOn (fun q : E3 => fderiv ℝ F q) endpoint U →
-            HasFDerivAt endpoint CLM (eM v) →
-            ContDiffAt ℝ 2 F (eM v) →
-            HasFDerivAt G₀ (fderiv ℝ G₀ (eM v)) (eM v) →
-            HasFDerivAt G₁ (fderiv ℝ G₁ (F (eM v))) (F (eM v)) →
-            ∀ (b₀ b₁ : LinearMap.BilinForm ℝ E3)
-              (hb₀ : b₀.Nondegenerate) (hb₁ : b₁.Nondegenerate),
-              (∀ a b : E3, b₀ a b = G₀ (eM v) a b) →
-              (∀ a b : E3, b₁ a b = G₁ (F (eM v)) a b) →
-              ∀ u w : E3,
-                CovariantDerivative.christoffelAt G₁ (F (eM v)) b₁
-                    hb₁ (DF v w) (DF v u) =
-                  DF v
-                      (CovariantDerivative.christoffelAt G₀ (eM v) b₀
-                        hb₀ w u) -
-                    (CLM u) w := by
+          HasStrictFDerivAt F (DF v) (eM v) ∧
+            (v ∈ eM.source →
+            ∀ (endpoint : E3 → E3 →L[ℝ] E3)
+              (CLM : E3 →L[ℝ] E3 →L[ℝ] E3) (U : Set E3),
+              IsOpen U →
+              eM v ∈ U →
+              Set.EqOn (fun q : E3 => fderiv ℝ F q) endpoint U →
+              HasFDerivAt endpoint CLM (eM v) →
+              ContDiffAt ℝ 2 F (eM v) →
+              HasFDerivAt G₀ (fderiv ℝ G₀ (eM v)) (eM v) →
+              HasFDerivAt G₁ (fderiv ℝ G₁ (F (eM v))) (F (eM v)) →
+              ∀ (b₀ b₁ : LinearMap.BilinForm ℝ E3)
+                (hb₀ : b₀.Nondegenerate) (hb₁ : b₁.Nondegenerate),
+                (∀ a b : E3, b₀ a b = G₀ (eM v) a b) →
+                (∀ a b : E3, b₁ a b = G₁ (F (eM v)) a b) →
+                ∀ u w : E3,
+                  CovariantDerivative.christoffelAt G₁ (F (eM v)) b₁
+                      hb₁ (DF v w) (DF v u) =
+                    DF v
+                        (CovariantDerivative.christoffelAt G₀ (eM v) b₀
+                          hb₀ w u) -
+                      (CLM u) w) := by
   rcases
       DifferentialField.exists_cartanChartDifferential_field_on_punctured_ball
         (g := g) hcurv (x₀ := x₀) (p₀ := p₀) L with
@@ -95,9 +96,11 @@ theorem exists_cartanChartMap_christoffelAt_F_transition_law_of_endpoint_hasFDer
     fun z => CovariantDerivative.chartMetric g.inner x₀ z
   let G₁ : E3 → E3 →L[ℝ] E3 →L[ℝ] ℝ :=
     fun z => CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ z
+  rcases hfield v hv hvne with
+    ⟨_hsourceStrict, _htargetStrict, hDFinv, hFstrict, hpullDF⟩
+  refine ⟨by simpa [F] using hFstrict, ?_⟩
   intro hvsrc endpoint CLM U hU hqU hEq hendpoint hC2 hG₀ hG₁
     b₀ b₁ hb₀ hb₁ hb₀G hb₁G u w
-  rcases hfield v hv hvne with ⟨hDFinv, hFstrict, hpullDF⟩
   let D : E3 → E3 →L[ℝ] E3 := fun q => DF (eM.symm q)
   have hD_at : D (eM v) = DF v := by
     simp [D, eM.left_inv hvsrc]
@@ -145,7 +148,7 @@ theorem exists_cartanChartMap_christoffelAt_F_transition_law_of_endpoint_hasFDer
     filter_upwards [hshift.eventually hnear] with δ hδ
     rcases hδ with ⟨hqtarget, hqP⟩
     rcases hfield (eM.symm (eM v + δ)) hqP.1 hqP.2 with
-      ⟨_, hstrict, _⟩
+      ⟨_, _, _, hstrict, _⟩
     have hq_eq : eM (eM.symm (eM v + δ)) = eM v + δ :=
       eM.right_inv hqtarget
     have hderiv :
@@ -181,7 +184,8 @@ theorem exists_cartanChartMap_christoffelAt_F_transition_law_of_endpoint_hasFDer
         (fun q : E3 => G₀ q a b) := by
     intro a b
     filter_upwards [hnear] with q hq
-    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with ⟨_, _, hpull⟩
+    rcases hfield (eM.symm q) hq.2.1 hq.2.2 with
+      ⟨_, _, _, _, hpull⟩
     have hq_eq : eM (eM.symm q) = q := eM.right_inv hq.1
     calc
       G₁ (F q) (D q a) (D q b)
