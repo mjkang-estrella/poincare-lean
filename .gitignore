@@ -1,3 +1,4 @@
 .lake/
 .DS_Store
 harness/logs/
+harness/v2/state/

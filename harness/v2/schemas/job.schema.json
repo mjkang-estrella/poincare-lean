@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://poincare.local/schemas/job.schema.json",
+  "title": "Poincare Harness Job",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "task_id",
+    "task_revision",
+    "attempt",
+    "state",
+    "backend",
+    "workspace",
+    "artifacts",
+    "gate"
+  ],
+  "properties": {
+    "schema_version": { "const": "2.0" },
+    "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,119}$" },
+    "task_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$" },
+    "task_revision": { "type": "integer", "minimum": 1 },
+    "attempt": { "type": "integer", "minimum": 1 },
+    "state": {
+      "enum": [
+        "queued",
+        "preparing",
+        "running",
+        "reviewing",
+        "passed",
+        "rejected",
+        "blocked",
+        "interrupted"
+      ]
+    },
+    "backend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "model", "model_revision", "endpoint", "sampling"],
+      "properties": {
+        "kind": { "enum": ["leanstral", "codex", "human"] },
+        "model": { "type": "string", "minLength": 1 },
+        "model_revision": { "type": "string", "minLength": 1 },
+        "endpoint": { "type": "string", "minLength": 1 },
+        "sampling": { "type": "object" }
+      }
+    },
+    "workspace": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["base_commit", "worktree", "branch", "lease_owner", "lease_expires_at"],
+      "properties": {
+        "base_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "worktree": { "type": "string", "minLength": 1 },
+        "branch": { "type": "string", "pattern": "^codex/" },
+        "lease_owner": { "type": "string", "minLength": 1 },
+        "lease_expires_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["directory", "prompt_sha256", "context_sha256"],
+      "properties": {
+        "directory": { "type": "string", "minLength": 1 },
+        "prompt_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "context_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "patch_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+      }
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "heartbeat_at": { "type": "string", "format": "date-time" },
+    "finished_at": { "type": "string", "format": "date-time" },
+    "exit_reason": { "type": "string" },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["not_run", "passed", "failed"] },
+        "result_path": { "type": "string" }
+      }
+    },
+    "accepted_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "state": { "const": "passed" } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "gate": {
+            "properties": { "status": { "const": "passed" } },
+            "required": ["status"]
+          }
+        }
+      }
+    }
+  ]
+}

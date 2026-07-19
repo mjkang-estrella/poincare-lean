@@ -1,0 +1,34 @@
+{
+  "schema_version": "2.0",
+  "id": "example-selector-neighborhood-package-a01",
+  "task_id": "example-selector-neighborhood-package",
+  "task_revision": 1,
+  "attempt": 1,
+  "state": "queued",
+  "backend": {
+    "kind": "leanstral",
+    "model": "mistralai/Leanstral-1.5-119B-A6B",
+    "model_revision": "PIN_BEFORE_DISPATCH",
+    "endpoint": "http://LEANSTRAL_PRIVATE_ENDPOINT:8000/v1",
+    "sampling": {
+      "temperature": 1.0,
+      "reasoning_effort": "high",
+      "max_tokens": 32000
+    }
+  },
+  "workspace": {
+    "base_commit": "d8f2e43c23680f9a9310bde5c3a3d2088f9728dc",
+    "worktree": "/home/mj-kang/worktrees/example-selector-neighborhood-package-a01",
+    "branch": "codex/example-selector-neighborhood-package/a01",
+    "lease_owner": "poincare-orchestrator",
+    "lease_expires_at": "2026-07-18T10:00:00Z"
+  },
+  "artifacts": {
+    "directory": "harness/v2/state/jobs/example-selector-neighborhood-package-a01",
+    "prompt_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "context_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "gate": {
+    "status": "not_run"
+  }
+}

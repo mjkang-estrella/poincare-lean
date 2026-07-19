@@ -1,0 +1,62 @@
+{
+  "schema_version": "2.0",
+  "id": "example-selector-neighborhood-package",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "d8f2e43c23680f9a9310bde5c3a3d2088f9728dc",
+  "objective": {
+    "title": "Revalidate and close one selector neighborhood package",
+    "statement": "Illustrative only: first revalidate whether the historical selector-neighborhood shape remains open at the base commit, then prove one non-vacuous constructor or stop with the exact current blocker.",
+    "frozen_lean_type": "REPLACE_AFTER_FRONTIER_RECONSTRUCTION",
+    "deliverables": [
+      "One focused theorem in Poincare/Global/SelectorAssembly.lean or an exact blocked report showing that the historical target is obsolete"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/SelectorAssembly.lean",
+      "harness/v2/state/jobs/example-selector-neighborhood-package/**"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "CURRENT_STATUS.md"
+    ]
+  },
+  "context": {
+    "files": [
+      "harness/reports/M5-glob-67_blocked.md",
+      "Poincare/Global/SelectorAssembly.lean",
+      "Poincare/Global/IndexedSelection.lean"
+    ],
+    "symbols": [
+      "Poincare.SelectorAssembly.exists_centered_endpoint_gronwall_bound"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      ["env", "LEAN_NUM_THREADS=1", "lake", "env", "lean", "Poincare/Global/SelectorAssembly.lean"],
+      ["git", "diff", "--check"]
+    ],
+    "required_declarations": [],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "The historical target type no longer matches the current imports",
+    "A required change falls outside the allowed file scope",
+    "Three proof attempts produce the same elaboration blocker"
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 32000,
+    "disk_mb": 4096
+  }
+}
