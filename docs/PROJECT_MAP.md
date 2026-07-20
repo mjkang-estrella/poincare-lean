@@ -6,15 +6,16 @@ shorter than the proof graph.
 ## What Counts as Completion
 
 The canonical endpoint is defined in `Poincare/Statement.lean`. The project is
-complete only when Lean checks:
+complete only in one clean, stable integration checkout when Lean checks:
 
 ```lean
 Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement
 ```
 
-without local placeholders or nonstandard axioms. Conditional routes,
-dependency packages, and audit success are supporting evidence, not this
-endpoint.
+without local placeholders or nonstandard axioms, its axiom footprint is
+allowed, and the full completion audit passes at that same HEAD. Conditional
+routes, dependency packages, and non-completion audit success are supporting
+evidence, not this endpoint.
 
 ## Main Layers
 
@@ -28,6 +29,7 @@ endpoint.
 | Root import | `Poincare.lean` | The curated integration graph. Elaboration proves import coherence only. |
 | Verification | `scripts/*.sh` | Placeholder, interface, contract, semantic, root-import, axiom, and completion checks. |
 | Work history | `harness/tasks`, `harness/reports`, `harness/ledger.json` | First-generation task attempts and reports. Historical after 2026-07-07 unless revalidated. |
+| Harness v2 | `harness/v2/runtime`, `harness/v2/pi`, `harness/v2/deploy`, `harness/v2/state` | SQLite Task/Job state, fenced leases, append-only evidence, one fresh bounded Pi session per Job, and restart-safe Codex orchestration. Runtime state is ignored. |
 
 ## Why the Repository Feels Large
 
@@ -71,13 +73,39 @@ be dispatched unchanged after a later bulk import or proof checkpoint.
 
 ## Recommended Working Loop
 
-1. Select one exact missing shape.
-2. Create a branch/worktree from a recorded commit.
-3. Inspect the smallest import closure that owns the shape.
-4. Prove or reduce it in a narrowly scoped file.
-5. Run focused elaboration and hygiene checks.
-6. Have the orchestrator independently review and gate the diff.
-7. Integrate serially, then run root checks.
-8. Update the task record and handoff with evidence.
+The executable path is:
 
-The planned automation for this loop is in `harness/v2/SPEC.md`.
+```text
+Codex orchestrator
+  -> Harness v2 Task/Job store, lease, artifacts, and isolated worktree
+  -> one fresh bounded Pi 0.80.10 JSON Job session
+  -> Leanstral
+```
+
+1. Codex selects one exact missing shape and freezes a Task at one commit.
+2. Codex allocates a `codex/<task>/<job>` worktree and claims its file lease.
+3. Harness snapshots the Task, prompt, context hashes, model identity, and
+   resource budget for one Job.
+4. A fresh Pi process gives Leanstral exactly `read_context`, `search_symbol`,
+   `apply_patch_scoped`, `lean_check`, `git_diff`, and `report_blocked`.
+   `lean_check` runs in a networkless Bubblewrap namespace with only its sparse
+   Job source and a provenance-validated, commit-keyed Lake cache mounted
+   read-only.
+5. Harness captures the Pi JSON event stream, scoped tool results, final diff,
+   compiler output, and report append-only.
+6. Codex independently reviews the diff and reruns the frozen acceptance gate.
+7. Codex alone may accept, commit, and integrate the result serially before
+   running root checks.
+8. The `mj-zima` observation loop records an immediate evidence snapshot and
+   another every 10,800 seconds as the durable long-term source. This Mac
+   setup thread reports the deployed state once and ends; future operators
+   inspect that evidence from the Mac on demand. No observer infers completion
+   from activity or a green root import.
+
+Pi built-in tools and unrestricted shell, filesystem, network, Git mutation,
+SSH, worktree deletion, Docker, Ray, tmux, and model-service management are not
+worker capabilities. The older custom worker is retained only for endpoint
+health, deterministic prompt snapshots, and an explicit one-shot fallback; it
+is not a second general agent loop.
+
+See `harness/v2/SPEC.md` for the complete authority and evidence contract.

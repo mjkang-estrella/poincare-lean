@@ -1,31 +1,38 @@
 # Harness v2 Specification
 
-Status: design ready; runtime not yet implemented
+Status: executable control plane; the first live Pi-backed proof Job is the
+current integration gate
 
 ## Outcome
 
 Codex GPT runs on `mj-zima` as the sole orchestrator. It selects and reviews
-small Lean tasks, dispatches bounded proof attempts to Leanstral through an
-OpenAI-compatible vLLM endpoint on the DGX Spark pair, executes Lean tools in
-isolated `mj-zima` worktrees, and merges only independently verified diffs.
+small Lean Tasks, records each attempt as a Harness v2 Job, and launches one
+fresh bounded Pi session per Job. Pi calls Leanstral through the existing
+OpenAI-compatible vLLM endpoint on the DGX Spark pair. Scoped tools execute in
+the trusted Harness broker against isolated `mj-zima` worktrees; the Pi process
+never mounts those worktrees. Codex commits only independently verified diffs.
 
-Leanstral is a proof worker. It does not select the project frontier, modify
-`main`, accept its own output, manage other jobs, or claim completion.
+Pi is the Job execution engine, not a second project coordinator. Leanstral is
+a proof worker. Neither selects the project frontier, modifies `main`, accepts
+its own output, commits, manages other Jobs, or claims completion.
 
 ## Control and Inference Planes
 
 ```mermaid
 flowchart LR
   U["Human owner"] --> O["Codex GPT orchestrator\non mj-zima"]
-  O --> Q["Task and Job store\non mj-zima"]
+  O --> Q["Harness v2 Task/Job control plane\nSQLite, leases, append-only artifacts"]
+  Q --> P["One fresh bounded Pi 0.80.10 JSON/RPC Job\non mj-zima"]
+  P --> V["Leanstral\nvLLM endpoint on DGX Spark pair"]
+  P --> T["Exactly six RPC tools\ntrusted Harness broker"]
   O --> W["Isolated git worktree\non mj-zima"]
-  O --> R["Leanstral worker loop\non mj-zima"]
-  R --> V["vLLM OpenAI endpoint\non DGX Spark pair"]
-  R --> T["Restricted Lean tools\nin the job worktree"]
   T --> W
   W --> G["Independent Lean gate"]
   G --> O
-  O --> M["Serial merge queue"]
+  O --> M["Codex-only acceptance and commit"]
+  Q --> E["mj-zima durable evidence\nimmediate + every 10,800 seconds"]
+  E --> C["Mac inspection\nfinal handoff + future on demand"]
+  C --> U
 ```
 
 The repository and Lean toolchain live on `mj-zima`. The Sparks serve model
@@ -94,27 +101,59 @@ queued -> preparing -> running -> reviewing -> passed
 A passed Job does not automatically accept the Task. Acceptance is a separate
 orchestrator transition after the recorded gate succeeds.
 
-## Worker Loop
+## Job Execution Loop
 
-1. Acquire a file-scope lease and create `codex/<task-id>/<job-id>` from the
-   Task's base commit.
-2. Reuse a compatible Lean cache without mutating another active worktree's
-   cache.
-3. Build a bounded prompt from the worker contract, Task, exact declarations,
-   relevant files, and prior failed Job summaries.
-4. Run Leanstral with restricted tools: read/search files, apply a patch inside
-   the worktree, and run allowlisted Lean/git diagnostic commands.
-5. Preserve every tool result and heartbeat. Stop on budget, lease loss,
-   repeated identical failure, or a Task stop condition.
-6. Run cheap automatic hygiene checks, then the Task acceptance commands.
-7. Ask Codex GPT to review the exact diff and evidence. It may reject, accept,
-   or create a narrower repair Job.
-8. Merge accepted work serially, rerun root integration checks, then update the
-   Task and handoff state.
+1. Codex acquires a fenced file-scope lease and creates
+   `codex/<task-id>/<job-id>` from the Task's exact base commit.
+   Claim is serialized with a durable SQLite dispatch switch, so a committed
+   deployment stop admits no later Job. A newer Task revision or superseding
+   Task is rejected while the prior Task still has any nonterminal Job.
+2. Codex prepares a compatible isolated Lean cache without letting one active
+   worktree mutate another's cache.
+3. Harness snapshots the immutable worker contract, Task revision, exact
+   declarations, relevant files and hashes, prior failed Job summaries,
+   budgets, and acceptance commands.
+4. A trusted supervisor holds one configured global capacity slot and the
+   Job-wide execution lock for its complete lifetime. Harness fully reattests
+   the sealed Pi install/dependency graph, then starts a
+   new Pi process and session for this Job only in JSON mode. Built-in tools,
+   extension discovery, skills, templates, themes, context discovery, and
+   approval flows are disabled except for the canonical Harness extension. Pi
+   runs in a worktree-free Bubblewrap namespace over the attested Node/install
+   and sealed inputs, with bounded private tmpfs, a fresh session ID, and
+   nonblocking supervised prompt transport. It shares the host network only to
+   reach the configured vLLM endpoint; no destination-filter claim is made.
+   Capacity is an execution-admission boundary: the control plane may retain
+   queued work, but no more than the configured number of supervisors can hold
+   slots and execute Pi sessions concurrently.
+5. Pi exposes exactly `read_context`, `search_symbol`, `apply_patch_scoped`,
+   `lean_check`, `git_diff`, and `report_blocked` through a token-authenticated,
+   serialized Unix RPC session. The trusted broker checks the frozen Task,
+   worktree, acceptance command list, and live lease; it is the only worktree
+   writer and journals patch intent/commit/abort. A requested Lean command runs
+   in a separate deny-by-default Bubblewrap namespace with only an attested
+   sparse source snapshot, provenance-validated immutable base cache, and
+   pinned Lean toolchain. Git/control/context-only files are absent, network is
+   isolated, and cgroup-v2 plus rlimits cap memory, PIDs, CPU, files, and time.
+6. Harness preserves every Pi message, lifecycle/RPC/tool event, patch journal,
+   compiler result, stderr record, final report, and diff under one append-only
+   quota. It stops on budget, lease loss, repeated identical failure, or a Task
+   stop condition. A successful terminal record additionally requires isolated
+   journal replay to byte-match the final diff and a commit-time SQLite fence.
+7. Codex inspects the exact diff and independently reruns the Task gate. It may
+   reject the Job, accept the Task at a verified commit, or define a narrower
+   Job or Task. Transition to `reviewing`, recovery, and terminal scope release
+   all require the execution lock to be free, so no broker mutation can race
+   review or stop.
+8. Codex alone commits and integrates accepted work serially, reruns root
+   integration checks, and updates the durable handoff.
 
-Do not give Leanstral an unrestricted shell or permission to remove worktrees,
-change remotes, edit `main`, manage model processes, or write outside its
-worktree and job-artifact directory.
+The worker has no unrestricted shell, SSH, arbitrary filesystem or network
+access, Git commit/push/merge, branch or worktree management, worktree deletion,
+Docker, Ray, tmux, subagent, browser, or model-service capability. The custom
+`harness.v2.worker` client remains only for endpoint health, deterministic
+prompt snapshots, and an explicitly selected one-shot fallback. It is not a
+parallel general agent loop.
 
 ## Prompt Shape
 
@@ -124,10 +163,12 @@ The worker prompt should contain, in this order:
 2. objective and frozen theorem type;
 3. exact base commit and allowed paths;
 4. named definitions with source locations;
-5. the smallest relevant source excerpts or full small files;
-6. prior attempt summaries, deduplicated;
-7. acceptance commands and stop conditions;
-8. required final report format.
+5. acceptance commands;
+6. stop conditions;
+7. the smallest relevant source excerpts or full small files.
+
+The immutable worker contract supplies the required final-report format before
+the Task sections above. This order is part of the stored prompt hash.
 
 Do not send all 828 root imports. Retrieval should start from the target symbol,
 direct imports, direct consumers, and compiler errors. Prompt snapshots must be
@@ -162,9 +203,33 @@ harness/v2/state/                 # ignored runtime state
     task.json
     job.json
     prompt.md
+    context-manifest.json
+    pi-capability.json
+    pi-public-config.json
+    pi-launch.json
+    pi-install-manifest.json
+    trusted-code-manifest.json
+    health-check.json
+    system-prompt.md
+    pi-sandbox-manifest.json
+    sparse-lean-preflight.json
+    pi-events.jsonl
     messages.jsonl
-    tool-calls.jsonl
+    pi-stderr.log
+    tool-events.jsonl
+    pi-broker-events.jsonl
+    pi-tools/
+    pi-patch-journal.jsonl
+    pi-patch-journal-seal.json
+    pi-patch-blobs/
+    patch-journal-replay.json
+    tool-crosscheck.json
+    pi-session-closed.json
+    pi-blocked-report.json       # only when report_blocked is used
     worker.patch
+    final-diff-audit.json
+    evidence-manifest.json
+    pi-run-result.json
     gate.json
     review.md
     final-report.md
@@ -173,77 +238,103 @@ harness/v2/state/                 # ignored runtime state
 Committed Task/Job examples and JSON Schemas live under `harness/v2/`; real
 runtime state, model endpoints, and secrets do not.
 
-SQLite transitions must use a lease owner and expiry. A stale heartbeat may
-release a Job for recovery, but it must never delete the old worktree or
-artifacts automatically.
+SQLite transitions must use a lease owner and expiry. Fresh state starts with
+dispatch stopped. Stopping rejects new claims and preparing-to-running
+transitions while allowing current-generation running/reviewing Jobs to drain;
+the next launch advances the generation and fences any remainder.
+
+Recovery never deletes the old worktree or artifacts automatically. Before a
+supervisor record/session exists, a queued or preparing attempt may be
+reclaimed. Once launch is recorded, that immutable Job is never relaunched:
+after proving the recorded process group is no longer live, terminalize the
+attempt as interrupted and create a fresh Job ID and fresh Pi session.
 
 ## tmux Layout on mj-zima
 
 Start with three persistent sessions:
 
 - `poincare-control`: Codex GPT orchestrator and merge queue.
-- `poincare-workers`: dispatcher and active worker loops.
-- `poincare-observe`: read-only status, queue, resource, and log tails.
+- `poincare-workers`: drain sentinel and active bounded Pi Job supervisors.
+- `poincare-observe`: read-only durable status/evidence producer.
 
 The database and filesystem are the source of restart state; tmux scrollback is
 not. Each process writes a PID, Job ID, heartbeat, and structured log before it
-starts work.
+starts work. The observation session takes one evidence snapshot immediately
+and then every 10,800 seconds. It cannot accept a Job or declare the theorem
+complete. The setup thread on this Mac reports the verified deployment once
+and ends; future operators inspect the durable evidence from the Mac on demand.
 
-## Leanstral Deployment Gate
+## Live Runtime Identity and Safety Gate
 
-Pin the exact model, not the label "Leanstral 1.5":
+Pin both the Pi executor and the model identity. The 2026-07-19 deployment
+checkpoint records:
 
-```text
-mistralai/Leanstral-1.5-119B-A6B
-```
+- repository clone `/srv/projects/poincare` on `mj-zima` at
+  `7ce913d87be973256517ea862fb4d3dbfae7cb82`;
+- the project toolchain elaborating under Lean `4.30.0-rc2` on `mj-zima`;
+- dedicated Pi package `@earendil-works/pi-coding-agent@0.80.10` under
+  `/srv/data/poincare-harness/pi`, separate from any ambient global install,
+  with a separately sealed full-tree/Node/CLI/lock/npm-graph manifest;
+- a healthy existing private vLLM endpoint serving ID `leanstral-1.5` with a
+  reported 200,000-token model limit;
+- official model artifact `mistralai/Leanstral-1.5-119B-A6B`, revision
+  `81592da95d94ab0439bfce16df1d55b402e598b6`.
 
-The [official model card](https://huggingface.co/mistralai/Leanstral-1.5-119B-A6B)
-describes a 119B MoE model with 6.5B active parameters, 256k maximum context,
-<=200k recommended context, temperature 1.0, and high reasoning for complex
-prompts. Its documented vLLM recipe requires vLLM >=0.24.0 and uses tensor
-parallel size 4. The local two-Spark topology therefore needs a measured
-feasibility test; successful multi-node loading is not assumed.
+The private endpoint URL belongs in ignored deployment configuration and Job
+evidence, not committed documentation. The harness may make bounded
+OpenAI-compatible health and completion requests. It must not SSH to the
+Sparks or inspect, stop, restart, reconfigure, or take ownership of vLLM, Ray,
+GPU processes, model storage, containers, ports, or service supervision.
 
-Phase 0 exit criteria:
-
-- exact model revision and storage path recorded;
-- existing Ray/GPU work has an owner and is not interrupted;
-- vLLM, `mistral_common`, attention backend, tool parser, and reasoning parser
-  versions are verified on a separate environment;
-- the model loads on the intended two-node topology or a documented quantized
-  fallback is selected;
-- `/v1/models` and one deterministic chat/tool smoke succeed from `mj-zima`;
-- a 64k Lean prompt and a 32k completion budget complete without OOM;
-- throughput, TTFT, peak GPU memory, and failure behavior are recorded;
-- the endpoint binds to an intentional private interface and does not reuse an
-  occupied port.
-
-Only after Phase 0 passes should the proof harness depend on the endpoint.
+Before the first proof Job, preflight must verify the exact checkout and
+branch, initialized SQLite store, external worktree root, free disk, complete
+sealed Pi install identity, project Lean toolchain, model served ID, one
+bounded completion, the immutable per-base Lake-cache manifest, and a real
+Poincare elaboration through the exact Bubblewrap profile. Cache publication
+is a Codex-only operation from a clean exact-base checkout and requires sealed
+evidence from the Task-bound provenance recorder: exact root build, root Lean
+check, and selected Task gate. It dereferences only internal symlinks, strips
+dependency Git metadata, records canonical local Lake package overrides,
+freezes every entry read-only, binds the snapshot to the Git commit/tree,
+`lean-toolchain`, `lake-manifest.json`, and provenance identity, and never
+overwrites an existing snapshot. The exact-base root bootstrap completed
+4,064/4,064 jobs and the focused automatic scalar module completed 3,382/3,382
+jobs on 2026-07-20; both recorded `exit_code=0`. Do not start an overlapping
+full build.
 
 ## Rollout Phases
 
-### Phase 0: Provision and measure
+### Phase 0: Provisioned prerequisites
 
-- put `~/.local/bin` on the orchestrator service PATH;
-- clone the exact repository and verify the Lean toolchain on `mj-zima`;
-- inventory the existing Ray cluster, ports, disk, and model storage;
-- download and pin Leanstral 1.5;
-- run the deployment exit criteria above without disturbing current work.
+- clone and toolchain on `mj-zima`, the dedicated Pi 0.80.10 pin, and the
+  existing private Leanstral endpoint are present;
+- preserve the successful exact-base root and focused-module build records;
+- keep the DGX service operational boundary unchanged.
 
-### Phase 1: One Task, one Job
+### Phase 1: Executable control plane
 
-- implement schema validation, SQLite queue, worktree creation, prompt
-  snapshots, one Leanstral worker loop, and the independent gate;
-- use one small theorem repair with no concurrent files;
-- require manual approval before the first merge.
+- JSON Schemas, validated SQLite Task/Job transitions, fenced leases,
+  append-only artifacts, runtime CLI, deployment preflight, and exact
+  10,800-second host evidence capture are implemented;
+- the older direct client is reduced to health/snapshot/one-shot fallback
+  duties and is not the Job agent loop.
 
-### Phase 2: Recovery and review
+### Phase 2: One Task, one fresh Pi Job
 
-- add leases, heartbeats, resume, interruption classification, baseline-vs-diff
-  failures, GPT repair/review Jobs, and serial integration checks;
-- make every action idempotent after a process or tmux restart.
+- exercise `automatic-scalar-derivative-constructor` revision 1 from base
+  `7ce913d87be973256517ea862fb4d3dbfae7cb82`;
+- use one isolated worktree, one lease, and one fresh Pi JSON session with only
+  the six scoped tools;
+- preserve the complete Pi event stream and diff, then have Codex independently
+  rerun the frozen gate before any acceptance or commit.
 
-### Phase 3: Controlled parallelism
+### Phase 3: Recovery and serial review
+
+- verify lease recovery, interruption classification, baseline-vs-diff
+  failures, narrower repair Jobs, and serial integration checks;
+- make every action idempotent after a Pi, Codex, process, or tmux restart.
+
+### Phase 4: Controlled parallelism
 
 - permit multiple Jobs only for disjoint file families and available Lean/GPU
   budgets;
@@ -265,3 +356,26 @@ The orchestrator stops dispatching when:
 
 It should then preserve the diff and logs, classify the blocker, and create a
 narrower proposed Task. It must not silently widen worker authority.
+
+## Exact Project Terminal Condition
+
+The outer Codex loop continues across blocked Tasks and process restarts. A
+single blocked Job, exhausted Task, green root import, conditional assembly,
+or passing non-completion audit is not a project stop condition.
+
+The project may be marked complete only when one clean, stable integration
+checkout satisfies all of the following:
+
+1. Lean checks exactly
+   `Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement`;
+2. `#print axioms Poincare.poincare_conjecture` contains only the permitted
+   foundational axioms;
+3. the full completion audit and root integration gate pass against that same
+   commit;
+4. the verified theorem, audit contract, generated status, and commit agree;
+5. the completion evidence is preserved append-only and attributed to that
+   exact clean HEAD.
+
+The persistent `mj-zima` evidence cadence remains exactly 10,800 seconds until
+this long-term Harness condition is verified. This setup thread is complete
+after deployment handoff. Monitoring is evidence collection, not proof.

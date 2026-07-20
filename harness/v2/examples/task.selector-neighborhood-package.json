@@ -14,8 +14,7 @@
   },
   "scope": {
     "allowed_paths": [
-      "Poincare/Global/SelectorAssembly.lean",
-      "harness/v2/state/jobs/example-selector-neighborhood-package/**"
+      "Poincare/Global/SelectorAssembly.lean"
     ],
     "forbidden_paths": [
       "Poincare.lean",

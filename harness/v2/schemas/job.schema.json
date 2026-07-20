@@ -39,11 +39,19 @@
       "additionalProperties": false,
       "required": ["kind", "model", "model_revision", "endpoint", "sampling"],
       "properties": {
-        "kind": { "enum": ["leanstral", "codex", "human"] },
+        "kind": { "const": "leanstral" },
         "model": { "type": "string", "minLength": 1 },
         "model_revision": { "type": "string", "minLength": 1 },
         "endpoint": { "type": "string", "minLength": 1 },
-        "sampling": { "type": "object" }
+        "sampling": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_tokens", "temperature"],
+          "properties": {
+            "max_tokens": { "type": "integer", "minimum": 1 },
+            "temperature": { "type": "number", "minimum": 0, "maximum": 2 }
+          }
+        }
       }
     },
     "workspace": {

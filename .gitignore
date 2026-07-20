@@ -1,4 +1,7 @@
 .lake/
 .DS_Store
+__pycache__/
+*.py[cod]
 harness/logs/
 harness/v2/state/
+harness/v2/pi/node_modules/

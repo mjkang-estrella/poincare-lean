@@ -23,8 +23,8 @@ Read these files in order:
 2. [docs/PROJECT_MAP.md](docs/PROJECT_MAP.md) — how the proof and support
    surfaces fit together.
 3. [AGENTS.md](AGENTS.md) — the working and verification contract for agents.
-4. [harness/README.md](harness/README.md) — the legacy harness and the planned
-   GPT/Leanstral v2 harness.
+4. [harness/README.md](harness/README.md) — the legacy history and the
+   executable Codex/Pi/Leanstral Harness v2.
 5. [CURRENT_STATUS.md](CURRENT_STATUS.md) — the latest generated full audit
    snapshot. Check its timestamp before treating it as current.
 
@@ -45,8 +45,9 @@ not the fastest entry point.
   reviewer ledgers. It is useful context but is not automatically the active
   frontier.
 - `scripts/` contains the verification and completion audits.
-- `harness/` contains the first-generation task history and the v2 harness
-  design.
+- `harness/` contains the first-generation task history plus the executable v2
+  Task/Job control plane, bounded Pi `0.80.10` Job adapter, deployment
+  launcher, and restart-safe runbook.
 
 ## Truth Hierarchy
 
@@ -99,3 +100,20 @@ the reserved theorem is absent.
 
 The immediate handoff and harness rollout are described in
 [HANDOFF.md](HANDOFF.md) and [harness/v2/SPEC.md](harness/v2/SPEC.md).
+
+The execution boundary is deliberately narrow:
+
+```text
+Codex -> Harness v2 Task/Job control plane -> fresh bounded Pi 0.80.10 Job -> Leanstral
+```
+
+Codex alone chooses Tasks, allocates isolated worktrees, independently reruns
+Lean gates, accepts results, and commits verified progress. Pi gives Leanstral
+only the six scoped Job tools documented in the v2 specification; it is not a
+second project orchestrator. Model-requested Lean checks run without network
+inside a deny-by-default Bubblewrap namespace over a read-only sparse source
+tree and a read-only, commit-keyed Lake cache whose publisher provenance has
+been independently recorded and validated. `mj-zima` emits durable evidence
+immediately and every 10,800 seconds for the long-running Harness. The setup
+thread on this Mac ends after deployment verification and one final handoff;
+future evidence can be inspected from the Mac on demand.
