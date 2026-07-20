@@ -169,6 +169,14 @@ class RunJobSupervisorArgumentTest(unittest.TestCase):
 
 
 class DeploymentAuthorityTest(unittest.TestCase):
+    def test_codex_host_authority_does_not_use_a_uid_remapping_sandbox(self) -> None:
+        source = (ROOT / "harness/v2/deploy/codex-cycle.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("--sandbox danger-full-access", source)
+        self.assertNotIn("--sandbox workspace-write", source)
+        self.assertNotIn("sandbox_workspace_write.writable_roots", source)
+
     def test_linux_authority_paths_are_absolute_and_remaining_scripts_use_them(self) -> None:
         common = COMMON.read_text(encoding="utf-8")
         self.assertIn("readonly HARNESS_PI_PYTHON=/usr/bin/python3", common)

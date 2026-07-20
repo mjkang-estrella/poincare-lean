@@ -202,6 +202,10 @@ It refuses a same-named foreign session.
 
 The control loop snapshots every prompt, Codex JSONL stream, stderr, final
 message, exact completion probe, and (when applicable) full completion audit.
+Codex runs with host authority because it is the trusted orchestrator that
+must attest root-owned executables, allocate worktrees, supervise Jobs, review,
+and commit. That authority is not inherited by Pi or Leanstral: every model Job
+still has disabled built-ins and only the exact six scoped tools.
 It hashes the committed Harness trust boundary before and after each cycle and
 pauses if Codex or another process changes it; control-plane repairs require a
 separate review and relaunch.
