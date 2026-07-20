@@ -10,8 +10,8 @@ Snapshot date: 2026-07-20 (America/Los_Angeles)
   commit is `8114cfe2a592d22ea1973441c0fb086c72e8826d`; the bounded proof Job
   commit is `f266c2fd4a8c23ca55bad0a09f35cc638e6842c0`. Inspect the current
   commit and working tree before acting; preserve any later changes.
-- An exact stdin probe at the pivot base failed with `Unknown identifier
-  Poincare.poincare_conjecture`.
+- An exact stdin probe at the pivot base and again at the deployed release
+  candidate failed with `Unknown identifier Poincare.poincare_conjecture`.
 - The repository is still incomplete. Completion means Lean checks exactly
   `Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement`, its
   axiom footprint is allowed, and the full completion audit passes in a clean,
@@ -117,6 +117,10 @@ Checks and the bounded release exercise on 2026-07-20 established:
   tools, dispatch generation 1 and lease token 1. Its sealed Pi run reported
   success with 8 tool events; Codex's clean accepted tree is
   `0581d0c497d584406dbfd75386214e1ed67426b6`.
+- Serial integration verification passed root elaboration plus the interface,
+  semantic-surface, theorem-contract, and axiom audits. The portable
+  root-import audit then reported five pre-existing direct-import ledger gaps,
+  so the root-import and full completion audits correctly remain non-green.
 
 The private endpoint URL belongs only in ignored configuration and Job
 evidence. Do not restart or modify the live vLLM/Ray service, inspect or manage
@@ -162,4 +166,10 @@ Known non-blocking release follow-ups are bounded: Pi 0.80.10 emits harmless
 read-only global-settings lock warnings in the sealed namespace, and its
 cumulative JSON message updates made this successful 7,116-token Job's event
 files large. Both are retained as evidence and remain within the Job disk
-budget; neither expands Leanstral's authority or blocks restart/recovery.
+budget; neither expands Leanstral's authority or blocks restart/recovery. The
+root-import ledger also needs direct `Poincare.lean` imports for the two Cartan
+tail-overlap reductions, the automatic scalar-time-derivative module, the
+scalar-variation continuity reduction, and the automatic finite-nerve compact-
+history boundary module. Their current transitive visibility is sufficient for
+the accepted constructor's exact `import Poincare` type probe, so this bounded
+deployment does not widen into unrelated root wiring.
