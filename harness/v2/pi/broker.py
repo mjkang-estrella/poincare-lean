@@ -712,7 +712,9 @@ def _tool_apply_patch(
     value: Any,
 ) -> dict[str, Any]:
     params = _exact_object(value, required={"patch"}, label="apply_patch_scoped input")
-    patch = _bounded_string(params["patch"], "patch", 512 * 1024)
+    raw_patch = _bounded_string(params["patch"], "patch", 512 * 1024)
+    normalized_trailing_newline = not raw_patch.endswith("\n")
+    patch = raw_patch + "\n" if normalized_trailing_newline else raw_patch
     touched = validate_patch(
         patch,
         root=root,
@@ -831,6 +833,7 @@ def _tool_apply_patch(
             "journal_intent_sequence": intent.sequence,
             "before_sha256": before_sha256,
             "after_sha256": after_sha256,
+            "normalized_trailing_newline": normalized_trailing_newline,
         },
     }
 
