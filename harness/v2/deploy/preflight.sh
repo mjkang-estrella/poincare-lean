@@ -288,7 +288,7 @@ PY
 )
 
 /usr/bin/bwrap \
-  --die-with-parent --new-session --unshare-all --disable-userns \
+  --die-with-parent --new-session --unshare-all --unshare-user --disable-userns \
   --assert-userns-disabled --cap-drop ALL \
   "${bwrap_layout[@]}" --proc /proc --dev /dev \
   --size "$((256 * 1024 * 1024))" --tmpfs /tmp --remount-ro / --chdir /tmp \
