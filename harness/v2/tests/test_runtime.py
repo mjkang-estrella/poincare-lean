@@ -614,6 +614,25 @@ class RuntimeTestCase(unittest.TestCase):
                 lease_seconds=10,
             )
 
+    def test_queued_only_claim_never_recovers_an_expired_active_job(self) -> None:
+        expired = self.make_active_job("queued-only-expired")
+        self.store.claim_job(job_id=expired, owner="worker-a", lease_seconds=10)
+        queued = self.make_active_job("queued-only-fresh", "Poincare/Fresh.lean")
+        self.clock.advance(11)
+
+        claimed = self.store.claim_job(
+            owner="automatic-worker", lease_seconds=60, queued_only=True
+        )
+        self.assertEqual(claimed["job"]["id"], queued)
+        self.assertEqual(self.store.get_job(expired)["job"]["state"], "preparing")
+        with self.assertRaisesRegex(ConflictError, "queued-only"):
+            self.store.claim_job(
+                job_id=expired,
+                owner="automatic-worker",
+                lease_seconds=60,
+                queued_only=True,
+            )
+
     def test_durable_dispatch_stop_serializes_with_claim_and_start(self) -> None:
         job_id = self.make_active_job("dispatch-stop")
         stopped = self.store.set_dispatch_state("stopped", actor="deploy-stop")

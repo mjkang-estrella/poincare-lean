@@ -418,6 +418,11 @@ PY
       cycle_id "$cycle_id" elapsed_seconds "$cycle_elapsed_seconds"
   fi
   cycle_deadline_utc=$(utc_from_epoch "$cycle_deadline_epoch")
+  set +e
+  pipeline_counts=$(job_pipeline_counts)
+  pipeline_counts_status=$?
+  set -e
+  (( pipeline_counts_status == 0 )) || pipeline_counts='{"status":"unavailable"}'
 
   {
     cat "$POINCARE_PROMPT_FILE"
@@ -450,11 +455,11 @@ PY
     printf -- '- Leanstral artifact: `%s`\n' "$POINCARE_LEANSTRAL_ARTIFACT"
     printf -- '- Leanstral revision: `%s`\n' "$POINCARE_LEANSTRAL_REVISION"
     printf -- '- Maximum simultaneous Leanstral Jobs: `%s`\n' "$POINCARE_MAX_LEANSTRAL_JOBS"
+    printf -- '- Current Job pipeline counts: `%s`\n' "$pipeline_counts"
     printf -- '- Required supervised Job launcher: `%s`\n' \
       "$SCRIPT_DIR/run-job-supervised.sh"
     printf -- '- Every Pi Job must run through that launcher so its PID, Linux start time, PGID, lease identity, and terminal status remain recoverable.\n'
-    printf -- '- Before every Job claim and again before its supervisor launch, verify `%s/desired-state.json` still requests this configuration to run; never dispatch after a stop request.\n' \
-      "$POINCARE_DEPLOY_STATE_DIR"
+    printf -- '- Enqueue only fully prepared Jobs. The worker plane owns automatic claim and supervisor launch; Codex owns every review, Task transition, integration, and commit.\n'
     printf '\nThe private endpoint URL is available in the process environment; do not print it.\n'
   } > "$cycle_dir/prompt.md"
 

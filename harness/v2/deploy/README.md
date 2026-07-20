@@ -7,7 +7,7 @@ all durable evidence under ignored `harness/v2/state/`, and owns exactly three
 tmux session names:
 
 - `poincare-control`: the Codex orchestration cycle;
-- `poincare-workers`: a drain sentinel and fresh leased Pi Job windows;
+- `poincare-workers`: a bounded dispatcher and fresh leased Pi Job sessions;
 - `poincare-observe`: an immediate and then 10,800-second durable evidence
   heartbeat. It is an evidence producer on `mj-zima`, not a claim that this Mac
   Codex thread stays alive. This thread reports the deployment result once and
@@ -226,11 +226,13 @@ orchestrator prompt. Model-requested `lean_check` processes additionally run in
 a deny-by-default Bubblewrap sandbox; Codex's later independent review gates
 remain outside the worker capability.
 
-The worker sentinel does not dispatch Jobs. SQLite serializes the durable
-dispatch switch with every claim and separately rejects overlapping file-scope
-leases. Each real supervisor must also acquire one of exactly
+The worker plane dispatches only immutable Jobs already prepared and queued by
+Codex; it does not invent Tasks, allocate worktrees, review, accept, or commit.
+SQLite serializes the durable dispatch switch with every claim and separately
+rejects overlapping file-scope leases. Each real supervisor acquires one of exactly
 `POINCARE_MAX_LEANSTRAL_JOBS` locked capacity slots and the Job-wide execution
-lock before its final admission; both locks remain held until its child exits.
+lock before its final admission. Both locks remain held until Pi exits, then
+are released before the successful Job enters Codex-owned `reviewing`.
 Stop disables durable dispatch first, signals and reaps authenticated process
 groups next, and only then terminalizes Jobs and releases scopes. Running and
 reviewing Jobs in the current dispatch generation may drain gracefully while
@@ -243,6 +245,12 @@ Before any supervisor record exists, a queued/preparing attempt may be
 reclaimed. Once launch is recorded, a crash or expired lease is terminalized
 as interrupted only after the recorded process group is proven dead; Codex then
 creates a fresh Job ID/attempt. Recovery never relaunches the same Job.
+
+The result route is explicit: a successful sealed `pi-run-result.json` enters
+`reviewing`; an authenticated `report_blocked` terminalizes the Job as blocked;
+every other unsuccessful run becomes interrupted and requires Codex to create
+a new immutable attempt. The worker plane renews running leases every minute.
+Reviewing leases remain Codex's responsibility while independent gates run.
 
 The observe loop records a JSON heartbeat immediately and every 10,800 seconds
 (three hours). Each line includes HEAD, branch, dirty-path and worktree counts,
@@ -270,7 +278,7 @@ harness/v2/deploy/stop.sh
 
 The stop command first validates stable tmux IDs, configuration fingerprints,
 roles, and base panes. By default it writes a durable stop request and kills no
-process: control stops between cycles, the worker sentinel waits for SQLite to
+process: control stops between cycles, the worker plane waits for SQLite to
 report no active Jobs, and observe exits last. If an operator has inspected
 the current Jobs and explicitly accepts interruption, use:
 

@@ -136,6 +136,14 @@ process/session. Pi built-ins are disabled, and Leanstral receives exactly:
 - `git_diff`
 - `report_blocked`
 
+As of 2026-07-20 the executable worker plane can fill up to four fixed Pi
+execution slots from fully prepared queued Jobs with disjoint SQLite file
+leases. The supervisor renews each running lease, releases its execution slot
+when Pi exits, and routes a sealed successful result to Codex-owned
+`reviewing`. Blocked or unsuccessful runs keep immutable evidence; only Codex
+may create a fresh attempt. Reviewing Jobs do not consume Leanstral execution
+capacity, so independent serial review can overlap another disjoint proof Job.
+
 There is no worker access to an unrestricted shell, SSH, arbitrary filesystem
 or network tools, Git mutation, worktree deletion, Docker, Ray, tmux, or model
 service management. `harness/v2/worker/` is fallback-only: keep its endpoint

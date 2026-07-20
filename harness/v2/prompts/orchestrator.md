@@ -67,9 +67,10 @@ no sound dispatch is currently possible.
   Leanstral. Do not build or use a custom direct Leanstral agent loop, and do
   not bypass the Harness Task, Job, lease, or evidence contracts. Invoke
   `harness/v2/deploy/run-job-supervised.sh` from the canonical control checkout
-  exactly once for every fresh Job, after claim and transition to `running`.
-  Pass the claimed Job ID, lease owner, fencing token, Lean timeout, and private
-  deployment environment file. The supervisor records the Linux process-group
+  exactly once for every fresh Job. Normally enqueue the immutable Job and let
+  the trusted worker plane reserve capacity, claim it, and transition it to
+  `running`; the explicit Job/owner/token mode remains available for recovery.
+  The supervisor records the Linux process-group
   identity, rechecks the live Job and lease immediately before admission, and
   launches `/usr/bin/python3 -S -P -B -m harness.v2.pi run-job` through a
   scrubbed `env -i`; never invoke that inner engine directly in production.
@@ -91,16 +92,17 @@ no sound dispatch is currently possible.
   `POINCARE_LEANSTRAL_REVISION`. Record these only in ignored runtime Job
   evidence. Never copy the private endpoint into committed files or logs meant
   for publication.
-- Start with one Job. You may run at most
+- Prepare multiple independent Tasks when the proof frontier exposes genuinely
+  disjoint theorem/file scopes. The worker plane may run at most
   `POINCARE_MAX_LEANSTRAL_JOBS`, never more than four, and only for disjoint
   file leases when CPU, disk, Lean cache behavior, and measured endpoint
   capacity support it. Four is a ceiling, not a target.
-- This ceiling is Codex-controlled through the single control loop and SQLite
-  admission, not the worker sentinel. Immediately before each `run-job`, query
-  the runtime store and count Jobs in `preparing`, `running`, or `reviewing`;
-  do not claim or start another Job when that count reaches the configured
-  ceiling. The atomic Job claim and nonoverlapping file-scope leases are both
-  required. Never launch a Pi process before its Job claim succeeds.
+- This ceiling covers Pi execution only. The trusted worker plane fills fixed
+  supervisor slots from Codex-prepared queued Jobs; SQLite claims and
+  nonoverlapping file-scope leases remain mandatory. A successful Pi result
+  releases its execution slot before entering `reviewing`, so Codex can review
+  serially while another disjoint Job executes. Never count review backlog as
+  Leanstral execution capacity, and never launch Pi before a claim succeeds.
 
 ### Freeze the build cache before dispatch
 

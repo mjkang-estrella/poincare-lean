@@ -88,12 +88,12 @@ python3 -m harness.v2.runtime job heartbeat JOB_ID \
   --lease-seconds "$LEASE_SECONDS" --state reviewing
 ```
 
-The supervisor and Pi engine do not renew the lease. The trusted Codex control
-plane must either choose a lease that covers the Task's full wall budget plus
-independent review, or heartbeat the same owner/token from outside the worker
-at a bounded cadence. For the 180-minute automatic-scalar exercise, use an
-18,000-second lease and refresh it every 600 seconds while the Job is
-`running` or `reviewing`. Leanstral never receives this authority.
+In automatic dispatch mode the trusted supervisor claims a 900-second lease
+and renews it every 60 seconds while Pi is running. After Pi exits, a successful
+result releases execution capacity and enters `reviewing`; Codex must continue
+renewing the same owner/token during any long independent review. Explicit
+recovery mode may instead use the commands above. Leanstral never receives
+lease authority.
 
 Overlapping repository path/glob scopes cannot be leased concurrently. Before
 a supervisor record or Pi session exists, a queued or abandoned preparing Job

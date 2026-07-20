@@ -47,6 +47,23 @@ set -e
 if (( jobs_status == 0 )); then
   printf 'runtime: active_jobs=%s configured_ceiling=%s\n' \
     "$jobs_active" "$POINCARE_MAX_LEANSTRAL_JOBS"
+  set +e
+  pipeline_counts=$(job_pipeline_counts)
+  pipeline_status=$?
+  set -e
+  if (( pipeline_status == 0 )); then
+    printf '%s' "$pipeline_counts" | "$HARNESS_PI_PYTHON" -S -P -B -c '
+import json
+import sys
+
+counts = json.load(sys.stdin)
+print(
+    "pipeline: queued={} executing={} reviewing={}".format(
+        counts["queued"], counts["executing"], counts["reviewing"]
+    )
+)
+'
+  fi
 else
   printf 'runtime: active_jobs=unknown (SQLite read failed)\n'
 fi
