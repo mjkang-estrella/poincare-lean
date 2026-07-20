@@ -275,6 +275,7 @@ class RuntimeLayoutTest(unittest.TestCase):
             self.assertEqual(valid.returncode, 0, valid.stderr)
             self.assertTrue((state / "deploy/workers/supervisors").is_dir())
             self.assertTrue((state / "deploy/workers/staging").is_dir())
+            self.assertTrue((state / "deploy/observe/snapshots").is_dir())
             self.assertTrue((state / "execution-locks").is_dir())
             expected_locks = (
                 state / "deploy/lifecycle.lock",

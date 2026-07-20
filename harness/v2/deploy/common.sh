@@ -836,6 +836,7 @@ for relative in (
     ("harness", "v2", "state", "deploy", "workers", "staging"),
     ("harness", "v2", "state", "deploy", "workers", "slots"),
     ("harness", "v2", "state", "deploy", "observe"),
+    ("harness", "v2", "state", "deploy", "observe", "snapshots"),
 ):
     ensure(relative)
 
