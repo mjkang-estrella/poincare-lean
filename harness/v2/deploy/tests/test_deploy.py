@@ -212,6 +212,9 @@ class DeploymentAuthorityTest(unittest.TestCase):
         self.assertIn('"minimum_version": manifest["node"]["minimum_version"]', source)
         self.assertIn('"version": manifest["node"]["version"]', source)
         self.assertIn('json.load(sys.stdin)["node"]["version"]', source)
+        self.assertIn(
+            'PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1', source
+        )
         self.assertNotIn("command -v node", source)
 
     def test_stop_fences_dispatch_before_reaping_and_releases_scopes_after_reap(self) -> None:

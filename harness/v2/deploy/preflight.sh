@@ -137,7 +137,8 @@ current_branch=$("$HARNESS_PI_GIT" -C "$POINCARE_REPO_ROOT" symbolic-ref --quiet
 "$POINCARE_CODEX_BIN" login status >/dev/null || die "Codex is not authenticated"
 expected_pi_version=$(
   cd "$POINCARE_REPO_ROOT"
-  PYTHONDONTWRITEBYTECODE=1 "$HARNESS_PI_PYTHON" -S -P -B - <<'PY'
+  PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+    "$HARNESS_PI_PYTHON" -S -P -B - <<'PY'
 import json
 from pathlib import Path
 
