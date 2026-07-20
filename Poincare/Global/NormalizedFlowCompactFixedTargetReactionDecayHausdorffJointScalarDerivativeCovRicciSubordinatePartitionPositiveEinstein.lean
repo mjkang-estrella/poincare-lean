@@ -1,4 +1,5 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
+import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
 /-!
@@ -74,6 +75,24 @@ def FixedTargetNormalizedFlowSphereCompactReactionDecayHausdorffJointScalarDeriv
 namespace NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3
 
 variable [SimplyConnectedSpace M]
+
+/-- Construct from reaction fields, deriving scalar-time-derivative continuity automatically. -/
+noncomputable def ofReactionFields
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (covariantRicciNormSqJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦ Poincare.covRicciNormSqAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  { reaction := reaction
+    compactTensorReferenceControl := compactTensorReferenceControl
+    covariantRicciNormSqJointContinuous := covariantRicciNormSqJointContinuous
+    scalarTimeDerivativeJointContinuous :=
+      scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three
+        reaction.jointMetricEntries
+    scalarSubordinateGeometry := scalarSubordinateGeometry }
 
 /-- Local finite-atlas domination constructs the moving total-scalar
 identity, finite subordinate geometry constructs Stokes, and compactness
