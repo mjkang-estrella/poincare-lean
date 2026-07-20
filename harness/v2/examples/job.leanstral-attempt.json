@@ -7,12 +7,11 @@
   "state": "queued",
   "backend": {
     "kind": "leanstral",
-    "model": "mistralai/Leanstral-1.5-119B-A6B",
+    "model": "leanstral-1.5",
     "model_revision": "PIN_BEFORE_DISPATCH",
     "endpoint": "http://LEANSTRAL_PRIVATE_ENDPOINT:8000/v1",
     "sampling": {
       "temperature": 1.0,
-      "reasoning_effort": "high",
       "max_tokens": 32000
     }
   },

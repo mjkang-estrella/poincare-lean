@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Poincare orchestrator cycle result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "resume_decision",
+    "reason_code",
+    "head",
+    "working_tree",
+    "completion_probe",
+    "task_job_summary",
+    "strongest_result",
+    "verification",
+    "commit",
+    "blocker",
+    "next_action",
+    "active_jobs_and_leases"
+  ],
+  "properties": {
+    "resume_decision": {
+      "type": "string",
+      "enum": ["continue", "pause", "completion_candidate"]
+    },
+    "reason_code": {
+      "type": "string",
+      "enum": [
+        "work_remains",
+        "task_replanned",
+        "completion_needs_outer_gate",
+        "external_authority_required",
+        "unsafe_repository_state",
+        "runtime_state_invalid",
+        "no_sound_dispatch"
+      ]
+    },
+    "head": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "working_tree": {"type": "string", "minLength": 1},
+    "completion_probe": {"type": "string", "minLength": 1},
+    "task_job_summary": {"type": "string", "minLength": 1},
+    "strongest_result": {"type": "string", "minLength": 1},
+    "verification": {"type": "array", "items": {"type": "string"}},
+    "commit": {"type": ["string", "null"]},
+    "blocker": {"type": ["string", "null"]},
+    "next_action": {"type": "string", "minLength": 1},
+    "active_jobs_and_leases": {"type": "string", "minLength": 1}
+  }
+}
