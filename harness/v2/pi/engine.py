@@ -84,6 +84,7 @@ MESSAGE_EVENTS = {"message_start", "message_update", "message_end"}
 TOOL_EVENTS = {"tool_execution_start", "tool_execution_update", "tool_execution_end"}
 PROMPT_WRITE_TIMEOUT_SECONDS = 30.0
 PI_PRIVATE_SETTINGS_BYTES = b'{"compaction":{"enabled":false}}'
+PI_STREAM_EVIDENCE_MAX_BYTES = 1024 * 1024 * 1024
 
 
 @dataclass(frozen=True)
@@ -1132,8 +1133,13 @@ def _run_pi_process(
     quota = artifact_quota or SharedArtifactQuota(
         artifact_dir, disk_budget_mb * 1024 * 1024
     )
+    # Pi 0.80.10 JSON mode repeats the cumulative assistant message in every
+    # streaming update. A 16k-token proof turn can therefore exceed 256 MiB
+    # even though the semantic output remains inside its frozen token budget.
+    # Preserve the exact stream while retaining a hard ceiling subordinate to
+    # the Job's independently enforced artifact quota.
     output_cap = min(
-        256 * 1024 * 1024,
+        PI_STREAM_EVIDENCE_MAX_BYTES,
         max(8 * 1024 * 1024, disk_budget_mb * 1024 * 1024 // 8),
     )
     process: subprocess.Popen[bytes] | None = None

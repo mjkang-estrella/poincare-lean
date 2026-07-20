@@ -9,6 +9,7 @@ import unittest
 from pathlib import Path
 
 from harness.v2.pi.engine import (
+    PI_STREAM_EVIDENCE_MAX_BYTES,
     PiEngineError,
     _crosscheck_tool_evidence,
     _replay_patch_journal,
@@ -24,6 +25,9 @@ def _sha(data: bytes) -> str:
 
 
 class SparseAcceptanceSelectionTest(unittest.TestCase):
+    def test_pi_stream_evidence_cap_fits_cumulative_json_mode(self) -> None:
+        self.assertEqual(PI_STREAM_EVIDENCE_MAX_BYTES, 1024 * 1024 * 1024)
+
     def test_env_wrapped_and_raw_lean_file_gates_are_selected(self) -> None:
         env_gate = [
             "env",
