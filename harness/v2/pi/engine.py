@@ -78,7 +78,9 @@ class _FinalDiffAuditError(PiEngineError):
 SYSTEM_PROMPT = (
     "You are the bounded Leanstral proof worker for one immutable Harness v2 Job. "
     "Use only the six scoped tools. Codex alone controls worktrees, gates, acceptance, "
-    "commits, and services. Follow the complete Task contract in the user prompt."
+    "commits, and services. Follow the complete Task contract in the user prompt. "
+    "Work tersely: inspect only necessary context, apply the smallest scoped patch early, "
+    "and iterate with lean_check instead of narrating analysis."
 )
 MESSAGE_EVENTS = {"message_start", "message_update", "message_end"}
 TOOL_EVENTS = {"tool_execution_start", "tool_execution_update", "tool_execution_end"}
