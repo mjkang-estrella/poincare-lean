@@ -33,6 +33,15 @@ variable [ChartedSpace (ClosedSmoothModel 3) M]
 variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
 variable [CompactSpace M] [ConnectedSpace M]
 
+/-- Joint covariant-Ricci norm continuity from the scalar Bochner fields. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_fields {n : ℕ} {N : Type u} {K : Type v} [TopologicalSpace N] [T2Space N] [ChartedSpace (ClosedSmoothModel n) N] [IsManifold (closedSmoothModelWithCorners n) ∞ N] [TopologicalSpace K] (metric : K → ClosedSmoothRiemannianMetric n N) (hRicNorm₂ : ∀ k : K, ∀ x : N, ContMDiffAt (closedSmoothModelWithCorners n) 𝓘(ℝ) 2 (fun y : N ↦ (metric k).ricciNormSqAt y) x) (hPairDiff : ∀ k : K, ∀ x : N, ∀ w : TangentSpace (closedSmoothModelWithCorners n) x, MDifferentiableAt (closedSmoothModelWithCorners n) 𝓘(ℝ) (fun y : N ↦ covRicciRicciPairingAt (metric k) y (extend (ClosedSmoothModel n) w y)) x) (hRicSecond : ∀ k : K, ∀ x : N, CovTensor2DerivExtDifferentiableAt (metric k) (ricciVariationField (metric k)) x) (hLaplacian : Continuous (fun p : K × N ↦ (metric p.1).laplacianAt (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2)) (hRough : Continuous (fun p : K × N ↦ roughRicciLaplacianPairingAt (metric p.1) p.2)) : Continuous (fun p : K × N ↦ covRicciNormSqAt (metric p.1) p.2) := by
+  have hformula : (fun p : K × N ↦ covRicciNormSqAt (metric p.1) p.2) = fun p : K × N ↦ ((metric p.1).laplacianAt (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2 - 2 * roughRicciLaplacianPairingAt (metric p.1) p.2) / 2 := by
+    funext p
+    have hBochner := laplacianAt_ricciNormSqAt_eq_two_roughPairing_add_two_covNormSq (metric p.1) p.2 (hRicNorm₂ p.1 p.2) (hPairDiff p.1 p.2) (hRicSecond p.1 p.2)
+    linarith
+  rw [hformula]
+  exact (hLaplacian.sub (hRough.const_mul 2)).div_const 2
+
 /-- Reaction-decay data with scalar-density domination lowered to intrinsic
 joint continuity of the scalar time derivative and Stokes lowered to finite
 subordinate coordinate geometry. -/
