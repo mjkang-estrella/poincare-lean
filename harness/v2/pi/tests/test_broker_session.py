@@ -181,8 +181,34 @@ class BrokerSessionTest(unittest.TestCase):
         committed = verify_patch_journal(self.artifacts, "job-1", "session-1")
         self.assertEqual(len(committed), 1)
         self.assertTrue(result["details"]["normalized_trailing_newline"])
+        self.assertFalse(result["details"]["normalized_hunk_counts"])
         blob = self.artifacts / result["details"]["patch_artifact"]
         self.assertTrue(blob.read_bytes().endswith(b"\n"))
+        self.assertIn("exact True.intro", self.target.read_text(encoding="utf-8"))
+
+    def test_scoped_patch_normalizes_incorrect_hunk_counts(self) -> None:
+        patch_text = """diff --git a/Poincare/Test.lean b/Poincare/Test.lean
+--- a/Poincare/Test.lean
++++ b/Poincare/Test.lean
+@@ -1,99 +1,77 @@
+ theorem x : True := by
+-  trivial
++  exact True.intro
+"""
+        with patch(
+            "harness.v2.pi.broker._validate_live", return_value=self.live
+        ), patch("harness.v2.pi.broker._live_guard", return_value=True):
+            session = BrokerSession(self.capability, quota=self.quota)
+            result = session.execute(
+                self.request(1, "patch-hunk-counts", "apply_patch_scoped", {"patch": patch_text})
+            )
+            session.close()
+
+        committed = verify_patch_journal(self.artifacts, "job-1", "session-1")
+        self.assertEqual(len(committed), 1)
+        self.assertTrue(result["details"]["normalized_hunk_counts"])
+        blob = self.artifacts / result["details"]["patch_artifact"]
+        self.assertIn(b"@@ -1,2 +1,2 @@\n", blob.read_bytes())
         self.assertIn("exact True.intro", self.target.read_text(encoding="utf-8"))
 
     def test_lean_check_uses_fresh_sparse_snapshot_and_cleans_it(self) -> None:

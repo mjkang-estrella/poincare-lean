@@ -147,6 +147,9 @@ def resolve_repo_file(root: Path, relative: str, *, must_exist: bool = True) -> 
 _DIFF_HEADER = re.compile(r"^diff --git a/([^\s]+) b/([^\s]+)$")
 _OLD_HEADER = re.compile(r"^--- a/([^\s\t]+)(?:\t.*)?$")
 _NEW_HEADER = re.compile(r"^\+\+\+ b/([^\s\t]+)(?:\t.*)?$")
+_HUNK_HEADER = re.compile(
+    r"^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(.*)$"
+)
 _FORBIDDEN_PATCH_PREFIXES = (
     "GIT binary patch",
     "Binary files ",
@@ -161,6 +164,59 @@ _FORBIDDEN_PATCH_PREFIXES = (
     "similarity index ",
     "dissimilarity index ",
 )
+
+
+def normalize_unified_diff_hunk_counts(patch: str) -> tuple[str, bool]:
+    """Repair only hunk counts, leaving paths, starts, and body bytes unchanged."""
+
+    lines = patch.splitlines(keepends=True)
+    normalized: list[str] = []
+    changed = False
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        content = line[:-1] if line.endswith("\n") else line
+        match = _HUNK_HEADER.fullmatch(content)
+        if match is None:
+            normalized.append(line)
+            index += 1
+            continue
+
+        old_start, _declared_old, new_start, _declared_new, suffix = match.groups()
+        body_end = index + 1
+        old_count = 0
+        new_count = 0
+        while body_end < len(lines):
+            body_line = lines[body_end]
+            body = body_line[:-1] if body_line.endswith("\n") else body_line
+            if _HUNK_HEADER.fullmatch(body) or _DIFF_HEADER.fullmatch(body):
+                break
+            if body == r"\ No newline at end of file":
+                body_end += 1
+                continue
+            if body.startswith(" "):
+                old_count += 1
+                new_count += 1
+            elif body.startswith("-"):
+                old_count += 1
+            elif body.startswith("+"):
+                new_count += 1
+            else:
+                raise SecurityError("patch hunk body has an unsupported line prefix")
+            body_end += 1
+        if body_end == index + 1:
+            raise SecurityError("patch contains an empty unified-diff hunk")
+
+        ending = "\n" if line.endswith("\n") else ""
+        corrected = (
+            f"@@ -{old_start},{old_count} +{new_start},{new_count} @@{suffix}{ending}"
+        )
+        normalized.append(corrected)
+        normalized.extend(lines[index + 1 : body_end])
+        changed = changed or corrected != line
+        index = body_end
+
+    return "".join(normalized), changed
 
 
 def validate_patch(

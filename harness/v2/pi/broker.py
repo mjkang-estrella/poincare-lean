@@ -29,6 +29,7 @@ from .security import (
     build_sparse_lean_snapshot,
     lean_acceptance_argv,
     normalize_relative,
+    normalize_unified_diff_hunk_counts,
     path_is_allowed,
     remove_sparse_lean_snapshot,
     resolve_repo_file,
@@ -715,6 +716,7 @@ def _tool_apply_patch(
     raw_patch = _bounded_string(params["patch"], "patch", 512 * 1024)
     normalized_trailing_newline = not raw_patch.endswith("\n")
     patch = raw_patch + "\n" if normalized_trailing_newline else raw_patch
+    patch, normalized_hunk_counts = normalize_unified_diff_hunk_counts(patch)
     touched = validate_patch(
         patch,
         root=root,
@@ -833,6 +835,7 @@ def _tool_apply_patch(
             "journal_intent_sequence": intent.sequence,
             "before_sha256": before_sha256,
             "after_sha256": after_sha256,
+            "normalized_hunk_counts": normalized_hunk_counts,
             "normalized_trailing_newline": normalized_trailing_newline,
         },
     }
