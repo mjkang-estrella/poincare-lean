@@ -103,6 +103,35 @@ noncomputable def ofReactionFields
         reaction.jointMetricEntries
     scalarSubordinateGeometry := scalarSubordinateGeometry }
 
+  /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
+  noncomputable def ofBochnerFields
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hPairDiff : ∀ k : reaction.K, ∀ x : M, ∀ w : TangentSpace (Poincare.closedSmoothModelWithCorners 3) x,
+      MDifferentiableAt (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ)
+      (fun y : M ↦ Poincare.covRicciRicciPairingAt (reaction.metric k) y
+        (FiberBundle.extend (Poincare.ClosedSmoothModel 3) w y)) x)
+    (hRicSecond : ∀ k : reaction.K, ∀ x : M,
+      Poincare.CovTensor2DerivExtDifferentiableAt (reaction.metric k)
+        (Poincare.ricciVariationField (reaction.metric k)) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_fields reaction.metric hRicNorm₂ hPairDiff hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
 /-- Local finite-atlas domination constructs the moving total-scalar
 identity, finite subordinate geometry constructs Stokes, and compactness
 constructs the omitted uniform covariant-Ricci bound. -/
