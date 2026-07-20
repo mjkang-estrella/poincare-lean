@@ -311,8 +311,10 @@ note "User systemd cgroup scopes for bounded Lean checks verified."
   die "util-linux setsid with --fork and --wait is required for Job supervision"
 (
   cd "$POINCARE_REPO_ROOT"
-  PYTHONDONTWRITEBYTECODE=1 "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.pi --help
-  PYTHONDONTWRITEBYTECODE=1 "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.pi run-job --help
+  PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+    "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.pi --help
+  PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+    "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.pi run-job --help
 ) >/dev/null || die "the bounded Pi Job executor entrypoint is unavailable"
 
 (
@@ -378,7 +380,8 @@ fi
 
 (
   cd "$POINCARE_REPO_ROOT"
-  PYTHONDONTWRITEBYTECODE=1 "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.worker health
+  PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 \
+    "$HARNESS_PI_PYTHON" -S -P -B -m harness.v2.worker health
 ) >/dev/null || die "the bounded worker endpoint identity check failed"
 
 for session in \

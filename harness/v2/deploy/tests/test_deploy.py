@@ -218,6 +218,10 @@ class DeploymentAuthorityTest(unittest.TestCase):
         self.assertIn(
             "--unshare-all --unshare-user --disable-userns", source
         )
+        self.assertGreaterEqual(
+            source.count('PYTHONPATH="$POINCARE_REPO_ROOT" PYTHONNOUSERSITE=1'),
+            5,
+        )
         self.assertNotIn("command -v node", source)
 
     def test_stop_fences_dispatch_before_reaping_and_releases_scopes_after_reap(self) -> None:
