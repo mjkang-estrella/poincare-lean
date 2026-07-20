@@ -1964,6 +1964,7 @@ class HarnessStore:
         owner: str,
         lease_seconds: int,
         job_id: str | None = None,
+        queued_only: bool = False,
     ) -> dict[str, Any]:
         if not owner or not owner.strip():
             raise LeaseError("lease owner must not be empty")
@@ -1983,6 +1984,18 @@ class HarnessStore:
                 dispatch_generation = int(dispatch["generation"])
                 if job_id is not None:
                     candidates = [self._job_row(connection, job_id)]
+                    if queued_only and candidates[0]["state"] != "queued":
+                        raise ConflictError(
+                            "queued-only claim refuses a nonqueued Job"
+                        )
+                elif queued_only:
+                    candidates = connection.execute(
+                        """
+                        SELECT * FROM jobs
+                        WHERE state = 'queued'
+                        ORDER BY created_at, job_id
+                        """
+                    ).fetchall()
                 else:
                     candidates = connection.execute(
                         """

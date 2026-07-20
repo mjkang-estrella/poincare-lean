@@ -10,12 +10,17 @@ usage() {
   cat <<EOF
 Usage: ${0##*/} --job-id ID --lease-owner OWNER --lease-token TOKEN
        [--lean-timeout-seconds SECONDS] [environment-file]
+       ${0##*/} --dispatch-next [--lean-timeout-seconds SECONDS]
+       [environment-file]
 
 Runs exactly one Harness Pi Job beneath a recorded Linux process-group/session
-supervisor. A Job ID can acquire only one write-once supervisor record.
+supervisor. In --dispatch-next mode the trusted worker plane reserves execution
+capacity and atomically claims the next eligible queued Job. A Job ID can
+acquire only one write-once supervisor record.
 EOF
 }
 
+dispatch_next=0
 job_id=
 lease_owner=
 lease_token=
@@ -24,6 +29,9 @@ config_file=$SCRIPT_DIR/.env
 config_seen=0
 while (( $# > 0 )); do
   case "$1" in
+    --dispatch-next)
+      dispatch_next=1
+      ;;
     --job-id)
       (( $# >= 2 )) || { usage >&2; exit 64; }
       job_id=$2
@@ -61,10 +69,16 @@ while (( $# > 0 )); do
   shift
 done
 
-[[ "$job_id" =~ ^[a-z0-9][a-z0-9._-]{2,119}$ ]] || die "invalid --job-id"
-[[ -n "$lease_owner" && "$lease_owner" != *$'\n'* && "$lease_owner" != *$'\t'* ]] ||
-  die "invalid --lease-owner"
-[[ "$lease_token" =~ ^[1-9][0-9]*$ ]] || die "--lease-token must be a positive integer"
+if (( dispatch_next == 1 )); then
+  [[ -z "$job_id" && -z "$lease_owner" && -z "$lease_token" ]] ||
+    die "--dispatch-next cannot be combined with explicit Job lease arguments"
+else
+  [[ "$job_id" =~ ^[a-z0-9][a-z0-9._-]{2,119}$ ]] || die "invalid --job-id"
+  [[ -n "$lease_owner" && "$lease_owner" != *$'\n'* && "$lease_owner" != *$'\t'* ]] ||
+    die "invalid --lease-owner"
+  [[ "$lease_token" =~ ^[1-9][0-9]*$ ]] ||
+    die "--lease-token must be a positive integer"
+fi
 require_uint_range --lean-timeout-seconds "$lean_timeout_seconds" 1 86400
 
 load_config "$config_file"
@@ -73,13 +87,17 @@ ensure_runtime_layout
 [[ -x "$HARNESS_PI_FLOCK" ]] || die "flock is required at $HARNESS_PI_FLOCK"
 deployment_stop_requested && die "deployment stop is requested; refusing to start a Job supervisor"
 
-reexec_args=(
-  --job-id "$job_id"
-  --lease-owner "$lease_owner"
-  --lease-token "$lease_token"
-  --lean-timeout-seconds "$lean_timeout_seconds"
-  "$POINCARE_CONFIG_FILE"
-)
+reexec_args=(--lean-timeout-seconds "$lean_timeout_seconds")
+if (( dispatch_next == 1 )); then
+  reexec_args+=(--dispatch-next)
+else
+  reexec_args+=(
+    --job-id "$job_id"
+    --lease-owner "$lease_owner"
+    --lease-token "$lease_token"
+  )
+fi
+reexec_args+=("$POINCARE_CONFIG_FILE")
 if [[ "${POINCARE_JOB_SUPERVISOR_SESSION:-0}" != 1 ]]; then
   exec /usr/bin/setsid --fork --wait \
     /usr/bin/env POINCARE_JOB_SUPERVISOR_SESSION=1 "$0" "${reexec_args[@]}"
@@ -117,12 +135,6 @@ exec 8> "$POINCARE_DEPLOY_STATE_DIR/lifecycle.lock"
 "$HARNESS_PI_FLOCK" 8
 deployment_stop_requested && die "deployment stop was requested before Job supervisor admission"
 
-execution_lock=$(job_execution_lock_path "$job_id") ||
-  die "could not validate the Job execution lock"
-exec {job_execution_fd}<> "$execution_lock"
-"$HARNESS_PI_FLOCK" --nonblock "$job_execution_fd" ||
-  die "Job $job_id already has an in-flight execution session"
-
 capacity_slot=
 capacity_slot_fd=
 occupied_slots=0
@@ -154,6 +166,57 @@ for (( free_index=1; free_index<${#free_slot_fds[@]}; free_index++ )); do
   unused_fd=${free_slot_fds[$free_index]}
   exec {unused_fd}>&-
 done
+
+readonly job_lease_seconds=900
+readonly job_heartbeat_seconds=60
+if (( dispatch_next == 1 )); then
+  lease_owner="$POINCARE_SESSION_OWNER:worker:$supervisor_pid"
+  set +e
+  claim_payload=$(runtime_cli job claim \
+    --owner "$lease_owner" --lease-seconds "$job_lease_seconds" \
+    --queued-only 2>/dev/null)
+  claim_status=$?
+  set -e
+  if (( claim_status != 0 )); then
+    append_event "$POINCARE_DEPLOY_STATE_DIR/workers/events.jsonl" \
+      worker_dispatch_idle pid "$supervisor_pid" capacity_slot "$capacity_slot"
+    "$HARNESS_PI_FLOCK" -u 8
+    exec 8>&-
+    exec {capacity_slot_fd}>&-
+    exit 0
+  fi
+  read -r job_id lease_token < <(
+    printf '%s' "$claim_payload" | "$HARNESS_PI_PYTHON" -S -P -B -c '
+import json
+import re
+import sys
+
+payload = json.load(sys.stdin)
+job_id = payload["job"]["id"]
+token = payload["runtime"]["lease_token"]
+if re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,119}", job_id) is None:
+    raise SystemExit("claimed Job ID is unsafe")
+if isinstance(token, bool) or not isinstance(token, int) or token < 1:
+    raise SystemExit("claimed Job lease token is invalid")
+print(job_id, token)
+'
+  ) || die "worker dispatch received an invalid claim payload"
+  if ! runtime_cli job heartbeat "$job_id" \
+    --owner "$lease_owner" --lease-token "$lease_token" \
+    --lease-seconds "$job_lease_seconds" --state running >/dev/null
+  then
+    runtime_cli job finish "$job_id" \
+      --owner "$lease_owner" --lease-token "$lease_token" \
+      --state interrupted --exit-reason dispatch_failed_before_supervisor >/dev/null || true
+    die "could not advance claimed Job $job_id to running"
+  fi
+fi
+
+execution_lock=$(job_execution_lock_path "$job_id") ||
+  die "could not validate the Job execution lock"
+exec {job_execution_fd}<> "$execution_lock"
+"$HARNESS_PI_FLOCK" --nonblock "$job_execution_fd" ||
+  die "Job $job_id already has an in-flight execution session"
 
 artifact_dir=$("$HARNESS_PI_PYTHON" -S -P -B - \
   "$POINCARE_STATE_DIR/harness.sqlite3" "$job_id" "$lease_owner" "$lease_token" <<'PY'
@@ -190,10 +253,15 @@ expected_artifact_dir="$POINCARE_STATE_DIR/jobs/$job_id"
 
 launch_recorded=0
 child_pid=
+lease_heartbeat_pid=
 requested_signal=
 finalize_supervisor() {
   local status=$?
   trap - EXIT
+  if [[ -n "$lease_heartbeat_pid" ]] && kill -0 "$lease_heartbeat_pid" 2>/dev/null; then
+    kill -TERM "$lease_heartbeat_pid" 2>/dev/null || true
+    wait "$lease_heartbeat_pid" 2>/dev/null || true
+  fi
   if (( launch_recorded == 0 )); then
     exit "$status"
   fi
@@ -217,10 +285,17 @@ request_supervisor_stop() {
     exit 143
   fi
 }
+request_lease_failure_stop() {
+  requested_signal=LEASE_HEARTBEAT
+  append_event "$POINCARE_DEPLOY_STATE_DIR/workers/events.jsonl" \
+    job_lease_heartbeat_failed job_id "$job_id" pid "$supervisor_pid"
+  request_supervisor_stop LEASE_HEARTBEAT
+}
 trap finalize_supervisor EXIT
 trap 'request_supervisor_stop HUP' HUP
 trap 'request_supervisor_stop INT' INT
 trap 'request_supervisor_stop TERM' TERM
+trap request_lease_failure_stop USR1
 
 record_dir="$POINCARE_DEPLOY_STATE_DIR/workers/supervisors/$job_id"
 [[ ! -e "$record_dir" && ! -L "$record_dir" ]] ||
@@ -337,6 +412,23 @@ set +e
 child_pid=$!
 "$HARNESS_PI_FLOCK" -u 8
 exec 8>&-
+
+(
+  exec {job_execution_fd}>&-
+  exec {capacity_slot_fd}>&-
+  trap 'exit 0' HUP INT TERM
+  while sleep "$job_heartbeat_seconds"; do
+    if ! runtime_cli job heartbeat "$job_id" \
+      --owner "$lease_owner" --lease-token "$lease_token" \
+      --lease-seconds "$job_lease_seconds" --state running >/dev/null
+    then
+      kill -USR1 "$supervisor_pid" 2>/dev/null || true
+      exit 1
+    fi
+  done
+) &
+lease_heartbeat_pid=$!
+
 wait "$child_pid"
 job_status=$?
 if kill -0 "$child_pid" 2>/dev/null; then
@@ -344,4 +436,113 @@ if kill -0 "$child_pid" 2>/dev/null; then
   job_status=$?
 fi
 set -e
+
+if [[ -n "$lease_heartbeat_pid" ]] && kill -0 "$lease_heartbeat_pid" 2>/dev/null; then
+  kill -TERM "$lease_heartbeat_pid" 2>/dev/null || true
+fi
+wait "$lease_heartbeat_pid" 2>/dev/null || true
+lease_heartbeat_pid=
+
+# Execution capacity ends with Pi, not with Codex review. Release both locks
+# before the fenced reviewing/terminal transition, which independently proves
+# no broker process can still mutate the worktree.
+exec {job_execution_fd}>&-
+exec {capacity_slot_fd}>&-
+
+result_kind=interrupted
+if (( job_status == 0 )); then
+  set +e
+  result_kind=$("$HARNESS_PI_PYTHON" -S -P -B - \
+    "$artifact_dir/pi-run-result.json" "$job_id" <<'PY'
+import json
+import os
+import stat
+import sys
+
+path, expected_job_id = sys.argv[1:]
+flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+descriptor = os.open(path, flags)
+try:
+    metadata = os.fstat(descriptor)
+    if (
+        not stat.S_ISREG(metadata.st_mode)
+        or metadata.st_uid != os.geteuid()
+        or metadata.st_nlink != 1
+        or metadata.st_mode & 0o222
+        or metadata.st_size > 10 * 1024 * 1024
+    ):
+        raise SystemExit(2)
+    chunks = []
+    remaining = metadata.st_size
+    while remaining:
+        chunk = os.read(descriptor, min(remaining, 1024 * 1024))
+        if not chunk:
+            raise SystemExit(2)
+        chunks.append(chunk)
+        remaining -= len(chunk)
+    after = os.fstat(descriptor)
+    identity = lambda value: (
+        value.st_dev,
+        value.st_ino,
+        value.st_mode,
+        value.st_nlink,
+        value.st_uid,
+        value.st_gid,
+        value.st_size,
+        value.st_mtime_ns,
+        value.st_ctime_ns,
+    )
+    if identity(after) != identity(metadata):
+        raise SystemExit(2)
+    payload = json.loads(b"".join(chunks).decode("utf-8"))
+finally:
+    os.close(descriptor)
+if payload.get("schema_version") != "poincare.pi-result.v1":
+    raise SystemExit(2)
+if payload.get("job_id") != expected_job_id:
+    raise SystemExit(2)
+if payload.get("success") is True:
+    print("reviewing")
+elif payload.get("blocked_reported") is True:
+    print("blocked")
+else:
+    print("interrupted")
+PY
+  )
+  result_status=$?
+  set -e
+  (( result_status == 0 )) || result_kind=interrupted
+fi
+
+case "$result_kind" in
+  reviewing)
+    runtime_cli job heartbeat "$job_id" \
+      --owner "$lease_owner" --lease-token "$lease_token" \
+      --lease-seconds "$job_lease_seconds" --state reviewing >/dev/null ||
+      die "Pi succeeded but Job $job_id could not enter Codex review"
+    append_event "$POINCARE_DEPLOY_STATE_DIR/workers/events.jsonl" \
+      job_feedback_passed_to_review job_id "$job_id" pid "$supervisor_pid"
+    ;;
+  blocked)
+    runtime_cli job finish "$job_id" \
+      --owner "$lease_owner" --lease-token "$lease_token" \
+      --state blocked --exit-reason worker_reported_blocked >/dev/null ||
+      die "could not terminalize blocked Job $job_id"
+    append_event "$POINCARE_DEPLOY_STATE_DIR/workers/events.jsonl" \
+      job_feedback_blocked job_id "$job_id" pid "$supervisor_pid"
+    ;;
+  interrupted)
+    runtime_cli job finish "$job_id" \
+      --owner "$lease_owner" --lease-token "$lease_token" \
+      --state interrupted --exit-reason pi_execution_unsuccessful >/dev/null ||
+      die "could not terminalize unsuccessful Job $job_id"
+    append_event "$POINCARE_DEPLOY_STATE_DIR/workers/events.jsonl" \
+      job_feedback_retry_required job_id "$job_id" pid "$supervisor_pid" \
+      immutable_retry true
+    ;;
+  *)
+    die "invalid Pi result classification"
+    ;;
+esac
+
 exit "$job_status"

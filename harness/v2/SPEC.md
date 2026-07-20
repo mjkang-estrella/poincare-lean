@@ -103,8 +103,10 @@ orchestrator transition after the recorded gate succeeds.
 
 ## Job Execution Loop
 
-1. Codex acquires a fenced file-scope lease and creates
-   `codex/<task-id>/<job-id>` from the Task's exact base commit.
+1. Codex creates `codex/<task-id>/<job-id>` from the Task's exact base commit,
+   snapshots the immutable Task/Job contract, and enqueues it. The trusted
+   worker plane reserves one execution slot, then atomically acquires the
+   fenced file-scope lease. It never creates Tasks or worktrees.
    Claim is serialized with a durable SQLite dispatch switch, so a committed
    deployment stop admits no later Job. A newer Task revision or superseding
    Task is rejected while the prior Task still has any nonterminal Job.
@@ -135,12 +137,16 @@ orchestrator transition after the recorded gate succeeds.
    sparse source snapshot, provenance-validated immutable base cache, and
    pinned Lean toolchain. Git/control/context-only files are absent, network is
    isolated, and cgroup-v2 plus rlimits cap memory, PIDs, CPU, files, and time.
-6. Harness preserves every Pi message, lifecycle/RPC/tool event, patch journal,
+6. Harness renews the running lease at a bounded cadence and preserves every Pi
+   message, lifecycle/RPC/tool event, patch journal,
    compiler result, stderr record, final report, and diff under one append-only
    quota. It stops on budget, lease loss, repeated identical failure, or a Task
    stop condition. A successful terminal record additionally requires isolated
    journal replay to byte-match the final diff and a commit-time SQLite fence.
-7. Codex inspects the exact diff and independently reruns the Task gate. It may
+7. A successful sealed Pi result releases the execution slot and enters
+   `reviewing`; blocked and unsuccessful outcomes retain immutable evidence and
+   never relaunch the same Job. Codex inspects the exact diff and independently
+   reruns the Task gate. It may
    reject the Job, accept the Task at a verified commit, or define a narrower
    Job or Task. Transition to `reviewing`, recovery, and terminal scope release
    all require the execution lock to be free, so no broker mutation can race

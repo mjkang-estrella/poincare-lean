@@ -500,7 +500,7 @@ load_config() {
   POINCARE_CODEX_BIN=${POINCARE_CODEX_BIN:-"${HOME}/.local/bin/codex"}
   POINCARE_GIT_BIN=${POINCARE_GIT_BIN:-/usr/bin/git}
   POINCARE_TMUX_BIN=${POINCARE_TMUX_BIN:-/usr/bin/tmux}
-  POINCARE_MAX_LEANSTRAL_JOBS=${POINCARE_MAX_LEANSTRAL_JOBS:-1}
+  POINCARE_MAX_LEANSTRAL_JOBS=${POINCARE_MAX_LEANSTRAL_JOBS:-4}
   POINCARE_CYCLE_COOLDOWN_SECONDS=${POINCARE_CYCLE_COOLDOWN_SECONDS:-300}
   POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS=${POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS:-14400}
   POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS=${POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS:-21600}
@@ -1310,6 +1310,36 @@ print(row[0])
 PY
 }
 
+job_pipeline_counts() {
+  "$HARNESS_PI_PYTHON" -S -P -B - "$POINCARE_STATE_DIR/harness.sqlite3" <<'PY'
+import json
+import sqlite3
+import sys
+
+states = ("queued", "preparing", "running", "reviewing")
+try:
+    connection = sqlite3.connect(f"file:{sys.argv[1]}?mode=ro", uri=True, timeout=5)
+    rows = connection.execute(
+        "SELECT state, COUNT(*) FROM jobs "
+        "WHERE state IN ('queued','preparing','running','reviewing') GROUP BY state"
+    ).fetchall()
+except (OSError, sqlite3.Error):
+    raise SystemExit(2)
+finally:
+    if "connection" in locals():
+        connection.close()
+counts = {state: 0 for state in states}
+counts.update({state: int(count) for state, count in rows})
+counts["executing"] = counts["preparing"] + counts["running"]
+print(json.dumps(counts, sort_keys=True, separators=(",", ":")))
+PY
+}
+
+queued_job_count() {
+  job_pipeline_counts | "$HARNESS_PI_PYTHON" -S -P -B -c \
+    'import json,sys; print(json.load(sys.stdin)["queued"])'
+}
+
 active_job_rows() {
   "$HARNESS_PI_PYTHON" -S -P -B - "$POINCARE_STATE_DIR/harness.sqlite3" <<'PY'
 import re
@@ -1557,17 +1587,7 @@ else:
         ):
             anomaly("supervisor_numeric_identity_invalid", job_id=job_id)
             continue
-        if version == "poincare.job-supervisor.v2" and launch["capacity_slot"] > max_jobs:
-            anomaly(
-                "supervisor_capacity_slot_outside_configured_ceiling",
-                job_id=job_id,
-                capacity_slot=launch["capacity_slot"],
-                configured_ceiling=max_jobs,
-            )
-            continue
-        if launch.get("config_fingerprint") != fingerprint:
-            anomaly("supervisor_config_fingerprint_mismatch", job_id=job_id)
-            continue
+        fingerprint_matches = launch.get("config_fingerprint") == fingerprint
         if launch.get("boot_id") != boot_id:
             live_identity = None
         else:
@@ -1606,6 +1626,19 @@ else:
                 anomaly("supervisor_exit_shape_invalid", job_id=job_id)
                 exit_record = None
         live = exact_live and exit_record is None
+        if not fingerprint_matches and (exit_record is None or exact_live or members):
+            anomaly("supervisor_config_fingerprint_mismatch", job_id=job_id)
+        if (
+            live
+            and version == "poincare.job-supervisor.v2"
+            and launch["capacity_slot"] > max_jobs
+        ):
+            anomaly(
+                "supervisor_capacity_slot_outside_configured_ceiling",
+                job_id=job_id,
+                capacity_slot=launch["capacity_slot"],
+                configured_ceiling=max_jobs,
+            )
         if live and version == "poincare.job-supervisor.v1":
             anomaly("live_supervisor_lacks_capacity_slot", job_id=job_id)
         if exit_record is None and not exact_live:

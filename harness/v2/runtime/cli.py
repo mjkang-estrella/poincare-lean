@@ -123,6 +123,11 @@ def build_parser() -> argparse.ArgumentParser:
     job_claim.add_argument("--owner", required=True)
     job_claim.add_argument("--lease-seconds", type=int, default=900)
     job_claim.add_argument("--job-id")
+    job_claim.add_argument(
+        "--queued-only",
+        action="store_true",
+        help="automatic dispatch fence: never recover an expired active Job",
+    )
     job_claim.set_defaults(action="job_claim")
     job_heartbeat = job_commands.add_parser(
         "heartbeat", help="renew an owned lease and optionally advance execution state"
@@ -215,6 +220,7 @@ def dispatch(arguments: argparse.Namespace) -> Any:
             owner=arguments.owner,
             lease_seconds=arguments.lease_seconds,
             job_id=arguments.job_id,
+            queued_only=arguments.queued_only,
         )
     if arguments.action == "job_heartbeat":
         return store.heartbeat_job(

@@ -142,8 +142,9 @@ class RunJobSupervisorArgumentTest(unittest.TestCase):
         child = source.index('"${job_argv[@]}" 8>&- &')
         wait = source.index('wait "$child_pid"')
         self.assertLess(lifecycle, execution)
-        self.assertLess(execution, capacity)
+        self.assertLess(capacity, execution)
         self.assertLess(capacity, admission)
+        self.assertLess(execution, admission)
         self.assertLess(admission, child)
         self.assertLess(child, wait)
         self.assertIn('"$HARNESS_PI_FLOCK" --nonblock "$job_execution_fd"', source)
@@ -152,8 +153,28 @@ class RunJobSupervisorArgumentTest(unittest.TestCase):
         self.assertIn('candidate_slot<=4', source)
         self.assertIn('occupied_slots >= POINCARE_MAX_LEANSTRAL_JOBS', source)
         self.assertIn('"${job_argv[@]}" 8>&- &', source)
-        self.assertNotIn('exec {job_execution_fd}>&-', source)
-        self.assertNotIn('exec {capacity_slot_fd}>&-', source)
+        release_execution = source.rindex('exec {job_execution_fd}>&-')
+        release_capacity = source.rindex('exec {capacity_slot_fd}>&-')
+        review = source.index('--state reviewing >/dev/null')
+        self.assertGreater(release_execution, wait)
+        self.assertGreater(release_capacity, wait)
+        self.assertLess(release_execution, review)
+        self.assertLess(release_capacity, review)
+
+    def test_automatic_dispatch_renews_and_routes_pi_results(self) -> None:
+        source = RUN_JOB_SUPERVISED.read_text(encoding="utf-8")
+        self.assertIn("--dispatch-next", source)
+        self.assertIn("runtime_cli job claim", source)
+        self.assertIn("--queued-only", source)
+        self.assertIn("readonly job_lease_seconds=900", source)
+        self.assertIn("readonly job_heartbeat_seconds=60", source)
+        self.assertIn("job_feedback_passed_to_review", source)
+        self.assertIn("job_feedback_blocked", source)
+        self.assertIn("job_feedback_retry_required", source)
+        self.assertIn("immutable_retry true", source)
+        self.assertIn("pi_execution_unsuccessful", source)
+        self.assertNotIn("runtime_cli job review", source)
+        self.assertNotIn("runtime_cli task transition", source)
 
     def test_supervisor_record_is_atomically_published_after_traps_exist(self) -> None:
         source = RUN_JOB_SUPERVISED.read_text(encoding="utf-8")
@@ -169,6 +190,18 @@ class RunJobSupervisorArgumentTest(unittest.TestCase):
 
 
 class DeploymentAuthorityTest(unittest.TestCase):
+    def test_worker_plane_fills_execution_slots_without_acceptance_authority(self) -> None:
+        source = (ROOT / "harness/v2/deploy/worker-plane.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("queued_job_count", source)
+        self.assertIn("job_supervisor_report", source)
+        self.assertIn('"$SCRIPT_DIR/run-job-supervised.sh" --dispatch-next', source)
+        self.assertIn("POINCARE_MAX_LEANSTRAL_JOBS - occupied", source)
+        self.assertNotIn("runtime_cli job review", source)
+        self.assertNotIn("runtime_cli task transition", source)
+        self.assertNotIn("git commit", source)
+
     def test_codex_host_authority_does_not_use_a_uid_remapping_sandbox(self) -> None:
         source = (ROOT / "harness/v2/deploy/codex-cycle.sh").read_text(
             encoding="utf-8"
@@ -619,6 +652,46 @@ class SupervisorAuditTest(unittest.TestCase):
             self.assertTrue(record["exit_recorded"])
             self.assertFalse(record["live"])
             self.assertEqual(record["group_members"], [123])
+
+    def test_dead_exit_recorded_history_survives_config_upgrade(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state, proc, _ = self.make_fixture(Path(temporary).resolve())
+            connection = sqlite3.connect(state / "harness.sqlite3")
+            connection.execute(
+                "UPDATE jobs SET state = 'passed', lease_expires_at = NULL"
+            )
+            connection.commit()
+            connection.close()
+            shutil.rmtree(proc / "123")
+            launch_path = state / "deploy/workers/supervisors/job-001/launch.json"
+            launch = json.loads(launch_path.read_text(encoding="utf-8"))
+            launch["config_fingerprint"] = "previous-fingerprint"
+            launch["capacity_slot"] = 4
+            launch_path.chmod(0o600)
+            launch_path.write_text(json.dumps(launch) + "\n", encoding="utf-8")
+            launch_path.chmod(0o400)
+            exit_path = launch_path.parent / "exit.json"
+            exit_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "poincare.job-supervisor-exit.v1",
+                        "job_id": "job-001",
+                        "finished_at": "2026-07-19T00:01:00Z",
+                        "outcome": "process_exit",
+                        "exit_code": 0,
+                        "recorded_by": "supervisor",
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            exit_path.chmod(0o400)
+
+            report = self.audit(state, proc)
+            self.assertEqual(report.returncode, 0, report.stdout)
+            payload = json.loads(report.stdout)
+            self.assertEqual(payload["anomalies"], [])
+            self.assertEqual(payload["live_supervisors"], 0)
 
 
 if __name__ == "__main__":

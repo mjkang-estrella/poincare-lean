@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import signal
 import shutil
 import socketserver
 import subprocess
@@ -1056,6 +1057,7 @@ class PiSecurityTest(unittest.TestCase):
         engine_script.write_text(
             textwrap.dedent(
                 f"""\
+                import hashlib
                 import os
                 import sys
                 import time
@@ -1087,6 +1089,7 @@ class PiSecurityTest(unittest.TestCase):
                     def get_task(self, task_id):
                         return {{"task": {{"revision": 1, "status": "active"}}}}
 
+                prompt = b"bounded parent-death test"
                 capability = {{
                     "job_id": "parent-death-job",
                     "task_id": "parent-death-task",
@@ -1095,6 +1098,9 @@ class PiSecurityTest(unittest.TestCase):
                     "lease_token": 1,
                     "allowed_paths": ["Poincare/Test.lean"],
                     "deadline_epoch": time.time() + 60,
+                    "prompt_sha256": hashlib.sha256(prompt).hexdigest(),
+                    "backend": {{"model": "parent-death-model"}},
+                    "session_id": "parent-death-session",
                 }}
                 _run_pi_process(
                     argv=[sys.executable, {str(pi_script)!r}],
@@ -1104,7 +1110,7 @@ class PiSecurityTest(unittest.TestCase):
                         "PYTHONNOUSERSITE": "1",
                     }},
                     worktree=Path({str(self.root)!r}),
-                    prompt=b"bounded parent-death test\\n",
+                    prompt=prompt,
                     artifact_dir=Path({str(artifact_dir)!r}),
                     store=LiveStore(),
                     capability=capability,
