@@ -385,13 +385,18 @@ class ExtensionRpcSourceTest(unittest.TestCase):
         self.assertTrue(observed["rejectedMissingUsage"])
         self.assertTrue(observed["rejectedZeroUsage"])
 
-    def test_all_rpc_failures_use_unswallowable_exit_70(self) -> None:
+    def test_only_authenticated_tool_errors_are_recoverable(self) -> None:
         self.assertIn("const FAIL_CLOSED_EXIT_CODE = 70;", self.source)
         self.assertIn("process.exit(FAIL_CLOSED_EXIT_CODE)", self.source)
+        self.assertIn(
+            "throw new BrokerToolError(`Harness Pi broker rejected the call: ${reply.error}`)",
+            self.source,
+        )
+        self.assertIn("if (error instanceof BrokerToolError) throw error;", self.source)
         self.assertRegex(
             self.source,
-            r"runBrokerRpc\(runtime, name, toolCallId, params, signal\)\.then\(\s*"
-            r"result,\s*failClosedInvariant,\s*\)",
+            r"if \(error instanceof BrokerToolError\) throw error;\s*"
+            r"return failClosedInvariant\(error\);",
         )
         self.assertNotRegex(self.source, r"\.catch\(\s*\(?.*?=>\s*\{?\s*return")
 

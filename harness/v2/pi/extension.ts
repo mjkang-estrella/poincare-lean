@@ -134,6 +134,13 @@ type BrokerReply = {
 	details?: unknown;
 };
 
+class BrokerToolError extends Error {
+	constructor(message: string) {
+		super(message);
+		this.name = "BrokerToolError";
+	}
+}
+
 type Runtime = {
 	config: PublicConfig;
 	configHash: string;
@@ -803,7 +810,7 @@ function parseBrokerReply(
 		if (reply.result !== null || typeof reply.error !== "string" || reply.error.length < 1) {
 			throw new Error("Harness Pi broker returned an invalid error");
 		}
-		throw new Error(`Harness Pi broker rejected the call: ${reply.error}`);
+		throw new BrokerToolError(`Harness Pi broker rejected the call: ${reply.error}`);
 	}
 	throw new Error("Harness Pi broker response has an invalid status");
 }
@@ -936,7 +943,13 @@ function execute(
 ) {
 	return runBrokerRpc(runtime, name, toolCallId, params, signal).then(
 		result,
-		failClosedInvariant,
+		(error: unknown) => {
+			// An exact, identity-bound `ok: false` reply is an ordinary tool error:
+			// Pi must record it and let the model correct its request. Transport,
+			// protocol, identity, and response-shape failures remain unswallowable.
+			if (error instanceof BrokerToolError) throw error;
+			return failClosedInvariant(error);
+		},
 	);
 }
 
