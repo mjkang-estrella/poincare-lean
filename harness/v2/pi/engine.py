@@ -80,7 +80,9 @@ SYSTEM_PROMPT = (
     "Use only the six scoped tools. Codex alone controls worktrees, gates, acceptance, "
     "commits, and services. Follow the complete Task contract in the user prompt. "
     "Work tersely: inspect only necessary context, apply the smallest scoped patch early, "
-    "and iterate with lean_check instead of narrating analysis."
+    "and iterate with lean_check instead of narrating analysis. For apply_patch_scoped, "
+    "include diff --git headers and exact unified-diff hunk line counts; prefer separate "
+    "small hunks when that makes the counts obvious."
 )
 MESSAGE_EVENTS = {"message_start", "message_update", "message_end"}
 TOOL_EVENTS = {"tool_execution_start", "tool_execution_update", "tool_execution_end"}
