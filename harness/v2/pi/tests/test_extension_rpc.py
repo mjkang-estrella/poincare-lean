@@ -168,6 +168,8 @@ class ExtensionRpcSourceTest(unittest.TestCase):
             r"const MAX_RPC_RESPONSE_BYTES = 2 \* 1024 \* 1024;",
         )
         self.assertIn("const RPC_TIMEOUT_MS = 30_000;", self.source)
+        self.assertIn("const LEAN_CHECK_RPC_TIMEOUT_MS = 20 * 60_000;", self.source)
+        self.assertIn('toolName === "lean_check" ? LEAN_CHECK_RPC_TIMEOUT_MS : RPC_TIMEOUT_MS', self.source)
         self.assertIn("frame.writeUInt32BE(payload.length, 0)", self.source)
         self.assertIn("received.readUInt32BE(0)", self.source)
         self.assertIn("createConnection({ path: runtime.socketPath })", self.source)

@@ -442,6 +442,8 @@ class SecurityProfileTest(unittest.TestCase):
                 "lean-toolchain",
             ],
         )
+        self.assertTrue((Path(snapshot["root"]) / ".lake").is_dir())
+        self.assertEqual(stat.S_IMODE((Path(snapshot["root"]) / ".lake").stat().st_mode), 0o555)
         self.assertFalse((Path(snapshot["root"]) / "Poincare/Unrelated.lean").exists())
 
         ignored = worktree / "Poincare/Ignored.lean"

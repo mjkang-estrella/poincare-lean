@@ -2431,6 +2431,7 @@ def build_sparse_lean_snapshot(
         )
     try:
         destination.mkdir(mode=0o700)
+        (destination / ".lake").mkdir(mode=0o700)
         files: list[dict[str, Any]] = []
         for relative in required:
             source, record = audited[relative]

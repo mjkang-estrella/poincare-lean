@@ -94,6 +94,7 @@ const MAX_SETTINGS_BYTES = 64 * 1024;
 const MAX_RPC_REQUEST_BYTES = 768 * 1024;
 const MAX_RPC_RESPONSE_BYTES = 2 * 1024 * 1024;
 const RPC_TIMEOUT_MS = 30_000;
+const LEAN_CHECK_RPC_TIMEOUT_MS = 20 * 60_000;
 const MAX_TRACKED_CALL_IDS = 100_000;
 const FAIL_CLOSED_EXIT_CODE = 70;
 const MAX_INVARIANT_MESSAGE_CHARS = 4_096;
@@ -841,6 +842,8 @@ function runBrokerRpc(
 	};
 	enforceInvariant(() => assertExactKeys(request, RPC_REQUEST_KEYS, "Harness Pi RPC request"));
 	const frame = enforceInvariant(() => encodeRpcFrame(request));
+	const rpcTimeoutMs =
+		toolName === "lean_check" ? LEAN_CHECK_RPC_TIMEOUT_MS : RPC_TIMEOUT_MS;
 
 	return new Promise((resolveReply, reject) => {
 		const socket = createConnection({ path: runtime.socketPath });
@@ -870,8 +873,13 @@ function runBrokerRpc(
 		const abort = () => fail(new Error("Harness Pi broker RPC was aborted"));
 
 		timer = setTimeout(
-			() => fail(new Error("Harness Pi broker RPC exceeded its 30 second timeout")),
-			RPC_TIMEOUT_MS,
+			() =>
+				fail(
+					new Error(
+						`Harness Pi broker RPC exceeded its ${rpcTimeoutMs / 1000} second timeout`,
+					),
+				),
+			rpcTimeoutMs,
 		);
 		if (signal?.aborted) {
 			abort();
