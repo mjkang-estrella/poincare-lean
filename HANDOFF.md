@@ -53,6 +53,38 @@ The previous broad positive-time-overlap and compact-history surfaces remain
 important context, but this narrower constructor is the selected first
 dependency reduction. Do not redispatch the last legacy ledger entry.
 
+## 2026-07-20 Bochner Continuity Checkpoint
+
+The integration checkout advanced from
+`ee4a8e5382f2b664a9843fc6b8ec237c535a9460` to the accepted proof commit
+`bec8bc4a5a514a6ba502e2a945f96317be397a5c`. Harness Task
+`cov-ricci-bochner-continuity-inline` revision 2 was accepted from Job
+`cov-ricci-bochner-continuity-inline-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-continuity-inline-r2-a01/gate.json`
+on `mj-zima`. The worker lease is released and no Job remains active.
+
+The accepted theorem is
+`Poincare.continuous_joint_covRicciNormSqAt_of_bochner_fields`. It uses the
+Ricci Bochner identity to derive joint continuity of `covRicciNormSqAt` from
+joint continuity of the Ricci-norm Laplacian and rough-Ricci pairing, together
+with the existing pointwise smoothness hypotheses. Its focused Lean gate,
+canonical frozen-type `import Poincare` probe, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit retained only its known direct-import ledger failures; this checkpoint
+also wires the previously accepted automatic scalar-time-derivative module
+directly into `Poincare.lean`, reducing that ledger by one.
+
+The exact completion probe still fails with unknown identifier/constant
+`Poincare.poincare_conjecture`. The next theorem-shaped frontier is a one-file
+`ofBochnerFields` constructor in
+`Poincare/Global/NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein.lean`.
+It should call the new Bochner continuity theorem and the existing
+`ofReactionFields` constructor, without taking either joint covariant-Ricci
+norm continuity or scalar-time-derivative continuity as an argument. Before
+claiming that successor Job at the new base, freeze and validate its exact
+Task revision and publish/verify the immutable Lake cache for the resulting
+clean HEAD.
+
 ## Executable Harness Boundary
 
 The primary path is:
@@ -167,9 +199,8 @@ read-only global-settings lock warnings in the sealed namespace, and its
 cumulative JSON message updates made this successful 7,116-token Job's event
 files large. Both are retained as evidence and remain within the Job disk
 budget; neither expands Leanstral's authority or blocks restart/recovery. The
-root-import ledger also needs direct `Poincare.lean` imports for the two Cartan
-tail-overlap reductions, the automatic scalar-time-derivative module, the
-scalar-variation continuity reduction, and the automatic finite-nerve compact-
-history boundary module. Their current transitive visibility is sufficient for
-the accepted constructor's exact `import Poincare` type probe, so this bounded
-deployment does not widen into unrelated root wiring.
+root-import ledger still needs direct `Poincare.lean` imports for the two
+Cartan tail-overlap reductions, the scalar-variation continuity reduction, and
+the automatic finite-nerve compact-history boundary module. Their current
+transitive visibility remains sufficient for exact `import Poincare` type
+probes; they are separate wiring follow-ups rather than proof completion.
