@@ -471,9 +471,11 @@ PY
     -C "$POINCARE_REPO_ROOT"
     --add-dir "$POINCARE_WORKTREE_ROOT"
     --add-dir "$POINCARE_PI_LAKE_CACHE_ROOT"
-    --sandbox workspace-write
-    -c "sandbox_workspace_write.writable_roots=[\"$POINCARE_REPO_ROOT/.git\",\"$POINCARE_STATE_DIR\",\"$POINCARE_WORKTREE_ROOT\",\"$POINCARE_PI_LAKE_CACHE_ROOT\"]"
-    -c "sandbox_workspace_write.network_access=true"
+    # Codex is the trusted host orchestrator. A Linux workspace-write user
+    # namespace maps root-owned attested tools to the overflow UID and prevents
+    # cache verification, supervisor admission, review, and commit authority.
+    # Leanstral remains isolated behind Pi's exact six scoped tools.
+    --sandbox danger-full-access
     --json
     --output-schema "$POINCARE_CYCLE_RESULT_SCHEMA"
     --color never
