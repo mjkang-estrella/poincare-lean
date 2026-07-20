@@ -74,16 +74,45 @@ audit retained only its known direct-import ledger failures; this checkpoint
 also wires the previously accepted automatic scalar-time-derivative module
 directly into `Poincare.lean`, reducing that ledger by one.
 
-The exact completion probe still fails with unknown identifier/constant
-`Poincare.poincare_conjecture`. The next theorem-shaped frontier is a one-file
-`ofBochnerFields` constructor in
-`Poincare/Global/NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein.lean`.
-It should call the new Bochner continuity theorem and the existing
-`ofReactionFields` constructor, without taking either joint covariant-Ricci
-norm continuity or scalar-time-derivative continuity as an argument. Before
-claiming that successor Job at the new base, freeze and validate its exact
-Task revision and publish/verify the immutable Lake cache for the resulting
-clean HEAD.
+## 2026-07-20 Bochner-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`12b700a27f31e7fb521eb1bec1845fbf4e842e61` to accepted proof commit
+`c5a80d17b236b82d5daac96982e9edf87fdb89b4`. Harness Task
+`cov-ricci-bochner-fields-constructor` revision 2 was accepted from Job
+`cov-ricci-bochner-fields-constructor-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-fields-constructor-r2-a01/gate.json`
+on `mj-zima`. No Job or file lease remains active.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerFields`.
+It installs `reaction.topologicalSpaceK`, derives joint covariant-Ricci norm
+continuity with `continuous_joint_covRicciNormSqAt_of_bochner_fields`, and
+calls `ofReactionFields`, so neither joint covariant-Ricci norm continuity nor
+scalar-time-derivative continuity is an explicit constructor argument. The
+canonical frozen-type probe passed and `#print axioms` reported only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `cov-ricci-bochner-fields-constructor-r1-a01` is preserved as
+interrupted evidence: its draft omitted the local topology instance, then
+exhausted its 12,000-token budget on stale correction hunks. Revision 2
+recorded that exact failure and passed in a fresh supervised Pi session. Its
+focused gate, targeted module build, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit has exactly the same four known direct-import ledger failures as before
+this checkpoint, with no new failure.
+
+The exact completion probe at the integrated commit still reports
+`EXACT_DECLARATION_PROBE=absent`; `Poincare.poincare_conjecture` is not
+declared. The next theorem-shaped action is to probe and freeze a fixed-target
+lifting constructor that packages `ofBochnerFields` for the `analytic` field
+of the automatic-finite-nerve ODE-primitive compact-history boundary, rather
+than adding another alias or assuming the already assembled analytic record.
+Before claiming any Job at the new base, publish and verify the immutable Lake
+cache for the final clean HEAD. Do not redispatch the obsolete broad
+`cov-ricci-bochner-constructor` Task; it retains only an interrupted Job and
+could not be marked superseded because the accepted replacement Task did not
+name that older Task in its immutable `supersedes` field.
 
 ## Executable Harness Boundary
 
