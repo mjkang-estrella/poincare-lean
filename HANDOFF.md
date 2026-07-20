@@ -1,13 +1,15 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-07-19 (America/Los_Angeles)
+Snapshot date: 2026-07-20 (America/Los_Angeles)
 
 ## Project Truth
 
 - Mac integration repository: `/Users/mjkang/Develop/poincare`, branch `main`.
 - Harness v2 pivot base: `7ce913d87be973256517ea862fb4d3dbfae7cb82`,
-  equal to `origin/main` before the implementation. Inspect the current commit
-  and working tree before acting; preserve any later changes.
+  equal to `origin/main` before the implementation. The Mac control-plane
+  commit is `8114cfe2a592d22ea1973441c0fb086c72e8826d`; the bounded proof Job
+  commit is `f266c2fd4a8c23ca55bad0a09f35cc638e6842c0`. Inspect the current
+  commit and working tree before acting; preserve any later changes.
 - An exact stdin probe at the pivot base failed with `Unknown identifier
   Poincare.poincare_conjecture`.
 - The repository is still incomplete. Completion means Lean checks exactly
@@ -20,12 +22,14 @@ with the 2026-07-07 legacy selector-assembly work. Both are historical until
 regenerated or revalidated against the current commit. Lean and the current
 diff remain authoritative.
 
-## Current Theorem-Shaped Task
+## Completed Bounded Deployment Exercise
 
-The first Harness v2 exercise is
-`automatic-scalar-derivative-constructor` revision 1, attempt Job
-`automatic-scalar-derivative-constructor-a01`, frozen at
-`7ce913d87be973256517ea862fb4d3dbfae7cb82`.
+The first Harness v2 exercise was
+`automatic-scalar-derivative-constructor` revision 4, accepted from Job
+`automatic-scalar-derivative-constructor-r4-a03`, frozen at
+`7ce913d87be973256517ea862fb4d3dbfae7cb82`. Attempts `r4-a01` and `r4-a02`
+were terminalized and preserved; neither immutable Job was relaunched after a
+supervisor record existed.
 
 Its single allowed source file is:
 
@@ -33,18 +37,17 @@ Its single allowed source file is:
 Poincare/Global/NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein.lean
 ```
 
-The objective is to add the frozen `ofReactionFields` constructor and derive
+The accepted edit adds the frozen `ofReactionFields` constructor and derives
 `scalarTimeDerivativeJointContinuous` from `reaction.jointMetricEntries` via
 the existing theorem
 `scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three`.
 The constructor may not add `ScalarTimeDerivativeJointContinuous` or scalar
-domination as a replacement argument. The Task and Job source records are
-staged in ignored `harness/v2/state/tasks/` and `harness/v2/state/queue/`; they
-must be transferred separately into an owner-only import directory on
-`mj-zima`, given a fresh future lease expiry, and imported into the runtime
-store rather than committed as queue state. Transfer only the current Task and
-queue Job JSON. Do not copy the Mac SQLite database, `state/staging/**`, or
-`state/jobs/**`; those are stale interrupted dry-run evidence.
+domination as a replacement argument. Leanstral made the one-file edit through
+Pi's scoped patch tool, its worker `lean_check` passed, and Codex independently
+reran all six frozen acceptance commands plus the canonical exact-type
+declaration probe before committing and accepting it. The accepted Job gate is
+`harness/v2/state/jobs/automatic-scalar-derivative-constructor-r4-a03/gate.json`
+on `mj-zima`.
 
 The previous broad positive-time-overlap and compact-history surfaces remain
 important context, but this narrower constructor is the selected first
@@ -86,15 +89,21 @@ rerun the frozen gate first.
 
 ## Verified Live Deployment Facts
 
-Read-only checks on 2026-07-19 found:
+Checks and the bounded release exercise on 2026-07-20 established:
 
-- `mj-zima` has the repository cloned at `/srv/projects/poincare` at
-  `7ce913d87be973256517ea862fb4d3dbfae7cb82`.
+- The integration checkout is `/srv/projects/poincare`; the committed control
+  checkout is `/srv/data/poincare-harness/control`; Job worktrees are beneath
+  `/srv/projects/poincare-worktrees`.
 - The project toolchain reports Lean `4.30.0-rc2` on `mj-zima`.
-- Pi has a dedicated npm installation under `/srv/data/poincare-harness/pi`,
-  pinned by the committed lockfile at version `0.80.10`. Production Jobs must
-  attest the complete install and launch the manifest-bound Node/CLI entrypoint;
-  the `.bin/pi` wrapper and version output alone are not a trust boundary.
+- Production Pi is the fresh sealed installation
+  `/srv/data/poincare-harness/pi-0.80.10-e755c49fe6ad637ee5a7531735e8c3129f6f6247`,
+  with owner-only attestations under
+  `/srv/data/poincare-harness/pi-attestation-0.80.10-e755c49fe6ad637ee5a7531735e8c3129f6f6247`.
+  The legacy unsealed `/srv/data/poincare-harness/pi` tree was not mutated or
+  reused.
+- Fresh runtime state is
+  `/srv/projects/poincare/harness/v2/state/harness.sqlite3`; no Mac SQLite,
+  WAL, staging directory, or prior Mac Job artifact was transferred.
 - The existing private vLLM API is healthy, serves model ID `leanstral-1.5`,
   and reports a 200,000-token model limit.
 - The model artifact is `mistralai/Leanstral-1.5-119B-A6B`, revision
@@ -104,6 +113,10 @@ Read-only checks on 2026-07-19 found:
   derivative module then completed 3,382/3,382 jobs, `exit_code=0`, at
   `2026-07-20T00:40:20Z`. No overlapping Lean build or owned bootstrap tmux
   session remained at the subsequent read-only check.
+- The bounded accepted Job used a fresh Pi JSON session, exactly the six scoped
+  tools, dispatch generation 1 and lease token 1. Its sealed Pi run reported
+  success with 8 tool events; Codex's clean accepted tree is
+  `0581d0c497d584406dbfd75386214e1ed67426b6`.
 
 The private endpoint URL belongs only in ignored configuration and Job
 evidence. Do not restart or modify the live vLLM/Ray service, inspect or manage
@@ -117,25 +130,36 @@ terminal. The Mac lane records the final setup-thread handoff and future
 on-demand inspection; it does not imply that this thread remains alive. The
 `mj-zima` observe process produces durable evidence every 10,800 seconds.
 
-## Exact Next Action
+## Operator Handoff
 
-Transfer the clean control-plane commit containing this handoff plus only the
-refreshed Task/Job source records to `mj-zima`; do not copy the Mac SQLite
-database, WAL, prior staging, or prior Job artifacts. The local runtime,
-fallback-worker, Pi, deploy, TypeScript, syntax, and schema gates were green
-before that commit was made.
+The persistent deployment owns exactly `poincare-control`,
+`poincare-workers`, and `poincare-observe`. From the Mac, use:
 
-After that exact first action, seal a fresh Pi install, publish and verify the
-separate old-base and control-HEAD Lean caches, initialize fresh runtime state,
-and run `automatic-scalar-derivative-constructor-a01` through one fresh
-`harness/v2/deploy/run-job-supervised.sh` Pi session. Preserve the complete Pi
-event stream even on failure. Codex must rerun the Task's exact Lean, hygiene,
-scope, and declaration gates before accepting or committing anything.
+```sh
+ssh -i ~/.ssh/id_ed25519_zimaboard_ai_lab -o IdentitiesOnly=yes \
+  mj-kang@192.168.30.227 \
+  '/srv/data/poincare-harness/control/harness/v2/deploy/status.sh /srv/data/poincare-harness/private/deploy.env'
+```
 
-Launch the owned Codex-control/Pi-supervisor/observe tmux topology only after
-preflight and the single-Job exercise are sound. The `mj-zima` observe loop
-emits one immediate evidence snapshot and continues every 10,800 seconds. This
-Mac setup thread reports the final deployed state once and ends; future
-operators inspect that durable evidence from the Mac on demand. The long-term
-Harness may report proof completion only after the exact declaration probe,
-allowed-axiom check, clean stable HEAD, and full completion audit all pass.
+Durable three-hour evidence is under
+`/srv/projects/poincare/harness/v2/state/deploy/`, especially
+`observe/heartbeats.jsonl` and `observe/snapshots/`. To request a graceful
+drain without deleting state:
+
+```sh
+/srv/data/poincare-harness/control/harness/v2/deploy/stop.sh \
+  /srv/data/poincare-harness/private/deploy.env
+```
+
+Restart with the corresponding `launch.sh` command. The SQLite store and Job
+artifacts, not tmux scrollback, are recovery state. This Mac setup thread ends
+after its one deployment report; it does not remain alive for the three-hour
+loop. The long-term Harness may report proof completion only after the exact
+declaration probe, allowed-axiom check, clean stable HEAD, and full completion
+audit all pass.
+
+Known non-blocking release follow-ups are bounded: Pi 0.80.10 emits harmless
+read-only global-settings lock warnings in the sealed namespace, and its
+cumulative JSON message updates made this successful 7,116-token Job's event
+files large. Both are retained as evidence and remain within the Job disk
+budget; neither expands Leanstral's authority or blocks restart/recovery.
