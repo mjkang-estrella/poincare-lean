@@ -946,7 +946,7 @@ fi
 
 for file in $(rg --files Poincare | sort); do
   module=${file%.lean}
-  module=${module//\//.}
+  module=$(printf '%s\n' "$module" | tr '/' '.')
   if rg -q "^import ${module}$" Poincare.lean; then
     echo "PASS: Poincare.lean imports ${module}"
   else
