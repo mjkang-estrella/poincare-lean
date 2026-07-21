@@ -158,6 +158,58 @@ removing `hPairDiff` at the constructor boundary. Before claiming a Job at the
 new integration base, complete the required root build and publish and verify a
 new immutable Lake cache for that exact clean HEAD.
 
+## 2026-07-21 Bochner Norm-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`7b216e8c246a309f2ec43ef59507799ec0e8d980` to accepted proof commit
+`c39ad01f334e372d169428f8fd874b070f7d644d`. Harness Task
+`cov-ricci-bochner-norm-fields-constructor` revision 2 was accepted from Job
+`cov-ricci-bochner-norm-fields-constructor-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-norm-fields-constructor-r2-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no Harness Job or
+file lease remains active.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerNormFields`.
+It installs the reaction parameter topology, derives joint covariant-Ricci
+norm continuity through
+`continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`, and calls
+`ofReactionFields`. Its frozen constructor type therefore retains the Ricci
+norm C2, Ricci second-derivative, Laplacian-continuity, rough-pairing
+continuity, and subordinate-geometry inputs but has no independent
+`hPairDiff`, joint covariant-Ricci continuity, or scalar-time-derivative
+continuity argument. The canonical exact-type probe passed and `#print axioms`
+reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `cov-ricci-bochner-norm-fields-constructor-r1-a01` is preserved
+as interrupted evidence. It eventually produced the same valid one-file patch
+and passed its brokered focused Lean check, but its final report hit
+`stopReason=length`, so the Harness correctly refused to route it to review.
+Revision 2 froze those exact patch bytes and completed exactly one scoped
+patch, one Lean check, and one diff request in a fresh supervised Pi session.
+
+The frozen acceptance array, targeted module build, canonical declaration
+probe, root elaboration, interface, semantic-surface, theorem-contract, and
+axiom audits passed. The root-import audit retains exactly its four known
+baseline direct-import gaps—
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`, and the
+automatic-finite-nerve joint-covariant-Ricci tail-overlap compact-history
+boundary—and this proof commit changes neither `Poincare.lean` nor that audit.
+The exact completion probe still fails with unknown identifier
+`Poincare.poincare_conjecture`.
+
+The next theorem-shaped action is to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the existing automatic-finite-nerve boundary module. Freeze its type as the
+current `ofBochnerFields` type with `hPairDiff` removed, and construct its
+`analytic` field through the newly accepted analytic-data constructor. The
+exact first action in the next cycle is to create and schema-validate that
+single-file Task at the final clean HEAD; before claiming its first Job, run
+the Task-bound root-build provenance recorder and publish and verify the new
+immutable Lake cache for that exact base.
+
 ## Executable Harness Boundary
 
 The primary path is:
