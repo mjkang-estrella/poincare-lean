@@ -653,6 +653,48 @@ class SupervisorAuditTest(unittest.TestCase):
             self.assertFalse(record["live"])
             self.assertEqual(record["group_members"], [123])
 
+    def test_completed_review_supervisor_does_not_block_queued_dispatch_audit(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state, proc, _ = self.make_fixture(Path(temporary).resolve())
+            connection = sqlite3.connect(state / "harness.sqlite3")
+            connection.execute("UPDATE jobs SET state = 'reviewing'")
+            connection.execute(
+                "INSERT INTO jobs VALUES(?,?,?,?,?)",
+                ("job-002", "queued", None, 0, None),
+            )
+            connection.commit()
+            connection.close()
+            shutil.rmtree(proc / "123")
+            exit_path = state / "deploy/workers/supervisors/job-001/exit.json"
+            exit_path.write_text(
+                json.dumps(
+                    {
+                        "schema_version": "poincare.job-supervisor-exit.v1",
+                        "job_id": "job-001",
+                        "finished_at": "2026-07-19T00:01:00Z",
+                        "outcome": "process_exit",
+                        "exit_code": 0,
+                        "recorded_by": "supervisor",
+                    }
+                )
+                + "\n",
+                encoding="utf-8",
+            )
+            exit_path.chmod(0o400)
+
+            report = self.audit(state, proc)
+            self.assertEqual(report.returncode, 0, report.stdout)
+            payload = json.loads(report.stdout)
+            self.assertEqual(payload["anomalies"], [])
+            self.assertEqual(payload["live_supervisors"], 0)
+            self.assertEqual(payload["active_jobs"][0]["state"], "reviewing")
+            queued = run_bash(
+                'source "$1"; POINCARE_STATE_DIR=$2; queued_job_count',
+                str(state),
+            )
+            self.assertEqual(queued.returncode, 0, queued.stderr)
+            self.assertEqual(queued.stdout.strip(), "1")
+
     def test_dead_exit_recorded_history_survives_config_upgrade(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             state, proc, _ = self.make_fixture(Path(temporary).resolve())
