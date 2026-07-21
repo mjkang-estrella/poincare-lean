@@ -42,6 +42,35 @@ theorem continuous_joint_covRicciNormSqAt_of_bochner_fields {n : ℕ} {N : Type 
   rw [hformula]
   exact (hLaplacian.sub (hRough.const_mul 2)).div_const 2
 
+/-- The C2 Ricci-norm premise also supplies the Bochner pairing differentiability premise. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
+    {n : ℕ} {N : Type u} {K : Type v}
+    [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (ClosedSmoothModel n) N]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ N]
+    [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n N)
+    (hRicNorm₂ : ∀ k : K, ∀ x : N,
+      ContMDiffAt (closedSmoothModelWithCorners n)
+        (modelWithCornersSelf ℝ ℝ) 2
+        (fun y : N ↦ (metric k).ricciNormSqAt y) x)
+    (hRicSecond : ∀ k : K, ∀ x : N,
+      CovTensor2DerivExtDifferentiableAt (metric k)
+        (ricciVariationField (metric k)) x)
+    (hLaplacian : Continuous (fun p : K × N ↦
+      (metric p.1).laplacianAt
+        (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2))
+    (hRough : Continuous (fun p : K × N ↦
+      roughRicciLaplacianPairingAt (metric p.1) p.2)) :
+    Continuous (fun p : K × N ↦
+      covRicciNormSqAt (metric p.1) p.2) := by
+  exact continuous_joint_covRicciNormSqAt_of_bochner_fields
+    metric hRicNorm₂
+    (fun k x w =>
+      covRicciRicciPairingAt_mdifferentiableAt_of_ricciNormSqAt_contMDiffAt_two
+        (metric k) x (hRicNorm₂ k x) w)
+    hRicSecond hLaplacian hRough
+
 /-- Reaction-decay data with scalar-density domination lowered to intrinsic
 joint continuity of the scalar time derivative and Stokes lowered to finite
 subordinate coordinate geometry. -/

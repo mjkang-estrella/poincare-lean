@@ -1,6 +1,6 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-07-20 (America/Los_Angeles)
+Snapshot date: 2026-07-21 (UTC)
 
 ## Project Truth
 
@@ -113,6 +113,50 @@ cache for the final clean HEAD. Do not redispatch the obsolete broad
 `cov-ricci-bochner-constructor` Task; it retains only an interrupted Job and
 could not be marked superseded because the accepted replacement Task did not
 name that older Task in its immutable `supersedes` field.
+
+## 2026-07-21 Bochner Pairing-Regularity Reduction Checkpoint
+
+The integration checkout advanced from
+`682560dcd37dd510b51b5a789fe8efc71ed8d97c` through the accepted proof
+integration recorded by this commit. Harness Task
+`bochner-pairing-from-ricci-norm` revision 3 was accepted from Job
+`bochner-pairing-from-ricci-norm-r3-a01`; its reviewed worker commit is
+`e216ed5bfc0e6dd098ea445eafc06d7048d3e669` and its strict gate is
+`harness/v2/state/jobs/bochner-pairing-from-ricci-norm-r3-a01/gate.json` on
+`mj-zima`. All Jobs and leases for the Task are terminal and released.
+
+The accepted theorem is
+`Poincare.continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`. It derives
+the pairing differentiability input to the existing Bochner continuity theorem
+from C2 regularity of `ricciNormSqAt`, using
+`covRicciRicciPairingAt_mdifferentiableAt_of_ricciNormSqAt_contMDiffAt_two`.
+Consequently the new theorem requires the Ricci-norm regularity field plus the
+Ricci second-derivative, Laplacian, and rough-pairing continuity fields, but no
+independent `hPairDiff` hypothesis. The canonical frozen-type probe passed and
+`#print axioms` reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `bochner-pairing-from-ricci-norm-r1-a01` is preserved as
+interrupted evidence after it exhausted its bounded Pi context without a patch.
+Revision-2 Job `bochner-pairing-from-ricci-norm-r2-a01` found the correct proof
+but was rejected because its first scoped patch request was broker-rejected and
+the immutable Task allowed exactly one patch call. Revision 3 froze the valid
+patch bytes and completed exactly one scoped patch, one Lean check, and one diff
+request in a fresh supervised Pi session.
+
+Focused elaboration, the frozen acceptance array, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit retains exactly its four known missing direct imports: the two Cartan
+tail-overlap reductions, the scalar-variation joint-continuity reduction, and
+the automatic finite-nerve compact-history boundary module. The exact
+completion probe still reports `EXACT_DECLARATION_PROBE=absent`.
+
+The next theorem-shaped action is to freeze an
+`NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3`
+constructor that takes the norm-field inputs above and installs the analytic
+record through `continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`,
+removing `hPairDiff` at the constructor boundary. Before claiming a Job at the
+new integration base, complete the required root build and publish and verify a
+new immutable Lake cache for that exact clean HEAD.
 
 ## Executable Harness Boundary
 
