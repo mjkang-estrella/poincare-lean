@@ -210,6 +210,59 @@ single-file Task at the final clean HEAD; before claiming its first Job, run
 the Task-bound root-build provenance recorder and publish and verify the new
 immutable Lake cache for that exact base.
 
+## 2026-07-21 Automatic Finite-Nerve Norm-Fields Boundary Checkpoint
+
+The integration checkout advanced from
+`0d89b5a67f9577e16f75601e8ac7cad20dee0901` to accepted proof commit
+`c778276a36de0bacda0462a95f002d50f7d52129`. Harness Task
+`automatic-finite-nerve-bochner-norm-boundary-constructor` revision 2 was
+accepted from Job
+`automatic-finite-nerve-bochner-norm-boundary-constructor-r2-a01`; its strict
+gate is
+`harness/v2/state/jobs/automatic-finite-nerve-bochner-norm-boundary-constructor-r2-a01/gate.json`
+on `mj-zima`. All Jobs for the Task are terminal and no file lease remains
+active.
+
+The accepted declaration is
+`Poincare.AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFields`.
+It constructs the boundary's analytic field through the accepted analytic-data
+`ofBochnerNormFields` constructor. Its frozen type retains the tetrahedral-star,
+reaction, compact tensor, Ricci-norm C2, Ricci second-derivative,
+Laplacian-continuity, rough-pairing-continuity, subordinate-geometry, ODE
+primitive, and compact-history inputs, while removing the independent
+`hPairDiff` premise. It also takes neither joint covariant-Ricci continuity nor
+scalar-time-derivative continuity as a replacement argument. The canonical
+exact-type probe passed and `#print axioms` reported only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job
+`automatic-finite-nerve-bochner-norm-boundary-constructor-r1-a01` is preserved
+as interrupted evidence. Its broad prompt produced two broker-rejected patch
+requests, then terminated fail-closed with an empty worker patch after a
+partial Pi stream and tool-crosscheck disagreement. Revision 2 froze a
+7,409-byte patch that Codex had independently checked with `git apply --check`
+and full stdin elaboration; its fresh Pi session then completed exactly one
+scoped patch, one focused Lean check, and one patch-form diff request.
+
+The frozen Task gate, a private incremental 4,065-job root build, root
+elaboration, interface, semantic-surface, theorem-contract, and axiom audits
+passed. The root-import audit retains exactly its four known direct-import
+ledger failures: the two Cartan tail-overlap reductions, the scalar-variation
+joint-continuity reduction, and the automatic finite-nerve joint-covariant-
+Ricci tail-overlap compact-history boundary. The exact completion probe still
+reports unknown identifier `Poincare.poincare_conjecture`.
+
+The next theorem-shaped action is to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the existing positive-time-overlap boundary module. Freeze its type as the
+new ODE-primitive constructor type with the primitive moving input replaced by
+`FixedTargetMovingGenericSuccessorGenericInverseEndpointODEPositiveTimeOverlapInputs3`
+and compact-history feedback indexed by its existing conversion. Construct the
+analytic field through the accepted analytic-data norm-fields constructor and
+do not reintroduce `hPairDiff`. Before claiming the first Job at the final clean
+HEAD, record, publish, and verify a new immutable Lake cache for that exact
+base.
+
 ## Executable Harness Boundary
 
 The primary path is:
