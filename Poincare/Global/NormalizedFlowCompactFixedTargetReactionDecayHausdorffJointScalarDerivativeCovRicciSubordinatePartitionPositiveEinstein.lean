@@ -133,6 +133,31 @@ noncomputable def ofReactionFields
     scalarSubordinateGeometry := scalarSubordinateGeometry }
 
   /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
+  noncomputable def ofBochnerNormFields
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hRicSecond : ∀ k : reaction.K, ∀ x : M,
+      Poincare.CovTensor2DerivExtDifferentiableAt (reaction.metric k)
+        (Poincare.ricciVariationField (reaction.metric k)) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_norm_fields reaction.metric hRicNorm₂ hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
+  /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
   noncomputable def ofBochnerFields
     (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
     (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
