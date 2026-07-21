@@ -433,6 +433,44 @@ coordinate Ricci C2 lemmas), and then feed that result through
 the final clean HEAD only after recording, publishing, and independently
 verifying its exact-base immutable Lake cache.
 
+## 2026-07-21 Chart Levi-Civita C3 Regularity Checkpoint
+
+The integration checkout advanced from
+`39054bc8268b9e4734c03ede4ccb0fe2ad8e7c2f` through the accepted proof
+integration recorded by this commit. Harness Task
+`chart-levicivita-section-c3-regularity` revision 4 was accepted from Job
+`chart-levicivita-section-c3-regularity-r4-a01`; its reviewed worker commit is
+`6e7eb9208248a2ffba8b11a71e8b566ee096fe9e` and its strict gate is
+`harness/v2/state/jobs/chart-levicivita-section-c3-regularity-r4-a01/gate.json`
+on `mj-zima`. The Job is passed and its lease is released.
+
+The accepted declaration is
+`CovariantDerivative.chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃`.
+It raises the existing chart-transported Levi-Civita section result from C2 to
+C3 for a C4 metric and C4 transported section. The proof globalizes the local
+section with a smooth bump, invokes the chart Levi-Civita C3 connection
+regularity theorem, and transfers the resulting germ back to the original
+section. The canonical exact-type probe passed and `#print axioms` reported
+only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 and revision-2 Jobs are preserved as interrupted evidence after
+bounded sessions exhausted their output without a patch. Revision 3 was
+interrupted before a known-unsafe zero-context patch could be broker-relocated.
+Revision 4 froze the deletion-anchored patch, completed exactly one scoped
+patch, one focused Lean check, and one patch diff, and then passed Codex's four
+frozen acceptance commands. An independent exact-commit root build completed
+all 4,068 jobs successfully before acceptance.
+
+The separate local C3 interface remains unresolved:
+`CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three` in
+`Poincare/LocalConnectionRegularity.lean`. The next exact theorem-shaped action
+is to prepare a narrower fresh revision for that declaration at the final
+clean integration HEAD, preserving the earlier failed patch-transport evidence
+and avoiding the broker's zero-context relocation. Once it is accepted, use it
+together with the chart C3 theorem to prove the closed Levi-Civita C3 instance
+in `Poincare/Global/LeviCivitaExistence.lean`. Before dispatch at the new base,
+record, publish, and verify the immutable Lake cache for that exact commit.
+
 ## Executable Harness Boundary
 
 The primary path is:

@@ -529,6 +529,148 @@ theorem chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₂
   exact hτcoord.congr_of_eventuallyEq hev
 
 /--
+The chart Levi-Civita hom applied to the inverse-chart transport of a
+manifold field is locally `C³` in model coordinates.
+-/
+theorem chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃
+    [IsManifold I ∞ M] [I.Boundaryless]
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hχ : ContDiff ℝ ∞ χ)
+    (htsupp : tsupport χ ⊆ (extChartAt I x₀).target)
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) 4
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y)))
+    (σ : Π y : M, TangentSpace I y) {y : M}
+    (hy : y ∈ (extChartAt I x₀).source)
+    (hσ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 4 (T% σ) y) :
+    ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E →L[ℝ] E) 3
+      (fun z =>
+        ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+          E (TangentSpace 𝓘(ℝ, E))
+          (extChartAt I x₀ y) z (extChartAt I x₀ y) z
+          ((chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp)
+            (chartTransportedLeviCivitaSection (I := I) x₀ σ) z))
+      (extChartAt I x₀ y) := by
+  let covC :=
+    chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp
+  let σc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+    chartTransportedLeviCivitaSection (I := I) x₀ σ
+  have hσc :
+      ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) 4
+        (T% σc) (extChartAt I x₀ y) := by
+    simpa [σc] using
+      chartTransportedLeviCivitaSection_contMDiffAt_apply_chart
+        (I := I) x₀ hy hσ (by
+          rw [show (4 : ℕ∞ω) + 1 = ((5 : ℕ∞) : ℕ∞ω) from rfl,
+            show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+          exact WithTop.coe_le_coe.mpr le_top)
+  obtain ⟨v, hv, hσcv⟩ :=
+    (contMDiffAt_iff_contMDiffOn_nhds (n := 4) (by norm_num)).mp hσc
+  set u : Set E := interior v with hu
+  have hu_open : IsOpen u := isOpen_interior
+  have hzu : extChartAt I x₀ y ∈ u := mem_interior_iff_mem_nhds.mpr hv
+  have hσcu : ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) 4
+      (T% σc) u :=
+    hσcv.mono interior_subset
+  obtain ⟨ψ, -, hψsupp⟩ :=
+    ((SmoothBumpFunction.nhds_basis_tsupport (I := 𝓘(ℝ, E))
+        (extChartAt I x₀ y)).mem_iff.mp (hu_open.mem_nhds hzu))
+  set τ : Π z : E, TangentSpace 𝓘(ℝ, E) z := (ψ : E → ℝ) • σc with hτ
+  have hτglob : ContMDiff 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E)) 4
+      (T% τ) :=
+    ContMDiffOn.smul_section_of_tsupport
+      ((ψ.contMDiff.of_le (by
+        rw [show (4 : ℕ∞ω) = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+          show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+        exact WithTop.coe_le_coe.mpr le_top)).contMDiffOn)
+      hu_open hψsupp hσcu
+  haveI hcovC : ContMDiffCovariantDerivative covC 3 :=
+    chartLeviCivita_contMDiff χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp
+      (k := 3) (by
+        rw [show (3 : ℕ∞ω) + 1 + 1 = ((5 : ℕ∞) : ℕ∞ω) from rfl,
+          show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+        exact WithTop.coe_le_coe.mpr le_top) hχ htsupp hg
+  have hτhomOn :
+      ContMDiffOn 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E →L[ℝ] E)) 3
+        (fun z : E =>
+          (⟨z, covC τ z⟩ :
+            TotalSpace (E →L[ℝ] E)
+              (fun z : E =>
+                TangentSpace 𝓘(ℝ, E) z →L[ℝ]
+                  TangentSpace 𝓘(ℝ, E) z)))
+        Set.univ :=
+    (ContMDiffCovariantDerivative.contMDiff (cov := covC) (k := 3)).contMDiff
+      (σ := τ) hτglob.contMDiffOn
+  have hτhomAt :
+      ContMDiffAt 𝓘(ℝ, E) (𝓘(ℝ, E).prod 𝓘(ℝ, E →L[ℝ] E)) 3
+        (fun z : E =>
+          (⟨z, covC τ z⟩ :
+            TotalSpace (E →L[ℝ] E)
+              (fun z : E =>
+                TangentSpace 𝓘(ℝ, E) z →L[ℝ]
+                  TangentSpace 𝓘(ℝ, E) z)))
+        (extChartAt I x₀ y) :=
+    hτhomOn.contMDiffAt Filter.univ_mem
+  have hτcoord :
+      ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E →L[ℝ] E) 3
+        (fun z : E =>
+          ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+            E (TangentSpace 𝓘(ℝ, E))
+            (extChartAt I x₀ y) z (extChartAt I x₀ y) z (covC τ z))
+        (extChartAt I x₀ y) :=
+    (contMDiffAt_hom_bundle
+      (fun z : E =>
+        (⟨z, covC τ z⟩ :
+          TotalSpace (E →L[ℝ] E)
+            (fun z : E =>
+              TangentSpace 𝓘(ℝ, E) z →L[ℝ]
+                TangentSpace 𝓘(ℝ, E) z)))).mp hτhomAt |>.2
+  set w : Set E := interior {z | (ψ : E → ℝ) z = 1} ∩ u with hw
+  have hw_open : IsOpen w := isOpen_interior.inter hu_open
+  have hzw : extChartAt I x₀ y ∈ w :=
+    ⟨mem_interior_iff_mem_nhds.mpr ψ.eventuallyEq_one, hzu⟩
+  have hστ : ∀ z ∈ interior {z | (ψ : E → ℝ) z = 1}, σc z = τ z := by
+    intro z hz
+    have h1 : z ∈ {z | (ψ : E → ℝ) z = 1} := interior_subset hz
+    have h1eq : (ψ : E → ℝ) z = 1 := by
+      simpa using h1
+    rw [hτ]
+    change σc z = (ψ : E → ℝ) z • σc z
+    rw [h1eq]
+    simp
+  have hev :
+      (fun z : E =>
+        ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+          E (TangentSpace 𝓘(ℝ, E))
+          (extChartAt I x₀ y) z (extChartAt I x₀ y) z (covC σc z))
+        =ᶠ[𝓝 (extChartAt I x₀ y)]
+      (fun z : E =>
+        ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+          E (TangentSpace 𝓘(ℝ, E))
+          (extChartAt I x₀ y) z (extChartAt I x₀ y) z (covC τ z)) := by
+    filter_upwards [hw_open.mem_nhds hzw] with z hz
+    have hσcz : MDiffAt (T% σc) z :=
+      ((hσcu z hz.2).contMDiffAt (hu_open.mem_nhds hz.2)).mdifferentiableAt
+        (by norm_num)
+    have hτz : MDiffAt (T% τ) z :=
+      (hτglob z).mdifferentiableAt (by norm_num)
+    have hcongr : covC σc z = covC τ z := by
+      apply covC.isCovariantDerivativeOnUniv.congr_of_eventuallyEq hσcz hτz
+        Filter.univ_mem
+      filter_upwards [isOpen_interior.mem_nhds hz.1] with z' hz'
+      exact hστ z' hz'
+    rw [hcongr]
+  exact hτcoord.congr_of_eventuallyEq hev
+
+/--
 The chart-transported hom section is locally `C²` as a section of the
 manifold hom-bundle.
 -/
