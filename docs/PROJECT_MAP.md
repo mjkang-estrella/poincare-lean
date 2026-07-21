@@ -82,8 +82,9 @@ Codex orchestrator
   -> Leanstral
 ```
 
-1. Codex selects one exact missing shape and freezes a Task at one commit.
-2. Codex allocates a `codex/<task>/<job>` worktree and claims its file lease.
+1. Codex selects exact missing shapes and freezes a disjoint same-base Task
+   batch toward the configured execution-backlog target.
+2. Codex allocates `codex/<task>/<job>` worktrees with nonoverlapping leases.
 3. Harness snapshots the Task, prompt, context hashes, model identity, and
    resource budget for one Job.
 4. A fresh Pi process gives Leanstral exactly `read_context`, `search_symbol`,
@@ -94,8 +95,8 @@ Codex orchestrator
 5. Harness captures the Pi JSON event stream, scoped tool results, final diff,
    compiler output, and report append-only.
 6. Codex independently reviews the diff and reruns the frozen acceptance gate.
-7. Codex alone may accept, commit, and integrate the result serially before
-   running root checks.
+7. Codex alone may accept, commit, and integrate results through one serial
+   merge queue; compatible results share one batched root checkpoint.
 8. The `mj-zima` observation loop records an immediate evidence snapshot and
    another every 10,800 seconds as the durable long-term source. This Mac
    setup thread reports the deployed state once and ends; future operators

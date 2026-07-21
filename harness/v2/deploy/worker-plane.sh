@@ -26,7 +26,8 @@ exec 7<> "$WORKER_DIR/worker-plane.lock"
   die "another authenticated worker plane holds the lock"
 
 append_event "$WORKER_LOG" worker_plane_ready \
-  pid "$$" maximum_jobs "$POINCARE_MAX_LEANSTRAL_JOBS"
+  pid "$$" maximum_jobs "$POINCARE_MAX_LEANSTRAL_JOBS" \
+  execution_backlog_target "$POINCARE_LEANSTRAL_BACKLOG_TARGET"
 
 dispatcher_pids=()
 reap_dispatchers() {
@@ -56,6 +57,7 @@ trap request_stop HUP INT TERM
 trap 'append_event "$WORKER_LOG" worker_plane_exited pid "$$"' EXIT
 
 note "Harness v2 Pi worker plane is ready. It dispatches only Codex-prepared queued Jobs and atomically enforces the $POINCARE_MAX_LEANSTRAL_JOBS execution ceiling."
+note "Codex targets $POINCARE_LEANSTRAL_BACKLOG_TARGET queued + preparing + running Jobs when disjoint proof work is safe."
 note "Every Job gets a fresh bounded Pi session; durable JSON/RPC evidence lives under harness/v2/state."
 
 while (( stopping == 0 )); do

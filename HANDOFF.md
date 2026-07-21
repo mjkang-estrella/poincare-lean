@@ -293,6 +293,18 @@ when Pi exits, and routes a sealed successful result to Codex-owned
 may create a fresh attempt. Reviewing Jobs do not consume Leanstral execution
 capacity, so independent serial review can overlap another disjoint proof Job.
 
+The 2026-07-21 throughput control update adds a configured execution-backlog
+target, defaulting to four and never exceeding the four-session ceiling. The
+target counts queued, preparing, and running Jobs; reviewing Jobs do not hide
+unused inference capacity. Codex must replenish a safe disjoint same-base batch
+before optional repository-wide audits or record the concrete lease, cache,
+dependency, resource, or theorem-shape reason for underfill. Compatible
+accepted Jobs still pass independent frozen gates and one serial Codex merge
+queue, while broad root audits may run once per compatible integration batch.
+Cycle results, `status.sh`, and the three-hour heartbeat expose the target and
+underfill. This policy does not authorize overlapping leases, duplicate or
+filler Tasks, extra Leanstral tools, or any worker acceptance/commit authority.
+
 There is no worker access to an unrestricted shell, SSH, arbitrary filesystem
 or network tools, Git mutation, worktree deletion, Docker, Ray, tmux, or model
 service management. `harness/v2/worker/` is fallback-only: keep its endpoint

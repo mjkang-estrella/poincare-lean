@@ -43,6 +43,13 @@ dependency-graph paths, external Job worktree root, user-local tool paths, and
 canonical absolute Git and tmux executables. `.env` is ignored in this
 directory. Do not put API keys in it or commit it.
 
+`POINCARE_MAX_LEANSTRAL_JOBS` is the hard execution ceiling (at most four).
+`POINCARE_LEANSTRAL_BACKLOG_TARGET` is the desired combined count of queued,
+preparing, and running Jobs and must not exceed that ceiling. The default is
+four. Reviewing Jobs do not satisfy the target; status and heartbeat evidence
+show any underfill. Codex may remain below target only when it records a
+concrete lease, cache, dependency, resource, or task-shape reason.
+
 Install Pi from the committed lockfile into a fresh dedicated directory. Make
 the complete install tree read-only, then capture `npm ls --json --all` and use
 `harness.v2.pi.install.build_install_manifest` with explicit `/usr/bin/node`,
@@ -209,6 +216,10 @@ still has disabled built-ins and only the exact six scoped tools.
 It hashes the committed Harness trust boundary before and after each cycle and
 pauses if Codex or another process changes it; control-plane repairs require a
 separate review and relaunch.
+At each cycle the prompt includes a measured execution-backlog snapshot. Codex
+prefills a safe disjoint same-base batch before optional repository-wide audits,
+reviews through one serial merge queue, and runs broad integration gates once
+per compatible batch rather than once per small accepted diff.
 After any Codex exit it waits the configured cooldown and starts a fresh cycle
 from git, SQLite, and artifacts only when Codex's schema-validated cycle result
 says resumption is safe. A nonzero Codex process exit is preserved and retried

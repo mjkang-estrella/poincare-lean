@@ -154,6 +154,27 @@ orchestrator transition after the recorded gate succeeds.
 8. Codex alone commits and integrates accepted work serially, reruns root
    integration checks, and updates the durable handoff.
 
+## Bounded Backlog Policy
+
+The deployment configures an execution-backlog target no greater than the
+four-session ceiling. The target counts `queued + preparing + running`; a Job
+waiting for Codex review does not count. When safe disjoint theorem/file scopes
+exist, Codex freezes a same-base batch and replenishes toward that target before
+optional repository-wide audits. The worker plane still only claims fully
+prepared Jobs and never creates Tasks.
+
+Codex reviews and integrates through one serial merge queue. Jobs from the same
+immutable base may continue while another disjoint Job is reviewed. Each Job is
+independently gated against its frozen contract. Compatible accepted diffs may
+be integrated as a batch before one root/audit checkpoint, but shared-interface
+changes, explicit Task gates, regression signals, cache publication, and the
+exact completion boundary force an earlier checkpoint. Underfill is allowed
+only with a recorded concrete safety or dependency reason; it never authorizes
+filler work, overlapping leases, weaker Tasks, or duplicate attempts.
+Every machine-validated Codex cycle result reports the target, queue/execution
+counts, underfill, and its reason. `status.sh` and the 10,800-second heartbeat
+surface the same utilization boundary for operators.
+
 The worker has no unrestricted shell, SSH, arbitrary filesystem or network
 access, Git commit/push/merge, branch or worktree management, worktree deletion,
 Docker, Ray, tmux, subagent, browser, or model-service capability. The custom
@@ -342,9 +363,10 @@ full build.
 
 ### Phase 4: Controlled parallelism
 
-- permit multiple Jobs only for disjoint file families and available Lean/GPU
-  budgets;
+- maintain the configured bounded execution backlog when disjoint theorem work
+  and Lean/GPU budgets permit it;
 - keep a single merge queue;
+- expose target and underfill in status and three-hour evidence;
 - score the system on accepted theorem-bearing diffs, regression rate, human
   review time, and cost per accepted Task, not raw attempts or generated lines.
 

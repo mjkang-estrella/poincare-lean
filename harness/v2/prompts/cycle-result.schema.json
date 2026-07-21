@@ -15,7 +15,8 @@
     "commit",
     "blocker",
     "next_action",
-    "active_jobs_and_leases"
+    "active_jobs_and_leases",
+    "execution_backlog"
   ],
   "properties": {
     "resume_decision": {
@@ -43,6 +44,28 @@
     "commit": {"type": ["string", "null"]},
     "blocker": {"type": ["string", "null"]},
     "next_action": {"type": "string", "minLength": 1},
-    "active_jobs_and_leases": {"type": "string", "minLength": 1}
+    "active_jobs_and_leases": {"type": "string", "minLength": 1},
+    "execution_backlog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "target",
+        "queued",
+        "preparing",
+        "running",
+        "reviewing",
+        "underfilled",
+        "underfill_reason"
+      ],
+      "properties": {
+        "target": {"type": "integer", "minimum": 1, "maximum": 4},
+        "queued": {"type": "integer", "minimum": 0},
+        "preparing": {"type": "integer", "minimum": 0},
+        "running": {"type": "integer", "minimum": 0},
+        "reviewing": {"type": "integer", "minimum": 0},
+        "underfilled": {"type": "integer", "minimum": 0, "maximum": 4},
+        "underfill_reason": {"type": ["string", "null"]}
+      }
+    }
   }
 }

@@ -55,7 +55,15 @@ def write_sealed_pi_inputs(root: Path) -> tuple[Path, Path]:
     return install_manifest, dependency_graph
 
 
-def write_config(path: Path, root: Path, *, timeout: int | None = None, branch: bool = True) -> None:
+def write_config(
+    path: Path,
+    root: Path,
+    *,
+    timeout: int | None = None,
+    branch: bool = True,
+    maximum_jobs: int | None = None,
+    backlog_target: int | None = None,
+) -> None:
     install_manifest, dependency_graph = write_sealed_pi_inputs(root)
     values = [
         f"POINCARE_REPO_ROOT={root / 'repo'}",
@@ -77,6 +85,10 @@ def write_config(path: Path, root: Path, *, timeout: int | None = None, branch: 
         values.append("POINCARE_INTEGRATION_BRANCH=main")
     if timeout is not None:
         values.append(f"POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS={timeout}")
+    if maximum_jobs is not None:
+        values.append(f"POINCARE_MAX_LEANSTRAL_JOBS={maximum_jobs}")
+    if backlog_target is not None:
+        values.append(f"POINCARE_LEANSTRAL_BACKLOG_TARGET={backlog_target}")
     path.write_text("\n".join(values) + "\n", encoding="utf-8")
     path.chmod(0o600)
 
@@ -105,6 +117,35 @@ printf '<%s>\n' "${POINCARE_CACHE_PUBLISH_REEXEC_ARGS[@]}"
                 "</tmp/harness env>",
             ],
         )
+
+
+class JobUtilizationSnapshotTest(unittest.TestCase):
+    def test_reviewing_jobs_do_not_hide_execution_underfill(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            state = Path(temporary).resolve()
+            database = state / "harness.sqlite3"
+            connection = sqlite3.connect(database)
+            connection.execute("CREATE TABLE jobs(state TEXT NOT NULL)")
+            connection.executemany(
+                "INSERT INTO jobs(state) VALUES (?)",
+                [("queued",), ("running",), ("reviewing",), ("reviewing",)],
+            )
+            connection.commit()
+            connection.close()
+            result = run_bash(
+                'source "$1"; POINCARE_STATE_DIR=$2; '
+                'export POINCARE_MAX_LEANSTRAL_JOBS=4 '
+                'POINCARE_LEANSTRAL_BACKLOG_TARGET=4; job_utilization_snapshot',
+                str(state),
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            payload = json.loads(result.stdout)
+            self.assertEqual(payload["queued"], 1)
+            self.assertEqual(payload["executing"], 1)
+            self.assertEqual(payload["reviewing"], 2)
+            self.assertEqual(payload["execution_backlog"], 2)
+            self.assertEqual(payload["target"], 4)
+            self.assertEqual(payload["underfilled"], 2)
 
 
 class RunJobSupervisorArgumentTest(unittest.TestCase):
@@ -209,6 +250,36 @@ class DeploymentAuthorityTest(unittest.TestCase):
         self.assertIn("--sandbox danger-full-access", source)
         self.assertNotIn("--sandbox workspace-write", source)
         self.assertNotIn("sandbox_workspace_write.writable_roots", source)
+
+    def test_codex_prioritizes_a_measured_bounded_execution_backlog(self) -> None:
+        cycle = (ROOT / "harness/v2/deploy/codex-cycle.sh").read_text(
+            encoding="utf-8"
+        )
+        prompt = (ROOT / "harness/v2/prompts/orchestrator.md").read_text(
+            encoding="utf-8"
+        )
+        status = (ROOT / "harness/v2/deploy/status.sh").read_text(encoding="utf-8")
+        heartbeat = (ROOT / "harness/v2/deploy/evidence-heartbeat.sh").read_text(
+            encoding="utf-8"
+        )
+        schema = json.loads(
+            (ROOT / "harness/v2/prompts/cycle-result.schema.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertIn("job_utilization_snapshot", cycle)
+        self.assertIn("Configured execution-backlog target", cycle)
+        self.assertIn("replenish", cycle)
+        self.assertIn("Keep inference fed while Codex reviews", prompt)
+        self.assertIn("Replenishment has priority", prompt)
+        self.assertIn("compatible accepted commits", prompt)
+        self.assertIn("job_utilization_snapshot", status)
+        self.assertIn('counts["underfilled"]', status)
+        self.assertIn("job_utilization_snapshot", heartbeat)
+        self.assertIn("backlog_underfilled", heartbeat)
+        self.assertIn("execution_backlog", schema["required"])
+        self.assertIn("underfill_reason", schema["properties"]["execution_backlog"]["required"])
+        self.assertIn('underfilled != max(0, target - sum(counts))', cycle)
 
     def test_linux_authority_paths_are_absolute_and_remaining_scripts_use_them(self) -> None:
         common = COMMON.read_text(encoding="utf-8")
@@ -402,6 +473,25 @@ class SecureConfigurationTest(unittest.TestCase):
             )
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("POINCARE_INTEGRATION_BRANCH", result.stderr)
+
+    def test_backlog_target_defaults_to_ceiling_and_cannot_exceed_it(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            config = root / "deploy.env"
+            write_config(config, root, maximum_jobs=3)
+            defaulted = run_bash(
+                'source "$1"; load_config "$2"; printf "%s/%s\\n" '
+                '"$POINCARE_LEANSTRAL_BACKLOG_TARGET" "$POINCARE_MAX_LEANSTRAL_JOBS"',
+                str(config),
+            )
+            self.assertEqual(defaulted.returncode, 0, defaulted.stderr)
+            self.assertEqual(defaulted.stdout.strip(), "3/3")
+
+            write_config(config, root, maximum_jobs=2, backlog_target=3)
+            rejected = run_bash('source "$1"; load_config "$2"', str(config))
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn("POINCARE_LEANSTRAL_BACKLOG_TARGET", rejected.stderr)
+            self.assertIn("between 1 and 2", rejected.stderr)
 
 
 class TrustBoundaryTest(unittest.TestCase):
