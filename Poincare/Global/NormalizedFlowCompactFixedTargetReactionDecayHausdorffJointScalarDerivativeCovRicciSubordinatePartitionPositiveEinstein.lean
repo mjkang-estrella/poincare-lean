@@ -71,6 +71,36 @@ theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
         (metric k) x (hRicNorm₂ k x) w)
     hRicSecond hLaplacian hRough
 
+/-- The reaction package supplies the Ricci-variation second regularity on
+each nonnegative normalized-flow slice. -/
+theorem
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.ricciVariationField_covTensor2DerivExtDifferentiableAt
+    [SimplyConnectedSpace M]
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (t : ℝ) (ht : t ∈ Ici (0 : ℝ)) (x : M) :
+    CovTensor2DerivExtDifferentiableAt (reaction.gt t)
+      (ricciVariationField (reaction.gt t)) x := by
+  letI : CovariantDerivative.ContMDiffCovariantDerivative
+      (reaction.gt t).leviCivita 1 := inferInstance
+  have hEntries : ∀ y : M,
+      TimeVariationExtContMDiffAt reaction.gt t y 2 := fun y ↦
+    timeVariationExtContMDiffAt_two_of_metricEntriesJointContDiffAt_three
+      (reaction.jointMetricEntries t y)
+  have hRicC2 : ∀ y : M,
+      CovTensor2ExtContMDiffAt
+        (ricciVariationField (reaction.gt t)) y 2 := fun y ↦
+    ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow
+      (reaction.normalizedFlow t ht) hEntries y
+  exact covTensor2DerivExtDifferentiableAt_of_extSecond
+    (g := reaction.gt t) (h := ricciVariationField (reaction.gt t)) (x := x)
+    (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two (hRicC2 x))
+    (fun y ↦ covTensor2ExtDifferentiableAt_of_contMDiffAt_two (hRicC2 y))
+    (tensor2AddLeft_ricciVariationField (reaction.gt t))
+    (tensor2SMulLeft_ricciVariationField (reaction.gt t))
+    (tensor2AddRight_ricciVariationField (reaction.gt t))
+    (tensor2SMulRight_ricciVariationField (reaction.gt t))
+
 /-- Reaction-decay data with scalar-density domination lowered to intrinsic
 joint continuity of the scalar time derivative and Stokes lowered to finite
 subordinate coordinate geometry. -/
