@@ -263,6 +263,72 @@ do not reintroduce `hPairDiff`. Before claiming the first Job at the final clean
 HEAD, record, publish, and verify a new immutable Lake cache for that exact
 base.
 
+## 2026-07-21 Positive-Time and Tail-Overlap Boundary Checkpoint
+
+The integration checkout advanced from
+`3d8dc9f20a5b943d1fc55019ad968713947ca137` through accepted proof commits
+`4b1f19736735a536ab2e5c6023da4fcfdf441bbb`,
+`6bc720d764a74893e04ec27cc32e04272c0677f9`, and finally
+`079292fae8a23cbb88082f2270a5e1c3f95cddf9`.
+
+Harness Task
+`automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor`
+revision 2 was accepted from Job
+`automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor-r2-a01`.
+It adds
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`.
+Revision-1 evidence is preserved as interrupted after Pi's stream and broker
+events could not be reconciled, even though its later broker-applied patch was
+mathematically valid. Revision 2 froze those exact patch bytes and passed a
+fresh three-call session. Its strict gate is
+`harness/v2/state/jobs/automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor-r2-a01/gate.json`.
+
+Task `automatic-positive-time-tail-bochner-norm-boundary-constructor`
+revision 1 was then accepted from Job
+`automatic-positive-time-tail-bochner-norm-boundary-constructor-r1-a01`.
+Its declaration
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsAndTailOverlap`
+replaces the positive-time moving input by the exact tail-only input, using the
+verified tail-to-positive-time adapter while preserving the compact-history
+index definitionally. Its strict gate is
+`harness/v2/state/jobs/automatic-positive-time-tail-bochner-norm-boundary-constructor-r1-a01/gate.json`.
+
+Finally, Task `automatic-scalar-tail-boundary-sphere-conclusion` revision 2
+was accepted from Job
+`automatic-scalar-tail-boundary-sphere-conclusion-r2-a01`. It defines the
+named scalar-derivative/tail-overlap compact-history boundary, converts it to
+the verified positive-time boundary, and proves
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.sphereConclusion`.
+It also adds the single direct `Poincare.lean` import required to expose this
+declaration canonically. Revision-1 Job
+`automatic-scalar-tail-boundary-sphere-conclusion-r1-a01` is preserved as
+rejected evidence: all focused commands passed, but its frozen scope forbade
+the root import, so the mandatory `import Poincare` declaration probe returned
+unknown identifiers. Revision 2 records that exact failure and its strict gate
+is
+`harness/v2/state/jobs/automatic-scalar-tail-boundary-sphere-conclusion-r2-a01/gate.json`.
+
+Every accepted Job used exactly one scoped patch, one focused Lean check, and
+one patch diff. Codex independently checked the exact frozen types and observed
+only `propext`, `Classical.choice`, and `Quot.sound`. Post-integration root
+elaboration and the interface, semantic-surface, theorem-contract, and axiom
+audits passed. The root-import ledger shrank from four failures to exactly
+three: the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe still reports unknown identifier
+`Poincare.poincare_conjecture`; no unconditional final theorem exists.
+
+No Harness Job or file lease remains active. The next theorem-shaped action is
+to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the now root-visible tail-boundary module. Freeze its arguments as the
+accepted positive-time `ofBochnerNormFieldsAndTailOverlap` type, but return the
+new scalar-tail structure and store the original tail input directly. The
+exact first action in the next cycle is to create and schema-validate that
+single-file Task at the final clean HEAD; before claiming its Job, record,
+publish, and independently verify a new immutable Lake cache for that exact
+base.
+
 ## Executable Harness Boundary
 
 The primary path is:
