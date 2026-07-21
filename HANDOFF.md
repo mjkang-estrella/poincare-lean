@@ -329,6 +329,58 @@ single-file Task at the final clean HEAD; before claiming its Job, record,
 publish, and independently verify a new immutable Lake cache for that exact
 base.
 
+## 2026-07-21 Scalar-Tail Bochner Norm-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`b2d4ac3cafd3a64848877bcd950864371a7b2e73` through accepted proof commit
+`cea0abe49a28290d6c37dcb365caa6440688c4b7`. Harness Task
+`automatic-scalar-tail-bochner-norm-boundary-constructor` revision 2 was
+accepted from Job
+`automatic-scalar-tail-bochner-norm-boundary-constructor-r2-a01`; its strict
+gate is
+`harness/v2/state/jobs/automatic-scalar-tail-bochner-norm-boundary-constructor-r2-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no Harness Job or
+file lease remains active.
+
+The accepted declaration is
+`Poincare.AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`.
+It calls the verified positive-time `ofBochnerNormFieldsAndTailOverlap`
+constructor, explicitly projects its analytic field at the ambient charted
+space, and stores the original tail input and definitionally indexed
+compact-history feedback in the scalar-tail record. Its frozen type retains
+the reaction, compact tensor, Ricci-norm C2, Ricci second-derivative,
+Laplacian-continuity, rough-pairing-continuity, subordinate-geometry,
+tail-overlap, and compact-history inputs, while adding neither `hPairDiff` nor
+joint covariant-Ricci or scalar-time-derivative continuity as replacement
+arguments. The canonical exact-type probe passed and `#print axioms` reported
+only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job
+`automatic-scalar-tail-bochner-norm-boundary-constructor-r1-a01` is preserved
+as interrupted evidence: it exhausted its 5,000-token output budget before
+making a tool call and left an empty patch. Revision 2 froze the independently
+checked 7,904-byte patch and completed exactly one scoped patch, one focused
+Lean check, and one patch diff in a fresh supervised Pi session.
+
+The frozen Task gate, targeted module build, root olean build, root
+elaboration, interface, semantic-surface, theorem-contract, and axiom audits
+passed. The root-import audit retains exactly its three established direct-
+import gaps: the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe still reports `EXACT_DECLARATION_PROBE=absent`.
+
+The next theorem-shaped dependency reduction is to prove, in
+`NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein.lean`,
+the pointwise `CovTensor2DerivExtDifferentiableAt` premise for
+`ricciVariationField (reaction.metric k)` from the reaction package's
+`normalizedFlow`, `jointMetricEntries`, and `realizesFlow` fields, using
+`ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow` and
+`covTensor2DerivExtDifferentiableAt_of_extSecond`. Freeze that lemma as one
+single-file Task before propagating it into a constructor without an explicit
+`hRicSecond` argument. Before claiming a Job at the final clean HEAD, record,
+publish, and independently verify the immutable Lake cache for that exact
+base.
+
 ## Executable Harness Boundary
 
 The primary path is:
@@ -464,7 +516,7 @@ cumulative JSON message updates made this successful 7,116-token Job's event
 files large. Both are retained as evidence and remain within the Job disk
 budget; neither expands Leanstral's authority or blocks restart/recovery. The
 root-import ledger still needs direct `Poincare.lean` imports for the two
-Cartan tail-overlap reductions, the scalar-variation continuity reduction, and
-the automatic finite-nerve compact-history boundary module. Their current
-transitive visibility remains sufficient for exact `import Poincare` type
-probes; they are separate wiring follow-ups rather than proof completion.
+Cartan tail-overlap reductions and the scalar-variation continuity reduction.
+Their current transitive visibility remains sufficient for exact
+`import Poincare` type probes; they are separate wiring follow-ups rather than
+proof completion.
