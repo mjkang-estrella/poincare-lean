@@ -1660,7 +1660,10 @@ for job_id, active in active_jobs.items():
     if record is None:
         anomaly("active_job_without_supervisor", job_id=job_id)
         continue
-    if not record["live"]:
+    # Pi execution ends before Codex-owned review begins. Reviewing keeps its
+    # fenced lease and launch/exit evidence, but intentionally has no live
+    # execution supervisor and must not block another queued Job.
+    if active["state"] in {"preparing", "running"} and not record["live"]:
         anomaly("active_job_supervisor_not_live", job_id=job_id)
         continue
     if (
