@@ -461,15 +461,30 @@ patch, one focused Lean check, and one patch diff, and then passed Codex's four
 frozen acceptance commands. An independent exact-commit root build completed
 all 4,068 jobs successfully before acceptance.
 
-The separate local C3 interface remains unresolved:
-`CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three` in
-`Poincare/LocalConnectionRegularity.lean`. The next exact theorem-shaped action
-is to prepare a narrower fresh revision for that declaration at the final
-clean integration HEAD, preserving the earlier failed patch-transport evidence
-and avoiding the broker's zero-context relocation. Once it is accepted, use it
-together with the chart C3 theorem to prove the closed Levi-Civita C3 instance
-in `Poincare/Global/LeviCivitaExistence.lean`. Before dispatch at the new base,
-record, publish, and verify the immutable Lake cache for that exact commit.
+The local C3 interface is now resolved. Harness Task
+`local-covariant-section-c3-regularity` revision 5 was accepted from Job
+`local-covariant-section-c3-regularity-r5-a01`; its reviewed proof commit is
+`1204566315a24f521536244b58d925f917585477`, its strict gate is
+`harness/v2/state/jobs/local-covariant-section-c3-regularity-r5-a01/gate.json`,
+and its lease is released. The accepted declaration is
+`CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three`. Its
+canonical exact-type probe passed, and `#print axioms` reported only `propext`,
+`Classical.choice`, and `Quot.sound`. The serial root build completed all 4,068
+jobs. Root elaboration plus the interface, semantic-surface, and theorem-
+contract audits passed; the theorem-contract audit first exposed and then
+verified the required equality companion
+`contMDiffAt_cov_section_of_contMDiffAt_three_eq`.
+
+The next exact theorem-shaped action is
+`Poincare.LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₃` with type
+`CovariantDerivative.ContMDiffCovariantDerivative
+  (LeviCivitaExistence.closedLeviCivitaConnection g) 3`. The nearest verified
+template is `closedLeviCivitaConnection_contMDiff₂`, and the C3 chart input is
+`CovariantDerivative.chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃`.
+Both live in `Poincare/Global/LeviCivitaRegularity.lean`; that file, rather than
+the constructor-only `Poincare/Global/LeviCivitaExistence.lean`, is the actual
+source location for the existing C1/C2 instances. Before dispatch at the new
+clean base, record, publish, and verify its exact-base immutable Lake cache.
 
 ## Executable Harness Boundary
 

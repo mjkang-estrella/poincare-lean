@@ -345,6 +345,12 @@ theorem contMDiffAt_cov_section_of_contMDiffAt_two_eq :
       @CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two :=
   rfl
 
+/-- Theorem contract for `contMDiffAt_cov_section_of_contMDiffAt_three`. -/
+theorem contMDiffAt_cov_section_of_contMDiffAt_three_eq :
+    @CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three =
+      @CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three :=
+  rfl
+
 /-- Theorem contract for `mdiffAt_cov_section_of_contMDiffAt`. -/
 theorem mdiffAt_cov_section_of_contMDiffAt_eq :
     @CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt = @CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt :=
