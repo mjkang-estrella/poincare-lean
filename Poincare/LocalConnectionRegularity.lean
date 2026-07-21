@@ -103,6 +103,79 @@ theorem contMDiffAt_cov_section_of_contMDiffAt_two
   rw [Bundle.TotalSpace.mk_inj]
   exact hy
 
+/--
+**Local `C³` regularity of a `C³` connection**: if `Z` is `C⁴` at `x` and
+`W` is `C³` at `x`, then `y ↦ ∇_{W y} Z` is `C³` at `x`.
+-/
+theorem contMDiffAt_cov_section_of_contMDiffAt_three
+    [ContMDiffCovariantDerivative cov 3]
+    {Z : Π y : M, TangentSpace I y} {x : M} (hZ : CMDiffAt 4 (T% Z) x)
+    {W : Π y : M, TangentSpace I y} (hW : CMDiffAt 3 (T% W) x) :
+    CMDiffAt 3 (T% (fun y ↦ cov Z y (W y))) x := by
+  obtain ⟨v, hv, hZv⟩ :=
+    (contMDiffAt_iff_contMDiffOn_nhds (n := 4) (by norm_num)).mp hZ
+  set u : Set M := interior v with hu
+  have hu_open : IsOpen u := isOpen_interior
+  have hxu : x ∈ u := mem_interior_iff_mem_nhds.mpr hv
+  have hZu : CMDiff[u] 4 (T% Z) := hZv.mono interior_subset
+  obtain ⟨χ, -, hχsupp⟩ :=
+    ((SmoothBumpFunction.nhds_basis_tsupport (I := I) x).mem_iff.mp
+      (hu_open.mem_nhds hxu))
+  set Z' : Π y : M, TangentSpace I y := (χ : M → ℝ) • Z with hZ'
+  have hZ'glob : CMDiff 4 (T% Z') :=
+    ContMDiffOn.smul_section_of_tsupport
+      ((χ.contMDiff.of_le (by
+        rw [show (4 : ℕ∞ω) = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+          show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+        exact WithTop.coe_le_coe.mpr le_top)).contMDiffOn)
+      hu_open hχsupp hZu
+  have hhomOn :
+      ContMDiffOn I (I.prod 𝓘(ℝ, E →L[ℝ] E)) 3
+        (fun y : M =>
+          (⟨y, cov Z' y⟩ :
+            TotalSpace (E →L[ℝ] E)
+              (fun y : M =>
+                TangentSpace I y →L[ℝ] TangentSpace I y)))
+        Set.univ :=
+    (ContMDiffCovariantDerivative.contMDiff (cov := cov) (k := 3)).contMDiff
+      (σ := Z') hZ'glob.contMDiffOn
+  have hhomAt :
+      ContMDiffAt I (I.prod 𝓘(ℝ, E →L[ℝ] E)) 3
+        (fun y : M =>
+          (⟨y, cov Z' y⟩ :
+            TotalSpace (E →L[ℝ] E)
+              (fun y : M =>
+                TangentSpace I y →L[ℝ] TangentSpace I y)))
+        x :=
+    hhomOn.contMDiffAt Filter.univ_mem
+  have hreg : CMDiffAt 3 (T% (fun y ↦ cov Z' y (W y))) x :=
+    hhomAt.clm_bundle_apply hW
+  set w : Set M := interior {y | (χ : M → ℝ) y = 1} ∩ u with hw
+  have hw_open : IsOpen w := isOpen_interior.inter hu_open
+  have hxw : x ∈ w :=
+    ⟨mem_interior_iff_mem_nhds.mpr χ.eventuallyEq_one, hxu⟩
+  have hZZ' : ∀ y ∈ interior {y | (χ : M → ℝ) y = 1}, Z y = Z' y := by
+    intro y hy
+    have h1 : y ∈ {y | (χ : M → ℝ) y = 1} := interior_subset hy
+    simp [hZ', h1.out]
+  have hev : (fun y ↦ cov Z y (W y)) =ᶠ[𝓝 x] fun y ↦ cov Z' y (W y) := by
+    filter_upwards [hw_open.mem_nhds hxw] with y hy
+    have hZy : MDiffAt (T% Z) y :=
+      ((hZu y hy.2).contMDiffAt (hu_open.mem_nhds hy.2)).mdifferentiableAt
+        (by norm_num)
+    have hZ'y : MDiffAt (T% Z') y :=
+      (hZ'glob y).mdifferentiableAt (by norm_num)
+    have hcongr : cov Z y = cov Z' y := by
+      apply cov.isCovariantDerivativeOnUniv.congr_of_eventuallyEq hZy hZ'y
+        univ_mem
+      filter_upwards [isOpen_interior.mem_nhds hy.1] with y' hy'
+      exact hZZ' y' hy'
+    rw [hcongr]
+  refine hreg.congr_of_eventuallyEq ?_
+  filter_upwards [hev] with y hy
+  rw [Bundle.TotalSpace.mk_inj]
+  exact hy
+
 variable [ContMDiffCovariantDerivative cov 1]
 
 /--
