@@ -381,6 +381,58 @@ single-file Task before propagating it into a constructor without an explicit
 publish, and independently verify the immutable Lake cache for that exact
 base.
 
+## 2026-07-21 Normalized-Flow-Slice Ricci Regularity Checkpoint
+
+The integration checkout advanced from
+`82c77b324b73ee7a196f4fba4fb35880bb73dc63` to accepted proof commit
+`0a5915fb3c4bbb5e3b513a6911e9aed6e92af23b`. Harness Task
+`reaction-flow-slice-ricci-second-regularity` revision 4 was accepted from Job
+`reaction-flow-slice-ricci-second-regularity-r4-a01`; its strict gate is
+`harness/v2/state/jobs/reaction-flow-slice-ricci-second-regularity-r4-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no queued,
+preparing, running, or reviewing Job remains.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.ricciVariationField_covTensor2DerivExtDifferentiableAt`.
+For every nonnegative time and point, it derives second differentiability of
+`ricciVariationField (reaction.gt t)` from `reaction.normalizedFlow` and
+`reaction.jointMetricEntries`. The proof first obtains C2 extended Ricci
+entries with
+`ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow`, then uses
+`covTensor2DerivExtDifferentiableAt_of_extSecond` and the canonical Ricci
+tensor-linearity lemmas. The exact frozen-type probe passed and `#print axioms`
+reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `reaction-flow-slice-ricci-second-regularity-r1-a01` is
+preserved as interrupted evidence after it exhausted its budget on broker-
+rejected context requests. Revision 2 is rejected evidence for the exact
+missing `[SimplyConnectedSpace M]` source binder. Revision 3 produced the
+green proof but is rejected because it exceeded its immutable three-call
+contract after an initial patch rejection. Revision 4 froze those final patch
+bytes and completed exactly one scoped patch, one focused Lean check, and one
+patch diff in a fresh supervised Pi session.
+
+The frozen Task gate, isolated and integrated root builds, root elaboration,
+interface, semantic-surface, theorem-contract, and axiom audits passed. The
+root-import audit reproduced exactly its three established direct-import gaps:
+the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe at the integrated commit still reports
+`EXACT_DECLARATION_PROBE=absent`.
+
+This checkpoint deliberately does not claim the stronger all-parameter result
+for `reaction.metric k`. The record field `realizesFlow` states only
+`reaction.metric (reaction.parameter t) = reaction.gt t`; no field makes
+`reaction.parameter` surjective onto every `k : reaction.K`. Consequently the
+previously proposed direct all-`k` lift is not justified by the reaction
+package. The next theorem-shaped action is to isolate intrinsic Ricci C2
+regularity for an arbitrary `ClosedSmoothRiemannianMetric` (starting with
+`CovTensor2ExtContMDiffAt (ricciVariationField g) x 2`, using the existing
+coordinate Ricci C2 lemmas), and then feed that result through
+`covTensor2DerivExtDifferentiableAt_of_extSecond`. Freeze that one interface at
+the final clean HEAD only after recording, publishing, and independently
+verifying its exact-base immutable Lake cache.
+
 ## Executable Harness Boundary
 
 The primary path is:
