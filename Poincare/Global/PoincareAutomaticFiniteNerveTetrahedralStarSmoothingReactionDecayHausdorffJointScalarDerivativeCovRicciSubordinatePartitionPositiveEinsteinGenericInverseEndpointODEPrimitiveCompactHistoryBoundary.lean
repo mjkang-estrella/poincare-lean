@@ -59,6 +59,131 @@ structure
       (fixedTargetMovingGenericSuccessorInputs3_of_genericInverseEndpointODEPrimitiveInputs
         genericInverseEndpointODEMovingPrimitiveInputs)
 
+/-- Construct the automatic-finite-nerve boundary directly from Bochner scalar fields. -/
+noncomputable def
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerFields
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ambientChartedSpace : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [CompactSpace M] [SimplyConnectedSpace M]
+    (tetrahedralStarProvider : FiniteTetrahedralStarPresentationProvider3 M)
+    (reaction :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          letI : TopologicalSpace reactionData.K := reactionData.topologicalSpaceK
+          CompactReferenceMetricTensorFamilyData reactionData.K reactionData.metric)
+    (hRicNorm₂ :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          ∀ k : reactionData.K, ∀ x : M,
+            ContMDiffAt (closedSmoothModelWithCorners 3)
+              (modelWithCornersSelf ℝ ℝ) 2
+              (fun y : M ↦ (reactionData.metric k).ricciNormSqAt y) x)
+    (hPairDiff :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          ∀ k : reactionData.K, ∀ x : M,
+            ∀ w : TangentSpace (closedSmoothModelWithCorners 3) x,
+              MDifferentiableAt (closedSmoothModelWithCorners 3)
+                (modelWithCornersSelf ℝ ℝ)
+                (fun y : M ↦ covRicciRicciPairingAt (reactionData.metric k) y
+                  (FiberBundle.extend (ClosedSmoothModel 3) w y)) x)
+    (hRicSecond :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          ∀ k : reactionData.K, ∀ x : M,
+            CovTensor2DerivExtDifferentiableAt (reactionData.metric k)
+              (ricciVariationField (reactionData.metric k)) x)
+    (hLaplacianJointContinuous :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          letI : TopologicalSpace reactionData.K := reactionData.topologicalSpaceK
+          Continuous (fun p : reactionData.K × M ↦
+            (reactionData.metric p.1).laplacianAt
+              (fun y : M ↦ (reactionData.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          letI : TopologicalSpace reactionData.K := reactionData.topologicalSpaceK
+          Continuous (fun p : reactionData.K × M ↦
+            roughRicciLaplacianPairingAt (reactionData.metric p.1) p.2))
+    (scalarSubordinateGeometry :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M :=
+              reaction
+          (t : Ici (0 : ℝ)) →
+            FiniteSubordinateHausdorffLaplacianGeometry
+              (reactionData.gt t.1)
+              (fun y ↦ (reactionData.gt t.1).scalarAt y))
+    (genericInverseEndpointODEMovingPrimitiveInputs :
+      FixedTargetMovingGenericSuccessorGenericInverseEndpointODEPrimitiveInputs3 M)
+    (compactHistoryFeedback :
+      FixedTargetMovingCompactHistoryPostRealizationFeedback3 M
+        (fixedTargetMovingGenericSuccessorInputs3_of_genericInverseEndpointODEPrimitiveInputs
+          genericInverseEndpointODEMovingPrimitiveInputs)) :
+    AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.{u, v}
+      M := by
+  refine
+    { tetrahedralStarProvider := tetrahedralStarProvider
+      analytic := ?_
+      genericInverseEndpointODEMovingPrimitiveInputs :=
+        genericInverseEndpointODEMovingPrimitiveInputs
+      compactHistoryFeedback := compactHistoryFeedback }
+  intro _chartedSpace _smoothManifold _secondCountable _connected
+  letI : MeasurableSpace M := borel M
+  letI : BorelSpace M := ⟨rfl⟩
+  exact
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerFields
+      reaction compactTensorReferenceControl hRicNorm₂ hPairDiff hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous scalarSubordinateGeometry
+
 /-- Select the automatic finite nerve, construct its affine conjugacy from
 the tetrahedral-star presentation, lower the intrinsic analytic package, and
 convert the ODE provider to the pointwise moving input expected by the
