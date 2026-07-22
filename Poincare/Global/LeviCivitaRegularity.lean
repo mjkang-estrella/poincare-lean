@@ -754,6 +754,89 @@ theorem chartTransportedLeviCivitaHom_contMDiffAt₂
           (ϕ := covC σc (extChartAt I x₀ y))
     exact hchart.trans hmodel_id.symm)
 
+/--
+The chart-transported hom section is locally `C³` as a section of the
+manifold hom-bundle.
+-/
+theorem chartTransportedLeviCivitaHom_contMDiffAt₃
+    [IsManifold I ∞ M] [I.Boundaryless]
+    (χ : E → ℝ) (G₀ : E →L[ℝ] E →L[ℝ] ℝ)
+    (hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v)
+    (g : Π y : M, TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (hgpos : ∀ (y : M) (u : TangentSpace I y), u ≠ 0 → 0 < g y u u)
+    (x₀ : M) (hχ0 : ∀ z, 0 ≤ χ z) (hχ1 : ∀ z, χ z ≤ 1)
+    (hsupp : ∀ z, χ z ≠ 0 →
+      (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+        (Set.range I) z).IsInvertible)
+    (hχ : ContDiff ℝ ∞ χ)
+    (htsupp : tsupport χ ⊆ (extChartAt I x₀).target)
+    (hg : ContMDiff I (I.prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) 4
+      (fun y ↦ TotalSpace.mk' (E →L[ℝ] E →L[ℝ] ℝ)
+        (E := fun y ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+        y (g y)))
+    (σ : Π y : M, TangentSpace I y)
+    (hσ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 4 (T% σ) x₀) :
+    ContMDiffAt I (I.prod 𝓘(ℝ, E →L[ℝ] E)) 3
+      (fun y : M =>
+        (⟨y,
+          chartTransportedLeviCivitaHom χ G₀ hG₀pos g hgpos x₀
+            hχ0 hχ1 hsupp σ y⟩ :
+          TotalSpace (E →L[ℝ] E)
+            (fun y : M =>
+              TangentSpace I y →L[ℝ] TangentSpace I y))) x₀ := by
+  rw [contMDiffAt_hom_bundle]
+  refine ⟨contMDiffAt_id, ?_⟩
+  let covC :=
+    chartLeviCivita χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp
+  let σc : Π z : E, TangentSpace 𝓘(ℝ, E) z :=
+    chartTransportedLeviCivitaSection (I := I) x₀ σ
+  have hmodel :
+      ContMDiffAt 𝓘(ℝ, E) 𝓘(ℝ, E →L[ℝ] E) 3
+        (fun z =>
+          ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+            E (TangentSpace 𝓘(ℝ, E))
+            (extChartAt I x₀ x₀) z (extChartAt I x₀ x₀) z
+            (covC σc z))
+        (extChartAt I x₀ x₀) := by
+    simpa [covC, σc] using
+      chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃
+        (I := I) χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp hχ htsupp hg
+        σ (mem_extChartAt_source x₀) hσ
+  have hcomp :
+      ContMDiffAt I 𝓘(ℝ, E →L[ℝ] E) 3
+        (fun y : M =>
+          ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+            E (TangentSpace 𝓘(ℝ, E))
+            (extChartAt I x₀ x₀) (extChartAt I x₀ y)
+            (extChartAt I x₀ x₀) (extChartAt I x₀ y)
+            (covC σc (extChartAt I x₀ y)))
+        x₀ :=
+    hmodel.comp x₀ (contMDiffAt_extChartAt (I := I) (n := 3) (x := x₀))
+  exact hcomp.congr_of_eventuallyEq (by
+    filter_upwards [extChartAt_source_mem_nhds (I := I) x₀] with y hy
+    have hchart :
+        ContinuousLinearMap.inCoordinates E (TangentSpace I) E (TangentSpace I)
+            x₀ y x₀ y
+            (chartTransportedLeviCivitaHom χ G₀ hG₀pos g hgpos x₀
+              hχ0 hχ1 hsupp σ y)
+          = covC σc (extChartAt I x₀ y) := by
+        simpa [covC, σc] using
+          chartTransportedLeviCivitaHom_inCoordinates_apply_chart
+            (I := I) χ G₀ hG₀pos g hgpos x₀ hχ0 hχ1 hsupp σ hy
+    have hmodel_id :
+        ContinuousLinearMap.inCoordinates E (TangentSpace 𝓘(ℝ, E))
+            E (TangentSpace 𝓘(ℝ, E))
+            (extChartAt I x₀ x₀) (extChartAt I x₀ y)
+            (extChartAt I x₀ x₀) (extChartAt I x₀ y)
+            (covC σc (extChartAt I x₀ y))
+          = covC σc (extChartAt I x₀ y) :=
+        inCoordinates_tangent_bundle_core_model_space
+          (I := 𝓘(ℝ, E)) (I' := 𝓘(ℝ, E))
+          (x₀ := extChartAt I x₀ x₀) (x := extChartAt I x₀ y)
+          (y₀ := extChartAt I x₀ x₀) (y := extChartAt I x₀ y)
+          (ϕ := covC σc (extChartAt I x₀ y))
+    exact hchart.trans hmodel_id.symm)
+
 end ChartHom
 
 end CovariantDerivative
