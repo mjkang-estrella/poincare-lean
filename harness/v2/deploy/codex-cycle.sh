@@ -12,6 +12,7 @@ if (( $# > 1 )); then
 fi
 
 load_config "${1:-$SCRIPT_DIR/.env}"
+assert_review_control_committed
 unset POINCARE_LIFECYCLE_LOCKED POINCARE_CONTROL_LOCKED \
   POINCARE_WORKERS_LOCKED POINCARE_OBSERVE_LOCKED \
   POINCARE_JOB_SUPERVISOR_SESSION
@@ -455,6 +456,12 @@ PY
     printf -- '- Leanstral artifact: `%s`\n' "$POINCARE_LEANSTRAL_ARTIFACT"
     printf -- '- Leanstral revision: `%s`\n' "$POINCARE_LEANSTRAL_REVISION"
     printf -- '- Maximum simultaneous Leanstral Jobs: `%s`\n' "$POINCARE_MAX_LEANSTRAL_JOBS"
+    printf -- '- Integration checkpoint batch target: `%s` passed Jobs\n' \
+      "$POINCARE_INTEGRATION_BATCH_SIZE"
+    printf -- '- Required focused Codex review gate: `%s`\n' \
+      "$SCRIPT_DIR/review-job-focused.sh"
+    printf -- '- During an ordinary Job review, never run `lake build`, `lake build Poincare`, direct root elaboration outside the focused runner, or broad audits. Use the focused review gate, which reuses the immutable exact-base cache and writes an ephemeral olean overlay.\n'
+    printf -- '- Accumulate compatible passed Jobs and run one serial root integration checkpoint for at most the configured batch target. A lone Job may checkpoint only when waiting would block the proof frontier or exhaust the cycle budget; record that reason.\n'
     printf -- '- Current Job pipeline counts: `%s`\n' "$pipeline_counts"
     printf -- '- Required supervised Job launcher: `%s`\n' \
       "$SCRIPT_DIR/run-job-supervised.sh"
@@ -517,6 +524,8 @@ PY
       cycle_id "$cycle_id" reason "control_surface_modified"
     die "Codex modified the launcher, prompt, or AGENTS contract; paused for independent review"
   fi
+
+  assert_review_control_committed
 
   (( stop_requested == 0 )) || break
 

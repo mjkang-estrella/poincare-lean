@@ -226,6 +226,14 @@ orchestrator prompt. Model-requested `lean_check` processes additionally run in
 a deny-by-default Bubblewrap sandbox; Codex's later independent review gates
 remain outside the worker capability.
 
+Independent Job review uses `review-job-focused.sh`. It refuses broad
+`lake build` commands and mutable worktree caches, reuses the verified
+commit-keyed cache read-only, and creates only an ephemeral olean projection
+for the frozen module checks and canonical declaration probes. Passed Jobs are
+held for a compatible batch of up to `POINCARE_INTEGRATION_BATCH_SIZE` (default
+four); Codex then runs one root integration checkpoint for the batch. This
+keeps full builds as milestone evidence without paying their cost per Job.
+
 The worker plane dispatches only immutable Jobs already prepared and queued by
 Codex; it does not invent Tasks, allocate worktrees, review, accept, or commit.
 SQLite serializes the durable dispatch switch with every claim and separately

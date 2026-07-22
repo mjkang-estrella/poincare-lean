@@ -88,6 +88,13 @@ Run `lake build`, `scripts/completion_audit.sh`, or
 small worker attempt. The completion audit is expected to exit nonzero while
 the reserved theorem is absent.
 
+The deployed Codex reviewer uses `harness/v2/deploy/review-job-focused.sh` for
+each Job. It reads the immutable exact-base Lake cache, checks only the frozen
+Task modules, and creates a temporary olean overlay for exact declaration
+probes. Compatible passed Jobs are integrated in batches of up to four, so one
+root build/audit checkpoint verifies the batch instead of rebuilding the same
+dependency graph for each worker result.
+
 ## Proof Work Rules
 
 - Reduce one explicit mathematical or Lean interface with proof-bearing code.

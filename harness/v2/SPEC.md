@@ -197,6 +197,16 @@ Root elaboration and broader audits run after serial integration. The expensive
 full build and generated status run at deliberate checkpoints. Baseline
 failures must be recorded separately from regressions introduced by the Job.
 
+On `mj-zima`, Codex executes an ordinary reviewing Job with
+`deploy/review-job-focused.sh`. The runner rejects all `lake build` commands,
+binds the immutable exact-base cache through a temporary read-only `.lake`
+link, compiles only Task-ordered Lean targets into an ephemeral olean
+projection, and refreshes only the root `Poincare.olean` needed by the
+canonical `import Poincare` declaration probe. None of those outputs enter the
+Job worktree or shared cache. Passed Jobs then form a bounded integration
+backlog; Codex integrates at most four compatible disjoint Jobs and pays for
+one root checkpoint for the batch.
+
 ## Runtime State
 
 Use SQLite for queue/lease transitions and an append-only artifact tree for

@@ -16,6 +16,7 @@ if (( $# > 1 )); then
 fi
 
 load_config "${1:-$SCRIPT_DIR/.env}"
+assert_review_control_committed
 
 require_command grep
 require_command curl

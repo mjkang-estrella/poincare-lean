@@ -476,6 +476,7 @@ load_config() {
   unset POINCARE_INTEGRATION_BRANCH POINCARE_LEANSTRAL_BASE_URL
   unset POINCARE_LEANSTRAL_SERVED_MODEL POINCARE_LEANSTRAL_ARTIFACT
   unset POINCARE_LEANSTRAL_REVISION POINCARE_MAX_LEANSTRAL_JOBS
+  unset POINCARE_INTEGRATION_BATCH_SIZE
   unset POINCARE_CYCLE_COOLDOWN_SECONDS POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS
   unset POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS POINCARE_EXACT_PROBE_TIMEOUT_SECONDS
   unset POINCARE_CODEX_MODEL POINCARE_CODEX_REASONING_EFFORT POINCARE_MIN_FREE_GIB
@@ -501,6 +502,7 @@ load_config() {
   POINCARE_GIT_BIN=${POINCARE_GIT_BIN:-/usr/bin/git}
   POINCARE_TMUX_BIN=${POINCARE_TMUX_BIN:-/usr/bin/tmux}
   POINCARE_MAX_LEANSTRAL_JOBS=${POINCARE_MAX_LEANSTRAL_JOBS:-4}
+  POINCARE_INTEGRATION_BATCH_SIZE=${POINCARE_INTEGRATION_BATCH_SIZE:-4}
   POINCARE_CYCLE_COOLDOWN_SECONDS=${POINCARE_CYCLE_COOLDOWN_SECONDS:-300}
   POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS=${POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS:-14400}
   POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS=${POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS:-21600}
@@ -513,7 +515,8 @@ load_config() {
   export POINCARE_GIT_BIN POINCARE_TMUX_BIN
   export POINCARE_PI_INSTALL_MANIFEST POINCARE_PI_DEPENDENCY_GRAPH
   export POINCARE_INTEGRATION_BRANCH
-  export POINCARE_MAX_LEANSTRAL_JOBS POINCARE_CYCLE_COOLDOWN_SECONDS
+  export POINCARE_MAX_LEANSTRAL_JOBS POINCARE_INTEGRATION_BATCH_SIZE
+  export POINCARE_CYCLE_COOLDOWN_SECONDS
   export POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS
   export POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS POINCARE_EXACT_PROBE_TIMEOUT_SECONDS
   export POINCARE_CODEX_MODEL POINCARE_CODEX_REASONING_EFFORT
@@ -546,6 +549,8 @@ load_config() {
     die "POINCARE_CODEX_REASONING_EFFORT must be high, xhigh, or max"
 
   require_uint_range POINCARE_MAX_LEANSTRAL_JOBS "$POINCARE_MAX_LEANSTRAL_JOBS" 1 4
+  require_uint_range POINCARE_INTEGRATION_BATCH_SIZE \
+    "$POINCARE_INTEGRATION_BATCH_SIZE" 1 4
   require_uint_range POINCARE_CYCLE_COOLDOWN_SECONDS "$POINCARE_CYCLE_COOLDOWN_SECONDS" 30 3600
   require_uint_range POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS \
     "$POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS" "$POINCARE_MIN_CODEX_CYCLE_SECONDS" 86400
@@ -680,8 +685,8 @@ PY
 
   POINCARE_STATE_DIR="$POINCARE_REPO_ROOT/harness/v2/state"
   POINCARE_DEPLOY_STATE_DIR="$POINCARE_STATE_DIR/deploy"
-  POINCARE_PROMPT_FILE="$POINCARE_REPO_ROOT/harness/v2/prompts/orchestrator.md"
-  POINCARE_CYCLE_RESULT_SCHEMA="$POINCARE_REPO_ROOT/harness/v2/prompts/cycle-result.schema.json"
+  POINCARE_PROMPT_FILE="$POINCARE_DEPLOY_CODE_ROOT/harness/v2/prompts/orchestrator.md"
+  POINCARE_CYCLE_RESULT_SCHEMA="$POINCARE_DEPLOY_CODE_ROOT/harness/v2/prompts/cycle-result.schema.json"
   POINCARE_CONFIG_FINGERPRINT=$("$HARNESS_PI_PYTHON" -S -P -B - \
     "$POINCARE_CONFIG_FILE" "$POINCARE_CONFIG_SHA256" \
     "$POINCARE_REPO_ROOT" "$POINCARE_DEPLOY_CODE_ROOT" \
@@ -694,7 +699,8 @@ PY
     "$POINCARE_PI_LAKE_CACHE_ROOT" "$POINCARE_PI_TOOLCHAIN_ROOT" \
     "$POINCARE_LEANSTRAL_BASE_URL" "$POINCARE_LEANSTRAL_SERVED_MODEL" \
     "$POINCARE_LEANSTRAL_ARTIFACT" "$POINCARE_LEANSTRAL_REVISION" \
-    "$POINCARE_MAX_LEANSTRAL_JOBS" "$POINCARE_CYCLE_COOLDOWN_SECONDS" \
+    "$POINCARE_MAX_LEANSTRAL_JOBS" "$POINCARE_INTEGRATION_BATCH_SIZE" \
+    "$POINCARE_CYCLE_COOLDOWN_SECONDS" \
     "$POINCARE_CODEX_CYCLE_TIMEOUT_SECONDS" \
     "$POINCARE_COMPLETION_GATE_TIMEOUT_SECONDS" \
     "$POINCARE_EXACT_PROBE_TIMEOUT_SECONDS" "$POINCARE_CODEX_MODEL" \
@@ -748,8 +754,31 @@ cache_publish_reexec_args() {
   POINCARE_CACHE_PUBLISH_REEXEC_ARGS+=("$config_file")
 }
 
-assert_deploy_code_committed() {
+assert_committed_deploy_paths() {
+  local label=$1
+  shift
+  local required=("$@")
   local relative
+  [[ "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" rev-parse --show-toplevel)" == \
+      "$POINCARE_DEPLOY_CODE_ROOT" ]] ||
+    die "deployment scripts are not running from their Git checkout root"
+  for relative in "${required[@]}"; do
+    "$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" ls-files --error-unmatch "$relative" \
+      >/dev/null 2>&1 || die "$label input is not committed: $relative"
+    [[ -f "$POINCARE_DEPLOY_CODE_ROOT/$relative" && \
+       ! -L "$POINCARE_DEPLOY_CODE_ROOT/$relative" ]] ||
+      die "$label input is not a regular file: $relative"
+    [[ "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" hash-object --no-filters \
+      "$POINCARE_DEPLOY_CODE_ROOT/$relative")" == \
+      "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" rev-parse "HEAD:$relative")" ]] ||
+      die "$label input bytes differ from committed HEAD: $relative"
+  done
+  [[ -z "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" status --porcelain \
+    --untracked-files=all -- "${required[@]}")" ]] ||
+    die "$label inputs differ from committed HEAD"
+}
+
+assert_deploy_code_committed() {
   local required=(
     harness/v2/pi/__init__.py
     harness/v2/pi/security.py
@@ -760,23 +789,20 @@ assert_deploy_code_committed() {
     harness/v2/deploy/cache-sandbox-smoke.sh
   )
 
-  [[ "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" rev-parse --show-toplevel)" == \
-      "$POINCARE_DEPLOY_CODE_ROOT" ]] ||
-    die "deployment scripts are not running from their Git checkout root"
-  for relative in "${required[@]}"; do
-    "$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" ls-files --error-unmatch "$relative" \
-      >/dev/null 2>&1 || die "deployment control input is not committed: $relative"
-    [[ -f "$POINCARE_DEPLOY_CODE_ROOT/$relative" && \
-       ! -L "$POINCARE_DEPLOY_CODE_ROOT/$relative" ]] ||
-      die "deployment control input is not a regular file: $relative"
-    [[ "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" hash-object --no-filters \
-      "$POINCARE_DEPLOY_CODE_ROOT/$relative")" == \
-      "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" rev-parse "HEAD:$relative")" ]] ||
-      die "deployment control input bytes differ from committed HEAD: $relative"
-  done
-  [[ -z "$("$HARNESS_PI_GIT" -C "$POINCARE_DEPLOY_CODE_ROOT" status --porcelain \
-    --untracked-files=all -- "${required[@]}")" ]] ||
-    die "deployment cache control inputs differ from committed HEAD"
+  assert_committed_deploy_paths "deployment cache control" "${required[@]}"
+}
+
+assert_review_control_committed() {
+  local required=(
+    harness/v2/deploy/common.sh
+    harness/v2/deploy/codex-cycle.sh
+    harness/v2/deploy/focused_review.py
+    harness/v2/deploy/review-job-focused.sh
+    harness/v2/prompts/orchestrator.md
+    harness/v2/prompts/cycle-result.schema.json
+  )
+
+  assert_committed_deploy_paths "focused review control" "${required[@]}"
 }
 
 ensure_runtime_layout() {
