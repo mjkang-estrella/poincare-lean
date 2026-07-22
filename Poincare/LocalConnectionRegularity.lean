@@ -176,6 +176,30 @@ theorem contMDiffAt_cov_section_of_contMDiffAt_three
   rw [Bundle.TotalSpace.mk_inj]
   exact hy
 
+/--
+**Local `C²` regularity of the manifold Lie bracket**: two `C³` vector fields
+have a `C²` Lie bracket at the same point.
+-/
+theorem contMDiffAt_mlieBracket_of_contMDiffAt_three
+    {X Y : Π y : M, TangentSpace I y} {x : M}
+    (hX : CMDiffAt 3 (T% X) x) (hY : CMDiffAt 3 (T% Y) x) :
+    CMDiffAt 2 (T% (VectorField.mlieBracket I X Y)) x := by
+  haveI : IsManifold I 4 M :=
+    IsManifold.of_le (n := ∞) (by
+      rw [show (4 : ℕ∞ω) = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+        show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+      exact WithTop.coe_le_coe.mpr le_top)
+  haveI : IsManifold I (minSmoothness ℝ 3) M := by
+    rw [minSmoothness_of_isRCLikeNormedField]
+    infer_instance
+  haveI : IsManifold I (((3 : ℕ∞) : ℕ∞ω) + 1) M := by
+    exact_mod_cast (inferInstance : IsManifold I 4 M)
+  have hineq : minSmoothness ℝ ((2 : ℕ∞) + 1) ≤ ((3 : ℕ∞) : ℕ∞ω) := by
+    simp
+    norm_num
+  exact ContMDiffAt.mlieBracket_vectorField
+    (m := 2) (n := 3) hX hY hineq
+
 variable [ContMDiffCovariantDerivative cov 1]
 
 /--
@@ -349,6 +373,12 @@ theorem contMDiffAt_cov_section_of_contMDiffAt_two_eq :
 theorem contMDiffAt_cov_section_of_contMDiffAt_three_eq :
     @CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three =
       @CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three :=
+  rfl
+
+/-- Theorem contract for `contMDiffAt_mlieBracket_of_contMDiffAt_three`. -/
+theorem contMDiffAt_mlieBracket_of_contMDiffAt_three_eq :
+    @CovariantDerivative.contMDiffAt_mlieBracket_of_contMDiffAt_three =
+      @CovariantDerivative.contMDiffAt_mlieBracket_of_contMDiffAt_three :=
   rfl
 
 /-- Theorem contract for `mdiffAt_cov_section_of_contMDiffAt`. -/
