@@ -475,16 +475,37 @@ contract audits passed; the theorem-contract audit first exposed and then
 verified the required equality companion
 `contMDiffAt_cov_section_of_contMDiffAt_three_eq`.
 
-The next exact theorem-shaped action is
-`Poincare.LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₃` with type
-`CovariantDerivative.ContMDiffCovariantDerivative
-  (LeviCivitaExistence.closedLeviCivitaConnection g) 3`. The nearest verified
-template is `closedLeviCivitaConnection_contMDiff₂`, and the C3 chart input is
-`CovariantDerivative.chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃`.
-Both live in `Poincare/Global/LeviCivitaRegularity.lean`; that file, rather than
-the constructor-only `Poincare/Global/LeviCivitaExistence.lean`, is the actual
-source location for the existing C1/C2 instances. Before dispatch at the new
-clean base, record, publish, and verify its exact-base immutable Lake cache.
+### 2026-07-22 closed Levi-Civita C3 frontier
+
+Main now integrates
+`Poincare.LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₃` with
+type `CovariantDerivative.ContMDiffCovariantDerivative
+  (LeviCivitaExistence.closedLeviCivitaConnection g) 3`. The proof lowers the
+metric's C4 regularity to the C3 chart input, applies
+`chartTransportedLeviCivitaHom_contMDiffAt₃`, explicitly lowers the resulting
+section regularity to C2, and supplies that C2 fact to the closed-chart germ
+bridge. The exact `Poincare.poincare_conjecture` declaration remains absent.
+
+Harness Task `closed-levicivita-connection-c3-regularity` revision 5 was
+accepted through Job `closed-levicivita-connection-c3-regularity-r5-a01`.
+That fresh bounded Pi session used one scoped patch, one successful Lean check,
+and one diff read. Codex independently inspected the 107-line theorem proof,
+committed it in the Job worktree as
+`199f4173969951444c06cfc2a62f3273c3c7f715`, and passed the complete frozen
+four-command focused review plus the exact canonical declaration probe before
+accepting the Task. The integration checkpoint passed root elaboration at this
+theorem source tree. Revision-3 Job `r3-a02` and
+revision-4 Job `r4-a01` remain preserved as interrupted evidence; no Job or
+file lease remains active.
+
+The next theorem-shaped objective is arbitrary closed-metric Ricci C2
+regularity,
+`CovTensor2ExtContMDiffAt (ricciVariationField g) x 2`, using the new C3
+closed Levi-Civita instance and the existing canonical first-regularity route
+in `Poincare/Global/ScalarVariation.lean`. The first action in the next cycle
+is to record, publish, and verify the immutable Lake cache for this final base,
+then freeze the exact declaration name, source scope, imports, and focused gate
+for that objective before dispatch. Do not reuse any interrupted worktree.
 
 ## Executable Harness Boundary
 

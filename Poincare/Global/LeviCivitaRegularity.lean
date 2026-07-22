@@ -1133,6 +1133,113 @@ theorem closedLeviCivitaConnection_contMDiff₂
     htrans.congr_of_eventuallyEq hev.symm
   simpa using hclosedAt.contMDiffWithinAt
 
+  /--
+  The closed smooth Levi-Civita connection is a `C³` covariant derivative.
+  -/
+  theorem closedLeviCivitaConnection_contMDiff₃
+      (g : ClosedSmoothRiemannianMetric n M) :
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (closedLeviCivitaConnection g) 3 := by
+    haveI : ModelWithCorners.Boundaryless I := by
+      infer_instance
+    constructor
+    constructor
+    intro σ hσ
+    intro x₀ _
+    let G₀ : ClosedSmoothModel n →L[ℝ] ClosedSmoothModel n →L[ℝ] ℝ := innerSL ℝ
+    have hG₀pos : ∀ v : E, v ≠ 0 → 0 < G₀ v v := by
+      intro v hv
+      change 0 < ((innerSL ℝ) v) v
+      rw [innerSL_apply_apply]
+      exact (real_inner_self_pos).2 hv
+    have hG₀symm : ∀ v w : E, G₀ v w = G₀ w v := by
+      intro v w
+      change ((innerSL ℝ) v) w = ((innerSL ℝ) w) v
+      rw [innerSL_apply_apply, innerSL_apply_apply]
+      exact real_inner_comm w v
+    obtain ⟨χ, hχ, hχ0, hχ1, hχsupp, hχone, _hχcanonical⟩ :=
+      @CovariantDerivative.exists_blending_cutoff E _ _ E _ I M _ _ _ _ _ x₀
+    have hsupp : ∀ z, χ z ≠ 0 →
+        (mfderivWithin 𝓘(ℝ, E) I ((extChartAt I x₀).symm)
+          (Set.range I) z).IsInvertible := by
+      intro z hz
+      exact isInvertible_mfderivWithin_extChartAt_symm
+        (hχsupp (subset_tsupport χ (Function.mem_support.mpr hz)))
+    have htwo_le_three : (2 : ℕ∞ω) ≤ (3 : ℕ∞ω) := by
+      norm_num
+    have hthree_le_four : (3 : ℕ∞ω) ≤ (4 : ℕ∞ω) := by
+      norm_num
+    have hfour_le_top : (4 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+      rw [show (4 : ℕ∞ω) = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+        show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+      exact WithTop.coe_le_coe.mpr le_top
+    have hfour_add_one_le_top : (4 : ℕ∞ω) + 1 ≤ (∞ : ℕ∞ω) := by
+      rw [show (4 : ℕ∞ω) + 1 = ((5 : ℕ∞) : ℕ∞ω) from rfl,
+        show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+      exact WithTop.coe_le_coe.mpr le_top
+    have hg4 :
+        ContMDiff I ((I).prod 𝓘(ℝ, E →L[ℝ] E →L[ℝ] ℝ)) 4
+          (fun y : M =>
+            (⟨y, g.inner y⟩ :
+              TotalSpace (E →L[ℝ] E →L[ℝ] ℝ)
+                (fun y : M => TM y →L[ℝ] TM y →L[ℝ] ℝ))) := by
+      simpa using g.contMDiff_inner.of_le hfour_le_top
+    have hblend :
+        ContDiff ℝ 4
+          (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀) :=
+      CovariantDerivative.contDiff_blendedChartMetric χ G₀ g.inner x₀
+        hfour_add_one_le_top hχ hχsupp hg4
+    have hbl :
+        Differentiable ℝ
+          (CovariantDerivative.blendedChartMetric χ G₀ g.inner x₀) :=
+      hblend.differentiable (by norm_num)
+    have hσAt :
+        ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 4 (T% σ) x₀ := by
+      simpa using (hσ.contMDiffAt Filter.univ_mem)
+    have hσOn :
+        ContMDiffOn I ((I).prod 𝓘(ℝ, E)) 4 (T% σ) Set.univ := by
+      simpa using hσ
+    have hσOn3 :
+        ContMDiffOn I ((I).prod 𝓘(ℝ, E)) 3 (T% σ) Set.univ :=
+      hσOn.of_le hthree_le_four
+    have hσOn2 :
+        ContMDiffOn I ((I).prod 𝓘(ℝ, E)) 2 (T% σ) Set.univ :=
+      hσOn3.of_le htwo_le_three
+    have htrans :
+        ContMDiffAt I ((I).prod 𝓘(ℝ, E →L[ℝ] E)) 3
+          (fun y : M =>
+            (⟨y,
+              CovariantDerivative.chartTransportedLeviCivitaHom χ G₀ hG₀pos
+                g.inner (fun y u hu => g.inner_pos y (v := u) hu)
+                x₀ hχ0 hχ1 hsupp σ y⟩ :
+              TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y)))
+          x₀ :=
+      CovariantDerivative.chartTransportedLeviCivitaHom_contMDiffAt₃
+        χ G₀ hG₀pos g.inner
+        (fun y u hu => g.inner_pos y (v := u) hu)
+        x₀ hχ0 hχ1 hsupp hχ hχsupp hg4 σ hσAt
+    have hev :
+        (fun y : M =>
+          (⟨y,
+            CovariantDerivative.chartTransportedLeviCivitaHom χ G₀ hG₀pos
+              g.inner (fun y u hu => g.inner_pos y (v := u) hu)
+              x₀ hχ0 hχ1 hsupp σ y⟩ :
+            TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y)))
+          =ᶠ[𝓝 x₀]
+        (fun y : M =>
+          (⟨y, closedLeviCivitaConnection g σ y⟩ :
+            TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y))) :=
+      LeviCivitaTransport.chartTransportedLeviCivitaHom_eventuallyEq_closed
+        g χ G₀ hG₀pos x₀ hχ0 hχ1 hsupp hbl hG₀symm hχone hσOn2
+    have hclosedAt :
+        ContMDiffAt I ((I).prod 𝓘(ℝ, E →L[ℝ] E)) 3
+          (fun y : M =>
+            (⟨y, closedLeviCivitaConnection g σ y⟩ :
+              TotalSpace (E →L[ℝ] E) (fun y : M => TM y →L[ℝ] TM y)))
+          x₀ :=
+      htrans.congr_of_eventuallyEq hev.symm
+    simpa using hclosedAt.contMDiffWithinAt
+
 end LeviCivitaExistence
 
 end Poincare
