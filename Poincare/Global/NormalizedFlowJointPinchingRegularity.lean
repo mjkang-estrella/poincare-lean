@@ -30,6 +30,23 @@ variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
 
 local notation "I" => closedSmoothModelWithCorners n
 
+/-- A globally joint `C³` normalized Ricci flow has spatially `C²` scalar
+curvature on every time slice. -/
+theorem contMDiff_two_scalarAt_of_normalizedRicciFlow_joint_metric_entries_three
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M}
+    (hFlow : ∀ t : ℝ, ∀ x : M,
+      IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hJoint : ∀ t : ℝ, ∀ x : M,
+      MetricEntriesJointContDiffAt gt t x 3) :
+    ∀ t : ℝ, ContMDiff I (modelWithCornersSelf ℝ ℝ) 2
+      (fun x : M ↦ (gt t).scalarAt x) := by
+  intro t x
+  exact scalarAt_contMDiffAt_two_of_normalizedRicciFlow
+    (hFlow t)
+    (fun y ↦
+      timeVariationExtContMDiffAt_two_of_metricEntriesJointContDiffAt_three
+        (hJoint t y)) x
+
 /-- Joint `C³` metric entries on a normalized Ricci-flow slice automatically
 give spatial `C²` regularity of the squared traceless-Ricci norm.  Unlike the
 quotient theorem below, this statement needs no scalar-curvature sign. -/
