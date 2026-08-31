@@ -1,6 +1,6 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-07-21 (UTC)
+Snapshot date: 2026-08-31 (UTC)
 
 ## Project Truth
 
@@ -506,6 +506,48 @@ in `Poincare/Global/ScalarVariation.lean`. The first action in the next cycle
 is to record, publish, and verify the immutable Lake cache for this final base,
 then freeze the exact declaration name, source scope, imports, and focused gate
 for that objective before dispatch. Do not reuse any interrupted worktree.
+
+## 2026-08-31 Canonical Ricci C2 and Bochner Boundary Checkpoint
+
+The integration branch `codex/formalization-until-6` advances clean base
+`bc076f1e893c6ba834729f8bcb359a1f400a3e72` through five reviewed commits:
+
+- `1d44e245` proves
+  `covTensor2ExtContMDiffAt_ricciVariationField_canonical`. The proof uses the
+  C3 closed Levi-Civita connection and C2 Lie-bracket regularity to construct
+  C2 curvature fields, pairs them with the metric, traces the auxiliary
+  curvature tensor, and identifies the result with the Ricci tensor.
+- `b1717bc3` packages fixed-time global C2 scalar-curvature regularity from a
+  normalized Ricci flow with joint C3 metric entries.
+- `81f97fc4` proves
+  `covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical`, deriving
+  the former `hRicSecond` field from canonical Ricci C2 regularity.
+- `074fc72d` adds
+  `continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical` and
+  `NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerNormFieldsCanonical`.
+  Both omit `hRicSecond`; the older APIs remain unchanged.
+- `970026cb` lifts the same reduction into
+  `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
+
+Focused elaboration passed for every changed Lean module. Exact declaration
+probes reported only `propext`, `Classical.choice`, and `Quot.sound`. The
+dependency refresh completed 3,755 jobs, root `Poincare.lean` elaboration
+passed, and the interface, semantic-surface, and theorem-contract audits
+passed. The axiom audit passed. The root-import audit retains exactly its
+three pre-existing direct-import gaps:
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+and `NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The
+project is still incomplete; an exact probe reports unknown identifier for
+the reserved `Poincare.poincare_conjecture` endpoint.
+
+The next exact theorem-shaped action is to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`
+in the existing positive-time-overlap boundary module. Freeze its type as the
+current `ofBochnerNormFields` type with the entire `hRicSecond` argument
+removed, and construct its analytic field through the new canonical analytic
+constructor. After that gate passes, propagate the same reduction through the
+tail-overlap boundary. Do not replace or weaken the older constructors.
 
 ## Executable Harness Boundary
 
