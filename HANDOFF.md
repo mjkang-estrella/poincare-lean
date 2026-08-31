@@ -510,7 +510,7 @@ for that objective before dispatch. Do not reuse any interrupted worktree.
 ## 2026-08-31 Canonical Ricci C2 and Bochner Boundary Checkpoint
 
 The integration branch `codex/formalization-until-6` advances clean base
-`bc076f1e893c6ba834729f8bcb359a1f400a3e72` through six reviewed commits:
+`bc076f1e893c6ba834729f8bcb359a1f400a3e72` through seven reviewed commits:
 
 - `1d44e245` proves
   `covTensor2ExtContMDiffAt_ricciVariationField_canonical`. The proof uses the
@@ -530,6 +530,8 @@ The integration branch `codex/formalization-until-6` advances clean base
   `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
 - `7b5a8b6a` carries the premise removal through
   `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
+- `6465a615` completes the same reduction through
+  `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
 
 Focused elaboration passed for every changed Lean module. Exact declaration
 probes reported only `propext`, `Classical.choice`, and `Quot.sound`. The
@@ -543,12 +545,12 @@ and `NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The
 project is still incomplete; an exact probe reports unknown identifier for
 the reserved `Poincare.poincare_conjecture` endpoint.
 
-The next exact theorem-shaped action is to add
-`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`
-in the existing tail-overlap boundary module. Freeze its type as the current
-`ofBochnerNormFields` type with the entire `hRicSecond` argument removed, and
-construct it through the new positive-time canonical constructor. Do not
-replace or weaken the older constructors.
+The next exact theorem-shaped action is to prove
+`ricciNormSqAt_contMDiffAt_two_canonical (g) (x)` in
+`Poincare/Global/MetricFlowJointPinchingEvolution.lean`, using
+`contMDiffAt_two_ricciNormSqAt_of_ricci_entries` and the new canonical Ricci C2
+theorem. Then remove `hRicNorm₂` from new canonical Bochner constructors in
+the same staged order. Do not replace or weaken the older constructors.
 
 ## Executable Harness Boundary
 
