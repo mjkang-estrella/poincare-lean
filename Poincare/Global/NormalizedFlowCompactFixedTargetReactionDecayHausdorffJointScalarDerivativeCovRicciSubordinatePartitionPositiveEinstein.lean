@@ -71,6 +71,32 @@ theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
         (metric k) x (hRicNorm₂ k x) w)
     hRicSecond hLaplacian hRough
 
+/-- Canonical Ricci-variation regularity removes the explicit second-derivative premise. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical
+    {n : ℕ} {N : Type u} {K : Type v}
+    [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (ClosedSmoothModel n) N]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ N]
+    [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n N)
+    (hRicNorm₂ : ∀ k : K, ∀ x : N,
+      ContMDiffAt (closedSmoothModelWithCorners n)
+        (modelWithCornersSelf ℝ ℝ) 2
+        (fun y : N ↦ (metric k).ricciNormSqAt y) x)
+    (hLaplacian : Continuous (fun p : K × N ↦
+      (metric p.1).laplacianAt
+        (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2))
+    (hRough : Continuous (fun p : K × N ↦
+      roughRicciLaplacianPairingAt (metric p.1) p.2)) :
+    Continuous (fun p : K × N ↦
+      covRicciNormSqAt (metric p.1) p.2) := by
+  exact continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
+    metric hRicNorm₂
+    (fun k x ↦
+      covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical
+        (metric k) x)
+    hLaplacian hRough
+
 /-- The reaction package supplies the Ricci-variation second regularity on
 each nonnegative normalized-flow slice. -/
 theorem
@@ -184,6 +210,28 @@ noncomputable def ofReactionFields
   letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
   ofReactionFields reaction compactTensorReferenceControl
     (continuous_joint_covRicciNormSqAt_of_bochner_norm_fields reaction.metric hRicNorm₂ hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
+  /-- Construct from Bochner norm fields using canonical Ricci-variation regularity. -/
+  noncomputable def ofBochnerNormFieldsCanonical
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical reaction.metric hRicNorm₂
       hLaplacianJointContinuous hRoughJointContinuous)
     scalarSubordinateGeometry
 
