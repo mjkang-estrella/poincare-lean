@@ -213,6 +213,22 @@ theorem covTensor2DerivExtDifferentiableAt_of_extSecond
         hΓq (hDiff x) hAddR hSMulR p
   exact ((hA.sub hB).sub hC).congr_of_eventuallyEq hevent
 
+/-- The covariant derivative entries of the Ricci tensor of a closed smooth
+metric are differentiable at every point. -/
+theorem covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    CovTensor2DerivExtDifferentiableAt g (ricciVariationField g) x := by
+  exact covTensor2DerivExtDifferentiableAt_of_extSecond
+    (g := g) (h := ricciVariationField g) (x := x)
+    (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two
+      (covTensor2ExtContMDiffAt_ricciVariationField_canonical g x))
+    (fun y ↦ covTensor2ExtDifferentiableAt_of_contMDiffAt_two
+      (covTensor2ExtContMDiffAt_ricciVariationField_canonical g y))
+    (tensor2AddLeft_ricciVariationField g)
+    (tensor2SMulLeft_ricciVariationField g)
+    (tensor2AddRight_ricciVariationField g)
+    (tensor2SMulRight_ricciVariationField g)
+
 /-- Global C² canonical entries of a metric variation discharge the older
 `∇h` entry-field regularity predicate. -/
 theorem covTensor2DerivExtDifferentiableAt_timeDeriv_of_global_entries
