@@ -1,5 +1,6 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
 import Poincare.Global.MetricFamilyCovRicciNormContinuity
+import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -225,6 +226,24 @@ noncomputable def ofCovRicciChartContinuous
   letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
   ofReactionFields reaction compactTensorReferenceControl
     (continuous_covRicciNormSqAt_joint_of_chartContinuous hCovRicciChartContinuous)
+    scalarSubordinateGeometry
+
+/-- Construct from a quotient realization by nonnegative real time. The
+quotient-map premise explicitly includes surjectivity, which is additional
+data beyond the current reaction package. -/
+noncomputable def ofQuotientRealization
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hParameter : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Topology.IsQuotientMap reaction.parameter)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_metricFamily_of_quotient_realization
+      hParameter reaction.realizesFlow reaction.jointMetricEntries)
     scalarSubordinateGeometry
 
   /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
