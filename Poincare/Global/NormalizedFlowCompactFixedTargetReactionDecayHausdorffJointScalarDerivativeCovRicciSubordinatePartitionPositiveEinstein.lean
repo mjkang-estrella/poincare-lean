@@ -1,6 +1,7 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
 import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
+import Poincare.Global.MetricFamilyEntryThirdJetCovRicciContinuity
 import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
@@ -243,6 +244,23 @@ noncomputable def ofMetricFamilyThirdJets
   letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
   ofReactionFields reaction compactTensorReferenceControl
     (continuous_covRicciNormSqAt_joint_of_metricFamilyThirdJets hMetricThirdJets)
+    scalarSubordinateGeometry
+
+/-- Construct from jointly continuous scalar coordinate components of the
+spatial metric jets through order three. -/
+noncomputable def ofMetricFamilyEntryThirdJets
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricEntryThirdJets : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyBlendedMetricEntryThirdJetContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_metricFamilyEntryThirdJets hMetricEntryThirdJets)
     scalarSubordinateGeometry
 
 /-- Construct from a quotient realization by nonnegative real time. The
