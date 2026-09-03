@@ -27,6 +27,7 @@ import Poincare.Global.RicciNorm
 import Poincare.Global.Laplacian
 import Poincare.Global.RicciFlow
 import Poincare.Global.BumpExtend
+import Poincare.Global.AnchoredExtendRegularity
 import Poincare.Global.MetricVariation
 import Poincare.Global.ScalarEvolution
 import Poincare.Global.ParabolicMinimumContinuousOn
@@ -40,11 +41,14 @@ import Poincare.Global.MetricFlowJointScalarTraceBridge
 import Poincare.Global.MetricFlowJointScalarTraceZoneBridge
 import Poincare.Global.MetricFlowJointScalarContinuity
 import Poincare.Global.ScalarVariation
+import Poincare.Global.CovRicciNormBasis
 import Poincare.Global.MetricRaiseTimeDerivative
 import Poincare.Global.DeltaGammaFieldRegularity
 import Poincare.Global.RicciFlowScalarRegularity
 import Poincare.Global.MetricFlowJointRicciTensorEvolution
 import Poincare.Global.MetricFlowJointPinchingEvolution
+import Poincare.Global.MetricFlowJointCovRicciEntryRegularity
+import Poincare.Global.MetricFlowJointCovRicciNormContinuity
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
 import Poincare.Global.PinchedLimitInterface
