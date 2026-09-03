@@ -1,6 +1,6 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-08-31 (UTC)
+Snapshot date: 2026-09-03 (UTC)
 
 ## Project Truth
 
@@ -551,6 +551,91 @@ The next exact theorem-shaped action is to prove
 `contMDiffAt_two_ricciNormSqAt_of_ricci_entries` and the new canonical Ricci C2
 theorem. Then remove `hRicNorm₂` from new canonical Bochner constructors in
 the same staged order. Do not replace or weaken the older constructors.
+
+## 2026-09-03 Covariant-Ricci Joint Continuity Checkpoint
+
+The isolated integration branch `codex/formalization-until-6` continued from
+the unchanged `origin/main` base `bc076f1e`. The committed tree reached
+`0a9d3aeb` before the next bounded proof attempt.
+
+The first group of commits completed the canonical Bochner cleanup described
+above. `bb3491ef` proves canonical C2 regularity of `ricciNormSqAt`.
+`c0571e50`, `e0ee52d9`, `25ebbf90`, and `d1138972` remove the explicit
+`hRicNorm₂` premise from new canonical analytic, primitive, positive-time, and
+tail constructors while preserving every older API. `a7d770ff` packages the
+Ricci curvature commutation theorem canonically, and `0defb8f0` removes the
+duplicated commutation proofs from both flow-evolution modules.
+
+The next group proves genuine real-time continuity of the intrinsic squared
+covariant-Ricci derivative norm:
+
+- `40b035fa` proves continuity of spatial Frechet derivatives of jointly C1
+  maps, and `035a28cb` specializes it to coordinate Ricci entries.
+- `9d3471e2` identifies `covRicciNormSqAt` with its full contraction in any
+  tangent basis and the metric-raised dual basis.
+- `85dd2462` and `cc8fd116` construct the coordinate covariant-Ricci entries
+  and their six-index norm contraction.
+- `bf6def94` proves that anchored tangent-field extensions remain smooth on
+  the chart source.
+- `ef448e97` identifies each coordinate covariant-Ricci entry with
+  `covTensor2DerivAt` in the cutoff-one chart zone.
+- `b98f65b2` identifies the six-index coordinate contraction with
+  `covRicciNormSqAt`, transfers continuity back to `ℝ × M`, and proves
+  `continuous_covRicciNormSqAt_joint_of_metricEntriesJointContDiffAt_three`.
+  `4ab619b0` exposes this chain through direct root imports.
+
+`9acc98c7` applies the real-time theorem on every compact interval and proves
+`exists_uniformCovariantRicciDerivativeNormBound_on_compact_slab_of_metricEntriesJointContDiffAt_three`.
+This is a finite-slab bound. It does not claim one constant on the noncompact
+forward ray.
+
+The compact-family boundary is now explicit instead of hidden inside a final
+continuity premise:
+
+- `a0b698a7` introduces `MetricFamilyCovRicciChartContinuousAt` and proves
+  that inverse-metric coefficient continuity plus coordinate
+  covariant-Ricci entry continuity on `K × E` gives the intrinsic continuity
+  on `K × M` used by compactness.
+- `e6d873a9` adds the analytic-data constructor
+  `ofCovRicciChartContinuous`.
+- `838690b1` derives the coordinate covariant-Ricci entries from inverse
+  coefficients, Christoffel values, Ricci entries, and their spatial
+  derivative.
+- `08d06874` proves a separate quotient route: if nonnegative real time is a
+  quotient parameterization of the whole family and realizes every metric,
+  the real-time continuity theorem descends to `K × M`. `70dbfe04` exposes
+  that route through `ofQuotientRealization`. Quotient surjectivity remains an
+  explicit extra premise because the current reaction record does not supply
+  it.
+- `1befc74b`, `2e8d7110`, and `0a9d3aeb` lower the chart route further.
+  Continuity of the blended metric gives inverse coefficients; its first
+  spatial derivative gives Christoffel continuity; and the Christoffel first
+  jet gives coordinate Ricci-entry continuity by the curvature formula and
+  finite trace.
+- `dd3a1a44` and `dc17d909` add direct root imports for the compact-family
+  modules.
+
+Focused Lean checks, targeted Lake builds, forbidden-term scans, diff checks,
+and exact axiom probes passed for every accepted source commit. The new
+theorems use only `propext`, `Classical.choice`, and `Quot.sound`. At
+`4ab619b0`, root elaboration, the interface audit, semantic-surface audit,
+6,008 theorem-contract checks, and the axiom audit passed. The root-import
+audit retained exactly the three earlier wiring gaps named in the previous
+checkpoint. A later 3,755-job targeted dependency repair and the subsequent
+3,282 to 3,283-job module builds also passed. The known nonfatal
+`LibrarySuggestions` timeout appeared during one cache build; that build
+still exited successfully.
+
+Real-time C3 regularity alone cannot prove continuity on an arbitrary compact
+family. The current reaction record constrains `metric` only along
+`parameter : Ici 0 → K`, and it supplies neither quotient surjectivity nor
+parameter-side spatial-jet continuity. The next exact theorem-shaped action is
+`anchorChartRicciEntrySpatialFDerivFamily_continuousAt_of_christoffelSecondJet`.
+It should derive the remaining Ricci spatial-derivative field from continuity
+of the Christoffel operator and its first two spatial derivatives. After that,
+derive those Christoffel jets from a concrete `C^{0,3}` metric-family chart
+record. Rerun all serial root audits and the exact reserved-declaration probe
+after the active proof is committed.
 
 ## Executable Harness Boundary
 
