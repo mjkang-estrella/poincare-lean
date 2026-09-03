@@ -18,6 +18,9 @@ universe u v
 
 namespace Poincare
 
+set_option maxHeartbeats 1000000
+set_option synthInstance.maxHeartbeats 1000000
+
 variable {n : ℕ} {M : Type u}
 variable [TopologicalSpace M] [T2Space M]
 variable [ChartedSpace (ClosedSmoothModel n) M]
@@ -32,6 +35,114 @@ noncomputable def anchorChartChristoffelFieldFamily
     {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
     (k : K) (z u w : E) : E :=
   anchorChartChristoffelFieldFlow (fun _ : ℝ ↦ g k) x 0 z u w
+
+omit [T2Space M] in
+/-- Continuity of a family metric and its first spatial chart derivative
+constructs continuity of every fixed Christoffel value. -/
+theorem anchorChartChristoffelFieldFamily_continuousAt_of_blendedMetric
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (hD : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2)
+      (k₀, extChartAt I x x))
+    (u w : E) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldFamily g x p.1 p.2 u w)
+      (k₀, extChartAt I x x) := by
+  let q : E := extChartAt I x x
+  have hInvMap : ContinuousAt ContinuousLinearMap.inverse
+      (anchorBlendedMetricFamily g x k₀ q) :=
+    ((anchorBlendedMetricFamily_isInvertible g x k₀ q)
+      |>.contDiffAt_map_inverse (n := 0)).continuousAt
+  have hInv : ContinuousAt
+      (fun p : K × E ↦
+        (anchorBlendedMetricFamily g x p.1 p.2).inverse)
+      (k₀, q) := by
+    simpa [Function.comp_def, q] using hInvMap.comp_of_eq hG rfl
+  have hDflip : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2).flip)
+      (k₀, q) := by
+    exact
+      (ContinuousLinearMap.flipₗᵢ ℝ E E (E →L[ℝ] ℝ)).continuous
+        |>.continuousAt.comp_of_eq hD rfl
+  have hDflipW : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2).flip w)
+      (k₀, q) :=
+    hDflip.clm_apply continuousAt_const
+  have hDflipWFlip : ContinuousAt
+      (fun p : K × E ↦
+        ((fderiv ℝ
+          (anchorBlendedMetricFamily g x p.1) p.2).flip w).flip)
+      (k₀, q) := by
+    exact
+      (ContinuousLinearMap.flipₗᵢ ℝ E E ℝ).continuous
+        |>.continuousAt.comp_of_eq hDflipW rfl
+  have hThird : ContinuousAt
+      (fun p : K × E ↦
+        ((fderiv ℝ
+          (anchorBlendedMetricFamily g x p.1) p.2).flip w).flip u)
+      (k₀, q) :=
+    hDflipWFlip.clm_apply continuousAt_const
+  have hDw : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2) w)
+      (k₀, q) :=
+    (ContinuousLinearMap.apply ℝ (E →L[ℝ] E →L[ℝ] ℝ) w).continuous
+      |>.continuousAt.comp_of_eq hD rfl
+  have hFirst : ContinuousAt
+      (fun p : K × E ↦
+        ((fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2) w) u)
+      (k₀, q) :=
+    hDw.clm_apply continuousAt_const
+  have hDu : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2) u)
+      (k₀, q) :=
+    (ContinuousLinearMap.apply ℝ (E →L[ℝ] E →L[ℝ] ℝ) u).continuous
+      |>.continuousAt.comp_of_eq hD rfl
+  have hSecond : ContinuousAt
+      (fun p : K × E ↦
+        ((fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2) u) w)
+      (k₀, q) :=
+    hDu.clm_apply continuousAt_const
+  have hKoszul : ContinuousAt
+      (fun p : K × E ↦
+        (1 / 2 : ℝ) •
+          (((fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) p.2) w) u
+            + ((fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) p.2) u) w
+            - ((fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) p.2).flip w).flip u))
+      (k₀, q) :=
+    (hFirst.add hSecond |>.sub hThird).const_smul (1 / 2 : ℝ)
+  have hResult := hInv.clm_apply hKoszul
+  have heq :
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldFamily g x p.1 p.2 u w) =
+      fun p : K × E ↦
+        (anchorBlendedMetricFamily g x p.1 p.2).inverse
+          ((1 / 2 : ℝ) •
+            (((fderiv ℝ
+                (anchorBlendedMetricFamily g x p.1) p.2) w) u
+              + ((fderiv ℝ
+                (anchorBlendedMetricFamily g x p.1) p.2) u) w
+              - ((fderiv ℝ
+                (anchorBlendedMetricFamily g x p.1) p.2).flip w).flip u)) := by
+    funext p
+    rw [anchorChartChristoffelFieldFamily,
+      anchorChartChristoffelFieldFlow_apply,
+      anchorChartChristoffelFlow_apply_eq_inverse_koszul]
+    rfl
+  rw [heq]
+  exact hResult
 
 /-- A coordinate Ricci entry for a metric family, obtained by viewing one
 family member as a constant real-parameter flow. -/
