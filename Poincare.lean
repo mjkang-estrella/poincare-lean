@@ -52,6 +52,7 @@ import Poincare.Global.MetricFlowJointCovRicciNormContinuity
 import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.MetricFamilyCovRicciEntryContinuity
 import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
+import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
 import Poincare.Global.PinchedLimitInterface
