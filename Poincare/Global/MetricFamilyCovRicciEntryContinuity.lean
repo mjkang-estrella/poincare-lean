@@ -31,10 +31,107 @@ local notation "E" => ClosedSmoothModel n
 
 /-- The anchor-chart Christoffel field for a metric family, obtained by
 viewing one family member as a constant real-parameter flow. -/
+noncomputable def anchorChartChristoffelFieldOperatorFamily
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
+    (k : K) (z : E) : E →L[ℝ] E →L[ℝ] E :=
+  anchorChartChristoffelFieldFlow (fun _ : ℝ ↦ g k) x 0 z
+
+/-- The spatial derivative of the operator-valued anchor-chart Christoffel
+field for a metric family. -/
+noncomputable def anchorChartChristoffelFieldSpatialFDerivFamily
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
+    (k : K) (z : E) : E → (E →L[ℝ] E →L[ℝ] E) := fun u ↦
+  fderiv ℝ (anchorChartChristoffelFieldOperatorFamily g x k) z u
+
+/-- A fixed-vector anchor-chart curvature value for a metric family, obtained
+by viewing one family member as a constant real-parameter flow. -/
+noncomputable def anchorChartCurvatureFamily
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
+    (k : K) (z u v w : E) : E :=
+  anchorChartCurvatureFlow (fun _ : ℝ ↦ g k) x 0 z u v w
+
+/-- The anchor-chart Christoffel field for a metric family, obtained by
+viewing one family member as a constant real-parameter flow. -/
 noncomputable def anchorChartChristoffelFieldFamily
     {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
     (k : K) (z u w : E) : E :=
   anchorChartChristoffelFieldFlow (fun _ : ℝ ↦ g k) x 0 z u w
+
+omit [T2Space M] in
+/-- Joint continuity of the operator-valued Christoffel field and its spatial
+derivative makes every fixed-vector chart-curvature value jointly continuous. -/
+theorem anchorChartCurvatureFamily_continuousAt_of_christoffelJet
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (hDGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (u v w : E) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartCurvatureFamily g x p.1 p.2 u v w)
+      (k₀, extChartAt I x x) := by
+  have hDGammaU : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2 u)
+      (k₀, extChartAt I x x) :=
+    (continuous_apply u).continuousAt.comp hDGamma
+  have hDGammaV : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2 v)
+      (k₀, extChartAt I x x) :=
+    (continuous_apply v).continuousAt.comp hDGamma
+  have hDu : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2 u v w)
+      (k₀, extChartAt I x x) :=
+    (hDGammaU.clm_apply continuousAt_const).clm_apply continuousAt_const
+  have hDv : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2 v u w)
+      (k₀, extChartAt I x x) :=
+    (hDGammaV.clm_apply continuousAt_const).clm_apply continuousAt_const
+  have hGammaU : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 u)
+      (k₀, extChartAt I x x) :=
+    hGamma.clm_apply continuousAt_const
+  have hGammaV : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 v)
+      (k₀, extChartAt I x x) :=
+    hGamma.clm_apply continuousAt_const
+  have hGammaVW : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 v w)
+      (k₀, extChartAt I x x) :=
+    hGammaV.clm_apply continuousAt_const
+  have hGammaUW : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 u w)
+      (k₀, extChartAt I x x) :=
+    hGammaU.clm_apply continuousAt_const
+  have hFirstProduct : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 u
+          (anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 v w))
+      (k₀, extChartAt I x x) :=
+    hGammaU.clm_apply hGammaVW
+  have hSecondProduct : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 v
+          (anchorChartChristoffelFieldOperatorFamily g x p.1 p.2 u w))
+      (k₀, extChartAt I x x) :=
+    hGammaV.clm_apply hGammaUW
+  unfold anchorChartCurvatureFamily anchorChartCurvatureFlow chartCurvatureOf
+  simpa [anchorChartChristoffelFieldSpatialFDerivFamily,
+    anchorChartChristoffelFieldOperatorFamily] using
+    ((hDu.sub hDv).add hFirstProduct).sub hSecondProduct
 
 omit [T2Space M] in
 /-- Continuity of a family metric and its first spatial chart derivative
@@ -199,6 +296,79 @@ private theorem continuousAt_finset_sum_ricci_jet
       have hsCont : ContinuousAt (fun q ↦ ∑ k ∈ s, f k q) p :=
         ih (fun k hk ↦ hf k (Finset.mem_insert_of_mem hk))
       simpa [Finset.sum_insert hr] using hrCont.add hsCont
+
+omit [T2Space M] in
+/-- The operator-valued Christoffel field and its spatial derivative construct
+joint continuity of every coordinate Ricci entry by finite-basis trace. -/
+theorem anchorChartRicciEntryFamily_continuousAt_of_christoffelJet
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (hDGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (v w : E) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartRicciEntryFamily g x p.1 p.2 v w)
+      (k₀, extChartAt I x x) := by
+  classical
+  let b := Module.finBasis ℝ E
+  have hTrace : ContinuousAt
+      (fun p : K × E ↦
+        ∑ i, LinearMap.toContinuousLinearMap (b.coord i)
+          (anchorChartCurvatureFamily g x p.1 p.2 (b i) v w))
+      (k₀, extChartAt I x x) := by
+    apply continuousAt_finset_sum_ricci_jet Finset.univ
+    intro i _hi
+    have hR := anchorChartCurvatureFamily_continuousAt_of_christoffelJet
+      hGamma hDGamma (b i) v w
+    exact continuousAt_const.clm_apply hR
+  unfold anchorChartRicciEntryFamily anchorChartRicciEntryFlow
+  simpa [anchorChartCurvatureFamily, b] using hTrace
+
+omit [T2Space M] in
+/-- Package a Ricci jet without assuming coordinate Ricci continuity: that
+field is derived from the operator-valued Christoffel first jet. -/
+theorem metricFamilyRicciJetChartContinuousAt_of_christoffelJet
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hInverseCoeff : ∀ i j : Fin (Module.finrank ℝ E),
+      ContinuousAt
+        (fun p : K × E ↦
+          anchorChartInverseMetricCoeffFamily g x p.1 p.2 i j)
+        (k₀, extChartAt I x x))
+    (hGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (hDGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (hRicciSpatialFDeriv : ∀ i j : E,
+      ContinuousAt
+        (fun p : K × E ↦
+          anchorChartRicciEntrySpatialFDerivFamily g x p.1 p.2 i j)
+        (k₀, extChartAt I x x)) :
+    MetricFamilyRicciJetChartContinuousAt g k₀ x where
+  inverseCoeff := hInverseCoeff
+  christoffel := by
+    intro u w
+    simpa [anchorChartChristoffelFieldFamily,
+      anchorChartChristoffelFieldOperatorFamily] using
+      (hGamma.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ u)
+          (k₀, extChartAt I x x))).clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w)
+          (k₀, extChartAt I x x))
+  ricciEntry :=
+    anchorChartRicciEntryFamily_continuousAt_of_christoffelJet hGamma hDGamma
+  ricciSpatialFDeriv := hRicciSpatialFDeriv
 
 omit [T2Space M] in
 /-- The lower-order chart data constructs every continuous coordinate
