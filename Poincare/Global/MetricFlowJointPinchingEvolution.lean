@@ -955,6 +955,22 @@ noncomputable def anchorChartRicciNormSqFlow
       anchorChartRicciEntryFlow gt x t z (b k) (b l) *
       anchorChartRicciEntryFlow gt x t z (b i) (b j)
 
+/-- Joint `C³` metric entries make the spatial Fréchet derivative of each
+fixed-vector coordinate Ricci entry jointly continuous at the anchor. -/
+theorem anchorChartRicciEntryFlow_spatialFDeriv_continuousAt_of_metricEntries
+    {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
+    (hJoint : MetricEntriesJointContDiffAt gt t₀ x 3) (v w : E) :
+    ContinuousAt
+      (fun p : ℝ × E ↦
+        fderiv ℝ
+          (fun z : E ↦ anchorChartRicciEntryFlow gt x p.1 z v w) p.2)
+      (t₀, extChartAt I x x) := by
+  exact continuousAt_spatial_fderiv_of_joint_contDiffAt_one_vector
+    (fun t z ↦ anchorChartRicciEntryFlow gt x t z v w)
+    t₀ (extChartAt I x x)
+    (anchorChartRicciEntryFlow_jointContDiffAt_one_of_metricEntries
+      hJoint v w)
+
 /-- Joint `C³` metric entries make the coordinate Ricci norm jointly `C¹`. -/
 theorem anchorChartRicciNormSqFlow_jointContDiffAt_one_of_metricEntries
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
