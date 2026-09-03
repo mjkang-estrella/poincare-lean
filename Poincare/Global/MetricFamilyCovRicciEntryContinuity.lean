@@ -545,6 +545,32 @@ theorem continuousAt_clm_of_apply
       (h (b i))
 
 omit [T2Space M] in
+/-- The blended metric and its first spatial derivative make the full
+operator-valued Christoffel family jointly continuous. -/
+theorem anchorChartChristoffelFieldOperatorFamily_continuousAt_of_blendedMetric
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (hDG : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2)
+      (k₀, extChartAt I x x)) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldOperatorFamily g x p.1 p.2)
+      (k₀, extChartAt I x x) := by
+  apply continuousAt_clm_of_apply
+  intro u
+  apply continuousAt_clm_of_apply
+  intro w
+  simpa [anchorChartChristoffelFieldFamily,
+    anchorChartChristoffelFieldOperatorFamily] using
+    anchorChartChristoffelFieldFamily_continuousAt_of_blendedMetric
+      hG hDG u w
+
+omit [T2Space M] in
 /-- The operator-valued Christoffel field and its spatial derivative construct
 joint continuity of every coordinate Ricci entry by finite-basis trace. -/
 theorem anchorChartRicciEntryFamily_continuousAt_of_christoffelJet
@@ -899,6 +925,34 @@ theorem metricFamilyRicciJetChartContinuousAt_of_christoffelSecondJet
   ricciSpatialFDeriv :=
     anchorChartRicciEntrySpatialFDerivFamily_continuousAt_of_christoffelSecondJet
       hGamma hDGamma hD2Gamma
+
+omit [T2Space M] in
+/-- A blended-metric first jet supplies the Christoffel value itself, so only
+its first two spatial derivatives remain as separate family inputs. -/
+theorem metricFamilyRicciJetChartContinuousAt_of_blendedMetric_and_christoffelSecondJet
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (hDG : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2)
+      (k₀, extChartAt I x x))
+    (hDGamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSpatialFDerivFamily g x p.1 p.2)
+      (k₀, extChartAt I x x))
+    (hD2Gamma : ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSecondSpatialFDerivFamily g x p.1 p.2)
+      (k₀, extChartAt I x x)) :
+    MetricFamilyRicciJetChartContinuousAt g k₀ x := by
+  exact metricFamilyRicciJetChartContinuousAt_of_christoffelSecondJet
+    hG hDG
+    (anchorChartChristoffelFieldOperatorFamily_continuousAt_of_blendedMetric
+      hG hDG)
+    hDGamma hD2Gamma
 
 omit [T2Space M] in
 /-- The lower-order chart data constructs every continuous coordinate
