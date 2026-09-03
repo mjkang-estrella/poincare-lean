@@ -229,6 +229,44 @@ theorem covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical
     (tensor2AddRight_ricciVariationField g)
     (tensor2SMulRight_ricciVariationField g)
 
+/-- Canonical smoothness of a closed metric discharges every regularity input
+to the corrected Ricci second-derivative curvature commutation identity. -/
+theorem RicciSecondDerivCurvatureCommutationAt.canonical
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    RicciSecondDerivCurvatureCommutationAt g x := by
+  have hRicC2 :
+      CovTensor2ExtContMDiffAt (ricciVariationField g) x 2 :=
+    covTensor2ExtContMDiffAt_ricciVariationField_canonical g x
+  have hScalar₂ :
+      ContMDiffAt I (modelWithCornersSelf ℝ ℝ) 2
+        (fun y : M ↦ g.scalarAt y) x := by
+    have hTrace :
+        ContMDiffAt I (modelWithCornersSelf ℝ ℝ) 2
+          (fun y : M ↦
+            traceMetricVariationAt g (ricciVariationField g) y) x :=
+      traceMetricVariationAt_contMDiffAt_two_of_entries
+        (g := g) (h := ricciVariationField g) (x := x)
+        ⟨hRicC2, metricExtContMDiffAt_two g x⟩
+        (ricciVariationBilinForm g)
+        (by intro y p q; rfl)
+    exact hTrace.congr_of_eventuallyEq
+      (Filter.Eventually.of_forall fun y ↦
+        (traceMetricVariationAt_ricci g y).symm)
+  have hScalarExt₂ : ∀ w : TM x,
+      MDifferentiableAt I (modelWithCornersSelf ℝ ℝ)
+        (fun y : M ↦
+          extDerivFun (fun z : M ↦ g.scalarAt z) y (extend E w y)) x := by
+    intro w
+    have hW :
+        MDifferentiableAt I ((I).prod (modelWithCornersSelf ℝ E))
+          (T% (extend E w)) x := by
+      simpa using (mdifferentiableAt_extend I E w)
+    exact CovariantDerivative.mdiffAt_extDerivFun_apply hScalar₂ hW
+  exact RicciSecondDerivCurvatureCommutationAt.of_traceSecondRegularity
+    (g := g) (x := x)
+    (covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical g x)
+    hRicC2 hScalar₂ hScalarExt₂
+
 /-- Global C² canonical entries of a metric variation discharge the older
 `∇h` entry-field regularity predicate. -/
 theorem covTensor2DerivExtDifferentiableAt_timeDeriv_of_global_entries
