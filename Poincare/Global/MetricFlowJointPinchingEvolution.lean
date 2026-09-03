@@ -91,6 +91,14 @@ theorem contMDiffAt_two_ricciNormSqAt_of_ricci_entries
           simpa [rhs] using
             metricVariationRicciPairingAt_ricci_eq_sum_gram_inv g x y hy)
 
+/-- The squared Ricci norm of a closed smooth metric is canonically `C²`. -/
+theorem ricciNormSqAt_contMDiffAt_two_canonical
+    (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    ContMDiffAt I (modelWithCornersSelf ℝ ℝ) 2
+      (fun y : M ↦ g.ricciNormSqAt y) x := by
+  exact contMDiffAt_two_ricciNormSqAt_of_ricci_entries g x
+    (covTensor2ExtContMDiffAt_ricciVariationField_canonical g x)
+
 /-- The Bochner pairing field is differentiable once `|Ric|²` is `C²`. -/
 theorem covRicciRicciPairingAt_mdifferentiableAt_of_ricciNormSqAt_contMDiffAt_two
     (g : ClosedSmoothRiemannianMetric n M)
