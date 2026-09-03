@@ -32,6 +32,61 @@ noncomputable def anchorChartInverseMetricCoeffFamily
     (k : K) (z : E) (i j : Fin (Module.finrank ℝ E)) : ℝ :=
   anchorChartInverseMetricCoeffFlow (fun _ : ℝ ↦ g k) x 0 z i j
 
+/-- The cutoff-blended chart metric for a metric family, obtained by viewing
+one family member as a constant real-parameter flow. -/
+noncomputable def anchorBlendedMetricFamily
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M) :
+    K → E → E →L[ℝ] E →L[ℝ] ℝ := fun k z ↦
+  anchorBlendedMetricFlow (fun _ : ℝ ↦ g k) x 0 z
+
+omit [T2Space M] in
+/-- Every member of the cutoff-blended family is an invertible metric
+operator. -/
+theorem anchorBlendedMetricFamily_isInvertible
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M) (x : M)
+    (k : K) (z : E) :
+    (anchorBlendedMetricFamily g x k z).IsInvertible := by
+  exact anchorBlendedMetricFlow_isInvertible
+    (fun _ : ℝ ↦ g k) x 0 z
+
+omit [T2Space M] in
+/-- Joint continuity of the blended metric operator supplies continuity of
+every inverse-metric coefficient used by the family norm contraction. -/
+theorem anchorChartInverseMetricCoeffFamily_continuousAt_of_blendedMetric
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (i j : Fin (Module.finrank ℝ E)) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartInverseMetricCoeffFamily g x p.1 p.2 i j)
+      (k₀, extChartAt I x x) := by
+  let q : E := extChartAt I x x
+  let b := Module.finBasis ℝ E
+  have hInvMap : ContinuousAt ContinuousLinearMap.inverse
+      (anchorBlendedMetricFamily g x k₀ q) :=
+    ((anchorBlendedMetricFamily_isInvertible g x k₀ q)
+      |>.contDiffAt_map_inverse (n := 0)).continuousAt
+  have hInv : ContinuousAt
+      (fun p : K × E ↦
+        (anchorBlendedMetricFamily g x p.1 p.2).inverse)
+      (k₀, q) := by
+    simpa [Function.comp_def, q] using hInvMap.comp_of_eq hG rfl
+  have hcoordI : ContinuousAt
+      (fun _ : K × E ↦
+        LinearMap.toContinuousLinearMap (b.coord i))
+      (k₀, q) := continuousAt_const
+  have hraised := hInv.clm_apply hcoordI
+  have hcoordJ : ContinuousAt
+      (fun _ : K × E ↦
+        LinearMap.toContinuousLinearMap (b.coord j))
+      (k₀, q) := continuousAt_const
+  simpa [anchorChartInverseMetricCoeffFamily,
+    anchorBlendedMetricFamily, anchorChartInverseMetricCoeffFlow, b, q]
+    using hcoordJ.clm_apply hraised
+
 /-- A coordinate covariant-Ricci entry for a metric family, defined by viewing
 one family member as a constant real-parameter flow. -/
 noncomputable def anchorChartCovRicciEntryFamily
