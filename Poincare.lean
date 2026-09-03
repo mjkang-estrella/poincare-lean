@@ -49,6 +49,7 @@ import Poincare.Global.MetricFlowJointRicciTensorEvolution
 import Poincare.Global.MetricFlowJointPinchingEvolution
 import Poincare.Global.MetricFlowJointCovRicciEntryRegularity
 import Poincare.Global.MetricFlowJointCovRicciNormContinuity
+import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
 import Poincare.Global.PinchedLimitInterface
