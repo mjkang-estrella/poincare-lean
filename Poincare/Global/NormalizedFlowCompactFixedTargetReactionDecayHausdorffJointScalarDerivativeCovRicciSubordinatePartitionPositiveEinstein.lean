@@ -1,6 +1,7 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
 import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
+import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -226,6 +227,22 @@ noncomputable def ofCovRicciChartContinuous
   letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
   ofReactionFields reaction compactTensorReferenceControl
     (continuous_covRicciNormSqAt_joint_of_chartContinuous hCovRicciChartContinuous)
+    scalarSubordinateGeometry
+
+/-- Construct from jointly continuous spatial metric jets through order three. -/
+noncomputable def ofMetricFamilyThirdJets
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricThirdJets : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyBlendedMetricThirdJetContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_metricFamilyThirdJets hMetricThirdJets)
     scalarSubordinateGeometry
 
 /-- Construct from a quotient realization by nonnegative real time. The
