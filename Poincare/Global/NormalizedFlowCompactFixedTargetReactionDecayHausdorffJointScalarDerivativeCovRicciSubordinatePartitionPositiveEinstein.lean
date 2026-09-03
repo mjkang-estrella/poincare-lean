@@ -1,4 +1,5 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
+import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -208,6 +209,23 @@ noncomputable def ofReactionFields
       scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three
         reaction.jointMetricEntries
     scalarSubordinateGeometry := scalarSubordinateGeometry }
+
+/-- Construct from chartwise continuity of the metric-family inverse coefficients
+and covariant-Ricci entries. -/
+noncomputable def ofCovRicciChartContinuous
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hCovRicciChartContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyCovRicciChartContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_chartContinuous hCovRicciChartContinuous)
+    scalarSubordinateGeometry
 
   /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
   noncomputable def ofBochnerNormFields
