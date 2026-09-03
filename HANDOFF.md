@@ -612,8 +612,28 @@ continuity premise:
   spatial derivative gives Christoffel continuity; and the Christoffel first
   jet gives coordinate Ricci-entry continuity by the curvature formula and
   finite trace.
+- `895ae4e2` differentiates the curvature formula and finite Ricci trace,
+  deriving the Ricci spatial derivative from the first two Christoffel jets.
+  `4d630fd7` reconstructs the full Christoffel value from the blended-metric
+  first jet. `e259654f` derives the first Christoffel jet from directional
+  metric jets through order two.
+- `73a77f87` proves the inverse-raise and Koszul product rules needed to
+  differentiate the Christoffel variation once more. It derives the second
+  Christoffel jet from directional metric jets through order three and then
+  constructs the full Ricci chart jet without independent Christoffel or
+  Ricci regularity premises.
+- `61c70659` packages that input as
+  `MetricFamilyBlendedMetricThirdJetContinuousAt`, the exact `C^{0,3}`
+  spatial contract over an arbitrary topological parameter space. It proves
+  local and global intrinsic covariant-Ricci norm continuity. `0885296a`
+  exposes this route through the analytic-data constructor
+  `ofMetricFamilyThirdJets`.
+- `81aaf1b3` lowers the operator-valued package to
+  `MetricFamilyBlendedMetricEntryThirdJetContinuousAt`, whose fields are all
+  real-valued fixed coordinate components. Finite-dimensional reconstruction
+  recovers the operator jets and the same intrinsic continuity theorem.
 - `dd3a1a44` and `dc17d909` add direct root imports for the compact-family
-  modules.
+  modules. `dc3af356` and `c32177c8` expose both third-jet packages.
 
 Focused Lean checks, targeted Lake builds, forbidden-term scans, diff checks,
 and exact axiom probes passed for every accepted source commit. The new
@@ -622,20 +642,32 @@ theorems use only `propext`, `Classical.choice`, and `Quot.sound`. At
 6,008 theorem-contract checks, and the axiom audit passed. The root-import
 audit retained exactly the three earlier wiring gaps named in the previous
 checkpoint. A later 3,755-job targeted dependency repair and the subsequent
-3,282 to 3,283-job module builds also passed. The known nonfatal
+3,282 to 3,285-job module builds also passed. The known nonfatal
 `LibrarySuggestions` timeout appeared during one cache build; that build
 still exited successfully.
+
+The final paused proof head is `c32177c8`. A serialized full `lake build`
+completed all 4,077 targets. Root `Poincare.lean` elaboration, the interface
+audit, semantic-surface audit, all 6,008 theorem-contract checks, and the axiom
+audit passed. The root-import audit sees every new metric-family module and
+retains exactly the same three pre-existing gaps:
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+and `NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The
+exact final probe still reports unknown identifier
+`Poincare.poincare_conjecture`; this checkpoint does not claim project
+completion.
 
 Real-time C3 regularity alone cannot prove continuity on an arbitrary compact
 family. The current reaction record constrains `metric` only along
 `parameter : Ici 0 → K`, and it supplies neither quotient surjectivity nor
-parameter-side spatial-jet continuity. The next exact theorem-shaped action is
-`anchorChartRicciEntrySpatialFDerivFamily_continuousAt_of_christoffelSecondJet`.
-It should derive the remaining Ricci spatial-derivative field from continuity
-of the Christoffel operator and its first two spatial derivatives. After that,
-derive those Christoffel jets from a concrete `C^{0,3}` metric-family chart
-record. Rerun all serial root audits and the exact reserved-declaration probe
-after the active proof is committed.
+parameter-side spatial-jet continuity. The formalization now names the latter
+requirement down to scalar chart components, but no current compactification
+constructor proves it for `reaction.metric`. The next theorem-shaped action is
+to connect the concrete compact metric-family construction to
+`MetricFamilyBlendedMetricEntryThirdJetContinuousAt`, or to strengthen that
+construction with the exact componentwise `C^{0,3}` data. Do not infer this
+record from compactness or from regularity of `gt` only.
 
 ## Executable Harness Boundary
 
