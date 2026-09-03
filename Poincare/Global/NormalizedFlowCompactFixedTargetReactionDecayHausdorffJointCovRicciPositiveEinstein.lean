@@ -1,4 +1,5 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffPositiveEinstein
+import Poincare.Global.MetricFlowJointCovRicciNormContinuity
 
 /-!
 # Compact joint covariant-Ricci control for the Hausdorff reaction endpoint
@@ -78,6 +79,36 @@ theorem exists_pos_uniform_covRicciNormSqAt_bound_of_compact_joint
   have hle : covRicciNormSqAt (metric k) x ≤ S := by
     simpa only [S] using hpMax (Set.mem_univ (k, x))
   exact hle.trans hSleSq
+
+/-- Global joint `C³` metric-entry regularity supplies a uniform intrinsic
+covariant-Ricci derivative bound on every nonempty compact time slab. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_on_compact_slab_of_metricEntriesJointContDiffAt_three
+    [Nonempty M]
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {a b : ℝ} (hab : a ≤ b)
+    (hJoint : ∀ t : ℝ, ∀ x : M,
+      MetricEntriesJointContDiffAt gt t x 3) :
+    ∃ D : ℝ,
+      UniformCovariantRicciDerivativeNormBound
+        (fun t : Set.Icc a b ↦ gt t.1) D := by
+  letI : Nonempty (Set.Icc a b) := ⟨⟨a, left_mem_Icc.mpr hab⟩⟩
+  have hInclude : Continuous
+      (fun p : Set.Icc a b × M ↦ ((p.1.1 : ℝ), p.2)) :=
+    continuous_subtype_val.comp continuous_fst |>.prodMk continuous_snd
+  have hJointReal : Continuous
+      (fun p : ℝ × M ↦ covRicciNormSqAt (gt p.1) p.2) :=
+    continuous_covRicciNormSqAt_joint_of_metricEntriesJointContDiffAt_three
+      (n := 3) (M := M) hJoint
+  have hJointSlab : Continuous
+      (fun p : Set.Icc a b × M ↦
+        covRicciNormSqAt (gt p.1.1) p.2) := by
+    change Continuous
+      ((fun p : ℝ × M ↦ covRicciNormSqAt (gt p.1) p.2) ∘
+        (fun p : Set.Icc a b × M ↦ ((p.1.1 : ℝ), p.2)))
+    exact hJointReal.comp hInclude
+  exact
+    exists_pos_uniform_covRicciNormSqAt_bound_of_compact_joint
+      (fun t : Set.Icc a b ↦ gt t.1) hJointSlab
 
 /-- Hausdorff reaction-decay positive-Einstein data in which full
 covariant-Ricci derivative control is represented by joint continuity on the
