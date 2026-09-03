@@ -822,6 +822,291 @@ theorem continuousAt_fderiv_christoffelClosedOp_of_metricJets
   rw [heq]
   exact hResult
 
+/-- Derivative of an inverse-metric operator applied to a varying covector field. -/
+theorem fderiv_inverse_apply_field
+    {G : V → V →L[ℝ] V →L[ℝ] ℝ} {P : V → V →L[ℝ] ℝ}
+    {z : V} (hG : DifferentiableAt ℝ G z)
+    (hinv : ∀ᶠ y in nhds z, (G y).IsInvertible)
+    (hP : DifferentiableAt ℝ P z) (a : V) :
+    fderiv ℝ (fun y ↦ (G y).inverse (P y)) z a =
+      (G z).inverse (fderiv ℝ P z a) -
+        (G z).inverse ((fderiv ℝ G z a) ((G z).inverse (P z))) := by
+  have hInv : DifferentiableAt ℝ (fun y ↦ (G y).inverse) z :=
+    (((hinv.self_of_nhds).contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp z hG
+  rw [fderiv_clm_apply hInv hP]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply]
+  have hfixed := (RicciFlow.RicciFlow.hasFDerivAt_inverse_raise
+    hG hinv (P z)).fderiv
+  have heval : (fderiv ℝ (fun y ↦ (G y).inverse) z a) (P z) =
+      -((G z).inverse ((fderiv ℝ G z a) ((G z).inverse (P z)))) := by
+    have hprod := fderiv_clm_apply hInv (differentiableAt_const (P z))
+    have happ := congrArg (fun L : V →L[ℝ] V ↦ L a) hprod
+    rw [fderiv_const_apply] at happ
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply,
+      map_zero, zero_add] at happ
+    rw [hfixed] at happ
+    simpa only [ContinuousLinearMap.neg_apply,
+      ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply] using happ.symm
+  rw [heval]
+  abel
+
+/-- The spatial derivative of the Christoffel functional is the functional of
+the directional metric jet. -/
+theorem fderiv_christoffelFunctionalCLM_spatial
+    (G : V → V →L[ℝ] V →L[ℝ] ℝ) (hG : ContDiff ℝ 3 G)
+    (z a u v : V) :
+    fderiv ℝ
+        (fun y ↦ LinearMap.toContinuousLinearMap
+          (CovariantDerivative.christoffelFunctional G y u v)) z a =
+      LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional
+          (fun y ↦ fderiv ℝ G y a) z u v) := by
+  let H : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ G y a
+  have hDdiff : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y) z :=
+    ((hG.fderiv_right (m := 1) (by norm_num)).differentiable
+      one_ne_zero).differentiableAt
+  have hPdiff : DifferentiableAt ℝ
+      (fun y ↦ LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional G y u v)) z :=
+    RicciFlow.RicciFlow.differentiableAt_christoffelFunctionalCLM hDdiff u v
+  apply ContinuousLinearMap.ext
+  intro w
+  rw [RicciFlow.RicciFlow.fderiv_clm_family_apply hPdiff a w]
+  have hcomp : ∀ p q r : V,
+      fderiv ℝ (fun y ↦ ((fderiv ℝ G y p) q) r) z a =
+        ((fderiv ℝ H z p) q) r := by
+    intro p q r
+    have hp := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] V →L[ℝ] ℝ)
+      hDdiff.hasFDerivAt (hasFDerivAt_const p z)
+    have hpq := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] ℝ) hp (hasFDerivAt_const q z)
+    have hpqr := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := ℝ) hpq (hasFDerivAt_const r z)
+    have ha := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] V →L[ℝ] ℝ)
+      hDdiff.hasFDerivAt (hasFDerivAt_const a z)
+    have haq := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] ℝ) ha (hasFDerivAt_const q z)
+    have haqr := HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := ℝ) haq (hasFDerivAt_const r z)
+    have hpa := congrArg (fun L : V →L[ℝ] ℝ ↦ L a) hpqr.fderiv
+    have hap := congrArg (fun L : V →L[ℝ] ℝ ↦ L p) haqr.fderiv
+    simp only [ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.add_apply, ContinuousLinearMap.flip_apply,
+      ContinuousLinearMap.zero_apply, map_zero, zero_add] at hpa hap
+    have hsymm := ((hG.contDiffAt (x := z)).isSymmSndFDerivAt
+      (by norm_num)).eq a p
+    have hsymmEval := congrArg
+      (fun L : V →L[ℝ] V →L[ℝ] ℝ ↦ L q r) hsymm
+    have hHcomm : ((fderiv ℝ H z p) q) r =
+        fderiv ℝ (fun y ↦ H y q r) z p := by
+      have e1 := RicciFlow.RicciFlow.fderiv_clm_family_apply
+        ha.differentiableAt p q
+      have e2 := RicciFlow.RicciFlow.fderiv_clm_family_apply
+        haq.differentiableAt p r
+      calc
+        ((fderiv ℝ H z p) q) r =
+            (fderiv ℝ (fun y ↦ H y q) z p) r :=
+          congrArg (fun L : V →L[ℝ] ℝ ↦ L r) e1
+        _ = fderiv ℝ (fun y ↦ H y q r) z p := e2
+    exact hpa.trans (hsymmEval.trans (hap.symm.trans hHcomm.symm))
+  have h1 := hcomp u v w
+  have h2 := hcomp v u w
+  have h3 := hcomp w u v
+  have hu1 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y u) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] V →L[ℝ] ℝ)
+      hDdiff.hasFDerivAt (hasFDerivAt_const u z)).differentiableAt
+  have hu2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y u) v) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] ℝ)
+      hu1.hasFDerivAt (hasFDerivAt_const v z)).differentiableAt
+  have hu : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y u) v w) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := ℝ) hu2.hasFDerivAt
+      (hasFDerivAt_const w z)).differentiableAt
+  have hv1 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y v) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] V →L[ℝ] ℝ)
+      hDdiff.hasFDerivAt (hasFDerivAt_const v z)).differentiableAt
+  have hv2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y v) u) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] ℝ)
+      hv1.hasFDerivAt (hasFDerivAt_const u z)).differentiableAt
+  have hv : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y v) u w) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := ℝ) hv2.hasFDerivAt
+      (hasFDerivAt_const w z)).differentiableAt
+  have hw1 : DifferentiableAt ℝ (fun y ↦ fderiv ℝ G y w) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] V →L[ℝ] ℝ)
+      hDdiff.hasFDerivAt (hasFDerivAt_const w z)).differentiableAt
+  have hw2 : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y w) u) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := V →L[ℝ] ℝ)
+      hw1.hasFDerivAt (hasFDerivAt_const u z)).differentiableAt
+  have hw : DifferentiableAt ℝ (fun y ↦ (fderiv ℝ G y w) u v) z :=
+    (HasFDerivAt.clm_apply (𝕜 := ℝ)
+      (G := V) (H := ℝ) hw2.hasFDerivAt
+      (hasFDerivAt_const v z)).differentiableAt
+  have hscalar := ((hu.hasFDerivAt.add hv.hasFDerivAt).sub hw.hasFDerivAt)
+    |>.const_mul (1 / 2 : ℝ)
+  have hfd := hscalar.fderiv
+  have haeq := congrArg (fun L : V →L[ℝ] ℝ ↦ L a) hfd
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul,
+    ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply] at haeq
+  change fderiv ℝ
+      (fun y ↦ (1 / 2 : ℝ) *
+        (((fderiv ℝ G y u) v) w + ((fderiv ℝ G y v) u) w -
+          ((fderiv ℝ G y w) u) v)) z a = _
+  calc
+    _ = (1 / 2 : ℝ) *
+        (fderiv ℝ (fun y ↦ (fderiv ℝ G y u) v w) z a +
+          fderiv ℝ (fun y ↦ (fderiv ℝ G y v) u w) z a -
+          fderiv ℝ (fun y ↦ (fderiv ℝ G y w) u v) z a) := by
+      simpa only [Pi.add_apply, Pi.sub_apply] using haeq
+    _ = _ := by rw [h1, h2, h3]; rfl
+
+/-- The explicit second spatial Christoffel formula in terms of metric
+derivatives through order three. -/
+noncomputable def christoffelSecondFormula
+    (G : V → V →L[ℝ] V →L[ℝ] ℝ) (z a u p v : V) : V :=
+  let H : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ G y u
+  let A : (V →L[ℝ] ℝ) →L[ℝ] V := (G z).inverse
+  let KG : V →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    (CovariantDerivative.christoffelFunctional G z p v)
+  let KH : V →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    (CovariantDerivative.christoffelFunctional H z p v)
+  let J : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ H y a
+  let KJ : V →L[ℝ] ℝ := LinearMap.toContinuousLinearMap
+    (CovariantDerivative.christoffelFunctional J z p v)
+  let dGammaG : V := RicciFlow.christoffelDeriv G
+    (fun y ↦ fderiv ℝ G y a) z p v
+  let gammaG : V := A KG
+  let psi : V →L[ℝ] ℝ := H z gammaG
+  let dpsi : V →L[ℝ] ℝ := J z gammaG + H z dGammaG
+  (-(A dpsi - A ((fderiv ℝ G z a) (A psi))) + A KJ -
+    A ((fderiv ℝ G z a) (A KH)))
+
+/-- Differentiating a directional Christoffel variation gives the explicit
+second-Christoffel formula. -/
+theorem fderiv_christoffelDeriv_spatial
+    (G : V → V →L[ℝ] V →L[ℝ] ℝ) (hG : ContDiff ℝ 4 G)
+    (hinv : ∀ y : V, (G y).IsInvertible) (z a u p v : V) :
+    fderiv ℝ
+        (fun y ↦ RicciFlow.christoffelDeriv G
+          (fun y' ↦ fderiv ℝ G y' u) y p v) z a =
+      christoffelSecondFormula G z a u p v := by
+  let H : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ G y u
+  let Ha : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ G y a
+  let J : V → V →L[ℝ] V →L[ℝ] ℝ := fun y ↦ fderiv ℝ H y a
+  let KG : V → V →L[ℝ] ℝ := fun y ↦ LinearMap.toContinuousLinearMap
+    (CovariantDerivative.christoffelFunctional G y p v)
+  let KH : V → V →L[ℝ] ℝ := fun y ↦ LinearMap.toContinuousLinearMap
+    (CovariantDerivative.christoffelFunctional H y p v)
+  let gammaG : V → V := fun y ↦ (G y).inverse (KG y)
+  let psi : V → V →L[ℝ] ℝ := fun y ↦ H y (gammaG y)
+  have hGdiff : DifferentiableAt ℝ G z :=
+    (hG.differentiable (by norm_num)).differentiableAt
+  have hH : ContDiff ℝ 3 H := by
+    simpa [H] using
+      (hG.contDiff_fderiv_apply (m := 3) (by norm_num)).comp
+        (contDiff_id.prodMk (contDiff_const : ContDiff ℝ 3 (fun _ : V ↦ u)))
+  have hHa : ContDiff ℝ 3 Ha := by
+    simpa [Ha] using
+      (hG.contDiff_fderiv_apply (m := 3) (by norm_num)).comp
+        (contDiff_id.prodMk (contDiff_const : ContDiff ℝ 3 (fun _ : V ↦ a)))
+  have hHdiff : DifferentiableAt ℝ H z :=
+    (hH.differentiable (by norm_num)).differentiableAt
+  have hJ : ContDiff ℝ 2 J := by
+    simpa [J] using
+      (hH.contDiff_fderiv_apply (m := 2) (by norm_num)).comp
+        (contDiff_id.prodMk (contDiff_const : ContDiff ℝ 2 (fun _ : V ↦ a)))
+  have hKG : DifferentiableAt ℝ KG z := by
+    apply RicciFlow.RicciFlow.differentiableAt_christoffelFunctionalCLM
+    exact ((hG.fderiv_right (m := 1) (by norm_num)).differentiable
+      one_ne_zero).differentiableAt
+  have hKH : DifferentiableAt ℝ KH z := by
+    apply RicciFlow.RicciFlow.differentiableAt_christoffelFunctionalCLM
+    exact ((hH.fderiv_right (m := 1) (by norm_num)).differentiable
+      one_ne_zero).differentiableAt
+  have hgammaG : DifferentiableAt ℝ gammaG z := by
+    exact ((((hinv z).contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp z hGdiff).clm_apply hKG
+  have hpsi : DifferentiableAt ℝ psi z := by
+    exact hHdiff.clm_apply hgammaG
+  have hKGderiv : fderiv ℝ KG z a =
+      LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional Ha z p v) := by
+    simpa [KG, Ha] using
+      fderiv_christoffelFunctionalCLM_spatial G (hG.of_le (by norm_num))
+        z a p v
+  have hKHderiv : fderiv ℝ KH z a =
+      LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional J z p v) := by
+    simpa [KH, J] using
+      fderiv_christoffelFunctionalCLM_spatial H hH z a p v
+  have hgammaGderiv : fderiv ℝ gammaG z a =
+      RicciFlow.christoffelDeriv G Ha z p v := by
+    rw [fderiv_inverse_apply_field hGdiff
+      (Filter.Eventually.of_forall hinv) hKG a, hKGderiv]
+    simp [RicciFlow.christoffelDeriv, KG, Ha,
+      ContinuousLinearMap.comp_apply]
+    abel
+  have hpsideriv : fderiv ℝ psi z a =
+      J z (gammaG z) + H z (RicciFlow.christoffelDeriv G Ha z p v) := by
+    rw [fderiv_clm_apply hHdiff hgammaG]
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.flip_apply]
+    rw [hgammaGderiv]
+    change H z (RicciFlow.christoffelDeriv G Ha z p v) + J z (gammaG z) = _
+    abel
+  have hOuter : fderiv ℝ
+      (fun y ↦ (G y).inverse (psi y)) z a =
+      (G z).inverse (J z (gammaG z) +
+          H z (RicciFlow.christoffelDeriv G Ha z p v)) -
+        (G z).inverse ((fderiv ℝ G z a)
+          ((G z).inverse (psi z))) := by
+    rw [fderiv_inverse_apply_field hGdiff
+      (Filter.Eventually.of_forall hinv) hpsi a, hpsideriv]
+  have hInner : fderiv ℝ
+      (fun y ↦ (G y).inverse (KH y)) z a =
+      (G z).inverse
+          (LinearMap.toContinuousLinearMap
+            (CovariantDerivative.christoffelFunctional J z p v)) -
+        (G z).inverse ((fderiv ℝ G z a)
+          ((G z).inverse (KH z))) := by
+    rw [fderiv_inverse_apply_field hGdiff
+      (Filter.Eventually.of_forall hinv) hKH a, hKHderiv]
+  have hOuterDiff : DifferentiableAt ℝ
+      (fun y ↦ (G y).inverse (psi y)) z :=
+    ((((hinv z).contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp z hGdiff).clm_apply hpsi
+  have hInnerDiff : DifferentiableAt ℝ
+      (fun y ↦ (G y).inverse (KH y)) z :=
+    ((((hinv z).contDiffAt_map_inverse (n := 1)).differentiableAt
+      one_ne_zero).comp z hGdiff).clm_apply hKH
+  have hsum := hOuterDiff.hasFDerivAt.neg.add hInnerDiff.hasFDerivAt
+  have hfd := hsum.fderiv
+  have happ := congrArg (fun L : V →L[ℝ] V ↦ L a) hfd
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.neg_apply] at happ
+  change fderiv ℝ
+      (fun y ↦ -((G y).inverse (H y ((G y).inverse (KG y)))) +
+        (G y).inverse (KH y)) z a = _
+  calc
+    _ = -(fderiv ℝ (fun y ↦ (G y).inverse (psi y)) z a) +
+        fderiv ℝ (fun y ↦ (G y).inverse (KH y)) z a := by
+      simpa [psi] using happ
+    _ = _ := by
+      rw [hOuter, hInner]
+      simp only [christoffelSecondFormula, H, Ha, J, KG, KH,
+        gammaG, psi]
+      abel
+
 end ChristoffelMetricSecondJet
 
 omit [T2Space M] in
@@ -839,6 +1124,433 @@ theorem anchorChartChristoffelFieldOperatorFamily_apply_eq_christoffelClosedOp
     anchorChartChristoffelFlow_apply_eq_inverse_koszul,
     RicciFlow.RicciFlow.christoffelClosedOp_apply]
   rfl
+
+omit [T2Space M] in
+/-- Each cutoff-blended family metric is four-times continuously differentiable in chart coordinates. -/
+theorem anchorBlendedMetricFamily_contDiff_four
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M)
+    (x : M) (k : K) :
+    ContDiff ℝ 4 (anchorBlendedMetricFamily g x k) := by
+  have hTop : ContDiff ℝ ∞
+      (CovariantDerivative.blendedChartMetric
+        (GeodesicTransport.cutoff (n := n) x)
+        (GeodesicTransport.backgroundMetric (n := n)) (g k).inner x) := by
+    exact CovariantDerivative.contDiff_blendedChartMetric
+      (GeodesicTransport.cutoff (n := n) x)
+      (GeodesicTransport.backgroundMetric (n := n)) (g k).inner x
+      (by simp)
+      (GeodesicTransport.cutoff_contDiff (n := n) x)
+      (GeodesicTransport.cutoff_tsupport (n := n) x)
+      (g k).contMDiff_inner
+  have hfour_le_top : (4 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    rw [show (4 : ℕ∞ω) = ((4 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  simpa [anchorBlendedMetricFamily, anchorBlendedMetricFlow] using
+    hTop.of_le hfour_le_top
+
+omit [T2Space M] in
+/-- A component of the first anchor-chart Christoffel jet is the corresponding directional Christoffel variation. -/
+theorem anchorChartChristoffelFieldSpatialFDerivFamily_apply_eq_christoffelDeriv
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M)
+    (x : M) (k : K) (z a i j : E) :
+    anchorChartChristoffelFieldSpatialFDerivFamily g x k z a i j =
+      RicciFlow.christoffelDeriv
+        (anchorBlendedMetricFamily g x k)
+        (fun y ↦ fderiv ℝ (anchorBlendedMetricFamily g x k) y a)
+        z j i := by
+  let G := anchorBlendedMetricFamily g x k
+  let Γ := anchorChartChristoffelFieldOperatorFamily g x k
+  have hG : ContDiff ℝ 4 G :=
+    anchorBlendedMetricFamily_contDiff_four g x k
+  have hΓ : ContDiff ℝ ∞ Γ := by
+    simpa [Γ, anchorChartChristoffelFieldOperatorFamily,
+      anchorChartChristoffelFieldFlow] using
+      GeodesicTransport.chartChristoffelField_contDiff_top (g k) x
+  have hΓdiff : DifferentiableAt ℝ Γ z :=
+    (hΓ.differentiable (by simp)).differentiableAt
+  have hΓi : DifferentiableAt ℝ (fun y ↦ Γ y i) z :=
+    hΓdiff.clm_apply (differentiableAt_const i)
+  have hClosed : DifferentiableAt ℝ
+      (fun y ↦ RicciFlow.RicciFlow.christoffelClosedOp G y j) z :=
+    (RicciFlow.RicciFlow.contDiffAt_christoffelClosedOp
+      G (hG.of_le (by norm_num))
+      (anchorBlendedMetricFamily_isInvertible g x k) j)
+      |>.differentiableAt (by norm_num)
+  have h1 := RicciFlow.RicciFlow.fderiv_clm_family_apply hΓdiff a i
+  have h2 := RicciFlow.RicciFlow.fderiv_clm_family_apply hΓi a j
+  have h3 := RicciFlow.RicciFlow.fderiv_clm_family_apply hClosed a i
+  have hPointwise : (fun y ↦ Γ y i j) =
+      (fun y ↦ RicciFlow.RicciFlow.christoffelClosedOp G y j i) := by
+    funext y
+    exact anchorChartChristoffelFieldOperatorFamily_apply_eq_christoffelClosedOp
+      g x k y i j
+  have hClosedDeriv := fderiv_christoffelClosedOp_eq_spatial_christoffelDeriv
+    G (hG.of_le (by norm_num))
+      (anchorBlendedMetricFamily_isInvertible g x k) z a j
+  unfold anchorChartChristoffelFieldSpatialFDerivFamily
+  change (fderiv ℝ Γ z a) i j = _
+  calc
+    (fderiv ℝ Γ z a) i j =
+        (fderiv ℝ (fun y ↦ Γ y i) z a) j :=
+      congrArg (fun L : E →L[ℝ] E ↦ L j) h1
+    _ = fderiv ℝ (fun y ↦ Γ y i j) z a := h2
+    _ = fderiv ℝ
+        (fun y ↦ RicciFlow.RicciFlow.christoffelClosedOp G y j i) z a := by
+      rw [hPointwise]
+    _ = (fderiv ℝ
+        (fun y ↦ RicciFlow.RicciFlow.christoffelClosedOp G y j) z a) i :=
+      h3.symm
+    _ = RicciFlow.RicciFlow.christoffelDerivOp G
+        (fun y ↦ fderiv ℝ G y a) z j i :=
+      congrArg (fun L : E →L[ℝ] E ↦ L i) hClosedDeriv
+    _ = _ := rfl
+
+omit [T2Space M] in
+/-- A component of the second anchor-chart Christoffel jet is the explicit metric-third-jet formula. -/
+theorem anchorChartChristoffelFieldSecondSpatialFDerivFamily_apply_eq_metricThirdJetFormula
+    {K : Type v} (g : K → ClosedSmoothRiemannianMetric n M)
+    (x : M) (k : K) (z a u i j : E) :
+    anchorChartChristoffelFieldSecondSpatialFDerivFamily
+        g x k z a u i j =
+      christoffelSecondFormula
+        (anchorBlendedMetricFamily g x k) z a u j i := by
+  let G := anchorBlendedMetricFamily g x k
+  let DΓu : E → E →L[ℝ] E →L[ℝ] E := fun y ↦
+    anchorChartChristoffelFieldSpatialFDerivFamily g x k y u
+  have hG : ContDiff ℝ 4 G :=
+    anchorBlendedMetricFamily_contDiff_four g x k
+  have hΓ : ContDiff ℝ ∞
+      (anchorChartChristoffelFieldOperatorFamily g x k) := by
+    simpa [anchorChartChristoffelFieldOperatorFamily,
+      anchorChartChristoffelFieldFlow] using
+      GeodesicTransport.chartChristoffelField_contDiff_top (g k) x
+  have htwo_le_topn : (2 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    rw [show (2 : ℕ∞ω) = ((2 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hDΓu : ContDiff ℝ 1 DΓu := by
+    simpa [DΓu, anchorChartChristoffelFieldSpatialFDerivFamily] using
+      (hΓ.contDiff_fderiv_apply (m := 1) htwo_le_topn).comp
+        (contDiff_id.prodMk (contDiff_const : ContDiff ℝ 1 (fun _ : E ↦ u)))
+  have hDΓudiff : DifferentiableAt ℝ DΓu z :=
+    (hDΓu.differentiable one_ne_zero).differentiableAt
+  have hDΓui : DifferentiableAt ℝ (fun y ↦ DΓu y i) z :=
+    hDΓudiff.clm_apply (differentiableAt_const i)
+  have h1 := RicciFlow.RicciFlow.fderiv_clm_family_apply hDΓudiff a i
+  have h2 := RicciFlow.RicciFlow.fderiv_clm_family_apply hDΓui a j
+  have hPointwise : (fun y ↦ DΓu y i j) =
+      (fun y ↦ RicciFlow.christoffelDeriv G
+        (fun y' ↦ fderiv ℝ G y' u) y j i) := by
+    funext y
+    exact anchorChartChristoffelFieldSpatialFDerivFamily_apply_eq_christoffelDeriv g x k y u i j
+  unfold anchorChartChristoffelFieldSecondSpatialFDerivFamily
+  change (fderiv ℝ DΓu z a) i j = _
+  calc
+    (fderiv ℝ DΓu z a) i j =
+        (fderiv ℝ (fun y ↦ DΓu y i) z a) j :=
+      congrArg (fun L : E →L[ℝ] E ↦ L j) h1
+    _ = fderiv ℝ (fun y ↦ DΓu y i j) z a := h2
+    _ = fderiv ℝ (fun y ↦ RicciFlow.christoffelDeriv G
+        (fun y' ↦ fderiv ℝ G y' u) y j i) z a := by
+      rw [hPointwise]
+    _ = _ := fderiv_christoffelDeriv_spatial G hG
+      (anchorBlendedMetricFamily_isInvertible g x k) z a u j i
+
+omit [T2Space M] in
+/-- Directional metric jets through order three construct joint continuity of
+the full second spatial Christoffel jet. -/
+theorem anchorChartChristoffelFieldSecondSpatialFDerivFamily_continuousAt_of_metricThirdJets
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (hDG : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2)
+      (k₀, extChartAt I x x))
+    (hD2G : ∀ u : E, ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ
+          (fun z ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) z u) p.2)
+      (k₀, extChartAt I x x))
+    (hD3G : ∀ u a : E, ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ
+          (fun z ↦ fderiv ℝ
+            (fun y ↦ fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) y u) z a) p.2)
+      (k₀, extChartAt I x x)) :
+    ContinuousAt
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSecondSpatialFDerivFamily
+          g x p.1 p.2)
+      (k₀, extChartAt I x x) := by
+  let q : E := extChartAt I x x
+  rw [continuousAt_pi]
+  intro a
+  rw [continuousAt_pi]
+  intro u
+  apply continuousAt_clm_of_apply
+  intro i
+  apply continuousAt_clm_of_apply
+  intro j
+  have hInvMap : ContinuousAt ContinuousLinearMap.inverse
+      (anchorBlendedMetricFamily g x k₀ q) :=
+    ((anchorBlendedMetricFamily_isInvertible g x k₀ q)
+      |>.contDiffAt_map_inverse (n := 0)).continuousAt
+  have hInv : ContinuousAt
+      (fun p : K × E ↦
+        (anchorBlendedMetricFamily g x p.1 p.2).inverse)
+      (k₀, q) := by
+    simpa [Function.comp_def, q] using hInvMap.comp_of_eq hG rfl
+  have hH : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 u)
+      (k₀, q) :=
+    hDG.clm_apply continuousAt_const
+  have hHa : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 a)
+      (k₀, q) :=
+    hDG.clm_apply continuousAt_const
+  have hJ : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ
+          (fun z ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) z u) p.2 a)
+      (k₀, q) :=
+    (hD2G u).clm_apply continuousAt_const
+  have hKG : ContinuousAt
+      (fun p : K × E ↦ LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional
+          (anchorBlendedMetricFamily g x p.1) p.2 j i))
+      (k₀, q) := by
+    apply continuousAt_clm_of_apply
+    intro w
+    have hDj : ContinuousAt
+        (fun p : K × E ↦
+          fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 j)
+        (k₀, q) :=
+      hDG.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hDji : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 j) i)
+        (k₀, q) :=
+      hDj.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hj : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 j) i w)
+        (k₀, q) :=
+      hDji.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDi : ContinuousAt
+        (fun p : K × E ↦
+          fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 i)
+        (k₀, q) :=
+      hDG.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hDij : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 i) j)
+        (k₀, q) :=
+      hDi.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hi : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 i) j w)
+        (k₀, q) :=
+      hDij.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDw : ContinuousAt
+        (fun p : K × E ↦
+          fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 w)
+        (k₀, q) :=
+      hDG.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDwj : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 w) j)
+        (k₀, q) :=
+      hDw.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hw : ContinuousAt
+        (fun p : K × E ↦
+          (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 w) j i)
+        (k₀, q) :=
+      hDwj.clm_apply
+        (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    simpa [CovariantDerivative.christoffelFunctional] using
+      ((hj.add hi).sub hw).const_mul (1 / 2 : ℝ)
+  have hKH : ContinuousAt
+      (fun p : K × E ↦ LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional
+          (fun y ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) y u) p.2 j i))
+      (k₀, q) := by
+    apply continuousAt_clm_of_apply
+    intro w
+    have hDj := (hD2G u).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hDji := hDj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hj := hDji.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDi := (hD2G u).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hDij := hDi.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hi := hDij.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDw := (hD2G u).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDwj := hDw.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hw := hDwj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    simpa [CovariantDerivative.christoffelFunctional] using
+      ((hj.add hi).sub hw).const_mul (1 / 2 : ℝ)
+  have hKJ : ContinuousAt
+      (fun p : K × E ↦ LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional
+          (fun z ↦ fderiv ℝ
+            (fun y ↦ fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) y u) z a)
+          p.2 j i))
+      (k₀, q) := by
+    apply continuousAt_clm_of_apply
+    intro w
+    have hDj := (hD3G u a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hDji := hDj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hj := hDji.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDi := (hD3G u a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hDij := hDi.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hi := hDij.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDw := (hD3G u a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDwj := hDw.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hw := hDwj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    simpa [CovariantDerivative.christoffelFunctional] using
+      ((hj.add hi).sub hw).const_mul (1 / 2 : ℝ)
+  have hKHa : ContinuousAt
+      (fun p : K × E ↦ LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional
+          (fun y ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) y a) p.2 j i))
+      (k₀, q) := by
+    apply continuousAt_clm_of_apply
+    intro w
+    have hDj := (hD2G a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hDji := hDj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hj := hDji.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDi := (hD2G a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    have hDij := hDi.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hi := hDij.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDw := (hD2G a).clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ w) (k₀, q))
+    have hDwj := hDw.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ j) (k₀, q))
+    have hw := hDwj.clm_apply
+      (continuousAt_const : ContinuousAt (fun _ : K × E ↦ i) (k₀, q))
+    simpa [CovariantDerivative.christoffelFunctional] using
+      ((hj.add hi).sub hw).const_mul (1 / 2 : ℝ)
+  have hGammaG : ContinuousAt
+      (fun p : K × E ↦
+        (anchorBlendedMetricFamily g x p.1 p.2).inverse
+          (LinearMap.toContinuousLinearMap
+            (CovariantDerivative.christoffelFunctional
+              (anchorBlendedMetricFamily g x p.1) p.2 j i)))
+      (k₀, q) :=
+    hInv.clm_apply hKG
+  have hCorrection : ContinuousAt
+      (fun p : K × E ↦
+        -((anchorBlendedMetricFamily g x p.1 p.2).inverse.comp
+          ((fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 a).comp
+            (anchorBlendedMetricFamily g x p.1 p.2).inverse)))
+      (k₀, q) :=
+    (hInv.clm_comp (hHa.clm_comp hInv)).neg
+  have hDGamma : ContinuousAt
+      (fun p : K × E ↦
+        RicciFlow.christoffelDeriv
+          (anchorBlendedMetricFamily g x p.1)
+          (fun y ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) y a)
+          p.2 j i)
+      (k₀, q) := by
+    simpa [RicciFlow.christoffelDeriv] using
+      (hCorrection.clm_apply hKG).add (hInv.clm_apply hKHa)
+  have hPsi : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 u)
+          ((anchorBlendedMetricFamily g x p.1 p.2).inverse
+            (LinearMap.toContinuousLinearMap
+              (CovariantDerivative.christoffelFunctional
+                (anchorBlendedMetricFamily g x p.1) p.2 j i))))
+      (k₀, q) :=
+    hH.clm_apply hGammaG
+  have hDPsi : ContinuousAt
+      (fun p : K × E ↦
+        (fderiv ℝ
+            (fun z ↦ fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) z u) p.2 a)
+          ((anchorBlendedMetricFamily g x p.1 p.2).inverse
+            (LinearMap.toContinuousLinearMap
+              (CovariantDerivative.christoffelFunctional
+                (anchorBlendedMetricFamily g x p.1) p.2 j i)))
+        + (fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2 u)
+          (RicciFlow.christoffelDeriv
+            (anchorBlendedMetricFamily g x p.1)
+            (fun y ↦ fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) y a)
+            p.2 j i))
+      (k₀, q) :=
+    (hJ.clm_apply hGammaG).add (hH.clm_apply hDGamma)
+  have hResult : ContinuousAt
+      (fun p : K × E ↦
+        christoffelSecondFormula
+          (anchorBlendedMetricFamily g x p.1) p.2 a u j i)
+      (k₀, q) := by
+    have hOuter := hInv.clm_apply hDPsi
+    have hRaisedPsi := hInv.clm_apply hPsi
+    have hMetricPsi := hHa.clm_apply hRaisedPsi
+    have hRaisedMetricPsi := hInv.clm_apply hMetricPsi
+    have hThird := hInv.clm_apply hKJ
+    have hRaisedKH := hInv.clm_apply hKH
+    have hMetricKH := hHa.clm_apply hRaisedKH
+    have hRaisedMetricKH := hInv.clm_apply hMetricKH
+    simpa [christoffelSecondFormula] using
+      ((hOuter.sub hRaisedMetricPsi).neg.add hThird).sub hRaisedMetricKH
+  have hEq :
+      (fun p : K × E ↦
+        anchorChartChristoffelFieldSecondSpatialFDerivFamily
+          g x p.1 p.2 a u i j) =
+      (fun p : K × E ↦
+        christoffelSecondFormula
+          (anchorBlendedMetricFamily g x p.1) p.2 a u j i) := by
+    funext p
+    exact
+      anchorChartChristoffelFieldSecondSpatialFDerivFamily_apply_eq_metricThirdJetFormula
+        g x p.1 p.2 a u i j
+  rw [hEq]
+  simpa [q] using hResult
 
 omit [T2Space M] in
 /-- Continuity of a blended metric and its first two spatial jets constructs
@@ -1410,6 +2122,38 @@ theorem metricFamilyRicciJetChartContinuousAt_of_metricSecondJet_and_christoffel
     (anchorChartChristoffelFieldSpatialFDerivFamily_continuousAt_of_metricJets
       hG hDG hD2G)
     hD2Gamma
+
+omit [T2Space M] in
+/-- Directional metric jets through spatial order three construct the full
+Ricci chart jet needed for compact-family covariant-Ricci continuity. -/
+theorem metricFamilyRicciJetChartContinuousAt_of_metricThirdJets
+    {K : Type v} [TopologicalSpace K]
+    {g : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (hG : ContinuousAt
+      (Function.uncurry (anchorBlendedMetricFamily g x))
+      (k₀, extChartAt I x x))
+    (hDG : ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ (anchorBlendedMetricFamily g x p.1) p.2)
+      (k₀, extChartAt I x x))
+    (hD2G : ∀ u : E, ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ
+          (fun z ↦ fderiv ℝ
+            (anchorBlendedMetricFamily g x p.1) z u) p.2)
+      (k₀, extChartAt I x x))
+    (hD3G : ∀ u a : E, ContinuousAt
+      (fun p : K × E ↦
+        fderiv ℝ
+          (fun z ↦ fderiv ℝ
+            (fun y ↦ fderiv ℝ
+              (anchorBlendedMetricFamily g x p.1) y u) z a) p.2)
+      (k₀, extChartAt I x x)) :
+    MetricFamilyRicciJetChartContinuousAt g k₀ x := by
+  exact metricFamilyRicciJetChartContinuousAt_of_metricSecondJet_and_christoffelSecondJet
+    hG hDG hD2G
+    (anchorChartChristoffelFieldSecondSpatialFDerivFamily_continuousAt_of_metricThirdJets
+      hG hDG hD2G hD3G)
 
 omit [T2Space M] in
 /-- The lower-order chart data constructs every continuous coordinate
