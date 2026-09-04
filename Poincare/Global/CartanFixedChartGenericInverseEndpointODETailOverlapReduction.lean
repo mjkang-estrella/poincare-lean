@@ -97,6 +97,39 @@ theorem normalizedSelectorPosition_continuousAt_zero
 
 end GenericInverseEndpointODEAdmissibilityData
 
+/-- Reparameterizing a preferred package to the fixed comparison time makes
+the time inequality tautological.  The remaining preferred-flow condition is
+the invariant product of its original time and velocity radii. -/
+theorem nonempty_reparameterized_admissibility_of_velocity_budget
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (x : M) (w : E)
+    (P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x)
+    (hselector :
+      (extChartAt I x₀ x, C.time⁻¹ • w) ∈
+        closedBall (extChartAt I x₀ x₀, (0 : E))
+          (C.selector.projectFirstVariational.initialRadius : ℝ))
+    (hbudget :
+      ‖fixedToAnchorVelocity x₀ (x, w)‖ <
+        P.time * P.velocityRadius) :
+    ∃ Q : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x,
+      Q.time = C.time ∧
+        Nonempty (GenericInverseEndpointODEAdmissibilityData C x w Q) := by
+  let Q := P.reparameterize C.time C.time_pos
+  refine ⟨Q, rfl, ⟨{
+    selectorInitial_mem := hselector
+    preferredTime_le := le_rfl
+    preferredVelocity_small := ?_ }⟩⟩
+  change
+    ‖C.time⁻¹ • fixedToAnchorVelocity x₀ (x, w)‖ <
+      (P.time / C.time) * P.velocityRadius
+  rw [norm_smul, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr C.time_pos)]
+  calc
+    C.time⁻¹ * ‖fixedToAnchorVelocity x₀ (x, w)‖
+        < C.time⁻¹ * (P.time * P.velocityRadius) :=
+      mul_lt_mul_of_pos_left hbudget (inv_pos.mpr C.time_pos)
+    _ = (P.time / C.time) * P.velocityRadius := by
+      field_simp [ne_of_gt C.time_pos]
+
 /-! ## Automatic initial good interval -/
 
 /-- At time zero the cutoff-subordinated selector lies in the full combined
@@ -931,6 +964,40 @@ def GenericInverseEndpointODEAdmissibilityProvider
         GenericInverseEndpointODEAdmissibilityData
           C.restrictToFixedAnchorCutoffOne x w P
 
+/-- The time-normalized provider boundary.  It retains only selector-domain
+membership and the scale-invariant preferred-flow budget for an unscaled
+trajectory package. -/
+def GenericInverseEndpointODEVelocityBudgetProvider
+    (C : FixedChartAnchorEndpointPackage g x₀) : Prop :=
+  ∀ (x : M) (w : E)
+      (_hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors),
+    (extChartAt I x₀ x, w) ∈
+      C.restrictToFixedAnchorCutoffOne.endpoint.source →
+    (x, fixedToAnchorVelocity x₀ (x, w)) ∈
+      (genericFamily g).targetLocus →
+      ∃ P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x,
+        (extChartAt I x₀ x,
+            C.restrictToFixedAnchorCutoffOne.time⁻¹ • w) ∈
+          closedBall (extChartAt I x₀ x₀, (0 : E))
+            (C.restrictToFixedAnchorCutoffOne.selector.projectFirstVariational.initialRadius : ℝ) ∧
+        ‖fixedToAnchorVelocity x₀ (x, w)‖ <
+          P.time * P.velocityRadius
+
+/-- Reparameterizing each unscaled preferred package at `C.time` converts the
+velocity-budget provider into the existing admissibility provider. -/
+theorem genericInverseEndpointODEAdmissibilityProvider_of_velocityBudget
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (hbudget : C.GenericInverseEndpointODEVelocityBudgetProvider) :
+    C.GenericInverseEndpointODEAdmissibilityProvider := by
+  intro x w hx hw htarget
+  rcases hbudget x w hx hw htarget with
+    ⟨P, hselector, hvelocity⟩
+  rcases
+      C.restrictToFixedAnchorCutoffOne.nonempty_reparameterized_admissibility_of_velocity_budget
+        x w P hselector hvelocity with
+    ⟨Q, _hQtime, ⟨data⟩⟩
+  exact ⟨Q, data⟩
+
 /-- Fixed-chart protection and admissibility alone provide every tail-overlap
 package.  Connected ODE continuation supplies the two moving-chart fields. -/
 theorem genericInverseEndpointODETailOverlapProvider_of_admissibility
@@ -987,6 +1054,21 @@ theorem genericInverseEndpointAgreement_of_admissibility
     (C.genericInverseEndpointODETailOverlapProvider_of_admissibility
       hprotectedFixed hadmissible)
 
+/-- The scale-invariant preferred-flow budget, together with selector-domain
+membership, is enough for generic inverse-endpoint agreement. -/
+theorem genericInverseEndpointAgreement_of_velocityBudget
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (hprotectedFixed :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀)
+    (hbudget : C.GenericInverseEndpointODEVelocityBudgetProvider) :
+    C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement :=
+  C.genericInverseEndpointAgreement_of_admissibility hprotectedFixed
+    (C.genericInverseEndpointODEAdmissibilityProvider_of_velocityBudget
+      hbudget)
+
 /-- A protected fixed-chart package can always be chosen so that generic
 inverse-endpoint agreement is reduced exactly to the three admissibility
 domain conditions. -/
@@ -1000,6 +1082,21 @@ theorem exists_fixedChartAnchorEndpointPackage_with_genericInverseEndpointAgreem
         g x₀ with
     ⟨C, hprotectedFixed⟩
   exact ⟨C, C.genericInverseEndpointAgreement_of_admissibility
+    hprotectedFixed⟩
+
+/-- A protected fixed-chart package can be chosen so that generic
+inverse-endpoint agreement is reduced to selector-domain membership and the
+scale-invariant preferred-flow velocity budget. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_genericInverseEndpointAgreement_of_velocityBudget
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      C.GenericInverseEndpointODEVelocityBudgetProvider →
+        C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement := by
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_fixedSourceChartCutoff_protectedInnerBall
+        g x₀ with
+    ⟨C, hprotectedFixed⟩
+  exact ⟨C, C.genericInverseEndpointAgreement_of_velocityBudget
     hprotectedFixed⟩
 
 end FixedChartAnchorEndpointPackage

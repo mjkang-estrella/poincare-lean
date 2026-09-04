@@ -78,6 +78,224 @@ structure PreferredChartExpAtTrajectoryPackage
       expAt g x (t • v) =
         (extChartAt I x).symm (trajectory v t).1
 
+/-- Rescale an actual preferred trajectory package to any prescribed positive
+time.  Velocities transform contravariantly, so the product of the time and
+velocity radii is unchanged. -/
+noncomputable def PreferredChartExpAtTrajectoryPackage.reparameterize
+    {g : ClosedSmoothRiemannianMetric 3 M} {x : M}
+    (P : PreferredChartExpAtTrajectoryPackage g x)
+    (T : ℝ) (hT : 0 < T) :
+    PreferredChartExpAtTrajectoryPackage g x := by
+  let c : ℝ := P.time / T
+  let scale : ℝ := T / P.time
+  have hc : 0 < c := div_pos P.time_pos hT
+  have hscale : 0 < scale := div_pos hT P.time_pos
+  have hcscale : c * scale = 1 := by
+    dsimp [c, scale]
+    field_simp [ne_of_gt P.time_pos, ne_of_gt hT]
+  have hscalec : scale * c = 1 := by linarith
+  let cNN : ℝ≥0 := ⟨c, hc.le⟩
+  refine {
+    time := T
+    time_pos := hT
+    velocityRadius := c * P.velocityRadius
+    velocityRadius_pos := mul_pos hc P.velocityRadius_pos
+    stateRadius := max 1 cNN * P.stateRadius
+    trajectory := fun v t =>
+      let y := P.trajectory (scale • v) (c * t)
+      (y.1, c • y.2)
+    initial := ?_
+    derivative := ?_
+    mem_closedBall := ?_
+    position_mem_target := ?_
+    position_mem_cutoffOne := ?_
+    expAt_eq := ?_ }
+  · intro v hv
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hinit := P.initial (scale • v) hsmall
+    dsimp
+    rw [mul_zero, hinit]
+    simpa [smul_smul, hcscale]
+  · intro v hv t ht
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hmap : MapsTo (fun s : ℝ => c * s) (Icc (-T) T)
+        (Icc (-P.time) P.time) := by
+      intro s hs
+      constructor
+      · calc
+          -P.time = c * (-T) := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+          _ ≤ c * s := mul_le_mul_of_nonneg_left hs.1 hc.le
+      · calc
+          c * s ≤ c * T := mul_le_mul_of_nonneg_left hs.2 hc.le
+          _ = P.time := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+    let γ : ℝ → E × E := P.trajectory (scale • v)
+    let η : ℝ → E × E := fun s =>
+      ((γ (c * s)).1, c • (γ (c * s)).2)
+    have hγ : HasDerivWithinAt γ
+        (geodesicFlowField (chartChristoffelField g x) (γ (c * t)))
+        (Icc (-P.time) P.time) (c * t) := by
+      exact P.derivative (scale • v) hsmall (c * t) (hmap ht)
+    have hreparam : HasDerivWithinAt (fun s : ℝ => γ (c * s))
+        (c • geodesicFlowField (chartChristoffelField g x) (γ (c * t)))
+        (Icc (-T) T) t := by
+      simpa [Function.comp_def] using
+        hγ.scomp t ((hasDerivAt_const_mul (x := t) c).hasDerivWithinAt) hmap
+    have hpos : HasDerivWithinAt (fun s : ℝ => (γ (c * s)).1)
+        (c • (γ (c * t)).2) (Icc (-T) T) t := by
+      have hfst := hreparam.hasFDerivWithinAt.fst.hasDerivWithinAt
+      simpa [geodesicFlowField] using hfst
+    have hvel_reparam : HasDerivWithinAt (fun s : ℝ => (γ (c * s)).2)
+        (c • (-(chartChristoffelField g x (γ (c * t)).1)
+          (γ (c * t)).2 (γ (c * t)).2)) (Icc (-T) T) t := by
+      have hsnd := hreparam.hasFDerivWithinAt.snd.hasDerivWithinAt
+      simpa [geodesicFlowField] using hsnd
+    have hvel : HasDerivWithinAt (fun s : ℝ => c • (γ (c * s)).2)
+        (-(chartChristoffelField g x (γ (c * t)).1)
+          (c • (γ (c * t)).2) (c • (γ (c * t)).2))
+        (Icc (-T) T) t := by
+      simpa [smul_smul] using hvel_reparam.const_smul c
+    have hprod := hpos.prodMk hvel
+    simpa [η, γ, geodesicFlowField] using hprod
+  · intro v hv t ht
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hct : c * t ∈ Icc (-P.time) P.time := by
+      constructor
+      · calc
+          -P.time = c * (-T) := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+          _ ≤ c * t := mul_le_mul_of_nonneg_left ht.1 hc.le
+      · calc
+          c * t ≤ c * T := mul_le_mul_of_nonneg_left ht.2 hc.le
+          _ = P.time := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+    have hold := P.mem_closedBall (scale • v) hsmall (c * t) hct
+    have hprod : P.trajectory (scale • v) (c * t) ∈
+        closedBall (extChartAt I x x) (P.stateRadius : ℝ) ×ˢ
+          closedBall (0 : E) (P.stateRadius : ℝ) := by
+      simpa [closedBall_prod_same] using hold
+    have hR : (P.stateRadius : ℝ) ≤
+        ((max 1 cNN * P.stateRadius : ℝ≥0) : ℝ) := by
+      change (P.stateRadius : ℝ) ≤ max 1 c * (P.stateRadius : ℝ)
+      calc
+        (P.stateRadius : ℝ) = 1 * (P.stateRadius : ℝ) := by ring
+        _ ≤ max 1 c * (P.stateRadius : ℝ) :=
+          mul_le_mul_of_nonneg_right (le_max_left 1 c) P.stateRadius.2
+    have hpos : (P.trajectory (scale • v) (c * t)).1 ∈
+        closedBall (extChartAt I x x)
+          ((max 1 cNN * P.stateRadius : ℝ≥0) : ℝ) :=
+      closedBall_subset_closedBall hR hprod.1
+    have hvel : c • (P.trajectory (scale • v) (c * t)).2 ∈
+        closedBall (0 : E)
+          ((max 1 cNN * P.stateRadius : ℝ≥0) : ℝ) := by
+      rw [Metric.mem_closedBall, dist_zero_right, norm_smul,
+        Real.norm_eq_abs, abs_of_pos hc]
+      have hvold : ‖(P.trajectory (scale • v) (c * t)).2‖ ≤
+          (P.stateRadius : ℝ) := by
+        simpa [Metric.mem_closedBall, dist_zero_right] using hprod.2
+      calc
+        c * ‖(P.trajectory (scale • v) (c * t)).2‖
+            ≤ c * (P.stateRadius : ℝ) :=
+          mul_le_mul_of_nonneg_left hvold hc.le
+        _ ≤ (max 1 cNN : ℝ≥0) * (P.stateRadius : ℝ) := by
+          exact mul_le_mul_of_nonneg_right
+            (le_max_right 1 cNN) P.stateRadius.2
+        _ = ((max 1 cNN * P.stateRadius : ℝ≥0) : ℝ) := by norm_num
+    dsimp
+    rw [← closedBall_prod_same]
+    exact ⟨hpos, hvel⟩
+  · intro v hv t ht
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hct : c * t ∈ Icc (-P.time) P.time := by
+      constructor
+      · calc
+          -P.time = c * (-T) := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+          _ ≤ c * t := mul_le_mul_of_nonneg_left ht.1 hc.le
+      · calc
+          c * t ≤ c * T := mul_le_mul_of_nonneg_left ht.2 hc.le
+          _ = P.time := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+    exact P.position_mem_target (scale • v) hsmall (c * t) hct
+  · intro v hv t ht
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hct : c * t ∈ Icc (-P.time) P.time := by
+      constructor
+      · calc
+          -P.time = c * (-T) := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+          _ ≤ c * t := mul_le_mul_of_nonneg_left ht.1 hc.le
+      · calc
+          c * t ≤ c * T := mul_le_mul_of_nonneg_left ht.2 hc.le
+          _ = P.time := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+    exact P.position_mem_cutoffOne (scale • v) hsmall (c * t) hct
+  · intro v hv t ht
+    have hsmall : ‖scale • v‖ < P.velocityRadius := by
+      rw [norm_smul, Real.norm_eq_abs, abs_of_pos hscale]
+      calc
+        scale * ‖v‖ < scale * (c * P.velocityRadius) :=
+          mul_lt_mul_of_pos_left hv hscale
+        _ = P.velocityRadius := by rw [← mul_assoc, hscalec, one_mul]
+    have hct : c * t ∈ Icc (0 : ℝ) P.time := by
+      constructor
+      · exact mul_nonneg hc.le ht.1
+      · calc
+          c * t ≤ c * T := mul_le_mul_of_nonneg_left ht.2 hc.le
+          _ = P.time := by
+            dsimp [c]
+            field_simp [ne_of_gt hT]
+    have hexp := P.expAt_eq (scale • v) hsmall (c * t) hct
+    have hscale' : (c * t) • (scale • v) = t • v := by
+      rw [smul_smul]
+      have : (c * t) * scale = t := by
+        calc
+          (c * t) * scale = (c * scale) * t := by ring
+          _ = t := by rw [hcscale, one_mul]
+      rw [this]
+    simpa [hscale'] using hexp
+
+@[simp]
+theorem PreferredChartExpAtTrajectoryPackage.reparameterize_time
+    {g : ClosedSmoothRiemannianMetric 3 M} {x : M}
+    (P : PreferredChartExpAtTrajectoryPackage g x)
+    (T : ℝ) (hT : 0 < T) :
+    (P.reparameterize T hT).time = T := rfl
+
 /-- Every neighborhood of the preferred-chart anchor admits an actual public
 `expAt` trajectory package whose positions remain in that neighborhood and in
 the cutoff-one locus. -/
