@@ -3,6 +3,7 @@ import Poincare.Global.MetricFamilyCovRicciNormContinuity
 import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
 import Poincare.Global.MetricFamilyEntryThirdJetCovRicciContinuity
 import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
+import Poincare.Global.ClosedMetricThirdJetOrbitCompactness
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -455,6 +456,89 @@ theorem sphereConclusion
     unitRecognition
 
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3
+
+namespace NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
+
+variable [SimplyConnectedSpace M]
+
+/-- A forward uniform full covariant-Ricci derivative bound and finite
+subordinate scalar-Laplacian geometry directly construct the established
+reaction-decay positive-Einstein package.  Joint `C³` metric-entry regularity
+already stored in `reaction` supplies both scalar-time-derivative continuity
+and the Lichnerowicz assembly regularity. -/
+noncomputable def ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hCov : ∃ D : ℝ,
+      UniformCovariantRicciDerivativeNormBound
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) D)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  let D : ℝ := Classical.choose hCov
+  have hD : UniformCovariantRicciDerivativeNormBound
+      (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) D :=
+    Classical.choose_spec hCov
+  let scalarTimeDerivativeJointContinuous :
+      ScalarTimeDerivativeJointContinuous reaction.gt :=
+    scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three
+      reaction.jointMetricEntries
+  letI : ∀ s : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (reaction.gt s).leviCivita 1 :=
+    fun _s ↦ inferInstance
+  let lichnerowicz : GlobalLichnerowiczAssemblyRegularity reaction.gt :=
+    globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree
+      reaction.jointMetricEntries
+  exact {
+    reaction := reaction
+    compactTensorReferenceControl := compactTensorReferenceControl
+    fullCovariantRicciDerivativeBound := D
+    fullCovariantRicciControl := hD
+    differentiateMovingTotalScalar := fun t ↦
+      hasDerivAt_totalScalar_energyNumerator_of_normalizedFlowAt_of_jointScalarTimeDerivative
+        reaction.compactFiniteAtlasChartFrameDensityData.toChartFrameDensityVariation
+        reaction.jointMetricEntries scalarTimeDerivativeJointContinuous
+        lichnerowicz t.1 (reaction.normalizedFlow t.1 t.2)
+        (scalarSubordinateGeometry t).closedLaplacianStokes }
+
+/-- Compactness of the full real-time metric orbit closure in the explicit
+scalar metric-entry third-jet topology supplies the uniform bound required by
+`ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound`. -/
+noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hOrbitCompact :
+      letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+        closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+      IsCompact (closure (Set.range reaction.gt)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  let hExists :=
+    exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
+      reaction.gt hOrbitCompact
+  let D : ℝ := Classical.choose hExists
+  have hFull : UniformCovariantRicciDerivativeNormBound reaction.gt D :=
+    Classical.choose_spec hExists
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact ⟨D, hFull.1, fun t x ↦ hFull.2 t.1 x⟩
+  · exact scalarSubordinateGeometry
+
+end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
 
 /-- Fixed-target conversion into the established reaction-decay positive-
 Einstein endpoint. -/
