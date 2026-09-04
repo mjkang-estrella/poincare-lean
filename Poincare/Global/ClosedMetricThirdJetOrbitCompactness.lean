@@ -18,7 +18,7 @@ noncomputable section
 open Bundle FiberBundle Filter MeasureTheory Set
 open scoped Manifold ContDiff MeasureTheory Topology ENNReal NNReal
 
-universe u v
+universe u v w
 
 namespace Poincare
 
@@ -44,6 +44,33 @@ theorem continuous_covRicciNormSqAt_joint_on_closedMetricThirdJetOrbitClosure
     (fun k x ↦
       metricFamilyBlendedMetricEntryThirdJetContinuousAt_subtype
         (closure (Set.range gt)) k x)
+
+omit [T2Space M] in
+/-- A continuous compact family in the scalar third-jet topology has compact
+orbit closure whenever every orbit value is realized by that family.  The
+indexing map needs no continuity because only its range inclusion is used. -/
+theorem isCompact_closedMetricThirdJetOrbitClosure_of_compact_realization
+    {I : Type w} {K : Type v} [TopologicalSpace K] [CompactSpace K]
+    (gt : I → G) (metric : K → G) (parameter : I → K)
+    (hmetric :
+      letI : TopologicalSpace G :=
+        closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+      Continuous metric)
+    (hrealize : ∀ i, metric (parameter i) = gt i) :
+    letI : TopologicalSpace G :=
+      closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+    IsCompact (closure (Set.range gt)) := by
+  letI : TopologicalSpace G :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+  letI : T2Space G :=
+    (metricEntryThirdJetProfile_isEmbedding (n := n) (M := M)).t2Space
+  have hmetric' : Continuous metric := hmetric
+  have hfamily : IsCompact (Set.range metric) := isCompact_range hmetric'
+  have horbit : Set.range gt ⊆ Set.range metric := by
+    rintro _ ⟨i, rfl⟩
+    exact ⟨parameter i, hrealize i⟩
+  exact hfamily.of_isClosed_subset isClosed_closure
+    (closure_minimal horbit hfamily.isClosed)
 
 section DimensionThree
 

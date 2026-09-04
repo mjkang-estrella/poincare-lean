@@ -119,6 +119,62 @@ noncomputable def metricEntryThirdJetProfile (g : G) :
   | .second x u a i j => metricEntryThirdJetSecondMap g x u a i j
   | .third x u a b i j => metricEntryThirdJetThirdMap g x u a b i j
 
+/-- The value slot at its own chart center recovers the intrinsic metric
+pairing.  This makes the profile faithful already at order zero. -/
+theorem metricEntryThirdJetProfile_value_anchor
+    (g : G) (x : M) (i j : E) :
+    metricEntryThirdJetProfile g (.value x i j)
+        (extChartAt (closedSmoothModelWithCorners n) x x) =
+      g.inner x i j := by
+  have hblend :=
+    (anchorBlendedMetricFlow_eventuallyEq_anchorChartMetricFlow
+      (fun _ : ℝ ↦ g) 0 x).self_of_nhds
+  have hchart := CovariantDerivative.chartMetric_apply_chart
+    g.inner x (mem_extChartAt_source x) i j
+  rw [mfderiv_extChartAt_self] at hchart
+  change anchorBlendedMetricFlow (fun _ : ℝ ↦ g) x 0
+      (extChartAt (closedSmoothModelWithCorners n) x x) i j = _
+  calc
+    _ = anchorChartMetricFlow (fun _ : ℝ ↦ g) x 0
+        (extChartAt (closedSmoothModelWithCorners n) x x) i j :=
+      congrArg (fun A ↦ A i j) hblend
+    _ = g.inner x i j := by
+      simpa [anchorChartMetricFlow] using hchart
+
+/-- Distinct closed smooth metrics have distinct scalar third-jet profiles.
+The proof uses only the value slots at their chart centers. -/
+theorem metricEntryThirdJetProfile_injective :
+    Function.Injective
+      (metricEntryThirdJetProfile (n := n) (M := M)) := by
+  intro g h hprofile
+  have hinner : g.inner = h.inner := by
+    funext x
+    apply ContinuousLinearMap.ext
+    intro i
+    apply ContinuousLinearMap.ext
+    intro j
+    have hp := congrArg
+      (fun f : C(E, ℝ) ↦
+        f (extChartAt (closedSmoothModelWithCorners n) x x))
+      (congrFun hprofile (.value x i j))
+    simpa only [metricEntryThirdJetProfile_value_anchor] using hp
+  cases g with
+  | mk ginner gsymm gpos gbdd gsmooth =>
+      cases h with
+      | mk hinner' hsymm hpos hbdd hsmooth =>
+          dsimp only at hinner
+          cases hinner
+          rfl
+
+/-- Full joint continuity of every scalar profile slot on `K × E`.
+This is stronger than continuity only at a parameter and the corresponding
+chart center used by `MetricFamilyBlendedMetricEntryThirdJetContinuousAt`. -/
+def MetricFamilyEntryThirdJetProfileJointContinuous
+    {K : Type v} [TopologicalSpace K] (metric : K → G) : Prop :=
+  ∀ slot : MetricEntryThirdJetSlot n M,
+    Continuous (fun p : K × E ↦
+      metricEntryThirdJetProfile (metric p.1) slot p.2)
+
 /-- The topology on closed smooth metrics induced by the complete scalar
 third-jet profile.  This definition is reducible so callers can install it as
 a local instance without creating a competing global metric topology. -/
@@ -135,6 +191,27 @@ local instance : TopologicalSpace G :=
 private theorem metricEntryThirdJetProfile_continuous :
     Continuous (metricEntryThirdJetProfile (n := n) (M := M)) :=
   continuous_induced_dom
+
+/-- The scalar third-jet profile is a topological embedding for the locally
+installed induced topology. -/
+theorem metricEntryThirdJetProfile_isEmbedding :
+    Topology.IsEmbedding
+      (metricEntryThirdJetProfile (n := n) (M := M)) :=
+  metricEntryThirdJetProfile_injective.isEmbedding_induced
+
+/-- Joint continuity of every complete scalar profile slot makes a metric
+family continuous into the explicit scalar third-jet topology.  The premise
+is global on `K × E`, not merely local at each chart center. -/
+theorem continuous_closedMetricFamily_of_entryThirdJetProfileJointContinuous
+    {K : Type v} [TopologicalSpace K] {metric : K → G}
+    (hmetric : MetricFamilyEntryThirdJetProfileJointContinuous metric) :
+    Continuous metric := by
+  apply continuous_induced_rng.mpr
+  apply continuous_pi
+  intro slot
+  apply ContinuousMap.continuous_of_continuous_uncurry
+  simpa only [Function.uncurry_apply_pair, Function.comp_apply] using
+    hmetric slot
 
 private theorem metricEntryThirdJetProfile_component_continuous
     (s : MetricEntryThirdJetSlot n M) :
