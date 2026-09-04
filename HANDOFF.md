@@ -1,6 +1,6 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-09-03 (UTC)
+Snapshot date: 2026-09-04 (UTC)
 
 ## Project Truth
 
@@ -21,6 +21,69 @@ Snapshot date: 2026-09-03 (UTC)
 with the 2026-07-07 legacy selector-assembly work. Both are historical until
 regenerated or revalidated against the current commit. Lean and the current
 diff remain authoritative.
+
+## 2026-09-04 Formal Profile and Grounded-Interface Checkpoint
+
+The active integration worktree is
+`/Users/mjkang/.codex/worktrees/formalization-until-6/poincare` on branch
+`codex/formalization-until-6`. Its clean checkpoint is
+`77fb1a54ba95f099ffe891d54190aec7a2f80d60`, 82 commits ahead of unchanged
+`origin/main` at `bc076f1e893c6ba834729f8bcb359a1f400a3e72`.
+
+The scalar `C0,3` compactness route no longer requires every profile limit to
+be realized by a smooth Riemannian metric. The new verified chain is:
+
+```text
+compact componentwise scalar third-jet profiles
+  -> formal metric and inverse on the nondegenerate locus
+  -> formal Christoffel jets through order two
+  -> formal curvature, Ricci, covariant Ricci, and norm contraction
+  -> exact agreement with genuine chart quantities
+  -> finite fixed-anchor cutoff-one cover
+  -> global UniformCovariantRicciDerivativeNormBound
+  -> reaction-decay positive-Einstein analytic data
+```
+
+The principal endpoint is
+`NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.ofComponentwiseAscoliFormalMetricThirdJetProfiles`.
+Its remaining nondegeneration input is the explicit
+`UniformClosedRiemannianMetricLowerComparison`; the former
+`hForwardProfileLimitsRealized` premise is absent. The bounded-component
+variant is also proved. All formal curvature expressions agree exactly with
+the repository's genuine `anchorChartCurvatureFamily`, Ricci,
+covariant-Ricci, inverse-metric, and sixfold norm formulas.
+
+The grounded surgery interface was also repaired. The constructorless
+`HasSingularityModelBlowupClassification` marker is now a proof-bearing
+classification source together with surjectivity onto every pointed
+rescaling index. The five component classification maps compose to this
+coverage theorem in `SingularityModelBlowupCoverage.lean`. No existing
+payload proves any of those five surjectivity claims, so that remains genuine
+Perelman work rather than an artificial inconsistency.
+
+On the topology side,
+`ExtinctionThreeSphereCoveringProjectionStatement` records the non-circular
+post-extinction target `exists p : ThreeSphere -> M, IsCoveringMap p`.
+Simply connected covering-space rigidity turns it into the sphere
+homeomorphism. The older full topology package still stores the final
+homeomorphism and is not an honest proof plan; its decomposition and surgery
+trace realization predicates also remain empty inductives.
+
+At this checkpoint, a serialized 4,095-target `lake build`, root elaboration,
+interface audit, semantic-surface audit, 6,008-declaration theorem-contract
+audit, root-import audit, and axiom audit all pass. The exact probe still
+fails with `Unknown identifier Poincare.poincare_conjecture`; the repository
+is not complete.
+
+The exact next analytic action is to derive a pointwise inverse-chart volume
+density lower bound from
+`CompactReferenceMetricTensorFamilyData.volume_le`, using the proved
+`inverseChart_hausdorffChartDensityEquality`. Combined with its uniform metric
+upper bound and the three-dimensional determinant inequality, this should
+produce `UniformClosedRiemannianMetricLowerComparison` and remove the last new
+nondegeneration input. In parallel mathematical terms, the independent hard
+frontiers remain classified-model coverage of all pointed rescalings and
+Cartan successor-equality persistence needed for a total developing map.
 
 ## Completed Bounded Deployment Exercise
 
