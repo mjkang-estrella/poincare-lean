@@ -26477,6 +26477,21 @@ theorem ExtinctionSurgeryTraceRealizationSource.eventIndex_injective
   apply Fin.ext
   simpa only [source.eventIndex_eq] using h
 
+/-- A finite event prefix through a terminal index always contains at least
+its zeroth trace stage. -/
+theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Nonempty traceStage :=
+  ⟨source.stageEventIndex.symm
+    ⟨0, Nat.zero_lt_succ source.terminalEventIndex⟩⟩
+
 /-- Consecutive realized trace stages occur at strictly increasing surgery times. -/
 theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt
     {M : Type u} [TopologicalSpace M] [T2Space M]
@@ -26572,6 +26587,28 @@ theorem extinction_surgery_trace_realization_of_reconstruction
   exact
     ⟨data.traceStage, ⟨data.finiteTraceStage⟩,
       data.realization⟩
+
+/-- A reconstructed surgery trace exposes the actual package-backed trace
+source, together with a finite nonempty stage index. -/
+theorem extinction_surgery_trace_source_of_reconstruction
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (surgeryTrace :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) :
+    ∃ traceStage : Type u,
+      Nonempty (Fintype traceStage) ∧
+        Nonempty traceStage ∧
+          Nonempty
+            (ExtinctionSurgeryTraceRealizationSource
+              M extinction decomposition traceStage) := by
+  rcases surgeryTrace.data with ⟨data⟩
+  rcases data.realization.source with ⟨source⟩
+  exact
+    ⟨data.traceStage, ⟨data.finiteTraceStage⟩,
+      source.traceStage_nonempty, ⟨source⟩⟩
 
 /--
 Named production payload for the final homeomorphism to the standard 3-sphere.
