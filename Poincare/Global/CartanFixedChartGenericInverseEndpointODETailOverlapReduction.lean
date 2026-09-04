@@ -983,6 +983,40 @@ def GenericInverseEndpointODEVelocityBudgetProvider
         ‖fixedToAnchorVelocity x₀ (x, w)‖ <
           P.time * P.velocityRadius
 
+/-- The final fixed-chart Cartan obligation. For each retained endpoint input,
+choose a preferred geodesic package whose time-radius product contains the
+transported velocity. Selector-domain membership is no longer stored. -/
+def GenericInverseEndpointODEPreferredVelocityBudgetProvider
+    (C : FixedChartAnchorEndpointPackage g x₀) : Prop :=
+  ∀ (x : M) (w : E)
+      (_hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors),
+    (extChartAt I x₀ x, w) ∈
+      C.restrictToFixedAnchorCutoffOne.endpoint.source →
+    (x, fixedToAnchorVelocity x₀ (x, w)) ∈
+      (genericFamily g).targetLocus →
+      ∃ P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x,
+        ‖fixedToAnchorVelocity x₀ (x, w)‖ <
+          P.time * P.velocityRadius
+
+/-- Once the endpoint source has been restricted to the selector's initial
+ball, endpoint-source membership supplies the selector-domain half of the
+older velocity-budget provider automatically. -/
+theorem restrictToSelectorInitialBall_genericInverseEndpointODEVelocityBudgetProvider_of_preferredVelocityBudget
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (hbudget : GenericInverseEndpointODEPreferredVelocityBudgetProvider
+      C.restrictToSelectorInitialBall) :
+    C.restrictToSelectorInitialBall.GenericInverseEndpointODEVelocityBudgetProvider := by
+  intro x w hx hw htarget
+  rcases hbudget x w hx hw htarget with ⟨P, hvelocity⟩
+  refine ⟨P, ?_, hvelocity⟩
+  have hw' : (extChartAt I x₀ x, w) ∈
+      C.restrictToSelectorInitialBall.endpoint.source := by
+    simpa only [restrictToFixedAnchorCutoffOne_endpoint] using hw
+  have hselector :=
+    C.restrictToSelectorInitialBall_endpoint_source_selectorInitial_mem hw'
+  simpa only [restrictToFixedAnchorCutoffOne_time,
+    restrictToFixedAnchorCutoffOne_selector] using hselector
+
 /-- Reparameterizing each unscaled preferred package at `C.time` converts the
 velocity-budget provider into the existing admissibility provider. -/
 theorem genericInverseEndpointODEAdmissibilityProvider_of_velocityBudget
@@ -1098,6 +1132,33 @@ theorem exists_fixedChartAnchorEndpointPackage_with_genericInverseEndpointAgreem
     ⟨C, hprotectedFixed⟩
   exact ⟨C, C.genericInverseEndpointAgreement_of_velocityBudget
     hprotectedFixed⟩
+
+/-- A protected package, restricted to the selector's initial source ball,
+reaches generic inverse-endpoint agreement from the preferred-trajectory
+time-radius budget alone. This is the exact remaining fixed-chart Cartan
+obligation after the domain and continuation reductions. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_genericInverseEndpointAgreement_of_preferredVelocityBudget
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      C.GenericInverseEndpointODEPreferredVelocityBudgetProvider →
+        C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement := by
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_fixedSourceChartCutoff_protectedInnerBall
+        g x₀ with
+    ⟨C, hprotectedFixed⟩
+  let D := C.restrictToSelectorInitialBall
+  refine ⟨D, ?_⟩
+  intro hbudget
+  have hprotectedD :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          D.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀ := by
+    simpa only [D, restrictToSelectorInitialBall,
+      restrictEndpointSource_selector] using hprotectedFixed
+  exact D.genericInverseEndpointAgreement_of_velocityBudget hprotectedD
+    (C.restrictToSelectorInitialBall_genericInverseEndpointODEVelocityBudgetProvider_of_preferredVelocityBudget
+      hbudget)
 
 end FixedChartAnchorEndpointPackage
 end CartanSourceExponentialLocalFamilyTransport
