@@ -15,7 +15,7 @@ not required.
 noncomputable section
 
 open Bundle Function Set
-open scoped Manifold ContDiff Topology
+open scoped Manifold ContDiff NNReal Topology
 
 universe u v
 
@@ -172,6 +172,29 @@ theorem exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_bounded
     gt data
       (isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_bounded
         gt hequicontinuous hpointwiseBounded)
+    gref c hLower
+
+/-- Uniform spatial derivative bounds for every scalar third-jet profile slot,
+bounded values at the zero coordinate, and one intrinsic lower metric
+comparison give the global covariant-Ricci derivative bound.  The derivative
+bound on a `third` slot is the explicit fourth-spatial-jet input. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_fderiv_bounded_and_closedMetricLower
+    {J : Type v} (gt : J → G)
+    (data : FiniteFixedAnchorCutoffOneChartCover 3 M)
+    (hfderivBounded : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      ∃ C : ℝ≥0, ∀ (t : J) (z : E),
+        ‖fderiv ℝ
+          (fun w : E ↦ metricEntryThirdJetProfile (gt t) slot w) z‖₊ ≤ C)
+    (hzeroBounded : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Bornology.IsBounded (Set.range
+        (fun t : J ↦ metricEntryThirdJetProfile (gt t) slot (0 : E))))
+    (gref : G) (c : ℝ)
+    (hLower : UniformClosedRiemannianMetricLowerComparison gref gt c) :
+    ∃ D : ℝ, UniformCovariantRicciDerivativeNormBound gt D :=
+  exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_closedMetricLower
+    gt data
+      (isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_fderiv_bounded
+        gt hfderivBounded hzeroBounded)
     gref c hLower
 
 end Poincare

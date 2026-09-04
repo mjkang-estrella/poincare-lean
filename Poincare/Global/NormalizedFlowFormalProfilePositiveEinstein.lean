@@ -203,6 +203,65 @@ noncomputable def ofComponentwiseBoundedAscoliFormalMetricThirdJetProfilesOfComp
     compactTensorReferenceControl.referenceMetric c hFlowLower
     scalarSubordinateGeometry
 
+/-- Uniform spatial `fderiv` bounds for all scalar third-jet profile slots and
+bounded zero-coordinate values produce the positive-Einstein analytic package.
+Compact tensor-family control supplies the lower metric comparison.  The
+`fderiv` bound for every `third` slot remains an explicit fourth-spatial-jet
+hypothesis. -/
+noncomputable def ofComponentwiseFDerivBoundedFormalMetricThirdJetProfilesOfCompactTensorControl
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hfderivBounded : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      ∃ C : ℝ≥0, ∀ (t : Ici (0 : ℝ)) (z : ClosedSmoothModel 3),
+        ‖fderiv ℝ
+          (fun w : ClosedSmoothModel 3 ↦
+            metricEntryThirdJetProfile (reaction.gt t.1) slot w) z‖₊ ≤ C)
+    (hzeroBounded : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Bornology.IsBounded (Set.range
+        (fun t : Ici (0 : ℝ) ↦
+          metricEntryThirdJetProfile
+            (reaction.gt t.1) slot (0 : ClosedSmoothModel 3))))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y => (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  let atlas : FiniteFixedAnchorCutoffOneChartCover 3 M :=
+    Classical.choice (exists_finiteFixedAnchorCutoffOneChartCover
+      (n := 3) (M := M))
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : CompactSpace reaction.K := reaction.compactSpaceK
+  letI : Nonempty reaction.K := ⟨reaction.parameter ⟨0, by simp⟩⟩
+  let hExists :=
+    compactTensorReferenceControl.exists_uniformMetricLowerComparison
+  let c : ℝ := Classical.choose hExists
+  have hFamilyLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric reaction.metric c :=
+    Classical.choose_spec hExists
+  have hFlowLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric
+        (fun t : Ici (0 : ℝ) => reaction.gt t.1) c := by
+    refine ⟨hFamilyLower.1, ?_⟩
+    intro t x w
+    change c * compactTensorReferenceControl.referenceMetric.inner x w w ≤
+      (reaction.gt t.1).inner x w w
+    rw [← reaction.realizesFlow t]
+    exact hFamilyLower.2 (reaction.parameter t) x w
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_fderiv_bounded_and_closedMetricLower
+        (fun t : Ici (0 : ℝ) => reaction.gt t.1) atlas
+        hfderivBounded hzeroBounded
+        compactTensorReferenceControl.referenceMetric c hFlowLower
+  · exact scalarSubordinateGeometry
+
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
 
 /-- The compact-tensor formal-profile constructor is stable under a later
@@ -282,6 +341,87 @@ noncomputable def
   exact
     NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.ofComponentwiseAscoliFormalMetricThirdJetProfilesOfCompactTensorControl
       reaction compactTensorReferenceControl hequicontinuous hpointwiseCompact
+      scalarSubordinateGeometry
+
+/-- The quantitative formal-profile constructor is stable under a later
+choice of smooth structure on a fixed topological target.  Its third-slot
+`fderiv` hypothesis remains the explicit fourth-spatial-jet bound. -/
+noncomputable def
+    fixedTargetNormalizedFlowSphereCompactReactionDecayPositiveEinsteinAnalyticData3_of_componentwiseFDerivBoundedFormalMetricThirdJetProfilesOfCompactTensorControl
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [CompactSpace M] [SimplyConnectedSpace M]
+    (reaction :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+            M)
+    (compactTensorReferenceControl :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+              M := reaction
+          letI : TopologicalSpace reactionData.K :=
+            reactionData.topologicalSpaceK
+          CompactReferenceMetricTensorFamilyData
+            reactionData.K reactionData.metric)
+    (hfderivBounded :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+              M := reaction
+          ∀ slot : MetricEntryThirdJetSlot 3 M,
+            ∃ C : ℝ≥0,
+              ∀ (t : Ici (0 : ℝ)) (z : ClosedSmoothModel 3),
+                ‖fderiv ℝ
+                  (fun w : ClosedSmoothModel 3 ↦
+                    metricEntryThirdJetProfile
+                      (reactionData.gt t.1) slot w) z‖₊ ≤ C)
+    (hzeroBounded :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+              M := reaction
+          ∀ slot : MetricEntryThirdJetSlot 3 M,
+            Bornology.IsBounded (Set.range
+              (fun t : Ici (0 : ℝ) ↦
+                metricEntryThirdJetProfile
+                  (reactionData.gt t.1) slot (0 : ClosedSmoothModel 3))))
+    (scalarSubordinateGeometry :
+      ∀ [ChartedSpace (ClosedSmoothModel 3) M]
+        [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+        [SecondCountableTopology M] [ConnectedSpace M],
+          letI : MeasurableSpace M := borel M
+          letI : BorelSpace M := ⟨rfl⟩
+          let reactionData :
+            NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+              M := reaction
+          (t : Ici (0 : ℝ)) →
+            FiniteSubordinateHausdorffLaplacianGeometry
+              (reactionData.gt t.1)
+              (fun y ↦ (reactionData.gt t.1).scalarAt y)) :
+    FixedTargetNormalizedFlowSphereCompactReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  intro _chartedSpace _smoothManifold _secondCountable _connected
+  letI : MeasurableSpace M := borel M
+  letI : BorelSpace M := ⟨rfl⟩
+  exact
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.ofComponentwiseFDerivBoundedFormalMetricThirdJetProfilesOfCompactTensorControl
+      reaction compactTensorReferenceControl hfderivBounded hzeroBounded
       scalarSubordinateGeometry
 
 end Poincare
