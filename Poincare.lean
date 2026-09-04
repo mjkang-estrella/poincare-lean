@@ -852,6 +852,7 @@ import Poincare.ProofProgress.TopologyPackageFields
 import Poincare.ProofProgress.TopologyDecompositionInterface
 import Poincare.ProofProgress.TopologyProductionPackageNextField
 import Poincare.ProofProgress.ExtinctionThreeSphereCoveringProjection
+import Poincare.ProofProgress.GroundedPerelmanPoincareBoundary
 import Poincare.ProofProgress.CompletionBlockerLedger
 import Poincare.ProofProgress.FullAssemblyClosure
 import Poincare.ProofProgress.FinalCertificateBoundary
