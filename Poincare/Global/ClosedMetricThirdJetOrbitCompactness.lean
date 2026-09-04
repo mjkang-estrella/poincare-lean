@@ -72,6 +72,58 @@ theorem isCompact_closedMetricThirdJetOrbitClosure_of_compact_realization
   exact hfamily.of_isClosed_subset isClosed_closure
     (closure_minimal horbit hfamily.isClosed)
 
+omit [T2Space M] in
+/-- Compactness of a metric-orbit closure in the explicit third-jet topology
+is exactly compactness of the ambient profile closure after restricting to
+profiles that are realized by actual metrics.  The intersection with the
+profile range is essential: the profile is an embedding, but its range need
+not be closed in the ambient compact-open product. -/
+theorem isCompact_closedMetricThirdJetOrbitClosure_iff_profileClosure_inter_range
+    {I : Type v} (gt : I → G) :
+    letI : TopologicalSpace G :=
+      closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+    IsCompact (closure (Set.range gt)) ↔
+      IsCompact
+        (closure
+            (Set.range
+              (metricEntryThirdJetProfile (n := n) (M := M) ∘ gt)) ∩
+          Set.range (metricEntryThirdJetProfile (n := n) (M := M))) := by
+  letI : TopologicalSpace G :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+  let profile := metricEntryThirdJetProfile (n := n) (M := M)
+  have hprofile : Topology.IsEmbedding profile :=
+    metricEntryThirdJetProfile_isEmbedding (n := n) (M := M)
+  rw [hprofile.isCompact_iff]
+  rw [hprofile.closure_eq_preimage_closure_image]
+  rw [Set.image_preimage_eq_inter_range]
+  simp only [profile, Set.range_comp]
+
+omit [T2Space M] in
+/-- Ambient compactness of the profile-orbit closure descends to compactness
+of the metric-orbit closure when every profile limit is realized by an actual
+metric.  The realized-limit hypothesis cannot be dropped merely because the
+profile map is a topological embedding: an embedded range need not be closed. -/
+theorem isCompact_closedMetricThirdJetOrbitClosure_of_compact_profileClosure
+    {I : Type v} (gt : I → G)
+    (hProfileCompact :
+      IsCompact
+        (closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := n) (M := M) ∘ gt))))
+    (hLimitsRealized :
+      closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := n) (M := M) ∘ gt)) ⊆
+        Set.range (metricEntryThirdJetProfile (n := n) (M := M))) :
+    letI : TopologicalSpace G :=
+      closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+    IsCompact (closure (Set.range gt)) := by
+  letI : TopologicalSpace G :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+  rw [isCompact_closedMetricThirdJetOrbitClosure_iff_profileClosure_inter_range
+    (n := n) (M := M) gt]
+  rwa [inter_eq_left.mpr hLimitsRealized]
+
 section DimensionThree
 
 variable [SecondCountableTopology M]
