@@ -119,6 +119,195 @@ private theorem geodesicGermChartSolution_eventually_hasDerivAt_fixedTime
   filter_upwards [hI] with t ht
   exact hspec.2.1 t ht
 
+/-- One fixed coordinate chart admits a uniform PL geodesic flow for every
+initial position-velocity state in a genuine closed neighborhood of its
+center.  All trajectories remain in one state ball and their position
+components remain in any prescribed neighborhood of the center coordinate.
+Choosing the fixed chart target gives target retention.  Velocity homogeneity
+holds at each retained initial position. -/
+theorem exists_uniform_local_geodesic_chart_flow_variable_initialState_with_position_mem_neighborhood
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M)
+    {U : Set E} (hU : U ∈ 𝓝 (extChartAt I x₀ x₀)) :
+    ∃ r : ℝ≥0, 0 < r ∧ ∃ ε : ℝ, 0 < ε ∧ ∃ a : ℝ≥0,
+      ∃ α : E × E → ℝ → E × E,
+        ∀ p ∈ closedBall (extChartAt I x₀ x₀, (0 : E)) (r : ℝ),
+          α p 0 = p ∧
+          (∀ t ∈ Icc (-ε) ε,
+            HasDerivWithinAt (α p)
+              (geodesicFlowField (chartChristoffelField g x₀) (α p t))
+              (Icc (-ε) ε) t) ∧
+          (∀ t ∈ Icc (-ε) ε,
+            α p t ∈
+              closedBall (extChartAt I x₀ x₀, (0 : E)) (a : ℝ)) ∧
+          (∀ t ∈ Icc (-ε) ε, (α p t).1 ∈ U) ∧
+          ∀ s ∈ Icc (0 : ℝ) 1, ∀ σ ∈ Icc (-ε) ε,
+            α (p.1, s • p.2) σ =
+              ((α p (s * σ)).1, s • (α p (s * σ)).2) := by
+  let p₀ : E × E := (extChartAt I x₀ x₀, 0)
+  let z₀ : E := extChartAt I x₀ x₀
+  let F : E × E → E × E :=
+    geodesicFlowField (chartChristoffelField g x₀)
+  have hflow : ContDiffAt ℝ 1 F p₀ := by
+    simpa [F, p₀] using
+      (geodesicFlowField_chartChristoffelField_contDiffAt
+        (g := g) (x₀ := x₀) (v₀ := (0 : E)))
+  rcases IsPicardLindelof.of_contDiffAt_one hflow with
+    ⟨ε₀, hε₀, a₀, r₀, L, K, hr₀, hpl₀⟩
+  rcases Metric.nhds_basis_closedBall.mem_iff.mp (by simpa [z₀] using hU) with
+    ⟨ρ, hρpos, hρsub⟩
+  have ha₀_pos : 0 < (a₀ : ℝ) := by
+    have hpl := hpl₀ (0 : ℝ)
+    have hnonneg :
+        0 ≤ (L : ℝ) *
+          max ((0 : ℝ) + ε₀ - (0 : ℝ)) ((0 : ℝ) - ((0 : ℝ) - ε₀)) := by
+      exact mul_nonneg (NNReal.coe_nonneg L)
+        (le_max_of_le_left (by linarith))
+    have hsub_nonneg : 0 ≤ (a₀ : ℝ) - (r₀ : ℝ) :=
+      hnonneg.trans hpl.mul_max_le
+    have hr₀_real : 0 < (r₀ : ℝ) := by exact_mod_cast hr₀
+    linarith
+  let targetRadius : ℝ≥0 := ⟨ρ / 2, (half_pos hρpos).le⟩
+  let a : ℝ≥0 := min a₀ targetRadius
+  have htargetRadius_pos : 0 < targetRadius := by
+    change (0 : ℝ) < ρ / 2
+    exact half_pos hρpos
+  have ha_pos : 0 < a := by
+    dsimp [a]
+    exact lt_min (by exact_mod_cast ha₀_pos) htargetRadius_pos
+  let r : ℝ≥0 := a / 2
+  have hr_pos : 0 < r := by
+    dsimp [r]
+    exact half_pos ha_pos
+  have hr_lt : r < a := by
+    dsimp [r]
+    exact half_lt_self ha_pos
+  rcases (hpl₀ (0 : ℝ)).exists_shrink_radius hε₀ (a' := a) (r' := r)
+      (by dsimp [a]; exact min_le_left _ _) hr_lt with
+    ⟨ε, hε, hpl⟩
+  rcases
+      hpl.exists_forall_mem_closedBall_eq_forall_mem_Icc_hasDerivWithinAt_mem_closedBall
+    with ⟨α, hα⟩
+  refine ⟨r, hr_pos, ε, hε, a, α, ?_⟩
+  intro p hp
+  have hspec := hα p (by simpa [p₀] using hp)
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · simpa [p₀] using hspec.1
+  · intro t ht
+    have ht' : t ∈ Icc (0 - ε) (0 + ε) := by
+      simpa only [zero_sub, zero_add] using ht
+    simpa [F, p₀] using hspec.2.1 t ht'
+  · intro t ht
+    have ht' : t ∈ Icc (0 - ε) (0 + ε) := by
+      simpa only [zero_sub, zero_add] using ht
+    simpa [p₀] using hspec.2.2 t ht'
+  · intro t ht
+    have hmem : α p t ∈ closedBall (z₀, (0 : E)) (a : ℝ) := by
+      have ht' : t ∈ Icc (0 - ε) (0 + ε) := by
+        simpa only [zero_sub, zero_add] using ht
+      simpa [p₀, z₀] using hspec.2.2 t ht'
+    have hpos_mem : (α p t).1 ∈ closedBall z₀ (a : ℝ) := by
+      have hprod : α p t ∈
+          closedBall z₀ (a : ℝ) ×ˢ closedBall (0 : E) (a : ℝ) := by
+        simpa [closedBall_prod_same] using hmem
+      exact hprod.1
+    apply hρsub
+    have ha_le_half : (a : ℝ) ≤ ρ / 2 := by
+      have ha_le_target : a ≤ targetRadius := by
+        dsimp [a]
+        exact min_le_right _ _
+      exact_mod_cast ha_le_target
+    exact closedBall_subset_closedBall (by linarith) hpos_mem
+  · intro s hs σ hσ
+    have hp_prod : p ∈
+        closedBall z₀ (r : ℝ) ×ˢ closedBall (0 : E) (r : ℝ) := by
+      simpa [p₀, z₀, closedBall_prod_same] using hp
+    have hps_prod : (p.1, s • p.2) ∈
+        closedBall z₀ (r : ℝ) ×ˢ closedBall (0 : E) (r : ℝ) :=
+      ⟨hp_prod.1, smul_mem_closedBall_zero_of_mem_Icc hs hp_prod.2⟩
+    have hps : (p.1, s • p.2) ∈ closedBall p₀ (r : ℝ) := by
+      simpa [p₀, z₀, closedBall_prod_same] using hps_prod
+    have hspec_s := hα (p.1, s • p.2) (by simpa [p₀] using hps)
+    let γ : ℝ → E × E := α p
+    let η : ℝ → E × E := fun τ =>
+      ((γ (s * τ)).1, s • (γ (s * τ)).2)
+    have hmaps : MapsTo (fun τ : ℝ => s * τ) (Icc (-ε) ε) (Icc (-ε) ε) :=
+      fun τ hτ => mul_mem_Icc_of_mem_Icc_zero_one hs hτ
+    have hηder : ∀ τ ∈ Icc (-ε) ε, HasDerivWithinAt η
+        (F (η τ)) (Icc (-ε) ε) τ := by
+      intro τ hτ
+      have hγτ : HasDerivWithinAt γ (F (γ (s * τ)))
+          (Icc (-ε) ε) (s * τ) := by
+        have hτ' : s * τ ∈ Icc (0 - ε) (0 + ε) := by
+          simpa only [zero_sub, zero_add] using hmaps hτ
+        simpa [γ, F, p₀, zero_sub, zero_add] using hspec.2.1 (s * τ) hτ'
+      have hreparam : HasDerivWithinAt (fun τ' : ℝ => γ (s * τ'))
+          (s • F (γ (s * τ))) (Icc (-ε) ε) τ := by
+        simpa [Function.comp_def] using
+          hγτ.scomp τ
+            ((hasDerivAt_const_mul (x := τ) s).hasDerivWithinAt) hmaps
+      have hpos : HasDerivWithinAt (fun τ' : ℝ => (γ (s * τ')).1)
+          (s • (γ (s * τ)).2) (Icc (-ε) ε) τ := by
+        have hfst := hreparam.hasFDerivWithinAt.fst.hasDerivWithinAt
+        simpa [F, geodesicFlowField] using hfst
+      have hvel_reparam :
+          HasDerivWithinAt (fun τ' : ℝ => (γ (s * τ')).2)
+            (s • (-(chartChristoffelField g x₀ (γ (s * τ)).1)
+              (γ (s * τ)).2 (γ (s * τ)).2))
+            (Icc (-ε) ε) τ := by
+        have hsnd := hreparam.hasFDerivWithinAt.snd.hasDerivWithinAt
+        simpa [F, geodesicFlowField] using hsnd
+      have hvel : HasDerivWithinAt
+          (fun τ' : ℝ => s • (γ (s * τ')).2)
+          (-(chartChristoffelField g x₀ (γ (s * τ)).1
+            (s • (γ (s * τ)).2) (s • (γ (s * τ)).2)))
+          (Icc (-ε) ε) τ := by
+        simpa [smul_smul] using hvel_reparam.const_smul s
+      have hprod := hpos.prodMk hvel
+      simpa [η, F, geodesicFlowField] using hprod
+    have hηmem : ∀ τ ∈ Icc (-ε) ε,
+        η τ ∈ closedBall p₀ (a : ℝ) := by
+      intro τ hτ
+      have hγmem : γ (s * τ) ∈
+          closedBall (z₀, (0 : E)) (a : ℝ) := by
+        have hτ' : s * τ ∈ Icc (0 - ε) (0 + ε) := by
+          simpa only [zero_sub, zero_add] using hmaps hτ
+        simpa [γ, p₀, z₀] using hspec.2.2 (s * τ) hτ'
+      have hprod : γ (s * τ) ∈
+          closedBall z₀ (a : ℝ) ×ˢ closedBall (0 : E) (a : ℝ) := by
+        simpa [closedBall_prod_same] using hγmem
+      have hηprod : η τ ∈
+          closedBall z₀ (a : ℝ) ×ˢ closedBall (0 : E) (a : ℝ) :=
+        ⟨hprod.1, smul_mem_closedBall_zero_of_mem_Icc hs hprod.2⟩
+      simpa [η, p₀, z₀, closedBall_prod_same] using hηprod
+    have hη0 : η 0 = (p.1, s • p.2) := by
+      simp [η, γ, hspec.1]
+    have hsame₀ : α (p.1, s • p.2) 0 = η 0 := by
+      rw [hspec_s.1, hη0]
+    have heq : EqOn (α (p.1, s • p.2)) η (Icc (-ε) ε) := by
+      have heq_raw : EqOn (α (p.1, s • p.2)) η
+          (Icc (0 - ε) (0 + ε)) :=
+        hpl.eqOn_Icc_of_mem_closedBall
+          (hα := by
+            intro τ hτ
+            simpa [F, p₀] using hspec_s.2.1 τ hτ)
+          (hαmem := by
+            intro τ hτ
+            simpa [p₀] using hspec_s.2.2 τ hτ)
+          (hβ := by
+            intro τ hτ
+            have hτ' : τ ∈ Icc (-ε) ε := by
+              simpa only [zero_sub, zero_add] using hτ
+            simpa only [zero_sub, zero_add] using hηder τ hτ')
+          (hβmem := by
+            intro τ hτ
+            have hτ' : τ ∈ Icc (-ε) ε := by
+              simpa only [zero_sub, zero_add] using hτ
+            exact hηmem τ hτ')
+          hsame₀
+      intro τ hτ
+      exact heq_raw (by simpa only [zero_sub, zero_add] using hτ)
+    simpa [η, γ] using heq hσ
+
 /--
 Target-controlled local geodesic chart flow with closed-interval homogeneity.
 
