@@ -669,6 +669,85 @@ to connect the concrete compact metric-family construction to
 construction with the exact componentwise `C^{0,3}` data. Do not infer this
 record from compactness or from regularity of `gt` only.
 
+## 2026-09-03 Explicit C0,3 Orbit Compactness Checkpoint
+
+The isolated integration branch `codex/formalization-until-6` advanced from
+the preceding compact-family checkpoint through proof-bearing source head
+`c5179232`. The original `main` checkout was not modified.
+
+This checkpoint replaces the previously opaque metric-topology boundary by an
+explicit scalar compact-open C0,3 topology and carries that topology through
+the normalized-flow positive-Einstein endpoint:
+
+- `e6b5431f` and `9fcd8a06` connect stored joint C3 metric entries to the
+  scalar third-jet covariant-Ricci constructor.
+- `224e039d`, `3518a7e3`, `17faa895`, and `469e738a` define and expose the
+  compact-open scalar third-jet topology, prove joint intrinsic
+  `covRicciNormSqAt` continuity on an orbit closure, and turn compactness of a
+  nonempty orbit closure into a uniform full covariant-Ricci derivative bound.
+- `ff5723b4` and `91c95958` feed that bound directly into the reaction-decay
+  positive-Einstein package and restrict the required orbit to the honest
+  forward family indexed by `Ici 0`.
+- `42f6d185` proves that the value slots recover the metric, so
+  `metricEntryThirdJetProfile` is injective and an embedding. It also proves
+  that a continuous realization from a compact parameter space has compact
+  orbit closure; continuity of the indexing map is unnecessary.
+- `754c4a78` exposes compact-realization and full scalar-profile joint-
+  continuity constructors at the positive-Einstein boundary.
+- `ae0e2cfe`, `9b9599b1`, and `0d92c260` apply componentwise
+  Arzela--Ascoli and Tychonoff in the profile target, characterize metric-orbit
+  compactness by the realized part of the profile closure, and derive the
+  uniform covariant-Ricci bound once every profile limit is realized by an
+  actual metric.
+- `58f241e9` imports the new compactness modules at the root. `c5179232`
+  supplies compact-containment and pointwise-bounded Ascoli constructors that
+  reach the established positive-Einstein analytic data for the forward flow.
+
+No global topology or T2 instance was installed on the metric type. The
+topology remains local to each theorem. Exact declaration and axiom probes for
+the new chain report only `propext`, `Classical.choice`, and `Quot.sound`. The
+missing Mathlib Ascoli object was repaired with a targeted 927-job build.
+
+At `c5179232`, a serialized full `lake build` completed all 4,082 targets.
+Root `Poincare.lean` elaboration, the interface audit, semantic-surface audit,
+all 6,008 theorem-contract checks, and the axiom audit passed. The root-import
+audit still fails on exactly the same three pre-existing direct-import gaps:
+
+```text
+Poincare.Global.CartanFixedChartGenericInverseEndpointODETailOverlapReduction
+Poincare.Global.CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction
+Poincare.Global.NormalizedFlowHausdorffScalarVariationJointContinuityReduction
+```
+
+An exact `import Poincare` probe still reports
+`Unknown identifier Poincare.poincare_conjecture`; this checkpoint does not
+claim completion.
+
+The remaining compactness obligation is now precise. Componentwise
+equicontinuity and pointwise bounds make the ambient C0,3 profile closure
+compact, but they do not prove that a limit profile is a smooth positive-
+definite metric. The forward endpoint therefore retains
+`hForwardProfileLimitsRealized`. This premise cannot be inferred from the
+embedding alone: finite C0,3 limits can lose smoothness, and positive
+definiteness can degenerate without a uniform lower bound. The alternative
+compact-parameter route retains the equally explicit requirement that
+`reaction.metric` be continuous in the full profile topology; the reaction
+record's local real-time C3 field does not imply continuity of its arbitrary
+extension over `reaction.K`.
+
+The exact first action for the next proof cycle is to freeze one theorem with
+conclusion
+
+```text
+closure (Set.range (metricEntryThirdJetProfile ∘ forward)) ⊆
+  Set.range metricEntryThirdJetProfile
+```
+
+for `forward t = reaction.gt t.1`, and prove it from explicit uniform higher-
+regularity and two-sided metric nondegeneracy hypotheses. If the repository
+does not yet supply those estimates, stop with their exact Lean types rather
+than weakening or assuming the realized-limit conclusion.
+
 ## Executable Harness Boundary
 
 The primary path is:
