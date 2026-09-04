@@ -1,4 +1,6 @@
+import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Topology.MetricSpace.ProperSpace.Real
+import Mathlib.Topology.MetricSpace.UniformConvergence
 import Mathlib.Topology.UniformSpace.Ascoli
 import Poincare.Global.ClosedMetricThirdJetTopology
 
@@ -16,7 +18,7 @@ in `ClosedSmoothRiemannianMetric n M`.
 noncomputable section
 
 open Bundle Filter Function Set Topology
-open scoped Manifold ContDiff Topology UniformConvergence
+open scoped Manifold ContDiff NNReal Topology UniformConvergence
 
 universe u v
 
@@ -31,6 +33,65 @@ local notation "E" => ClosedSmoothModel n
 local notation "G" => ClosedSmoothRiemannianMetric n M
 local notation "S" => MetricEntryThirdJetSlot n M
 local notation "P" => MetricEntryThirdJetProfileTarget n M
+
+/-- Every scalar metric third-jet profile slot is differentiable in its
+model-space coordinate.  For the third-jet slot, this uses the fourth spatial
+derivative supplied by `anchorBlendedMetricFamily_contDiff_four`. -/
+theorem metricEntryThirdJetProfile_differentiable
+    (g : G) (slot : S) :
+    Differentiable ℝ
+      (fun z : E ↦ metricEntryThirdJetProfile g slot z) := by
+  cases slot with
+  | value x i j =>
+      exact (((anchorBlendedMetricFamily_contDiff_four
+        (fun h : G ↦ h) x g).clm_apply contDiff_const).clm_apply
+          contDiff_const).differentiable (by norm_num)
+  | first x u i j =>
+      let A := anchorBlendedMetricFamily (fun h : G ↦ h) x g
+      have hA : ContDiff ℝ 4 A :=
+        anchorBlendedMetricFamily_contDiff_four (fun h : G ↦ h) x g
+      have hD : ContDiff ℝ 3 (fun z ↦ fderiv ℝ A z u) := by
+        simpa [A] using (hA.contDiff_fderiv_apply (m := 3) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 3 (fun _ : E ↦ u)))
+      exact ((hD.clm_apply contDiff_const).clm_apply contDiff_const).differentiable
+        (by norm_num)
+  | second x u a i j =>
+      let A := anchorBlendedMetricFamily (fun h : G ↦ h) x g
+      have hA : ContDiff ℝ 4 A :=
+        anchorBlendedMetricFamily_contDiff_four (fun h : G ↦ h) x g
+      have hD₁ : ContDiff ℝ 3 (fun z ↦ fderiv ℝ A z u) := by
+        simpa [A] using (hA.contDiff_fderiv_apply (m := 3) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 3 (fun _ : E ↦ u)))
+      have hD₂ : ContDiff ℝ 2
+          (fun z ↦ fderiv ℝ (fun y ↦ fderiv ℝ A y u) z a) := by
+        simpa [A] using (hD₁.contDiff_fderiv_apply (m := 2) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 2 (fun _ : E ↦ a)))
+      exact ((hD₂.clm_apply contDiff_const).clm_apply contDiff_const).differentiable
+        (by norm_num)
+  | third x u a b i j =>
+      let A := anchorBlendedMetricFamily (fun h : G ↦ h) x g
+      have hA : ContDiff ℝ 4 A :=
+        anchorBlendedMetricFamily_contDiff_four (fun h : G ↦ h) x g
+      have hD₁ : ContDiff ℝ 3 (fun z ↦ fderiv ℝ A z u) := by
+        simpa [A] using (hA.contDiff_fderiv_apply (m := 3) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 3 (fun _ : E ↦ u)))
+      have hD₂ : ContDiff ℝ 2
+          (fun z ↦ fderiv ℝ (fun y ↦ fderiv ℝ A y u) z a) := by
+        simpa [A] using (hD₁.contDiff_fderiv_apply (m := 2) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 2 (fun _ : E ↦ a)))
+      have hD₃ : ContDiff ℝ 1
+          (fun z ↦ fderiv ℝ
+            (fun y ↦ fderiv ℝ (fun w ↦ fderiv ℝ A w u) y a) z b) := by
+        simpa [A] using (hD₂.contDiff_fderiv_apply (m := 1) (by norm_num)).comp
+          (contDiff_id.prodMk
+            (contDiff_const : ContDiff ℝ 1 (fun _ : E ↦ b)))
+      exact ((hD₃.clm_apply contDiff_const).clm_apply contDiff_const).differentiable
+        (by norm_num)
 
 private theorem isCompact_closure_range_metricEntryThirdJetProfile_component
     {I : Type v} (gt : I → G) (slot : S)
@@ -137,5 +198,73 @@ theorem isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_boun
   · exact (hpointwiseBounded slot z).isCompact_closure
   · intro t
     exact subset_closure ⟨t, rfl⟩
+
+/-- Uniform bounds on the spatial derivative of each scalar profile slot,
+together with bounded values at the zero coordinate, imply compactness of the
+profile orbit closure.  The bound is uniform over the family and the whole
+model space for each slot.  In a `third` slot it is a genuine fourth-spatial-
+jet estimate, since the bounded `fderiv` differentiates the third-jet profile.
+
+The derivative bound gives a common Lipschitz constant for the slot family.
+The mean-value estimate then transports boundedness from zero to every model-
+space coordinate, so the componentwise bounded Ascoli theorem applies. -/
+theorem isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_fderiv_bounded
+    {I : Type v} (gt : I → G)
+    (hfderivBounded : ∀ slot : S, ∃ C : ℝ≥0, ∀ (t : I) (z : E),
+      ‖fderiv ℝ
+        (fun w : E ↦ metricEntryThirdJetProfile (gt t) slot w) z‖₊ ≤ C)
+    (hzeroBounded : ∀ slot : S,
+      Bornology.IsBounded (Set.range
+        (fun t : I ↦ metricEntryThirdJetProfile (gt t) slot (0 : E)))) :
+    IsCompact (closure (Set.range
+      (metricEntryThirdJetProfile (n := n) (M := M) ∘ gt))) := by
+  apply isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_bounded
+  · intro slot
+    obtain ⟨C, hC⟩ := hfderivBounded slot
+    exact (LipschitzWith.uniformEquicontinuous
+      (fun t : I ↦
+        (metricEntryThirdJetProfile (gt t) slot : E → ℝ)) C
+      (fun t ↦ lipschitzWith_of_nnnorm_fderiv_le
+        (metricEntryThirdJetProfile_differentiable (gt t) slot)
+        (hC t))).equicontinuous
+  · intro slot z
+    obtain ⟨C, hC⟩ := hfderivBounded slot
+    have hlip : ∀ t : I, LipschitzWith C
+        (fun w : E ↦ metricEntryThirdJetProfile (gt t) slot w) :=
+      fun t ↦ lipschitzWith_of_nnnorm_fderiv_le
+        (metricEntryThirdJetProfile_differentiable (gt t) slot) (hC t)
+    obtain ⟨B, hB⟩ := Metric.isBounded_range_iff.mp (hzeroBounded slot)
+    rw [Metric.isBounded_range_iff]
+    refine ⟨2 * (C : ℝ) * dist z 0 + B, ?_⟩
+    intro t s
+    calc
+      dist (metricEntryThirdJetProfile (gt t) slot z)
+          (metricEntryThirdJetProfile (gt s) slot z) ≤
+        dist (metricEntryThirdJetProfile (gt t) slot z)
+            (metricEntryThirdJetProfile (gt t) slot 0) +
+          dist (metricEntryThirdJetProfile (gt t) slot 0)
+            (metricEntryThirdJetProfile (gt s) slot z) := dist_triangle _ _ _
+      _ ≤ dist (metricEntryThirdJetProfile (gt t) slot z)
+            (metricEntryThirdJetProfile (gt t) slot 0) +
+          (dist (metricEntryThirdJetProfile (gt t) slot 0)
+              (metricEntryThirdJetProfile (gt s) slot 0) +
+            dist (metricEntryThirdJetProfile (gt s) slot 0)
+              (metricEntryThirdJetProfile (gt s) slot z)) := by
+        gcongr
+        exact dist_triangle _ _ _
+      _ = dist (metricEntryThirdJetProfile (gt t) slot z)
+            (metricEntryThirdJetProfile (gt t) slot 0) +
+          dist (metricEntryThirdJetProfile (gt t) slot 0)
+            (metricEntryThirdJetProfile (gt s) slot 0) +
+          dist (metricEntryThirdJetProfile (gt s) slot 0)
+            (metricEntryThirdJetProfile (gt s) slot z) := by ring
+      _ ≤ (C : ℝ) * dist z 0 + B + (C : ℝ) * dist 0 z := by
+        gcongr
+        · exact (hlip t).dist_le_mul z 0
+        · exact hB t s
+        · exact (hlip s).dist_le_mul 0 z
+      _ = 2 * (C : ℝ) * dist z 0 + B := by
+        rw [dist_comm 0 z]
+        ring
 
 end Poincare
