@@ -26327,16 +26327,174 @@ theorem extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData
   ⟨recognizeData.homeomorphism⟩
 
 /--
-Raw finite-extinction certificate that a reconstructed topological surgery
-trace realizes a fixed post-extinction decomposition.
+Concrete source data for a finite ordered surgery trace realizing a fixed
+extinction decomposition.
+
+The chosen decomposition data and component source are the witnesses carried
+by `decomposition`. The aggregate surgery payload is the witness carried by
+that source's finite-extinction package. Trace stages enumerate an initial
+finite segment of the package's actual surgery-event indices; their times and
+regions are identified with the surgery-time payload. Consecutive stages must
+agree away from the current event region, and every decomposition component
+must occur in the trace. The final field is the remaining honest terminal
+condition: event regions after the selected finite prefix are empty.
 -/
-inductive ExtinctionSurgeryTraceRealization
+structure ExtinctionSurgeryTraceRealizationSource
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_decomposition : HasExtinctionTopologyDecomposition M extinction)
-    (_traceStage : Type u) : Prop
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (traceStage : Type u) : Type (u + 1) where
+  /-- The exact decomposition datum selected from the fixed decomposition. -/
+  decompositionData : ExtinctionTopologyDecompositionData M extinction
+  /-- The selected datum is the witness carried by `decomposition`. -/
+  decompositionData_eq :
+    decompositionData = Classical.choice decomposition.data
+  /-- Smooth structure carried by the selected decomposition realization. -/
+  smooth : IsManifold ThreeManifoldModelWithCorners 1 M
+  /-- The smooth structure is the one selected by the realization witness. -/
+  smooth_eq :
+    smooth = Classical.choose decompositionData.realization.source
+  /-- Concrete package-backed component source carried by the realization. -/
+  decompositionSource :
+    @ExtinctionTopologyDecompositionRealizationSource
+      M _ _ _ _ _ smooth extinction decompositionData.componentIndex
+  /-- The component source is the witness carried by the realization. -/
+  decompositionSource_eq :
+    HEq decompositionSource
+      (Classical.choice
+        (Classical.choose_spec decompositionData.realization.source))
+  /-- Aggregate surgery payload selected from the decomposition's package. -/
+  surgeryPayloadSource :
+    @RicciFlowWithSurgeryPayloadSource
+      decompositionSource.n M _ _ smooth
+  /-- The surgery payload is the witness carried by the package's surgery interface. -/
+  surgeryPayloadSource_eq_package :
+    surgeryPayloadSource =
+      Classical.choice
+        (ricci_flow_with_surgery_of_surgery_package
+          decompositionSource.package).ricciFlowWithSurgeryPayload_source
+  /-- The aggregate surgery payload is attached to the package's analytic flow. -/
+  surgeryPayloadFlow_eq :
+    surgeryPayloadSource.flow =
+      ricci_flow_data_of_surgery_package decompositionSource.package
+  /-- Last actual surgery-event index represented by the finite trace. -/
+  terminalEventIndex : ℕ
+  /-- Trace stages enumerate exactly the event-index prefix through the terminal event. -/
+  stageEventIndex : traceStage ≃ Fin (terminalEventIndex + 1)
+  /-- Natural surgery-event index represented by each trace stage. -/
+  eventIndex : traceStage → ℕ
+  /-- Stage indices are the natural values of the finite-prefix equivalence. -/
+  eventIndex_eq :
+    ∀ stage, eventIndex stage = (stageEventIndex stage).val
+  /-- Surgery-scale parameter at which this trace is reconstructed. -/
+  scaleParameter :
+    surgeryPayloadSource.scalePayload.scaleParameterSpace
+  /-- Actual time assigned to each trace stage. -/
+  eventTime : traceStage → ℝ
+  /-- Trace times are the times stored by the package's surgery-time payload. -/
+  eventTime_eq :
+    ∀ stage,
+      eventTime stage =
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTime
+          scaleParameter (eventIndex stage)
+  /-- Actual spatial surgery-event region assigned to each trace stage. -/
+  eventRegion : traceStage → Set M
+  /-- Trace regions are the regions stored by the package's surgery-time payload. -/
+  eventRegion_eq :
+    ∀ stage,
+      eventRegion stage =
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
+          scaleParameter (eventIndex stage)
+  /-- Decomposition component represented at each stage. -/
+  stageComponent : traceStage → decompositionData.componentIndex
+  /-- Every component in the fixed decomposition occurs in the trace. -/
+  stageComponent_surjective : Function.Surjective stageComponent
+  /-- Each event region lies in the component represented at that stage. -/
+  eventRegion_subset_stageComponent :
+    ∀ stage,
+      eventRegion stage ⊆
+        (decompositionSource.componentTopologyPayload
+          (stageComponent stage)).componentSet
+  /-- Successive component stages agree away from the surgery-event region. -/
+  successor_component_agrees_off_event :
+    ∀ stage nextStage,
+      eventIndex nextStage = eventIndex stage + 1 →
+        (decompositionSource.componentTopologyPayload
+              (stageComponent nextStage)).componentSet \ eventRegion stage =
+          (decompositionSource.componentTopologyPayload
+              (stageComponent stage)).componentSet \ eventRegion stage
+  /-- No nonempty surgery-event region occurs after the terminal event. -/
+  noActiveEventAfterTerminal :
+    ∀ laterEventIndex,
+      terminalEventIndex < laterEventIndex →
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
+          scaleParameter laterEventIndex = ∅
+
+/--
+Proof-bearing certificate that a finite ordered, package-backed topological
+surgery trace realizes the fixed post-extinction decomposition.
+-/
+structure ExtinctionSurgeryTraceRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (traceStage : Type u) : Prop where
+  source : Nonempty
+    (ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+
+/-- Package concrete surgery-trace source data as a realization certificate. -/
+def ExtinctionSurgeryTraceRealization.ofSource
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    ExtinctionSurgeryTraceRealization
+      M extinction decomposition traceStage :=
+  ⟨⟨source⟩⟩
+
+/-- The natural event-index map of a realized finite trace is injective. -/
+theorem ExtinctionSurgeryTraceRealizationSource.eventIndex_injective
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Function.Injective source.eventIndex := by
+  intro stage nextStage h
+  apply source.stageEventIndex.injective
+  apply Fin.ext
+  simpa only [source.eventIndex_eq] using h
+
+/-- Consecutive realized trace stages occur at strictly increasing surgery times. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    {stage nextStage : traceStage}
+    (hnext : source.eventIndex nextStage = source.eventIndex stage + 1) :
+    source.eventTime stage < source.eventTime nextStage := by
+  letI := source.smooth
+  rw [source.eventTime_eq stage, source.eventTime_eq nextStage, hnext]
+  exact
+    source.surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTime_strictlyOrdered
+      source.scaleParameter (source.eventIndex stage)
 
 /--
 Explicit payload reconstructing the topological surgery trace represented by
