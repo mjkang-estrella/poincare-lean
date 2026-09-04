@@ -1,4 +1,4 @@
-import Poincare.Surgery
+import Poincare.ProofProgress.SurgeryPerelmanPackageLayer
 
 /-!
 # Grounded Perelman singularity control
@@ -362,6 +362,78 @@ def toHasPerelmanSingularityControl
   HasPerelmanSingularityControl.of_perelman_singularity_control_payload
     source.toPerelmanSingularityControlPayload
 
+/-- Assemble the full legacy Perelman package from the payloads retained in
+the classification chain and this source's grounded aggregate inputs. -/
+def toPerelmanSingularityControlPackage
+    (source : PerelmanSingularityControlProductionSource flow) :
+    PerelmanSingularityControlPackage flow := by
+  let classificationSource := source.classificationSource
+  let asymptoticSolitonSource := classificationSource.asymptoticSolitonSource
+  let nonnegativeSource :=
+    asymptoticSolitonSource.nonnegativeCurvatureOperatorSource
+  let structureSource := nonnegativeSource.structureTheorySource
+  let curvatureNormalizationSource :=
+    structureSource.curvatureNormalizationSource
+  let pointedSource := curvatureNormalizationSource.pointedRescalingSource
+  let limitSource := pointedSource.limitExtractionSource
+  let hamiltonSource := limitSource.hamiltonCompactnessSource
+  let collapsedSource := hamiltonSource.collapsedBallBlowupSource
+  let setupSource :=
+    collapsedSource.noLocalCollapsingContradictionSetupSource
+  let kappaSource := setupSource.kappaNoncollapsingFromReducedVolumeSource
+  let nonincreasingSource := kappaSource.reducedVolumeNonincreasingSource
+  let limitRigiditySource :=
+    nonincreasingSource.reducedVolumeLimitRigiditySource
+  let positiveLowerBoundSource :=
+    limitRigiditySource.reducedVolumePositiveLowerBoundSource
+  let rigiditySource := positiveLowerBoundSource.reducedVolumeRigiditySource
+  let derivativeSource := rigiditySource.reducedVolumeDerivativeFormulaSource
+  let definitionSource := derivativeSource.reducedVolumeDefinitionSource
+  let distanceTheorySource := definitionSource.reducedDistanceTheorySource
+  let jacobianSource := distanceTheorySource.reducedJacobianComparisonSource
+  let cutLocusSource :=
+    jacobianSource.reducedDistanceCutLocusControlSource
+  let estimatesSource := cutLocusSource.reducedDistanceEstimatesSource
+  let differentialSource :=
+    estimatesSource.reducedDistanceDifferentialInequalitySource
+  let existenceSource := differentialSource.reducedDistanceExistenceSource
+  let firstVariationSource := existenceSource.reducedLengthFirstVariationSource
+  exact
+    perelmanSingularityControlPackage_of_f_functional_payload_entropy_normalization_payload_entropy_minimizer_payload_log_sobolev_payload_conjugate_heat_payload_adjoint_heat_payload_conjugate_heat_kernel_estimates_payload_w_functional_payload_entropy_gradient_payload_entropy_first_variation_payload_entropy_monotonicity_payload_entropy_lower_bound_payload_entropy_functional_payload_reduced_length_first_variation_payload_reduced_distance_existence_payload_reduced_distance_differential_inequality_payload_reduced_distance_estimates_payload_reduced_distance_cut_locus_payload_reduced_jacobian_payload_reduced_distance_theory_payload_reduced_volume_definition_payload_reduced_volume_derivative_formula_payload_reduced_volume_rigidity_payload_reduced_volume_positive_lower_bound_payload_reduced_volume_limit_rigidity_payload_reduced_volume_nonincreasing_payload_kappa_noncollapsing_from_reduced_volume_payload_no_local_collapsing_contradiction_setup_payload_collapsed_ball_blowup_payload_hamilton_compactness_payload_ancient_kappa_solution_compactness_payload_ancient_kappa_solution_limit_extraction_payload_kappa_solution_pointed_rescaling_payload_kappa_solution_curvature_normalization_payload_kappa_solution_structure_payload_kappa_solution_nonnegative_curvature_operator_payload_kappa_solution_asymptotic_soliton_payload_canonical_neighborhood_scale_control_payload_canonical_neighborhood_stability_payload_canonical_neighborhood_persistence_across_scales_payload_canonical_neighborhood_neck_cap_dichotomy_payload_canonical_neighborhood_classification_payload_no_local_collapsing_payload_reduced_volume_monotonicity_payload_canonical_neighborhood_theorem_payload_singularity_model_classification_payload_and_components_and_control_payload
+      firstVariationSource.fFunctionalPayload
+      firstVariationSource.entropyNormalizationPayload
+      firstVariationSource.entropyMinimizerPayload
+      firstVariationSource.entropyLogSobolevPayload
+      firstVariationSource.conjugateHeatPayload
+      firstVariationSource.adjointHeatPayload
+      firstVariationSource.conjugateHeatKernelEstimatesPayload
+      firstVariationSource.wFunctionalPayload
+      firstVariationSource.entropyGradientPayload
+      firstVariationSource.entropyFirstVariationPayload
+      firstVariationSource.entropyMonotonicityPayload
+      firstVariationSource.entropyLowerBoundPropagationPayload
+      firstVariationSource.entropyFunctionalPayload
+      firstVariationSource.payload
+      existenceSource.payload differentialSource.payload estimatesSource.payload
+      cutLocusSource.payload jacobianSource.payload distanceTheorySource.payload
+      definitionSource.payload derivativeSource.payload rigiditySource.payload
+      positiveLowerBoundSource.payload limitRigiditySource.payload
+      nonincreasingSource.payload source.reducedVolumeMonotonicityPayload
+      kappaSource.payload setupSource.payload collapsedSource.payload
+      hamiltonSource.payload classificationSource.ancientCompactnessPayload
+      limitSource.payload pointedSource.payload
+      curvatureNormalizationSource.payload structureSource.payload
+      nonnegativeSource.payload asymptoticSolitonSource.payload
+      classificationSource.scaleControlPayload
+      classificationSource.stabilityPayload
+      classificationSource.persistencePayload
+      classificationSource.neckCapPayload
+      classificationSource.classificationPayload
+      classificationSource.canonicalNeighborhoodTheoremPayload
+      classificationSource.payload source.noLocalCollapsingPayload
+      source.toSingularityModelBlowupClassification
+      source.toPerelmanSingularityControlPayload
+
 end PerelmanSingularityControlProductionSource
 
 /-- Grounded singularity control retains the nonempty production source, so
@@ -393,6 +465,13 @@ theorem toHasPerelmanSingularityControl
     HasPerelmanSingularityControl flow := by
   rcases grounded.source with ⟨source⟩
   exact source.toHasPerelmanSingularityControl
+
+/-- Select the retained nonvacuous source and assemble its complete legacy
+Perelman package. -/
+noncomputable def toPerelmanSingularityControlPackage
+    (grounded : GroundedPerelmanSingularityControl flow) :
+    PerelmanSingularityControlPackage flow :=
+  (Classical.choice grounded.source).toPerelmanSingularityControlPackage
 
 /-- Grounded control contains a real high-Ricci spacetime point at a positive
 threshold. -/
