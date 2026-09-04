@@ -11027,17 +11027,26 @@ theorem completion_frontier_surgery_construction_package_of_ricci_flow_with_surg
     longTimeSurgeryContinuationPayload ricciFlowWithSurgeryPayload
 
 /--
-The next package-layer blocker is singularity-model blowup classification after
-singularity-model classification has been derived from payload data.
+The remaining blow-up-classification frontier is exact coverage of all pointed
+rescaling indices by the classified singularity models in one payload source.
 -/
-theorem completion_blocker_surgery_perelman_singularity_model_blowup_classification_current_interface
+theorem completion_frontier_surgery_perelman_blowup_classification_iff_pointed_rescaling_coverage_current_interface
     {n : ℕ∞ω}
     {M : Type uS} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
     (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
-    ¬ HasSingularityModelBlowupClassification flow :=
-  no_perelman_singularity_model_blowup_classification_of_current_interface
-    flow
+    HasSingularityModelBlowupClassification flow ↔
+      ∃ source : SingularityModelClassificationPayloadSource flow,
+        Function.Surjective
+          source.singularityModelToPointedRescalingIndex := by
+  constructor
+  · intro classification
+    exact
+      classification.singularityModelBlowupClassificationPayload_source
+  · rintro ⟨source, hCoverage⟩
+    exact
+      HasSingularityModelBlowupClassification.of_classification_payload_source
+        source hCoverage
 
 /-- The finite-extinction conclusion derivation is now constructed from the frontier. -/
 theorem completion_frontier_finite_conclusion_derivation_current_interface
