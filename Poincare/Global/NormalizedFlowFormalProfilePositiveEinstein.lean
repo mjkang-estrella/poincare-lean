@@ -1,3 +1,4 @@
+import Poincare.Global.CompactReferenceMetricTensorFamilyLowerComparison
 import Poincare.Global.MetricEntryThirdJetFormalRicciBound
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein
 
@@ -105,6 +106,102 @@ noncomputable def ofComponentwiseBoundedAscoliFormalMetricThirdJetProfiles
         (fun t : Ici (0 : ℝ) => reaction.gt t.1) atlas
         hequicontinuous hpointwiseBounded gref c hLower
   · exact scalarSubordinateGeometry
+
+/-- Compact tensor-family control supplies the uniform metric lower comparison
+needed by the componentwise formal-profile constructor. -/
+noncomputable def ofComponentwiseAscoliFormalMetricThirdJetProfilesOfCompactTensorControl
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) =>
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseCompact :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        ∃ Q : Set ℝ, IsCompact Q ∧
+          ∀ t : Ici (0 : ℝ),
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z ∈ Q)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y => (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : CompactSpace reaction.K := reaction.compactSpaceK
+  letI : Nonempty reaction.K := ⟨reaction.parameter ⟨0, by simp⟩⟩
+  let hExists :=
+    compactTensorReferenceControl.exists_uniformMetricLowerComparison
+  let c : ℝ := Classical.choose hExists
+  have hFamilyLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric reaction.metric c :=
+    Classical.choose_spec hExists
+  have hFlowLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric
+        (fun t : Ici (0 : ℝ) => reaction.gt t.1) c := by
+    refine ⟨hFamilyLower.1, ?_⟩
+    intro t x w
+    change c * compactTensorReferenceControl.referenceMetric.inner x w w ≤
+      (reaction.gt t.1).inner x w w
+    rw [← reaction.realizesFlow t]
+    exact hFamilyLower.2 (reaction.parameter t) x w
+  exact ofComponentwiseAscoliFormalMetricThirdJetProfiles
+    reaction compactTensorReferenceControl hequicontinuous hpointwiseCompact
+    compactTensorReferenceControl.referenceMetric c hFlowLower
+    scalarSubordinateGeometry
+
+/-- Compact tensor-family control also removes the explicit lower-comparison
+argument from the bounded componentwise formal-profile constructor. -/
+noncomputable def ofComponentwiseBoundedAscoliFormalMetricThirdJetProfilesOfCompactTensorControl
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) =>
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseBounded :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        Bornology.IsBounded (Set.range
+          (fun t : Ici (0 : ℝ) =>
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y => (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : CompactSpace reaction.K := reaction.compactSpaceK
+  letI : Nonempty reaction.K := ⟨reaction.parameter ⟨0, by simp⟩⟩
+  let hExists :=
+    compactTensorReferenceControl.exists_uniformMetricLowerComparison
+  let c : ℝ := Classical.choose hExists
+  have hFamilyLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric reaction.metric c :=
+    Classical.choose_spec hExists
+  have hFlowLower :
+      UniformClosedRiemannianMetricLowerComparison
+        compactTensorReferenceControl.referenceMetric
+        (fun t : Ici (0 : ℝ) => reaction.gt t.1) c := by
+    refine ⟨hFamilyLower.1, ?_⟩
+    intro t x w
+    change c * compactTensorReferenceControl.referenceMetric.inner x w w ≤
+      (reaction.gt t.1).inner x w w
+    rw [← reaction.realizesFlow t]
+    exact hFamilyLower.2 (reaction.parameter t) x w
+  exact ofComponentwiseBoundedAscoliFormalMetricThirdJetProfiles
+    reaction compactTensorReferenceControl hequicontinuous hpointwiseBounded
+    compactTensorReferenceControl.referenceMetric c hFlowLower
+    scalarSubordinateGeometry
 
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
 end Poincare
