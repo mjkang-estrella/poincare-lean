@@ -4,6 +4,7 @@ import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
 import Poincare.Global.MetricFamilyEntryThirdJetCovRicciContinuity
 import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
 import Poincare.Global.ClosedMetricThirdJetOrbitCompactness
+import Poincare.Global.ClosedMetricThirdJetAscoliOrbitCompactness
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -533,6 +534,86 @@ noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
   · exact
       exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
         (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) hOrbitCompact
+  · exact scalarSubordinateGeometry
+
+/-- Componentwise equicontinuity and pointwise compact containment of the
+forward scalar third-jet profiles supply the uniform covariant-Ricci bound.
+The premise that every forward profile limit comes from a closed smooth
+Riemannian metric is the genuine residual compactness and regularity
+obligation. -/
+noncomputable def ofComponentwiseAscoliMetricThirdJetProfiles
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) ↦
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseCompact :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        ∃ Q : Set ℝ, IsCompact Q ∧
+          ∀ t : Ici (0 : ℝ),
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z ∈ Q)
+    (hForwardProfileLimitsRealized :
+      closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := 3) (M := M) ∘
+              (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))) ⊆
+        Set.range (metricEntryThirdJetProfile (n := 3) (M := M)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_componentwise
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1)
+        hequicontinuous hpointwiseCompact hForwardProfileLimitsRealized
+  · exact scalarSubordinateGeometry
+
+/-- Componentwise equicontinuity and pointwise boundedness of the forward
+scalar third-jet profiles supply the uniform covariant-Ricci bound.  The
+premise that every forward profile limit comes from a closed smooth
+Riemannian metric remains the genuine residual compactness and regularity
+obligation. -/
+noncomputable def ofComponentwiseBoundedAscoliMetricThirdJetProfiles
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) ↦
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseBounded :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        Bornology.IsBounded (Set.range
+          (fun t : Ici (0 : ℝ) ↦
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z)))
+    (hForwardProfileLimitsRealized :
+      closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := 3) (M := M) ∘
+              (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))) ⊆
+        Set.range (metricEntryThirdJetProfile (n := 3) (M := M)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_bounded
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1)
+        hequicontinuous hpointwiseBounded hForwardProfileLimitsRealized
   · exact scalarSubordinateGeometry
 
 /-- Continuity of the compact reaction family in the explicit scalar
