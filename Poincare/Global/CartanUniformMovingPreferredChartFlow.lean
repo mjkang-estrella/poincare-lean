@@ -44,6 +44,66 @@ def UniformPreferredChartTransportNeighborhood (x₀ : M) : Prop :=
     U ∈ 𝓝 (extChartAt I x₀ x₀) ∧
       ∀ x ∈ V, U ⊆ chartTransitionCutoffGoodLocus x₀ x
 
+/-- Joint anchor-position locus underlying the uniform preferred-chart
+transport condition. -/
+def preferredChartTransportGoodLocus (x₀ : M) : Set (M × E) :=
+  {q | q.2 ∈ chartTransitionCutoffGoodLocus x₀ q.1}
+
+/-- Uniform preferred-chart transport is exactly the existence of a product
+neighborhood inside the joint good locus. -/
+theorem uniformPreferredChartTransportNeighborhood_iff_jointGoodLocus_mem_nhds
+    (x₀ : M) :
+    UniformPreferredChartTransportNeighborhood x₀ ↔
+      preferredChartTransportGoodLocus x₀ ∈
+        nhds (x₀, extChartAt I x₀ x₀) := by
+  constructor
+  · rintro ⟨V, hV, U, hU, hsub⟩
+    refine Filter.mem_of_superset (prod_mem_nhds hV hU) ?_
+    rintro ⟨x, z⟩ ⟨hx, hz⟩
+    change z ∈ chartTransitionCutoffGoodLocus x₀ x
+    exact hsub x hx hz
+  · intro hjoint
+    rcases mem_nhds_prod_iff.mp hjoint with
+      ⟨V, hV, U, hU, hproduct⟩
+    refine ⟨V, hV, U, hU, ?_⟩
+    intro x hx z hz
+    have hxz : (x, z) ∈ preferredChartTransportGoodLocus x₀ :=
+      hproduct ⟨hx, hz⟩
+    exact hxz
+
+/-- The centered anchor-coordinate pair belongs to the joint chart/cutoff
+good locus. -/
+theorem center_mem_preferredChartTransportGoodLocus (x₀ : M) :
+    (x₀, extChartAt I x₀ x₀) ∈ preferredChartTransportGoodLocus x₀ := by
+  have hxSource : x₀ ∈ (extChartAt I x₀).source :=
+    mem_extChartAt_source x₀
+  have hzTarget : extChartAt I x₀ x₀ ∈ (extChartAt I x₀).target :=
+    (extChartAt I x₀).map_source hxSource
+  have hcutoff : extChartAt I x₀ x₀ ∈
+      IsometryInstantiate.cutoffOneLocus x₀ :=
+    mem_of_mem_nhds
+      (IsometryInstantiate.cutoffOneLocus_mem_nhds_anchor x₀)
+  change
+    (((extChartAt I x₀ x₀ ∈ (extChartAt I x₀).target ∧
+        (extChartAt I x₀).symm (extChartAt I x₀ x₀) ∈
+          (extChartAt I x₀).source) ∧
+      extChartAt I x₀ x₀ ∈ IsometryInstantiate.cutoffOneLocus x₀) ∧
+    GeodesicTransport.chartTransition x₀ x₀ (extChartAt I x₀ x₀) ∈
+      IsometryInstantiate.cutoffOneLocus x₀)
+  refine ⟨⟨⟨hzTarget, ?_⟩, hcutoff⟩, ?_⟩
+  · simpa only [(extChartAt I x₀).left_inv hxSource] using hxSource
+  · simpa [GeodesicTransport.chartTransition_apply,
+      (extChartAt I x₀).left_inv hxSource] using hcutoff
+
+/-- Joint openness at the centered pair is sufficient for the exact uniform
+preferred-chart transport hypothesis. -/
+theorem uniformPreferredChartTransportNeighborhood_of_isOpen_jointGoodLocus
+    (x₀ : M)
+    (hopen : IsOpen (preferredChartTransportGoodLocus x₀)) :
+    UniformPreferredChartTransportNeighborhood x₀ :=
+  (uniformPreferredChartTransportNeighborhood_iff_jointGoodLocus_mem_nhds x₀).2
+    (hopen.mem_nhds (center_mem_preferredChartTransportGoodLocus x₀))
+
 /-- Convert a velocity in the moving preferred chart back to the fixed
 `x₀` chart at the same manifold anchor. -/
 def movingToFixedVelocity (x₀ : M) (q : M × E) : E :=
@@ -320,6 +380,29 @@ def UniformMovingToFixedVelocityBound (x₀ : M) : Prop :=
     ∀ x ∈ V,
       ‖GeodesicTransport.chartTransitionDeriv x x₀
         (extChartAt I x x)‖ ≤ K
+
+/-- Continuity at the anchor of the reverse transition derivative supplies
+the required local uniform operator bound. -/
+theorem uniformMovingToFixedVelocityBound_of_continuousAt
+    (x₀ : M)
+    (hcontinuous : ContinuousAt
+      (fun x : M => GeodesicTransport.chartTransitionDeriv x x₀
+        (extChartAt I x x)) x₀) :
+    UniformMovingToFixedVelocityBound x₀ := by
+  let D : M → E →L[ℝ] E := fun x =>
+    GeodesicTransport.chartTransitionDeriv x x₀ (extChartAt I x x)
+  let K : ℝ := ‖D x₀‖ + 1
+  have hK : 0 < K := by
+    dsimp [K]
+    positivity
+  have hnorm : ContinuousAt (fun x => ‖D x‖) x₀ := by
+    have hDcontinuous : ContinuousAt D x₀ := by
+      simpa [D] using hcontinuous
+    exact hDcontinuous.norm
+  have hlt : ∀ᶠ x in nhds x₀, ‖D x‖ < K := by
+    exact hnorm.eventually (Iio_mem_nhds (by dsimp [K]; linarith))
+  exact ⟨{x | ‖D x‖ < K}, hlt, K, hK,
+    fun x hx => by simpa [D] using hx.le⟩
 
 /-- A transported preferred-chart flow with its input parameter expressed in
 the moving preferred chart itself.  This is the full preferred trajectory
