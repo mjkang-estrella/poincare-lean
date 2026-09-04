@@ -26409,6 +26409,9 @@ structure ExtinctionSurgeryTraceRealizationSource
       eventRegion stage =
         surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
           scaleParameter (eventIndex stage)
+  /-- Every represented trace stage is an actual, nonempty surgery event. -/
+  eventRegion_nonempty :
+    ∀ stage, (eventRegion stage).Nonempty
   /-- The active component index at each surgery stage. -/
   activeComponentIndex : traceStage → Type u
   /-- Every stage has only finitely many active components. -/
@@ -26522,6 +26525,25 @@ theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty
     Nonempty traceStage :=
   ⟨source.stageEventIndex.symm
     ⟨0, Nat.zero_lt_succ source.terminalEventIndex⟩⟩
+
+/-- Every represented surgery stage has an active component because its
+nonempty event region lies in the union of the active-component family. -/
+theorem ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    (stage : traceStage) :
+    Nonempty (source.activeComponentIndex stage) := by
+  letI := source.smooth
+  obtain ⟨x, hx⟩ := source.eventRegion_nonempty stage
+  have hxUnion := source.eventRegion_subset_activeComponents stage hx
+  rcases Set.mem_iUnion.mp hxUnion with ⟨component, _hxComponent⟩
+  exact ⟨component⟩
 
 /-- The terminal active-component family is nonempty because it is equivalent
 to the fixed decomposition family, which covers the nonempty manifold. -/
