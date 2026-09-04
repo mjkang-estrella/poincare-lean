@@ -1,5 +1,5 @@
 import Poincare.Global.FiniteFixedAnchorCutoffOneChartCover
-import Poincare.Global.MetricEntryThirdJetFormalRicci
+import Poincare.Global.MetricEntryThirdJetFormalInvertibility
 import Poincare.Global.NormalizedFlowEnergyConcentrationCurvatureDerivative
 
 /-!
@@ -89,5 +89,24 @@ theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosur
     _ ≤ C i := hC i t _ hyCoordinate
     _ ≤ S := hCiS
     _ ≤ D ^ 2 := hDSq
+
+/-- A positive lower comparison on each selected fixed chart discharges the
+formal-invertibility premise and yields the same global intrinsic bound. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_anchor_lower
+    {J : Type v} (gt : J → G)
+    (data : FiniteFixedAnchorCutoffOneChartCover 3 M)
+    (hProfileCompact : IsCompact
+      (closure (Set.range
+        (metricEntryThirdJetProfile (n := 3) (M := M) ∘ gt))))
+    (c : data.Index → ℝ)
+    (hLower : ∀ i : data.Index,
+      UniformAnchorBlendedMetricLowerComparison gt (i : M)
+        (data.compactCoordinateSet i) (c i)) :
+    ∃ D : ℝ, UniformCovariantRicciDerivativeNormBound gt D :=
+  exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_formal_invertibility
+    gt data hProfileCompact
+    (fun i p hp z hz =>
+      formalProfileMetricAt_isInvertible_of_mem_closure
+        gt (i : M) (c i) (hLower i) (p := p) hp (z := z) hz)
 
 end Poincare
