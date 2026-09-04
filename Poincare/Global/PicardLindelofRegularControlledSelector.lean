@@ -151,17 +151,18 @@ end LocalRegularControlledContinuousAutonomousSelector
 
 variable [CompleteSpace X]
 
-/-- Every local `C¹` field has a selector whose invariant tube remains
-inside one neighborhood of `C¹` regularity and whose initial ball has a
-strict positive margin inside that tube. -/
-theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one
-    (F : X → X) (x₀ : X) (hF : ContDiffAt ℝ 1 F x₀) :
-    Nonempty (LocalRegularControlledContinuousAutonomousSelector F x₀) := by
+/-- Every local `C¹` field has a regular controlled selector whose protected
+inner ball lies in any prescribed neighborhood of the initial state. -/
+theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one_with_protectedInnerBall_subset
+    (F : X → X) (x₀ : X) (hF : ContDiffAt ℝ 1 F x₀)
+    {U : Set X} (hU : U ∈ nhds x₀) :
+    ∃ H : LocalRegularControlledContinuousAutonomousSelector F x₀,
+      closedBall x₀ H.protectedInnerRadius ⊆ U := by
   obtain ⟨K, s, hs, hLipS⟩ := hF.exists_lipschitzOnWith
   have hregular : {x : X | ContDiffAt ℝ 1 F x} ∈ nhds x₀ :=
     hF.eventually (by norm_num)
-  have hgood : s ∩ {x : X | ContDiffAt ℝ 1 F x} ∈ nhds x₀ :=
-    inter_mem hs hregular
+  have hgood : (s ∩ {x : X | ContDiffAt ℝ 1 F x}) ∩ U ∈ nhds x₀ :=
+    inter_mem (inter_mem hs hregular) hU
   obtain ⟨R, hR, hRsub⟩ := Metric.mem_nhds_iff.mp hgood
   let speed : ℝ := (K : ℝ) * R + ‖F x₀‖ + 1
   have hspeed : 0 < speed := by
@@ -187,12 +188,12 @@ theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_
       exact_mod_cast half_pos hR)
   have htube_to_good :
       closedBall x₀ (tube : ℝ) ⊆
-        s ∩ {x : X | ContDiffAt ℝ 1 F x} := by
+        (s ∩ {x : X | ContDiffAt ℝ 1 F x}) ∩ U := by
     apply subset_trans _ hRsub
     change closedBall x₀ (R / 2) ⊆ ball x₀ R
     exact closedBall_subset_ball (half_lt_self hR)
   have hLip : LipschitzOnWith K F (closedBall x₀ (tube : ℝ)) :=
-    hLipS.mono (fun x hx ↦ (htube_to_good hx).1)
+    hLipS.mono (fun x hx ↦ (htube_to_good hx).1.1)
   have hnorm : ∀ x ∈ closedBall x₀ (tube : ℝ), ‖F x‖ ≤ speedNN := by
     intro x hx
     change ‖F x‖ ≤ speed
@@ -223,7 +224,7 @@ theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_
     ring
   rcases hpl.exists_controlled_continuous_selector with
     ⟨alpha, halpha, hcontinuous⟩
-  refine ⟨
+  let H : LocalRegularControlledContinuousAutonomousSelector F x₀ :=
     { epsilon := epsilon
       epsilon_pos := hepsilon
       tubeRadius := tube
@@ -233,16 +234,31 @@ theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_
       initialRadius_pos := hinitial
       selector := alpha
       field_lipschitzOn := hLip
-      selector_data := ?_
-      selector_continuousOn := ?_
+      selector_data := by
+        intro x hx
+        simpa only [zero_sub, zero_add] using halpha x hx
+      selector_continuousOn := by
+        simpa only [zero_sub, zero_add] using hcontinuous
       initialRadius_lt_tubeRadius := hinitial_lt
       field_norm_le := hnorm
-      speed_time_le_margin := ?_
-      field_contDiffAt_one := fun x hx ↦ (htube_to_good hx).2 }⟩
-  · intro x hx
-    simpa only [zero_sub, zero_add] using halpha x hx
-  · simpa only [zero_sub, zero_add] using hcontinuous
-  · simpa only [sub_zero, zero_sub, neg_neg, max_self] using hpl.mul_max_le
+      speed_time_le_margin := by
+        simpa only [sub_zero, zero_sub, neg_neg, max_self] using hpl.mul_max_le
+      field_contDiffAt_one := fun x hx ↦ (htube_to_good hx).1.2 }
+  refine ⟨H, ?_⟩
+  intro x hx
+  exact (htube_to_good ((mem_closedBall.mp hx).trans
+    H.protectedInnerRadius_lt_tubeRadius.le)).2
+
+/-- Every local `C¹` field has a selector whose invariant tube remains
+inside one neighborhood of `C¹` regularity and whose initial ball has a
+strict positive margin inside that tube. -/
+theorem exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one
+    (F : X → X) (x₀ : X) (hF : ContDiffAt ℝ 1 F x₀) :
+    Nonempty (LocalRegularControlledContinuousAutonomousSelector F x₀) := by
+  obtain ⟨H, -⟩ :=
+    exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one_with_protectedInnerBall_subset
+      F x₀ hF (U := Set.univ) univ_mem
+  exact ⟨H⟩
 
 end RegularSelector
 
