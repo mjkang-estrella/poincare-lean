@@ -23064,6 +23064,27 @@ structure ExtinctionTopologyDecompositionRealizationSource
   components_cover :
     (⋃ i, (componentTopologyPayload i).componentSet) = Set.univ
 
+/-- A surgery-controlled component cover of a connected manifold cannot have
+an empty component index. -/
+theorem ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (source : ExtinctionTopologyDecompositionRealizationSource
+      M extinction componentIndex) :
+    Nonempty componentIndex := by
+  by_contra h
+  letI : IsEmpty componentIndex := not_nonempty_iff.mp h
+  obtain ⟨x⟩ : Nonempty M := inferInstance
+  have hx :
+      x ∈ (⋃ i, (source.componentTopologyPayload i).componentSet) := by
+    rw [source.components_cover]
+    exact Set.mem_univ x
+  simp at hx
+
 /-- A post-extinction decomposition realization is backed by an actual
 finite-extinction surgery package and a covering, pairwise-disjoint family of
 its controlled component payloads. -/
@@ -23078,6 +23099,21 @@ structure ExtinctionTopologyDecompositionRealization
       Nonempty
         (@ExtinctionTopologyDecompositionRealizationSource
           M _ _ _ _ _ _ extinction componentIndex)
+
+/-- Every realized extinction decomposition has at least one controlled
+component. -/
+theorem ExtinctionTopologyDecompositionRealization.componentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (realization :
+      ExtinctionTopologyDecompositionRealization
+        M extinction componentIndex) :
+    Nonempty componentIndex := by
+  rcases realization.source with ⟨_smooth, ⟨source⟩⟩
+  exact source.componentIndex_nonempty
 
 /-- Package concrete surgery-controlled component data as a decomposition
 realization. -/
