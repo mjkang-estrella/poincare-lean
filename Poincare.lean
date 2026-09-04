@@ -61,6 +61,8 @@ import Poincare.Global.MetricEntryThirdJetProfileLimitAlgebra
 import Poincare.Global.MetricEntryThirdJetFormalInverse
 import Poincare.Global.MetricEntryThirdJetFormalRawCoordinates
 import Poincare.Global.MetricEntryThirdJetFormalChristoffel
+import Poincare.Global.MetricEntryThirdJetFormalRicci
+import Poincare.Global.MetricEntryThirdJetFormalRicciBound
 import Poincare.Global.ClosedMetricThirdJetAscoliOrbitCompactness
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
