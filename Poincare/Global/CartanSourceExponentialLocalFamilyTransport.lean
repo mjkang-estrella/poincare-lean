@@ -24,7 +24,7 @@ noncomputable section
 set_option maxHeartbeats 1000000
 set_option synthInstance.maxHeartbeats 140000
 
-open Filter Function Set
+open Filter Function Metric Set
 open scoped Manifold ContDiff Topology RealInnerProductSpace
 
 namespace Poincare
@@ -180,17 +180,21 @@ theorem center_mem_rawLocalFamily_anchors
 
 end FixedChartAnchorEndpointPackage
 
-/-- Every fixed manifold chart produces a product inverse-function package
-with an honest open stationary anchor slice, hence a raw manifold
-`LocalFamily`. -/
-theorem exists_fixedChartAnchorEndpointPackage
-    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
-    Nonempty (FixedChartAnchorEndpointPackage g x₀) := by
+/-- Every prescribed neighborhood of the central fixed-chart state admits a
+product inverse-function package whose selector remains protected inside that
+neighborhood. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (E × E)}
+    (hU : U ∈ nhds (extChartAt I x₀ x₀, (0 : E))) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius ⊆ U := by
   rcases
-      CartanSourceExponentialLocalChartSelector.exists_fixedChart_anchorEndpointOpenPartialHomeomorph
-        g x₀ with
-    ⟨H, T, hT, D, P, hTprotected, hjoint, hPapply, hcenterSource,
-      _hcenterTarget⟩
+      CartanSourceExponentialLocalChartSelector.exists_fixedChart_anchorEndpointOpenPartialHomeomorph_with_projected_protectedInnerBall_subset
+        g x₀ hU with
+    ⟨H, hprotected, T, hT, D, P, hTprotected, hjoint, hPapply,
+      hcenterSource, _hcenterTarget⟩
   have hTfull : T ∈ Icc (-H.epsilon) H.epsilon := by
     constructor <;> linarith [hTprotected.1, hTprotected.2, H.epsilon_pos]
   have hanchor :=
@@ -214,25 +218,60 @@ theorem exists_fixedChartAnchorEndpointPackage
       (z, (0 : E)) ∈ P.source ∧ P (z, (0 : E)) = (z, z) := by
     filter_upwards [hsourceNhd, hstationary] with z hzSource hzStationary
     exact ⟨hzSource, hzStationary⟩
-  rcases mem_nhds_iff.mp hgood with ⟨U, hUsub, hUopen, hcenterU⟩
-  refine ⟨{
-    selector := H
-    time := T
-    time_pos := hT
-    derivative := D
-    endpoint := P
-    time_protected := hTprotected
-    endpoint_hasStrictFDerivAt := hjoint
-    endpoint_apply := hPapply
-    coordinateAnchors := U
-    isOpen_coordinateAnchors := hUopen
-    center_mem_coordinateAnchors := hcenterU
-    zero_mem_source := ?_
-    zero_stationary := ?_ }⟩
-  · intro z hz
-    exact (hUsub hz).1
-  · intro z hz
-    exact (hUsub hz).2
+  rcases _root_.mem_nhds_iff.mp hgood with ⟨U, hUsub, hUopen, hcenterU⟩
+  let C : FixedChartAnchorEndpointPackage g x₀ :=
+    { selector := H
+      time := T
+      time_pos := hT
+      derivative := D
+      endpoint := P
+      time_protected := hTprotected
+      endpoint_hasStrictFDerivAt := hjoint
+      endpoint_apply := hPapply
+      coordinateAnchors := U
+      isOpen_coordinateAnchors := hUopen
+      center_mem_coordinateAnchors := hcenterU
+      zero_mem_source := fun z hz => (hUsub hz).1
+      zero_stationary := fun z hz => (hUsub hz).2 }
+  exact ⟨C, hprotected⟩
+
+/-- Every fixed manifold chart produces a product inverse-function package
+with an honest open stationary anchor slice, hence a raw manifold
+`LocalFamily`.  This is the universal-neighborhood specialization of the
+protected-range constructor. -/
+theorem exists_fixedChartAnchorEndpointPackage
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    Nonempty (FixedChartAnchorEndpointPackage g x₀) := by
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+        g x₀ (U := Set.univ) Filter.univ_mem with
+    ⟨C, _hprotected⟩
+  exact ⟨C⟩
+
+/-- Choose the fixed package so every protected selector position remains in
+the fixed source chart and its cutoff-one locus. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_fixedSourceChartCutoff_protectedInnerBall
+    [T2Space M]
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀ := by
+  have hfixed :
+      (extChartAt I x₀).target ∩ IsometryInstantiate.cutoffOneLocus x₀ ∈
+        nhds (extChartAt I x₀ x₀) :=
+    inter_mem (extChartAt_target_mem_nhds x₀)
+      (IsometryInstantiate.cutoffOneLocus_mem_nhds_anchor x₀)
+  have hpre : Prod.fst ⁻¹'
+      ((extChartAt I x₀).target ∩ IsometryInstantiate.cutoffOneLocus x₀) ∈
+        nhds (extChartAt I x₀ x₀, (0 : E)) :=
+    continuous_fst.continuousAt.preimage_mem_nhds hfixed
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+        g x₀ hpre with
+    ⟨C, hC⟩
+  exact ⟨C, fun q hq => hC hq⟩
 
 /-- Postcompose a local normal vector by a jointly continuous
 anchor-dependent coordinate transport.  The open loci are unchanged. -/

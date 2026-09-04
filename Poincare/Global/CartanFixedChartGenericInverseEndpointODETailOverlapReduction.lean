@@ -327,6 +327,51 @@ theorem nonempty_genericInverseEndpointODETailOverlapData_of_protectedInnerBall
       intro t ht
       exact (hgood t ht).2 }⟩
 
+/-- Fixed source-chart and source-cutoff retention in the protected selector
+ball discharges those two tail fields.  Only the moving target chart and cutoff
+conditions remain as path-dependent premises. -/
+theorem nonempty_genericInverseEndpointODETailOverlapData_of_fixedSourceChartCutoff_protectedInnerBall
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    {x : M} {w : E}
+    {P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x}
+    (hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors)
+    (data : GenericInverseEndpointODEAdmissibilityData
+      C.restrictToFixedAnchorCutoffOne x w P)
+    (hprotectedFixed :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀)
+    (htargetChart :
+      ∀ t ∈ Ioc (C.initialOverlapTime hx data) C.time,
+        (extChartAt I x₀).symm
+            (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory
+              x w t).1 ∈
+          (extChartAt I x).source)
+    (htargetCutoffOne :
+      ∀ t ∈ Ioc (C.initialOverlapTime hx data) C.time,
+        GeodesicTransport.chartTransition x₀ x
+            (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory
+              x w t).1 ∈
+          IsometryInstantiate.cutoffOneLocus x) :
+    Nonempty (C.GenericInverseEndpointODETailOverlapData x w P hx) := by
+  have hfixed : ∀ t ∈ Ioc (C.initialOverlapTime hx data) C.time,
+      (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory x w t).1 ∈
+          (extChartAt I x₀).target ∧
+        (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory x w t).1 ∈
+          IsometryInstantiate.cutoffOneLocus x₀ := by
+    intro t ht
+    apply hprotectedFixed
+    simpa only [restrictToFixedAnchorCutoffOne_selector] using
+      C.normalizedSelectorTrajectory_mem_protectedInnerBall_on_tail
+        hx data t ht
+  exact ⟨{
+    admissibility := data
+    sourceChart_mem := fun t ht => (hfixed t ht).1
+    targetChart_mem := htargetChart
+    sourceCutoffOne_mem := fun t ht => (hfixed t ht).2
+    targetCutoffOne_mem := htargetCutoffOne }⟩
+
 namespace GenericInverseEndpointODETailOverlapData
 
 /-- The automatic initial interval and the exact tail residual combine to
