@@ -7,6 +7,7 @@ needed to identify the manifold with the standard 3-sphere.
 -/
 
 import Poincare.RicciFlowInterface
+import Poincare.Surgery
 import Mathlib.Topology.Compactification.OnePoint.Sphere
 import Mathlib.Topology.Covering.Basic
 import Mathlib.Topology.Covering.Quotient
@@ -23036,20 +23037,97 @@ theorem quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base
   exact covering_deckTransform_eq_refl_of_simplyConnected_base h.isCoveringMap
     φ hdeck e₀
 
-/--
-Raw finite-extinction certificate that a concrete post-extinction topological
-decomposition has been produced.
-
-This is intentionally separate from `HasExtinctionTopologyDecomposition`: the
-interface can now be constructed from certified data, but finite extinction
-still has to supply that data.
--/
-inductive ExtinctionTopologyDecompositionRealization
+/-- Concrete source data for a finite, surgery-controlled component
+decomposition of the initial manifold. -/
+structure ExtinctionTopologyDecompositionRealizationSource
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (_extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_componentIndex : Type u) : Prop
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (componentIndex : Type u) : Type (u + 1) where
+  n : ℕ∞ω
+  package : FiniteExtinctionSurgeryPackage n M
+  package_extinction_eq :
+    finite_extinction_of_surgery_package package = extinction
+  componentTopologyPayload : componentIndex →
+    FiniteExtinctionComponentTopologyPayload
+      (ricci_flow_data_of_surgery_package package)
+      (ricci_flow_with_surgery_of_surgery_package package)
+      (perelman_singularity_control_of_surgery_package package)
+      (finite_extinction_width_theory_of_surgery_package package)
+      (finite_extinction_width_evolution_of_surgery_package package)
+      (finite_extinction_surgery_discard_control_of_surgery_package package)
+  components_pairwise :
+    Set.univ.PairwiseDisjoint
+      (fun i ↦ (componentTopologyPayload i).componentSet)
+  components_cover :
+    (⋃ i, (componentTopologyPayload i).componentSet) = Set.univ
+
+/-- A post-extinction decomposition realization is backed by an actual
+finite-extinction surgery package and a covering, pairwise-disjoint family of
+its controlled component payloads. -/
+structure ExtinctionTopologyDecompositionRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (componentIndex : Type u) : Prop where
+  source :
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+      Nonempty
+        (@ExtinctionTopologyDecompositionRealizationSource
+          M _ _ _ _ _ _ extinction componentIndex)
+
+/-- Package concrete surgery-controlled component data as a decomposition
+realization. -/
+def ExtinctionTopologyDecompositionRealization.ofSource
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (source : ExtinctionTopologyDecompositionRealizationSource
+      M extinction componentIndex) :
+    ExtinctionTopologyDecompositionRealization M extinction componentIndex :=
+  ⟨⟨inferInstance, ⟨source⟩⟩⟩
+
+/-- Package-linked component payloads form a decomposition realization once
+their component sets are pairwise disjoint and cover the manifold. -/
+theorem extinctionTopologyDecompositionRealization_of_componentTopologyPayloads
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (n : ℕ∞ω)
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (package_extinction_eq :
+      finite_extinction_of_surgery_package package = extinction)
+    (componentTopologyPayload : componentIndex →
+      FiniteExtinctionComponentTopologyPayload
+        (ricci_flow_data_of_surgery_package package)
+        (ricci_flow_with_surgery_of_surgery_package package)
+        (perelman_singularity_control_of_surgery_package package)
+        (finite_extinction_width_theory_of_surgery_package package)
+        (finite_extinction_width_evolution_of_surgery_package package)
+        (finite_extinction_surgery_discard_control_of_surgery_package package))
+    (components_pairwise :
+      Set.univ.PairwiseDisjoint
+        (fun i ↦ (componentTopologyPayload i).componentSet))
+    (components_cover :
+      (⋃ i, (componentTopologyPayload i).componentSet) = Set.univ) :
+    ExtinctionTopologyDecompositionRealization
+      M extinction componentIndex :=
+  ExtinctionTopologyDecompositionRealization.ofSource
+    { n := n
+      package := package
+      package_extinction_eq := package_extinction_eq
+      componentTopologyPayload := componentTopologyPayload
+      components_pairwise := components_pairwise
+      components_cover := components_cover }
 
 /--
 Explicit payload for the decomposition information obtained from finite
@@ -23121,6 +23199,29 @@ theorem extinction_topology_decomposition_realization_of_decomposition
   exact
     ⟨data.componentIndex, ⟨data.finiteComponentIndex⟩,
       data.realization⟩
+
+/-- A decomposition exposes the actual finite-extinction package and the
+pairwise-disjoint component cover hidden by its realization field. -/
+theorem extinction_topology_decomposition_source_of_decomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ componentIndex : Type u,
+      Nonempty (Fintype componentIndex) ∧
+        ∃ source : @ExtinctionTopologyDecompositionRealizationSource
+          M _ _ _ _ _ _ extinction componentIndex,
+          Set.univ.PairwiseDisjoint
+              (fun i ↦ (source.componentTopologyPayload i).componentSet) ∧
+            (⋃ i, (source.componentTopologyPayload i).componentSet) =
+              Set.univ := by
+  rcases decomposition.data with ⟨data⟩
+  rcases data.realization.source with ⟨smooth, ⟨source⟩⟩
+  exact
+    ⟨smooth, data.componentIndex, ⟨data.finiteComponentIndex⟩,
+      source, source.components_pairwise, source.components_cover⟩
 
 /--
 Proof-bearing one-point compactification recognition payload after a concrete
