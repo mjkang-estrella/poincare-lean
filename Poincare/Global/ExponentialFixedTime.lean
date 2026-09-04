@@ -119,6 +119,110 @@ private theorem geodesicGermChartSolution_eventually_hasDerivAt_fixedTime
   filter_upwards [hI] with t ht
   exact hspec.2.1 t ht
 
+/-- The PL selector retains joint continuity in initial state and time while
+its position is confined to any prescribed neighborhood of the chart center. -/
+theorem exists_uniform_local_geodesic_chart_flow_variableInitialState_continuousOn
+    (g : ClosedSmoothRiemannianMetric n M) (x₀ : M)
+    {U : Set E} (hU : U ∈ 𝓝 (extChartAt I x₀ x₀)) :
+    ∃ r : ℝ≥0, 0 < r ∧ ∃ ε : ℝ, 0 < ε ∧
+      ∃ α : (E × E) × ℝ → E × E,
+        (∀ p ∈ closedBall (extChartAt I x₀ x₀, (0 : E)) (r : ℝ),
+          α (p, 0) = p ∧
+            ∀ t ∈ Icc (-ε) ε,
+              HasDerivWithinAt (fun s : ℝ => α (p, s))
+                (geodesicFlowField (chartChristoffelField g x₀) (α (p, t)))
+                (Icc (-ε) ε) t) ∧
+        (∀ q ∈
+          closedBall (extChartAt I x₀ x₀, (0 : E)) (r : ℝ) ×ˢ
+            Icc (-ε) ε,
+          (α q).1 ∈ U) ∧
+        ContinuousOn α
+          (closedBall (extChartAt I x₀ x₀, (0 : E)) (r : ℝ) ×ˢ
+            Icc (-ε) ε) := by
+  let p₀ : E × E := (extChartAt I x₀ x₀, 0)
+  let F : E × E → E × E :=
+    geodesicFlowField (chartChristoffelField g x₀)
+  have hflow : ContDiffAt ℝ 1 F p₀ := by
+    simpa [F, p₀] using
+      (geodesicFlowField_chartChristoffelField_contDiffAt
+        (g := g) (x₀ := x₀) (v₀ := (0 : E)))
+  rcases IsPicardLindelof.of_contDiffAt_one hflow with
+    ⟨ε₀, hε₀, a₀, r₀, L, K, hr₀, hpl₀⟩
+  rcases
+      (hpl₀ (0 : ℝ)).exists_forall_mem_closedBall_eq_hasDerivWithinAt_continuousOn
+    with ⟨β, hβspec, hβcont⟩
+  have hcenterState : p₀ ∈ closedBall p₀ (r₀ : ℝ) :=
+    mem_closedBall_self r₀.2
+  have hβcenter : β (p₀, (0 : ℝ)) = p₀ :=
+    (hβspec p₀ hcenterState).1
+  have hdomain_nhds :
+      closedBall p₀ (r₀ : ℝ) ×ˢ Icc (-ε₀) ε₀ ∈
+        𝓝 (p₀, (0 : ℝ)) := by
+    exact prod_mem_nhds
+      (closedBall_mem_nhds p₀ (by exact_mod_cast hr₀))
+      (Icc_mem_nhds (by linarith) hε₀)
+  have hβat : ContinuousAt β (p₀, (0 : ℝ)) := by
+    apply hβcont.continuousAt
+    simpa only [zero_sub, zero_add] using hdomain_nhds
+  have hposition_nhds :
+      {q : (E × E) × ℝ | (β q).1 ∈ U} ∈
+        𝓝 (p₀, (0 : ℝ)) := by
+    have hU' : U ∈ 𝓝 p₀.1 := by simpa [p₀] using hU
+    have hUβ : U ∈ 𝓝 (β (p₀, (0 : ℝ))).1 := by
+      rw [hβcenter]
+      exact hU'
+    exact hβat.fst.preimage_mem_nhds hUβ
+  rcases mem_nhds_prod_iff.mp hposition_nhds with
+    ⟨S, hS, T, hT, hST⟩
+  rcases Metric.nhds_basis_closedBall.mem_iff.mp hS with
+    ⟨ρs, hρs, hρsS⟩
+  rcases Metric.nhds_basis_closedBall.mem_iff.mp hT with
+    ⟨ρt, hρt, hρtT⟩
+  let r : ℝ≥0 := min r₀ ⟨ρs, hρs.le⟩
+  let ε : ℝ := min ε₀ ρt
+  have hr : 0 < r := by
+    dsimp [r]
+    exact lt_min hr₀ (by exact_mod_cast hρs)
+  have hε : 0 < ε := lt_min hε₀ hρt
+  have hr_le_r₀ : (r : ℝ) ≤ (r₀ : ℝ) := by
+    exact_mod_cast (show r ≤ r₀ by dsimp [r]; exact min_le_left _ _)
+  have hr_le_ρs : (r : ℝ) ≤ ρs := by
+    exact_mod_cast
+      (show r ≤ (⟨ρs, hρs.le⟩ : ℝ≥0) by
+        dsimp [r]
+        exact min_le_right _ _)
+  have hε_le_ε₀ : ε ≤ ε₀ := by dsimp [ε]; exact min_le_left _ _
+  have hε_le_ρt : ε ≤ ρt := by dsimp [ε]; exact min_le_right _ _
+  have htimeOld : Icc (-ε) ε ⊆ Icc (0 - ε₀) (0 + ε₀) := by
+    intro t ht
+    exact ⟨by simpa only [zero_sub] using (neg_le_neg hε_le_ε₀).trans ht.1,
+      by simpa only [zero_add] using ht.2.trans hε_le_ε₀⟩
+  refine ⟨r, hr, ε, hε, β, ?_, ?_, ?_⟩
+  · intro p hp
+    have hpOld : p ∈ closedBall p₀ (r₀ : ℝ) := by
+      apply closedBall_subset_closedBall hr_le_r₀
+      simpa [p₀] using hp
+    have hspec := hβspec p hpOld
+    refine ⟨hspec.1, ?_⟩
+    intro t ht
+    exact (hspec.2 t (htimeOld ht)).mono htimeOld
+  · intro q hq
+    apply hST
+    constructor
+    · apply hρsS
+      exact closedBall_subset_closedBall hr_le_ρs hq.1
+    · apply hρtT
+      rw [Metric.mem_closedBall, Real.dist_eq]
+      simpa only [sub_zero] using
+        (abs_le.mpr ⟨(neg_le_neg hε_le_ρt).trans hq.2.1,
+          hq.2.2.trans hε_le_ρt⟩)
+  · apply hβcont.mono
+    rintro ⟨p, t⟩ hpt
+    constructor
+    · apply closedBall_subset_closedBall hr_le_r₀
+      simpa [p₀] using hpt.1
+    · exact htimeOld hpt.2
+
 /-- One fixed coordinate chart admits a uniform PL geodesic flow for every
 initial position-velocity state in a genuine closed neighborhood of its
 center.  All trajectories remain in one state ball and their position
