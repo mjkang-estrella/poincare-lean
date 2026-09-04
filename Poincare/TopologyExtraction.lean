@@ -15,7 +15,7 @@ import Mathlib.Topology.Homotopy.Lifting
 
 universe u v w w' z
 
-open scoped Manifold ContDiff
+open scoped Manifold ContDiff symmDiff
 
 namespace Poincare
 
@@ -26558,6 +26558,48 @@ theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt
   exact
     source.surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTime_strictlyOrdered
       source.scaleParameter (source.eventIndex stage)
+
+/-- For one component before a surgery event, the union of all of its
+children can differ from that component only inside the package-backed event
+region. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    {stage nextStage : traceStage}
+    (hnext : source.eventIndex nextStage = source.eventIndex stage + 1)
+    (component : source.activeComponentIndex stage) :
+    (⋃ child : { child : source.activeComponentIndex nextStage //
+          source.successorParent hnext child = component },
+        source.activeComponentSet nextStage child.1) ∆
+        source.activeComponentSet stage component ⊆
+      source.eventRegion stage := by
+  letI := source.smooth
+  intro x hx
+  by_contra hxEvent
+  have hdiff :=
+    source.successor_children_agree_off_event
+      stage nextStage hnext component
+  rcases Set.mem_symmDiff.mp hx with hx | hx
+  · have hxParent :
+        x ∈ source.activeComponentSet stage component \
+          source.eventRegion stage := by
+      rw [← hdiff]
+      exact ⟨hx.1, hxEvent⟩
+    exact hx.2 hxParent.1
+  · have hxChildren :
+        x ∈ (⋃ child : { child : source.activeComponentIndex nextStage //
+              source.successorParent hnext child = component },
+            source.activeComponentSet nextStage child.1) \
+          source.eventRegion stage := by
+      rw [hdiff]
+      exact ⟨hx.1, hxEvent⟩
+    exact hx.2 hxChildren.1
 
 /--
 Explicit payload reconstructing the topological surgery trace represented by
