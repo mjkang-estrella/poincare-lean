@@ -1,5 +1,6 @@
 import Poincare.Global.CartanFixedChartGenericInverseEndpointODEComparison
 import Poincare.Global.ExponentialFixedTime
+import Poincare.Global.IsometryInstantiate
 
 /-!
 # Constructing the generic-inverse ODE comparison from actual selectors
@@ -69,32 +70,85 @@ structure PreferredChartExpAtTrajectoryPackage
   position_mem_target : ∀ v : E, ‖v‖ < velocityRadius →
     ∀ t ∈ Icc (-time) time,
       (trajectory v t).1 ∈ (extChartAt I x).target
+  position_mem_cutoffOne : ∀ v : E, ‖v‖ < velocityRadius →
+    ∀ t ∈ Icc (-time) time,
+      (trajectory v t).1 ∈ IsometryInstantiate.cutoffOneLocus x
   expAt_eq : ∀ v : E, ‖v‖ < velocityRadius →
     ∀ t ∈ Icc (0 : ℝ) time,
       expAt g x (t • v) =
         (extChartAt I x).symm (trajectory v t).1
 
-/-- Every preferred chart has an actual trajectory package, obtained by
-restricting the exported `expAt` PL flow to the common part of its flow and
-endpoint intervals. -/
-theorem exists_preferredChartExpAtTrajectoryPackage
-    (g : ClosedSmoothRiemannianMetric 3 M) (x : M) :
-    Nonempty (PreferredChartExpAtTrajectoryPackage g x) := by
+/-- Every neighborhood of the preferred-chart anchor admits an actual public
+`expAt` trajectory package whose positions remain in that neighborhood and in
+the cutoff-one locus. -/
+theorem exists_preferredChartExpAtTrajectoryPackage_with_position_mem_neighborhood
+    (g : ClosedSmoothRiemannianMetric 3 M) (x : M)
+    {U : Set E} (hU : U ∈ 𝓝 (extChartAt I x x)) :
+    ∃ P : PreferredChartExpAtTrajectoryPackage g x,
+      ∀ v : E, ‖v‖ < P.velocityRadius →
+        ∀ t ∈ Icc (-P.time) P.time, (P.trajectory v t).1 ∈ U := by
   rcases expAt_uniform_pl_flow_eq_on_Icc (g := g) (x₀ := x) with
     ⟨τ, hτ, δ, hδ, ε, hε, a, α, hα, hexp⟩
-  let T : ℝ := min τ ε
+  let z₀ : E := extChartAt I x x
+  have hprotected_nhds :
+      IsometryInstantiate.cutoffOneLocus x ∩ U ∈ 𝓝 z₀ := by
+    exact inter_mem
+      (by simpa [z₀] using
+        IsometryInstantiate.cutoffOneLocus_mem_nhds_anchor x)
+      (by simpa [z₀] using hU)
+  rcases Metric.nhds_basis_closedBall.mem_iff.mp hprotected_nhds with
+    ⟨ρ, hρpos, hρsub⟩
+  let κ : ℝ := ρ / (2 * ((a : ℝ) + 1))
+  have hκ : 0 < κ := by
+    dsimp [κ]
+    positivity
+  let T : ℝ := min τ (min ε κ)
   have hT : 0 < T := by
     dsimp [T]
-    exact lt_min hτ hε
+    exact lt_min hτ (lt_min hε hκ)
   have hTτ : T ≤ τ := by
     dsimp [T]
     exact min_le_left _ _
   have hTε : T ≤ ε := by
     dsimp [T]
-    exact min_le_right _ _
+    exact (min_le_right _ _).trans (min_le_left _ _)
+  have hTκ : T ≤ κ := by
+    dsimp [T]
+    exact (min_le_right _ _).trans (min_le_right _ _)
   have hsymm : Icc (-T) T ⊆ Icc (-ε) ε := by
     intro t ht
     exact ⟨(neg_le_neg hTε).trans ht.1, ht.2.trans hTε⟩
+  have hposition_mem_protected :
+      ∀ v : E, ‖v‖ < δ → ∀ t ∈ Icc (-T) T,
+        (α (extChartAt I x x, v) t).1 ∈
+          IsometryInstantiate.cutoffOneLocus x ∩ U := by
+    intro v hv t ht
+    apply hρsub
+    rcases hα v hv with ⟨hα0, hαder, hαmem, _hαtarget, _hhom⟩
+    have hdist :
+        dist (α (extChartAt I x x, v) t).1 z₀ ≤ (a : ℝ) * |t| := by
+      simpa [z₀] using
+        plFlowPosition_dist_anchor_le_radius_mul_abs
+          (g := g) (x₀ := x) (ε := ε) (τ := T) (a := a)
+          (α := α) (v₀ := v) hT.le hTε hα0 hαder hαmem ht
+    have habs : |t| ≤ T := abs_le.mpr ht
+    have ha_nonneg : 0 ≤ (a : ℝ) := NNReal.coe_nonneg a
+    have hdistρ : dist (α (extChartAt I x x, v) t).1 z₀ ≤ ρ := by
+      calc
+        dist (α (extChartAt I x x, v) t).1 z₀
+            ≤ (a : ℝ) * |t| := hdist
+        _ ≤ (a : ℝ) * T := mul_le_mul_of_nonneg_left habs ha_nonneg
+        _ ≤ (a : ℝ) * κ := mul_le_mul_of_nonneg_left hTκ ha_nonneg
+        _ = (ρ / 2) * ((a : ℝ) / ((a : ℝ) + 1)) := by
+          dsimp [κ]
+          have hden : ((a : ℝ) + 1) ≠ 0 := by positivity
+          field_simp [hden]
+        _ ≤ (ρ / 2) * 1 := by
+          gcongr
+          rw [div_le_one (by positivity : 0 < (a : ℝ) + 1)]
+          linarith
+        _ ≤ ρ := by linarith
+    simpa [Metric.mem_closedBall] using hdistρ
   refine ⟨{
     time := T
     time_pos := hT
@@ -106,7 +160,8 @@ theorem exists_preferredChartExpAtTrajectoryPackage
     derivative := ?_
     mem_closedBall := ?_
     position_mem_target := ?_
-    expAt_eq := ?_ }⟩
+    position_mem_cutoffOne := ?_
+    expAt_eq := ?_ }, ?_⟩
   · intro v hv
     exact (hα v hv).1
   · intro v hv t ht
@@ -116,7 +171,22 @@ theorem exists_preferredChartExpAtTrajectoryPackage
   · intro v hv t ht
     exact (hα v hv).2.2.2.1 t (hsymm ht)
   · intro v hv t ht
+    exact (hposition_mem_protected v hv t ht).1
+  · intro v hv t ht
     exact hexp v hv t ⟨ht.1, ht.2.trans hTτ⟩
+  · intro v hv t ht
+    exact (hposition_mem_protected v hv t ht).2
+
+/-- Every preferred chart has an actual trajectory package.  This is the
+universal-neighborhood wrapper around the protected constructor. -/
+theorem exists_preferredChartExpAtTrajectoryPackage
+    (g : ClosedSmoothRiemannianMetric 3 M) (x : M) :
+    Nonempty (PreferredChartExpAtTrajectoryPackage g x) := by
+  rcases
+      exists_preferredChartExpAtTrajectoryPackage_with_position_mem_neighborhood
+        g x (U := Set.univ) Filter.univ_mem with
+    ⟨P, _hP⟩
+  exact ⟨P⟩
 
 end GeodesicTransport
 
