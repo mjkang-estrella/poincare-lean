@@ -26334,10 +26334,12 @@ The chosen decomposition data and component source are the witnesses carried
 by `decomposition`. The aggregate surgery payload is the witness carried by
 that source's finite-extinction package. Trace stages enumerate an initial
 finite segment of the package's actual surgery-event indices; their times and
-regions are identified with the surgery-time payload. Consecutive stages must
-agree away from the current event region, and every decomposition component
-must occur in the trace. The final field is the remaining honest terminal
-condition: event regions after the selected finite prefix are empty.
+regions are identified with the surgery-time payload. Each stage has its own
+finite family of active components. At a successor event, every new component
+has a parent, and the union of a parent's children agrees with that parent away
+from the event region. The terminal active family is identified exactly with
+the fixed extinction decomposition. The final field is the remaining honest
+terminal condition: event regions after the selected finite prefix are empty.
 -/
 structure ExtinctionSurgeryTraceRealizationSource
     (M : Type u) [TopologicalSpace M] [T2Space M]
@@ -26407,24 +26409,53 @@ structure ExtinctionSurgeryTraceRealizationSource
       eventRegion stage =
         surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
           scaleParameter (eventIndex stage)
-  /-- Decomposition component represented at each stage. -/
-  stageComponent : traceStage → decompositionData.componentIndex
-  /-- Every component in the fixed decomposition occurs in the trace. -/
-  stageComponent_surjective : Function.Surjective stageComponent
-  /-- Each event region lies in the component represented at that stage. -/
-  eventRegion_subset_stageComponent :
+  /-- The active component index at each surgery stage. -/
+  activeComponentIndex : traceStage → Type u
+  /-- Every stage has only finitely many active components. -/
+  finiteActiveComponentIndex :
+    ∀ stage, Fintype (activeComponentIndex stage)
+  /-- The region occupied by an active component at a stage. -/
+  activeComponentSet :
+    (stage : traceStage) → activeComponentIndex stage → Set M
+  /-- Every indexed active component contains an actual point. -/
+  activeComponent_nonempty :
+    ∀ stage component, (activeComponentSet stage component).Nonempty
+  /-- Distinct active components at one stage are disjoint. -/
+  activeComponents_pairwise :
+    ∀ stage, Set.univ.PairwiseDisjoint (activeComponentSet stage)
+  /-- Each event region lies in the union of the current active components. -/
+  eventRegion_subset_activeComponents :
     ∀ stage,
       eventRegion stage ⊆
-        (decompositionSource.componentTopologyPayload
-          (stageComponent stage)).componentSet
-  /-- Successive component stages agree away from the surgery-event region. -/
-  successor_component_agrees_off_event :
-    ∀ stage nextStage,
+        ⋃ component, activeComponentSet stage component
+  /-- Every component after a surgery event has a component before it as parent. -/
+  successorParent :
+    ∀ {stage nextStage},
       eventIndex nextStage = eventIndex stage + 1 →
+        activeComponentIndex nextStage → activeComponentIndex stage
+  /-- The union of all children of one component agrees with it off the event region. -/
+  successor_children_agree_off_event :
+    ∀ (stage nextStage)
+      (hnext : eventIndex nextStage = eventIndex stage + 1)
+      (component : activeComponentIndex stage),
+        (⋃ child : { child : activeComponentIndex nextStage //
+              successorParent hnext child = component },
+            activeComponentSet nextStage child.1) \ eventRegion stage =
+          activeComponentSet stage component \ eventRegion stage
+  /-- The distinguished last trace stage. -/
+  terminalStage : traceStage
+  /-- The distinguished last stage represents the terminal event index. -/
+  terminalStage_eventIndex :
+    eventIndex terminalStage = terminalEventIndex
+  /-- Terminal active components are exactly the fixed decomposition components. -/
+  terminalComponentEquiv :
+    activeComponentIndex terminalStage ≃ decompositionData.componentIndex
+  /-- The terminal equivalence preserves the component regions exactly. -/
+  terminalComponentSet_eq :
+    ∀ component,
+      activeComponentSet terminalStage component =
         (decompositionSource.componentTopologyPayload
-              (stageComponent nextStage)).componentSet \ eventRegion stage =
-          (decompositionSource.componentTopologyPayload
-              (stageComponent stage)).componentSet \ eventRegion stage
+          (terminalComponentEquiv component)).componentSet
   /-- No nonempty surgery-event region occurs after the terminal event. -/
   noActiveEventAfterTerminal :
     ∀ laterEventIndex,
@@ -26491,6 +26522,23 @@ theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty
     Nonempty traceStage :=
   ⟨source.stageEventIndex.symm
     ⟨0, Nat.zero_lt_succ source.terminalEventIndex⟩⟩
+
+/-- The terminal active-component family is nonempty because it is equivalent
+to the fixed decomposition family, which covers the nonempty manifold. -/
+theorem ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Nonempty (source.activeComponentIndex source.terminalStage) := by
+  letI := source.smooth
+  exact
+    Nonempty.map source.terminalComponentEquiv.symm
+      source.decompositionSource.componentIndex_nonempty
 
 /-- Consecutive realized trace stages occur at strictly increasing surgery times. -/
 theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt
