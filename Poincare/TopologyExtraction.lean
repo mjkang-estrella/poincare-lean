@@ -38039,6 +38039,72 @@ theorem extinction_topology_decomposition_realization_of_decomposition_eq :
       @Poincare.extinction_topology_decomposition_realization_of_decomposition :=
   rfl
 
+/-- Theorem contract for `ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty`. -/
+theorem ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty_eq :
+    @Poincare.ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty =
+      @Poincare.ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionTopologyDecompositionRealization.componentIndex_nonempty`. -/
+theorem ExtinctionTopologyDecompositionRealization.componentIndex_nonempty_eq :
+    @Poincare.ExtinctionTopologyDecompositionRealization.componentIndex_nonempty =
+      @Poincare.ExtinctionTopologyDecompositionRealization.componentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `extinctionTopologyDecompositionRealization_of_componentTopologyPayloads`. -/
+theorem extinctionTopologyDecompositionRealization_of_componentTopologyPayloads_eq :
+    @Poincare.extinctionTopologyDecompositionRealization_of_componentTopologyPayloads =
+      @Poincare.extinctionTopologyDecompositionRealization_of_componentTopologyPayloads :=
+  rfl
+
+/-- Theorem contract for `extinction_topology_decomposition_source_of_decomposition`. -/
+theorem extinction_topology_decomposition_source_of_decomposition_eq :
+    @Poincare.extinction_topology_decomposition_source_of_decomposition =
+      @Poincare.extinction_topology_decomposition_source_of_decomposition :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.eventIndex_injective`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.eventIndex_injective_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.eventIndex_injective =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.eventIndex_injective :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion :=
+  rfl
+
+/-- Theorem contract for `extinction_surgery_trace_source_of_reconstruction`. -/
+theorem extinction_surgery_trace_source_of_reconstruction_eq :
+    @Poincare.extinction_surgery_trace_source_of_reconstruction =
+      @Poincare.extinction_surgery_trace_source_of_reconstruction :=
+  rfl
+
 /-- Theorem contract for `extinction_surgery_trace_realization_of_reconstruction`. -/
 theorem extinction_surgery_trace_realization_of_reconstruction_eq :
     @Poincare.extinction_surgery_trace_realization_of_reconstruction =
