@@ -59,6 +59,8 @@ import Poincare.Global.ClosedMetricThirdJetOrbitCompactness
 import Poincare.Global.MetricEntryThirdJetProfileCompactness
 import Poincare.Global.MetricEntryThirdJetProfileLimitAlgebra
 import Poincare.Global.MetricEntryThirdJetFormalInverse
+import Poincare.Global.MetricEntryThirdJetFormalRawCoordinates
+import Poincare.Global.MetricEntryThirdJetFormalChristoffel
 import Poincare.Global.ClosedMetricThirdJetAscoliOrbitCompactness
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
@@ -819,6 +821,7 @@ import Poincare.ProofProgress.SmoothabilityProductionPackageBridge
 import Poincare.ProofProgress.SmoothabilityProductionPackageMoiseLocalBlocker
 import Poincare.ProofProgress.AnalyticThreeManifoldStationary
 import Poincare.ProofProgress.SurgeryPerelmanPackageLayer
+import Poincare.ProofProgress.SingularityModelBlowupCoverage
 import Poincare.ProofProgress.FiniteExtinctionPackage
 import Poincare.ProofProgress.TopologyExtractionPunctureTransport
 import Poincare.ProofProgress.AnalyticLeviCivitaBlocker
@@ -837,6 +840,7 @@ import Poincare.ProofProgress.GroundedFiniteExtinctionCertificate
 import Poincare.ProofProgress.TopologyPackageFields
 import Poincare.ProofProgress.TopologyDecompositionInterface
 import Poincare.ProofProgress.TopologyProductionPackageNextField
+import Poincare.ProofProgress.ExtinctionThreeSphereCoveringProjection
 import Poincare.ProofProgress.CompletionBlockerLedger
 import Poincare.ProofProgress.FullAssemblyClosure
 import Poincare.ProofProgress.FinalCertificateBoundary
