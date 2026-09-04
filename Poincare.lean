@@ -65,6 +65,8 @@ import Poincare.Global.MetricEntryThirdJetFormalRicci
 import Poincare.Global.MetricEntryThirdJetFormalInvertibility
 import Poincare.Global.MetricEntryThirdJetAnchorLowerComparison
 import Poincare.Global.MetricEntryThirdJetFormalRicciBound
+import Poincare.Global.ContinuousWithDensityOrder
+import Poincare.Global.CompactReferenceMetricTensorFamilyLowerComparison
 import Poincare.Global.ClosedMetricThirdJetAscoliOrbitCompactness
 import Poincare.Global.SphereTheorem
 import Poincare.Global.ScalarRegularity
