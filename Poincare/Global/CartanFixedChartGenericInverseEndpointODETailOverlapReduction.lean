@@ -916,6 +916,38 @@ def GenericInverseEndpointODETailOverlapProvider
       ∃ P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x,
         Nonempty (C.GenericInverseEndpointODETailOverlapData x w P hx)
 
+/-- The remaining provider after connected continuation: choose compatible
+selector/public-flow domains, but supply no chart or cutoff retention along
+the trajectory. -/
+def GenericInverseEndpointODEAdmissibilityProvider
+    (C : FixedChartAnchorEndpointPackage g x₀) : Prop :=
+  ∀ (x : M) (w : E)
+      (_hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors),
+    (extChartAt I x₀ x, w) ∈
+      C.restrictToFixedAnchorCutoffOne.endpoint.source →
+    (x, fixedToAnchorVelocity x₀ (x, w)) ∈
+      (genericFamily g).targetLocus →
+      ∃ P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x,
+        GenericInverseEndpointODEAdmissibilityData
+          C.restrictToFixedAnchorCutoffOne x w P
+
+/-- Fixed-chart protection and admissibility alone provide every tail-overlap
+package.  Connected ODE continuation supplies the two moving-chart fields. -/
+theorem genericInverseEndpointODETailOverlapProvider_of_admissibility
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (hprotectedFixed :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀)
+    (hadmissible : C.GenericInverseEndpointODEAdmissibilityProvider) :
+    C.GenericInverseEndpointODETailOverlapProvider := by
+  intro x w hx hw htarget
+  rcases hadmissible x w hx hw htarget with ⟨P, data⟩
+  exact ⟨P,
+    C.nonempty_genericInverseEndpointODETailOverlapData_of_fixedSourceChartCutoff_protectedInnerBall_automatic
+      hx data hprotectedFixed⟩
+
 theorem genericInverseEndpointODEPositiveTimeOverlapProvider_of_tail
     (C : FixedChartAnchorEndpointPackage g x₀)
     (htail : C.GenericInverseEndpointODETailOverlapProvider) :
@@ -938,6 +970,37 @@ theorem genericInverseEndpointAgreement_of_tailOverlap
     C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement :=
   C.genericInverseEndpointAgreement_of_positiveTimeOverlap
     (C.genericInverseEndpointODEPositiveTimeOverlapProvider_of_tail htail)
+
+/-- The fixed-chart ODE construction reaches generic inverse-endpoint
+agreement from its three genuine domain inequalities alone.  No moving chart
+or cutoff path hypothesis remains. -/
+theorem genericInverseEndpointAgreement_of_admissibility
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (hprotectedFixed :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀)
+    (hadmissible : C.GenericInverseEndpointODEAdmissibilityProvider) :
+    C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement :=
+  C.genericInverseEndpointAgreement_of_tailOverlap
+    (C.genericInverseEndpointODETailOverlapProvider_of_admissibility
+      hprotectedFixed hadmissible)
+
+/-- A protected fixed-chart package can always be chosen so that generic
+inverse-endpoint agreement is reduced exactly to the three admissibility
+domain conditions. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_genericInverseEndpointAgreement_of_admissibility
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      C.GenericInverseEndpointODEAdmissibilityProvider →
+        C.restrictToFixedAnchorCutoffOne.GenericInverseEndpointAgreement := by
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_fixedSourceChartCutoff_protectedInnerBall
+        g x₀ with
+    ⟨C, hprotectedFixed⟩
+  exact ⟨C, C.genericInverseEndpointAgreement_of_admissibility
+    hprotectedFixed⟩
 
 end FixedChartAnchorEndpointPackage
 end CartanSourceExponentialLocalFamilyTransport
