@@ -535,6 +535,65 @@ noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
         (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) hOrbitCompact
   · exact scalarSubordinateGeometry
 
+/-- Continuity of the compact reaction family in the explicit scalar
+metric-entry third-jet topology makes its realized forward orbit closure
+compact.  The indexing map `reaction.parameter` need not be continuous. -/
+noncomputable def ofContinuousCompactMetricThirdJetRealization
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricContinuous :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+        closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+      Continuous reaction.metric)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : CompactSpace reaction.K := reaction.compactSpaceK
+  letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+  apply ofCompactClosedMetricThirdJetOrbitClosure
+    reaction compactTensorReferenceControl
+  · exact isCompact_closedMetricThirdJetOrbitClosure_of_compact_realization
+      (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) reaction.metric
+      reaction.parameter hMetricContinuous reaction.realizesFlow
+  · exact scalarSubordinateGeometry
+
+/-- Full joint continuity of every scalar third-jet profile slot on
+`reaction.K × ClosedSmoothModel 3` makes the compact reaction family
+continuous in the explicit third-jet topology.  This premise is stronger
+than the local-at-center entry third-jet predicate. -/
+noncomputable def ofMetricFamilyEntryThirdJetProfileJointContinuous
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricProfileJointContinuous :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      MetricFamilyEntryThirdJetProfileJointContinuous reaction.metric)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+  apply ofContinuousCompactMetricThirdJetRealization
+    reaction compactTensorReferenceControl
+  · exact continuous_closedMetricFamily_of_entryThirdJetProfileJointContinuous
+      hMetricProfileJointContinuous
+  · exact scalarSubordinateGeometry
+
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
 
 /-- Fixed-target conversion into the established reaction-decay positive-
