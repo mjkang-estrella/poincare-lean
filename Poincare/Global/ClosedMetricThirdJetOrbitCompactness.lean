@@ -55,11 +55,12 @@ variable [CompactSpace M] [ConnectedSpace M] [Nonempty M]
 
 local notation "G3" => ClosedSmoothRiemannianMetric 3 M
 
-/-- Compactness of the real-time metric orbit closure in the explicit scalar
-metric-entry third-jet topology supplies a uniform full covariant-Ricci
-derivative bound for the original family. -/
+/-- Compactness of a nonempty metric-family orbit closure in the explicit
+scalar metric-entry third-jet topology supplies a uniform full
+covariant-Ricci derivative bound for the original family. -/
 theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
-    (gt : ℝ → G3)
+    {I : Type v} [Nonempty I]
+    (gt : I → G3)
     (hOrbitCompact :
       letI : TopologicalSpace G3 :=
         closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
@@ -69,8 +70,9 @@ theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricT
     closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
   let K := closure (Set.range gt)
   letI : CompactSpace K := isCompact_iff_compactSpace.mp hOrbitCompact
+  let i₀ : I := Classical.choice (inferInstance : Nonempty I)
   letI : Nonempty K :=
-    ⟨⟨gt 0, subset_closure ⟨0, rfl⟩⟩⟩
+    ⟨⟨gt i₀, subset_closure ⟨i₀, rfl⟩⟩⟩
   have hJoint : Continuous (fun p : K × M ↦
       covRicciNormSqAt (p.1 : G3) p.2) :=
     continuous_covRicciNormSqAt_joint_on_closedMetricThirdJetOrbitClosure gt

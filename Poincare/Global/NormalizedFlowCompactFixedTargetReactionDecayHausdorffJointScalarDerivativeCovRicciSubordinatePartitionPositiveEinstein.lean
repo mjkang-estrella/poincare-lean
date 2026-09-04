@@ -508,7 +508,7 @@ noncomputable def ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBo
         lichnerowicz t.1 (reaction.normalizedFlow t.1 t.2)
         (scalarSubordinateGeometry t).closedLaplacianStokes }
 
-/-- Compactness of the full real-time metric orbit closure in the explicit
+/-- Compactness of the forward metric orbit closure in the explicit
 scalar metric-entry third-jet topology supplies the uniform bound required by
 `ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound`. -/
 noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
@@ -521,21 +521,18 @@ noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
     (hOrbitCompact :
       letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
         closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
-      IsCompact (closure (Set.range reaction.gt)))
+      IsCompact (closure (Set.range
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))))
     (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
       FiniteSubordinateHausdorffLaplacianGeometry
         (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
     NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
       M := by
-  let hExists :=
-    exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
-      reaction.gt hOrbitCompact
-  let D : ℝ := Classical.choose hExists
-  have hFull : UniformCovariantRicciDerivativeNormBound reaction.gt D :=
-    Classical.choose_spec hExists
   apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
     reaction compactTensorReferenceControl
-  · exact ⟨D, hFull.1, fun t x ↦ hFull.2 t.1 x⟩
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) hOrbitCompact
   · exact scalarSubordinateGeometry
 
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
