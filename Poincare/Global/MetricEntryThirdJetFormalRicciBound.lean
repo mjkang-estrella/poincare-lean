@@ -1,5 +1,5 @@
 import Poincare.Global.FiniteFixedAnchorCutoffOneChartCover
-import Poincare.Global.MetricEntryThirdJetFormalInvertibility
+import Poincare.Global.MetricEntryThirdJetAnchorLowerComparison
 import Poincare.Global.NormalizedFlowEnergyConcentrationCurvatureDerivative
 
 /-!
@@ -108,5 +108,70 @@ theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosur
     (fun i p hp z hz =>
       formalProfileMetricAt_isInvertible_of_mem_closure
         gt (i : M) (c i) (hLower i) (p := p) hp (z := z) hz)
+
+/-- Compact scalar-profile closure and one uniform intrinsic lower comparison
+with a genuine reference metric suffice for the global covariant-Ricci bound.
+The finite fixed-chart lower bounds are produced automatically. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_closedMetricLower
+    {J : Type v} (gt : J → G)
+    (data : FiniteFixedAnchorCutoffOneChartCover 3 M)
+    (hProfileCompact : IsCompact
+      (closure (Set.range
+        (metricEntryThirdJetProfile (n := 3) (M := M) ∘ gt))))
+    (gref : G) (c : ℝ)
+    (hLower : UniformClosedRiemannianMetricLowerComparison gref gt c) :
+    ∃ D : ℝ, UniformCovariantRicciDerivativeNormBound gt D := by
+  have hChart : ∀ i : data.Index, ∃ d : ℝ,
+      UniformAnchorBlendedMetricLowerComparison gt (i : M)
+        (data.compactCoordinateSet i) d := by
+    intro i
+    exact
+      exists_uniformAnchorBlendedMetricLowerComparison_of_closedMetricLowerComparison
+        gref gt c hLower (i : M) (data.isCompact_compactCoordinateSet i)
+  choose d hd using hChart
+  exact
+    exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_anchor_lower
+      gt data hProfileCompact d hd
+
+/-- Componentwise Arzela--Ascoli compactness and one uniform intrinsic metric
+lower comparison give the full covariant-Ricci derivative bound without any
+smooth-realization premise for profile limits. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_and_closedMetricLower
+    {J : Type v} (gt : J → G)
+    (data : FiniteFixedAnchorCutoffOneChartCover 3 M)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : J =>
+        (metricEntryThirdJetProfile (gt t) slot : E → ℝ)))
+    (hpointwiseCompact : ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : E),
+      ∃ Q : Set ℝ, IsCompact Q ∧
+        ∀ t : J, metricEntryThirdJetProfile (gt t) slot z ∈ Q)
+    (gref : G) (c : ℝ)
+    (hLower : UniformClosedRiemannianMetricLowerComparison gref gt c) :
+    ∃ D : ℝ, UniformCovariantRicciDerivativeNormBound gt D :=
+  exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_closedMetricLower
+    gt data
+      (isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise
+        gt hequicontinuous hpointwiseCompact)
+    gref c hLower
+
+/-- Pointwise boundedness supplies the compact pointwise sets in the preceding
+no-realization theorem. -/
+theorem exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_bounded_and_closedMetricLower
+    {J : Type v} (gt : J → G)
+    (data : FiniteFixedAnchorCutoffOneChartCover 3 M)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : J =>
+        (metricEntryThirdJetProfile (gt t) slot : E → ℝ)))
+    (hpointwiseBounded : ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : E),
+      Bornology.IsBounded (Set.range
+        (fun t : J => metricEntryThirdJetProfile (gt t) slot z)))
+    (gref : G) (c : ℝ)
+    (hLower : UniformClosedRiemannianMetricLowerComparison gref gt c) :
+    ∃ D : ℝ, UniformCovariantRicciDerivativeNormBound gt D :=
+  exists_uniformCovariantRicciDerivativeNormBound_of_compact_profileClosure_and_closedMetricLower
+    gt data
+      (isCompact_closure_range_metricEntryThirdJetProfile_of_componentwise_bounded
+        gt hequicontinuous hpointwiseBounded)
+    gref c hLower
 
 end Poincare

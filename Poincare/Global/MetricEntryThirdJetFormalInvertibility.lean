@@ -75,6 +75,21 @@ def UniformAnchorBlendedMetricLowerComparison
   0 < c ∧ ∀ t : J, ∀ z ∈ Q, ∀ w : E,
     c * ‖w‖ ^ 2 ≤ anchorBlendedMetricFamily gt x t z w w
 
+/-- Every genuine cutoff-blended chart metric is strictly positive. -/
+theorem anchorBlendedMetricFamily_pos
+    {J : Type v} (gt : J → G) (x : M) (t : J) (z : E)
+    {w : E} (hw : w ≠ 0) :
+    0 < anchorBlendedMetricFamily gt x t z w w := by
+  exact CovariantDerivative.blendedChartMetric_posDef
+    (GeodesicTransport.cutoff (n := n) x)
+    (GeodesicTransport.backgroundMetric (n := n))
+    (GeodesicTransport.backgroundMetric_pos (n := n))
+    (gt t).inner
+    (fun y a ha => (gt t).inner_pos y (v := a) ha) x
+    (GeodesicTransport.cutoff_nonneg (n := n) x z)
+    (GeodesicTransport.cutoff_le_one (n := n) x z)
+    (GeodesicTransport.cutoff_support_invertible (n := n) x z) hw
+
 /-- A uniform fixed-chart lower comparison passes to every formal profile in
 the family closure. -/
 theorem formalProfileMetricAt_lower_of_mem_closure
