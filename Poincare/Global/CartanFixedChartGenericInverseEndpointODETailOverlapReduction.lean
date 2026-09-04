@@ -216,6 +216,55 @@ theorem initialOverlapTime_mem_goodLocus
         chartTransitionCutoffGoodLocus x₀ x :=
   (Classical.choose_spec (C.exists_initialOverlapTime hx data)).2.2
 
+/-- On the remaining tail, the complete selector state stays in the protected
+inner ball supplied by the regular controlled selector.  This is the strongest
+range control available from admissibility alone; no chart or cutoff
+membership is used. -/
+theorem normalizedSelectorTrajectory_mem_protectedInnerBall_on_tail
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    {x : M} {w : E}
+    {P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x}
+    (hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors)
+    (data : GenericInverseEndpointODEAdmissibilityData
+      C.restrictToFixedAnchorCutoffOne x w P) :
+    ∀ t ∈ Ioc (C.initialOverlapTime hx data) C.time,
+      C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory x w t ∈
+        closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.restrictToFixedAnchorCutoffOne.selector.projectFirstVariational.protectedInnerRadius := by
+  intro t ht
+  let B := C.restrictToFixedAnchorCutoffOne.selector.projectFirstVariational
+  have hhalf : t ∈ Icc (-(B.epsilon / 2)) (B.epsilon / 2) := by
+    have hneg : -(B.epsilon / 2) ≤ 0 := by
+      linarith [B.epsilon_pos]
+    have hzero : 0 ≤ t :=
+      (C.initialOverlapTime_pos hx data).le.trans ht.1.le
+    have hupper : C.time < B.epsilon / 2 := by
+      simpa [B] using C.time_protected.2
+    exact ⟨hneg.trans hzero, ht.2.trans hupper.le⟩
+  simpa [B, normalizedSelectorTrajectory] using
+    B.selector_mem_protectedInnerBall data.selectorInitial_mem hhalf
+
+/-- One static containment of the selector's protected inner ball replaces
+pointwise chart and cutoff membership throughout the positive-time tail. -/
+theorem normalizedSelectorPosition_mem_goodLocus_on_tail
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    {x : M} {w : E}
+    {P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x}
+    (hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors)
+    (data : GenericInverseEndpointODEAdmissibilityData
+      C.restrictToFixedAnchorCutoffOne x w P)
+    (hprotectedInnerBall :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.restrictToFixedAnchorCutoffOne.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ chartTransitionCutoffGoodLocus x₀ x) :
+    ∀ t ∈ Ioc (C.initialOverlapTime hx data) C.time,
+      (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory x w t).1 ∈
+        chartTransitionCutoffGoodLocus x₀ x := by
+  intro t ht
+  exact hprotectedInnerBall _
+    (C.normalizedSelectorTrajectory_mem_protectedInnerBall_on_tail
+      hx data t ht)
+
 /-! ## Exact remaining tail residual -/
 
 /-- After the automatic initial interval, retain the same four path
@@ -245,6 +294,38 @@ structure GenericInverseEndpointODETailOverlapData
       GeodesicTransport.chartTransition x₀ x
           (C.restrictToFixedAnchorCutoffOne.normalizedSelectorTrajectory x w t).1 ∈
         IsometryInstantiate.cutoffOneLocus x
+
+/-- Admissibility and one geometric containment of the protected selector ball
+produce the complete tail-overlap package.  The four dynamic residuals are
+obtained by projecting the four conjuncts of the combined good locus. -/
+theorem nonempty_genericInverseEndpointODETailOverlapData_of_protectedInnerBall
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    {x : M} {w : E}
+    {P : GeodesicTransport.PreferredChartExpAtTrajectoryPackage g x}
+    (hx : x ∈ C.restrictToFixedAnchorCutoffOne.rawLocalFamily.anchors)
+    (data : GenericInverseEndpointODEAdmissibilityData
+      C.restrictToFixedAnchorCutoffOne x w P)
+    (hprotectedInnerBall :
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.restrictToFixedAnchorCutoffOne.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ chartTransitionCutoffGoodLocus x₀ x) :
+    Nonempty (C.GenericInverseEndpointODETailOverlapData x w P hx) := by
+  have hgood := C.normalizedSelectorPosition_mem_goodLocus_on_tail
+    hx data hprotectedInnerBall
+  exact ⟨{
+    admissibility := data
+    sourceChart_mem := by
+      intro t ht
+      exact (hgood t ht).1.1.1
+    targetChart_mem := by
+      intro t ht
+      exact (hgood t ht).1.1.2
+    sourceCutoffOne_mem := by
+      intro t ht
+      exact (hgood t ht).1.2
+    targetCutoffOne_mem := by
+      intro t ht
+      exact (hgood t ht).2 }⟩
 
 namespace GenericInverseEndpointODETailOverlapData
 
