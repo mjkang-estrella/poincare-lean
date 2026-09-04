@@ -139,6 +139,131 @@ theorem budgetRestrictedTargetLocus_subset_genericTargetLocus
       (GeodesicTransport.mem_budgetExpAtChart_source_iff g x v).1 hv.1 |>.1
   · simpa using hv.2
 
+/-- Membership in the budget-restricted target is exactly ordinary generic
+target membership together with the selected preferred-package budget. -/
+theorem mem_budgetRestrictedTargetLocus_iff
+    (g : ClosedSmoothRiemannianMetric 3 M) (x : M) (v : E) :
+    (x, v) ∈ (budgetRestrictedGenericFamily g).targetLocus ↔
+      (x, v) ∈ (genericFamily g).targetLocus ∧
+        ‖v‖ < (GeodesicTransport.budgetPreferredPackage g x).time *
+          (GeodesicTransport.budgetPreferredPackage g x).velocityRadius := by
+  constructor
+  · intro hv
+    exact ⟨budgetRestrictedTargetLocus_subset_genericTargetLocus g hv,
+      norm_lt_budgetPreferredPackage_of_mem_budgetRestrictedTargetLocus g hv⟩
+  · rintro ⟨hgeneric, hbudget⟩
+    change v ∈
+      ((chartAt E x).trans
+        (GeodesicTransport.budgetExpAtChartOpenPartialHomeomorph g x).symm).target
+    change v ∈
+      ((chartAt E x).trans
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph
+          (g := g) x).symm).target at hgeneric
+    rw [OpenPartialHomeomorph.trans_target] at hgeneric ⊢
+    refine ⟨?_, ?_⟩
+    · have hgenericSource : v ∈
+          (GeodesicTransport.expAtChartOpenPartialHomeomorph
+            (g := g) x).source := by
+        simpa using hgeneric.1
+      have hbudgetSource : v ∈
+          (GeodesicTransport.budgetExpAtChartOpenPartialHomeomorph g x).source :=
+        (GeodesicTransport.mem_budgetExpAtChart_source_iff g x v).2
+          ⟨hgenericSource, hbudget⟩
+      simpa using hbudgetSource
+    · simpa using hgeneric.2
+
+/-- Set-level form of the exact budget-restricted target description. -/
+theorem budgetRestrictedTargetLocus_eq
+    (g : ClosedSmoothRiemannianMetric 3 M) :
+    (budgetRestrictedGenericFamily g).targetLocus =
+      (genericFamily g).targetLocus ∩
+        {q : M × E |
+          ‖q.2‖ <
+            (GeodesicTransport.budgetPreferredPackage g q.1).time *
+              (GeodesicTransport.budgetPreferredPackage g q.1).velocityRadius} := by
+  ext q
+  exact mem_budgetRestrictedTargetLocus_iff g q.1 q.2
+
+/-- A locally uniform positive lower bound for the selected package budgets
+turns any centered generic-target neighborhood into a centered neighborhood
+of the budget-restricted target. -/
+theorem budgetRestrictedTargetLocus_mem_nhds_of_genericTargetLocus_mem_nhds_of_eventually_budget_lower
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    (hgeneric : (genericFamily g).targetLocus ∈ nhds (x₀, (0 : E)))
+    {r : ℝ} (hr : 0 < r)
+    (hbudget : ∀ᶠ x in nhds x₀,
+      r ≤ (GeodesicTransport.budgetPreferredPackage g x).time *
+        (GeodesicTransport.budgetPreferredPackage g x).velocityRadius) :
+    (budgetRestrictedGenericFamily g).targetLocus ∈
+      nhds (x₀, (0 : E)) := by
+  have hproduct :
+      {x : M |
+          r ≤ (GeodesicTransport.budgetPreferredPackage g x).time *
+            (GeodesicTransport.budgetPreferredPackage g x).velocityRadius} ×ˢ
+          Metric.ball (0 : E) r ∈ nhds (x₀, (0 : E)) :=
+    prod_mem_nhds hbudget (Metric.ball_mem_nhds (0 : E) hr)
+  have hbudgetLocus :
+      {q : M × E |
+        ‖q.2‖ <
+          (GeodesicTransport.budgetPreferredPackage g q.1).time *
+            (GeodesicTransport.budgetPreferredPackage g q.1).velocityRadius} ∈
+        nhds (x₀, (0 : E)) := by
+    refine Filter.mem_of_superset hproduct ?_
+    rintro ⟨x, v⟩ ⟨hx, hv⟩
+    have hvNorm : ‖v‖ < r := by
+      simpa [Metric.mem_ball, dist_eq_norm] using hv
+    exact hvNorm.trans_le hx
+  rw [budgetRestrictedTargetLocus_eq]
+  exact inter_mem hgeneric hbudgetLocus
+
+/-- Continuity at the anchor of the selected time-radius product supplies the
+local lower bound required by the preceding neighborhood theorem. -/
+theorem budgetRestrictedTargetLocus_mem_nhds_of_genericTargetLocus_mem_nhds_of_budget_continuousAt
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    (hgeneric : (genericFamily g).targetLocus ∈ nhds (x₀, (0 : E)))
+    (hbudgetContinuous : ContinuousAt
+      (fun x : M =>
+        (GeodesicTransport.budgetPreferredPackage g x).time *
+          (GeodesicTransport.budgetPreferredPackage g x).velocityRadius) x₀) :
+    (budgetRestrictedGenericFamily g).targetLocus ∈
+      nhds (x₀, (0 : E)) := by
+  let R : ℝ := (GeodesicTransport.budgetPreferredPackage g x₀).time *
+    (GeodesicTransport.budgetPreferredPackage g x₀).velocityRadius
+  let r : ℝ := R / 2
+  have hR : 0 < R := by
+    simpa [R] using
+      GeodesicTransport.budgetPreferredPackage_budget_pos g x₀
+  have hr : 0 < r := half_pos hR
+  have hbudgetStrict : ∀ᶠ x in nhds x₀,
+      r < (GeodesicTransport.budgetPreferredPackage g x).time *
+        (GeodesicTransport.budgetPreferredPackage g x).velocityRadius := by
+    apply hbudgetContinuous
+    exact Ioi_mem_nhds (half_lt_self hR)
+  exact
+    budgetRestrictedTargetLocus_mem_nhds_of_genericTargetLocus_mem_nhds_of_eventually_budget_lower
+      g x₀ hgeneric hr (hbudgetStrict.mono fun _ hx => hx.le)
+
+/-- Joint regularity of the original generic family plus continuity of the
+selected package budget at one anchor is sufficient for the exact remaining
+budget-neighborhood obligation. -/
+theorem budgetRestrictedTargetLocus_mem_nhds_of_genericJointRegularity_of_budget_continuousAt
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    (hregular : GenericJointRegularity g)
+    (hbudgetContinuous : ContinuousAt
+      (fun x : M =>
+        (GeodesicTransport.budgetPreferredPackage g x).time *
+          (GeodesicTransport.budgetPreferredPackage g x).velocityRadius) x₀) :
+    (budgetRestrictedGenericFamily g).targetLocus ∈
+      nhds (x₀, (0 : E)) := by
+  have hcenter : (x₀, (0 : E)) ∈ (genericFamily g).targetLocus := by
+    change (0 : E) ∈ ((genericFamily g).normal x₀).target
+    have hmap := (genericFamily g).normal x₀ |>.map_source
+      ((genericFamily g).anchor_mem_source x₀)
+    simpa [(genericFamily g).normal_anchor x₀] using hmap
+  exact
+    budgetRestrictedTargetLocus_mem_nhds_of_genericTargetLocus_mem_nhds_of_budget_continuousAt
+      g x₀ (hregular.isOpen_targetLocus.mem_nhds hcenter) hbudgetContinuous
+
 @[simp] theorem budgetRestrictedGenericFamily_normal_apply
     (g : ClosedSmoothRiemannianMetric 3 M) (x z : M) :
     (budgetRestrictedGenericFamily g).normal x z =
