@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "grounded-topology",
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "description": "A reviewed conditional route from concrete surgery-source existence and spherical covering construction to the canonical topological target. Source existence and covering construction remain open. Stage component sets are subsets of the original space, not physical time-slice manifolds.",
+  "modules": [
+    "Poincare.ProofProgress.GroundedTopologyAssembly",
+    "Poincare"
+  ],
+  "endpoint": {
+    "name": "Poincare.poincare_conjecture",
+    "type_symbol": "Poincare.PoincareConjectureStatement"
+  },
+  "references": [
+    {
+      "url": "https://arxiv.org/abs/math/0303109",
+      "role": "Background surgery construction; no claim of equivalence of current interface definitions."
+    },
+    {
+      "url": "https://arxiv.org/abs/math/0307245",
+      "role": "Background finite extinction; exact geometric realization remains an open prerequisite."
+    },
+    {
+      "url": "https://arxiv.org/abs/math/0607607",
+      "role": "Exposition of the intended route; theorem-level source matching is future mathematical work."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "source-existence",
+      "kind": "obligation",
+      "declaration": null,
+      "description": "For every compact Hausdorff simply connected topological three-manifold, choose a compatible atlas on its existing topology and supply the matching analytic, surgery, decomposition, finite trace, and Perelman production data.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.GroundedTopologyUniversalSourceStatement",
+      "expected_statement_sha256": "c1cbbd3b1b613d0d328187dd4b451ccbbd958c6b0c578d2d5f1fe548401c3c6a"
+    },
+    {
+      "id": "covering-construction",
+      "kind": "obligation",
+      "declaration": null,
+      "description": "Construct a covering map from the standard three-sphere to a manifold equipped with a GroundedTopologySource. The geometric interpretation of its component carriers and their neck/cap gluing remains open; a partition of the original point set does not supply this covering.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.GroundedTopologyThreeSphereCoveringStatement",
+      "expected_statement_sha256": "e91f86987f3543b49704a851d241a3da2ad35f00c1e71daedcab737eced2a226"
+    },
+    {
+      "id": "conditional-assembly",
+      "kind": "checked",
+      "declaration": "Poincare.poincare_statement_of_groundedTopologySources_and_covering",
+      "description": "Checked conditional reduction: choose the presentation atlas, pass its complete source to the assumed covering constructor, and apply simply connected covering rigidity.",
+      "depends_on": [
+        "source-existence",
+        "covering-construction"
+      ]
+    },
+    {
+      "id": "poincare",
+      "kind": "obligation",
+      "declaration": "Poincare.poincare_conjecture",
+      "description": "Every compact Hausdorff simply connected topological three-manifold is homeomorphic to the standard three-sphere. This exact declaration remains absent.",
+      "depends_on": [
+        "conditional-assembly"
+      ],
+      "expected_type_symbol": "Poincare.PoincareConjectureStatement",
+      "expected_statement_sha256": "883609fc4e756e69b7ed5befba349e33c90b283e404565aa69a1ee848b0c4ed9"
+    }
+  ]
+}

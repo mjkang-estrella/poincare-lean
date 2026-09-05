@@ -1,0 +1,46 @@
+{
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "integration_branch": "codex/proof-workflow-improvements",
+  "leases": [
+    {
+      "task": "grounded-topology-consumer",
+      "owner": "grounded-topology-consumer",
+      "allowed_paths": [
+        "Poincare/ProofProgress/GroundedTopology*.lean",
+        "Poincare/ProofProgress/GroundedPerelmanPoincareBoundary.lean"
+      ],
+      "status": "reserved",
+      "release_condition": "worker terminal; orchestrator reviewed diff"
+    },
+    {
+      "task": "frozen-statement-contracts",
+      "owner": "frozen-statement-contracts",
+      "allowed_paths": [
+        "harness/v2/runtime/store.py",
+        "harness/v2/runtime/validation.py",
+        "harness/v2/schemas/task.schema.json",
+        "harness/v2/tests/",
+        "harness/v2/worker/client.py",
+        "harness/v2/worker/tests/",
+        "scripts/theorem_contract_audit.sh",
+        "scripts/frozen_contract_audit.py",
+        "scripts/tests/test_frozen_contract_audit.py",
+        "harness/v2/contracts/"
+      ],
+      "status": "reserved",
+      "release_condition": "worker terminal; orchestrator reviewed diff"
+    },
+    {
+      "task": "theorem-dependency-registry",
+      "owner": "theorem-dependency-registry",
+      "allowed_paths": [
+        "harness/v2/proof_graph/",
+        "scripts/theorem_registry.py",
+        "scripts/lean/TheoremRegistry.lean",
+        "scripts/tests/test_theorem_registry.py"
+      ],
+      "status": "reserved",
+      "release_condition": "worker terminal; orchestrator reviewed diff"
+    }
+  ]
+}

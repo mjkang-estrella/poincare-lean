@@ -15,10 +15,23 @@ cleanup() {
 
 trap cleanup EXIT
 
-rg -n '^(noncomputable[[:space:]]+)?(def|abbrev)[[:space:]]+[A-Za-z0-9_]+' \
+rg -Hn '^(noncomputable[[:space:]]+)?(def|abbrev)[[:space:]]+[A-Za-z0-9_]+' \
   Poincare/*.lean | sort -t: -k1,1 -k2,2n > "$decls_file"
 
 while IFS=: read -r path line rest; do
+  qualified_name=$(
+    printf '%s\n' "$rest" |
+      sed -E 's/^(noncomputable[[:space:]]+)?(def|abbrev)[[:space:]]+([A-Za-z0-9_.]+).*/\3/'
+  )
+  case "$qualified_name" in
+    *.*)
+      # A constructor or method is not a redefinition of its owning type.
+      # This legacy convention checks only unqualified definition names;
+      # exact type contracts are a separate compiler-checked audit.
+      echo "INFO: qualified definition $qualified_name is outside the unqualified shape-name convention"
+      continue
+      ;;
+  esac
   name=$(
     printf '%s\n' "$rest" |
       sed -E 's/^(noncomputable[[:space:]]+)?(def|abbrev)[[:space:]]+([A-Za-z0-9_]+).*/\3/'

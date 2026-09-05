@@ -50,6 +50,26 @@ or preserve concrete evidence that no sound dispatch is currently possible.
   context symbols and files, dependencies, array-form acceptance commands,
   forbidden-token policy, resource budgets, and valid stop conditions. Validate
   it against `harness/v2/schemas/task.schema.json` before dispatch.
+- Create new proof Tasks using schema version `2.1` and its statement contract.
+  Freeze the exact Lean type of every required declaration, its universe
+  parameters, and the definition files that determine its meaning. Obtain an
+  independent blind mathematical read-back before dispatch: the reviewer sees
+  the Lean statements and definitions without the intended source wording.
+  Compare that read-back with the mathematical milestone, then bind the review
+  report to the exact statement snapshot. Version `2.0` exists for immutable
+  historical Tasks; do not use it to bypass review on new proof work.
+- Start proof selection from the reviewed mission in
+  `harness/v2/missions/grounded-topology.json` and the theorem registry described
+  in `docs/PROOF_WORKFLOW.md`. Check current compiled declarations and search
+  reusable results before inventing a new interface. Keep planned obligation
+  edges separate from dependencies extracted from proof terms. A checked
+  conditional theorem leaves its input obligations open. An absent final
+  declaration remains open even when every planned prerequisite is marked ready.
+- Each proof Task must name the open obligation it addresses and the consumer
+  that will use its result. Prefer a proof that discharges a prerequisite on the
+  selected route. Count discharged reviewed obligations and preserved concrete
+  data, not declarations, commits, reflexive equality companions, or successful
+  Jobs. Infrastructure Tasks must state their separate acceptance criterion.
 - A Job is one bounded attempt at one Task revision. Snapshot the prompt and
   context hashes and record exact model/artifact metadata, worktree, branch,
   lease, budgets, raw messages/tool calls, compiler output, final patch, exit

@@ -220,6 +220,36 @@ failures must be recorded separately from regressions introduced by the Job.
 
 ## Runtime State
 
+### Mathematical obligations and statement contracts
+
+The Task dependency DAG schedules work. The theorem registry adds a separate
+view of the mathematics: exact Lean declarations, statement and proof
+dependencies, and a reviewed plan of open obligations leading to the reserved
+endpoint. Planned edges are not proof terms. A conditional proof is checked
+without declaring its hypotheses solved. The registry must refresh selected
+compiled modules before using their contents as current evidence and reject
+stale snapshots or changed expected statements.
+
+New proof Tasks use schema version `2.1`. Their statement contract covers every
+required declaration, including universe parameters and hashes of reviewed
+definition files. A distinct reviewer records a blind mathematical read-back
+bound to that snapshot before dispatch. The runtime verifies the pinned report
+and definitions at the Task base and at the worktree; the independent gate
+checks exact Lean types and permitted axioms. Historical `2.0` Tasks remain
+readable and executable under their original contract. The orchestration prompt
+requires `2.1` for new proof work.
+
+Review records establish what was reviewed and by whom. They do not prove that
+a mathematical interpretation is correct. The orchestrator still compares the
+read-back with its source milestone and checks the actual definitions. The
+topology pilot makes this distinction explicit: source existence and the
+construction of a spherical covering are open obligations, while the assembly
+from those inputs is a separate checked theorem.
+
+`docs/PROOF_WORKFLOW.md` documents the commands, migration, and measured
+statement/proof compilation pilot. The runtime and proof source remain the
+authority when reports disagree.
+
 Use SQLite for queue/lease transitions and an append-only artifact tree for
 large evidence:
 

@@ -1,0 +1,76 @@
+{
+  "schema_version": "2.0",
+  "id": "theorem-dependency-registry",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "objective": {
+    "title": "Extract checked theorem dependencies and expose obligation graph and reusable theorem search",
+    "statement": "Build an executable Lean declaration exporter plus local CLI for catalog snapshots, mathematical description/type search, and a validated planned mission graph joined to actual checked dependencies. Distinguish theorem proofs, arbitrary unresolved hypotheses, planned nodes, and absent endpoint. Bind artifacts to source identities and reject stale evidence/cycles/false closure. Add tests and minimal CLI documentation. The tool is read-only with respect to proof source and does not infer proof completion from names, imports, job status, or graph reachability alone.",
+    "deliverables": [
+      "Extract checked theorem dependencies and expose obligation graph and reusable theorem search"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "harness/v2/proof_graph/",
+      "scripts/theorem_registry.py",
+      "scripts/lean/TheoremRegistry.lean",
+      "scripts/tests/test_theorem_registry.py"
+    ],
+    "forbidden_paths": [
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lake-manifest.json",
+      "lean-toolchain",
+      "HANDOFF.md",
+      "Poincare.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "Poincare/ProofProgress/GroundedPerelmanPoincareBoundary.lean",
+      "Poincare/ProofProgress/SingularityModelBlowupCoverage.lean",
+      "harness/v2/schemas/task.schema.json"
+    ],
+    "symbols": [],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/tests",
+        "-p",
+        "test_theorem_registry.py",
+        "-v"
+      ],
+      [
+        "lake",
+        "env",
+        "lean",
+        "scripts/lean/TheoremRegistry.lean"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Stop at the stated file scope; report exact resisting types and preserved compiler failures if blocked.",
+    "No service operations, full builds, merges, task acceptance, or final-target claim."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  }
+}

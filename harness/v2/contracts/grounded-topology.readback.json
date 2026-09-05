@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/blind_topology_readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "1707c1441501bbf94ef0edb52bd71df344aebd7bf2fa66be5b71d4af21975aa2",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.GroundedTopologyUniversalSourceStatement",
+      "mathematical_statement": "This defines the proposition that every compact Hausdorff simply connected space with a topological R^3 atlas admits another R^3 atlas on the SAME topology together with a GroundedTopologySource for that selected atlas. The source assumes analytic and surgery packages, a finite nonempty event-prefix trace, and a Perelman production source on the matching flow. It does not prove existence of those data or require the original arbitrary atlas to be differentiable. Recorded component sets live in the original space; their carrier maps need not be topological embeddings."
+    },
+    {
+      "name": "Poincare.GroundedTopologyThreeSphereCoveringStatement",
+      "mathematical_statement": "This defines the proposition that for every compact Hausdorff simply connected charted three-space and every supplied GroundedTopologySource there exists a covering map from the standard three-sphere onto that space. Construction of the covering remains assumed. The statement does not require the covering to be constructed by any specified gluing algorithm, and a proof may ignore source fields. Universal source existence is a separate obligation."
+    },
+    {
+      "name": "Poincare.GroundedTopologySource.active_components_cover",
+      "mathematical_statement": "For a supplied GroundedTopologySource, the union of its recorded component subsets at every stage is the entire original manifold. Backward finite induction uses terminal coverage, containment of each event region in current component sets, and equality between parent and child unions outside that event. This is a set-partition assertion, not a statement that physical flow slices persist after extinction."
+    },
+    {
+      "name": "Poincare.GroundedTopologySource.unique_active_component",
+      "mathematical_statement": "For a supplied source, every point of the original manifold lies in exactly one recorded component subset at every stage. Coverage supplies existence and pairwise disjointness supplies uniqueness. The component subsets are not asserted here to be geometric connected components."
+    },
+    {
+      "name": "Poincare.poincare_statement_of_groundedTopologySources_and_covering",
+      "mathematical_statement": "Assume universal existence of chosen-atlas presentations, and assume every supplied concrete source yields a covering from the three-sphere. Then each compact Hausdorff simply connected topological three-manifold is homeomorphic to the three-sphere. The proof selects the presentation atlas on the same topology, applies the covering assumption to its source, and uses simply connected covering rigidity. Neither universal source existence nor covering construction is proved."
+    }
+  ],
+  "findings": []
+}

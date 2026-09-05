@@ -30,6 +30,8 @@ evidence, not this endpoint.
 | Verification | `scripts/*.sh` | Placeholder, interface, contract, semantic, root-import, axiom, and completion checks. |
 | Work history | `harness/tasks`, `harness/reports`, `harness/ledger.json` | First-generation task attempts and reports. Historical after 2026-07-07 unless revalidated. |
 | Harness v2 | `harness/v2/runtime`, `harness/v2/pi`, `harness/v2/deploy`, `harness/v2/state` | SQLite Task/Job state, fenced leases, append-only evidence, one fresh bounded Pi session per Job, and restart-safe Codex orchestration. Runtime state is ignored. |
+| Reviewed proof route | `harness/v2/missions/grounded-topology.json`, `scripts/theorem_registry.py` | Planned open obligations alongside dependencies extracted from Lean; source-bound theorem lookup. |
+| Statement review | `harness/v2/contracts`, `scripts/frozen_contract_audit.py` | Exact types, definition hashes, and independent mathematical read-back for registered interfaces. |
 
 ## Why the Repository Feels Large
 
@@ -47,6 +49,12 @@ Do not start by reading all of `Poincare.lean`. Find the target declaration,
 then use `rg` for its consumers and direct imports.
 
 ## Finding the Active Frontier
+
+The current pilot route and commands are documented in
+`docs/PROOF_WORKFLOW.md`. Its new topology consumer retains a selected surgery
+source and permits a compatible replacement atlas. Source existence and the
+spherical covering construction remain open. A checked partition lemma or
+conditional assembly does not close those obligations.
 
 Use evidence in this order:
 

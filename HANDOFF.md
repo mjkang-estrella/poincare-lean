@@ -1,6 +1,98 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-09-04 (UTC)
+Snapshot date: 2026-09-05 (UTC)
+
+## 2026-09-05 Reviewed topology and proof-workflow checkpoint
+
+The active integration worktree is
+`/Users/mjkang/.codex/worktrees/proof-workflow-improvements/poincare`, branch
+`codex/proof-workflow-improvements`, based on the previously pushed
+`64c9f999c9c699cb52e87ea36fad294d43b774d4`. The implementation commits are
+`d73eb030` for the topology source, `500ecdd3` for the theorem registry, and
+`84ca80dd` for strict statement contracts. This section supersedes older
+descriptions of the active branch and theorem-selection workflow below.
+
+The new `GroundedTopologySource` retains one decomposition and trace, their
+owning surgery package, and a Perelman production source on the matching flow.
+`GroundedTopologyPresentation` selects a compatible atlas on the same topology.
+The independent read-back rejected an earlier draft which required the original
+arbitrary topological atlas to be differentiable; the accepted types remove
+that requirement. The new conditional assembly passes the presentation's full
+source into the covering premise.
+
+`GroundedTopologySource.active_components_cover` proves coverage of the original
+space at every recorded stage by backwards induction through the actual parent
+maps. Disjointness gives unique component membership. The high-Ricci membership
+lemma transfers a point using the actual trace-flow equality and locates its
+spatial point in that partition. It does not locate the point at the stage's
+event time or in the event region.
+
+These are sets in the original manifold, not physical time-slice manifolds.
+Their carriers still lack the topology and embedding requirements needed for
+geometric reconstruction. The source also does not identify event regions with
+high-curvature regions. Both universal chosen-atlas source existence and
+`GroundedTopologyThreeSphereCoveringStatement` remain open, as does treatment
+of a zero-event history. No final Poincare theorem is supplied by this work.
+
+The registry reads exact types and dependencies from Lean after focused builds.
+Its reviewed mission is `harness/v2/missions/grounded-topology.json`. Planned
+edges stay separate from checked proof dependencies; a conditional theorem
+cannot discharge an unconditional obligation. Expected statements include
+transitive semantic fingerprints. Catalogs bind to source identity, and stale
+or edited evidence is rejected.
+
+New mathematical Tasks use opt-in schema `2.1`, as required by the updated
+orchestrator prompt. Every deliverable has a frozen type and universe list,
+with definition hashes and an independent read-back tied to the snapshot.
+Pinned source files are streamed through hash checks without being copied into
+worker prompts. Existing context limits and broker scope remain unchanged.
+Version `2.0` remains available for historical tasks. The curated theorem audit
+now checks exact types and axiom footprints; it no longer demands reflexive
+`theorem_eq` companions. The full completion audit also rejects a failed or
+nonstandard final axiom check instead of printing it and continuing.
+
+The full completion run passed build, interface, mathlib-gap, semantic-surface,
+root-import, and axiom checks, then exposed four older shape-parser false
+positives. That parser treated qualified methods such as `Type.ofSource` as
+definitions of `Type`. It now limits the legacy name convention to unqualified
+definitions, always records filenames, and preserves the existing checks on
+those definitions. Four regression tests and the live shape audit pass after
+the repair. The five curated contracts were then rerun and passed. The initial
+completion log is preserved; the entire completion script was not repeated
+after this parser-only repair. No successful full completion audit is claimed.
+An independent final root probe still reports
+`Unknown identifier Poincare.poincare_conjecture`.
+
+Independent verification passed the focused Lean checks and axiom probes for
+all eight new proof declarations, the five curated contracts, and a serialized
+4,105-target full build. The runtime suite passed 63 tests, worker suite 33,
+registry suite 16, and curated-audit suite 10. The Pi suite completed 94 tests
+with 14 environment-dependent skips. These suites include changed secondary
+types, forged or stale review evidence, unsafe proof-typed definitions, changed
+dependent definitions, false graph closure, and omitted multi-megabyte pinned
+sources. The warm-cache pilot medians were 2.60 seconds for statements and
+2.52 seconds for assembly, measured while the completion audit also ran; no
+before/after speedup is claimed.
+
+Local implementation task snapshots and their corrected directory-scope
+revisions are under `harness/v2/tasks`; the invalid initial spellings are
+preserved under `tasks/history`. These records were not dispatched to the
+persistent Harness database. All local worker leases are released in
+`proof-workflow-improvements-leases.closed.json`. The live model services and
+persistent deployment were not modified.
+
+The exact first action is:
+
+```sh
+python3 scripts/theorem_registry.py graph \
+  --mission harness/v2/missions/grounded-topology.json --require-closed
+```
+
+Exit `2` denotes valid evidence with open obligations. Before dispatching the
+next proof, split the `covering-construction` obligation at a geometric carrier
+or gluing interface and review its exact statement. Do not infer carrier
+embeddings, spherical pieces, or a covering from the existing partition fields.
+See `docs/PROOF_WORKFLOW.md` for commands and the precise scope of the pilot.
 
 ## Project Truth
 

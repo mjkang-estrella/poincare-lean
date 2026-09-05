@@ -1,0 +1,63 @@
+{
+  "schema_version": "2.0",
+  "id": "grounded-topology-consumer",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "objective": {
+    "title": "Preserve concrete surgery evidence through the topology consumer",
+    "statement": "Introduce a nonvacuous topology extraction route whose input retains the actual grounded Perelman surgery construction and its matching decomposition/trace data, with checked assembly to the canonical target. Keep existing frozen targets and legacy APIs intact. Split the new statement interface from its proof implementation as a measured compilation pilot. The hard geometric covering-construction obligation must remain explicit; no assumption may be relabeled as a proof.",
+    "deliverables": [
+      "Preserve concrete surgery evidence through the topology consumer"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/ProofProgress/GroundedTopology*.lean",
+      "Poincare/ProofProgress/GroundedPerelmanPoincareBoundary.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lake-manifest.json",
+      "lean-toolchain",
+      "HANDOFF.md",
+      "Poincare.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "Poincare/ProofProgress/GroundedPerelmanPoincareBoundary.lean",
+      "Poincare/ProofProgress/GroundedPerelmanFiniteExtinctionBridge.lean",
+      "Poincare/ProofProgress/ExtinctionThreeSphereCoveringProjection.lean"
+    ],
+    "symbols": [],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "lake",
+        "env",
+        "lean",
+        "Poincare/ProofProgress/GroundedPerelmanPoincareBoundary.lean"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Stop at the stated file scope; report exact resisting types and preserved compiler failures if blocked.",
+    "No service operations, full builds, merges, task acceptance, or final-target claim."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  }
+}

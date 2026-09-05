@@ -64246,14 +64246,16 @@ EOF
 
 if lake env lean "$completion_check" >/dev/null 2>&1; then
   echo "PASS: Lean confirms Poincare.poincare_conjecture has type PoincareConjectureStatement"
-  axiom_check="$completion_check_dir/axioms.lean"
-  cat > "$axiom_check" <<'EOF'
-import Poincare
-
-#print axioms Poincare.poincare_conjecture
-EOF
-  echo "INFO: canonical theorem axiom footprint:"
-  lake env lean "$axiom_check" || true
+  if axiom_probe_source=$(python3 -c '
+from harness.v2.runtime.validation import axiom_probe_source
+print(axiom_probe_source(names=["Poincare.poincare_conjecture"], imports=["Poincare"]))
+') && printf '%s\n' "$axiom_probe_source" |
+      LEAN_NUM_THREADS=1 lake env lean --stdin; then
+    echo "PASS: canonical theorem uses only permitted foundational axioms"
+  else
+    echo "FAIL: canonical theorem axiom verification failed"
+    status=1
+  fi
 else
   echo "FAIL: Lean cannot confirm Poincare.poincare_conjecture : PoincareConjectureStatement"
   if rg -q 'PoincareConjectureStatement' Poincare; then
