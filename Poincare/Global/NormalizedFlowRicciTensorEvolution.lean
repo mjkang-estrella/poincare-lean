@@ -218,39 +218,8 @@ theorem satisfiesRicciEvolutionAt_of_normalizedRicciFlow_joint_metric_entries_th
     deltaGammaEntryDerivativeBridgeAt_of_deltaGammaFieldMDifferentiableAt
       (deltaGammaFieldMDifferentiableAt_of_metricEntriesJointContDiffAt_three
         (hJoint x) hConn)
-  have hRicC2 : ∀ y : M,
-      CovTensor2ExtContMDiffAt (ricciVariationField (gt t₀)) y 2 := fun y ↦
-    ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow
-      hFlow hEntries y
-  have hRicSecond :
-      CovTensor2DerivExtDifferentiableAt
-        (gt t₀) (ricciVariationField (gt t₀)) x :=
-    covTensor2DerivExtDifferentiableAt_of_extSecond
-      (g := gt t₀) (h := ricciVariationField (gt t₀)) (x := x)
-      (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two (hRicC2 x))
-      (fun y ↦ covTensor2ExtDifferentiableAt_of_contMDiffAt_two (hRicC2 y))
-      (tensor2AddLeft_ricciVariationField (gt t₀))
-      (tensor2SMulLeft_ricciVariationField (gt t₀))
-      (tensor2AddRight_ricciVariationField (gt t₀))
-      (tensor2SMulRight_ricciVariationField (gt t₀))
-  have hScalar₂ :
-      ContMDiffAt I (modelWithCornersSelf ℝ ℝ) 2
-        (fun y : M ↦ (gt t₀).scalarAt y) x :=
-    scalarAt_contMDiffAt_two_of_normalizedRicciFlow hFlow hEntries x
-  have hScalarExt₂ : ∀ w : TM x,
-      MDifferentiableAt I (modelWithCornersSelf ℝ ℝ)
-        (fun y : M ↦
-          extDerivFun (fun z : M ↦ (gt t₀).scalarAt z) y
-            (extend E w y)) x := by
-    intro w
-    have hW :
-        MDifferentiableAt I
-          ((I).prod (modelWithCornersSelf ℝ E)) (T% (extend E w)) x := by
-      simpa using (mdifferentiableAt_extend I E w)
-    exact CovariantDerivative.mdiffAt_extDerivFun_apply hScalar₂ hW
   have hCurvComm : RicciSecondDerivCurvatureCommutationAt (gt t₀) x :=
-    RicciSecondDerivCurvatureCommutationAt.of_traceSecondRegularity
-      (g := gt t₀) (x := x) hRicSecond (hRicC2 x) hScalar₂ hScalarExt₂
+    RicciSecondDerivCurvatureCommutationAt.canonical (gt t₀) x
   have hCyclic :
       ∀ u v w z : TM x,
         closedCurvatureCovDerivAt (gt t₀) x v u w z

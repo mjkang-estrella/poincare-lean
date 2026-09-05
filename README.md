@@ -28,6 +28,10 @@ Read these files in order:
 5. [CURRENT_STATUS.md](CURRENT_STATUS.md) — the latest generated full audit
    snapshot. Check its timestamp before treating it as current.
 
+[Proof selection and statement review](docs/PROOF_WORKFLOW.md) describes the
+theorem registry, open topology obligations, strict frozen contracts, and the
+independent mathematical read-back used for new proof Tasks.
+
 `RESEARCHER_VERIFICATION.md` and the other long reports are evidence archives,
 not the fastest entry point.
 

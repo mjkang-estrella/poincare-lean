@@ -17226,25 +17226,29 @@ theorem perelmanSingularityControlPackage_of_f_functional_payload_entropy_normal
     singularityModelBlowupClassification controlPayload
 
 /--
-The next package-layer blocker is singularity-model blowup classification after
-singularity-model classification has been derived from payload data.
+A classification source supplies blow-up classification exactly when its
+classified models cover every pointed rescaling index.
 -/
-theorem no_perelman_singularity_model_blowup_classification_of_current_interface
+theorem perelman_singularity_model_blowup_classification_of_payload_source_and_coverage
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
-    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
-    ¬ HasSingularityModelBlowupClassification flow := by
-  intro singularityModelBlowupClassification
-  cases singularityModelBlowupClassification
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (source : SingularityModelClassificationPayloadSource flow)
+    (hCoverage :
+      Function.Surjective source.singularityModelToPointedRescalingIndex) :
+    HasSingularityModelBlowupClassification flow :=
+  HasSingularityModelBlowupClassification.of_classification_payload_source
+    source hCoverage
 
 /--
-Payload-backed surgery construction plus the currently available Perelman
-control legs already give the finite-extinction-facing certificate: a
+Payload-backed surgery construction plus the available Perelman control legs
+give the finite-extinction-facing certificate once classified singularity
+models cover every pointed rescaling index. The certificate contains a
 theorem-shaped surgery construction statement, its sub-obligation payload, the
 aggregate surgery witness, no-local-collapsing, reduced-volume monotonicity,
 canonical-neighborhood control, singularity-model classification, and the
-remaining blowup-classification blocker.
+resulting blow-up classification.
 -/
 theorem surgery_perelman_finite_extinction_control_certificate_of_payloads
     {n : ℕ∞ω}
@@ -17380,6 +17384,10 @@ theorem surgery_perelman_finite_extinction_control_certificate_of_payloads
       SingularityModelClassificationPayload
         kappaSolutionAsymptoticSolitonPayload
         canonicalNeighborhoodTheoremPayload)
+    (hCoverage :
+      Function.Surjective
+        (SingularityModelClassificationPayloadSource.of_payload
+          singularityModelClassificationPayload).singularityModelToPointedRescalingIndex)
     (noLocalCollapsingPayload :
       PerelmanNoLocalCollapsingPayload
         noLocalCollapsingContradictionSetupPayload) :
@@ -17393,7 +17401,7 @@ theorem surgery_perelman_finite_extinction_control_certificate_of_payloads
     ∃ _canonicalNeighborhood : HasCanonicalNeighborhoodTheorem flow,
     ∃ _singularityModelClassification :
       HasSingularityModelClassification flow,
-      ¬ HasSingularityModelBlowupClassification flow := by
+      HasSingularityModelBlowupClassification flow := by
   rcases surgery_construction_payload_of_construction_package
       constructionPackage with
     ⟨constructionStatement, constructionSubobligations, withSurgery⟩
@@ -17406,83 +17414,15 @@ theorem surgery_perelman_finite_extinction_control_certificate_of_payloads
         canonicalNeighborhoodTheoremPayload,
       singularity_model_classification_of_payload
         singularityModelClassificationPayload,
-      no_perelman_singularity_model_blowup_classification_of_current_interface
-        flow⟩
+      perelman_singularity_model_blowup_classification_of_payload_source_and_coverage
+        (SingularityModelClassificationPayloadSource.of_payload
+          singularityModelClassificationPayload)
+        hCoverage⟩
 
 /-- Theorem contract for `surgery_perelman_finite_extinction_control_certificate_of_payloads`. -/
 theorem surgery_perelman_finite_extinction_control_certificate_of_payloads_eq :
     @Poincare.surgery_perelman_finite_extinction_control_certificate_of_payloads =
       @Poincare.surgery_perelman_finite_extinction_control_certificate_of_payloads :=
   rfl
-
-/--
-Consequently, no direct Perelman singularity-control package can be inhabited
-under the current local API: any package would still contain constructorless
-singularity-model blowup classification evidence.
--/
-theorem no_perelman_singularity_control_package_of_current_interface
-    {n : ℕ∞ω}
-    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
-    [IsManifold ThreeManifoldModelWithCorners 1 M]
-    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
-    ¬ PerelmanSingularityControlPackage (n := n) (M := M) flow := by
-  intro package
-  exact
-    no_perelman_singularity_model_blowup_classification_of_current_interface
-      flow package.singularityModelBlowupClassification
-
-/--
-The fixed-flow surgery/Perelman package conjunction required by the dependency
-crosswalk is now blocked on singularity-model blowup classification after the F-functional setup,
-entropy normalization, entropy-minimizer
-existence, entropy log-Sobolev control, conjugate heat equation theory, surgery
-construction package, adjoint heat-kernel construction, conjugate heat-kernel
-estimates, W-functional setup, entropy-gradient formula, aggregate Perelman
-first variation, entropy monotonicity, and entropy lower-bound propagation are
-supplied together with the entropy functional, reduced-length first variation,
-reduced-distance differential inequality, reduced-distance estimates, and
-reduced-distance cut-locus/barrier control, reduced-Jacobian comparison, and
-reduced-distance theory, reduced-volume definition, and reduced-volume
-derivative formula, reduced-volume rigidity, and the reduced-volume positive
-lower bound, reduced-volume limit rigidity, and reduced-volume nonincreasing
-control derive kappa-noncollapsing from reduced-volume payload data and
-no-local-collapsing contradiction setup, collapsed-ball blowup, and
-volume-ratio contradiction, local volume lower-bound, and quantified
-kappa-noncollapsing data together with Hamilton compactness and ancient
-kappa-solution limit-extraction, pointed-rescaling, and
-curvature-normalization, structure-theory, and nonnegative curvature-operator
-and asymptotic-soliton payload data, plus ancient kappa-solution compactness
-payload data, canonical-neighborhood scale-control payload data, and
-canonical-neighborhood stability, cross-scale persistence, and neck/cap
-dichotomy and classification payload data plus no-local-collapsing,
-reduced-volume monotonicity, canonical-neighborhood theorem, and
-singularity-model classification payload data.
--/
-theorem no_surgery_perelman_package_payload_of_current_interface
-    {n : ℕ∞ω}
-    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
-    [IsManifold ThreeManifoldModelWithCorners 1 M]
-    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) :
-    ¬ (RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
-      PerelmanSingularityControlPackage (n := n) (M := M) flow) := by
-  rintro ⟨_constructionPackage, perelmanPackage⟩
-  exact no_perelman_singularity_control_package_of_current_interface flow
-    perelmanPackage
-
-/--
-Pointwise formal blocker for the direct package-layer target: any proposed
-`∃ n, ∃ flow, construction package ∧ Perelman package` witness would contain a
-constructorless singularity-model blowup classification field.
--/
-theorem no_direct_surgery_perelman_package_target_of_current_interface
-    (M : Type u) [TopologicalSpace M] [T2Space M]
-    [ChartedSpace ThreeManifoldModel M] [SimplyConnectedSpace M]
-    [CompactSpace M] [IsManifold ThreeManifoldModelWithCorners 1 M] :
-    ¬ (∃ n : ℕ∞ω,
-      ∃ flow : RicciFlowData ThreeManifoldModelWithCorners n M,
-        RicciFlowWithSurgeryConstructionPackage (n := n) (M := M) flow ∧
-        PerelmanSingularityControlPackage (n := n) (M := M) flow) := by
-  rintro ⟨_n, flow, payload⟩
-  exact no_surgery_perelman_package_payload_of_current_interface flow payload
 
 end Poincare

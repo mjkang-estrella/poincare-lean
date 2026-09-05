@@ -90,6 +90,29 @@ print("{}\t{}".format(report["live_supervisors"], len(report["anomalies"])))
   )
 fi
 
+set +e
+utilization_snapshot=$(job_utilization_snapshot)
+utilization_status=$?
+set -e
+queued_jobs=unknown
+executing_jobs=unknown
+reviewing_jobs=unknown
+execution_backlog=unknown
+backlog_underfilled=unknown
+if (( utilization_status == 0 )); then
+  IFS=$'\t' read -r queued_jobs executing_jobs reviewing_jobs execution_backlog backlog_underfilled < <(
+    printf '%s' "$utilization_snapshot" | "$HARNESS_PI_PYTHON" -S -P -B -c '
+import json
+import sys
+snapshot = json.load(sys.stdin)
+print("{}\t{}\t{}\t{}\t{}".format(
+    snapshot["queued"], snapshot["executing"], snapshot["reviewing"],
+    snapshot["execution_backlog"], snapshot["underfilled"]
+))
+'
+  )
+fi
+
 append_event "$HEARTBEAT_LOG" evidence_heartbeat \
   head_before "$head_before" head_after "$head_commit" tree "$tree_after" \
   branch "$branch" dirty_paths "$dirty_count" snapshot_stable "$snapshot_stable" \
@@ -98,6 +121,11 @@ append_event "$HEARTBEAT_LOG" evidence_heartbeat \
   exact_probe_size_bytes "$probe_size" leanstral_endpoint "$endpoint_state" \
   job_supervisor_audit_exit "$supervisor_status" \
   live_job_supervisors "$supervisor_live" supervisor_anomalies "$supervisor_anomalies" \
+  utilization_audit_exit "$utilization_status" \
+  queued_jobs "$queued_jobs" executing_jobs "$executing_jobs" \
+  reviewing_jobs "$reviewing_jobs" execution_backlog "$execution_backlog" \
+  execution_backlog_target "$POINCARE_LEANSTRAL_BACKLOG_TARGET" \
+  backlog_underfilled "$backlog_underfilled" \
   control_session "$(session_state "$POINCARE_CONTROL_SESSION")" \
   workers_session "$(session_state "$POINCARE_WORKERS_SESSION")" \
   observe_session "$(session_state "$POINCARE_OBSERVE_SESSION")" \

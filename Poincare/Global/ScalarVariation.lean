@@ -1,6 +1,7 @@
 import Poincare.Global.MetricVariation
 import Poincare.Global.Laplacian
 import Poincare.Global.RicciNorm
+import Poincare.Global.LeviCivitaRegularity
 import Poincare.LocalConnectionRegularity
 import Poincare.ChartIdentification
 import Mathlib.Analysis.InnerProductSpace.Spectrum
@@ -26795,5 +26796,124 @@ theorem hasDerivAt_scalarAt_lichnerowicz
     exact hDeriv
   convert hHas using 1
   exact hTrace.symm
+
+/--
+The curvature operator in canonical extension slots is `C²` as a tangent
+field.  The third-order connection regularity makes the inner covariant
+derivatives `C³`; one more localized covariant derivative and the `C²` Lie
+bracket theorem then give the three terms in the curvature formula.
+-/
+theorem closedCurvatureField_contMDiffAt_two
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (u w z : TM x) :
+    ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+      (T% (closedCurvatureFieldAt g u w z)) x := by
+  let X : Π y : M, TM y := extend E u
+  let Y : Π y : M, TM y := extend E w
+  let Z : Π y : M, TM y := extend E z
+  have hX2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% X) x := by
+    simpa [X] using (FiberBundle.contMDiffAt_extend' (k := 2) I E u)
+  have hY2 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2 (T% Y) x := by
+    simpa [Y] using (FiberBundle.contMDiffAt_extend' (k := 2) I E w)
+  have hX3 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% X) x := by
+    simpa [X] using (FiberBundle.contMDiffAt_extend' (k := 3) I E u)
+  have hY3 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Y) x := by
+    simpa [Y] using (FiberBundle.contMDiffAt_extend' (k := 3) I E w)
+  have hZ3 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 3) I E z)
+  have hZ4 : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 4 (T% Z) x := by
+    simpa [Z] using (FiberBundle.contMDiffAt_extend' (k := 4) I E z)
+  letI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 2 :=
+    ClosedSmoothRiemannianMetric.leviCivita_contMDiff₂ g
+  letI : CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 3 := by
+    simpa [ClosedSmoothRiemannianMetric.leviCivita] using
+      LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₃ g
+  have hInnerY :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3
+        (T% (fun y : M ↦ g.leviCivita Z y (Y y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three
+      (cov := g.leviCivita) hZ4 hY3
+  have hInnerX :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 3
+        (T% (fun y : M ↦ g.leviCivita Z y (X y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three
+      (cov := g.leviCivita) hZ4 hX3
+  have hTermXY :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦
+          g.leviCivita (fun p : M ↦ g.leviCivita Z p (Y p)) y (X y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hInnerY hX2
+  have hTermYX :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦
+          g.leviCivita (fun p : M ↦ g.leviCivita Z p (X p)) y (Y y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hInnerX hY2
+  have hBracket :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (VectorField.mlieBracket I X Y)) x :=
+    CovariantDerivative.contMDiffAt_mlieBracket_of_contMDiffAt_three hX3 hY3
+  have hTermBracket :
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (T% (fun y : M ↦
+          g.leviCivita Z y (VectorField.mlieBracket I X Y y))) x :=
+    CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_two
+      (cov := g.leviCivita) hZ3 hBracket
+  have hCurvature := (hTermXY.sub_section hTermYX).sub_section hTermBracket
+  simpa [closedCurvatureFieldAt, CovariantDerivative.curvatureOp, X, Y, Z]
+    using hCurvature
+
+/-- Canonical closed curvature entries are `C²`. -/
+theorem closedCurvatureEntry_contMDiffAt_two
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (a u w q : TM x) :
+    ContMDiffAt I 𝓘(ℝ) 2
+      (fun y : M ↦
+        g.inner y
+          (CovariantDerivative.curvatureOp g.leviCivita
+            (extend E a) (extend E u) (extend E w) y)
+          (extend E q y)) x := by
+  exact g.metric_pairing_contMDiffAt_two
+    (by simpa [closedCurvatureFieldAt] using
+      closedCurvatureField_contMDiffAt_two (g := g) (x := x) a u w)
+    (FiberBundle.contMDiffAt_extend' (k := 2) I E q)
+
+/-- The auxiliary curvature-trace tensor has `C²` canonical entries. -/
+theorem covTensor2ExtContMDiffAt_closedRicciTraceFieldAt_two
+    (g : ClosedSmoothRiemannianMetric n M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    {x : M} (u w : TM x) :
+    CovTensor2ExtContMDiffAt (closedRicciTraceFieldAt g u w) x 2 := by
+  intro p q
+  exact (closedCurvatureEntry_contMDiffAt_two
+    (g := g) (x := x) p u w q).congr_of_eventuallyEq
+      (eventually_closedRicciTraceFieldAt_entry_eq_curvature_entry
+        (g := g) (u := u) (w := w) (p := p) (q := q))
+
+/-- The Ricci tensor of a closed smooth metric has `C²` canonical entries. -/
+theorem covTensor2ExtContMDiffAt_ricciVariationField_canonical
+    (g : ClosedSmoothRiemannianMetric n M)
+    (x : M) :
+    CovTensor2ExtContMDiffAt (ricciVariationField g) x 2 := by
+  intro u w
+  have hTrace :
+      ContMDiffAt I 𝓘(ℝ) 2
+        (fun y : M ↦
+          traceMetricVariationAt g (closedRicciTraceFieldAt g u w) y) x :=
+    traceMetricVariationAt_contMDiffAt_two_of_entries
+      (g := g) (h := closedRicciTraceFieldAt g u w) (x := x)
+      ⟨covTensor2ExtContMDiffAt_closedRicciTraceFieldAt_two
+          (g := g) (x := x) u w,
+        metricExtContMDiffAt_two g x⟩
+      (closedRicciTraceBilinFormAt g u w)
+      (by intro y p q; rfl)
+  exact hTrace.congr_of_eventuallyEq
+    (Filter.Eventually.of_forall fun y ↦ by
+      simpa [ricciVariationField] using
+        (traceMetricVariationAt_closedRicciTraceFieldAt
+          (g := g) (u := u) (w := w) y).symm)
 
 end Poincare

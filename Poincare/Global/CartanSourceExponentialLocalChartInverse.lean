@@ -348,6 +348,41 @@ theorem exists_normalizedSelector_anchorEndpointOpenPartialHomeomorph
   · simpa [endpoint] using hUcoe
   · simpa [hendpointCenter] using htargetRaw
 
+/--
+Every prescribed neighborhood of the central fixed-chart state admits a
+concrete joint inverse package whose selector remains protected inside that
+same neighborhood.
+-/
+theorem exists_fixedChart_anchorEndpointOpenPartialHomeomorph_with_projected_protectedInnerBall_subset
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (E × E)}
+    (hU : U ∈ nhds (extChartAt I x₀ x₀, (0 : E))) :
+    ∃ H : LocalRegularControlledContinuousAutonomousSelector
+        (firstVariationalAugmentedField (fixedChartGeodesicField g x₀))
+        ((extChartAt I x₀ x₀, (0 : E)),
+          ContinuousLinearMap.id ℝ (E × E)),
+      closedBall (extChartAt I x₀ x₀, (0 : E))
+          H.projectFirstVariational.protectedInnerRadius ⊆ U ∧
+      ∃ T > (0 : ℝ), ∃ D : (E × E) →L[ℝ] E,
+        ∃ P : OpenPartialHomeomorph (E × E) (E × E),
+          T ∈ Ioo (-(H.epsilon / 2)) (H.epsilon / 2) ∧
+          HasStrictFDerivAt (normalizedSelectorEndpoint g x₀ H T) D
+            (extChartAt I x₀ x₀, (0 : E)) ∧
+          (P : (E × E) → (E × E)) =
+            (fun q : E × E =>
+              (q.1, normalizedSelectorEndpoint g x₀ H T q)) ∧
+          (extChartAt I x₀ x₀, (0 : E)) ∈ P.source ∧
+          (extChartAt I x₀ x₀, extChartAt I x₀ x₀) ∈ P.target := by
+  rcases
+      exists_regularVariationalSelector_fixedChart_with_projected_protectedInnerBall_subset
+        g x₀ hU with ⟨H, hprotected⟩
+  rcases exists_normalizedSelector_anchorEndpointOpenPartialHomeomorph
+      g x₀ H with
+    ⟨T, hT, D, P, hTprotected, hjoint, _hproduct, hPapply,
+      hcenterSource, hcenterTarget⟩
+  exact ⟨H, hprotected, T, hT, D, P, hTprotected, hjoint, hPapply,
+    hcenterSource, hcenterTarget⟩
+
 /-- Every fixed manifold chart admits the concrete joint inverse package. -/
 theorem exists_fixedChart_anchorEndpointOpenPartialHomeomorph
     (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
@@ -365,10 +400,11 @@ theorem exists_fixedChart_anchorEndpointOpenPartialHomeomorph
               (q.1, normalizedSelectorEndpoint g x₀ H T q)) ∧
           (extChartAt I x₀ x₀, (0 : E)) ∈ U.source ∧
           (extChartAt I x₀ x₀, extChartAt I x₀ x₀) ∈ U.target := by
-  rcases exists_regularVariationalSelector_fixedChart g x₀ with ⟨H⟩
-  rcases exists_normalizedSelector_anchorEndpointOpenPartialHomeomorph
-      g x₀ H with
-    ⟨T, hT, D, U, hTprotected, hjoint, _hproduct, hUcoe, hsource, htarget⟩
+  rcases
+      exists_fixedChart_anchorEndpointOpenPartialHomeomorph_with_projected_protectedInnerBall_subset
+        g x₀ (U := Set.univ) Filter.univ_mem with
+    ⟨H, _hprotected, T, hT, D, U, hTprotected, hjoint, hUcoe,
+      hsource, htarget⟩
   exact ⟨H, T, hT, D, U, hTprotected, hjoint, hUcoe, hsource, htarget⟩
 
 end CartanSourceExponentialLocalChartSelector

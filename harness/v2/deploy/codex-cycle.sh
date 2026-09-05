@@ -419,10 +419,10 @@ PY
   fi
   cycle_deadline_utc=$(utc_from_epoch "$cycle_deadline_epoch")
   set +e
-  pipeline_counts=$(job_pipeline_counts)
-  pipeline_counts_status=$?
+  utilization_snapshot=$(job_utilization_snapshot)
+  utilization_status=$?
   set -e
-  (( pipeline_counts_status == 0 )) || pipeline_counts='{"status":"unavailable"}'
+  (( utilization_status == 0 )) || utilization_snapshot='{"status":"unavailable"}'
 
   {
     cat "$POINCARE_PROMPT_FILE"
@@ -455,7 +455,10 @@ PY
     printf -- '- Leanstral artifact: `%s`\n' "$POINCARE_LEANSTRAL_ARTIFACT"
     printf -- '- Leanstral revision: `%s`\n' "$POINCARE_LEANSTRAL_REVISION"
     printf -- '- Maximum simultaneous Leanstral Jobs: `%s`\n' "$POINCARE_MAX_LEANSTRAL_JOBS"
-    printf -- '- Current Job pipeline counts: `%s`\n' "$pipeline_counts"
+    printf -- '- Configured execution-backlog target: `%s` queued + preparing + running Jobs\n' \
+      "$POINCARE_LEANSTRAL_BACKLOG_TARGET"
+    printf -- '- Current Job utilization snapshot: `%s`\n' "$utilization_snapshot"
+    printf -- '- Reviewing Jobs do not satisfy the execution-backlog target. When `underfilled` is positive, replenish with genuinely disjoint, fully prepared Jobs before optional repository-wide audits; otherwise record the exact bounded reason replenishment is unsafe.\n'
     printf -- '- Required supervised Job launcher: `%s`\n' \
       "$SCRIPT_DIR/run-job-supervised.sh"
     printf -- '- Every Pi Job must run through that launcher so its PID, Linux start time, PGID, lease identity, and terminal status remain recoverable.\n'
@@ -537,7 +540,8 @@ PY
     consecutive_codex_failures=0
     retry_cooldown=$POINCARE_CYCLE_COOLDOWN_SECONDS
     set +e
-    resume_decision=$("$HARNESS_PI_PYTHON" -S -P -B - "$cycle_dir/final-message.md" <<'PY'
+    resume_decision=$("$HARNESS_PI_PYTHON" -S -P -B - \
+      "$cycle_dir/final-message.md" "$POINCARE_LEANSTRAL_BACKLOG_TARGET" <<'PY'
 import json
 import sys
 
@@ -545,10 +549,23 @@ try:
     with open(sys.argv[1], encoding="utf-8") as handle:
         payload = json.load(handle)
     decision = payload["resume_decision"]
-except (OSError, KeyError, json.JSONDecodeError, TypeError):
+    backlog = payload["execution_backlog"]
+    target = int(sys.argv[2])
+    counts = [int(backlog[name]) for name in ("queued", "preparing", "running")]
+    underfilled = int(backlog["underfilled"])
+    underfill_reason = backlog["underfill_reason"]
+except (OSError, KeyError, ValueError, json.JSONDecodeError, TypeError):
     raise SystemExit(2)
 if decision not in {"continue", "pause", "completion_candidate"}:
     raise SystemExit(3)
+if int(backlog["target"]) != target:
+    raise SystemExit(4)
+if underfilled != max(0, target - sum(counts)):
+    raise SystemExit(5)
+if (underfilled == 0 and underfill_reason is not None) or (
+    underfilled > 0 and (not isinstance(underfill_reason, str) or not underfill_reason.strip())
+):
+    raise SystemExit(6)
 print(decision)
 PY
     )

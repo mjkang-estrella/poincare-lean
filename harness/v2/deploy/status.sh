@@ -48,18 +48,19 @@ if (( jobs_status == 0 )); then
   printf 'runtime: active_jobs=%s configured_ceiling=%s\n' \
     "$jobs_active" "$POINCARE_MAX_LEANSTRAL_JOBS"
   set +e
-  pipeline_counts=$(job_pipeline_counts)
-  pipeline_status=$?
+  utilization_snapshot=$(job_utilization_snapshot)
+  utilization_status=$?
   set -e
-  if (( pipeline_status == 0 )); then
-    printf '%s' "$pipeline_counts" | "$HARNESS_PI_PYTHON" -S -P -B -c '
+  if (( utilization_status == 0 )); then
+    printf '%s' "$utilization_snapshot" | "$HARNESS_PI_PYTHON" -S -P -B -c '
 import json
 import sys
 
 counts = json.load(sys.stdin)
 print(
-    "pipeline: queued={} executing={} reviewing={}".format(
-        counts["queued"], counts["executing"], counts["reviewing"]
+    "pipeline: queued={} executing={} reviewing={} target={} underfilled={}".format(
+        counts["queued"], counts["executing"], counts["reviewing"],
+        counts["target"], counts["underfilled"]
     )
 )
 '

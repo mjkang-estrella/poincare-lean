@@ -154,6 +154,27 @@ orchestrator transition after the recorded gate succeeds.
 8. Codex alone commits and integrates accepted work serially, reruns root
    integration checks, and updates the durable handoff.
 
+## Bounded Backlog Policy
+
+The deployment configures an execution-backlog target no greater than the
+four-session ceiling. The target counts `queued + preparing + running`; a Job
+waiting for Codex review does not count. When safe disjoint theorem/file scopes
+exist, Codex freezes a same-base batch and replenishes toward that target before
+optional repository-wide audits. The worker plane still only claims fully
+prepared Jobs and never creates Tasks.
+
+Codex reviews and integrates through one serial merge queue. Jobs from the same
+immutable base may continue while another disjoint Job is reviewed. Each Job is
+independently gated against its frozen contract. Compatible accepted diffs may
+be integrated as a batch before one root/audit checkpoint, but shared-interface
+changes, explicit Task gates, regression signals, cache publication, and the
+exact completion boundary force an earlier checkpoint. Underfill is allowed
+only with a recorded concrete safety or dependency reason; it never authorizes
+filler work, overlapping leases, weaker Tasks, or duplicate attempts.
+Every machine-validated Codex cycle result reports the target, queue/execution
+counts, underfill, and its reason. `status.sh` and the 10,800-second heartbeat
+surface the same utilization boundary for operators.
+
 The worker has no unrestricted shell, SSH, arbitrary filesystem or network
 access, Git commit/push/merge, branch or worktree management, worktree deletion,
 Docker, Ray, tmux, subagent, browser, or model-service capability. The custom
@@ -198,6 +219,36 @@ full build and generated status run at deliberate checkpoints. Baseline
 failures must be recorded separately from regressions introduced by the Job.
 
 ## Runtime State
+
+### Mathematical obligations and statement contracts
+
+The Task dependency DAG schedules work. The theorem registry adds a separate
+view of the mathematics: exact Lean declarations, statement and proof
+dependencies, and a reviewed plan of open obligations leading to the reserved
+endpoint. Planned edges are not proof terms. A conditional proof is checked
+without declaring its hypotheses solved. The registry must refresh selected
+compiled modules before using their contents as current evidence and reject
+stale snapshots or changed expected statements.
+
+New proof Tasks use schema version `2.1`. Their statement contract covers every
+required declaration, including universe parameters and hashes of reviewed
+definition files. A distinct reviewer records a blind mathematical read-back
+bound to that snapshot before dispatch. The runtime verifies the pinned report
+and definitions at the Task base and at the worktree; the independent gate
+checks exact Lean types and permitted axioms. Historical `2.0` Tasks remain
+readable and executable under their original contract. The orchestration prompt
+requires `2.1` for new proof work.
+
+Review records establish what was reviewed and by whom. They do not prove that
+a mathematical interpretation is correct. The orchestrator still compares the
+read-back with its source milestone and checks the actual definitions. The
+topology pilot makes this distinction explicit: source existence and the
+construction of a spherical covering are open obligations, while the assembly
+from those inputs is a separate checked theorem.
+
+`docs/PROOF_WORKFLOW.md` documents the commands, migration, and measured
+statement/proof compilation pilot. The runtime and proof source remain the
+authority when reports disagree.
 
 Use SQLite for queue/lease transitions and an append-only artifact tree for
 large evidence:
@@ -342,9 +393,10 @@ full build.
 
 ### Phase 4: Controlled parallelism
 
-- permit multiple Jobs only for disjoint file families and available Lean/GPU
-  budgets;
+- maintain the configured bounded execution backlog when disjoint theorem work
+  and Lean/GPU budgets permit it;
 - keep a single merge queue;
+- expose target and underfill in status and three-hour evidence;
 - score the system on accepted theorem-bearing diffs, regression rate, human
   review time, and cost per accepted Task, not raw attempts or generated lines.
 

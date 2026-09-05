@@ -1,6 +1,98 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-07-20 (America/Los_Angeles)
+Snapshot date: 2026-09-05 (UTC)
+
+## 2026-09-05 Reviewed topology and proof-workflow checkpoint
+
+The active integration worktree is
+`/Users/mjkang/.codex/worktrees/proof-workflow-improvements/poincare`, branch
+`codex/proof-workflow-improvements`, based on the previously pushed
+`64c9f999c9c699cb52e87ea36fad294d43b774d4`. The implementation commits are
+`d73eb030` for the topology source, `500ecdd3` for the theorem registry, and
+`84ca80dd` for strict statement contracts. This section supersedes older
+descriptions of the active branch and theorem-selection workflow below.
+
+The new `GroundedTopologySource` retains one decomposition and trace, their
+owning surgery package, and a Perelman production source on the matching flow.
+`GroundedTopologyPresentation` selects a compatible atlas on the same topology.
+The independent read-back rejected an earlier draft which required the original
+arbitrary topological atlas to be differentiable; the accepted types remove
+that requirement. The new conditional assembly passes the presentation's full
+source into the covering premise.
+
+`GroundedTopologySource.active_components_cover` proves coverage of the original
+space at every recorded stage by backwards induction through the actual parent
+maps. Disjointness gives unique component membership. The high-Ricci membership
+lemma transfers a point using the actual trace-flow equality and locates its
+spatial point in that partition. It does not locate the point at the stage's
+event time or in the event region.
+
+These are sets in the original manifold, not physical time-slice manifolds.
+Their carriers still lack the topology and embedding requirements needed for
+geometric reconstruction. The source also does not identify event regions with
+high-curvature regions. Both universal chosen-atlas source existence and
+`GroundedTopologyThreeSphereCoveringStatement` remain open, as does treatment
+of a zero-event history. No final Poincare theorem is supplied by this work.
+
+The registry reads exact types and dependencies from Lean after focused builds.
+Its reviewed mission is `harness/v2/missions/grounded-topology.json`. Planned
+edges stay separate from checked proof dependencies; a conditional theorem
+cannot discharge an unconditional obligation. Expected statements include
+transitive semantic fingerprints. Catalogs bind to source identity, and stale
+or edited evidence is rejected.
+
+New mathematical Tasks use opt-in schema `2.1`, as required by the updated
+orchestrator prompt. Every deliverable has a frozen type and universe list,
+with definition hashes and an independent read-back tied to the snapshot.
+Pinned source files are streamed through hash checks without being copied into
+worker prompts. Existing context limits and broker scope remain unchanged.
+Version `2.0` remains available for historical tasks. The curated theorem audit
+now checks exact types and axiom footprints; it no longer demands reflexive
+`theorem_eq` companions. The full completion audit also rejects a failed or
+nonstandard final axiom check instead of printing it and continuing.
+
+The full completion run passed build, interface, mathlib-gap, semantic-surface,
+root-import, and axiom checks, then exposed four older shape-parser false
+positives. That parser treated qualified methods such as `Type.ofSource` as
+definitions of `Type`. It now limits the legacy name convention to unqualified
+definitions, always records filenames, and preserves the existing checks on
+those definitions. Four regression tests and the live shape audit pass after
+the repair. The five curated contracts were then rerun and passed. The initial
+completion log is preserved; the entire completion script was not repeated
+after this parser-only repair. No successful full completion audit is claimed.
+An independent final root probe still reports
+`Unknown identifier Poincare.poincare_conjecture`.
+
+Independent verification passed the focused Lean checks and axiom probes for
+all eight new proof declarations, the five curated contracts, and a serialized
+4,105-target full build. The runtime suite passed 63 tests, worker suite 33,
+registry suite 16, and curated-audit suite 10. The Pi suite completed 94 tests
+with 14 environment-dependent skips. These suites include changed secondary
+types, forged or stale review evidence, unsafe proof-typed definitions, changed
+dependent definitions, false graph closure, and omitted multi-megabyte pinned
+sources. The warm-cache pilot medians were 2.60 seconds for statements and
+2.52 seconds for assembly, measured while the completion audit also ran; no
+before/after speedup is claimed.
+
+Local implementation task snapshots and their corrected directory-scope
+revisions are under `harness/v2/tasks`; the invalid initial spellings are
+preserved under `tasks/history`. These records were not dispatched to the
+persistent Harness database. All local worker leases are released in
+`proof-workflow-improvements-leases.closed.json`. The live model services and
+persistent deployment were not modified.
+
+The exact first action is:
+
+```sh
+python3 scripts/theorem_registry.py graph \
+  --mission harness/v2/missions/grounded-topology.json --require-closed
+```
+
+Exit `2` denotes valid evidence with open obligations. Before dispatching the
+next proof, split the `covering-construction` obligation at a geometric carrier
+or gluing interface and review its exact statement. Do not infer carrier
+embeddings, spherical pieces, or a covering from the existing partition fields.
+See `docs/PROOF_WORKFLOW.md` for commands and the precise scope of the pilot.
 
 ## Project Truth
 
@@ -21,6 +113,69 @@ Snapshot date: 2026-07-20 (America/Los_Angeles)
 with the 2026-07-07 legacy selector-assembly work. Both are historical until
 regenerated or revalidated against the current commit. Lean and the current
 diff remain authoritative.
+
+## 2026-09-04 Formal Profile and Grounded-Interface Checkpoint
+
+The active integration worktree is
+`/Users/mjkang/.codex/worktrees/formalization-until-6/poincare` on branch
+`codex/formalization-until-6`. Its clean checkpoint is
+`77fb1a54ba95f099ffe891d54190aec7a2f80d60`, 82 commits ahead of unchanged
+`origin/main` at `bc076f1e893c6ba834729f8bcb359a1f400a3e72`.
+
+The scalar `C0,3` compactness route no longer requires every profile limit to
+be realized by a smooth Riemannian metric. The new verified chain is:
+
+```text
+compact componentwise scalar third-jet profiles
+  -> formal metric and inverse on the nondegenerate locus
+  -> formal Christoffel jets through order two
+  -> formal curvature, Ricci, covariant Ricci, and norm contraction
+  -> exact agreement with genuine chart quantities
+  -> finite fixed-anchor cutoff-one cover
+  -> global UniformCovariantRicciDerivativeNormBound
+  -> reaction-decay positive-Einstein analytic data
+```
+
+The principal endpoint is
+`NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.ofComponentwiseAscoliFormalMetricThirdJetProfiles`.
+Its remaining nondegeneration input is the explicit
+`UniformClosedRiemannianMetricLowerComparison`; the former
+`hForwardProfileLimitsRealized` premise is absent. The bounded-component
+variant is also proved. All formal curvature expressions agree exactly with
+the repository's genuine `anchorChartCurvatureFamily`, Ricci,
+covariant-Ricci, inverse-metric, and sixfold norm formulas.
+
+The grounded surgery interface was also repaired. The constructorless
+`HasSingularityModelBlowupClassification` marker is now a proof-bearing
+classification source together with surjectivity onto every pointed
+rescaling index. The five component classification maps compose to this
+coverage theorem in `SingularityModelBlowupCoverage.lean`. No existing
+payload proves any of those five surjectivity claims, so that remains genuine
+Perelman work rather than an artificial inconsistency.
+
+On the topology side,
+`ExtinctionThreeSphereCoveringProjectionStatement` records the non-circular
+post-extinction target `exists p : ThreeSphere -> M, IsCoveringMap p`.
+Simply connected covering-space rigidity turns it into the sphere
+homeomorphism. The older full topology package still stores the final
+homeomorphism and is not an honest proof plan; its decomposition and surgery
+trace realization predicates also remain empty inductives.
+
+At this checkpoint, a serialized 4,095-target `lake build`, root elaboration,
+interface audit, semantic-surface audit, 6,008-declaration theorem-contract
+audit, root-import audit, and axiom audit all pass. The exact probe still
+fails with `Unknown identifier Poincare.poincare_conjecture`; the repository
+is not complete.
+
+The exact next analytic action is to derive a pointwise inverse-chart volume
+density lower bound from
+`CompactReferenceMetricTensorFamilyData.volume_le`, using the proved
+`inverseChart_hausdorffChartDensityEquality`. Combined with its uniform metric
+upper bound and the three-dimensional determinant inequality, this should
+produce `UniformClosedRiemannianMetricLowerComparison` and remove the last new
+nondegeneration input. In parallel mathematical terms, the independent hard
+frontiers remain classified-model coverage of all pointed rescalings and
+Cartan successor-equality persistence needed for a total developing map.
 
 ## Completed Bounded Deployment Exercise
 
@@ -53,6 +208,701 @@ The previous broad positive-time-overlap and compact-history surfaces remain
 important context, but this narrower constructor is the selected first
 dependency reduction. Do not redispatch the last legacy ledger entry.
 
+## 2026-07-20 Bochner Continuity Checkpoint
+
+The integration checkout advanced from
+`ee4a8e5382f2b664a9843fc6b8ec237c535a9460` to the accepted proof commit
+`bec8bc4a5a514a6ba502e2a945f96317be397a5c`. Harness Task
+`cov-ricci-bochner-continuity-inline` revision 2 was accepted from Job
+`cov-ricci-bochner-continuity-inline-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-continuity-inline-r2-a01/gate.json`
+on `mj-zima`. The worker lease is released and no Job remains active.
+
+The accepted theorem is
+`Poincare.continuous_joint_covRicciNormSqAt_of_bochner_fields`. It uses the
+Ricci Bochner identity to derive joint continuity of `covRicciNormSqAt` from
+joint continuity of the Ricci-norm Laplacian and rough-Ricci pairing, together
+with the existing pointwise smoothness hypotheses. Its focused Lean gate,
+canonical frozen-type `import Poincare` probe, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit retained only its known direct-import ledger failures; this checkpoint
+also wires the previously accepted automatic scalar-time-derivative module
+directly into `Poincare.lean`, reducing that ledger by one.
+
+## 2026-07-20 Bochner-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`12b700a27f31e7fb521eb1bec1845fbf4e842e61` to accepted proof commit
+`c5a80d17b236b82d5daac96982e9edf87fdb89b4`. Harness Task
+`cov-ricci-bochner-fields-constructor` revision 2 was accepted from Job
+`cov-ricci-bochner-fields-constructor-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-fields-constructor-r2-a01/gate.json`
+on `mj-zima`. No Job or file lease remains active.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerFields`.
+It installs `reaction.topologicalSpaceK`, derives joint covariant-Ricci norm
+continuity with `continuous_joint_covRicciNormSqAt_of_bochner_fields`, and
+calls `ofReactionFields`, so neither joint covariant-Ricci norm continuity nor
+scalar-time-derivative continuity is an explicit constructor argument. The
+canonical frozen-type probe passed and `#print axioms` reported only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `cov-ricci-bochner-fields-constructor-r1-a01` is preserved as
+interrupted evidence: its draft omitted the local topology instance, then
+exhausted its 12,000-token budget on stale correction hunks. Revision 2
+recorded that exact failure and passed in a fresh supervised Pi session. Its
+focused gate, targeted module build, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit has exactly the same four known direct-import ledger failures as before
+this checkpoint, with no new failure.
+
+The exact completion probe at the integrated commit still reports
+`EXACT_DECLARATION_PROBE=absent`; `Poincare.poincare_conjecture` is not
+declared. The next theorem-shaped action is to probe and freeze a fixed-target
+lifting constructor that packages `ofBochnerFields` for the `analytic` field
+of the automatic-finite-nerve ODE-primitive compact-history boundary, rather
+than adding another alias or assuming the already assembled analytic record.
+Before claiming any Job at the new base, publish and verify the immutable Lake
+cache for the final clean HEAD. Do not redispatch the obsolete broad
+`cov-ricci-bochner-constructor` Task; it retains only an interrupted Job and
+could not be marked superseded because the accepted replacement Task did not
+name that older Task in its immutable `supersedes` field.
+
+## 2026-07-21 Bochner Pairing-Regularity Reduction Checkpoint
+
+The integration checkout advanced from
+`682560dcd37dd510b51b5a789fe8efc71ed8d97c` through the accepted proof
+integration recorded by this commit. Harness Task
+`bochner-pairing-from-ricci-norm` revision 3 was accepted from Job
+`bochner-pairing-from-ricci-norm-r3-a01`; its reviewed worker commit is
+`e216ed5bfc0e6dd098ea445eafc06d7048d3e669` and its strict gate is
+`harness/v2/state/jobs/bochner-pairing-from-ricci-norm-r3-a01/gate.json` on
+`mj-zima`. All Jobs and leases for the Task are terminal and released.
+
+The accepted theorem is
+`Poincare.continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`. It derives
+the pairing differentiability input to the existing Bochner continuity theorem
+from C2 regularity of `ricciNormSqAt`, using
+`covRicciRicciPairingAt_mdifferentiableAt_of_ricciNormSqAt_contMDiffAt_two`.
+Consequently the new theorem requires the Ricci-norm regularity field plus the
+Ricci second-derivative, Laplacian, and rough-pairing continuity fields, but no
+independent `hPairDiff` hypothesis. The canonical frozen-type probe passed and
+`#print axioms` reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `bochner-pairing-from-ricci-norm-r1-a01` is preserved as
+interrupted evidence after it exhausted its bounded Pi context without a patch.
+Revision-2 Job `bochner-pairing-from-ricci-norm-r2-a01` found the correct proof
+but was rejected because its first scoped patch request was broker-rejected and
+the immutable Task allowed exactly one patch call. Revision 3 froze the valid
+patch bytes and completed exactly one scoped patch, one Lean check, and one diff
+request in a fresh supervised Pi session.
+
+Focused elaboration, the frozen acceptance array, root elaboration, interface,
+semantic-surface, theorem-contract, and axiom audits passed. The root-import
+audit retains exactly its four known missing direct imports: the two Cartan
+tail-overlap reductions, the scalar-variation joint-continuity reduction, and
+the automatic finite-nerve compact-history boundary module. The exact
+completion probe still reports `EXACT_DECLARATION_PROBE=absent`.
+
+The next theorem-shaped action is to freeze an
+`NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3`
+constructor that takes the norm-field inputs above and installs the analytic
+record through `continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`,
+removing `hPairDiff` at the constructor boundary. Before claiming a Job at the
+new integration base, complete the required root build and publish and verify a
+new immutable Lake cache for that exact clean HEAD.
+
+## 2026-07-21 Bochner Norm-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`7b216e8c246a309f2ec43ef59507799ec0e8d980` to accepted proof commit
+`c39ad01f334e372d169428f8fd874b070f7d644d`. Harness Task
+`cov-ricci-bochner-norm-fields-constructor` revision 2 was accepted from Job
+`cov-ricci-bochner-norm-fields-constructor-r2-a01`; its strict gate is
+`harness/v2/state/jobs/cov-ricci-bochner-norm-fields-constructor-r2-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no Harness Job or
+file lease remains active.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerNormFields`.
+It installs the reaction parameter topology, derives joint covariant-Ricci
+norm continuity through
+`continuous_joint_covRicciNormSqAt_of_bochner_norm_fields`, and calls
+`ofReactionFields`. Its frozen constructor type therefore retains the Ricci
+norm C2, Ricci second-derivative, Laplacian-continuity, rough-pairing
+continuity, and subordinate-geometry inputs but has no independent
+`hPairDiff`, joint covariant-Ricci continuity, or scalar-time-derivative
+continuity argument. The canonical exact-type probe passed and `#print axioms`
+reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `cov-ricci-bochner-norm-fields-constructor-r1-a01` is preserved
+as interrupted evidence. It eventually produced the same valid one-file patch
+and passed its brokered focused Lean check, but its final report hit
+`stopReason=length`, so the Harness correctly refused to route it to review.
+Revision 2 froze those exact patch bytes and completed exactly one scoped
+patch, one Lean check, and one diff request in a fresh supervised Pi session.
+
+The frozen acceptance array, targeted module build, canonical declaration
+probe, root elaboration, interface, semantic-surface, theorem-contract, and
+axiom audits passed. The root-import audit retains exactly its four known
+baseline direct-import gaps—
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`, and the
+automatic-finite-nerve joint-covariant-Ricci tail-overlap compact-history
+boundary—and this proof commit changes neither `Poincare.lean` nor that audit.
+The exact completion probe still fails with unknown identifier
+`Poincare.poincare_conjecture`.
+
+The next theorem-shaped action is to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the existing automatic-finite-nerve boundary module. Freeze its type as the
+current `ofBochnerFields` type with `hPairDiff` removed, and construct its
+`analytic` field through the newly accepted analytic-data constructor. The
+exact first action in the next cycle is to create and schema-validate that
+single-file Task at the final clean HEAD; before claiming its first Job, run
+the Task-bound root-build provenance recorder and publish and verify the new
+immutable Lake cache for that exact base.
+
+## 2026-07-21 Automatic Finite-Nerve Norm-Fields Boundary Checkpoint
+
+The integration checkout advanced from
+`0d89b5a67f9577e16f75601e8ac7cad20dee0901` to accepted proof commit
+`c778276a36de0bacda0462a95f002d50f7d52129`. Harness Task
+`automatic-finite-nerve-bochner-norm-boundary-constructor` revision 2 was
+accepted from Job
+`automatic-finite-nerve-bochner-norm-boundary-constructor-r2-a01`; its strict
+gate is
+`harness/v2/state/jobs/automatic-finite-nerve-bochner-norm-boundary-constructor-r2-a01/gate.json`
+on `mj-zima`. All Jobs for the Task are terminal and no file lease remains
+active.
+
+The accepted declaration is
+`Poincare.AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFields`.
+It constructs the boundary's analytic field through the accepted analytic-data
+`ofBochnerNormFields` constructor. Its frozen type retains the tetrahedral-star,
+reaction, compact tensor, Ricci-norm C2, Ricci second-derivative,
+Laplacian-continuity, rough-pairing-continuity, subordinate-geometry, ODE
+primitive, and compact-history inputs, while removing the independent
+`hPairDiff` premise. It also takes neither joint covariant-Ricci continuity nor
+scalar-time-derivative continuity as a replacement argument. The canonical
+exact-type probe passed and `#print axioms` reported only `propext`,
+`Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job
+`automatic-finite-nerve-bochner-norm-boundary-constructor-r1-a01` is preserved
+as interrupted evidence. Its broad prompt produced two broker-rejected patch
+requests, then terminated fail-closed with an empty worker patch after a
+partial Pi stream and tool-crosscheck disagreement. Revision 2 froze a
+7,409-byte patch that Codex had independently checked with `git apply --check`
+and full stdin elaboration; its fresh Pi session then completed exactly one
+scoped patch, one focused Lean check, and one patch-form diff request.
+
+The frozen Task gate, a private incremental 4,065-job root build, root
+elaboration, interface, semantic-surface, theorem-contract, and axiom audits
+passed. The root-import audit retains exactly its four known direct-import
+ledger failures: the two Cartan tail-overlap reductions, the scalar-variation
+joint-continuity reduction, and the automatic finite-nerve joint-covariant-
+Ricci tail-overlap compact-history boundary. The exact completion probe still
+reports unknown identifier `Poincare.poincare_conjecture`.
+
+The next theorem-shaped action is to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the existing positive-time-overlap boundary module. Freeze its type as the
+new ODE-primitive constructor type with the primitive moving input replaced by
+`FixedTargetMovingGenericSuccessorGenericInverseEndpointODEPositiveTimeOverlapInputs3`
+and compact-history feedback indexed by its existing conversion. Construct the
+analytic field through the accepted analytic-data norm-fields constructor and
+do not reintroduce `hPairDiff`. Before claiming the first Job at the final clean
+HEAD, record, publish, and verify a new immutable Lake cache for that exact
+base.
+
+## 2026-07-21 Positive-Time and Tail-Overlap Boundary Checkpoint
+
+The integration checkout advanced from
+`3d8dc9f20a5b943d1fc55019ad968713947ca137` through accepted proof commits
+`4b1f19736735a536ab2e5c6023da4fcfdf441bbb`,
+`6bc720d764a74893e04ec27cc32e04272c0677f9`, and finally
+`079292fae8a23cbb88082f2270a5e1c3f95cddf9`.
+
+Harness Task
+`automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor`
+revision 2 was accepted from Job
+`automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor-r2-a01`.
+It adds
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`.
+Revision-1 evidence is preserved as interrupted after Pi's stream and broker
+events could not be reconciled, even though its later broker-applied patch was
+mathematically valid. Revision 2 froze those exact patch bytes and passed a
+fresh three-call session. Its strict gate is
+`harness/v2/state/jobs/automatic-finite-nerve-positive-time-bochner-norm-boundary-constructor-r2-a01/gate.json`.
+
+Task `automatic-positive-time-tail-bochner-norm-boundary-constructor`
+revision 1 was then accepted from Job
+`automatic-positive-time-tail-bochner-norm-boundary-constructor-r1-a01`.
+Its declaration
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsAndTailOverlap`
+replaces the positive-time moving input by the exact tail-only input, using the
+verified tail-to-positive-time adapter while preserving the compact-history
+index definitionally. Its strict gate is
+`harness/v2/state/jobs/automatic-positive-time-tail-bochner-norm-boundary-constructor-r1-a01/gate.json`.
+
+Finally, Task `automatic-scalar-tail-boundary-sphere-conclusion` revision 2
+was accepted from Job
+`automatic-scalar-tail-boundary-sphere-conclusion-r2-a01`. It defines the
+named scalar-derivative/tail-overlap compact-history boundary, converts it to
+the verified positive-time boundary, and proves
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.sphereConclusion`.
+It also adds the single direct `Poincare.lean` import required to expose this
+declaration canonically. Revision-1 Job
+`automatic-scalar-tail-boundary-sphere-conclusion-r1-a01` is preserved as
+rejected evidence: all focused commands passed, but its frozen scope forbade
+the root import, so the mandatory `import Poincare` declaration probe returned
+unknown identifiers. Revision 2 records that exact failure and its strict gate
+is
+`harness/v2/state/jobs/automatic-scalar-tail-boundary-sphere-conclusion-r2-a01/gate.json`.
+
+Every accepted Job used exactly one scoped patch, one focused Lean check, and
+one patch diff. Codex independently checked the exact frozen types and observed
+only `propext`, `Classical.choice`, and `Quot.sound`. Post-integration root
+elaboration and the interface, semantic-surface, theorem-contract, and axiom
+audits passed. The root-import ledger shrank from four failures to exactly
+three: the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe still reports unknown identifier
+`Poincare.poincare_conjecture`; no unconditional final theorem exists.
+
+No Harness Job or file lease remains active. The next theorem-shaped action is
+to add
+`AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`
+in the now root-visible tail-boundary module. Freeze its arguments as the
+accepted positive-time `ofBochnerNormFieldsAndTailOverlap` type, but return the
+new scalar-tail structure and store the original tail input directly. The
+exact first action in the next cycle is to create and schema-validate that
+single-file Task at the final clean HEAD; before claiming its Job, record,
+publish, and independently verify a new immutable Lake cache for that exact
+base.
+
+## 2026-07-21 Scalar-Tail Bochner Norm-Fields Constructor Checkpoint
+
+The integration checkout advanced from
+`b2d4ac3cafd3a64848877bcd950864371a7b2e73` through accepted proof commit
+`cea0abe49a28290d6c37dcb365caa6440688c4b7`. Harness Task
+`automatic-scalar-tail-bochner-norm-boundary-constructor` revision 2 was
+accepted from Job
+`automatic-scalar-tail-bochner-norm-boundary-constructor-r2-a01`; its strict
+gate is
+`harness/v2/state/jobs/automatic-scalar-tail-bochner-norm-boundary-constructor-r2-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no Harness Job or
+file lease remains active.
+
+The accepted declaration is
+`Poincare.AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFields`.
+It calls the verified positive-time `ofBochnerNormFieldsAndTailOverlap`
+constructor, explicitly projects its analytic field at the ambient charted
+space, and stores the original tail input and definitionally indexed
+compact-history feedback in the scalar-tail record. Its frozen type retains
+the reaction, compact tensor, Ricci-norm C2, Ricci second-derivative,
+Laplacian-continuity, rough-pairing-continuity, subordinate-geometry,
+tail-overlap, and compact-history inputs, while adding neither `hPairDiff` nor
+joint covariant-Ricci or scalar-time-derivative continuity as replacement
+arguments. The canonical exact-type probe passed and `#print axioms` reported
+only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job
+`automatic-scalar-tail-bochner-norm-boundary-constructor-r1-a01` is preserved
+as interrupted evidence: it exhausted its 5,000-token output budget before
+making a tool call and left an empty patch. Revision 2 froze the independently
+checked 7,904-byte patch and completed exactly one scoped patch, one focused
+Lean check, and one patch diff in a fresh supervised Pi session.
+
+The frozen Task gate, targeted module build, root olean build, root
+elaboration, interface, semantic-surface, theorem-contract, and axiom audits
+passed. The root-import audit retains exactly its three established direct-
+import gaps: the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe still reports `EXACT_DECLARATION_PROBE=absent`.
+
+The next theorem-shaped dependency reduction is to prove, in
+`NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinstein.lean`,
+the pointwise `CovTensor2DerivExtDifferentiableAt` premise for
+`ricciVariationField (reaction.metric k)` from the reaction package's
+`normalizedFlow`, `jointMetricEntries`, and `realizesFlow` fields, using
+`ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow` and
+`covTensor2DerivExtDifferentiableAt_of_extSecond`. Freeze that lemma as one
+single-file Task before propagating it into a constructor without an explicit
+`hRicSecond` argument. Before claiming a Job at the final clean HEAD, record,
+publish, and independently verify the immutable Lake cache for that exact
+base.
+
+## 2026-07-21 Normalized-Flow-Slice Ricci Regularity Checkpoint
+
+The integration checkout advanced from
+`82c77b324b73ee7a196f4fba4fb35880bb73dc63` to accepted proof commit
+`0a5915fb3c4bbb5e3b513a6911e9aed6e92af23b`. Harness Task
+`reaction-flow-slice-ricci-second-regularity` revision 4 was accepted from Job
+`reaction-flow-slice-ricci-second-regularity-r4-a01`; its strict gate is
+`harness/v2/state/jobs/reaction-flow-slice-ricci-second-regularity-r4-a01/gate.json`
+on `mj-zima`. The Job is passed, its lease is released, and no queued,
+preparing, running, or reviewing Job remains.
+
+The accepted declaration is
+`Poincare.NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.ricciVariationField_covTensor2DerivExtDifferentiableAt`.
+For every nonnegative time and point, it derives second differentiability of
+`ricciVariationField (reaction.gt t)` from `reaction.normalizedFlow` and
+`reaction.jointMetricEntries`. The proof first obtains C2 extended Ricci
+entries with
+`ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow`, then uses
+`covTensor2DerivExtDifferentiableAt_of_extSecond` and the canonical Ricci
+tensor-linearity lemmas. The exact frozen-type probe passed and `#print axioms`
+reported only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 Job `reaction-flow-slice-ricci-second-regularity-r1-a01` is
+preserved as interrupted evidence after it exhausted its budget on broker-
+rejected context requests. Revision 2 is rejected evidence for the exact
+missing `[SimplyConnectedSpace M]` source binder. Revision 3 produced the
+green proof but is rejected because it exceeded its immutable three-call
+contract after an initial patch rejection. Revision 4 froze those final patch
+bytes and completed exactly one scoped patch, one focused Lean check, and one
+patch diff in a fresh supervised Pi session.
+
+The frozen Task gate, isolated and integrated root builds, root elaboration,
+interface, semantic-surface, theorem-contract, and axiom audits passed. The
+root-import audit reproduced exactly its three established direct-import gaps:
+the two Cartan tail-overlap reductions and
+`NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The exact
+completion probe at the integrated commit still reports
+`EXACT_DECLARATION_PROBE=absent`.
+
+This checkpoint deliberately does not claim the stronger all-parameter result
+for `reaction.metric k`. The record field `realizesFlow` states only
+`reaction.metric (reaction.parameter t) = reaction.gt t`; no field makes
+`reaction.parameter` surjective onto every `k : reaction.K`. Consequently the
+previously proposed direct all-`k` lift is not justified by the reaction
+package. The next theorem-shaped action is to isolate intrinsic Ricci C2
+regularity for an arbitrary `ClosedSmoothRiemannianMetric` (starting with
+`CovTensor2ExtContMDiffAt (ricciVariationField g) x 2`, using the existing
+coordinate Ricci C2 lemmas), and then feed that result through
+`covTensor2DerivExtDifferentiableAt_of_extSecond`. Freeze that one interface at
+the final clean HEAD only after recording, publishing, and independently
+verifying its exact-base immutable Lake cache.
+
+## 2026-07-21 Chart Levi-Civita C3 Regularity Checkpoint
+
+The integration checkout advanced from
+`39054bc8268b9e4734c03ede4ccb0fe2ad8e7c2f` through the accepted proof
+integration recorded by this commit. Harness Task
+`chart-levicivita-section-c3-regularity` revision 4 was accepted from Job
+`chart-levicivita-section-c3-regularity-r4-a01`; its reviewed worker commit is
+`6e7eb9208248a2ffba8b11a71e8b566ee096fe9e` and its strict gate is
+`harness/v2/state/jobs/chart-levicivita-section-c3-regularity-r4-a01/gate.json`
+on `mj-zima`. The Job is passed and its lease is released.
+
+The accepted declaration is
+`CovariantDerivative.chartLeviCivita_chartTransportedLeviCivitaSection_contMDiffAt₃`.
+It raises the existing chart-transported Levi-Civita section result from C2 to
+C3 for a C4 metric and C4 transported section. The proof globalizes the local
+section with a smooth bump, invokes the chart Levi-Civita C3 connection
+regularity theorem, and transfers the resulting germ back to the original
+section. The canonical exact-type probe passed and `#print axioms` reported
+only `propext`, `Classical.choice`, and `Quot.sound`.
+
+Revision-1 and revision-2 Jobs are preserved as interrupted evidence after
+bounded sessions exhausted their output without a patch. Revision 3 was
+interrupted before a known-unsafe zero-context patch could be broker-relocated.
+Revision 4 froze the deletion-anchored patch, completed exactly one scoped
+patch, one focused Lean check, and one patch diff, and then passed Codex's four
+frozen acceptance commands. An independent exact-commit root build completed
+all 4,068 jobs successfully before acceptance.
+
+The local C3 interface is now resolved. Harness Task
+`local-covariant-section-c3-regularity` revision 5 was accepted from Job
+`local-covariant-section-c3-regularity-r5-a01`; its reviewed proof commit is
+`1204566315a24f521536244b58d925f917585477`, its strict gate is
+`harness/v2/state/jobs/local-covariant-section-c3-regularity-r5-a01/gate.json`,
+and its lease is released. The accepted declaration is
+`CovariantDerivative.contMDiffAt_cov_section_of_contMDiffAt_three`. Its
+canonical exact-type probe passed, and `#print axioms` reported only `propext`,
+`Classical.choice`, and `Quot.sound`. The serial root build completed all 4,068
+jobs. Root elaboration plus the interface, semantic-surface, and theorem-
+contract audits passed; the theorem-contract audit first exposed and then
+verified the required equality companion
+`contMDiffAt_cov_section_of_contMDiffAt_three_eq`.
+
+### 2026-07-22 closed Levi-Civita C3 frontier
+
+Main now integrates
+`Poincare.LeviCivitaExistence.closedLeviCivitaConnection_contMDiff₃` with
+type `CovariantDerivative.ContMDiffCovariantDerivative
+  (LeviCivitaExistence.closedLeviCivitaConnection g) 3`. The proof lowers the
+metric's C4 regularity to the C3 chart input, applies
+`chartTransportedLeviCivitaHom_contMDiffAt₃`, explicitly lowers the resulting
+section regularity to C2, and supplies that C2 fact to the closed-chart germ
+bridge. The exact `Poincare.poincare_conjecture` declaration remains absent.
+
+Harness Task `closed-levicivita-connection-c3-regularity` revision 5 was
+accepted through Job `closed-levicivita-connection-c3-regularity-r5-a01`.
+That fresh bounded Pi session used one scoped patch, one successful Lean check,
+and one diff read. Codex independently inspected the 107-line theorem proof,
+committed it in the Job worktree as
+`199f4173969951444c06cfc2a62f3273c3c7f715`, and passed the complete frozen
+four-command focused review plus the exact canonical declaration probe before
+accepting the Task. The integration checkpoint passed root elaboration at this
+theorem source tree. Revision-3 Job `r3-a02` and
+revision-4 Job `r4-a01` remain preserved as interrupted evidence; no Job or
+file lease remains active.
+
+The next theorem-shaped objective is arbitrary closed-metric Ricci C2
+regularity,
+`CovTensor2ExtContMDiffAt (ricciVariationField g) x 2`, using the new C3
+closed Levi-Civita instance and the existing canonical first-regularity route
+in `Poincare/Global/ScalarVariation.lean`. The first action in the next cycle
+is to record, publish, and verify the immutable Lake cache for this final base,
+then freeze the exact declaration name, source scope, imports, and focused gate
+for that objective before dispatch. Do not reuse any interrupted worktree.
+
+## 2026-08-31 Canonical Ricci C2 and Bochner Boundary Checkpoint
+
+The integration branch `codex/formalization-until-6` advances clean base
+`bc076f1e893c6ba834729f8bcb359a1f400a3e72` through seven reviewed commits:
+
+- `1d44e245` proves
+  `covTensor2ExtContMDiffAt_ricciVariationField_canonical`. The proof uses the
+  C3 closed Levi-Civita connection and C2 Lie-bracket regularity to construct
+  C2 curvature fields, pairs them with the metric, traces the auxiliary
+  curvature tensor, and identifies the result with the Ricci tensor.
+- `b1717bc3` packages fixed-time global C2 scalar-curvature regularity from a
+  normalized Ricci flow with joint C3 metric entries.
+- `81f97fc4` proves
+  `covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical`, deriving
+  the former `hRicSecond` field from canonical Ricci C2 regularity.
+- `074fc72d` adds
+  `continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical` and
+  `NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.ofBochnerNormFieldsCanonical`.
+  Both omit `hRicSecond`; the older APIs remain unchanged.
+- `970026cb` lifts the same reduction into
+  `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPrimitiveCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
+- `7b5a8b6a` carries the premise removal through
+  `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODEPositiveTimeOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
+- `6465a615` completes the same reduction through
+  `AutomaticFiniteNerveTetrahedralStarSmoothingReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinGenericInverseEndpointODETailOverlapCompactHistoryBoundaryData3.ofBochnerNormFieldsCanonical`.
+
+Focused elaboration passed for every changed Lean module. Exact declaration
+probes reported only `propext`, `Classical.choice`, and `Quot.sound`. The
+dependency refresh completed 3,755 jobs, root `Poincare.lean` elaboration
+passed, and the interface, semantic-surface, and theorem-contract audits
+passed. The axiom audit passed. The root-import audit retains exactly its
+three pre-existing direct-import gaps:
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+and `NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The
+project is still incomplete; an exact probe reports unknown identifier for
+the reserved `Poincare.poincare_conjecture` endpoint.
+
+The next exact theorem-shaped action is to prove
+`ricciNormSqAt_contMDiffAt_two_canonical (g) (x)` in
+`Poincare/Global/MetricFlowJointPinchingEvolution.lean`, using
+`contMDiffAt_two_ricciNormSqAt_of_ricci_entries` and the new canonical Ricci C2
+theorem. Then remove `hRicNorm₂` from new canonical Bochner constructors in
+the same staged order. Do not replace or weaken the older constructors.
+
+## 2026-09-03 Covariant-Ricci Joint Continuity Checkpoint
+
+The isolated integration branch `codex/formalization-until-6` continued from
+the unchanged `origin/main` base `bc076f1e`. The committed tree reached
+`0a9d3aeb` before the next bounded proof attempt.
+
+The first group of commits completed the canonical Bochner cleanup described
+above. `bb3491ef` proves canonical C2 regularity of `ricciNormSqAt`.
+`c0571e50`, `e0ee52d9`, `25ebbf90`, and `d1138972` remove the explicit
+`hRicNorm₂` premise from new canonical analytic, primitive, positive-time, and
+tail constructors while preserving every older API. `a7d770ff` packages the
+Ricci curvature commutation theorem canonically, and `0defb8f0` removes the
+duplicated commutation proofs from both flow-evolution modules.
+
+The next group proves genuine real-time continuity of the intrinsic squared
+covariant-Ricci derivative norm:
+
+- `40b035fa` proves continuity of spatial Frechet derivatives of jointly C1
+  maps, and `035a28cb` specializes it to coordinate Ricci entries.
+- `9d3471e2` identifies `covRicciNormSqAt` with its full contraction in any
+  tangent basis and the metric-raised dual basis.
+- `85dd2462` and `cc8fd116` construct the coordinate covariant-Ricci entries
+  and their six-index norm contraction.
+- `bf6def94` proves that anchored tangent-field extensions remain smooth on
+  the chart source.
+- `ef448e97` identifies each coordinate covariant-Ricci entry with
+  `covTensor2DerivAt` in the cutoff-one chart zone.
+- `b98f65b2` identifies the six-index coordinate contraction with
+  `covRicciNormSqAt`, transfers continuity back to `ℝ × M`, and proves
+  `continuous_covRicciNormSqAt_joint_of_metricEntriesJointContDiffAt_three`.
+  `4ab619b0` exposes this chain through direct root imports.
+
+`9acc98c7` applies the real-time theorem on every compact interval and proves
+`exists_uniformCovariantRicciDerivativeNormBound_on_compact_slab_of_metricEntriesJointContDiffAt_three`.
+This is a finite-slab bound. It does not claim one constant on the noncompact
+forward ray.
+
+The compact-family boundary is now explicit instead of hidden inside a final
+continuity premise:
+
+- `a0b698a7` introduces `MetricFamilyCovRicciChartContinuousAt` and proves
+  that inverse-metric coefficient continuity plus coordinate
+  covariant-Ricci entry continuity on `K × E` gives the intrinsic continuity
+  on `K × M` used by compactness.
+- `e6d873a9` adds the analytic-data constructor
+  `ofCovRicciChartContinuous`.
+- `838690b1` derives the coordinate covariant-Ricci entries from inverse
+  coefficients, Christoffel values, Ricci entries, and their spatial
+  derivative.
+- `08d06874` proves a separate quotient route: if nonnegative real time is a
+  quotient parameterization of the whole family and realizes every metric,
+  the real-time continuity theorem descends to `K × M`. `70dbfe04` exposes
+  that route through `ofQuotientRealization`. Quotient surjectivity remains an
+  explicit extra premise because the current reaction record does not supply
+  it.
+- `1befc74b`, `2e8d7110`, and `0a9d3aeb` lower the chart route further.
+  Continuity of the blended metric gives inverse coefficients; its first
+  spatial derivative gives Christoffel continuity; and the Christoffel first
+  jet gives coordinate Ricci-entry continuity by the curvature formula and
+  finite trace.
+- `895ae4e2` differentiates the curvature formula and finite Ricci trace,
+  deriving the Ricci spatial derivative from the first two Christoffel jets.
+  `4d630fd7` reconstructs the full Christoffel value from the blended-metric
+  first jet. `e259654f` derives the first Christoffel jet from directional
+  metric jets through order two.
+- `73a77f87` proves the inverse-raise and Koszul product rules needed to
+  differentiate the Christoffel variation once more. It derives the second
+  Christoffel jet from directional metric jets through order three and then
+  constructs the full Ricci chart jet without independent Christoffel or
+  Ricci regularity premises.
+- `61c70659` packages that input as
+  `MetricFamilyBlendedMetricThirdJetContinuousAt`, the exact `C^{0,3}`
+  spatial contract over an arbitrary topological parameter space. It proves
+  local and global intrinsic covariant-Ricci norm continuity. `0885296a`
+  exposes this route through the analytic-data constructor
+  `ofMetricFamilyThirdJets`.
+- `81aaf1b3` lowers the operator-valued package to
+  `MetricFamilyBlendedMetricEntryThirdJetContinuousAt`, whose fields are all
+  real-valued fixed coordinate components. Finite-dimensional reconstruction
+  recovers the operator jets and the same intrinsic continuity theorem.
+- `dd3a1a44` and `dc17d909` add direct root imports for the compact-family
+  modules. `dc3af356` and `c32177c8` expose both third-jet packages.
+
+Focused Lean checks, targeted Lake builds, forbidden-term scans, diff checks,
+and exact axiom probes passed for every accepted source commit. The new
+theorems use only `propext`, `Classical.choice`, and `Quot.sound`. At
+`4ab619b0`, root elaboration, the interface audit, semantic-surface audit,
+6,008 theorem-contract checks, and the axiom audit passed. The root-import
+audit retained exactly the three earlier wiring gaps named in the previous
+checkpoint. A later 3,755-job targeted dependency repair and the subsequent
+3,282 to 3,285-job module builds also passed. The known nonfatal
+`LibrarySuggestions` timeout appeared during one cache build; that build
+still exited successfully.
+
+The final paused proof head is `c32177c8`. A serialized full `lake build`
+completed all 4,077 targets. Root `Poincare.lean` elaboration, the interface
+audit, semantic-surface audit, all 6,008 theorem-contract checks, and the axiom
+audit passed. The root-import audit sees every new metric-family module and
+retains exactly the same three pre-existing gaps:
+`CartanFixedChartGenericInverseEndpointODETailOverlapReduction`,
+`CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction`,
+and `NormalizedFlowHausdorffScalarVariationJointContinuityReduction`. The
+exact final probe still reports unknown identifier
+`Poincare.poincare_conjecture`; this checkpoint does not claim project
+completion.
+
+Real-time C3 regularity alone cannot prove continuity on an arbitrary compact
+family. The current reaction record constrains `metric` only along
+`parameter : Ici 0 → K`, and it supplies neither quotient surjectivity nor
+parameter-side spatial-jet continuity. The formalization now names the latter
+requirement down to scalar chart components, but no current compactification
+constructor proves it for `reaction.metric`. The next theorem-shaped action is
+to connect the concrete compact metric-family construction to
+`MetricFamilyBlendedMetricEntryThirdJetContinuousAt`, or to strengthen that
+construction with the exact componentwise `C^{0,3}` data. Do not infer this
+record from compactness or from regularity of `gt` only.
+
+## 2026-09-03 Explicit C0,3 Orbit Compactness Checkpoint
+
+The isolated integration branch `codex/formalization-until-6` advanced from
+the preceding compact-family checkpoint through proof-bearing source head
+`c5179232`. The original `main` checkout was not modified.
+
+This checkpoint replaces the previously opaque metric-topology boundary by an
+explicit scalar compact-open C0,3 topology and carries that topology through
+the normalized-flow positive-Einstein endpoint:
+
+- `e6b5431f` and `9fcd8a06` connect stored joint C3 metric entries to the
+  scalar third-jet covariant-Ricci constructor.
+- `224e039d`, `3518a7e3`, `17faa895`, and `469e738a` define and expose the
+  compact-open scalar third-jet topology, prove joint intrinsic
+  `covRicciNormSqAt` continuity on an orbit closure, and turn compactness of a
+  nonempty orbit closure into a uniform full covariant-Ricci derivative bound.
+- `ff5723b4` and `91c95958` feed that bound directly into the reaction-decay
+  positive-Einstein package and restrict the required orbit to the honest
+  forward family indexed by `Ici 0`.
+- `42f6d185` proves that the value slots recover the metric, so
+  `metricEntryThirdJetProfile` is injective and an embedding. It also proves
+  that a continuous realization from a compact parameter space has compact
+  orbit closure; continuity of the indexing map is unnecessary.
+- `754c4a78` exposes compact-realization and full scalar-profile joint-
+  continuity constructors at the positive-Einstein boundary.
+- `ae0e2cfe`, `9b9599b1`, and `0d92c260` apply componentwise
+  Arzela--Ascoli and Tychonoff in the profile target, characterize metric-orbit
+  compactness by the realized part of the profile closure, and derive the
+  uniform covariant-Ricci bound once every profile limit is realized by an
+  actual metric.
+- `58f241e9` imports the new compactness modules at the root. `c5179232`
+  supplies compact-containment and pointwise-bounded Ascoli constructors that
+  reach the established positive-Einstein analytic data for the forward flow.
+
+No global topology or T2 instance was installed on the metric type. The
+topology remains local to each theorem. Exact declaration and axiom probes for
+the new chain report only `propext`, `Classical.choice`, and `Quot.sound`. The
+missing Mathlib Ascoli object was repaired with a targeted 927-job build.
+
+At `c5179232`, a serialized full `lake build` completed all 4,082 targets.
+Root `Poincare.lean` elaboration, the interface audit, semantic-surface audit,
+all 6,008 theorem-contract checks, and the axiom audit passed. The root-import
+audit still fails on exactly the same three pre-existing direct-import gaps:
+
+```text
+Poincare.Global.CartanFixedChartGenericInverseEndpointODETailOverlapReduction
+Poincare.Global.CartanFixedTargetMovingGenericInverseEndpointODETailOverlapProviderReduction
+Poincare.Global.NormalizedFlowHausdorffScalarVariationJointContinuityReduction
+```
+
+An exact `import Poincare` probe still reports
+`Unknown identifier Poincare.poincare_conjecture`; this checkpoint does not
+claim completion.
+
+The remaining compactness obligation is now precise. Componentwise
+equicontinuity and pointwise bounds make the ambient C0,3 profile closure
+compact, but they do not prove that a limit profile is a smooth positive-
+definite metric. The forward endpoint therefore retains
+`hForwardProfileLimitsRealized`. This premise cannot be inferred from the
+embedding alone: finite C0,3 limits can lose smoothness, and positive
+definiteness can degenerate without a uniform lower bound. The alternative
+compact-parameter route retains the equally explicit requirement that
+`reaction.metric` be continuous in the full profile topology; the reaction
+record's local real-time C3 field does not imply continuity of its arbitrary
+extension over `reaction.K`.
+
+The exact first action for the next proof cycle is to freeze one theorem with
+conclusion
+
+```text
+closure (Set.range (metricEntryThirdJetProfile ∘ forward)) ⊆
+  Set.range metricEntryThirdJetProfile
+```
+
+for `forward t = reaction.gt t.1`, and prove it from explicit uniform higher-
+regularity and two-sided metric nondegeneracy hypotheses. If the repository
+does not yet supply those estimates, stop with their exact Lean types rather
+than weakening or assuming the realized-limit conclusion.
+
 ## Executable Harness Boundary
 
 The primary path is:
@@ -82,6 +932,18 @@ when Pi exits, and routes a sealed successful result to Codex-owned
 `reviewing`. Blocked or unsuccessful runs keep immutable evidence; only Codex
 may create a fresh attempt. Reviewing Jobs do not consume Leanstral execution
 capacity, so independent serial review can overlap another disjoint proof Job.
+
+The 2026-07-21 throughput control update adds a configured execution-backlog
+target, defaulting to four and never exceeding the four-session ceiling. The
+target counts queued, preparing, and running Jobs; reviewing Jobs do not hide
+unused inference capacity. Codex must replenish a safe disjoint same-base batch
+before optional repository-wide audits or record the concrete lease, cache,
+dependency, resource, or theorem-shape reason for underfill. Compatible
+accepted Jobs still pass independent frozen gates and one serial Codex merge
+queue, while broad root audits may run once per compatible integration batch.
+Cycle results, `status.sh`, and the three-hour heartbeat expose the target and
+underfill. This policy does not authorize overlapping leases, duplicate or
+filler Tasks, extra Leanstral tools, or any worker acceptance/commit authority.
 
 There is no worker access to an unrestricted shell, SSH, arbitrary filesystem
 or network tools, Git mutation, worktree deletion, Docker, Ray, tmux, or model
@@ -175,9 +1037,8 @@ read-only global-settings lock warnings in the sealed namespace, and its
 cumulative JSON message updates made this successful 7,116-token Job's event
 files large. Both are retained as evidence and remain within the Job disk
 budget; neither expands Leanstral's authority or blocks restart/recovery. The
-root-import ledger also needs direct `Poincare.lean` imports for the two Cartan
-tail-overlap reductions, the automatic scalar-time-derivative module, the
-scalar-variation continuity reduction, and the automatic finite-nerve compact-
-history boundary module. Their current transitive visibility is sufficient for
-the accepted constructor's exact `import Poincare` type probe, so this bounded
-deployment does not widen into unrelated root wiring.
+root-import ledger still needs direct `Poincare.lean` imports for the two
+Cartan tail-overlap reductions and the scalar-variation continuity reduction.
+Their current transitive visibility remains sufficient for exact
+`import Poincare` type probes; they are separate wiring follow-ups rather than
+proof completion.

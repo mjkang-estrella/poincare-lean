@@ -7,6 +7,7 @@ needed to identify the manifold with the standard 3-sphere.
 -/
 
 import Poincare.RicciFlowInterface
+import Poincare.Surgery
 import Mathlib.Topology.Compactification.OnePoint.Sphere
 import Mathlib.Topology.Covering.Basic
 import Mathlib.Topology.Covering.Quotient
@@ -14,7 +15,7 @@ import Mathlib.Topology.Homotopy.Lifting
 
 universe u v w w' z
 
-open scoped Manifold ContDiff
+open scoped Manifold ContDiff symmDiff
 
 namespace Poincare
 
@@ -23036,20 +23037,133 @@ theorem quotientCovering_smulDeckTransform_eq_refl_of_simplyConnected_base
   exact covering_deckTransform_eq_refl_of_simplyConnected_base h.isCoveringMap
     φ hdeck e₀
 
-/--
-Raw finite-extinction certificate that a concrete post-extinction topological
-decomposition has been produced.
-
-This is intentionally separate from `HasExtinctionTopologyDecomposition`: the
-interface can now be constructed from certified data, but finite extinction
-still has to supply that data.
--/
-inductive ExtinctionTopologyDecompositionRealization
+/-- Concrete source data for a finite, surgery-controlled component
+decomposition of the initial manifold. -/
+structure ExtinctionTopologyDecompositionRealizationSource
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
-    (_extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_componentIndex : Type u) : Prop
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (componentIndex : Type u) : Type (u + 1) where
+  n : ℕ∞ω
+  package : FiniteExtinctionSurgeryPackage n M
+  package_extinction_eq :
+    finite_extinction_of_surgery_package package = extinction
+  componentTopologyPayload : componentIndex →
+    FiniteExtinctionComponentTopologyPayload
+      (ricci_flow_data_of_surgery_package package)
+      (ricci_flow_with_surgery_of_surgery_package package)
+      (perelman_singularity_control_of_surgery_package package)
+      (finite_extinction_width_theory_of_surgery_package package)
+      (finite_extinction_width_evolution_of_surgery_package package)
+      (finite_extinction_surgery_discard_control_of_surgery_package package)
+  components_pairwise :
+    Set.univ.PairwiseDisjoint
+      (fun i ↦ (componentTopologyPayload i).componentSet)
+  components_cover :
+    (⋃ i, (componentTopologyPayload i).componentSet) = Set.univ
+
+/-- A surgery-controlled component cover of a connected manifold cannot have
+an empty component index. -/
+theorem ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (source : ExtinctionTopologyDecompositionRealizationSource
+      M extinction componentIndex) :
+    Nonempty componentIndex := by
+  by_contra h
+  letI : IsEmpty componentIndex := not_nonempty_iff.mp h
+  obtain ⟨x⟩ : Nonempty M := inferInstance
+  have hx :
+      x ∈ (⋃ i, (source.componentTopologyPayload i).componentSet) := by
+    rw [source.components_cover]
+    exact Set.mem_univ x
+  simp at hx
+
+/-- A post-extinction decomposition realization is backed by an actual
+finite-extinction surgery package and a covering, pairwise-disjoint family of
+its controlled component payloads. -/
+structure ExtinctionTopologyDecompositionRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (componentIndex : Type u) : Prop where
+  source :
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+      Nonempty
+        (@ExtinctionTopologyDecompositionRealizationSource
+          M _ _ _ _ _ _ extinction componentIndex)
+
+/-- Every realized extinction decomposition has at least one controlled
+component. -/
+theorem ExtinctionTopologyDecompositionRealization.componentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (realization :
+      ExtinctionTopologyDecompositionRealization
+        M extinction componentIndex) :
+    Nonempty componentIndex := by
+  rcases realization.source with ⟨_smooth, ⟨source⟩⟩
+  exact source.componentIndex_nonempty
+
+/-- Package concrete surgery-controlled component data as a decomposition
+realization. -/
+def ExtinctionTopologyDecompositionRealization.ofSource
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (source : ExtinctionTopologyDecompositionRealizationSource
+      M extinction componentIndex) :
+    ExtinctionTopologyDecompositionRealization M extinction componentIndex :=
+  ⟨⟨inferInstance, ⟨source⟩⟩⟩
+
+/-- Package-linked component payloads form a decomposition realization once
+their component sets are pairwise disjoint and cover the manifold. -/
+theorem extinctionTopologyDecompositionRealization_of_componentTopologyPayloads
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {componentIndex : Type u}
+    (n : ℕ∞ω)
+    (package : FiniteExtinctionSurgeryPackage n M)
+    (package_extinction_eq :
+      finite_extinction_of_surgery_package package = extinction)
+    (componentTopologyPayload : componentIndex →
+      FiniteExtinctionComponentTopologyPayload
+        (ricci_flow_data_of_surgery_package package)
+        (ricci_flow_with_surgery_of_surgery_package package)
+        (perelman_singularity_control_of_surgery_package package)
+        (finite_extinction_width_theory_of_surgery_package package)
+        (finite_extinction_width_evolution_of_surgery_package package)
+        (finite_extinction_surgery_discard_control_of_surgery_package package))
+    (components_pairwise :
+      Set.univ.PairwiseDisjoint
+        (fun i ↦ (componentTopologyPayload i).componentSet))
+    (components_cover :
+      (⋃ i, (componentTopologyPayload i).componentSet) = Set.univ) :
+    ExtinctionTopologyDecompositionRealization
+      M extinction componentIndex :=
+  ExtinctionTopologyDecompositionRealization.ofSource
+    { n := n
+      package := package
+      package_extinction_eq := package_extinction_eq
+      componentTopologyPayload := componentTopologyPayload
+      components_pairwise := components_pairwise
+      components_cover := components_cover }
 
 /--
 Explicit payload for the decomposition information obtained from finite
@@ -23121,6 +23235,29 @@ theorem extinction_topology_decomposition_realization_of_decomposition
   exact
     ⟨data.componentIndex, ⟨data.finiteComponentIndex⟩,
       data.realization⟩
+
+/-- A decomposition exposes the actual finite-extinction package and the
+pairwise-disjoint component cover hidden by its realization field. -/
+theorem extinction_topology_decomposition_source_of_decomposition
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction) :
+    ∃ _smooth : IsManifold ThreeManifoldModelWithCorners 1 M,
+    ∃ componentIndex : Type u,
+      Nonempty (Fintype componentIndex) ∧
+        ∃ source : @ExtinctionTopologyDecompositionRealizationSource
+          M _ _ _ _ _ _ extinction componentIndex,
+          Set.univ.PairwiseDisjoint
+              (fun i ↦ (source.componentTopologyPayload i).componentSet) ∧
+            (⋃ i, (source.componentTopologyPayload i).componentSet) =
+              Set.univ := by
+  rcases decomposition.data with ⟨data⟩
+  rcases data.realization.source with ⟨smooth, ⟨source⟩⟩
+  exact
+    ⟨smooth, data.componentIndex, ⟨data.finiteComponentIndex⟩,
+      source, source.components_pairwise, source.components_cover⟩
 
 /--
 Proof-bearing one-point compactification recognition payload after a concrete
@@ -26190,16 +26327,301 @@ theorem extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData
   ⟨recognizeData.homeomorphism⟩
 
 /--
-Raw finite-extinction certificate that a reconstructed topological surgery
-trace realizes a fixed post-extinction decomposition.
+Concrete source data for a finite ordered surgery trace realizing a fixed
+extinction decomposition.
+
+The chosen decomposition data and component source are the witnesses carried
+by `decomposition`. The aggregate surgery payload is the witness carried by
+that source's finite-extinction package. Trace stages enumerate an initial
+finite segment of the package's actual surgery-event indices; their times and
+regions are identified with the surgery-time payload. Each stage has its own
+finite family of active components. At a successor event, every new component
+has a parent, and the union of a parent's children agrees with that parent away
+from the event region. The terminal active family is identified exactly with
+the fixed extinction decomposition. The final field is the remaining honest
+terminal condition: event regions after the selected finite prefix are empty.
 -/
-inductive ExtinctionSurgeryTraceRealization
+structure ExtinctionSurgeryTraceRealizationSource
     (M : Type u) [TopologicalSpace M] [T2Space M]
     [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
     [SimplyConnectedSpace M] [CompactSpace M]
     (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
-    (_decomposition : HasExtinctionTopologyDecomposition M extinction)
-    (_traceStage : Type u) : Prop
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (traceStage : Type u) : Type (u + 1) where
+  /-- The exact decomposition datum selected from the fixed decomposition. -/
+  decompositionData : ExtinctionTopologyDecompositionData M extinction
+  /-- The selected datum is the witness carried by `decomposition`. -/
+  decompositionData_eq :
+    decompositionData = Classical.choice decomposition.data
+  /-- Smooth structure carried by the selected decomposition realization. -/
+  smooth : IsManifold ThreeManifoldModelWithCorners 1 M
+  /-- The smooth structure is the one selected by the realization witness. -/
+  smooth_eq :
+    smooth = Classical.choose decompositionData.realization.source
+  /-- Concrete package-backed component source carried by the realization. -/
+  decompositionSource :
+    @ExtinctionTopologyDecompositionRealizationSource
+      M _ _ _ _ _ smooth extinction decompositionData.componentIndex
+  /-- The component source is the witness carried by the realization. -/
+  decompositionSource_eq :
+    HEq decompositionSource
+      (Classical.choice
+        (Classical.choose_spec decompositionData.realization.source))
+  /-- Aggregate surgery payload selected from the decomposition's package. -/
+  surgeryPayloadSource :
+    @RicciFlowWithSurgeryPayloadSource
+      decompositionSource.n M _ _ smooth
+  /-- The surgery payload is the witness carried by the package's surgery interface. -/
+  surgeryPayloadSource_eq_package :
+    surgeryPayloadSource =
+      Classical.choice
+        (ricci_flow_with_surgery_of_surgery_package
+          decompositionSource.package).ricciFlowWithSurgeryPayload_source
+  /-- The aggregate surgery payload is attached to the package's analytic flow. -/
+  surgeryPayloadFlow_eq :
+    surgeryPayloadSource.flow =
+      ricci_flow_data_of_surgery_package decompositionSource.package
+  /-- Last actual surgery-event index represented by the finite trace. -/
+  terminalEventIndex : ℕ
+  /-- Trace stages enumerate exactly the event-index prefix through the terminal event. -/
+  stageEventIndex : traceStage ≃ Fin (terminalEventIndex + 1)
+  /-- Natural surgery-event index represented by each trace stage. -/
+  eventIndex : traceStage → ℕ
+  /-- Stage indices are the natural values of the finite-prefix equivalence. -/
+  eventIndex_eq :
+    ∀ stage, eventIndex stage = (stageEventIndex stage).val
+  /-- Surgery-scale parameter at which this trace is reconstructed. -/
+  scaleParameter :
+    surgeryPayloadSource.scalePayload.scaleParameterSpace
+  /-- Actual time assigned to each trace stage. -/
+  eventTime : traceStage → ℝ
+  /-- Trace times are the times stored by the package's surgery-time payload. -/
+  eventTime_eq :
+    ∀ stage,
+      eventTime stage =
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTime
+          scaleParameter (eventIndex stage)
+  /-- Actual spatial surgery-event region assigned to each trace stage. -/
+  eventRegion : traceStage → Set M
+  /-- Trace regions are the regions stored by the package's surgery-time payload. -/
+  eventRegion_eq :
+    ∀ stage,
+      eventRegion stage =
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
+          scaleParameter (eventIndex stage)
+  /-- Every represented trace stage is an actual, nonempty surgery event. -/
+  eventRegion_nonempty :
+    ∀ stage, (eventRegion stage).Nonempty
+  /-- The active component index at each surgery stage. -/
+  activeComponentIndex : traceStage → Type u
+  /-- Every stage has only finitely many active components. -/
+  finiteActiveComponentIndex :
+    ∀ stage, Fintype (activeComponentIndex stage)
+  /-- The region occupied by an active component at a stage. -/
+  activeComponentSet :
+    (stage : traceStage) → activeComponentIndex stage → Set M
+  /-- Every indexed active component contains an actual point. -/
+  activeComponent_nonempty :
+    ∀ stage component, (activeComponentSet stage component).Nonempty
+  /-- Distinct active components at one stage are disjoint. -/
+  activeComponents_pairwise :
+    ∀ stage, Set.univ.PairwiseDisjoint (activeComponentSet stage)
+  /-- Each event region lies in the union of the current active components. -/
+  eventRegion_subset_activeComponents :
+    ∀ stage,
+      eventRegion stage ⊆
+        ⋃ component, activeComponentSet stage component
+  /-- Every component after a surgery event has a component before it as parent. -/
+  successorParent :
+    ∀ {stage nextStage},
+      eventIndex nextStage = eventIndex stage + 1 →
+        activeComponentIndex nextStage → activeComponentIndex stage
+  /-- The union of all children of one component agrees with it off the event region. -/
+  successor_children_agree_off_event :
+    ∀ (stage nextStage)
+      (hnext : eventIndex nextStage = eventIndex stage + 1)
+      (component : activeComponentIndex stage),
+        (⋃ child : { child : activeComponentIndex nextStage //
+              successorParent hnext child = component },
+            activeComponentSet nextStage child.1) \ eventRegion stage =
+          activeComponentSet stage component \ eventRegion stage
+  /-- The distinguished last trace stage. -/
+  terminalStage : traceStage
+  /-- The distinguished last stage represents the terminal event index. -/
+  terminalStage_eventIndex :
+    eventIndex terminalStage = terminalEventIndex
+  /-- Terminal active components are exactly the fixed decomposition components. -/
+  terminalComponentEquiv :
+    activeComponentIndex terminalStage ≃ decompositionData.componentIndex
+  /-- The terminal equivalence preserves the component regions exactly. -/
+  terminalComponentSet_eq :
+    ∀ component,
+      activeComponentSet terminalStage component =
+        (decompositionSource.componentTopologyPayload
+          (terminalComponentEquiv component)).componentSet
+  /-- No nonempty surgery-event region occurs after the terminal event. -/
+  noActiveEventAfterTerminal :
+    ∀ laterEventIndex,
+      terminalEventIndex < laterEventIndex →
+        surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTimeEventRegion
+          scaleParameter laterEventIndex = ∅
+
+/--
+Proof-bearing certificate that a finite ordered, package-backed topological
+surgery trace realizes the fixed post-extinction decomposition.
+-/
+structure ExtinctionSurgeryTraceRealization
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (traceStage : Type u) : Prop where
+  source : Nonempty
+    (ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+
+/-- Package concrete surgery-trace source data as a realization certificate. -/
+def ExtinctionSurgeryTraceRealization.ofSource
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    ExtinctionSurgeryTraceRealization
+      M extinction decomposition traceStage :=
+  ⟨⟨source⟩⟩
+
+/-- The natural event-index map of a realized finite trace is injective. -/
+theorem ExtinctionSurgeryTraceRealizationSource.eventIndex_injective
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Function.Injective source.eventIndex := by
+  intro stage nextStage h
+  apply source.stageEventIndex.injective
+  apply Fin.ext
+  simpa only [source.eventIndex_eq] using h
+
+/-- A finite event prefix through a terminal index always contains at least
+its zeroth trace stage. -/
+theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Nonempty traceStage :=
+  ⟨source.stageEventIndex.symm
+    ⟨0, Nat.zero_lt_succ source.terminalEventIndex⟩⟩
+
+/-- Every represented surgery stage has an active component because its
+nonempty event region lies in the union of the active-component family. -/
+theorem ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    (stage : traceStage) :
+    Nonempty (source.activeComponentIndex stage) := by
+  letI := source.smooth
+  obtain ⟨x, hx⟩ := source.eventRegion_nonempty stage
+  have hxUnion := source.eventRegion_subset_activeComponents stage hx
+  rcases Set.mem_iUnion.mp hxUnion with ⟨component, _hxComponent⟩
+  exact ⟨component⟩
+
+/-- The terminal active-component family is nonempty because it is equivalent
+to the fixed decomposition family, which covers the nonempty manifold. -/
+theorem ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage) :
+    Nonempty (source.activeComponentIndex source.terminalStage) := by
+  letI := source.smooth
+  exact
+    Nonempty.map source.terminalComponentEquiv.symm
+      source.decompositionSource.componentIndex_nonempty
+
+/-- Consecutive realized trace stages occur at strictly increasing surgery times. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    {stage nextStage : traceStage}
+    (hnext : source.eventIndex nextStage = source.eventIndex stage + 1) :
+    source.eventTime stage < source.eventTime nextStage := by
+  letI := source.smooth
+  rw [source.eventTime_eq stage, source.eventTime_eq nextStage, hnext]
+  exact
+    source.surgeryPayloadSource.surgeryTimeDiscretenessPayload.surgeryTime_strictlyOrdered
+      source.scaleParameter (source.eventIndex stage)
+
+/-- For one component before a surgery event, the union of all of its
+children can differ from that component only inside the package-backed event
+region. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion
+    {M : Type u} [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    {extinction : FiniteExtinctionByRicciFlowWithSurgery M}
+    {decomposition : HasExtinctionTopologyDecomposition M extinction}
+    {traceStage : Type u}
+    (source : ExtinctionSurgeryTraceRealizationSource
+      M extinction decomposition traceStage)
+    {stage nextStage : traceStage}
+    (hnext : source.eventIndex nextStage = source.eventIndex stage + 1)
+    (component : source.activeComponentIndex stage) :
+    (⋃ child : { child : source.activeComponentIndex nextStage //
+          source.successorParent hnext child = component },
+        source.activeComponentSet nextStage child.1) ∆
+        source.activeComponentSet stage component ⊆
+      source.eventRegion stage := by
+  letI := source.smooth
+  intro x hx
+  by_contra hxEvent
+  have hdiff :=
+    source.successor_children_agree_off_event
+      stage nextStage hnext component
+  rcases Set.mem_symmDiff.mp hx with hx | hx
+  · have hxParent :
+        x ∈ source.activeComponentSet stage component \
+          source.eventRegion stage := by
+      rw [← hdiff]
+      exact ⟨hx.1, hxEvent⟩
+    exact hx.2 hxParent.1
+  · have hxChildren :
+        x ∈ (⋃ child : { child : source.activeComponentIndex nextStage //
+              source.successorParent hnext child = component },
+            source.activeComponentSet nextStage child.1) \
+          source.eventRegion stage := by
+      rw [hdiff]
+      exact ⟨hx.1, hxEvent⟩
+    exact hx.2 hxChildren.1
 
 /--
 Explicit payload reconstructing the topological surgery trace represented by
@@ -26277,6 +26699,28 @@ theorem extinction_surgery_trace_realization_of_reconstruction
   exact
     ⟨data.traceStage, ⟨data.finiteTraceStage⟩,
       data.realization⟩
+
+/-- A reconstructed surgery trace exposes the actual package-backed trace
+source, together with a finite nonempty stage index. -/
+theorem extinction_surgery_trace_source_of_reconstruction
+    (M : Type u) [TopologicalSpace M] [T2Space M]
+    [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M]
+    [SimplyConnectedSpace M] [CompactSpace M]
+    (extinction : FiniteExtinctionByRicciFlowWithSurgery M)
+    (decomposition : HasExtinctionTopologyDecomposition M extinction)
+    (surgeryTrace :
+      HasExtinctionSurgeryTraceReconstruction M extinction decomposition) :
+    ∃ traceStage : Type u,
+      Nonempty (Fintype traceStage) ∧
+        Nonempty traceStage ∧
+          Nonempty
+            (ExtinctionSurgeryTraceRealizationSource
+              M extinction decomposition traceStage) := by
+  rcases surgeryTrace.data with ⟨data⟩
+  rcases data.realization.source with ⟨source⟩
+  exact
+    ⟨data.traceStage, ⟨data.finiteTraceStage⟩,
+      source.traceStage_nonempty, ⟨source⟩⟩
 
 /--
 Named production payload for the final homeomorphism to the standard 3-sphere.
@@ -37593,6 +38037,72 @@ theorem extinctionOnePointThreeSpaceRecognitionData_of_afterDecompositionData_eq
 theorem extinction_topology_decomposition_realization_of_decomposition_eq :
     @Poincare.extinction_topology_decomposition_realization_of_decomposition =
       @Poincare.extinction_topology_decomposition_realization_of_decomposition :=
+  rfl
+
+/-- Theorem contract for `ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty`. -/
+theorem ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty_eq :
+    @Poincare.ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty =
+      @Poincare.ExtinctionTopologyDecompositionRealizationSource.componentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionTopologyDecompositionRealization.componentIndex_nonempty`. -/
+theorem ExtinctionTopologyDecompositionRealization.componentIndex_nonempty_eq :
+    @Poincare.ExtinctionTopologyDecompositionRealization.componentIndex_nonempty =
+      @Poincare.ExtinctionTopologyDecompositionRealization.componentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `extinctionTopologyDecompositionRealization_of_componentTopologyPayloads`. -/
+theorem extinctionTopologyDecompositionRealization_of_componentTopologyPayloads_eq :
+    @Poincare.extinctionTopologyDecompositionRealization_of_componentTopologyPayloads =
+      @Poincare.extinctionTopologyDecompositionRealization_of_componentTopologyPayloads :=
+  rfl
+
+/-- Theorem contract for `extinction_topology_decomposition_source_of_decomposition`. -/
+theorem extinction_topology_decomposition_source_of_decomposition_eq :
+    @Poincare.extinction_topology_decomposition_source_of_decomposition =
+      @Poincare.extinction_topology_decomposition_source_of_decomposition :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.eventIndex_injective`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.eventIndex_injective_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.eventIndex_injective =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.eventIndex_injective :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.traceStage_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.activeComponentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.terminalActiveComponentIndex_nonempty :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_eventTime_lt :=
+  rfl
+
+/-- Theorem contract for `ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion`. -/
+theorem ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion_eq :
+    @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion =
+      @Poincare.ExtinctionSurgeryTraceRealizationSource.successor_children_symmDiff_parent_subset_eventRegion :=
+  rfl
+
+/-- Theorem contract for `extinction_surgery_trace_source_of_reconstruction`. -/
+theorem extinction_surgery_trace_source_of_reconstruction_eq :
+    @Poincare.extinction_surgery_trace_source_of_reconstruction =
+      @Poincare.extinction_surgery_trace_source_of_reconstruction :=
   rfl
 
 /-- Theorem contract for `extinction_surgery_trace_realization_of_reconstruction`. -/

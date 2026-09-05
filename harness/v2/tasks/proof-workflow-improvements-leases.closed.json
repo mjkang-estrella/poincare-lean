@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "execution_kind": "local_codex_implementation",
+  "persistent_harness_jobs_dispatched": false,
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "released_at": "2026-09-05T04:05:28Z",
+  "leases": [
+    {
+      "task": "grounded-topology-consumer",
+      "owner": "implement_grounded_topology",
+      "state": "released",
+      "worker_commit": "ed7052816a46ee5a2328364b421d411edd3f401f",
+      "integration_commit": "d73eb030",
+      "review": "Independent focused Lean checks for all three modules, deliverable type and axiom probes, diff review, and blind mathematical read-back passed."
+    },
+    {
+      "task": "frozen-statement-contracts",
+      "owner": "implement_frozen_contracts",
+      "state": "released",
+      "worker_commit": "b6fd0aa7d6865696f69b1c03c82d507fd4b5f5d7",
+      "integration_commit": "84ca80dd",
+      "review": "Independent runtime, worker, Pi, and frozen-contract regression tests passed. Omitted large pinned sources were rechecked after the prompt-size repair."
+    },
+    {
+      "task": "theorem-dependency-registry",
+      "owner": "implement_theorem_registry",
+      "state": "released",
+      "worker_commit": "64351986f66e9654ea233d0eab90acd4ae57df4b",
+      "integration_commit": "500ecdd3",
+      "review": "Independent 16-test suite, exporter Lean elaboration, and source review passed."
+    }
+  ],
+  "task_record_corrections": {
+    "frozen_statement_contracts_revision": 3,
+    "theorem_dependency_registry_revision": 2,
+    "reason": "Directory-scope notation corrected to explicit recursive globs. Initial worker task snapshots preserved under tasks/history; no live queue records were rewritten."
+  }
+}

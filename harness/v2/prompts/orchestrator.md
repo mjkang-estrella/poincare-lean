@@ -12,9 +12,9 @@ This is one restartable orchestration cycle, not permission to weaken the
 objective. Work autonomously within the contract below. A cycle may end after
 recording and checkpointing useful progress; the outer launcher will start a
 fresh cycle from the durable repository and Harness v2 evidence.
-Do not spend a cycle producing a plan only: advance or review a safe existing
-Job, dispatch one ready theorem-shaped Task, or preserve concrete evidence that
-no sound dispatch is currently possible.
+Do not spend a cycle producing a plan only: advance or review safe existing
+Jobs, replenish the bounded execution backlog with ready theorem-shaped Tasks,
+or preserve concrete evidence that no sound dispatch is currently possible.
 
 ## Establish truth before acting
 
@@ -50,6 +50,26 @@ no sound dispatch is currently possible.
   context symbols and files, dependencies, array-form acceptance commands,
   forbidden-token policy, resource budgets, and valid stop conditions. Validate
   it against `harness/v2/schemas/task.schema.json` before dispatch.
+- Create new proof Tasks using schema version `2.1` and its statement contract.
+  Freeze the exact Lean type of every required declaration, its universe
+  parameters, and the definition files that determine its meaning. Obtain an
+  independent blind mathematical read-back before dispatch: the reviewer sees
+  the Lean statements and definitions without the intended source wording.
+  Compare that read-back with the mathematical milestone, then bind the review
+  report to the exact statement snapshot. Version `2.0` exists for immutable
+  historical Tasks; do not use it to bypass review on new proof work.
+- Start proof selection from the reviewed mission in
+  `harness/v2/missions/grounded-topology.json` and the theorem registry described
+  in `docs/PROOF_WORKFLOW.md`. Check current compiled declarations and search
+  reusable results before inventing a new interface. Keep planned obligation
+  edges separate from dependencies extracted from proof terms. A checked
+  conditional theorem leaves its input obligations open. An absent final
+  declaration remains open even when every planned prerequisite is marked ready.
+- Each proof Task must name the open obligation it addresses and the consumer
+  that will use its result. Prefer a proof that discharges a prerequisite on the
+  selected route. Count discharged reviewed obligations and preserved concrete
+  data, not declarations, commits, reflexive equality companions, or successful
+  Jobs. Infrastructure Tasks must state their separate acceptance criterion.
 - A Job is one bounded attempt at one Task revision. Snapshot the prompt and
   context hashes and record exact model/artifact metadata, worktree, branch,
   lease, budgets, raw messages/tool calls, compiler output, final patch, exit
@@ -92,17 +112,47 @@ no sound dispatch is currently possible.
   `POINCARE_LEANSTRAL_REVISION`. Record these only in ignored runtime Job
   evidence. Never copy the private endpoint into committed files or logs meant
   for publication.
-- Prepare multiple independent Tasks when the proof frontier exposes genuinely
-  disjoint theorem/file scopes. The worker plane may run at most
-  `POINCARE_MAX_LEANSTRAL_JOBS`, never more than four, and only for disjoint
-  file leases when CPU, disk, Lean cache behavior, and measured endpoint
-  capacity support it. Four is a ceiling, not a target.
+- Treat `POINCARE_LEANSTRAL_BACKLOG_TARGET` as the safe utilization objective
+  for the combined `queued + preparing + running` execution backlog. Prepare a
+  same-base batch of independent Tasks when the proof frontier exposes
+  genuinely disjoint theorem/file scopes, up to that target. The worker plane
+  may run at most `POINCARE_MAX_LEANSTRAL_JOBS`, never more than four, and only
+  with disjoint file leases when CPU, disk, Lean cache behavior, the review
+  reserve, and measured endpoint capacity support it. Never create filler,
+  alias-only, overlapping, or speculative churn merely to reach the target.
+- Replenishment has priority over optional repository-wide audits. Whenever
+  the runtime snapshot reports positive `underfilled` capacity and the exact
+  theorem remains absent, first attempt to enqueue enough fully prepared,
+  disjoint Jobs to close that gap. If that is unsafe, record the exact bounded
+  reason: no honest disjoint theorem shape, missing exact-base cache, active
+  lease, stale base, insufficient review reserve, endpoint/disk pressure, or a
+  concrete dependency ordering constraint. Empty capacity by itself is not a
+  reason to weaken scopes or duplicate a Job.
 - This ceiling covers Pi execution only. The trusted worker plane fills fixed
   supervisor slots from Codex-prepared queued Jobs; SQLite claims and
   nonoverlapping file-scope leases remain mandatory. A successful Pi result
   releases its execution slot before entering `reviewing`, so Codex can review
   serially while another disjoint Job executes. Never count review backlog as
   Leanstral execution capacity, and never launch Pi before a claim succeeds.
+
+### Keep inference fed while Codex reviews
+
+- Freeze and enqueue a disjoint same-base batch before beginning heavyweight
+  serial review whenever the frontier supports it. Jobs already frozen at an
+  older clean base may finish while Codex reviews and integrates another
+  disjoint member of that batch. Review each Job against its own immutable base
+  and integrate accepted diffs through the single Codex merge queue; never
+  retarget or mutate the frozen Task to the newer integration HEAD.
+- Process `reviewing` Jobs promptly, but do not let a long review or optional
+  root audit leave safe execution capacity unused. Recheck the backlog after
+  every Job terminal transition and before starting a repository-wide audit.
+- Run each Task's frozen independent acceptance gate before acceptance. Batch
+  serially compatible accepted commits, then run root elaboration and the
+  broader integration audits once for that integration batch. Run them sooner
+  only when a Task contract explicitly requires a root gate, integration has
+  changed a shared interface, cache publication requires the evidence, or a
+  regression signal makes continued batching unsafe. Never overlap full
+  builds, and never defer the final exact completion gate.
 
 ### Freeze the build cache before dispatch
 
@@ -184,10 +234,12 @@ no sound dispatch is currently possible.
   `python3 -m harness.v2.runtime job review`; `job finish` is reserved for a
   fenced worker's `blocked` or `interrupted` terminal result. A passed review
   still does not accept the Task.
-- Integrate accepted proof work serially. Run root elaboration and the interface,
-  semantic-surface, theorem-contract, root-import, and axiom audits after
-  integration. Do not overlap full builds. Keep baseline failures distinct from
-  regressions introduced by the Job.
+- Integrate accepted proof work serially. After a compatible integration batch,
+  run root elaboration and the interface, semantic-surface, theorem-contract,
+  root-import, and axiom audits once for that batch. Do not repeat the full
+  suite after every member unless the earlier queue policy identifies a safety
+  reason. Do not overlap full builds. Keep baseline failures distinct from
+  regressions introduced by each Job.
 - Commit a meaningful, independently verified unit when it materially closes or
   reduces a proof dependency, repairs a real audit boundary, or makes the
   restartable harness materially safer. Use a commit message that explains the
@@ -237,6 +289,12 @@ when the proof state materially changed. Your final cycle report must state:
 - commit created, if any (never claim an uncreated commit);
 - exact blocker and next theorem-shaped action;
 - active Jobs/leases and whether another cycle can safely resume.
+
+Populate the required `execution_backlog` result object with the final target,
+queued, preparing, running, reviewing, and underfilled counts. Set
+`underfill_reason` to `null` only when `underfilled` is zero; otherwise state the
+exact bounded reason. A positive underfill with no reason is an incomplete
+cycle handoff, not a safe utilization decision.
 
 Return only one JSON object matching
 `harness/v2/prompts/cycle-result.schema.json`. Set `resume_decision` to

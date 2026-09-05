@@ -1,0 +1,11 @@
+{
+  "task": "frozen-statement-contracts",
+  "revision": 2,
+  "owner": "implement_frozen_contracts",
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "additional_allowed_paths": [
+    "harness/v2/pi/snapshot.py",
+    "harness/v2/worker/snapshot.py"
+  ],
+  "reason": "Strict contracts must reach every worker prompt; no overlap with other jobs."
+}

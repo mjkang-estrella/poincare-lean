@@ -26303,6 +26303,25 @@ structure SingularityModelClassificationPayloadSource
       asymptoticSolitonSource.payload
       canonicalNeighborhoodTheoremPayload
 
+/--
+Send a classified singularity model to the pointed rescaling index obtained by
+following the asymptotic-soliton classification chain back to its blow-up data.
+-/
+def SingularityModelClassificationPayloadSource.singularityModelToPointedRescalingIndex
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (source : SingularityModelClassificationPayloadSource flow) :
+    source.payload.singularityModelFamily →
+      source.asymptoticSolitonSource.nonnegativeCurvatureOperatorSource.structureTheorySource.curvatureNormalizationSource.pointedRescalingSource.payload.pointedRescalingDomain :=
+  fun model =>
+    source.asymptoticSolitonSource.nonnegativeCurvatureOperatorSource.structureTheorySource.curvatureNormalizationSource.payload.curvatureNormalizationToPointedRescalingIndex
+      (source.asymptoticSolitonSource.nonnegativeCurvatureOperatorSource.structureTheorySource.payload.structureModelToCurvatureNormalizationIndex
+        (source.asymptoticSolitonSource.nonnegativeCurvatureOperatorSource.payload.curvatureOperatorTestToStructureModel
+          (source.asymptoticSolitonSource.payload.asymptoticSolitonToCurvatureOperatorTest
+            (source.payload.singularityModelToAsymptoticSoliton model))))
+
 /-- Package singularity-model classification payloads as source data. -/
 def SingularityModelClassificationPayloadSource.of_payload
     {n : ℕ∞ω}
@@ -26551,12 +26570,45 @@ def HasSingularityModelClassification.of_singularity_model_classification_payloa
   singularityModelClassificationPayload_source :=
     ⟨SingularityModelClassificationPayloadSource.of_payload payload⟩
 
-/-- Interface for classifying the singularity models obtained from blow-up limits. -/
-inductive HasSingularityModelBlowupClassification
+/--
+Interface asserting that classified singularity models cover every pointed
+rescaling index produced by the blow-up construction.
+-/
+structure HasSingularityModelBlowupClassification
     {n : ℕ∞ω}
     {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
     [IsManifold ThreeManifoldModelWithCorners 1 M]
-    (_flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop
+    (flow : RicciFlowData ThreeManifoldModelWithCorners n M) : Prop where
+  singularityModelBlowupClassificationPayload_source :
+    ∃ source : SingularityModelClassificationPayloadSource flow,
+      Function.Surjective source.singularityModelToPointedRescalingIndex
+
+/--
+Construct blow-up classification from a classification source whose models
+cover all pointed rescaling indices.
+-/
+def HasSingularityModelBlowupClassification.of_classification_payload_source
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (source : SingularityModelClassificationPayloadSource flow)
+    (hCoverage :
+      Function.Surjective source.singularityModelToPointedRescalingIndex) :
+    HasSingularityModelBlowupClassification flow :=
+  ⟨⟨source, hCoverage⟩⟩
+
+/-- Blow-up classification retains the underlying singularity-model data. -/
+def HasSingularityModelBlowupClassification.to_singularityModelClassification
+    {n : ℕ∞ω}
+    {M : Type u} [TopologicalSpace M] [ChartedSpace ThreeManifoldModel M]
+    [IsManifold ThreeManifoldModelWithCorners 1 M]
+    {flow : RicciFlowData ThreeManifoldModelWithCorners n M}
+    (classification : HasSingularityModelBlowupClassification flow) :
+    HasSingularityModelClassification flow := by
+  rcases classification.singularityModelBlowupClassificationPayload_source with
+    ⟨source, _hCoverage⟩
+  exact ⟨⟨source⟩⟩
 
 /--
 Concrete aggregate Perelman singularity-control data.

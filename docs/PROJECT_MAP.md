@@ -30,6 +30,8 @@ evidence, not this endpoint.
 | Verification | `scripts/*.sh` | Placeholder, interface, contract, semantic, root-import, axiom, and completion checks. |
 | Work history | `harness/tasks`, `harness/reports`, `harness/ledger.json` | First-generation task attempts and reports. Historical after 2026-07-07 unless revalidated. |
 | Harness v2 | `harness/v2/runtime`, `harness/v2/pi`, `harness/v2/deploy`, `harness/v2/state` | SQLite Task/Job state, fenced leases, append-only evidence, one fresh bounded Pi session per Job, and restart-safe Codex orchestration. Runtime state is ignored. |
+| Reviewed proof route | `harness/v2/missions/grounded-topology.json`, `scripts/theorem_registry.py` | Planned open obligations alongside dependencies extracted from Lean; source-bound theorem lookup. |
+| Statement review | `harness/v2/contracts`, `scripts/frozen_contract_audit.py` | Exact types, definition hashes, and independent mathematical read-back for registered interfaces. |
 
 ## Why the Repository Feels Large
 
@@ -47,6 +49,12 @@ Do not start by reading all of `Poincare.lean`. Find the target declaration,
 then use `rg` for its consumers and direct imports.
 
 ## Finding the Active Frontier
+
+The current pilot route and commands are documented in
+`docs/PROOF_WORKFLOW.md`. Its new topology consumer retains a selected surgery
+source and permits a compatible replacement atlas. Source existence and the
+spherical covering construction remain open. A checked partition lemma or
+conditional assembly does not close those obligations.
 
 Use evidence in this order:
 
@@ -82,8 +90,9 @@ Codex orchestrator
   -> Leanstral
 ```
 
-1. Codex selects one exact missing shape and freezes a Task at one commit.
-2. Codex allocates a `codex/<task>/<job>` worktree and claims its file lease.
+1. Codex selects exact missing shapes and freezes a disjoint same-base Task
+   batch toward the configured execution-backlog target.
+2. Codex allocates `codex/<task>/<job>` worktrees with nonoverlapping leases.
 3. Harness snapshots the Task, prompt, context hashes, model identity, and
    resource budget for one Job.
 4. A fresh Pi process gives Leanstral exactly `read_context`, `search_symbol`,
@@ -94,8 +103,8 @@ Codex orchestrator
 5. Harness captures the Pi JSON event stream, scoped tool results, final diff,
    compiler output, and report append-only.
 6. Codex independently reviews the diff and reruns the frozen acceptance gate.
-7. Codex alone may accept, commit, and integrate the result serially before
-   running root checks.
+7. Codex alone may accept, commit, and integrate results through one serial
+   merge queue; compatible results share one batched root checkpoint.
 8. The `mj-zima` observation loop records an immediate evidence snapshot and
    another every 10,800 seconds as the durable long-term source. This Mac
    setup thread reports the deployed state once and ends; future operators

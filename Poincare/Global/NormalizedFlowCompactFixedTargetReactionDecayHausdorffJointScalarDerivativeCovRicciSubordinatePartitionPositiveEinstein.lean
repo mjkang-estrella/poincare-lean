@@ -1,4 +1,10 @@
 import Poincare.Global.NormalizedFlowCompactFixedTargetReactionDecayHausdorffJointCovRicciSubordinatePartitionPositiveEinstein
+import Poincare.Global.MetricFamilyCovRicciNormContinuity
+import Poincare.Global.MetricFamilyCovRicciQuotientContinuity
+import Poincare.Global.MetricFamilyEntryThirdJetCovRicciContinuity
+import Poincare.Global.MetricFamilyThirdJetCovRicciContinuity
+import Poincare.Global.ClosedMetricThirdJetOrbitCompactness
+import Poincare.Global.ClosedMetricThirdJetAscoliOrbitCompactness
 import Poincare.Global.NormalizedFlowHausdorffScalarTimeDerivativeAutomatic
 import Poincare.Global.NormalizedFlowHausdorffScalarDominationJointC1Reduction
 
@@ -32,6 +38,121 @@ variable [MeasurableSpace M] [BorelSpace M]
 variable [ChartedSpace (ClosedSmoothModel 3) M]
 variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
 variable [CompactSpace M] [ConnectedSpace M]
+
+/-- Joint covariant-Ricci norm continuity from the scalar Bochner fields. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_fields {n : ℕ} {N : Type u} {K : Type v} [TopologicalSpace N] [T2Space N] [ChartedSpace (ClosedSmoothModel n) N] [IsManifold (closedSmoothModelWithCorners n) ∞ N] [TopologicalSpace K] (metric : K → ClosedSmoothRiemannianMetric n N) (hRicNorm₂ : ∀ k : K, ∀ x : N, ContMDiffAt (closedSmoothModelWithCorners n) 𝓘(ℝ) 2 (fun y : N ↦ (metric k).ricciNormSqAt y) x) (hPairDiff : ∀ k : K, ∀ x : N, ∀ w : TangentSpace (closedSmoothModelWithCorners n) x, MDifferentiableAt (closedSmoothModelWithCorners n) 𝓘(ℝ) (fun y : N ↦ covRicciRicciPairingAt (metric k) y (extend (ClosedSmoothModel n) w y)) x) (hRicSecond : ∀ k : K, ∀ x : N, CovTensor2DerivExtDifferentiableAt (metric k) (ricciVariationField (metric k)) x) (hLaplacian : Continuous (fun p : K × N ↦ (metric p.1).laplacianAt (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2)) (hRough : Continuous (fun p : K × N ↦ roughRicciLaplacianPairingAt (metric p.1) p.2)) : Continuous (fun p : K × N ↦ covRicciNormSqAt (metric p.1) p.2) := by
+  have hformula : (fun p : K × N ↦ covRicciNormSqAt (metric p.1) p.2) = fun p : K × N ↦ ((metric p.1).laplacianAt (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2 - 2 * roughRicciLaplacianPairingAt (metric p.1) p.2) / 2 := by
+    funext p
+    have hBochner := laplacianAt_ricciNormSqAt_eq_two_roughPairing_add_two_covNormSq (metric p.1) p.2 (hRicNorm₂ p.1 p.2) (hPairDiff p.1 p.2) (hRicSecond p.1 p.2)
+    linarith
+  rw [hformula]
+  exact (hLaplacian.sub (hRough.const_mul 2)).div_const 2
+
+/-- The C2 Ricci-norm premise also supplies the Bochner pairing differentiability premise. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
+    {n : ℕ} {N : Type u} {K : Type v}
+    [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (ClosedSmoothModel n) N]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ N]
+    [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n N)
+    (hRicNorm₂ : ∀ k : K, ∀ x : N,
+      ContMDiffAt (closedSmoothModelWithCorners n)
+        (modelWithCornersSelf ℝ ℝ) 2
+        (fun y : N ↦ (metric k).ricciNormSqAt y) x)
+    (hRicSecond : ∀ k : K, ∀ x : N,
+      CovTensor2DerivExtDifferentiableAt (metric k)
+        (ricciVariationField (metric k)) x)
+    (hLaplacian : Continuous (fun p : K × N ↦
+      (metric p.1).laplacianAt
+        (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2))
+    (hRough : Continuous (fun p : K × N ↦
+      roughRicciLaplacianPairingAt (metric p.1) p.2)) :
+    Continuous (fun p : K × N ↦
+      covRicciNormSqAt (metric p.1) p.2) := by
+  exact continuous_joint_covRicciNormSqAt_of_bochner_fields
+    metric hRicNorm₂
+    (fun k x w =>
+      covRicciRicciPairingAt_mdifferentiableAt_of_ricciNormSqAt_contMDiffAt_two
+        (metric k) x (hRicNorm₂ k x) w)
+    hRicSecond hLaplacian hRough
+
+/-- Canonical Ricci-variation regularity removes the explicit second-derivative premise. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical
+    {n : ℕ} {N : Type u} {K : Type v}
+    [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (ClosedSmoothModel n) N]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ N]
+    [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n N)
+    (hRicNorm₂ : ∀ k : K, ∀ x : N,
+      ContMDiffAt (closedSmoothModelWithCorners n)
+        (modelWithCornersSelf ℝ ℝ) 2
+        (fun y : N ↦ (metric k).ricciNormSqAt y) x)
+    (hLaplacian : Continuous (fun p : K × N ↦
+      (metric p.1).laplacianAt
+        (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2))
+    (hRough : Continuous (fun p : K × N ↦
+      roughRicciLaplacianPairingAt (metric p.1) p.2)) :
+    Continuous (fun p : K × N ↦
+      covRicciNormSqAt (metric p.1) p.2) := by
+  exact continuous_joint_covRicciNormSqAt_of_bochner_norm_fields
+    metric hRicNorm₂
+    (fun k x ↦
+      covTensor2DerivExtDifferentiableAt_ricciVariationField_canonical
+        (metric k) x)
+    hLaplacian hRough
+
+/-- Canonical Ricci-norm and Ricci-variation regularity leave only the joint
+Bochner fields as premises. -/
+theorem continuous_joint_covRicciNormSqAt_of_bochner_fields_canonical
+    {n : ℕ} {N : Type u} {K : Type v}
+    [TopologicalSpace N] [T2Space N]
+    [ChartedSpace (ClosedSmoothModel n) N]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ N]
+    [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n N)
+    (hLaplacian : Continuous (fun p : K × N ↦
+      (metric p.1).laplacianAt
+        (fun y : N ↦ (metric p.1).ricciNormSqAt y) p.2))
+    (hRough : Continuous (fun p : K × N ↦
+      roughRicciLaplacianPairingAt (metric p.1) p.2)) :
+    Continuous (fun p : K × N ↦
+      covRicciNormSqAt (metric p.1) p.2) := by
+  exact continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical
+    metric
+    (fun k x ↦ ricciNormSqAt_contMDiffAt_two_canonical (metric k) x)
+    hLaplacian hRough
+
+/-- The reaction package supplies the Ricci-variation second regularity on
+each nonnegative normalized-flow slice. -/
+theorem
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.ricciVariationField_covTensor2DerivExtDifferentiableAt
+    [SimplyConnectedSpace M]
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (t : ℝ) (ht : t ∈ Ici (0 : ℝ)) (x : M) :
+    CovTensor2DerivExtDifferentiableAt (reaction.gt t)
+      (ricciVariationField (reaction.gt t)) x := by
+  letI : CovariantDerivative.ContMDiffCovariantDerivative
+      (reaction.gt t).leviCivita 1 := inferInstance
+  have hEntries : ∀ y : M,
+      TimeVariationExtContMDiffAt reaction.gt t y 2 := fun y ↦
+    timeVariationExtContMDiffAt_two_of_metricEntriesJointContDiffAt_three
+      (reaction.jointMetricEntries t y)
+  have hRicC2 : ∀ y : M,
+      CovTensor2ExtContMDiffAt
+        (ricciVariationField (reaction.gt t)) y 2 := fun y ↦
+    ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow
+      (reaction.normalizedFlow t ht) hEntries y
+  exact covTensor2DerivExtDifferentiableAt_of_extSecond
+    (g := reaction.gt t) (h := ricciVariationField (reaction.gt t)) (x := x)
+    (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two (hRicC2 x))
+    (fun y ↦ covTensor2ExtDifferentiableAt_of_contMDiffAt_two (hRicC2 y))
+    (tensor2AddLeft_ricciVariationField (reaction.gt t))
+    (tensor2SMulLeft_ricciVariationField (reaction.gt t))
+    (tensor2AddRight_ricciVariationField (reaction.gt t))
+    (tensor2SMulRight_ricciVariationField (reaction.gt t))
 
 /-- Reaction-decay data with scalar-density domination lowered to intrinsic
 joint continuity of the scalar time derivative and Stokes lowered to finite
@@ -93,6 +214,170 @@ noncomputable def ofReactionFields
       scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three
         reaction.jointMetricEntries
     scalarSubordinateGeometry := scalarSubordinateGeometry }
+
+/-- Construct from chartwise continuity of the metric-family inverse coefficients
+and covariant-Ricci entries. -/
+noncomputable def ofCovRicciChartContinuous
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hCovRicciChartContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyCovRicciChartContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_chartContinuous hCovRicciChartContinuous)
+    scalarSubordinateGeometry
+
+/-- Construct from jointly continuous spatial metric jets through order three. -/
+noncomputable def ofMetricFamilyThirdJets
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricThirdJets : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyBlendedMetricThirdJetContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_metricFamilyThirdJets hMetricThirdJets)
+    scalarSubordinateGeometry
+
+/-- Construct from jointly continuous scalar coordinate components of the
+spatial metric jets through order three. -/
+noncomputable def ofMetricFamilyEntryThirdJets
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricEntryThirdJets : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      ∀ k : reaction.K, ∀ x : M,
+        Poincare.MetricFamilyBlendedMetricEntryThirdJetContinuousAt reaction.metric k x)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_joint_of_metricFamilyEntryThirdJets hMetricEntryThirdJets)
+    scalarSubordinateGeometry
+
+/-- Construct from a quotient realization by nonnegative real time. The
+quotient-map premise explicitly includes surjectivity, which is additional
+data beyond the current reaction package. -/
+noncomputable def ofQuotientRealization
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hParameter : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Topology.IsQuotientMap reaction.parameter)
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_covRicciNormSqAt_metricFamily_of_quotient_realization
+      hParameter reaction.realizesFlow reaction.jointMetricEntries)
+    scalarSubordinateGeometry
+
+  /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
+  noncomputable def ofBochnerNormFields
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hRicSecond : ∀ k : reaction.K, ∀ x : M,
+      Poincare.CovTensor2DerivExtDifferentiableAt (reaction.metric k)
+        (Poincare.ricciVariationField (reaction.metric k)) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_norm_fields reaction.metric hRicNorm₂ hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
+  /-- Construct from Bochner norm fields using canonical Ricci-variation regularity. -/
+  noncomputable def ofBochnerNormFieldsCanonical
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_norm_fields_canonical reaction.metric hRicNorm₂
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
+  /-- Construct from the joint Bochner fields using canonical Ricci regularity. -/
+  noncomputable def ofBochnerFieldsCanonical
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_fields_canonical reaction.metric
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
+
+  /-- Construct from Bochner scalar fields, deriving joint covariant-Ricci continuity automatically. -/
+  noncomputable def ofBochnerFields
+    (reaction : NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M)
+    (compactTensorReferenceControl : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Poincare.CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hRicNorm₂ : ∀ k : reaction.K, ∀ x : M, ContMDiffAt (Poincare.closedSmoothModelWithCorners 3)
+      (modelWithCornersSelf ℝ ℝ) 2 (fun y : M ↦ (reaction.metric k).ricciNormSqAt y) x)
+    (hPairDiff : ∀ k : reaction.K, ∀ x : M, ∀ w : TangentSpace (Poincare.closedSmoothModelWithCorners 3) x,
+      MDifferentiableAt (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ)
+      (fun y : M ↦ Poincare.covRicciRicciPairingAt (reaction.metric k) y
+        (FiberBundle.extend (Poincare.ClosedSmoothModel 3) w y)) x)
+    (hRicSecond : ∀ k : reaction.K, ∀ x : M,
+      Poincare.CovTensor2DerivExtDifferentiableAt (reaction.metric k)
+        (Poincare.ricciVariationField (reaction.metric k)) x)
+    (hLaplacianJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        (reaction.metric p.1).laplacianAt (fun y : M ↦ (reaction.metric p.1).ricciNormSqAt y) p.2))
+    (hRoughJointContinuous : letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      Continuous (fun p : reaction.K × M ↦
+        Poincare.roughRicciLaplacianPairingAt (reaction.metric p.1) p.2))
+    (scalarSubordinateGeometry : (t : Set.Ici (0 : ℝ)) → Poincare.FiniteSubordinateHausdorffLaplacianGeometry
+      (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3.{u, v} M :=
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  ofReactionFields reaction compactTensorReferenceControl
+    (continuous_joint_covRicciNormSqAt_of_bochner_fields reaction.metric hRicNorm₂ hPairDiff hRicSecond
+      hLaplacianJointContinuous hRoughJointContinuous)
+    scalarSubordinateGeometry
 
 /-- Local finite-atlas domination constructs the moving total-scalar
 identity, finite subordinate geometry constructs Stokes, and compactness
@@ -172,6 +457,225 @@ theorem sphereConclusion
     unitRecognition
 
 end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayHausdorffJointScalarDerivativeCovRicciSubordinatePartitionPositiveEinsteinAnalyticData3
+
+namespace NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
+
+variable [SimplyConnectedSpace M]
+
+/-- A forward uniform full covariant-Ricci derivative bound and finite
+subordinate scalar-Laplacian geometry directly construct the established
+reaction-decay positive-Einstein package.  Joint `C³` metric-entry regularity
+already stored in `reaction` supplies both scalar-time-derivative continuity
+and the Lichnerowicz assembly regularity. -/
+noncomputable def ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hCov : ∃ D : ℝ,
+      UniformCovariantRicciDerivativeNormBound
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) D)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  let D : ℝ := Classical.choose hCov
+  have hD : UniformCovariantRicciDerivativeNormBound
+      (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) D :=
+    Classical.choose_spec hCov
+  let scalarTimeDerivativeJointContinuous :
+      ScalarTimeDerivativeJointContinuous reaction.gt :=
+    scalarTimeDerivativeJointContinuous_of_metricEntriesJointContDiffAt_three
+      reaction.jointMetricEntries
+  letI : ∀ s : ℝ,
+      CovariantDerivative.ContMDiffCovariantDerivative
+        (reaction.gt s).leviCivita 1 :=
+    fun _s ↦ inferInstance
+  let lichnerowicz : GlobalLichnerowiczAssemblyRegularity reaction.gt :=
+    globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree
+      reaction.jointMetricEntries
+  exact {
+    reaction := reaction
+    compactTensorReferenceControl := compactTensorReferenceControl
+    fullCovariantRicciDerivativeBound := D
+    fullCovariantRicciControl := hD
+    differentiateMovingTotalScalar := fun t ↦
+      hasDerivAt_totalScalar_energyNumerator_of_normalizedFlowAt_of_jointScalarTimeDerivative
+        reaction.compactFiniteAtlasChartFrameDensityData.toChartFrameDensityVariation
+        reaction.jointMetricEntries scalarTimeDerivativeJointContinuous
+        lichnerowicz t.1 (reaction.normalizedFlow t.1 t.2)
+        (scalarSubordinateGeometry t).closedLaplacianStokes }
+
+/-- Compactness of the forward metric orbit closure in the explicit
+scalar metric-entry third-jet topology supplies the uniform bound required by
+`ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound`. -/
+noncomputable def ofCompactClosedMetricThirdJetOrbitClosure
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hOrbitCompact :
+      letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+        closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+      IsCompact (closure (Set.range
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_compact_closedMetricThirdJetOrbitClosure
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) hOrbitCompact
+  · exact scalarSubordinateGeometry
+
+/-- Componentwise equicontinuity and pointwise compact containment of the
+forward scalar third-jet profiles supply the uniform covariant-Ricci bound.
+The premise that every forward profile limit comes from a closed smooth
+Riemannian metric is the genuine residual compactness and regularity
+obligation. -/
+noncomputable def ofComponentwiseAscoliMetricThirdJetProfiles
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) ↦
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseCompact :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        ∃ Q : Set ℝ, IsCompact Q ∧
+          ∀ t : Ici (0 : ℝ),
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z ∈ Q)
+    (hForwardProfileLimitsRealized :
+      closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := 3) (M := M) ∘
+              (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))) ⊆
+        Set.range (metricEntryThirdJetProfile (n := 3) (M := M)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_componentwise
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1)
+        hequicontinuous hpointwiseCompact hForwardProfileLimitsRealized
+  · exact scalarSubordinateGeometry
+
+/-- Componentwise equicontinuity and pointwise boundedness of the forward
+scalar third-jet profiles supply the uniform covariant-Ricci bound.  The
+premise that every forward profile limit comes from a closed smooth
+Riemannian metric remains the genuine residual compactness and regularity
+obligation. -/
+noncomputable def ofComponentwiseBoundedAscoliMetricThirdJetProfiles
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hequicontinuous : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Equicontinuous (fun t : Ici (0 : ℝ) ↦
+        (metricEntryThirdJetProfile (reaction.gt t.1) slot :
+          ClosedSmoothModel 3 → ℝ)))
+    (hpointwiseBounded :
+      ∀ (slot : MetricEntryThirdJetSlot 3 M) (z : ClosedSmoothModel 3),
+        Bornology.IsBounded (Set.range
+          (fun t : Ici (0 : ℝ) ↦
+            metricEntryThirdJetProfile (reaction.gt t.1) slot z)))
+    (hForwardProfileLimitsRealized :
+      closure
+          (Set.range
+            (metricEntryThirdJetProfile (n := 3) (M := M) ∘
+              (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1))) ⊆
+        Set.range (metricEntryThirdJetProfile (n := 3) (M := M)))
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  apply ofJointScalarDerivativeSubordinatePartitionOfUniformCovRicciBound
+    reaction compactTensorReferenceControl
+  · exact
+      exists_uniformCovariantRicciDerivativeNormBound_of_componentwise_bounded
+        (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1)
+        hequicontinuous hpointwiseBounded hForwardProfileLimitsRealized
+  · exact scalarSubordinateGeometry
+
+/-- Continuity of the compact reaction family in the explicit scalar
+metric-entry third-jet topology makes its realized forward orbit closure
+compact.  The indexing map `reaction.parameter` need not be continuous. -/
+noncomputable def ofContinuousCompactMetricThirdJetRealization
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricContinuous :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+        closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+      Continuous reaction.metric)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : CompactSpace reaction.K := reaction.compactSpaceK
+  letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+  apply ofCompactClosedMetricThirdJetOrbitClosure
+    reaction compactTensorReferenceControl
+  · exact isCompact_closedMetricThirdJetOrbitClosure_of_compact_realization
+      (fun t : Ici (0 : ℝ) ↦ reaction.gt t.1) reaction.metric
+      reaction.parameter hMetricContinuous reaction.realizesFlow
+  · exact scalarSubordinateGeometry
+
+/-- Full joint continuity of every scalar third-jet profile slot on
+`reaction.K × ClosedSmoothModel 3` makes the compact reaction family
+continuous in the explicit third-jet topology.  This premise is stronger
+than the local-at-center entry third-jet predicate. -/
+noncomputable def ofMetricFamilyEntryThirdJetProfileJointContinuous
+    (reaction :
+      NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v}
+        M)
+    (compactTensorReferenceControl :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      CompactReferenceMetricTensorFamilyData reaction.K reaction.metric)
+    (hMetricProfileJointContinuous :
+      letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+      MetricFamilyEntryThirdJetProfileJointContinuous reaction.metric)
+    (scalarSubordinateGeometry : ∀ t : Ici (0 : ℝ),
+      FiniteSubordinateHausdorffLaplacianGeometry
+        (reaction.gt t.1) (fun y ↦ (reaction.gt t.1).scalarAt y)) :
+    NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.{u, v}
+      M := by
+  letI : TopologicalSpace reaction.K := reaction.topologicalSpaceK
+  letI : TopologicalSpace (ClosedSmoothRiemannianMetric 3 M) :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := 3) (M := M)
+  apply ofContinuousCompactMetricThirdJetRealization
+    reaction compactTensorReferenceControl
+  · exact continuous_closedMetricFamily_of_entryThirdJetProfileJointContinuous
+      hMetricProfileJointContinuous
+  · exact scalarSubordinateGeometry
+
+end NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3
 
 /-- Fixed-target conversion into the established reaction-decay positive-
 Einstein endpoint. -/

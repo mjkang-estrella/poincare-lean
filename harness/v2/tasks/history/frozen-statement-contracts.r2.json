@@ -1,0 +1,76 @@
+{
+  "schema_version": "2.0",
+  "id": "frozen-statement-contracts",
+  "revision": 2,
+  "status": "ready",
+  "base_commit": "64c9f999c9c699cb52e87ea36fad294d43b774d4",
+  "objective": {
+    "title": "Require meaningful frozen statement contracts and semantic review for new tasks",
+    "statement": "Add a backward-compatible strict task contract version covering every required declaration with exact Lean types, pinned statement-definition context, and reviewed blind mathematical read-back. Enforce it before dispatch and in independent gates. Replace mandatory reflexive theorem-name companions with compiler checked explicit contracts, preserving meaningful existing equalities and APIs. Add fail-closed regression tests, including a changed secondary deliverable and altered/missing review evidence.",
+    "deliverables": [
+      "Require meaningful frozen statement contracts and semantic review for new tasks"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "harness/v2/runtime/store.py",
+      "harness/v2/runtime/validation.py",
+      "harness/v2/schemas/task.schema.json",
+      "harness/v2/tests/",
+      "harness/v2/worker/client.py",
+      "harness/v2/worker/tests/",
+      "scripts/theorem_contract_audit.sh",
+      "scripts/frozen_contract_audit.py",
+      "scripts/tests/test_frozen_contract_audit.py",
+      "harness/v2/contracts/",
+      "harness/v2/pi/snapshot.py",
+      "harness/v2/worker/snapshot.py"
+    ],
+    "forbidden_paths": [
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lake-manifest.json",
+      "lean-toolchain",
+      "HANDOFF.md",
+      "Poincare.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "harness/v2/schemas/task.schema.json",
+      "harness/v2/runtime/validation.py",
+      "scripts/theorem_contract_audit.sh"
+    ],
+    "symbols": [],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "harness/v2/tests",
+        "-v"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Stop at the stated file scope; report exact resisting types and preserved compiler failures if blocked.",
+    "No service operations, full builds, merges, task acceptance, or final-target claim."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  }
+}

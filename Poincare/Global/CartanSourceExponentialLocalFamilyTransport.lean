@@ -24,7 +24,7 @@ noncomputable section
 set_option maxHeartbeats 1000000
 set_option synthInstance.maxHeartbeats 140000
 
-open Filter Function Set
+open Filter Function Metric Set
 open scoped Manifold ContDiff Topology RealInnerProductSpace
 
 namespace Poincare
@@ -178,19 +178,176 @@ theorem center_mem_rawLocalFamily_anchors
     x₀ ∈ C.rawLocalFamily.anchors := by
   exact ⟨mem_extChartAt_source x₀, C.center_mem_coordinateAnchors⟩
 
+/-! ## Restricting the endpoint source -/
+
+variable {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M}
+
+/-- Restrict the coordinate-anchor slice to the zero-velocity points retained
+by an additional endpoint-source set. -/
+def restrictedCoordinateAnchorsForEndpointSource
+    (C : FixedChartAnchorEndpointPackage g x₀) (source : Set (E × E)) : Set E :=
+  C.coordinateAnchors ∩ (fun z : E => (z, (0 : E))) ⁻¹' source
+
+/-- Restrict the endpoint partial homeomorphism to an additional open source
+set. The selector, time, derivative, and endpoint function do not change. The
+anchor slice is restricted so that every retained zero-velocity point remains
+in the new endpoint source. -/
+def restrictEndpointSource
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    FixedChartAnchorEndpointPackage g x₀ where
+  selector := C.selector
+  time := C.time
+  time_pos := C.time_pos
+  derivative := C.derivative
+  endpoint := C.endpoint.restrOpen source hsource
+  time_protected := C.time_protected
+  endpoint_hasStrictFDerivAt := C.endpoint_hasStrictFDerivAt
+  endpoint_apply := by
+    simpa only [OpenPartialHomeomorph.coe_restrOpen] using C.endpoint_apply
+  coordinateAnchors := C.restrictedCoordinateAnchorsForEndpointSource source
+  isOpen_coordinateAnchors :=
+    C.isOpen_coordinateAnchors.inter
+      (hsource.preimage (continuous_id.prodMk continuous_const))
+  center_mem_coordinateAnchors :=
+    ⟨C.center_mem_coordinateAnchors, hcenter⟩
+  zero_mem_source := by
+    intro z hz
+    rw [OpenPartialHomeomorph.restrOpen_source]
+    exact ⟨C.zero_mem_source z hz.1, hz.2⟩
+  zero_stationary := by
+    intro z hz
+    simpa only [OpenPartialHomeomorph.coe_restrOpen] using
+      C.zero_stationary z hz.1
+
+@[simp]
+theorem restrictEndpointSource_selector
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    (C.restrictEndpointSource source hsource hcenter).selector = C.selector :=
+  rfl
+
+@[simp]
+theorem restrictEndpointSource_time
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    (C.restrictEndpointSource source hsource hcenter).time = C.time :=
+  rfl
+
+@[simp]
+theorem restrictEndpointSource_endpoint
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    (C.restrictEndpointSource source hsource hcenter).endpoint =
+      C.endpoint.restrOpen source hsource :=
+  rfl
+
+/-- Restricting the source leaves the endpoint function unchanged. -/
+@[simp]
+theorem restrictEndpointSource_endpoint_apply
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source)
+    (q : E × E) :
+    (C.restrictEndpointSource source hsource hcenter).endpoint q =
+      C.endpoint q :=
+  rfl
+
+/-- The new endpoint source is exactly the old source intersected with the
+requested open set. -/
+theorem restrictEndpointSource_endpoint_source
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    (C.restrictEndpointSource source hsource hcenter).endpoint.source =
+      C.endpoint.source ∩ source := by
+  rw [restrictEndpointSource_endpoint,
+    OpenPartialHomeomorph.restrOpen_source]
+
+/-- Every point of the restricted endpoint source lies in the requested
+additional source set. -/
+theorem restrictEndpointSource_endpoint_source_subset
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    (source : Set (E × E)) (hsource : IsOpen source)
+    (hcenter : (extChartAt I x₀ x₀, (0 : E)) ∈ source) :
+    (C.restrictEndpointSource source hsource hcenter).endpoint.source ⊆ source := by
+  rw [C.restrictEndpointSource_endpoint_source source hsource hcenter]
+  exact inter_subset_right
+
+/-! ## Restriction to the selector's initial domain -/
+
+/-- Endpoint inputs whose time-normalized velocity lies in the open initial
+ball of the retained selector. -/
+def selectorInitialOpenSource
+    (C : FixedChartAnchorEndpointPackage g x₀) : Set (E × E) :=
+  (fun q : E × E => (q.1, C.time⁻¹ • q.2)) ⁻¹'
+    ball (extChartAt I x₀ x₀, (0 : E))
+      (C.selector.projectFirstVariational.initialRadius : ℝ)
+
+theorem isOpen_selectorInitialOpenSource
+    (C : FixedChartAnchorEndpointPackage g x₀) :
+    IsOpen C.selectorInitialOpenSource := by
+  exact isOpen_ball.preimage
+    (continuous_fst.prodMk (continuous_const.smul continuous_snd))
+
+theorem center_mem_selectorInitialOpenSource
+    (C : FixedChartAnchorEndpointPackage g x₀) :
+    (extChartAt I x₀ x₀, (0 : E)) ∈ C.selectorInitialOpenSource := by
+  change
+    (extChartAt I x₀ x₀, C.time⁻¹ • (0 : E)) ∈
+      ball (extChartAt I x₀ x₀, (0 : E))
+        (C.selector.projectFirstVariational.initialRadius : ℝ)
+  simpa only [smul_zero] using
+    mem_ball_self
+      (by exact_mod_cast
+        C.selector.projectFirstVariational.initialRadius_pos)
+
+/-- Restrict a package so every retained endpoint-source velocity belongs to
+the selector's time-normalized initial domain. -/
+def restrictToSelectorInitialBall
+    (C : FixedChartAnchorEndpointPackage g x₀) :
+    FixedChartAnchorEndpointPackage g x₀ :=
+  C.restrictEndpointSource C.selectorInitialOpenSource
+    C.isOpen_selectorInitialOpenSource C.center_mem_selectorInitialOpenSource
+
+/-- Endpoint-source membership in the restricted package supplies the closed
+initial-ball fact consumed by the fixed-chart selector. -/
+theorem restrictToSelectorInitialBall_endpoint_source_selectorInitial_mem
+    (C : FixedChartAnchorEndpointPackage g x₀)
+    {x : M} {w : E}
+    (hsource : (extChartAt I x₀ x, w) ∈
+      C.restrictToSelectorInitialBall.endpoint.source) :
+    (extChartAt I x₀ x, C.restrictToSelectorInitialBall.time⁻¹ • w) ∈
+      closedBall (extChartAt I x₀ x₀, (0 : E))
+        (C.restrictToSelectorInitialBall.selector.projectFirstVariational.initialRadius : ℝ) := by
+  have hrestricted :
+      (extChartAt I x₀ x, w) ∈ C.selectorInitialOpenSource :=
+    C.restrictEndpointSource_endpoint_source_subset
+      C.selectorInitialOpenSource C.isOpen_selectorInitialOpenSource
+        C.center_mem_selectorInitialOpenSource hsource
+  exact ball_subset_closedBall hrestricted
+
 end FixedChartAnchorEndpointPackage
 
-/-- Every fixed manifold chart produces a product inverse-function package
-with an honest open stationary anchor slice, hence a raw manifold
-`LocalFamily`. -/
-theorem exists_fixedChartAnchorEndpointPackage
-    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
-    Nonempty (FixedChartAnchorEndpointPackage g x₀) := by
+/-- Every prescribed neighborhood of the central fixed-chart state admits a
+product inverse-function package whose selector remains protected inside that
+neighborhood. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (E × E)}
+    (hU : U ∈ nhds (extChartAt I x₀ x₀, (0 : E))) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius ⊆ U := by
   rcases
-      CartanSourceExponentialLocalChartSelector.exists_fixedChart_anchorEndpointOpenPartialHomeomorph
-        g x₀ with
-    ⟨H, T, hT, D, P, hTprotected, hjoint, hPapply, hcenterSource,
-      _hcenterTarget⟩
+      CartanSourceExponentialLocalChartSelector.exists_fixedChart_anchorEndpointOpenPartialHomeomorph_with_projected_protectedInnerBall_subset
+        g x₀ hU with
+    ⟨H, hprotected, T, hT, D, P, hTprotected, hjoint, hPapply,
+      hcenterSource, _hcenterTarget⟩
   have hTfull : T ∈ Icc (-H.epsilon) H.epsilon := by
     constructor <;> linarith [hTprotected.1, hTprotected.2, H.epsilon_pos]
   have hanchor :=
@@ -214,25 +371,60 @@ theorem exists_fixedChartAnchorEndpointPackage
       (z, (0 : E)) ∈ P.source ∧ P (z, (0 : E)) = (z, z) := by
     filter_upwards [hsourceNhd, hstationary] with z hzSource hzStationary
     exact ⟨hzSource, hzStationary⟩
-  rcases mem_nhds_iff.mp hgood with ⟨U, hUsub, hUopen, hcenterU⟩
-  refine ⟨{
-    selector := H
-    time := T
-    time_pos := hT
-    derivative := D
-    endpoint := P
-    time_protected := hTprotected
-    endpoint_hasStrictFDerivAt := hjoint
-    endpoint_apply := hPapply
-    coordinateAnchors := U
-    isOpen_coordinateAnchors := hUopen
-    center_mem_coordinateAnchors := hcenterU
-    zero_mem_source := ?_
-    zero_stationary := ?_ }⟩
-  · intro z hz
-    exact (hUsub hz).1
-  · intro z hz
-    exact (hUsub hz).2
+  rcases _root_.mem_nhds_iff.mp hgood with ⟨U, hUsub, hUopen, hcenterU⟩
+  let C : FixedChartAnchorEndpointPackage g x₀ :=
+    { selector := H
+      time := T
+      time_pos := hT
+      derivative := D
+      endpoint := P
+      time_protected := hTprotected
+      endpoint_hasStrictFDerivAt := hjoint
+      endpoint_apply := hPapply
+      coordinateAnchors := U
+      isOpen_coordinateAnchors := hUopen
+      center_mem_coordinateAnchors := hcenterU
+      zero_mem_source := fun z hz => (hUsub hz).1
+      zero_stationary := fun z hz => (hUsub hz).2 }
+  exact ⟨C, hprotected⟩
+
+/-- Every fixed manifold chart produces a product inverse-function package
+with an honest open stationary anchor slice, hence a raw manifold
+`LocalFamily`.  This is the universal-neighborhood specialization of the
+protected-range constructor. -/
+theorem exists_fixedChartAnchorEndpointPackage
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    Nonempty (FixedChartAnchorEndpointPackage g x₀) := by
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+        g x₀ (U := Set.univ) Filter.univ_mem with
+    ⟨C, _hprotected⟩
+  exact ⟨C⟩
+
+/-- Choose the fixed package so every protected selector position remains in
+the fixed source chart and its cutoff-one locus. -/
+theorem exists_fixedChartAnchorEndpointPackage_with_fixedSourceChartCutoff_protectedInnerBall
+    [T2Space M]
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
+    ∃ C : FixedChartAnchorEndpointPackage g x₀,
+      ∀ q ∈ closedBall (extChartAt I x₀ x₀, (0 : E))
+          C.selector.projectFirstVariational.protectedInnerRadius,
+        q.1 ∈ (extChartAt I x₀).target ∧
+          q.1 ∈ IsometryInstantiate.cutoffOneLocus x₀ := by
+  have hfixed :
+      (extChartAt I x₀).target ∩ IsometryInstantiate.cutoffOneLocus x₀ ∈
+        nhds (extChartAt I x₀ x₀) :=
+    inter_mem (extChartAt_target_mem_nhds x₀)
+      (IsometryInstantiate.cutoffOneLocus_mem_nhds_anchor x₀)
+  have hpre : Prod.fst ⁻¹'
+      ((extChartAt I x₀).target ∩ IsometryInstantiate.cutoffOneLocus x₀) ∈
+        nhds (extChartAt I x₀ x₀, (0 : E)) :=
+    continuous_fst.continuousAt.preimage_mem_nhds hfixed
+  rcases
+      exists_fixedChartAnchorEndpointPackage_with_projected_protectedInnerBall_subset
+        g x₀ hpre with
+    ⟨C, hC⟩
+  exact ⟨C, fun q hq => hC hq⟩
 
 /-- Postcompose a local normal vector by a jointly continuous
 anchor-dependent coordinate transport.  The open loci are unchanged. -/

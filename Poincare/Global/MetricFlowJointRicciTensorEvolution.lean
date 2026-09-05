@@ -8,9 +8,8 @@ import Poincare.Global.RicciFlowScalarRegularity
 The closed Ricci-tensor variation theorem was previously exposed through a
 collection of connection, mixed-partial, and second-spatial-regularity
 hypotheses.  Joint `C³` regularity of the metric entries supplies all of the
-time/connection hypotheses.  On a genuine Ricci-flow slice it also makes
-`Ric = -½ ∂ₜg` entrywise `C²`, which supplies the remaining curvature
-commutation regularity.
+time/connection hypotheses.  Canonical smoothness of the closed metric at the
+fixed time supplies the remaining curvature-commutation regularity.
 
 Thus the standard tensor evolution equation
 
@@ -43,8 +42,9 @@ A genuine closed Ricci-flow slice with globally joint `C³` canonical metric
 entries satisfies Hamilton's Ricci-tensor evolution equation at every point.
 
 No separate `MetricFlowRegularAt`, `DeltaGammaEntryDerivativeBridgeAt`, or
-Ricci/scalar second-regularity premise remains: each is reconstructed from the
-joint metric-entry hypothesis and the Ricci-flow equation.
+Ricci/scalar second-regularity premise remains.  Joint metric-entry regularity
+supplies the flow inputs, while canonical smoothness supplies curvature
+commutation.
 -/
 theorem satisfiesRicciEvolutionAt_of_ricciFlow_joint_metric_entries_three
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
@@ -113,37 +113,11 @@ theorem satisfiesRicciEvolutionAt_of_ricciFlow_joint_metric_entries_three
     Eventually.of_forall
       (global_isClosedRicciFlowSolutionAt_and_extensionRegularAt
         gt t₀ hFlow)
-  have hRicC2 : ∀ y : M,
-      CovTensor2ExtContMDiffAt (ricciVariationField (gt t₀)) y 2 := fun y ↦
-    ricciVariationField_extContMDiffAt_two_of_ricciFlow
-      hFlow hEntries y
-  have hRicSecond :
-      CovTensor2DerivExtDifferentiableAt
-        (gt t₀) (ricciVariationField (gt t₀)) x :=
-    covTensor2DerivExtDifferentiableAt_of_extSecond
-      (g := gt t₀) (h := ricciVariationField (gt t₀)) (x := x)
-      (covTensor2ExtSecondDifferentiableAt_of_contMDiffAt_two (hRicC2 x))
-      (fun y ↦ covTensor2ExtDifferentiableAt_of_contMDiffAt_two (hRicC2 y))
-      (tensor2AddLeft_ricciVariationField (gt t₀))
-      (tensor2SMulLeft_ricciVariationField (gt t₀))
-      (tensor2AddRight_ricciVariationField (gt t₀))
-      (tensor2SMulRight_ricciVariationField (gt t₀))
-  have hScalar₂ :
-      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gt t₀).scalarAt y) x :=
-    scalarAt_contMDiffAt_two_of_ricciFlow hFlow hEntries x
-  have hScalarExt₂ : ∀ w : TM x,
-      MDifferentiableAt I 𝓘(ℝ)
-        (fun y : M ↦
-          extDerivFun (fun z : M ↦ (gt t₀).scalarAt z) y
-            (extend E w y)) x := by
-    intro w
-    have hW :
-        MDifferentiableAt I ((I).prod 𝓘(ℝ, E)) (T% (extend E w)) x := by
-      simpa using (mdifferentiableAt_extend I E w)
-    exact CovariantDerivative.mdiffAt_extDerivFun_apply hScalar₂ hW
-  exact satisfiesRicciEvolutionAt_of_ricciFlow_traceSecondRegularity
+  have hCurvComm : RicciSecondDerivCurvatureCommutationAt (gt t₀) x :=
+    RicciSecondDerivCurvatureCommutationAt.canonical (gt t₀) x
+  exact satisfiesRicciEvolutionAt_of_ricciFlow_curvatureCommutation
     (gt := gt) (t₀ := t₀) (x := x)
     (hReg x) hgt hExt hNear hBridge hSecond hFlowNear
-    hRicSecond (hRicC2 x) hScalar₂ hScalarExt₂
+    hCurvComm
 
 end Poincare

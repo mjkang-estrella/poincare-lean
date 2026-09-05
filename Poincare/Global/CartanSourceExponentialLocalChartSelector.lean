@@ -187,6 +187,44 @@ Unlike independently chosen fixed-anchor exponentials, one fixed chart admits
 a single regular variational ODE selector whose initial state contains the
 varying anchor coordinate and velocity.
 -/
+theorem exists_regularVariationalSelector_fixedChart_with_projected_protectedInnerBall_subset
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (E × E)}
+    (hU : U ∈ nhds (extChartAt I x₀ x₀, (0 : E))) :
+    ∃ H : LocalRegularControlledContinuousAutonomousSelector
+        (firstVariationalAugmentedField (fixedChartGeodesicField g x₀))
+        ((extChartAt I x₀ x₀, (0 : E)),
+          ContinuousLinearMap.id ℝ (E × E)),
+      closedBall (extChartAt I x₀ x₀, (0 : E))
+          H.projectFirstVariational.protectedInnerRadius ⊆ U := by
+  let q₀ : E × E := (extChartAt I x₀ x₀, (0 : E))
+  let J₀ : (E × E) →L[ℝ] (E × E) :=
+    ContinuousLinearMap.id ℝ (E × E)
+  have hUaug : Prod.fst ⁻¹' U ∈ nhds (q₀, J₀) :=
+    continuous_fst.continuousAt.preimage_mem_nhds hU
+  have hfield : ContDiffAt ℝ 1
+      (firstVariationalAugmentedField (fixedChartGeodesicField g x₀))
+      (q₀, J₀) := by
+    apply firstVariationalAugmentedField_contDiffAt_one_of_contDiffAt_two
+    simpa [q₀, fixedChartGeodesicField] using
+      (GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff_two
+        (g := g) (x₀ := x₀)).contDiffAt
+  rcases
+      exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one_with_protectedInnerBall_subset
+        (firstVariationalAugmentedField (fixedChartGeodesicField g x₀))
+        (q₀, J₀) hfield hUaug with ⟨H, hH⟩
+  refine ⟨H, ?_⟩
+  intro q hq
+  change (q, J₀) ∈ Prod.fst ⁻¹' U
+  apply hH
+  change (q, J₀) ∈ closedBall (q₀, J₀) H.protectedInnerRadius
+  rw [Metric.mem_closedBall, Prod.dist_eq, dist_self,
+    max_eq_left (dist_nonneg : 0 ≤ dist q q₀)]
+  simpa [q₀, J₀,
+    LocalRegularControlledContinuousAutonomousSelector.protectedInnerRadius,
+    LocalRegularControlledContinuousAutonomousSelector.projectFirstVariational] using hq
+
+/-- The unrestricted selector existence theorem is the universal-neighborhood case. -/
 theorem exists_regularVariationalSelector_fixedChart
     (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M) :
     Nonempty
@@ -194,11 +232,10 @@ theorem exists_regularVariationalSelector_fixedChart
         (firstVariationalAugmentedField (fixedChartGeodesicField g x₀))
         ((extChartAt I x₀ x₀, (0 : E)),
           ContinuousLinearMap.id ℝ (E × E))) := by
-  apply exists_localRegularControlledContinuousAutonomousSelector_of_contDiffAt_one
-  apply firstVariationalAugmentedField_contDiffAt_one_of_contDiffAt_two
-  simpa [fixedChartGeodesicField] using
-    (GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff_two
-      (g := g) (x₀ := x₀)).contDiffAt
+  rcases
+      exists_regularVariationalSelector_fixedChart_with_projected_protectedInnerBall_subset
+        g x₀ (U := Set.univ) Filter.univ_mem with ⟨H, _hH⟩
+  exact ⟨H⟩
 
 /--
 Endpoint coordinate of the fixed-chart selector at time `T`, with the initial

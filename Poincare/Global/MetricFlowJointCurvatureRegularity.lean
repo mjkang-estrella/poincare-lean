@@ -61,6 +61,36 @@ theorem contDiffAt_spatial_fderiv_of_joint_contDiffAt_two_vector
     simpa [U] using hslice.fderiv
   exact hcomp.congr_of_eventuallyEq heq
 
+/-- A jointly `C¹` vector-valued map has a jointly continuous spatial
+Fréchet derivative. Only the second factor is differentiated. -/
+theorem continuousAt_spatial_fderiv_of_joint_contDiffAt_one_vector
+    (F : ℝ → V → W) (t₀ : ℝ) (x : V)
+    (hF : ContDiffAt ℝ 1 (Function.uncurry F) (t₀, x)) :
+    ContinuousAt (fun p : ℝ × V ↦ fderiv ℝ (F p.1) p.2) (t₀, x) := by
+  let U : ℝ × V → W := Function.uncurry F
+  let p : ℝ × V := (t₀, x)
+  have hU : ContDiffAt ℝ 1 U p := by
+    simpa [U, p] using hF
+  have hDU : ContinuousAt (fderiv ℝ U) p :=
+    (hU.fderiv_right (m := 0) (by norm_num)).continuousAt
+  have hcomp : ContinuousAt
+      (fun q : ℝ × V ↦
+        (fderiv ℝ U q).comp (ContinuousLinearMap.inr ℝ ℝ V)) p :=
+    hDU.clm_comp continuousAt_const
+  have hUnear : ∀ᶠ q in nhds p, DifferentiableAt ℝ U q :=
+    (hU.eventually (by norm_num)).mono fun _ hq ↦
+      hq.differentiableAt one_ne_zero
+  have heq :
+      (fun q : ℝ × V ↦ fderiv ℝ (F q.1) q.2) =ᶠ[nhds p]
+        fun q ↦ (fderiv ℝ U q).comp (ContinuousLinearMap.inr ℝ ℝ V) := by
+    filter_upwards [hUnear] with q hq
+    rcases q with ⟨t, z⟩
+    have hslice : HasFDerivAt (fun z' : V ↦ U (t, z'))
+        ((fderiv ℝ U (t, z)).comp (ContinuousLinearMap.inr ℝ ℝ V)) z :=
+      hq.hasFDerivAt.comp z (hasFDerivAt_prodMk_right t z)
+    simpa [U] using hslice.fderiv
+  exact hcomp.congr_of_eventuallyEq heq
+
 end VectorValuedSpatialDerivative
 
 section AbstractChartCurvature
