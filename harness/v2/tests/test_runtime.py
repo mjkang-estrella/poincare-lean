@@ -578,6 +578,80 @@ class RuntimeTestCase(unittest.TestCase):
         self.assertEqual(blocked["task"]["status"], "blocked")
         self.assertEqual(blocked["runtime"]["blocked_evidence_job_id"], job_id)
 
+    def test_blocked_task_accepts_three_same_shape_interrupted_jobs(self) -> None:
+        task_id = "repeated-interrupted-task"
+        first = self.make_active_job(task_id)
+        first_token = self.claim_and_run(first, owner="supervisor-one")
+        self.store.finish_job(
+            first,
+            owner="supervisor-one",
+            lease_token=first_token,
+            state="interrupted",
+            exit_reason="pi_execution_unsuccessful",
+        )
+
+        interrupted_jobs = [first]
+        for attempt in (2, 3):
+            job = self.job_record(task_id, attempt=attempt)
+            self.enqueue_job(job)
+            token = self.claim_and_run(job["id"], owner=f"supervisor-{attempt}")
+            self.store.finish_job(
+                job["id"],
+                owner=f"supervisor-{attempt}",
+                lease_token=token,
+                state="interrupted",
+                exit_reason="pi_execution_unsuccessful",
+            )
+            interrupted_jobs.append(job["id"])
+
+        blocked = self.store.transition_task(
+            task_id,
+            "blocked",
+            blocked_reason="three supervised attempts ended on one execution invariant",
+            evidence_job_id=interrupted_jobs[-1],
+        )
+        self.assertEqual(blocked["task"]["status"], "blocked")
+        self.assertEqual(
+            blocked["runtime"]["blocked_evidence_job_id"], interrupted_jobs[-1]
+        )
+        connection = self.store._connect()
+        try:
+            event = connection.execute(
+                """
+                SELECT details_json FROM task_events
+                WHERE task_id = ? AND to_state = 'blocked'
+                ORDER BY sequence DESC LIMIT 1
+                """,
+                (task_id,),
+            ).fetchone()
+        finally:
+            connection.close()
+        self.assertEqual(
+            json.loads(event["details_json"])["repeated_interrupted_job_ids"],
+            interrupted_jobs,
+        )
+
+    def test_blocked_task_rejects_nonrepeated_interrupted_evidence(self) -> None:
+        task_id = "single-interrupted-task"
+        job_id = self.make_active_job(task_id)
+        token = self.claim_and_run(job_id, owner="supervisor")
+        self.store.finish_job(
+            job_id,
+            owner="supervisor",
+            lease_token=token,
+            state="interrupted",
+            exit_reason="pi_execution_unsuccessful",
+        )
+        with self.assertRaisesRegex(
+            TransitionError, "requires three same-Task worker-finished Jobs"
+        ):
+            self.store.transition_task(
+                task_id,
+                "blocked",
+                blocked_reason="one interrupted attempt is not enough evidence",
+                evidence_job_id=job_id,
+            )
+
     def test_glob_scopes_are_conservative_and_claims_serialize(self) -> None:
         self.assertTrue(scopes_overlap("foo*/a*", "foobar*/a?"))
         self.assertTrue(

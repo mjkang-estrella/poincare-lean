@@ -1612,15 +1612,67 @@ class HarnessStore:
                         row["revision"],
                     ):
                         raise TransitionError("evidence Job belongs to another Task revision")
-                    if evidence["state"] not in {"blocked", "rejected"}:
-                        raise TransitionError("evidence Job must be blocked or rejected")
                     if not evidence["exit_reason"]:
                         raise TransitionError("evidence Job must record an exit reason")
+                    repeated_interrupted_jobs: list[str] = []
+                    if evidence["state"] == "interrupted":
+                        candidates = connection.execute(
+                            """
+                            SELECT j.*, e.event, e.from_state, e.to_state,
+                                   e.owner AS event_owner, e.details_json
+                            FROM jobs j
+                            JOIN job_events e ON e.job_id = j.job_id
+                            WHERE j.task_id = ?
+                              AND j.state = 'interrupted'
+                              AND j.exit_reason = ?
+                              AND e.event = 'finished'
+                              AND e.to_state = 'interrupted'
+                            ORDER BY j.task_revision, j.attempt, e.sequence
+                            """,
+                            (row["task_id"], evidence["exit_reason"]),
+                        ).fetchall()
+                        for candidate in candidates:
+                            details = json.loads(candidate["details_json"])
+                            if (
+                                candidate["event_owner"] == candidate["lease_owner"]
+                                and candidate["from_state"]
+                                in {"running", "reviewing"}
+                                and details
+                                == {
+                                    "exit_reason": candidate["exit_reason"],
+                                    "gate_status": "not_run",
+                                    "reviewer_identity": None,
+                                }
+                            ):
+                                repeated_interrupted_jobs.append(candidate["job_id"])
+                        repeated_interrupted_jobs = list(
+                            dict.fromkeys(repeated_interrupted_jobs)
+                        )
+                        if (
+                            evidence["job_id"] not in repeated_interrupted_jobs
+                            or len(repeated_interrupted_jobs) < 3
+                        ):
+                            raise TransitionError(
+                                "interrupted evidence requires three same-Task "
+                                "worker-finished Jobs with one exact exit reason"
+                            )
+                    elif evidence["state"] not in {"blocked", "rejected"}:
+                        raise TransitionError(
+                            "evidence Job must be blocked, rejected, or one of "
+                            "three repeated interrupted attempts"
+                        )
                     updates.update(
                         blocked_reason=blocked_reason.strip(),
                         blocked_evidence_job_id=evidence_job_id,
                     )
-                    details.update(reason=blocked_reason.strip(), evidence_job_id=evidence_job_id)
+                    details.update(
+                        reason=blocked_reason.strip(),
+                        evidence_job_id=evidence_job_id,
+                    )
+                    if repeated_interrupted_jobs:
+                        details["repeated_interrupted_job_ids"] = (
+                            repeated_interrupted_jobs
+                        )
                 elif to_state == "superseded":
                     self._assert_no_nonterminal_jobs_for_task(
                         connection,
