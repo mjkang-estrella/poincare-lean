@@ -67,6 +67,17 @@ def strict_task() -> tuple[dict, bytes]:
 
 
 class StatementValidationTests(unittest.TestCase):
+    def test_focused_review_uses_the_same_strict_and_legacy_probe(self):
+        from harness.v2.deploy.focused_review import _declaration_source
+
+        task, _ = strict_task()
+        for index, name in enumerate(task["acceptance"]["required_declarations"]):
+            self.assertEqual(_declaration_source(task, index, name),
+                             _declaration_probe_source(task, index, name))
+        legacy = fixture.task_record("legacy-focused-task")
+        self.assertEqual(_declaration_source(legacy, 0, "ExampleTarget"),
+                         _declaration_probe_source(legacy, 0, "ExampleTarget"))
+
     def test_legacy_contract_bytes_and_first_probe_remain_unchanged(self):
         task = fixture.task_record("legacy-task")
         before = copy.deepcopy(task)

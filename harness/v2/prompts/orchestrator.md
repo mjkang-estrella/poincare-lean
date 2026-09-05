@@ -220,6 +220,19 @@ or preserve concrete evidence that no sound dispatch is currently possible.
   file, scan the added content for `sorry`, `admit`, axioms, postulates,
   `native_decide`, forbidden target rewrites, and run `git diff --check`.
   Preserve failed output and the final patch.
+- Ordinary Job review is a focused gate, never an integration checkpoint. Run
+  every Task-declared `lake env lean Poincare/Path/File.lean` command through
+  `harness/v2/deploy/review-job-focused.sh`. The runner reuses the immutable
+  exact-base cache read-only, compiles only the Task-ordered Lean targets into
+  an ephemeral olean overlay, refreshes `Poincare.olean` in that overlay for
+  canonical declaration probes, and writes append-only gate evidence. It
+  refuses a pre-existing mutable `.lake` in a Job worktree; create a fresh Job
+  rather than reusing that cache.
+- Never run `lake build`, `lake build Poincare`, `lake build <module>`, direct
+  root elaboration outside the focused runner, root audits, completion audits,
+  or status generation while a single Job is being reviewed. Those commands
+  duplicate thousands of unchanged modules and are not independent per-Job
+  evidence.
 - Independently inspect the exact diff from its frozen base. Re-run the Task's
   acceptance commands yourself; check scope, hypothesis use, non-vacuity,
   deliverable axiom footprints, and exact declaration types. Never accept a
@@ -234,12 +247,14 @@ or preserve concrete evidence that no sound dispatch is currently possible.
   `python3 -m harness.v2.runtime job review`; `job finish` is reserved for a
   fenced worker's `blocked` or `interrupted` terminal result. A passed review
   still does not accept the Task.
-- Integrate accepted proof work serially. After a compatible integration batch,
-  run root elaboration and the interface, semantic-surface, theorem-contract,
-  root-import, and axiom audits once for that batch. Do not repeat the full
-  suite after every member unless the earlier queue policy identifies a safety
-  reason. Do not overlap full builds. Keep baseline failures distinct from
-  regressions introduced by each Job.
+- Keep passed Jobs as a Codex-owned integration backlog. Select up to
+  `POINCARE_INTEGRATION_BATCH_SIZE` Jobs with compatible bases and disjoint
+  diffs, inspect their merge order, then integrate them serially. Run one root
+  elaboration plus the interface, semantic-surface, theorem-contract,
+  root-import, and axiom audits for the whole batch, never once per Job. A
+  smaller checkpoint is valid only when waiting would block the dependency
+  frontier or exceed the current cycle budget; record the exact reason. Do not
+  overlap full builds. Keep baseline failures distinct from regressions.
 - Commit a meaningful, independently verified unit when it materially closes or
   reduces a proof dependency, repairs a real audit boundary, or makes the
   restartable harness materially safer. Use a commit message that explains the

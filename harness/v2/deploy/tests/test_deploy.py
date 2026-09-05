@@ -10,7 +10,13 @@ import sys
 import tempfile
 import time
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePosixPath
+
+from harness.v2.deploy.focused_review import (
+    FocusedReviewError,
+    _acceptance_kind,
+    _run_forbidden_token_scan,
+)
 
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -31,6 +37,7 @@ AUTHORITY_SCRIPTS = tuple(
         "heartbeat-loop.sh",
         "evidence-heartbeat.sh",
         "exact-completion-probe.sh",
+        "review-job-focused.sh",
     )
 )
 
@@ -63,6 +70,7 @@ def write_config(
     branch: bool = True,
     maximum_jobs: int | None = None,
     backlog_target: int | None = None,
+    batch_size: int | None = None,
 ) -> None:
     install_manifest, dependency_graph = write_sealed_pi_inputs(root)
     values = [
@@ -89,6 +97,8 @@ def write_config(
         values.append(f"POINCARE_MAX_LEANSTRAL_JOBS={maximum_jobs}")
     if backlog_target is not None:
         values.append(f"POINCARE_LEANSTRAL_BACKLOG_TARGET={backlog_target}")
+    if batch_size is not None:
+        values.append(f"POINCARE_INTEGRATION_BATCH_SIZE={batch_size}")
     path.write_text("\n".join(values) + "\n", encoding="utf-8")
     path.chmod(0o600)
 
@@ -231,6 +241,116 @@ class RunJobSupervisorArgumentTest(unittest.TestCase):
 
 
 class DeploymentAuthorityTest(unittest.TestCase):
+    def test_focused_review_acceptance_allowlist_is_fail_closed(self) -> None:
+        kind, target = _acceptance_kind(
+            [
+                "env",
+                "LEAN_NUM_THREADS=1",
+                "lake",
+                "env",
+                "lean",
+                "Poincare/Global/Target.lean",
+            ]
+        )
+        self.assertEqual(kind, "lean")
+        self.assertEqual(target, PurePosixPath("Poincare/Global/Target.lean"))
+        kind, target = _acceptance_kind(
+            [
+                "rg",
+                "--files-without-match",
+                r"\b(sorry|admit)\b",
+                "Poincare/Global/Target.lean",
+            ]
+        )
+        self.assertEqual(kind, "rg")
+        self.assertEqual(target, PurePosixPath("Poincare/Global/Target.lean"))
+        for command in (
+            ["lake", "build", "Poincare"],
+            ["env", "LEAN_NUM_THREADS=1", "lake", "env", "lean", "Poincare.lean"],
+            ["sh", "-c", "lake env lean Poincare/Global/Target.lean"],
+            ["rg", "--files-without-match", r"\bsorry\b", "."],
+            [
+                "rg",
+                "--files-without-match",
+                "--glob",
+                "*",
+                "Poincare/Global/Target.lean",
+            ],
+        ):
+            with self.subTest(command=command):
+                with self.assertRaises(FocusedReviewError):
+                    _acceptance_kind(command)
+
+    def test_forbidden_token_scan_runs_without_external_ripgrep(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            target = root / "Poincare/Global/Target.lean"
+            target.parent.mkdir(parents=True)
+            command = [
+                "rg",
+                "--files-without-match",
+                r"\b(sorry|admit|axiom|postulate)\b|native_decide",
+                "Poincare/Global/Target.lean",
+            ]
+            target.write_text("theorem verified : True := by trivial\n", encoding="utf-8")
+            status, stdout, stderr = _run_forbidden_token_scan(command, cwd=root)
+            self.assertEqual(
+                (status, stdout, stderr),
+                (0, b"Poincare/Global/Target.lean\n", b""),
+            )
+            target.write_text("theorem invalid : True := by sorry\n", encoding="utf-8")
+            status, stdout, stderr = _run_forbidden_token_scan(command, cwd=root)
+            self.assertEqual((status, stdout, stderr), (1, b"", b""))
+
+    def test_focused_review_reuses_cache_and_forbids_lake_build(self) -> None:
+        runner = (ROOT / "harness/v2/deploy/focused_review.py").read_text(
+            encoding="utf-8"
+        )
+        wrapper = (ROOT / "harness/v2/deploy/review-job-focused.sh").read_text(
+            encoding="utf-8"
+        )
+        prompt = (ROOT / "harness/v2/prompts/orchestrator.md").read_text(
+            encoding="utf-8"
+        )
+        cycle = (ROOT / "harness/v2/deploy/codex-cycle.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn('"lake" in command', runner)
+        self.assertIn("non-focused Lean target is forbidden", runner)
+        self.assertIn("immutable exact-base cache", runner)
+        self.assertIn("Job worktree already has a mutable or stale .lake", runner)
+        self.assertIn('prefix=f"codex-focused-review-{accepted_commit[:12]}-"', runner)
+        self.assertNotIn('subprocess.run(["lake", "build"', runner)
+        self.assertIn("assert_review_control_committed", wrapper)
+        self.assertIn("review-job-focused.sh", prompt)
+        self.assertIn("Never run `lake build`", prompt)
+        self.assertIn("POINCARE_INTEGRATION_BATCH_SIZE", prompt)
+        self.assertIn("POINCARE_INTEGRATION_BATCH_SIZE", cycle)
+
+    def test_focused_review_control_comes_from_attested_deploy_checkout(self) -> None:
+        common = COMMON.read_text(encoding="utf-8")
+        preflight = (ROOT / "harness/v2/deploy/preflight.sh").read_text(
+            encoding="utf-8"
+        )
+        cycle = (ROOT / "harness/v2/deploy/codex-cycle.sh").read_text(
+            encoding="utf-8"
+        )
+        wrapper = (ROOT / "harness/v2/deploy/review-job-focused.sh").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(
+            'POINCARE_PROMPT_FILE="$POINCARE_DEPLOY_CODE_ROOT/harness/v2/prompts/orchestrator.md"',
+            common,
+        )
+        self.assertIn(
+            'POINCARE_CYCLE_RESULT_SCHEMA="$POINCARE_DEPLOY_CODE_ROOT/harness/v2/prompts/cycle-result.schema.json"',
+            common,
+        )
+        self.assertIn("assert_review_control_committed", common)
+        self.assertIn("assert_review_control_committed", preflight)
+        self.assertGreaterEqual(cycle.count("assert_review_control_committed"), 2)
+        self.assertIn("assert_review_control_committed", wrapper)
+
     def test_worker_plane_fills_execution_slots_without_acceptance_authority(self) -> None:
         source = (ROOT / "harness/v2/deploy/worker-plane.sh").read_text(
             encoding="utf-8"
@@ -419,6 +539,22 @@ class RuntimeLayoutTest(unittest.TestCase):
 
 
 class SecureConfigurationTest(unittest.TestCase):
+    def test_integration_batch_defaults_to_four_and_is_bounded(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            config = root / "deploy.env"
+            write_config(config, root)
+            result = run_bash(
+                'source "$1"; load_config "$2"; printf "%s\n" "$POINCARE_INTEGRATION_BATCH_SIZE"',
+                str(config),
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(result.stdout.strip(), "4")
+            write_config(config, root, batch_size=5)
+            rejected = run_bash('source "$1"; load_config "$2"', str(config))
+            self.assertNotEqual(rejected.returncode, 0)
+            self.assertIn("between 1 and 4", rejected.stderr)
+
     def test_insecure_config_is_rejected_before_sourcing(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary).resolve()

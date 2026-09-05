@@ -2,6 +2,36 @@
 
 Snapshot date: 2026-09-05 (UTC)
 
+## 2026-09-05 Main integration
+
+The integration checkout is now `/Users/mjkang/Develop/poincare`, branch `main`.
+The merge retains the old local-main history and incorporates
+`codex/proof-workflow-improvements` at `5d408763`, the repeated-interruption
+handling at `81cde044`, and the focused-review implementation at `a87c80a6`.
+The earlier proof-worker branches are included through their reviewed
+cherry-picked changes. Existing worktrees and their evidence are preserved.
+
+The focused reviewer now uses the same schema-2.1 declaration-probe generator
+as the runtime gate. A regression test checks both strict deliverables and
+legacy probe compatibility. Integration preserves both the execution-backlog
+target and the independent integration-batch setting.
+
+The combined runtime suite passed 66 tests, deployment suite 49, worker suite
+33, and Pi suite 94 with 11 skips. The Lean sources, root imports, toolchain,
+and dependency manifest are byte-for-byte identical to the verified
+`5d408763` tree; no Lean theorem was changed during these merges. No live
+model or persistent harness service was changed by this Git integration.
+
+The next action remains the reviewed mission check, run from `main`:
+
+```sh
+python3 scripts/theorem_registry.py graph \
+  --mission harness/v2/missions/grounded-topology.json --require-closed
+```
+
+The source-existence, covering-construction, and final Poincare obligations
+remain open. The historical verification limitations below still apply.
+
 ## 2026-09-05 Reviewed topology and proof-workflow checkpoint
 
 The active integration worktree is

@@ -12,6 +12,7 @@ if (( $# > 1 )); then
 fi
 
 load_config "${1:-$SCRIPT_DIR/.env}"
+assert_review_control_committed
 unset POINCARE_LIFECYCLE_LOCKED POINCARE_CONTROL_LOCKED \
   POINCARE_WORKERS_LOCKED POINCARE_OBSERVE_LOCKED \
   POINCARE_JOB_SUPERVISOR_SESSION
@@ -459,6 +460,12 @@ PY
       "$POINCARE_LEANSTRAL_BACKLOG_TARGET"
     printf -- '- Current Job utilization snapshot: `%s`\n' "$utilization_snapshot"
     printf -- '- Reviewing Jobs do not satisfy the execution-backlog target. When `underfilled` is positive, replenish with genuinely disjoint, fully prepared Jobs before optional repository-wide audits; otherwise record the exact bounded reason replenishment is unsafe.\n'
+    printf -- '- Integration checkpoint batch target: `%s` passed Jobs\n' \
+      "$POINCARE_INTEGRATION_BATCH_SIZE"
+    printf -- '- Required focused Codex review gate: `%s`\n' \
+      "$SCRIPT_DIR/review-job-focused.sh"
+    printf -- '- During an ordinary Job review, never run `lake build`, `lake build Poincare`, direct root elaboration outside the focused runner, or broad audits. Use the focused review gate, which reuses the immutable exact-base cache and writes an ephemeral olean overlay.\n'
+    printf -- '- Accumulate compatible passed Jobs and run one serial root integration checkpoint for at most the configured batch target. A lone Job may checkpoint only when waiting would block the proof frontier or exhaust the cycle budget; record that reason.\n'
     printf -- '- Required supervised Job launcher: `%s`\n' \
       "$SCRIPT_DIR/run-job-supervised.sh"
     printf -- '- Every Pi Job must run through that launcher so its PID, Linux start time, PGID, lease identity, and terminal status remain recoverable.\n'
@@ -520,6 +527,8 @@ PY
       cycle_id "$cycle_id" reason "control_surface_modified"
     die "Codex modified the launcher, prompt, or AGENTS contract; paused for independent review"
   fi
+
+  assert_review_control_committed
 
   (( stop_requested == 0 )) || break
 

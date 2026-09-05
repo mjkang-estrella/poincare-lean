@@ -187,6 +187,21 @@ equal `accepted_tree`. Review and every acceptance retry recheck this Git
 identity, so a random hash, unrelated repository at the expected path, moved
 HEAD, dirty worktree, or mismatched tree fails closed.
 
+On the deployed host, generate that gate with the Codex-owned focused runner:
+
+```sh
+harness/v2/deploy/review-job-focused.sh JOB_ID \
+  --reviewer CODEX_REVIEWER_ID /absolute/path/to/deploy.env
+```
+
+The command prints the artifact-relative `gate_result` and accepted commit for
+the subsequent `job review` call. It never invokes `lake build`; it reuses the
+immutable Task-base cache and keeps its writable olean projection in temporary
+storage. A Job worktree containing any existing `.lake` is rejected as stale
+or mutable. After focused reviews, integrate up to the configured
+`POINCARE_INTEGRATION_BATCH_SIZE` compatible passed Jobs and run one serial
+root checkpoint for that batch.
+
 A passed Job does not accept its Task. Acceptance is a separate orchestrator
 action, and the Task commit must equal the commit embedded in the reviewed
 Job evidence:
