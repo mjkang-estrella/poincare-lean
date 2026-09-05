@@ -8,7 +8,10 @@ from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from harness.v2.runtime.validation import RecordValidationError, validate_task
+from harness.v2.runtime.validation import (
+    RecordValidationError, validate_task, validate_statement_context_bytes,
+    validate_statement_pinned_sources,
+)
 
 
 MAX_CONTEXT_FILE_BYTES = 2 * 1024 * 1024
@@ -168,7 +171,8 @@ def _render_prompt(
         "Statement:",
         objective["statement"],
         "Frozen Lean type:",
-        objective.get("frozen_lean_type", "NOT_PROVIDED"),
+        (json.dumps(task["statement_contract"]["declarations"], ensure_ascii=False, indent=2)
+         if task["schema_version"] == "2.1" else objective.get("frozen_lean_type", "NOT_PROVIDED")),
         "Deliverables:",
         json.dumps(objective["deliverables"], ensure_ascii=False, indent=2),
         "",
@@ -186,6 +190,9 @@ def _render_prompt(
         "## Acceptance contract",
         "",
         json.dumps(task["acceptance"], ensure_ascii=False, indent=2, sort_keys=True),
+        *(["", "Reviewed statement contract:",
+           json.dumps(task["statement_contract"], ensure_ascii=False, indent=2, sort_keys=True)]
+          if task["schema_version"] == "2.1" else []),
         "",
         "`lean_check` accepts only the Lean/lake entries above, selected by zero-based command_index. Codex independently runs the full acceptance contract.",
         "",
@@ -236,6 +243,14 @@ def build_snapshot(task: dict[str, Any], worktree: Path | str) -> PiPromptSnapsh
     if not root.is_dir():
         raise SnapshotError(f"worktree is not a directory: {root}")
     entries = _read_context(task, root)
+    if task["schema_version"] == "2.1":
+        try:
+            validate_statement_pinned_sources(task["statement_contract"], root)
+            validate_statement_context_bytes(
+                task["statement_contract"], {entry.path: entry.content for entry in entries}
+            )
+        except RecordValidationError as error:
+            raise SnapshotError(str(error)) from error
     context_sha256 = _aggregate_context(entries)
     prompt = _render_prompt(task, entries, context_sha256)
     manifest = {

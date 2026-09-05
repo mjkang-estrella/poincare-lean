@@ -19,6 +19,8 @@ from harness.v2.runtime.validation import (
     RecordValidationError,
     reject_secrets,
     validate_task,
+    validate_statement_context_bytes,
+    validate_statement_pinned_sources,
 )
 
 from .artifacts import ArtifactStore, WrittenArtifact, canonical_json_bytes, sha256_bytes
@@ -329,6 +331,8 @@ def _verify_repository_state(
     except UnicodeDecodeError as exc:
         raise SnapshotError("tracked repository path is not UTF-8") from exc
     context_paths = {_normalize_context_path(raw) for raw in task["context"]["files"]}
+    if task["schema_version"] == "2.1":
+        context_paths.update(entry["path"] for entry in task["statement_contract"]["definition_files"])
     untracked_context = sorted(context_paths - tracked)
     if untracked_context:
         raise SnapshotError(
@@ -447,7 +451,8 @@ def _render_prompt(
         "Statement:",
         str(objective.get("statement", "")),
         "Frozen Lean type:",
-        str(objective.get("frozen_lean_type", "NOT_PROVIDED")),
+        (json.dumps(task["statement_contract"]["declarations"], ensure_ascii=False, indent=2)
+         if task["schema_version"] == "2.1" else str(objective.get("frozen_lean_type", "NOT_PROVIDED"))),
         "Deliverables:",
         json.dumps(objective.get("deliverables", []), ensure_ascii=False, indent=2),
         "",
@@ -465,6 +470,9 @@ def _render_prompt(
         "## Acceptance commands and policy",
         "",
         json.dumps(acceptance, ensure_ascii=False, indent=2, sort_keys=True),
+        *(["", "Reviewed statement contract:",
+           json.dumps(task["statement_contract"], ensure_ascii=False, indent=2, sort_keys=True)]
+          if task["schema_version"] == "2.1" else []),
         "",
         "## Stop conditions",
         "",
@@ -525,6 +533,14 @@ def compute_prompt_snapshot(
         deadline=deadline,
         exact_secrets=pinned_secrets,
     )
+    if task["schema_version"] == "2.1":
+        try:
+            validate_statement_pinned_sources(task["statement_contract"], root)
+            validate_statement_context_bytes(
+                task["statement_contract"], {entry.path: entry.content for entry in entries}
+            )
+        except RecordValidationError as error:
+            raise SnapshotError(str(error)) from error
     _check_deadline(deadline)
     context_sha256 = _context_aggregate(entries)
     prompt = _render_prompt(task, entries, context_sha256)

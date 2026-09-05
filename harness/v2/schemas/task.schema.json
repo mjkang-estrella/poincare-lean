@@ -18,7 +18,7 @@
     "budget"
   ],
   "properties": {
-    "schema_version": { "const": "2.0" },
+    "schema_version": { "enum": ["2.0", "2.1"] },
     "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$" },
     "revision": { "type": "integer", "minimum": 1 },
     "status": {
@@ -116,6 +116,7 @@
         "disk_mb": { "type": "integer", "minimum": 1 }
       }
     },
+    "statement_contract": { "$ref": "#/$defs/statementContract" },
     "supersedes": { "type": "string" },
     "accepted_commit": { "type": "string", "pattern": "^[0-9a-f]{40}$" }
   },
@@ -126,6 +127,65 @@
         "required": ["status"]
       },
       "then": { "required": ["accepted_commit"] }
+    },
+    {
+      "if": { "properties": { "schema_version": { "const": "2.1" } } },
+      "then": {
+        "required": ["statement_contract"],
+        "properties": {
+          "objective": { "not": { "required": ["frozen_lean_type"] } },
+          "acceptance": {
+            "required": ["required_declarations"],
+            "properties": { "required_declarations": { "minItems": 1, "uniqueItems": true } }
+          }
+        }
+      },
+      "else": { "not": { "required": ["statement_contract"] } }
     }
-  ]
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "statementContract": {
+      "description": "Runtime also verifies exact declaration coverage, snapshot hashes, disjoint frozen sources, Git-base bytes, and the full independent review report before dispatch and acceptance.",
+      "type": "object", "additionalProperties": false,
+      "required": ["imports", "declarations", "definition_files", "author", "review"],
+      "properties": {
+        "imports": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/name" } },
+        "declarations": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["name", "lean_type"],
+            "properties": {
+              "name": { "$ref": "#/$defs/name" },
+              "lean_type": { "type": "string", "minLength": 1 },
+              "universes": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/name" } }
+            }
+          }
+        },
+        "definition_files": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["path", "sha256"],
+            "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha256" } }
+          }
+        },
+        "author": { "type": "string", "minLength": 1 },
+        "review": {
+          "type": "object", "additionalProperties": false,
+          "required": ["reviewer", "method", "snapshot_sha256", "report_path", "report_sha256", "verdict"],
+          "properties": {
+            "reviewer": { "type": "string", "minLength": 1 },
+            "method": { "const": "blind-readback" },
+            "snapshot_sha256": { "$ref": "#/$defs/sha256" },
+            "report_path": { "type": "string", "minLength": 1 },
+            "report_sha256": { "$ref": "#/$defs/sha256" },
+            "verdict": { "const": "approved" }
+          }
+        }
+      }
+    }
+  }
 }

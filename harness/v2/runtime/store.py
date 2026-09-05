@@ -27,6 +27,9 @@ from .validation import (
     scopes_overlap,
     validate_job,
     validate_task,
+    validate_statement_contract,
+    validate_statement_readback,
+    statement_contract_probe_source,
 )
 
 
@@ -251,7 +254,7 @@ def _is_within(path: Path, root: Path) -> bool:
 
 def _read_relative_evidence(
     artifact_dir: Path, relative_path: str, expected_sha256: str
-) -> None:
+) -> bytes:
     path = Path(relative_path)
     if path.is_absolute() or ".." in path.parts or not path.parts:
         raise TransitionError("gate evidence output path must be artifact-relative")
@@ -265,16 +268,19 @@ def _read_relative_evidence(
     if candidate.parent != root and root not in candidate.parents:
         raise TransitionError("gate evidence output escaped the Job artifact directory")
     try:
-        _, digest = _read_regular_file_safely(candidate, maximum_bytes=MAX_GATE_BYTES)
+        content, digest = _read_regular_file_safely(candidate, maximum_bytes=MAX_GATE_BYTES)
     except ConflictError as error:
         raise TransitionError(str(error)) from error
     if digest != expected_sha256:
         raise TransitionError("gate evidence output hash does not match its exact bytes")
+    return content
 
 
 def _declaration_probe_source(
     task: dict[str, Any], index: int, symbol: str
 ) -> str:
+    if task["schema_version"] == "2.1":
+        return statement_contract_probe_source(task["statement_contract"], [symbol])
     lines = ["import Poincare", f"#check {symbol}"]
     if index == 0:
         lines.append(
@@ -411,6 +417,7 @@ def _validate_gate_document(
             raise TransitionError(f"declaration probe {index} argv is invalid")
         if probe["status"] != "passed" or probe["exit_code"] != 0:
             raise TransitionError(f"declaration probe {index} did not pass")
+        stdout = b""
         for stream in ("stdout", "stderr"):
             path_value = probe[f"{stream}_path"]
             digest_value = probe[f"{stream}_sha256"]
@@ -424,7 +431,17 @@ def _validate_gate_document(
                 raise TransitionError(
                     f"declaration probe {index} {stream}_sha256 is invalid"
                 )
-            _read_relative_evidence(artifact_dir, path_value, digest_value)
+            content = _read_relative_evidence(artifact_dir, path_value, digest_value)
+            if stream == "stdout":
+                stdout = content
+        if task["schema_version"] == "2.1":
+            try:
+                output = stdout.decode("utf-8")
+            except UnicodeDecodeError as error:
+                raise TransitionError(f"declaration probe {index} output is not UTF-8") from error
+            for marker in (f"FROZEN_CONTRACT_OK: {symbol}", f"AXIOM_CONTRACT_OK: {symbol}"):
+                if marker not in output.splitlines():
+                    raise TransitionError(f"declaration probe {index} lacks executable success marker")
     _reject_runtime_secrets(document, "gate")
     return document
 
@@ -639,6 +656,31 @@ class HarnessStore:
         if len(result.stdout) > 4096:
             raise TransitionError("reviewed Git identity output is unexpectedly large")
         return result.stdout.decode("utf-8", errors="strict").strip()
+
+    def _validate_statement_context(self, task: dict[str, Any], worktree: Path) -> None:
+        """Freeze definitions and independent review at both base and execution tree."""
+        if task["schema_version"] != "2.1":
+            return
+        try:
+            contract = validate_statement_contract(task["statement_contract"])
+            review = contract["review"]
+            entries = contract["definition_files"] + [{
+                "path": review["report_path"], "sha256": review["report_sha256"]
+            }]
+            for entry in entries:
+                relative = entry["path"]
+                path = worktree / relative
+                _assert_no_symlink_ancestors(path)
+                current, digest = _read_regular_file_safely(path, maximum_bytes=MAX_GATE_BYTES)
+                if digest != entry["sha256"]:
+                    raise ConflictError(f"frozen statement context changed: {relative}")
+                base = self._git(worktree, "show", f"{task['base_commit']}:{relative}").stdout
+                if _sha256_bytes(base) != entry["sha256"]:
+                    raise ConflictError(f"frozen statement context is not pinned at Task base: {relative}")
+                if relative == review["report_path"]:
+                    validate_statement_readback(contract, current)
+        except (RecordValidationError, OSError) as error:
+            raise ConflictError(f"frozen statement review validation failed: {error}") from error
 
     def _validate_reviewed_commit(
         self,
@@ -1705,6 +1747,7 @@ class HarnessStore:
                 if record["workspace"]["base_commit"] != task_row["base_commit"]:
                     raise ConflictError("Job and Task base commits differ")
                 self._validate_job_worktree(connection, record, required=False)
+                self._validate_statement_context(task, worktree_path)
                 maximum = connection.execute(
                     """
                     SELECT MAX(attempt) AS attempt FROM jobs
@@ -2070,6 +2113,13 @@ class HarnessStore:
                         )
                         continue
                     task = json.loads(task_row["source_json"])
+                    try:
+                        self._validate_statement_context(
+                            task, Path(candidate_document["workspace"]["worktree"])
+                        )
+                    except (ConflictError, TransitionError) as error:
+                        last_conflict = str(error)
+                        continue
                     scopes = [normalize_scope(path)[0] for path in task["scope"]["allowed_paths"]]
                     candidate_stale_fences: dict[str, int] = {}
                     conflict = self._scope_conflict(
@@ -2363,6 +2413,11 @@ class HarnessStore:
                 task_row = self._latest_task_row(
                     connection, row["task_id"], row["task_revision"]
                 )
+                if from_state == "preparing" and target == "running":
+                    self._validate_statement_context(
+                        json.loads(task_row["source_json"]),
+                        Path(json.loads(row["source_json"])["workspace"]["worktree"]),
+                    )
                 expected_scopes = {
                     normalize_scope(path)[0]
                     for path in json.loads(task_row["source_json"])["scope"]["allowed_paths"]
@@ -2889,6 +2944,9 @@ class HarnessStore:
             if gate_result is not None and accepted_commit is not None:
                 accepted_tree = self._validate_reviewed_commit(
                     connection, row, task, accepted_commit
+                )
+                self._validate_statement_context(
+                    task, Path(json.loads(row["source_json"])["workspace"]["worktree"])
                 )
                 gate_path, content, gate_digest = self._gate_artifact(
                     artifact_dir, gate_result
