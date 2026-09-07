@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "id": "unit-recognition",
+  "base_commit": "b2b96fc28248c2a72cb2e08b4fda946d3b26e6d5",
+  "description": "The Cartan developing-map route to unit-curvature sphere recognition. Everything from the two joint-uniformity obligations H1 and H2 to the universal recognition statement is checked; H1 and H2 remain open. Their fixed-anchor slices are proved from constant curvature; the joint neighborhoods as anchors and alignments move on the compact diagonal are not.",
+  "modules": [
+    "Poincare.Global.CartanTwoNeighborhoodDevelopment"
+  ],
+  "endpoint": {
+    "name": "Poincare.universal_unit_constant_curvature_sphere_recognition",
+    "type_symbol": "Poincare.CartanTwoNeighborhoodDevelopment.UniversalUnitConstantCurvatureSphereRecognitionStatement"
+  },
+  "references": [
+    {
+      "url": "harness/reports/M5-glob-68_closure.md",
+      "role": "Closure record for the F-transition law and the definition of the H1/H2 boundary."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "successor-data-neighborhood",
+      "kind": "obligation",
+      "declaration": null,
+      "description": "H1: for every unit-curvature metric on every closed simply connected smooth 3-manifold, the differential-induced successor data locus is a neighborhood of the parameter diagonal (joint in source anchor, target anchor, and alignment). Only fixed-anchor vertical slices are proved (universalSuccessorDataLocus_vertical_mem_nhds_of_curvature).",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.CartanTwoNeighborhoodDevelopment.UniversalUnitCurvatureSuccessorDataNeighborhoodStatement",
+      "expected_statement_sha256": "f7ebcf2eaaa276c93ba16447f35894060de3268401655933094d070eb3c29ae9"
+    },
+    {
+      "id": "successor-equality-neighborhood",
+      "kind": "obligation",
+      "declaration": null,
+      "description": "H2: for every unit-curvature metric on every closed simply connected smooth 3-manifold, the locus where the old germ equals the successor germ is a neighborhood of the parameter diagonal. Only the fixed-anchor datum-dependent-radius version is proved (fixedAnchorActualSuccessorEqualityNeighborhood_of_constantCurvature).",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.CartanTwoNeighborhoodDevelopment.UniversalUnitCurvatureSuccessorEqualityNeighborhoodStatement",
+      "expected_statement_sha256": "f96f7b01f6bf16048975dafe708500da6ead50095762c9d8751d52e18a8470c8"
+    },
+    {
+      "id": "two-neighborhood-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.CartanTwoNeighborhoodDevelopment.universalUnitRecognition_of_two_neighborhood_statements",
+      "description": "Checked conditional reduction: H1 and H2 realize rooted chains with whole-cell mesh control, hence a restricted compatible Cartan atlas, hence a total local developing map, hence the sphere homeomorphism by covering rigidity.",
+      "depends_on": [
+        "successor-data-neighborhood",
+        "successor-equality-neighborhood"
+      ]
+    },
+    {
+      "id": "unit-recognition",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_unit_constant_curvature_sphere_recognition",
+      "description": "Universal unit-curvature sphere recognition (Killing-Hopf endpoint of the Cartan route). This exact declaration is intentionally absent.",
+      "depends_on": [
+        "two-neighborhood-reduction"
+      ],
+      "expected_type_symbol": "Poincare.CartanTwoNeighborhoodDevelopment.UniversalUnitConstantCurvatureSphereRecognitionStatement",
+      "expected_statement_sha256": "f6a835638732c64e7f39918fa50c2eb40b6ae375d2500f4dc1d1b1fa65207f23"
+    }
+  ]
+}

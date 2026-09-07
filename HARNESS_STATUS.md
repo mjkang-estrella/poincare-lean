@@ -219,3 +219,24 @@ topology remain absent from both this repo and Mathlib (see
 package/certificate layers (`RicciFlowInterface.lean` etc.) remain quarantined
 as vacuous/legacy per `INTEGRITY_ASSESSMENT.md` and are not counted as
 progress.
+
+## Ledger correction (2026-09-07)
+
+Lean-verified corrections to the entries above (evidence in
+`harness/reports/M5-glob-68_closure.md`):
+
+- The M5-glob-21..67 "F-transition law" boundary was CLOSED curvature-only by
+  commit `d8f2e43c` (2026-07-17) and never recorded:
+  `UniformAnchoredFTransition.exists_cartanChartMap_christoffelAt_F_transition_law_curvature_only`,
+  `UniformAnchoredGeodesicTransition.exists_cartanChartMap_chartChristoffelField_self_F_transition_law`,
+  `DifferentialSuccessorIntervalNaturality.exists_uniform_local_eqOn_differentialSuccessor_all`
+  (axioms: propext, Classical.choice, Quot.sound). The third-variation/selector
+  tower of M5-glob-49..67 is not on the closing path.
+- The 2026-09-04 HANDOFF "next analytic action" was already proved by commit
+  `723b4132` (`CompactReferenceMetricTensorFamilyData.exists_uniformMetricLowerComparison`).
+- The live unit-recognition boundary is H1 ∧ H2 in
+  `Poincare/Global/CartanTwoNeighborhoodDevelopment.lean`
+  (`UnitCurvatureSuccessorDataNeighborhood3`,
+  `UnitCurvatureSuccessorEqualityNeighborhood3`), with the checked reduction
+  `poincareConjecture_of_hamiltonConvergence_of_two_neighborhoods`; mission
+  file `harness/v2/missions/unit-recognition.json`.

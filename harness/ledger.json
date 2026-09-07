@@ -3845,7 +3845,16 @@
       ],
       "difficulty": "wall",
       "result": "STRICT-PARTIAL 2026-07-07 (gate PASS, FINAL MERGE OF SESSION #260): exists_centered_hosted_endpoint_hasFDerivAt + exists_centered_endpoint_gronwall_bound. RESUME: the neighborhood-indexed endpoint package shape (M5-glob-67_blocked.md verbatim) -> IndexedSelection consumer -> THE F-TRANSITION LAW."
+    },
+    {
+      "id": "M5-glob-68",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-07",
+      "objective": "Closure record: the F-transition law and interval naturality were closed curvature-only in commit d8f2e43c (2026-07-17) and never recorded; the live Cartan boundary is H1 (UnitCurvatureSuccessorDataNeighborhood3) and H2 (UnitCurvatureSuccessorEqualityNeighborhood3) in Poincare/Global/CartanTwoNeighborhoodDevelopment.lean.",
+      "report": "harness/reports/M5-glob-68_closure.md",
+      "module": "Poincare/Global/CartanTwoNeighborhoodDevelopment.lean"
     }
   ],
-  "current_goal": "SESSION WRAP-UP (2026-07-07, 259 gated merges): user requested exit after current sessions. M5-glob-67 (THE SELECTOR ASSEMBLY) is the last in-flight worker — merge on completion, then STOP. RESUME POINT: if glob-67 lands the F-transition law, next = geodesic preservation (SideConditions/ChainRuleInput pattern with F) -> exp-naturality anywhere -> RigidStepCompatibleWith -> CartanChain fires -> global Phi -> CoveringSkeleton (proven) -> M equiv S^3 -> UnitConstantCurvatureSphereRecognition3 DISCHARGED. If blocked, its report isolates the next statement. SESSION CROWNS: cartanMap_isLocalIsometry (merge #196, curvature-only, axioms clean); THE REANCHOR LAW; THE TRANSITION LAW; the three-level variation tower; the globalization skeleton; 10 formal refutations; 1 circularity catch; 6 reroutes; 2 laser breaks. OTHER FRONTS (parked with specs): heat Cauchy closer, DeTurck raw-basis, M2 maximum principle unstarted, front A (HamiltonConvergencePinchedLimit3) analytic interface."
+  "current_goal": "RESUME POINT (2026-09-07, ledger corrected): the F-transition law is CLOSED (see harness/reports/M5-glob-68_closure.md); do not dispatch the M5-glob-67 resisting shape. The Cartan boundary is exactly H1 = Poincare.CartanTwoNeighborhoodDevelopment.UnitCurvatureSuccessorDataNeighborhood3 and H2 = Poincare.CartanTwoNeighborhoodDevelopment.UnitCurvatureSuccessorEqualityNeighborhood3; Poincare.poincareConjecture_of_hamiltonConvergence_of_two_neighborhoods composes them with Hamilton convergence. Machine-readable obligations: harness/v2/missions/unit-recognition.json. Hamilton-front open inputs are listed in HANDOFF.md (2026-09-07 section)."
 }

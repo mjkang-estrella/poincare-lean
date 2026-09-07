@@ -1,6 +1,77 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-09-05 (UTC)
+Snapshot date: 2026-09-07 (UTC)
+
+## 2026-09-07 Boundary correction
+
+Checked in `/Users/mjkang/Develop/poincare` on branch `main`, base `b2b96fc2`.
+Two prose ledgers were behind Lean; both are corrected here with theorem-level
+evidence (`harness/reports/M5-glob-68_closure.md`).
+
+1. The 2026-09-04 "exact next analytic action" below was already done by
+   commit `723b4132`: `CompactReferenceMetricTensorFamilyData.exists_uniformMetricLowerComparison`
+   (`Poincare/Global/CompactReferenceMetricTensorFamilyLowerComparison.lean`)
+   removes the `UniformClosedRiemannianMetricLowerComparison` input, and
+   `NormalizedFlowFormalProfilePositiveEinstein.lean` exposes the
+   `...OfCompactTensorControl` constructors. Its axiom footprint is
+   `[propext, Classical.choice, Quot.sound]`. The remaining open inputs of
+   `NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayPositiveEinsteinAnalyticData3.ofComponentwiseAscoliFormalMetricThirdJetProfilesOfCompactTensorControl`
+   are, by exact name: `compactTensorReferenceControl :
+   CompactReferenceMetricTensorFamilyData reaction.K reaction.metric`,
+   `hequicontinuous`, `hpointwiseCompact`, and `scalarSubordinateGeometry`,
+   plus the `reaction` record itself, whose only producer needs
+   `HamiltonPinchingCoreData3` (normalized-flow existence with Hamilton's
+   eigenvalue floor). These are the Hamilton-1982 analytic wall; no producer
+   of any of them exists in the repository.
+
+2. The Cartan "F-transition law" that `harness/ledger.json` and reports
+   M5-glob-21..67 call blocked was closed curvature-only by commit `d8f2e43c`
+   (2026-07-17), never recorded:
+   `UniformAnchoredFTransition.exists_cartanChartMap_christoffelAt_F_transition_law_curvature_only`,
+   `UniformAnchoredGeodesicTransition.exists_cartanChartMap_chartChristoffelField_self_F_transition_law`,
+   `DifferentialSuccessorIntervalNaturality.exists_uniform_local_eqOn_differentialSuccessor_all`.
+   The M5-glob-49..67 third-variation/selector tower is not on the closing
+   path. Reports through M5-glob-67 are historical.
+
+3. The live Cartan boundary is now recorded in Lean:
+   `Poincare/Global/CartanTwoNeighborhoodDevelopment.lean` defines H1
+   (`UnitCurvatureSuccessorDataNeighborhood3`) and H2
+   (`UnitCurvatureSuccessorEqualityNeighborhood3`) and proves
+   `globalLocalDevelopment_of_two_neighborhoods`,
+   `unitConstantCurvatureSphereRecognition3_of_two_neighborhoods`,
+   `universalUnitRecognition_of_two_neighborhood_statements`, and
+   `Poincare.poincareConjecture_of_hamiltonConvergence_of_two_neighborhoods`,
+   each with axiom footprint `[propext, Classical.choice, Quot.sound]`.
+   Constant curvature proves only the fixed-anchor slices of H1 and H2
+   (`universalSuccessorDataLocus_vertical_mem_nhds_of_curvature`,
+   `fixedAnchorActualSuccessorEqualityNeighborhood_of_constantCurvature`);
+   the joint neighborhoods as anchors and alignments move are open.
+   The reviewed obligations are machine-readable in
+   `harness/v2/missions/unit-recognition.json`; on this tree
+
+   ```sh
+   python3 scripts/theorem_registry.py graph \
+     --mission harness/v2/missions/unit-recognition.json --require-closed
+   ```
+
+   exits `2` with `successor-data-neighborhood`,
+   `successor-equality-neighborhood`, and `unit-recognition` open and the
+   reduction `checked_with_hypotheses`.
+
+The module is wired into `Poincare.lean`; `LEAN_NUM_THREADS=1 lake env lean
+Poincare.lean` succeeded on this tree. The independent root probe still reports
+`Unknown identifier Poincare.poincare_conjecture`; the repository is not
+complete.
+
+Exact first action for the next agent: attack H2 through its equivalent
+`DifferentialSuccessorEqualityStabilityReduction.ActualSuccessorEqualityRadiusLocalPersistence g`
+(persistence of the radius of
+`DifferentialSuccessorIntervalNaturality.exists_uniform_local_eqOn_differentialSuccessor_all`
+under motion of the anchors), or H1 through
+`CartanGenericSuccessorDataLocalCover.FixedChartLocalGenericDataPersistence g`
+(persistence of the successor datum's open conditions and strict derivative
+as the anchors move, using `UniformTangentAlignmentRigidity.exists_uniform_cartanMap_isLocalIsometry`).
+Freeze the chosen statement with a schema-2.1 contract before dispatch.
 
 ## 2026-09-05 Main integration
 
