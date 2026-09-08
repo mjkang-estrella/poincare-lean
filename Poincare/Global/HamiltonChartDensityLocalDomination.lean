@@ -71,7 +71,8 @@ theorem continuous_trace_timeDeriv
       (gramMatrix_at_base_isUnit (g := gt t) (x := x)))
   have hinv : ContinuousAt (fun p ↦ (G p)⁻¹) (t, x) := by
     simpa only [Matrix.inv_def, Ring.inverse_eq_inv] using
-      ((continuous_id.matrix_det.continuousAt.comp hG).inv₀ hdet).smul (continuous_id.matrix_adjugate.continuousAt.comp hG)
+      ((continuous_id.matrix_det.continuousAt.comp hG).inv₀ hdet).smul
+        (continuous_id.matrix_adjugate.continuousAt.comp hG)
   have hunit : ∀ᶠ p in 𝓝 (t, x), IsUnit (G p) := by
     filter_upwards [(continuous_id.matrix_det.continuousAt.comp hG).eventually_ne hdet] with p hp
     exact (Matrix.isUnit_iff_isUnit_det _).mpr (isUnit_iff_ne_zero.mpr hp)
@@ -82,7 +83,7 @@ theorem continuous_trace_timeDeriv
     intro i _
     apply tendsto_finsetSum
     intro j _
-    exact ((continuousAt_pi.mp (continuousAt_pi.mp hinv i) j)).mul (hvariation i j)
+    exact (continuousAt_pi.mp (continuousAt_pi.mp hinv i) j).mul (hvariation i j)
   apply hsum.congr_of_eventuallyEq
   filter_upwards [hunit] with p hp
   exact traceMetricVariationAt_eq_sum_gram_inv (gt p.1) (timeDerivAt gt p.1) x p.2 hp
@@ -233,5 +234,23 @@ theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3'
     (hamiltonReactionCore3_of_core' h)
 
 end DimensionThree
+
+/-- Universal existence of the reaction core without chart domination. -/
+def UniversalHamiltonReactionCoreStatement' : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3'.{u, v} N
+
+/-- Universal existence of the smaller core implies universal Hamilton convergence. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCore'
+    (h : UniversalHamiltonReactionCoreStatement'.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  letI : MeasurableSpace N := borel N
+  letI : BorelSpace N := ⟨rfl⟩
+  exact hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3' (h N)
 
 end Poincare.HamiltonChartDensityLocalDomination
