@@ -64283,13 +64283,9 @@ rm -rf "$completion_check_dir"
 completion_check_dir=
 completion_check=
 
-placeholder_decl_pattern='^[[:space:]]*(opaque|axiom|postulate)[[:space:]]+|^[[:space:]]*constant[[:space:]]+[A-Za-z_][A-Za-z0-9_]*([[:space:]]*:|[[:space:]]+.*:|[[:space:]]*$)'
-placeholder_hits=$(
-  {
-    rg -n "$placeholder_decl_pattern" Poincare Poincare.lean || true
-    rg -n '\b(sorry|admit)\b' Poincare Poincare.lean || true
-  } | sort -u
-)
+# Comment-aware scan: docstring prose such as "admit" or "postulate" is not a
+# placeholder. Lean reports real sorries as sorryAx in the axiom footprints.
+placeholder_hits=$(python3 scripts/lean_placeholder_scan.py Poincare Poincare.lean)
 
 if [ -n "$placeholder_hits" ]; then
   echo "FAIL: local proof placeholders remain"

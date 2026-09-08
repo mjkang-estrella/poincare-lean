@@ -32,9 +32,17 @@ semantics:
   unchanged.
 - The axiom audit prints `FAIL: axiom footprint Lean check did not elaborate`
   with the first Lean lines instead of exiting silently.
+- The completion and formalization audits' placeholder scan is
+  `scripts/lean_placeholder_scan.py`, which strips `--` and nested `/- -/`
+  comments before matching. The previous `rg` scan flagged docstring prose
+  (`admit`, `postulate`, `constant`) in four modules written after June, which
+  made the completion boundary read as "unexpected completion audit
+  failures" although the only real failures are the absent reserved theorem.
+  On this tree the scan reports zero hits.
 - Tests: `scripts/tests/test_rg_fallback.py`,
-  `scripts/tests/test_completion_gate_reuse.py`; the scripts suite is 40
-  tests, the harness runtime suite unchanged.
+  `scripts/tests/test_completion_gate_reuse.py`,
+  `scripts/tests/test_lean_placeholder_scan.py`; the harness runtime, deploy,
+  and worker suites are unchanged and green.
 
 Warm-cache timings on the same tree, sequential runs:
 
