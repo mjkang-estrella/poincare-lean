@@ -124,4 +124,77 @@ theorem chartFrameDensityData_of_joint_of_local_bound
           ((hJoint τ (C.inverseChart i z)).of_le (by norm_num)) } }⟩
 
 end HamiltonReactionCoreReduction
+
+/-- The reaction existence obligation with area formulas, density
+integrability, derivative measurability, and time differentiability removed.
+The local integrable bound and all compact-family continuity assumptions
+are retained explicitly. This definition asserts no existence theorem. -/
+def HamiltonReactionCore3 (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (c rate : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      0 < c ∧ (∀ t : Ici (0 : ℝ), c ≤ meanScalar (gt t.1)) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      0 < rate ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M,
+        normalizedTracelessRicciEvolutionReactionAt (gt t) x ≤
+          -rate * (gt t).tracelessRicciNormSqAt x) ∧
+      Continuous (fun k ↦ closedMetricFiniteVolumeMeasure (metric k)) ∧
+      Continuous (fun p : K × M ↦ (metric p.1).scalarAt p.2) ∧
+      Continuous (fun p : K × M ↦ (metric p.1).tracelessRicciNormSqAt p.2) ∧
+      (let C := compactFiniteExtendedChartCover (n := 3) (M := M)
+       ∀ t : ℝ, ∃ s ∈ 𝓝 t,
+         ∃ B : (i : Fin C.chartCount) → C.coordinateDomain i → ℝ,
+           (∀ i, Integrable (B i) (coordinateLebesgueMeasure (C.coordinateDomain i))) ∧
+           (∀ i, ∀ᵐ z ∂(coordinateLebesgueMeasure (C.coordinateDomain i)),
+             ∀ τ ∈ s, ‖finiteExtendedChartFrameDensityDerivative C gt τ i z‖ ≤ B i z))
+
+variable {M : Type u}
+variable [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+variable [MeasurableSpace M] [BorelSpace M]
+variable [ChartedSpace (ClosedSmoothModel 3) M]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+variable [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M]
+
+/-- Reconstruct the full reaction record from the residual core. The
+selected family, chart cover, and all-real-time requirements are preserved. -/
+theorem reactionDecayAnalyticData3_of_hamiltonReactionCore3
+    (h : HamiltonReactionCore3.{u, v} M) :
+    Nonempty (NormalizedFlowSphereCompactMeanEnergyMeasureReactionDecayAnalyticData3.{u, v} M) := by
+  rcases h with ⟨K, topK, compactK, gt, metric, parameter, c, rate,
+    hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction,
+    hmeasure, hscalar, htraceless, hbound⟩
+  obtain ⟨density⟩ :=
+    HamiltonReactionCoreReduction.chartFrameDensityData_of_joint_of_local_bound gt hjoint hbound
+  exact ⟨{
+    K := K
+    topologicalSpaceK := topK
+    compactSpaceK := compactK
+    gt := gt
+    metric := metric
+    parameter := parameter
+    parameterContinuous := hparam
+    realizesFlow := hreal
+    meanScalarFloor := c
+    meanScalarFloor_pos := hc
+    meanScalarLower := hlower
+    normalizedFlow := hflow
+    compactFiniteAtlasChartFrameDensityData := density
+    jointMetricEntries := hjoint
+    reactionDecayRate := rate
+    reactionDecayRate_pos := hrate
+    actualReactionDomination := hreaction
+    finiteVolumeMeasureContinuous := hmeasure
+    scalarJointContinuous := hscalar
+    tracelessRicciNormSqJointContinuous := htraceless }⟩
+
 end Poincare
