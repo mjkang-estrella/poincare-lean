@@ -274,5 +274,22 @@ theorem conjugatedConnection_eq_leviCivita
     (conjugatedConnection_metricCompatible (inst := inst) inst' h g)
     (conjugatedConnection_torsion (inst := inst) inst' h g) hX
 
+/-- Pointwise connection naturality, oriented from the new connection to the old one. -/
+theorem leviCivita_naturality_apply
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (X : M → E) (x : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) X x) (v : E) :
+    (letI := inst';
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1;
+      J (inst := inst) inst' h x ((transport (inst := inst) inst' h g).leviCivita X x v)) =
+      (letI := inst; g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
+        (J (inst := inst) inst' h x v)) := by
+  have he := conjugatedConnection_eq_leviCivita (inst := inst) inst' h g X x hX
+  rw [← he]
+  exact (J (inst := inst) inst' h x).apply_symm_apply _
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
