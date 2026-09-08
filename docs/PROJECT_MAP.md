@@ -27,7 +27,7 @@ evidence, not this endpoint.
 | Conditional assembly | `Poincare/FullAssembly.lean`, `Dependencies.lean`, `DependencyProjections.lean`, `CompletionTarget.lean` | Connect named mathematical inputs to the final statement without pretending the inputs are proved. |
 | Review packages | `Poincare/ProofProgress/*.lean` | Package constructors, proof-progress reductions, and explicit blocker ledgers. |
 | Root import | `Poincare.lean` | The curated integration graph. Elaboration proves import coherence only. |
-| Verification | `scripts/*.sh` | Placeholder, interface, contract, semantic, root-import, axiom, and completion checks. |
+| Verification | `scripts/*.sh`, `scripts/bin/rg` | Placeholder, interface, contract, semantic, root-import, axiom, and completion checks; portable ripgrep fallback. |
 | Work history | `harness/tasks`, `harness/reports`, `harness/ledger.json` | First-generation task attempts and reports. Historical after 2026-07-07 unless revalidated. |
 | Harness v2 | `harness/v2/runtime`, `harness/v2/pi`, `harness/v2/deploy`, `harness/v2/state` | SQLite Task/Job state, fenced leases, append-only evidence, one fresh bounded Pi session per Job, and restart-safe Codex orchestration. Runtime state is ignored. |
 | Reviewed proof route | `harness/v2/missions/grounded-topology.json`, `scripts/theorem_registry.py` | Planned open obligations alongside dependencies extracted from Lean; source-bound theorem lookup. |

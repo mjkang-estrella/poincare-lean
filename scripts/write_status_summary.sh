@@ -4,6 +4,13 @@ set -eu
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root_dir"
 
+# Portable fallback: use the bundled Python ripgrep subset only when no `rg`
+# binary is on PATH (see scripts/bin/rg).
+if ! command -v rg >/dev/null 2>&1; then
+  PATH="$root_dir/scripts/bin:$PATH"
+  export PATH
+fi
+
 out="CURRENT_STATUS.md"
 tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/poincare-status.$$-XXXXXX")
 tmp="$tmp_dir/CURRENT_STATUS.md"
@@ -54,7 +61,8 @@ root_import_status=$(cat "$tmp_dir/root_import.status")
 run_capture axiom sh scripts/axiom_audit.sh
 axiom_status=$(cat "$tmp_dir/axiom.status")
 
-run_capture completion env COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT=1 sh scripts/completion_audit.sh
+run_capture completion env COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT=1 \
+  COMPLETION_AUDIT_GATE_RESULTS_DIR="$tmp_dir" sh scripts/completion_audit.sh
 completion_status=$(cat "$tmp_dir/completion.status")
 
 completion_result="not achieved"

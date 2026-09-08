@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Portable fallback for the ripgrep subset used by scripts/*.sh.
+
+The audit scripts prepend this directory to PATH only when no `rg` binary is
+available. Supported: -q -n -c -x -o -v -i -H -P --no-filename --files -r REPL,
+`-e PATTERN`, `--`, reading from stdin when no path is given. Exit status follows
+ripgrep: 0 when a line was selected, 1 when none, 2 on a usage or I/O error.
+"""
+
+import os
+import re
+import sys
+
+
+def usage_error(message):
+    sys.stderr.write(f"rg (fallback): {message}\n")
+    sys.exit(2)
+
+
+def parse(argv):
+    flags = {"q": False, "n": False, "c": False, "x": False, "o": False, "v": False,
+             "i": False, "H": False, "P": False, "no_filename": False, "files": False}
+    replacement = None
+    pattern = None
+    paths = []
+    i = 0
+    while i < len(argv):
+        arg = argv[i]
+        if arg == "--":
+            paths.extend(argv[i + 1:])
+            break
+        if arg == "--files":
+            flags["files"] = True
+        elif arg == "--no-filename":
+            flags["no_filename"] = True
+        elif arg == "--with-filename":
+            flags["H"] = True
+        elif arg in ("-e", "--regexp"):
+            i += 1
+            pattern = argv[i]
+        elif arg in ("-r", "--replace"):
+            i += 1
+            replacement = argv[i]
+        elif arg.startswith("--"):
+            usage_error(f"unsupported option {arg}")
+        elif arg.startswith("-") and len(arg) > 1:
+            for ch in arg[1:]:
+                if ch in "qncxoviHP":
+                    flags[ch] = True
+                elif ch == "e":
+                    i += 1
+                    pattern = argv[i]
+                elif ch == "r":
+                    i += 1
+                    replacement = argv[i]
+                else:
+                    usage_error(f"unsupported flag -{ch}")
+        elif pattern is None and not flags["files"]:
+            pattern = arg
+        else:
+            paths.append(arg)
+        i += 1
+    return flags, pattern, replacement, paths
+
+
+def list_files(paths):
+    if not paths:
+        paths = ["."]
+    for base in paths:
+        if os.path.isfile(base):
+            print(base)
+            continue
+        for directory, subdirectories, filenames in os.walk(base):
+            subdirectories[:] = sorted(d for d in subdirectories if not d.startswith("."))
+            for name in sorted(filenames):
+                if name.startswith("."):
+                    continue
+                print(os.path.join(directory, name))
+
+
+POSIX_CLASSES = {
+    "alnum": "a-zA-Z0-9", "alpha": "a-zA-Z", "digit": "0-9", "lower": "a-z", "upper": "A-Z",
+    "space": r"\s", "blank": r" \t", "punct": r"!-/:-@\[-`{-~", "word": r"\w", "xdigit": "0-9A-Fa-f",
+    "cntrl": r"\x00-\x1f\x7f", "print": r"\x20-\x7e", "graph": r"\x21-\x7e",
+}
+
+
+def translate_pattern(pattern):
+    """Rewrite POSIX bracket classes such as [[:space:]] (supported by ripgrep) for `re`."""
+    def replace(match):
+        name = match.group(1)
+        if name not in POSIX_CLASSES:
+            usage_error(f"unsupported POSIX class [:{name}:]")
+        return POSIX_CLASSES[name]
+    return re.sub(r"\[:([a-z]+):\]", replace, pattern)
+
+
+def translate_replacement(replacement):
+    # ripgrep uses $1 / ${name}; Python uses \1 / \g<name>.
+    out = re.sub(r"\$\{([A-Za-z_][A-Za-z0-9_]*|\d+)\}", lambda m: f"\\g<{m.group(1)}>", replacement)
+    out = re.sub(r"\$(\d+)", r"\\\1", out)
+    out = re.sub(r"\$([A-Za-z_][A-Za-z0-9_]*)", r"\\g<\1>", out)
+    return out
+
+
+def main():
+    flags, pattern, replacement, paths = parse(sys.argv[1:])
+    if flags["files"]:
+        list_files(paths)
+        return 0
+    if pattern is None:
+        usage_error("missing pattern")
+    try:
+        regex = re.compile(translate_pattern(pattern), re.IGNORECASE if flags["i"] else 0)
+    except re.error as exc:
+        usage_error(f"bad pattern: {exc}")
+    expanded = []
+    saw_directory = False
+    for path in paths:
+        if os.path.isdir(path):
+            saw_directory = True
+            for directory, subdirectories, filenames in os.walk(path):
+                subdirectories[:] = sorted(d for d in subdirectories if not d.startswith("."))
+                for name in sorted(filenames):
+                    if not name.startswith("."):
+                        expanded.append(os.path.join(directory, name))
+        else:
+            expanded.append(path)
+    paths = expanded
+    show_name = (flags["H"] or ((len(paths) > 1 or saw_directory) and not flags["no_filename"])) and not (flags["no_filename"])
+    replacement = translate_replacement(replacement) if replacement is not None else None
+    selected_any = False
+    sources = paths if paths else [None]
+    out = sys.stdout
+    for path in sources:
+        try:
+            if path is None:
+                data = sys.stdin.buffer.read()
+            else:
+                with open(path, "rb") as handle:
+                    data = handle.read()
+        except OSError as exc:
+            sys.stderr.write(f"rg (fallback): {path}: {exc.strerror}\n")
+            continue
+        if b"\x00" in data:
+            continue
+        text = data.decode("utf-8", errors="surrogateescape")
+        lines = text.split("\n")
+        if lines and lines[-1] == "":
+            lines.pop()
+        count = 0
+        prefix = f"{path}:" if (show_name and path is not None) else ""
+        for number, line in enumerate(lines, 1):
+            if line.endswith("\r"):
+                line = line[:-1]
+            if flags["x"]:
+                matched = regex.fullmatch(line) is not None
+            else:
+                matched = regex.search(line) is not None
+            if flags["v"]:
+                matched = not matched
+            if not matched:
+                continue
+            count += 1
+            selected_any = True
+            if flags["q"]:
+                return 0
+            if flags["c"]:
+                continue
+            number_prefix = f"{number}:" if flags["n"] else ""
+            if flags["o"] and not flags["v"]:
+                for match in regex.finditer(line):
+                    if match.end() == match.start():
+                        continue
+                    piece = match.expand(replacement) if replacement is not None else match.group(0)
+                    out.write(f"{prefix}{number_prefix}{piece}\n")
+            else:
+                out.write(f"{prefix}{number_prefix}{line}\n")
+        if flags["c"] and count > 0:
+            out.write(f"{prefix}{count}\n")
+    out.flush()
+    return 0 if selected_any else 1
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except BrokenPipeError:
+        sys.exit(0)

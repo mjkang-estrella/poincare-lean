@@ -4,6 +4,13 @@ set -eu
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root_dir"
 
+# Portable fallback: use the bundled Python ripgrep subset only when no `rg`
+# binary is on PATH (see scripts/bin/rg).
+if ! command -v rg >/dev/null 2>&1; then
+  PATH="$root_dir/scripts/bin:$PATH"
+  export PATH
+fi
+
 echo "== Root import audit =="
 
 status=0
@@ -35,6 +42,27 @@ theorem_names_file=$(mktemp "${TMPDIR:-/tmp}/poincare-root-theorems.$$-XXXXXX")
 awk '/^theorem / {print $2}' Poincare.lean Poincare/*.lean | sort -u > "$theorem_names_file"
 theorem_names=$(cat "$theorem_names_file")
 
+# Shared awk library for the route-naming checks. The theorem-name file is
+# read twice: the first pass loads the name set, the second pass checks.
+route_awk_lib='
+function ends_with(n, s) { return length(n) >= length(s) && substr(n, length(n) - length(s) + 1) == s }
+function is_general_route_exception(n) {
+  return (index(n, "poincare_conjecture") > 0 ||
+    ends_with(n, "_of_remaining_dependency_and_packaged_smooth_statement") ||
+    index(n, "_of_remaining_dependency_and_packaged_smooth_statement_to_") > 0 ||
+    ends_with(n, "_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement") ||
+    index(n, "_of_remaining_dependency_and_packaged_canonical_smooth_three_sphere_statement_to_") > 0 ||
+    ends_with(n, "_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement") ||
+    index(n, "_of_remaining_dependency_and_packaged_reverse_canonical_smooth_three_sphere_statement_to_") > 0)
+}
+function has_theorem(t,   i) {
+  if (t in names) return 1
+  if (t ~ /[.+*?\[(){}|^$\\]/) { for (i = 1; i <= count; i++) if (all[i] ~ ("^" t "$")) return 1 }
+  return 0
+}
+NR == FNR { names[$0] = 1; all[++count] = $0; next }
+'
+
 has_theorem() {
   rg -qx "$1" "$theorem_names_file"
 }
@@ -53,21 +81,15 @@ is_general_route_exception() {
 }
 
 check_route_counterpart() {
-  source_suffix=$1
-  target_suffix=$2
-  label=$3
-  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
-    case "$name" in
-      *"$source_suffix")
-        is_general_route_exception "$name" && continue
-        target=${name%"$source_suffix"}"$target_suffix"
-        if ! has_theorem "$target"; then
-          echo "FAIL: root import audit route counterpart missing for ${label}: ${name} lacks ${target}"
-          exit 1
-        fi
-        ;;
-    esac
-  done
+  awk -v source_suffix="$1" -v target_suffix="$2" -v label="$3" "$route_awk_lib"'
+  { name = $0
+    if (!ends_with(name, source_suffix) || is_general_route_exception(name)) next
+    target = substr(name, 1, length(name) - length(source_suffix)) target_suffix
+    if (!has_theorem(target)) {
+      print "FAIL: root import audit route counterpart missing for " label ": " name " lacks " target
+      exit 1
+    }
+  }' "$theorem_names_file" "$theorem_names_file" || exit 1
 }
 
 check_route_counterpart "_to_boundary_route_eq" "_to_package_eq" "boundary route package"
@@ -93,40 +115,30 @@ check_route_counterpart "_to_projected_dependency_eq" "_to_finite_extinction_eq"
 echo "PASS: generalized route counterparts are present in root import audit surface"
 
 check_route_base_endpoint() {
-  source_suffix=$1
-  label=$2
-  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
-    case "$name" in
-      *"$source_suffix")
-        is_general_route_exception "$name" && continue
-        base=${name%"_eq"}
-        if ! has_theorem "$base"; then
-          echo "FAIL: root import audit route base endpoint missing for ${label}: ${name} lacks ${base}"
-          exit 1
-        fi
-        ;;
-    esac
-  done
+  awk -v source_suffix="$1" -v label="$2" "$route_awk_lib"'
+  { name = $0
+    if (!ends_with(name, source_suffix) || is_general_route_exception(name)) next
+    base = ends_with(name, "_eq") ? substr(name, 1, length(name) - 3) : name
+    if (!has_theorem(base)) {
+      print "FAIL: root import audit route base endpoint missing for " label ": " name " lacks " base
+      exit 1
+    }
+  }' "$theorem_names_file" "$theorem_names_file" || exit 1
 }
 
 check_route_base_endpoint "_to_projected_dependency_eq" "projected dependency"
 echo "PASS: projected-dependency route equality contracts expose direct endpoint names in root import audit surface"
 
 check_route_base_endpoint_for_prefix() {
-  source_suffix=$1
-  name_prefix=$2
-  label=$3
-  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
-    case "$name" in
-      "$name_prefix""$source_suffix")
-        base=${name%"_eq"}
-        if ! has_theorem "$base"; then
-          echo "FAIL: root import audit route base endpoint missing for ${label}: ${name} lacks ${base}"
-          exit 1
-        fi
-        ;;
-    esac
-  done
+  awk -v source_suffix="$1" -v name_prefix="$2" -v label="$3" "$route_awk_lib"'
+  { name = $0
+    if (name != name_prefix source_suffix) next
+    base = ends_with(name, "_eq") ? substr(name, 1, length(name) - 3) : name
+    if (!has_theorem(base)) {
+      print "FAIL: root import audit route base endpoint missing for " label ": " name " lacks " base
+      exit 1
+    }
+  }' "$theorem_names_file" "$theorem_names_file" || exit 1
 }
 
 for route_suffix in \
@@ -658,21 +670,15 @@ check_route_base_endpoint_for_prefix "_to_bridge_payload_eq" "smoothability_subo
 echo "PASS: smoothability subobligation bridge payload route equality contract exposes direct endpoint name in root import audit surface"
 
 check_route_suffix_counterpart() {
-  source_suffix=$1
-  target_suffix=$2
-  label=$3
-  printf '%s\n' "$theorem_names" | while IFS= read -r name; do
-    case "$name" in
-      *"$source_suffix")
-        is_general_route_exception "$name" && continue
-        target=${name%"$source_suffix"}"$target_suffix"
-        if ! has_theorem "$target"; then
-          echo "FAIL: root import audit suffix counterpart missing for ${label}: ${name} lacks ${target}"
-          exit 1
-        fi
-        ;;
-    esac
-  done
+  awk -v source_suffix="$1" -v target_suffix="$2" -v label="$3" "$route_awk_lib"'
+  { name = $0
+    if (!ends_with(name, source_suffix) || is_general_route_exception(name)) next
+    target = substr(name, 1, length(name) - length(source_suffix)) target_suffix
+    if (!has_theorem(target)) {
+      print "FAIL: root import audit suffix counterpart missing for " label ": " name " lacks " target
+      exit 1
+    }
+  }' "$theorem_names_file" "$theorem_names_file" || exit 1
 }
 
 check_route_suffix_counterpart "_to_direct_verification_payload_eq" "_to_package_eq" "direct-verification package"
@@ -694,18 +700,18 @@ check_route_suffix_clique_counterparts() {
   for source_suffix in "$@"; do
     for target_suffix in "$@"; do
       if [ "$source_suffix" != "$target_suffix" ]; then
-        printf '%s\n' "$theorem_names" | while IFS= read -r name; do
-          case "$name" in
-            $name_pattern*"$source_suffix")
-              is_general_route_exception "$name" && continue
-              target=${name%"$source_suffix"}"$target_suffix"
-              if ! has_theorem "$target"; then
-                echo "FAIL: root import audit suffix counterpart missing for ${label}: ${name} lacks ${target}"
-                exit 1
-              fi
-              ;;
-          esac
-        done
+        awk -v source_suffix="$source_suffix" -v target_suffix="$target_suffix" \
+          -v label="$label" -v name_pattern="$name_pattern" "$route_awk_lib"'
+        { name = $0
+          if (index(name, name_pattern) != 1 || !ends_with(name, source_suffix) ||
+              length(name) < length(name_pattern) + length(source_suffix) ||
+              is_general_route_exception(name)) next
+          target = substr(name, 1, length(name) - length(source_suffix)) target_suffix
+          if (!has_theorem(target)) {
+            print "FAIL: root import audit suffix counterpart missing for " label ": " name " lacks " target
+            exit 1
+          }
+        }' "$theorem_names_file" "$theorem_names_file" || exit 1
       fi
     done
   done

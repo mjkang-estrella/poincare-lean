@@ -4,29 +4,42 @@ set -eu
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root_dir"
 
-echo "== Build gate =="
-lake build
+# Portable fallback: use the bundled Python ripgrep subset only when no `rg`
+# binary is on PATH (see scripts/bin/rg).
+if ! command -v rg >/dev/null 2>&1; then
+  PATH="$root_dir/scripts/bin:$PATH"
+  export PATH
+fi
 
-echo "== Interface gate =="
-sh scripts/interface_audit.sh
+# Each gate runs here unless scripts/write_status_summary.sh already ran it in
+# this status generation and recorded its exit status in
+# COMPLETION_AUDIT_GATE_RESULTS_DIR/<key>.status; a recorded nonzero status
+# aborts exactly as a failing gate would.
+run_gate() {
+  gate_label=$1
+  gate_key=$2
+  shift 2
+  echo "== ${gate_label} gate =="
+  if [ -n "${COMPLETION_AUDIT_GATE_RESULTS_DIR:-}" ] &&
+      [ -f "$COMPLETION_AUDIT_GATE_RESULTS_DIR/${gate_key}.status" ]; then
+    gate_status=$(tr -d '[:space:]' < "$COMPLETION_AUDIT_GATE_RESULTS_DIR/${gate_key}.status")
+    echo "REUSE: ${gate_label} gate result recorded by scripts/write_status_summary.sh (status ${gate_status})"
+    if [ "$gate_status" != "0" ]; then
+      exit "$gate_status"
+    fi
+  else
+    "$@"
+  fi
+}
 
-echo "== Mathlib gap gate =="
-sh scripts/mathlib_gap_audit.sh
-
-echo "== Semantic surface gate =="
-sh scripts/semantic_surface_audit.sh
-
-echo "== Root import gate =="
-sh scripts/root_import_audit.sh
-
-echo "== Axiom footprint gate =="
-sh scripts/axiom_audit.sh
-
-echo "== Shape contract gate =="
-sh scripts/shape_contract_audit.sh
-
-echo "== Theorem contract gate =="
-sh scripts/theorem_contract_audit.sh
+run_gate "Build" build lake build
+run_gate "Interface" interface sh scripts/interface_audit.sh
+run_gate "Mathlib gap" mathlib sh scripts/mathlib_gap_audit.sh
+run_gate "Semantic surface" semantic sh scripts/semantic_surface_audit.sh
+run_gate "Root import" root_import sh scripts/root_import_audit.sh
+run_gate "Axiom footprint" axiom sh scripts/axiom_audit.sh
+run_gate "Shape contract" shape sh scripts/shape_contract_audit.sh
+run_gate "Theorem contract" theorem sh scripts/theorem_contract_audit.sh
 
 echo "== Objective =="
 cat <<'TEXT'

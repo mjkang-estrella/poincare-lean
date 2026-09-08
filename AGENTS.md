@@ -79,6 +79,12 @@ sh scripts/axiom_audit.sh
 Use `lake build` and the completion/status scripts at explicit integration
 checkpoints. Do not launch overlapping full builds from multiple jobs.
 
+The audit scripts fall back to `scripts/bin/rg` (a Python subset of ripgrep)
+when no `rg` binary is on `PATH`; the route-naming checks run as single `awk`
+passes over the harvested theorem-name list, so a warm-cache audit pass takes
+minutes, not tens of minutes. Keep new checks in that shape: one process per
+check, never one process per name.
+
 ## Harness v2
 
 The current `harness/tasks`, `harness/reports`, and `harness/ledger.json` are a

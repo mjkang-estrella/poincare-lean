@@ -4,6 +4,13 @@ set -eu
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root_dir"
 
+# Portable fallback: use the bundled Python ripgrep subset only when no `rg`
+# binary is on PATH (see scripts/bin/rg).
+if ! command -v rg >/dev/null 2>&1; then
+  PATH="$root_dir/scripts/bin:$PATH"
+  export PATH
+fi
+
 echo "== Semantic surface audit =="
 
 check_file=
@@ -42251,15 +42258,15 @@ check_route_counterpart_family() {
   missing_file="$direct_package_parity_dir/${label}.missing"
   sed -n "s/^\\(.*\\)${route_suffix}$/\\1/p" \
     "$direct_package_parity_dir/theorems" | sort -u > "$route_file"
-  : > "$missing_file"
-  while IFS= read -r route_base; do
-    for counterpart_suffix in "$@"; do
-      if ! rg -qx "${route_base}${counterpart_suffix}" \
-          "$direct_package_parity_dir/theorems"; then
-        echo "${route_base}${counterpart_suffix}" >> "$missing_file"
-      fi
-    done
-  done < "$route_file"
+  awk -v counterpart_suffixes="$*" '
+    BEGIN { suffix_count = split(counterpart_suffixes, suffixes, " ") }
+    NR == FNR { names[$0] = 1; next }
+    { for (i = 1; i <= suffix_count; i++) {
+        target = $0 suffixes[i]
+        if (!(target in names)) print target
+      }
+    }
+  ' "$direct_package_parity_dir/theorems" "$route_file" > "$missing_file"
   rg -v 'poincare_conjecture|_of_remaining_dependency_and_packaged_(smooth_statement|canonical_smooth_three_sphere_statement|reverse_canonical_smooth_three_sphere_statement)' \
     "$missing_file" > "$missing_file.nonreserved" || true
   if [ -s "$missing_file.nonreserved" ]; then
@@ -42278,12 +42285,10 @@ check_route_base_endpoint_family() {
   missing_file="$direct_package_parity_dir/${label}.base-missing"
   sed -n "s/^\\(.*${route_suffix%_eq}\\)_eq$/\\1/p" \
     "$direct_package_parity_dir/theorems" | sort -u > "$route_file"
-  : > "$missing_file"
-  while IFS= read -r route_base; do
-    if ! rg -qx "$route_base" "$direct_package_parity_dir/theorems"; then
-      echo "$route_base" >> "$missing_file"
-    fi
-  done < "$route_file"
+  awk '
+    NR == FNR { names[$0] = 1; next }
+    !($0 in names) { print }
+  ' "$direct_package_parity_dir/theorems" "$route_file" > "$missing_file"
   rg -v 'poincare_conjecture|_of_remaining_dependency_and_packaged_(smooth_statement|canonical_smooth_three_sphere_statement|reverse_canonical_smooth_three_sphere_statement)' \
     "$missing_file" > "$missing_file.nonreserved" || true
   if [ -s "$missing_file.nonreserved" ]; then

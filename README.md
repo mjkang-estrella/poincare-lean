@@ -92,6 +92,14 @@ Run `lake build`, `scripts/completion_audit.sh`, or
 small worker attempt. The completion audit is expected to exit nonzero while
 the reserved theorem is absent.
 
+The audit scripts need only POSIX `sh`, `awk`, `python3`, and `lake`. They use
+ripgrep when an `rg` binary is on `PATH` and otherwise fall back to the
+bundled Python subset in `scripts/bin/rg`. `scripts/write_status_summary.sh`
+runs each gate once and passes its recorded exit statuses to
+`scripts/completion_audit.sh` through `COMPLETION_AUDIT_GATE_RESULTS_DIR`, so
+a status snapshot no longer runs every audit twice; a standalone
+`sh scripts/completion_audit.sh` still runs every gate itself.
+
 The deployed Codex reviewer uses `harness/v2/deploy/review-job-focused.sh` for
 each Job. It reads the immutable exact-base Lake cache, checks only the frozen
 Task modules, and creates a temporary olean overlay for exact declaration

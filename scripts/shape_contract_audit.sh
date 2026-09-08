@@ -4,6 +4,13 @@ set -eu
 root_dir=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$root_dir"
 
+# Portable fallback: use the bundled Python ripgrep subset only when no `rg`
+# binary is on PATH (see scripts/bin/rg).
+if ! command -v rg >/dev/null 2>&1; then
+  PATH="$root_dir/scripts/bin:$PATH"
+  export PATH
+fi
+
 echo "== Shape contract audit =="
 
 status=0
