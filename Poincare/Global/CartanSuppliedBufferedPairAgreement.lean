@@ -269,5 +269,30 @@ theorem exists_uniform_normal_chartTransition {a b : M} {U V : Set E}
   refine ⟨⟨hzC, hzD⟩, ?_⟩
   exact (congrArg (D.normal x) heq).trans ((D.endpoint x).left_inv hw)
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- The intrinsic alignment commutes with both host changes. Its two output
+vectors are related by the target transition, rather than equal coordinates. -/
+theorem linear_chartTransition_of_normal_chartTransition
+    {a b : M} {c d : RoundSphere3} {U V W Z : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g a U)
+    (C' : FixedChartUniformSourceNormal.Patch g b V)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 c W)
+    (D' : FixedChartUniformSourceNormal.Patch roundSphereMetric3 d Z)
+    (x : M) (hxC : x ∈ C.anchors) (hxC' : x ∈ C'.anchors)
+    (p : RoundSphere3) (hpD : p ∈ D.anchors) (hpD' : p ∈ D'.anchors)
+    (L : CartanMap.TangentAlignment g x p) (z : M)
+    (hn : C'.normal x z = GeodesicTransport.chartTransitionDeriv a b
+      (extChartAt I a x) (C.normal x z)) :
+    GeodesicTransport.chartTransitionDeriv c d (extChartAt I c p)
+      (linear (patch C D) ⟨x, p, L⟩ (C.normal x z)) =
+      linear (patch C' D') ⟨x, p, L⟩ (C'.normal x z) := by
+  have hsource : patchFrame C' x (C'.normal x z) = patchFrame C x (C.normal x z) := by
+    rw [hn]
+    exact patchFrame_chartTransition C C' x hxC hxC' _
+  apply (patchFrame D' p).injective
+  rw [patchFrame_chartTransition D D' p hpD hpD']
+  simpa only [linear, patch, ContinuousLinearEquiv.trans_apply,
+    ContinuousLinearEquiv.apply_symm_apply] using congrArg L hsource.symm
+
 end CartanSuppliedBufferedPairAgreement
 end Poincare
