@@ -90,5 +90,41 @@ theorem block_state_eq (S : System g) (initial : CartanChain.ChainState g)
         _ _ _ _ _ (c.data (m + k)) d _ isOpen_ball
         (by simpa only [Nat.add_assoc] using hz) heq.symm
 
+/-- Transport to a monotone sampled chain, without imposing strictness on its
+inserted samples or any terminal-index condition on the factor map. -/
+theorem refinement_chain_state_eq (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (p : Path initial.anchor y) (R : Realization S initial p)
+    (t : ℕ → unitInterval) (htzero : t 0 = 0) (htmono : Monotone t)
+    (preferred : ℕ → S.cover.Label)
+    (c : ReachableChain (policy S.cover preferred) (fun k => p (t k)) initial)
+    (f : ℕ → ℕ) (hfzero : f 0 = 0) (hfmono : Monotone f)
+    (htimes : ∀ n, R.subdivision.time n = t (f n)) :
+    ∀ n, R.chain.state n = c.state (f n) := by
+  letI : MetricSpace M := g.toMetricSpace
+  have hinitial : initial.anchor = p (t 0) := by simp [htzero]
+  intro n
+  induction n with
+  | zero => rw [hfzero, R.chain.initial_eq, c.initial_eq]
+  | succ n ih =>
+      have hf : f n ≤ f (n + 1) := hfmono (Nat.le_succ n)
+      have hsmall : ∀ k ≤ f (n + 1) - f n,
+          dist (p (t (f n + k))) (c.state (f n)).anchor < S.mesh := by
+        intro k hk
+        rw [state_anchor_eq_node _ _ _ c hinitial]
+        have hcell : t (f n + k) ∈
+            Icc (R.subdivision.time n) (R.subdivision.time (n + 1)) := by
+          rw [htimes n, htimes (n + 1)]
+          exact ⟨htmono (by omega), htmono (by omega)⟩
+        rw [← htimes n]
+        exact R.subdivision.wholeCell n _ _ hcell
+          ⟨le_rfl, R.subdivision.mono (Nat.le_succ n)⟩
+      have hblock := block_state_eq S initial (fun k => p (t k)) preferred c
+        hinitial (f n) (f (n + 1) - f n)
+        (select S.cover (R.preferred n) (R.chain.state n))
+        (by rw [← ih]; exact select_valid _ _ _) hsmall
+      dsimp only at hblock
+      rw [Nat.add_sub_of_le hf, ← htimes (n + 1), ← ih] at hblock
+      exact (R.chain.successor_eq n).trans (hblock (R.chain.data n)).symm
+
 end CartanSuppliedSubdivisionTransport
 end Poincare
