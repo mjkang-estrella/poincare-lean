@@ -472,10 +472,20 @@ their consumers) is hardwired to the per-anchor `expAt` selector, so the
 chain has to be parametrized over an exponential-chart family with the
 uniform family as an instance; germ-level theorems transfer by per-anchor
 agreement (ODE uniqueness on the cutoff-one zone), joint-in-anchor theorems
-must be re-proved for the uniform family. Task
-`harness/tasks/chain-parametrization-inventory.md` (analysis only) produces
-the exact dependency inventory and the first five bounded tasks of that
-parametrization.
+must be re-proved for the uniform family. The inventory
+`harness/reports/chain-parametrization-inventory.md` (task
+`chain-parametrization-inventory`, analysis only, every citation grep- and
+probe-verified) measures the corridor at 112 modules and 1,442 declarations,
+identifies the exact hardwired definitions (`CartanMap.openPartialHomeomorph`,
+`DifferentialInducedSuccessor.Data` and its ten exponential-bound fields,
+`RestrictedCompatibleCartanAtlasData3`, the two `UnitCurvature*Cartan*`
+adapters), proposes parametrizing the interpretation of a Cartan state and its
+differential successor over supplied source and target exponential families
+(about fourteen new files), and specifies the first five bounded tasks with
+exact Lean targets. Tasks 1 (`supplied-source-map`, the supplied-family germ
+and its agreement with `CartanMap.cartanMap` on the generic families) and 3
+(`fixed-chart-endpoint-slices`, per-anchor slices of the joint product
+inverse) are dispatched; tasks 2, 4, and 5 follow in order from the report.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
