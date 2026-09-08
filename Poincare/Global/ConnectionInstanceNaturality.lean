@@ -291,5 +291,52 @@ theorem leviCivita_naturality_apply
   rw [← he]
   exact (J (inst := inst) inst' h x).apply_symm_apply _
 
+/-- Nested covariant derivatives transform using germ locality of the inner section. -/
+theorem leviCivita_naturality_twice
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (Z W : M → E) (x : M)
+    (hZ : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (fun y : M ↦ (⟨y, Z y⟩ : TotalSpace E (TangentSpace I))) x)
+    (hW : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) W x) (v : E) :
+    (letI := inst';
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1;
+      let cov := (transport (inst := inst) inst' h g).leviCivita;
+      J (inst := inst) inst' h x (cov (fun y ↦ cov Z y (W y)) x v)) =
+    (letI := inst;
+      g.leviCivita (fun y ↦ g.leviCivita (inverseTransportField (inst := inst) inst' h Z) y
+        (inverseTransportField (inst := inst) inst' h W y)) x
+        (J (inst := inst) inst' h x v)) := by
+  letI := inst
+  have hZold := inverseTransportField_contMDiffAt (inst := inst) inst' h
+    (show (2 : ℕ∞ω) ≤ ∞ from ENat.natCast_le_of_coe_top_le_withTop le_rfl 2) Z x hZ
+  have hWold := inverseTransportField_mdiffAt (inst := inst) inst' h W x hW
+  have hinnerOld := CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt
+    g.leviCivita hZold hWold
+  let innerOld := fun y ↦ g.leviCivita (inverseTransportField (inst := inst) inst' h Z) y
+    (inverseTransportField (inst := inst) inst' h W y)
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let cov := (transport (inst := inst) inst' h g).leviCivita
+  let innerNew := fun y ↦ cov Z y (W y)
+  have hinnerNew := CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt cov hZ hW
+  have hinnerInv := inverseTransportField_mdiffAt (inst := inst) inst' h innerNew x hinnerNew
+  have hev : inverseTransportField (inst := inst) inst' h innerNew =ᶠ[𝓝 x] innerOld := by
+    obtain ⟨s, hs, hZs⟩ := (contMDiffAt_iff_contMDiffOn_nhds (n := 2) (by norm_num)).mp hZ
+    filter_upwards [eventually_mem_nhds_iff.mpr hs] with y hy
+    exact leviCivita_naturality_apply (inst := inst) inst' h g Z y
+      ((hZs.contMDiffAt hy).mdifferentiableAt two_ne_zero) (W y)
+  have he := leviCivita_naturality_apply (inst := inst) inst' h g innerNew x hinnerNew v
+  letI := inst
+  have heq := g.leviCivita.isCovariantDerivativeOnUniv.congr_of_eventuallyEq
+    hinnerInv hinnerOld univ_mem hev
+  exact he.trans (congrArg (fun L ↦ L (J (inst := inst) inst' h x v)) heq)
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
