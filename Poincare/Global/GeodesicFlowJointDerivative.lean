@@ -1,5 +1,6 @@
 import Poincare.Global.ParameterizedFlowDerivative
 import Poincare.Global.LinearEndpointGronwall
+import Mathlib.Geometry.Manifold.PartitionOfUnity
 
 /-!
 # Joint initial-state variations of a fixed-chart geodesic flow
@@ -351,6 +352,30 @@ theorem exists_flow_initialState_C1 [ProperSpace X] [CompleteSpace X]
   apply contDiffAt_one_iff.mpr
   refine ⟨fun y => Φ y t, ball p r, isOpen_ball.mem_nhds hq, ?_, fun y hy => hder y hy t ht⟩
   exact hc.comp (continuous_id.prodMk continuous_const).continuousOn (fun y hy => ⟨hy, ht⟩)
+
+/-- Local C2 regularity near a compact set can be used in the global Gronwall
+lemmas. The extension agrees as a germ at every point of the compact set. -/
+theorem exists_contDiff_extension_near_compact [FiniteDimensional ℝ X]
+    {F : X → X} {U K : Set X} (hU : IsOpen U) (hK : IsCompact K)
+    (hKU : K ⊆ U) (hF : ∀ x ∈ U, ContDiffAt ℝ 2 F x) :
+    ∃ G : X → X, ContDiff ℝ 2 G ∧ ∀ x ∈ K, G =ᶠ[𝓝 x] F := by
+  obtain ⟨χ, hzero, hone, _⟩ := exists_contMDiffMap_zero_one_nhds_of_isClosed
+    (I := 𝓘(ℝ, X)) (n := 2) hU.isClosed_compl hK.isClosed
+    (Set.disjoint_left.mpr (fun x hx hk => hx (hKU hk)))
+  have hχ : ContDiff ℝ 2 (χ : X → ℝ) := contMDiff_iff_contDiff.mp χ.contMDiff
+  let G : X → X := fun x => χ x • F x
+  refine ⟨G, ?_, ?_⟩
+  · rw [contDiff_iff_contDiffAt]
+    intro x
+    by_cases hx : x ∈ U
+    · exact hχ.contDiffAt.smul (hF x hx)
+    · have heq : G =ᶠ[𝓝 x] (fun _ => (0 : X)) := by
+        filter_upwards [eventually_nhdsSet_iff_forall.mp hzero x hx] with y hy
+        simp [G, hy]
+      exact contDiffAt_const.congr_of_eventuallyEq heq
+  · intro x hx
+    filter_upwards [eventually_nhdsSet_iff_forall.mp hone x hx] with y hy
+    simp [G, hy]
 
 end GeodesicFlowJointDerivative
 end Poincare
