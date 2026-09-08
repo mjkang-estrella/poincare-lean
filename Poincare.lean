@@ -22,6 +22,7 @@ import Poincare.Global.CartanSuppliedSourceMap
 import Poincare.Global.ConnectionInstanceNaturality
 import Poincare.Global.ControlledChartInstance
 import Poincare.Global.CurvatureInstanceTransport
+import Poincare.Global.FixedChartAugmentedSystemRegularity
 import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartLocalSuccessorEquality
 import Poincare.Global.FixedChartLocalSuccessorExistence

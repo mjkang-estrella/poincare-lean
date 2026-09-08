@@ -768,9 +768,13 @@ the augmented flow on the full retained ball, which
 `target_of_augmentedSystemRegularity` turns into `C²` of the endpoint map.
 The flow theorems return a shorter time; the missing piece is continuation
 over the full retained interval, the same full-interval Grönwall argument
-already done for the base flow. Task `augmented-system-regularity` is
-dispatched for it; the chart-map `C²`, transition law, and mapped
-geodesic assembly follow.
+already done for the base flow. Task `augmented-system-regularity` PROVED
+it (`FixedChartAugmentedSystemRegularity.lean`, merged): `augmentedSystemRegularity`
+and `patch_endpoint_contDiffOn_two`, so every patch endpoint map is `C²` on
+its full retained ball. Task `mapped-geodesic-assembly` is dispatched for
+the remaining assembly: chart-map `C²`, the uniform transition law, the
+mapped geodesic initial-value problem, and the frozen task-9 target
+`exists_radii` (H1 and H2 replacements together).
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
