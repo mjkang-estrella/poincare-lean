@@ -212,4 +212,19 @@ theorem curvatureContinuity_of_continuous
 
 end ThirdJetTopology
 
+/-- Joint scalar third-jet profiles supply both curvature-continuity clauses
+of the compact-family reaction core, in every dimension and for any parameter space. -/
+theorem curvatureContinuity_of_thirdJetProfiles_continuous
+    (K : Type v) [TopologicalSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2)) :
+    Continuous (fun p : K × M ↦ (metric p.1).scalarAt p.2) ∧
+    Continuous (fun p : K × M ↦ (metric p.1).tracelessRicciNormSqAt p.2) := by
+  letI : TopologicalSpace (ClosedSmoothRiemannianMetric n M) :=
+    closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+  exact curvatureContinuity_of_continuous metric
+    (continuous_closedMetricFamily_of_entryThirdJetProfileJointContinuous hjet)
+
 end Poincare.HamiltonCompactFamilyInvariantContinuity
