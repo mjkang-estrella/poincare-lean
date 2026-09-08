@@ -63,5 +63,24 @@ theorem patchFrame_chartTransition {a b : M} {U V : Set E}
   simpa only [anchorFrame, GeodesicTransport.chartTransitionDeriv, habq,
     ContinuousLinearMap.comp_apply] using congrArg (fun A : E →L[ℝ] E => A v) hd
 
+/-- A fixed chart transition has one operator bound over a compact overlap. -/
+theorem exists_uniform_chartTransition_bound {a b : M} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g a U)
+    (D : FixedChartUniformSourceNormal.Patch g b V)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) (hKD : K ⊆ D.anchors) :
+    ∃ R > (0 : ℝ), ∀ x ∈ K,
+      ‖GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x)‖ ≤ R := by
+  let J := fun x : M => GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x)
+  have hc : ContinuousOn J K := by
+    intro x hx
+    have ht := (extChartAt I a).map_source (hKC hx).1
+    have hs : (extChartAt I a).symm (extChartAt I a x) ∈ (extChartAt I b).source := by
+      rw [(extChartAt I a).left_inv (hKC hx).1]
+      exact (hKD hx).1
+    exact ((chartTransition_contDiffAt a b ht hs).continuousAt_fderiv (by norm_num)
+      |>.comp (continuousAt_extChartAt' (hKC hx).1)).continuousWithinAt
+  obtain ⟨R, hR, hb⟩ := (hK.image_of_continuousOn hc).isBounded.exists_pos_norm_le
+  exact ⟨R, hR, fun x hx => hb _ ⟨x, hx, rfl⟩⟩
+
 end CartanSuppliedBufferedPairAgreement
 end Poincare
