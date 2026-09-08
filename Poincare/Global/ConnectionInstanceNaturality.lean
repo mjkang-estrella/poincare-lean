@@ -7,7 +7,7 @@ The identity map from the new atlas to the original atlas has derivative `J`.
 -/
 
 noncomputable section
-open Bundle Filter Set
+open Bundle Filter Set FiberBundle
 open scoped Manifold ContDiff Topology
 namespace Poincare.ConnectionInstanceNaturality
 open RiemannianMetricInstanceTransportGeometric CurvatureInstanceTransport
@@ -392,6 +392,55 @@ theorem curvatureOp_naturality
   rw [leviCivita_naturality_twice (inst := inst) inst' h g Z Y x hZ hY (X x),
     leviCivita_naturality_twice (inst := inst) inst' h g Z X x hZ hX (Y x), hthird]
   rfl
+
+/-- Curvature values on the canonical extensions conjugate by `J`. -/
+theorem curvatureValue_naturality
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (x : M) (u w a : E) :
+    (letI := inst';
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1;
+      J (inst := inst) inst' h x
+        (curvatureValue (transport (inst := inst) inst' h g) x u w a)) =
+    curvatureValue (inst := inst) g x (J (inst := inst) inst' h x u)
+      (J (inst := inst) inst' h x w) (J (inst := inst) inst' h x a) := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let X : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) u
+  let Y : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) w
+  let Z : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) a
+  have hX : MDiffAtTangentField (n := 3) X x := mdifferentiableAt_extend I E (V := TangentSpace I) (x := x) u
+  have hY : MDiffAtTangentField (n := 3) Y x := mdifferentiableAt_extend I E (V := TangentSpace I) (x := x) w
+  have hZ : ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+      (fun y : M ↦ (⟨y, Z y⟩ : TotalSpace E (TangentSpace I))) x :=
+    contMDiffAt_extend' I E (V := TangentSpace I) (x := x) a
+  have hR := curvatureOp_naturality (inst := inst) inst' h g X Y Z x hX hY hZ
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hYold := inverseTransportField_mdiffAt (inst := inst) inst' h Y x hY
+  have hZold := inverseTransportField_contMDiffAt (inst := inst) inst' h
+    (show (2 : ℕ∞ω) ≤ ∞ from ENat.natCast_le_of_coe_top_le_withTop le_rfl 2) Z x hZ
+  letI := inst
+  let X' := inverseTransportField (inst := inst) inst' h X
+  let Y' := inverseTransportField (inst := inst) inst' h Y
+  let Z' := inverseTransportField (inst := inst) inst' h Z
+  let U : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) (J (inst := inst) inst' h x u)
+  let W : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) (J (inst := inst) inst' h x w)
+  let A : Π y : M, TangentSpace I y := FiberBundle.extend E (x := x) (J (inst := inst) inst' h x a)
+  have hU : MDiffAtTangentField (n := 3) U x := mdifferentiableAt_extend I E (V := TangentSpace I) (x := x) _
+  have hW : MDiffAtTangentField (n := 3) W x := mdifferentiableAt_extend I E (V := TangentSpace I) (x := x) _
+  have hreg : CovariantDerivative.DerivRegularAt g.leviCivita Z' x :=
+    fun V hV ↦ CovariantDerivative.mdiffAt_cov_section_of_contMDiffAt g.leviCivita hZold hV
+  have hxy : CovariantDerivative.curvatureOp g.leviCivita X' Y' Z' x =
+      CovariantDerivative.curvatureOp g.leviCivita U W Z' x := by
+    rw [← CovariantDerivative.curvatureTensorAt_apply g.leviCivita hreg hXold hYold,
+      ← CovariantDerivative.curvatureTensorAt_apply g.leviCivita hreg hU hW]
+    simp only [inverseTransportField, X, Y, U, W, FiberBundle.extend_apply_self]
+  have hz : CovariantDerivative.curvatureOp g.leviCivita U W Z' x =
+      CovariantDerivative.curvatureOp g.leviCivita U W A x :=
+    CovariantDerivative.curvatureOp_congr_of_value_eq g.leviCivita hZold
+      (contMDiffAt_extend' I E (V := TangentSpace I) (x := x) _) (by simp only [Z', inverseTransportField, Z, A,
+        FiberBundle.extend_apply_self]) hU hW
+  exact hR.trans (hxy.trans hz)
 
 end Connection
 end Poincare.ConnectionInstanceNaturality
