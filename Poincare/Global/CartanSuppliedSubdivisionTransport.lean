@@ -126,5 +126,15 @@ theorem refinement_chain_state_eq (S : System g) (initial : CartanChain.ChainSta
       rw [Nat.add_sub_of_le hf, ← htimes (n + 1), ← ih] at hblock
       exact (R.chain.successor_eq n).trans (hblock (R.chain.data n)).symm
 
+/-- Refining any realization preserves every represented state. -/
+theorem refinement_state_eq : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (p : Path initial.anchor y) (R T : Realization S initial p)
+    (f : ℕ → ℕ), f 0 = 0 → Monotone f →
+  (∀ n, R.subdivision.time n = T.subdivision.time (f n)) →
+  ∀ n, R.chain.state n = T.chain.state (f n) := by
+  intro S initial y p R T f hfzero hfmono htimes
+  exact refinement_chain_state_eq S initial p R T.subdivision.time
+    T.subdivision.zero T.subdivision.mono T.preferred T.chain f hfzero hfmono htimes
+
 end CartanSuppliedSubdivisionTransport
 end Poincare
