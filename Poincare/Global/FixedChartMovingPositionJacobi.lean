@@ -388,7 +388,7 @@ theorem pairing_of_radial_transverse
       rw [hB v a]
       dsimp [c]
       field_simp
-      <;> ring
+      ring
     have how := ho w hw
     have how' : G (J v) (J w) = 0 := (hG _ _).trans how
     have hnw := hn w hw
@@ -403,12 +403,83 @@ theorem pairing_of_radial_transverse
     rw [hB v a]
     dsimp [c]
     field_simp
-    <;> ring
+    ring
   have h := hd (a + b)
   simp only [map_add, ContinuousLinearMap.add_apply] at h
   rw [hG (J b) (J a), hB b a, hd a, hd b] at h
   field_simp at h ⊢
   nlinarith
+
+/-- Time normalization cancels the patch time from the radial term and from
+the transverse sine factor. The formula uses only the moving anchor metric. -/
+theorem normalized_pairing_formula [T2Space M] {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {z v : E} (hq : (z, C.T⁻¹ • v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, C.T⁻¹ • v) t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    {speed : ℝ} (hspeed : CovariantDerivative.chartMetric g.inner x₀ z v v = speed ^ 2)
+    (hs : speed ≠ 0) (a b : E) :
+    let B := CovariantDerivative.chartMetric g.inner x₀ z
+    let κ := Real.sin speed ^ 2 / speed ^ 2
+    CovariantDerivative.chartMetric g.inner x₀ (C.α (z, C.T⁻¹ • v) C.T).1
+      (Φ C.T (0, C.T⁻¹ • a)).1 (Φ C.T (0, C.T⁻¹ • b)).1 =
+      κ * B a b + (1 - κ) * (B a v * B b v / B v v) := by
+  let B := CovariantDerivative.chartMetric g.inner x₀ z
+  let G := CovariantDerivative.chartMetric g.inner x₀ (C.α (z, C.T⁻¹ • v) C.T).1
+  let J : E →L[ℝ] E := ((ContinuousLinearMap.fst ℝ E E).comp (Φ C.T)).comp
+    ((0 : E →L[ℝ] E).prod (C.timeRescaling : E →L[ℝ] E))
+  have hJ : ∀ a, J a = (Φ C.T (0, C.T⁻¹ • a)).1 := fun _ => rfl
+  have hT := C.T_pos.ne'
+  have hqc := ball_subset_closedBall hq
+  have ht : C.T ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], le_rfl⟩
+  have hraw : B (C.T⁻¹ • v) (C.T⁻¹ • v) = (speed / C.T) ^ 2 := by
+    simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    change C.T⁻¹ * (C.T⁻¹ * (CovariantDerivative.chartMetric g.inner x₀ z v v)) = _
+    rw [hspeed]
+    field_simp
+  have hrad : J v = C.T • (C.α (z, C.T⁻¹ • v) C.T).2 :=
+    radial_position_eq_time_smul_velocity C hqc hΦ0 hΦ ht
+  have hr : G (J v) (J v) = B v v := by
+    rw [hrad]
+    simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    have hv := flow_chartMetric_speed_eq_initial C hU hqc ht
+    change G _ _ = B _ _ at hv
+    rw [hv, hraw]
+    change _ = CovariantDerivative.chartMetric g.inner x₀ z v v
+    rw [hspeed]
+    field_simp
+  have ho : ∀ w, B v w = 0 → G (J w) (J v) = 0 := by
+    intro w hw
+    have horth : B (C.T⁻¹ • v) (C.T⁻¹ • w) = 0 := by simp [hw]
+    have h := transverse_orthogonal C hU hq hΦ0 hΦ (C.T⁻¹ • w) horth ht
+    rw [hrad]
+    simpa only [map_smul, smul_eq_mul, hJ w, mul_zero] using congrArg (C.T * ·) h
+  have hn : ∀ w, B v w = 0 → G (J w) (J w) =
+      (Real.sin speed ^ 2 / speed ^ 2) * B w w := by
+    intro w hw
+    have horth : B (C.T⁻¹ • v) (C.T⁻¹ • w) = 0 := by simp [hw]
+    have hN := transverse_norms_eq_pinned C hcurv hU hq hΦ0 hΦ
+      (C.T⁻¹ • w) horth hraw (div_ne_zero hs hT) ht
+    have h := congrArg Prod.fst hN
+    dsimp only [GronwallMembership.normState, JacobiNormSystem.normA, chartGeodesicMetric] at h
+    rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀)
+      (flow_mem_target_cutoffOne C hU hqc ht).2.self_of_nhds] at h
+    change G (J w) (J w) = JacobiNormSystem.speedPinnedA (speed / C.T)
+      (B (C.T⁻¹ • w) (C.T⁻¹ • w)) C.T at h
+    rw [h]
+    simp only [JacobiNormSystem.speedPinnedA, JacobiNormSystem.speedPinnedScale,
+      div_mul_cancel₀ speed hT, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+    field_simp
+  exact pairing_of_radial_transverse B G J v _
+    (CovariantDerivative.chartMetric_symm g.inner g.inner_symm x₀ z)
+    (CovariantDerivative.chartMetric_symm g.inner g.inner_symm x₀ _)
+    (by change CovariantDerivative.chartMetric g.inner x₀ z v v ≠ 0; rw [hspeed]; exact pow_ne_zero 2 hs)
+    hr ho hn a b
 
 end FixedChartMovingPositionJacobi
 end Poincare
