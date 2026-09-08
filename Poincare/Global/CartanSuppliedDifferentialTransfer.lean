@@ -563,5 +563,31 @@ theorem toGeneric : ∀ (s : CartanChain.ChainState g) (z : M)
         exact h }
   exact ⟨d, (generic_successor_eq s z e d).symm, rfl⟩
 
+omit [T2Space M] [ChartedSpace E M] [IsManifold I ∞ M] in
+/-- A framed normal germ determines its inverse germ through partial inverse laws. -/
+private theorem inverse_germ_of_framed_normal_germ
+    (N N' : OpenPartialHomeomorph M E) (x : M) (J : E ≃L[ℝ] E)
+    (hx : x ∈ N.source) (hx' : x ∈ N'.source) (hzero : N x = 0)
+    (h : (fun y => J (N y)) =ᶠ[𝓝 x] (N' : M → E)) :
+    (fun v => N.symm (J.symm v)) =ᶠ[𝓝 (0 : E)] (N'.symm : E → M) := by
+  have hz : (0 : E) ∈ N.target := hzero ▸ N.map_source hx
+  have hinvzero : N.symm (0 : E) = x := by
+    rw [← hzero]
+    exact N.left_inv hx
+  have htN : Tendsto N.symm (𝓝 (0 : E)) (𝓝 x) := by
+    simpa only [hinvzero] using (N.continuousAt_symm hz).tendsto
+  have htJ : Tendsto J.symm (𝓝 (0 : E)) (𝓝 (0 : E)) := by
+    simpa only [map_zero] using (J.symm.continuous.continuousAt (x := (0 : E))).tendsto
+  have ht := htN.comp htJ
+  filter_upwards [ht h, ht (N'.open_source.mem_nhds hx'),
+    htJ (N.open_target.mem_nhds hz)] with v hv hvs hvt
+  have heq : N' (N.symm (J.symm v)) = v := by
+    calc
+      N' (N.symm (J.symm v)) = J (N (N.symm (J.symm v))) := hv.symm
+      _ = v := by rw [N.right_inv hvt, J.apply_symm_apply]
+  calc
+    N.symm (J.symm v) = N'.symm (N' (N.symm (J.symm v))) := (N'.left_inv hvs).symm
+    _ = N'.symm v := congrArg N'.symm heq
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
