@@ -96,5 +96,37 @@ theorem exists_uniform_chartMap_contDiffAt_two
   obtain ⟨d⟩ := (hdata x hx p hp L z hz).2.2.2
   exact chartMap_contDiffAt_two_of_coordinateData C D ⟨x, p, L⟩ z d.toCoordinateData
 
+/-- Curvature now gives the uniform transition law without a regularity premise. -/
+theorem exists_uniform_christoffel_transition
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+      let F := chartMap (patch C D) ⟨x, p, L⟩
+      let q := extChartAt I x₀ z
+      ContDiffAt ℝ 2 F q ∧ ∀ v : E,
+        GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀ (F q)
+            (fderiv ℝ F q v) (fderiv ℝ F q v) =
+          fderiv ℝ F q (GeodesicTransport.chartChristoffelField g x₀ q v v) -
+            fderiv ℝ (fderiv ℝ F) q v v := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηc, hηc, hc⟩ := exists_uniform_chartMap_contDiffAt_two
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨ηt, hηt, ht⟩ := exists_uniform_christoffel_transition_of_differentiable_fderiv
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨min ηc ηt, lt_min hηc hηt, ?_⟩
+  intro x hx p hp L z hz
+  have hC2 := hc x hx p hp L z (hz.trans_le (min_le_left _ _))
+  exact ⟨hC2, ht x hx p hp L z (hz.trans_le (min_le_right _ _))
+    ((hC2.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
+      (by norm_num))⟩
+
 end FixedChartMappedGeodesicAssembly
 end Poincare
