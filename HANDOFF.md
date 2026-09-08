@@ -68,10 +68,16 @@ Not merged: branch `worker/audit-refactor` (commit `9c2c7584`) holds an
 interrupted agent's extraction of the Lean check payloads into a non-default
 `lean_lib PoincareAudit` (`audit/PoincareAudit/*.lean`,
 `scripts/audit_payload_equivalence.py`). It would let Lake cache the Lean half
-of the audits. On 2026-09-07 its own `--check` reported every module as a
-lossless extraction of the legacy heredocs (83,887 checks), but
-`lake build PoincareAudit` was not run and no driver consumes the modules;
-treat it as unverified.
+of the audits. On 2026-09-07, after adding the missing root module
+`audit/PoincareAudit.lean` and moving the module docstrings below the
+`import` lines (two follow-up commits on that branch), its own `--check`
+reports every module as a lossless extraction of the legacy heredocs (83,887
+checks), `lake build PoincareAudit` succeeds in 35 s on a warm cache with all
+seven payload modules elaborating under `#guard_msgs` and `#std_axioms`, and a
+no-op rebuild takes 2 s. No audit script consumes the library yet: wiring it
+in means replacing the heredoc elaborations and reworking the
+self-referential token-coverage checks that read the script text, so it stays
+a separate reviewed change.
 
 ## 2026-09-07 Boundary correction
 
