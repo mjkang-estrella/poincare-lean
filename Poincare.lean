@@ -18,6 +18,7 @@ import Poincare.Statement
 import Poincare.Global.ControlledChartInstance
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.GenericJointRegularityCounterexample
+import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.Statement
 import Poincare.Global.Alignment
 import Poincare.Global.RiemannianContext
