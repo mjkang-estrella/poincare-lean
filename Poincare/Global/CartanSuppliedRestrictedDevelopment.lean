@@ -145,5 +145,14 @@ theorem isLocalHomeomorph_diagonal : ∀ A : RestrictedAtlas M,
     change A.germ z z = A.germ x z
     exact A.compatible z x ⟨A.anchor_mem_domain z, hz.2⟩
 
+/-- The total map of rooted supplied endpoints is a local homeomorphism. -/
+theorem isLocalHomeomorph_development [SimplyConnectedSpace M] :
+  ∀ (S : System g) (sk : CartanAtlasRootedPathSkeleton.RootedCartanPathSkeleton g)
+    (R : RootedRealization S sk), IsLocalHomeomorph (development R) := by
+  intro S sk R
+  obtain ⟨A, _hgerm, hdiagonal⟩ := exists_restrictedAtlas S sk R
+  rw [← hdiagonal]
+  exact isLocalHomeomorph_diagonal A
+
 end CartanSuppliedRestrictedDevelopment
 end Poincare
