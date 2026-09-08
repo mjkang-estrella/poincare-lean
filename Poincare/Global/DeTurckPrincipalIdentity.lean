@@ -181,6 +181,31 @@ theorem lieTensor_apply (H : E →L[ℝ] Jet1) (v w p q : E) :
       H w p q v + H w q p v - H w v p q := by
   rfl
 
+/-- Lowering the two Lie slots gives exactly the landed formal Lie second jet. -/
+theorem lieSecondCoordinate_eq_lieSecondJet (G : Bilin) (H : E →L[ℝ] Jet1)
+    (hG : G.IsInvertible) (hs : ∀ u v, G u v = G v u)
+    (hH : ∀ a b p q, H a b p q = H a b q p) (v w : E) :
+    lieSecondCoordinate G H v w =
+      lieSecondJet (inverseEntries G) (fun a b p q => H a b p q) v w := by
+  have hraise (p : E →L[ℝ] ℝ) : G (G.inverse p) = p :=
+    (hG.inverse_apply_eq.mp rfl).symm
+  calc
+    _ = (1 / 2 : ℝ) * ∑ i, lieTensor H v w
+        (G.inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i) := by
+      simp only [lieSecondCoordinate, fieldSecond, map_sum, ContinuousLinearMap.sum_apply,
+        ← Finset.sum_add_distrib, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [connection, hraise]
+      rw [hs v]
+      simp only [hraise, koszul_apply, lieTensor_apply]
+      rw [hH v w ((Module.finBasis ℝ E) i), hH w v ((Module.finBasis ℝ E) i)]
+      ring
+    _ = _ := by
+      rw [contraction_eq_matrix G (lieTensor H v w) hG hs]
+      rfl
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
