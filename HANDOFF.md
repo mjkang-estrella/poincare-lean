@@ -639,8 +639,23 @@ from it. This single curvature-only statement, the uniform Jacobi-field
 comparison on a fixed-chart patch, is now the analytic core of the
 unit-recognition route; everything from it to the smooth Poincaré statement
 (given Hamilton convergence) is either proved or reduced to it plus
-`UniformEndpointReanchoring`. Task `uniform-nonzero-metric-pullback` is
-dispatched for it; the endpoint-reanchoring task follows.
+`UniformEndpointReanchoring`. Task `uniform-nonzero-metric-pullback` landed
+its partial, merged (`FixedChartUniformJacobiComparison.lean`, thirteen
+declarations): full-interval fundamental solutions for the retained patch
+flows (no smallness hypothesis, both endpoints, joint continuity), the
+identification of the canonical derivative of the supplied coordinate
+exponential with the position component of the fundamental solution, and the
+normalized Jacobi initial data. Its exact remainder is
+`MovingInitialPositionJacobiComparison`: a pointwise statement with no radius
+quantifier at all, saying that along a source patch geodesic and the aligned
+sphere geodesic the chart-metric pairings of the Jacobi fields at the retained
+times agree; `target_of_movingInitialPositionJacobiComparison` and the two
+conditional consequences reduce the uniform pullback and the frozen task-8
+target to it. The report names the lower-level lemmas that already allow
+arbitrary initial position (the transverse Gauss lemma, the curvature
+contraction, the Jacobi norm system). Task
+`moving-position-jacobi-comparison` is dispatched for it; the
+endpoint-reanchoring task follows.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
