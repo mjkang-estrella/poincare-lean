@@ -172,5 +172,63 @@ theorem normal_anchor : ∀ x ∈ C.anchors, C.normal x x = 0 := by
   simpa only [C.endpoint_zero x hx] using
     (C.endpoint x).left_inv (C.zero_mem_endpoint_source x hx)
 
+/-- The normal source retains precisely the fixed chart and slice target domains. -/
+theorem normal_source (x : M) :
+    (C.normal x).source = (extChartAt I x₀).source ∩
+      {y | (extChartAt I x₀ x, extChartAt I x₀ y) ∈ C.P.target} := by
+  ext y
+  change (y ∈ (chartAt E x₀).source ∧
+    ((extChartAt I x₀ x, extChartAt I x₀ y) ∈ C.P.target ∧
+      (C.P.symm (extChartAt I x₀ x, extChartAt I x₀ y)).2 ∈ (univ : Set E))) ↔ _
+  simp only [mem_univ, and_true, mem_inter_iff, mem_setOf_eq, extChartAt_source]
+
+/-- The inverse multiplies the retained inverse-flow velocity by the common time. -/
+theorem normal_apply (x y : M) :
+    C.normal x y = C.T • (C.P.symm (extChartAt I x₀ x, extChartAt I x₀ y)).2 := by
+  change (C.T⁻¹)⁻¹ • (C.P.symm (extChartAt I x₀ x, extChartAt I x₀ y)).2 = _
+  rw [inv_inv]
+
+/-- The joint inverse domain is the existing fixed-chart endpoint locus. -/
+theorem sourceLocus_eq_endpointLocus :
+    {q : M × M | q.1 ∈ C.anchors ∧ q.2 ∈ (C.normal q.1).source} =
+      CartanSourceExponentialLocalFamilyTransport.endpointLocus x₀ C.P C.A := by
+  ext q
+  rw [mem_setOf_eq, C.normal_source]
+  change (q.1 ∈ C.anchors ∧ (q.2 ∈ (extChartAt I x₀).source ∧
+    (extChartAt I x₀ q.1, extChartAt I x₀ q.2) ∈ C.P.target)) ↔
+    (q.1 ∈ C.anchors ∧ ((q.1 ∈ (extChartAt I x₀).source ∧
+      q.2 ∈ (extChartAt I x₀).source) ∧
+      (extChartAt I x₀ q.1, extChartAt I x₀ q.2) ∈ C.P.target))
+  exact ⟨fun h => ⟨h.1, ⟨h.1.1, h.2.1⟩, h.2.2⟩,
+    fun h => ⟨h.1, h.2.1.2, h.2.2⟩⟩
+
+/-- The exact joint normal source over the retained anchors is open. -/
+theorem isOpen_normal_sourceLocus :
+    IsOpen {q : M × M | q.1 ∈ C.anchors ∧ q.2 ∈ (C.normal q.1).source} := by
+  rw [C.sourceLocus_eq_endpointLocus]
+  exact CartanSourceExponentialLocalFamilyTransport.isOpen_endpointLocus x₀ C.P C.A_open
+
+/-- Normal evaluation is jointly continuous on its exact source locus. -/
+theorem continuousOn_normal_eval :
+    ContinuousOn (fun q : M × M => C.normal q.1 q.2)
+      {q | q.1 ∈ C.anchors ∧ q.2 ∈ (C.normal q.1).source} := by
+  rw [C.sourceLocus_eq_endpointLocus]
+  let B := CartanSourceExponentialLocalFamilyTransport.localFamilyOfAnchorEndpoint
+    g x₀ C.P C.A C.A_open C.zero_mem_source C.stationary
+  have h := (continuousOn_const (c := C.T)).smul B.continuousOn_normal
+  simpa only [normal_apply] using h
+
+/-- The local family has exactly the retained anchors, normal sources, and inverse evaluator. -/
+def rawLocalFamily : CartanSourceExponential.LocalFamily g where
+  anchors := C.anchors
+  isOpen_anchors := C.isOpen_anchors
+  sourceLocus := {q | q.1 ∈ C.anchors ∧ q.2 ∈ (C.normal q.1).source}
+  isOpen_sourceLocus := C.isOpen_normal_sourceLocus
+  sourceLocus_fst := fun _ hq => hq.1
+  normal q := C.normal q.1 q.2
+  continuousOn_normal := C.continuousOn_normal_eval
+  diagonal_mem x hx := ⟨hx, C.anchor_mem_normal_source x hx⟩
+  normal_diagonal := C.normal_anchor
+
 end Patch
 end Poincare.FixedChartUniformSourceNormal
