@@ -97,5 +97,51 @@ theorem christoffelDerivative_eq_jets
   simp only [hK, heval]
   rfl
 
+/-- Differentiation of the contracted field includes the motion of the raised covectors. -/
+theorem fieldDerivative_eq_raised_derivative
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z a : E) :
+    let B := anchorBlendedMetricFlow (fun _ => g) anchor 0
+    let Γ := GeodesicTransport.chartChristoffelField g anchor
+    let Γb := GeodesicTransport.chartChristoffelField bg anchor
+    let b := Module.finBasis ℝ E
+    fderiv ℝ (anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0) z a =
+      ∑ i,
+        let r := (B z).inverse (LinearMap.toContinuousLinearMap (b.coord i))
+        let dr := -(B z).inverse (fderiv ℝ B z a r)
+        fderiv ℝ Γ z a r (b i) + Γ z dr (b i) -
+          fderiv ℝ Γb z a r (b i) - Γb z dr (b i) := by
+  let B := anchorBlendedMetricFlow (fun _ => g) anchor 0
+  let Γ := GeodesicTransport.chartChristoffelField g anchor
+  let Γb := GeodesicTransport.chartChristoffelField bg anchor
+  let b := Module.finBasis ℝ E
+  have hB : DifferentiableAt ℝ B z :=
+    ((anchorBlendedMetricFamily_contDiff_four (fun _ : Unit => g) anchor ()).differentiable
+      (by norm_num)).differentiableAt
+  have hΓ : DifferentiableAt ℝ Γ z :=
+    ((GeodesicTransport.chartChristoffelField_contDiff_top g anchor).differentiable
+      (by simp)).differentiableAt
+  have hΓb : DifferentiableAt ℝ Γb z :=
+    ((GeodesicTransport.chartChristoffelField_contDiff_top bg anchor).differentiable
+      (by simp)).differentiableAt
+  have hr (i) := RicciFlow.RicciFlow.hasFDerivAt_inverse_raise hB
+    (Filter.Eventually.of_forall (anchorBlendedMetricFlow_isInvertible (fun _ => g) anchor 0))
+    (LinearMap.toContinuousLinearMap (b.coord i))
+  have ht (i) := ((hΓ.hasFDerivAt.clm_apply (hr i)).clm_apply
+    (hasFDerivAt_const (b i) z)).sub
+      ((hΓb.hasFDerivAt.clm_apply (hr i)).clm_apply (hasFDerivAt_const (b i) z))
+  have hs := HasFDerivAt.fun_sum (fun i (_ : i ∈ Finset.univ) => ht i)
+  simp only [Pi.sub_apply] at hs
+  dsimp only
+  change fderiv ℝ (fun y => ∑ i, (Γ y ((B y).inverse
+    (LinearMap.toContinuousLinearMap (b.coord i))) (b i) -
+    Γb y ((B y).inverse (LinearMap.toContinuousLinearMap (b.coord i))) (b i))) z a = _
+  rw [hs.fderiv, ContinuousLinearMap.sum_apply]
+  apply Finset.sum_congr rfl
+  intro i _
+  simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply,
+    ContinuousLinearMap.neg_apply, ContinuousLinearMap.zero_apply, map_zero, zero_add]
+  abel
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
