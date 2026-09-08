@@ -368,4 +368,14 @@ def UniversalHamiltonReactionCoreJetStatement : Prop :=
     [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
       HamiltonReactionCore3Jet.{u, v} N
 
+/-- Universal jet-form core existence implies the existing universal
+Hamilton endpoint. The analytic existence statement remains an input. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCoreJet
+    (h : UniversalHamiltonReactionCoreJetStatement.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  letI : MeasurableSpace N := borel N
+  letI : BorelSpace N := ⟨rfl⟩
+  exact hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Jet (h N)
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
