@@ -68,7 +68,7 @@ end SmoothStructure
 
 section Metric
 
-variable {M : Type u} [MetricSpace M] [ChartedSpace E M] [CompactSpace M]
+variable {M : Type u} [MetricSpace M] [inst : ChartedSpace E M] [CompactSpace M]
 
 /-- A finite family of original preferred charts contains a uniform ball
 around every point, including when the manifold is empty. -/
@@ -102,6 +102,30 @@ theorem chartedSpaceOfCover_ball_subset (s : Finset M) (δ : ℝ) (hδ : 0 < δ)
     (hballs : ∀ x : M, ∃ i : s, ball x δ ⊆ (chartAt E (i : M)).source) (x : M) :
     ball x δ ⊆ (@chartAt E _ M _ (chartedSpaceOfCover s δ hδ hballs) x).source :=
   Classical.choose_spec (hballs x)
+
+/-- The controlled instance has a finite atlas of original charts and exactly
+the original smooth maximal atlas. -/
+theorem exists_controlled_chartedSpace [IsManifold I ∞ M] :
+    ∃ (inst' : ChartedSpace E M) (δ : ℝ), 0 < δ ∧
+      (∀ x : M, ball x δ ⊆ (@chartAt E _ M _ inst' x).source) ∧
+      (∀ x : M, @chartAt E _ M _ inst' x ∈
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I)) ∧
+      (letI := inst'; IsManifold I ∞ M) ∧
+      @StructureGroupoid.maximalAtlas E M _ _ inst' (contDiffGroupoid ∞ I) =
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I) ∧
+      inst'.atlas.Finite ∧ inst'.atlas ⊆ inst.atlas := by
+  obtain ⟨s, δ, hδ, hballs⟩ := exists_finite_uniform_chart_cover (M := M)
+  let inst' := chartedSpaceOfCover s δ hδ hballs
+  letI := inst
+  have hsub : inst'.atlas ⊆ inst.atlas := by
+    rintro e ⟨i, _, rfl⟩
+    exact chart_mem_atlas E i
+  have hmax : inst'.atlas ⊆ (contDiffGroupoid ∞ I).maximalAtlas M :=
+    hsub.trans (StructureGroupoid.subset_maximalAtlas _)
+  obtain ⟨hsmooth, heq⟩ := isManifold_and_maximalAtlas_eq (inst := inst) inst' hmax
+  exact ⟨inst', δ, hδ, chartedSpaceOfCover_ball_subset s δ hδ hballs,
+    fun x ↦ hmax (inst'.chart_mem_atlas x), hsmooth, heq,
+    s.finite_toSet.image _, hsub⟩
 
 end Metric
 
