@@ -338,5 +338,60 @@ theorem leviCivita_naturality_twice
     hinnerInv hinnerOld univ_mem hev
   exact he.trans (congrArg (fun L ↦ L (J (inst := inst) inst' h x v)) heq)
 
+/-- Curvature of local fields transforms by `J`; no global smoothness is required. -/
+theorem curvatureOp_naturality
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (X Y Z : M → E) (x : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) X x)
+    (hY : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) Y x)
+    (hZ : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) 2
+        (fun y : M ↦ (⟨y, Z y⟩ : TotalSpace E (TangentSpace I))) x) :
+    (letI := inst';
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1;
+      J (inst := inst) inst' h x
+        (CovariantDerivative.curvatureOp (transport (inst := inst) inst' h g).leviCivita X Y Z x)) =
+    (letI := inst; CovariantDerivative.curvatureOp g.leviCivita
+      (inverseTransportField (inst := inst) inst' h X)
+      (inverseTransportField (inst := inst) inst' h Y)
+      (inverseTransportField (inst := inst) inst' h Z) x) := by
+  letI := inst
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hYold := inverseTransportField_mdiffAt (inst := inst) inst' h Y x hY
+  have hb := mlieBracket_transportField (inst := inst) inst' h
+    (inverseTransportField (inst := inst) inst' h X)
+    (inverseTransportField (inst := inst) inst' h Y) x hXold hYold
+  have hr (W : M → E) : transportField (inst := inst) inst' h
+      (inverseTransportField (inst := inst) inst' h W) = W := by
+    funext y
+    exact (J (inst := inst) inst' h y).symm_apply_apply (W y)
+  rw [hr X, hr Y] at hb
+  have hbJ := congrArg (J (inst := inst) inst' h x) hb
+  simp only [transportField, ContinuousLinearEquiv.apply_symm_apply] at hbJ
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  have hZd : MDiffAtTangentField (n := 3) Z x := hZ.mdifferentiableAt two_ne_zero
+  have hthird := leviCivita_naturality_apply (inst := inst) inst' h g Z x hZd
+    (VectorField.mlieBracket I X Y x)
+  rw [hbJ] at hthird
+  let cov := (transport (inst := inst) inst' h g).leviCivita
+  change J (inst := inst) inst' h x
+    ((show E from cov (fun y ↦ cov Z y (Y y)) x (X x)) -
+      (show E from cov (fun y ↦ cov Z y (X y)) x (Y x)) -
+      (show E from cov Z x (VectorField.mlieBracket I X Y x))) = _
+  rw [(J (inst := inst) inst' h x).map_sub, (J (inst := inst) inst' h x).map_sub]
+  rw [leviCivita_naturality_twice (inst := inst) inst' h g Z Y x hZ hY (X x),
+    leviCivita_naturality_twice (inst := inst) inst' h g Z X x hZ hX (Y x), hthird]
+  rfl
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
