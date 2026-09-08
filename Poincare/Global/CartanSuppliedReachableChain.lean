@@ -49,5 +49,17 @@ theorem exists_reachableChain :
     successor_eq := fun _ => rfl
   }⟩
 
+/-- Every reached state is anchored at its corresponding node. -/
+theorem state_anchor_eq_node :
+  ∀ (Q : ℕ → CartanChain.ChainState g → Interpretation g) (nodes : ℕ → M)
+    (initial : CartanChain.ChainState g) (c : ReachableChain Q nodes initial),
+    initial.anchor = nodes 0 → ∀ n, (c.state n).anchor = nodes n := by
+  intro Q nodes initial c hinitial n
+  cases n with
+  | zero => exact (congrArg CartanChain.ChainState.anchor c.initial_eq).trans hinitial
+  | succ n =>
+      rw [c.successor_eq n]
+      rfl
+
 end CartanSuppliedReachableChain
 end Poincare
