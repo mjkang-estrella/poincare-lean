@@ -369,5 +369,46 @@ theorem radial_position_eq_time_smul_velocity {x₀ : M} {U : Set E}
     (by simp [hΦ0, R, V, (C.flow_law _ hq).1])
   exact congrArg Prod.fst (heq ht)
 
+/-- Radial isometry and transverse norm scaling determine every pairing.
+This algebra uses the same anchor bilinear form for both components. -/
+theorem pairing_of_radial_transverse
+    (B G : E →L[ℝ] E →L[ℝ] ℝ) (J : E →L[ℝ] E) (v : E) (κ : ℝ)
+    (hB : ∀ a b, B a b = B b a) (hG : ∀ a b, G a b = G b a)
+    (hv : B v v ≠ 0) (hr : G (J v) (J v) = B v v)
+    (ho : ∀ w, B v w = 0 → G (J w) (J v) = 0)
+    (hn : ∀ w, B v w = 0 → G (J w) (J w) = κ * B w w) (a b : E) :
+    G (J a) (J b) = κ * B a b + (1 - κ) * (B a v * B b v / B v v) := by
+  have hd : ∀ a, G (J a) (J a) =
+      κ * B a a + (1 - κ) * (B a v * B a v / B v v) := by
+    intro a
+    let c := B a v / B v v
+    let w := a - c • v
+    have hw : B v w = 0 := by
+      simp only [w, map_sub, map_smul, smul_eq_mul]
+      rw [hB v a]
+      dsimp [c]
+      field_simp
+      <;> ring
+    have how := ho w hw
+    have how' : G (J v) (J w) = 0 := (hG _ _).trans how
+    have hnw := hn w hw
+    have he : a = c • v + w := by dsimp [w]; module
+    have hj : J a = c • J v + J w := by rw [he, map_add, map_smul]
+    rw [hj]
+    simp only [map_add, map_smul, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul, hr, how, how', mul_zero, add_zero, zero_add]
+    rw [hnw]
+    simp only [w, map_sub, map_smul, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.smul_apply, smul_eq_mul]
+    rw [hB v a]
+    dsimp [c]
+    field_simp
+    <;> ring
+  have h := hd (a + b)
+  simp only [map_add, ContinuousLinearMap.add_apply] at h
+  rw [hG (J b) (J a), hB b a, hd a, hd b] at h
+  field_simp at h ⊢
+  nlinarith
+
 end FixedChartMovingPositionJacobi
 end Poincare
