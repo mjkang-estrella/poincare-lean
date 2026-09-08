@@ -839,7 +839,11 @@ compact buffer overlaps, i.e. uniform chart-transition naturality of the
 patch normals; task `uniform-buffered-pair-agreement` PROVED it
 (`CartanSuppliedBufferedPairAgreement.lean`), so task 12's frozen
 `exists_switchControl` is unconditional under curvature 1. Task 13
-(`supplied-patch-policy`) is dispatched; 14 to 19 follow serially.
+(`supplied-patch-policy`) landed (`CartanSuppliedPatchPolicy.lean`: the
+policy with external label schedule and covering fallback, `StepAvailable`
+for every node-anchored state, sticky chains, and chain equality under
+equal schedules). Task 14 (`supplied-whole-cell-realization`) is dispatched;
+15 to 19 follow serially.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.

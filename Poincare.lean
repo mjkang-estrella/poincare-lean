@@ -19,6 +19,7 @@ import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer
 import Poincare.Global.CartanSuppliedFinitePatchCover
+import Poincare.Global.CartanSuppliedPatchPolicy
 import Poincare.Global.CartanSuppliedReachableChain
 import Poincare.Global.CartanSuppliedSourceGermTransfer
 import Poincare.Global.CartanSuppliedSourceMap
