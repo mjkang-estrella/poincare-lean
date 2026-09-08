@@ -200,5 +200,42 @@ theorem grid_endpoint_eq : ∀ (S : System g) (initial : CartanChain.ChainState 
     | succ m ih => exact ih.trans (hadj m)
   exact hiterate k
 
+/-- A small homotopy grid can retain every sample of both boundary realizations.
+The bounded monotone factor maps also account for repeated terminal samples. -/
+theorem exists_grid_refining (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} {p q : Path initial.anchor y} (H : p.Homotopy q)
+    (R : Realization S initial p) (T : Realization S initial q) :
+    ∃ (t : ℕ → unitInterval) (k : ℕ) (f h : ℕ → ℕ),
+      t 0 = 0 ∧ Monotone t ∧ (∀ n ≥ k, t n = 1) ∧ GridSmall S H t ∧
+      Monotone f ∧ Monotone h ∧ f 0 = 0 ∧ h 0 = 0 ∧
+      (∀ n, f n ≤ k) ∧ (∀ n, h n ≤ k) ∧
+      (∀ n, R.subdivision.time n = t (f n)) ∧
+      (∀ n, T.subdivision.time n = t (h n)) := by
+  obtain ⟨small, smallK, hs0, hsmono, hstail, hsmall⟩ := exists_grid S H
+  obtain ⟨seed, seedK, fR, fT, _hseedK, hseed0, hseedmono, hseedtail,
+      hfRmono, hfTmono, hfR0, hfT0, _hfRbound, _hfTbound,
+      hfRvalue, hfTvalue, _hRbracket, _hTbracket⟩ :=
+    DifferentialSuccessorFiniteSubdivisionRefinement.exists_common_monotone_refinement
+      R.subdivision.time T.subdivision.time R.subdivision.zero T.subdivision.zero
+      R.subdivision.mono T.subdivision.mono R.subdivision.terminal T.subdivision.terminal
+      R.subdivision.tail T.subdivision.tail
+  obtain ⟨t, k, fseed, fsmall, _hk, ht0, htmono, httail,
+      hfseedmono, _hfsmallmono, hfseed0, _hfsmall0, hfseedbound, _hfsmallbound,
+      hfseedvalue, _hfsmallvalue, _hseedbracket, hsmallbracket⟩ :=
+    DifferentialSuccessorFiniteSubdivisionRefinement.exists_common_monotone_refinement
+      seed small hseed0 hs0 hseedmono hsmono seedK smallK hseedtail hstail
+  refine ⟨t, k, fseed ∘ fR, fseed ∘ fT, ht0, htmono, httail, ?_,
+    hfseedmono.comp hfRmono, hfseedmono.comp hfTmono,
+    by simp [hfR0, hfseed0], by simp [hfT0, hfseed0],
+    fun n => hfseedbound (fR n), fun n => hfseedbound (fT n),
+    fun n => (hfRvalue n).symm.trans (hfseedvalue (fR n)).symm,
+    fun n => (hfTvalue n).symm.trans (hfseedvalue (fT n)).symm⟩
+  intro m n a b c d ha hb hc hd
+  obtain ⟨i, hi0, hi1⟩ := hsmallbracket m
+  obtain ⟨j, hj0, hj1⟩ := hsmallbracket n
+  exact hsmall i j a b c d ⟨hi0.trans ha.1, ha.2.trans hi1⟩
+    ⟨hi0.trans hb.1, hb.2.trans hi1⟩ ⟨hj0.trans hc.1, hc.2.trans hj1⟩
+    ⟨hj0.trans hd.1, hd.2.trans hj1⟩
+
 end CartanSuppliedHomotopyEndpoints
 end Poincare
