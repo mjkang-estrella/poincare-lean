@@ -187,5 +187,12 @@ theorem vector_eq : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g)
       ((Q.sourceNormal s.anchor).right_inv d.source_vector_mem.1).symm
     _ = Q.sourceNormal s.anchor z := congrArg (Q.sourceNormal s.anchor) he.symm
 
+/-- The successor retains its new anchor, actual target, and predecessor source evidence. -/
+theorem successor_fields : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g)
+  (z : M) (d : Data Q s z), d.successor.anchor = z ∧
+  d.successor.target = map Q s z ∧ z ∈ (germ Q s).source := by
+  intro Q s z d
+  exact ⟨rfl, rfl, d.source_mem⟩
+
 end CartanSuppliedDifferentialSuccessor
 end Poincare
