@@ -558,5 +558,21 @@ theorem uniformNonzeroMetricPullback (g : ClosedSmoothRiemannianMetric 3 M) :
   FixedChartUniformJacobiComparison.target_of_movingInitialPositionJacobiComparison
     (movingInitialPositionJacobiComparison g)
 
+/-- Constant curvature gives the original uniform differential pullback on
+the prescribed compact source and sphere anchor sets. -/
+theorem uniformDifferentialPullback_of_constantCurvature
+    (g : ClosedSmoothRiemannianMetric 3 M)
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    UniformDifferentialPullback (patch C D) K H :=
+  uniformDifferentialPullback_of_uniformNonzeroMetricPullback
+    (uniformNonzeroMetricPullback g) x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+
 end FixedChartMovingPositionJacobi
 end Poincare
