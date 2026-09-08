@@ -103,6 +103,17 @@ theorem chartedSpaceOfCover_ball_subset (s : Finset M) (δ : ℝ) (hδ : 0 < δ)
     ball x δ ⊆ (@chartAt E _ M _ (chartedSpaceOfCover s δ hδ hballs) x).source :=
   Classical.choose_spec (hballs x)
 
+omit [CompactSpace M] in
+/-- Symmetry of distance turns uniform source balls into persistence of
+membership for a fixed endpoint while the chart anchor varies. -/
+theorem source_slice_mem_nhds_of_ball_subset {δ : ℝ} (hδ : 0 < δ)
+    (hballs : ∀ x : M, ball x δ ⊆ (chartAt E x).source) (x : M) :
+    {y : M | x ∈ (chartAt E y).source} ∈ 𝓝 x := by
+  apply Filter.mem_of_superset (ball_mem_nhds x hδ)
+  intro y hy
+  apply hballs y
+  simpa only [mem_ball, dist_comm] using hy
+
 /-- The controlled instance has a finite atlas of original charts and exactly
 the original smooth maximal atlas. -/
 theorem exists_controlled_chartedSpace [IsManifold I ∞ M] :
