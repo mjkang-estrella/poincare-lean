@@ -70,5 +70,46 @@ theorem terminal_anchor_laws {S : System g}
   have hs : s.anchor = x := endpoint_anchor S sk.root (sk.path x) (R.realization x)
   simpa only [hs] using h
 
+/-- Short terminal paths identify the total rooted-endpoint map on an open source neighborhood. -/
+theorem development_eqOn_terminal_neighborhood [SimplyConnectedSpace M] :
+  ∀ (S : System g) (sk : CartanAtlasRootedPathSkeleton.RootedCartanPathSkeleton g)
+    (R : RootedRealization S sk) (x : M),
+  ∃ W : Set M, IsOpen W ∧ x ∈ W ∧ W ⊆ (terminalGerm R x).source ∧
+    EqOn (development R) (terminalGerm R x) W := by
+  intro S sk R x
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨W, hW, hxW, hpaths⟩ := CartanSuppliedTerminalTransport.exists_short_paths S x
+  refine ⟨W ∩ (terminalGerm R x).source,
+    hW.inter (terminalGerm R x).open_source,
+    ⟨hxW, (terminal_anchor_laws R x).1⟩, inter_subset_right, ?_⟩
+  intro z hz
+  obtain ⟨q, hq⟩ := hpaths z hz.1
+  let s := terminalState R x
+  have hs : s.anchor = x := endpoint_anchor S sk.root (sk.path x) (R.realization x)
+  obtain ⟨T, _hT⟩ := exists_realization S s (q.cast hs rfl)
+  obtain ⟨C, _hC⟩ := exists_realization S sk.root ((sk.path x).trans q)
+  let a := fallback S.cover s
+  have hv : S.cover.Valid a s :=
+    ⟨Classical.choose_spec (S.cover.source.covers s.anchor),
+      Classical.choose_spec (S.cover.target.covers s.target)⟩
+  have hstep : S.mesh ≤ S.cover.step := by
+    have := (four_mul_mesh_le S).1
+    have := mesh_pos S
+    linarith
+  have hzstep : dist z s.anchor < S.cover.step := by
+    rw [hs]
+    have hzend : dist z x < S.mesh := by simpa only [Path.target] using hq 1
+    exact hzend.trans_le hstep
+  obtain ⟨d⟩ := (S.cover.h1 a.1 a.2 s.anchor
+    (interior_subset (S.cover.source.core_subset a.1 hv.1)) s.target
+    (interior_subset (S.cover.target.core_subset a.2 hv.2)) s.alignment z hzstep).2.2.2
+  have hshort := CartanSuppliedTerminalTransport.short_path_endpoint S s
+    (q.cast hs rfl) T (by simpa only [Path.cast_coe, hs] using hq) d
+  have htrans := CartanSuppliedTerminalTransport.endpoint_trans S sk.root
+    (sk.path x) q (R.realization x) hs T C
+  have hroot := CartanSuppliedHomotopyEndpoints.endpoint_eq S sk.root
+    (sk.path z) ((sk.path x).trans q) (R.realization z) C
+  exact congrArg CartanChain.ChainState.target (hroot.trans (htrans.trans hshort))
+
 end CartanSuppliedRestrictedDevelopment
 end Poincare
