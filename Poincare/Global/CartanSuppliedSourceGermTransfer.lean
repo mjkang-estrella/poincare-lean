@@ -38,5 +38,32 @@ theorem germ_eventuallyEq_of_normal_eventuallyEq
   filter_upwards [h] with z hz
   rw [hz]
 
+/-- Inverse normal coordinates agree near zero by the local inverse laws. -/
+theorem normal_symm_eventuallyEq_of_normal_eventuallyEq
+    (S S' : CartanSourceExponential.Family g) (x : M)
+    (h : (S.normal x : M → E) =ᶠ[𝓝 x] (S'.normal x : M → E)) :
+    ((S.normal x).symm : E → M) =ᶠ[𝓝 (0 : E)]
+      ((S'.normal x).symm : E → M) := by
+  have hzero : (0 : E) ∈ (S.normal x).target := by
+    simpa only [S.normal_anchor] using
+      (S.normal x).map_source (S.anchor_mem_source x)
+  have hinvzero : (S.normal x).symm (0 : E) = x := by
+    simpa only [S.normal_anchor] using
+      (S.normal x).left_inv (S.anchor_mem_source x)
+  have htendsto : Tendsto (S.normal x).symm (𝓝 (0 : E)) (𝓝 x) := by
+    simpa only [hinvzero] using (S.normal x).continuousAt_symm hzero |>.tendsto
+  have hsource : ∀ᶠ v in 𝓝 (0 : E),
+      (S.normal x).symm v ∈ (S'.normal x).source :=
+    htendsto ((S'.normal x).open_source.mem_nhds (S'.anchor_mem_source x))
+  filter_upwards [htendsto h, hsource,
+    (S.normal x).open_target.mem_nhds hzero] with v hv hvs hvt
+  have heq : S'.normal x ((S.normal x).symm v) = v :=
+    hv.symm.trans ((S.normal x).right_inv hvt)
+  calc
+    (S.normal x).symm v =
+        (S'.normal x).symm (S'.normal x ((S.normal x).symm v)) :=
+      ((S'.normal x).left_inv hvs).symm
+    _ = (S'.normal x).symm v := congrArg (S'.normal x).symm heq
+
 end CartanSuppliedSourceGermTransfer
 end Poincare
