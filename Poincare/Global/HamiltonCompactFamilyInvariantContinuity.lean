@@ -183,4 +183,33 @@ theorem continuousAt_ricciNormSqAt_of_ricciJet
         rw [(extChartAt I x).left_inv hpSource]
   exact hchartNorm.congr_of_eventuallyEq hEq
 
+section ThirdJetTopology
+
+local instance : TopologicalSpace (ClosedSmoothRiemannianMetric n M) :=
+  closedSmoothRiemannianMetricEntryThirdJetTopology (n := n) (M := M)
+
+/-- Continuity in the landed scalar third-jet topology implies joint scalar
+and squared traceless-Ricci continuity. Compactness of the parameter is unnecessary. -/
+theorem curvatureContinuity_of_continuous
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hmetric : Continuous metric) :
+    Continuous (fun p : K × M ↦ (metric p.1).scalarAt p.2) ∧
+    Continuous (fun p : K × M ↦ (metric p.1).tracelessRicciNormSqAt p.2) := by
+  have hj (k : K) (x : M) : MetricFamilyRicciJetChartContinuousAt metric k x :=
+    (metricFamilyBlendedMetricEntryThirdJetContinuousAt_of_continuous hmetric k x
+      ).toBlendedMetricThirdJetContinuousAt.toRicciJetChartContinuousAt
+  have hs : Continuous (fun p : K × M ↦ (metric p.1).scalarAt p.2) := by
+    rw [continuous_iff_continuousAt]
+    rintro ⟨k, x⟩
+    exact continuousAt_scalarAt_of_ricciJet (hj k x)
+  have hr : Continuous (fun p : K × M ↦ (metric p.1).ricciNormSqAt p.2) := by
+    rw [continuous_iff_continuousAt]
+    rintro ⟨k, x⟩
+    exact continuousAt_ricciNormSqAt_of_ricciJet (hj k x)
+  exact ⟨hs, by
+    simpa only [ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt] using
+      hr.sub ((hs.pow 2).div_const (n : ℝ))⟩
+
+end ThirdJetTopology
+
 end Poincare.HamiltonCompactFamilyInvariantContinuity
