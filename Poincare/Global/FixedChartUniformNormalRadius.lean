@@ -11,7 +11,7 @@ It makes no identification with any separately selected per-anchor exponential.
 noncomputable section
 
 open Filter Function Metric Set
-open scoped Topology ContDiff NNReal
+open scoped Topology ContDiff NNReal Manifold
 
 namespace Poincare.FixedChartUniformNormalRadius
 
@@ -309,5 +309,57 @@ theorem exists_uniform_normal_radius_on_compact
     exact hasStrictFDerivAt_F hΓ hT hα hΦ0 hΦ hf hC1 (hm z hz)
 
 end Flow
+
+/-- The repository's uniform fixed-chart PL selector admits joint normal
+neighborhoods and compactly uniform radii. No per-anchor exponential is used. -/
+theorem exists_uniform_local_geodesic_chart_flow_normal_neighborhoods
+    {M : Type*} [TopologicalSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (ClosedSmoothModel 3)}
+    (hU : U ∈ 𝓝 (extChartAt (closedSmoothModelWithCorners 3) x₀ x₀)) :
+    let c := extChartAt (closedSmoothModelWithCorners 3) x₀ x₀
+    let Γ := GeodesicTransport.chartChristoffelField g x₀
+    ∃ r : ℝ≥0, 0 < r ∧ ∃ T > (0 : ℝ),
+      ∃ α : (ClosedSmoothModel 3 × ClosedSmoothModel 3) → ℝ →
+        ClosedSmoothModel 3 × ClosedSmoothModel 3,
+      (∀ q ∈ closedBall (c, 0) (r : ℝ), α q 0 = q ∧
+        ∀ t ∈ Icc (-T) T, HasDerivWithinAt (α q)
+          (geodesicFlowField Γ (α q t)) (Icc (-T) T) t) ∧
+      (∀ q ∈ closedBall (c, 0) (r : ℝ), ∀ t ∈ Icc (-T) T, (α q t).1 ∈ U) ∧
+      ContinuousOn (Function.uncurry α) (closedBall (c, 0) (r : ℝ) ×ˢ Icc (-T) T) ∧
+      ContDiffOn ℝ 1 (fun q => α q T) (ball (c, 0) (r : ℝ)) ∧
+      (∀ z ∈ ball c (r : ℝ),
+        HasStrictFDerivAt (F α T) (endpointDerivative T) (z, 0)) ∧
+      (∀ z ∈ ball c (r : ℝ), ∀ R > (0 : ℝ),
+        ∃ ρ > (0 : ℝ), ∃ e : OpenPartialHomeomorph
+          (ClosedSmoothModel 3 × ClosedSmoothModel 3)
+          (ClosedSmoothModel 3 × ClosedSmoothModel 3),
+        (e : (ClosedSmoothModel 3 × ClosedSmoothModel 3) →
+          ClosedSmoothModel 3 × ClosedSmoothModel 3) = F α T ∧
+        (z, 0) ∈ e.source ∧ e.source ⊆ ball (c, 0) (r : ℝ) ∧
+        e.source ⊆ univ ×ˢ ball 0 R ∧ ball z ρ ×ˢ ball 0 ρ ⊆ e.source ∧
+        ∀ y ∈ ball z ρ, InjOn (expChart α T y) (ball 0 ρ) ∧
+          ball y ρ ⊆ expChart α T y '' ball 0 R) ∧
+      ∀ K : Set (ClosedSmoothModel 3), IsCompact K → K ⊆ ball c (r : ℝ) →
+        ∀ R > (0 : ℝ), ∃ ρ > (0 : ℝ), ∀ z ∈ K,
+          InjOn (expChart α T z) (ball 0 ρ) ∧
+          ball z ρ ⊆ expChart α T z '' ball 0 R := by
+  dsimp only
+  obtain ⟨r, hr, T, hT, α, Φ, hα, hmem, hcont, hΦ0, hΦ, hf, _, hC1⟩ :=
+    GeodesicFlowJointDerivative.exists_uniform_local_geodesic_chart_flow_initialState_C1 g x₀ hU
+  have hΓ := GeodesicTransport.chartChristoffelField_contDiff g x₀
+  have ht : T ∈ Icc (-T) T := ⟨by linarith, le_rfl⟩
+  have hα' := fun q hq => hα q (ball_subset_closedBall hq)
+  have hf' := fun q hq => hf q hq T ht
+  refine ⟨r, hr, T, hT, α, hα, hmem, hcont, hC1 T ht, ?_, ?_, ?_⟩
+  · intro z hz
+    exact hasStrictFDerivAt_F hΓ hT hα' hΦ0 hΦ hf' (hC1 T ht) (by simpa using hz)
+  · intro z hz R hR
+    exact uniform_normal_radius_near hΓ hT hα' hΦ0 hΦ hf' (hC1 T ht)
+      (by simpa using hz) hR
+  · intro K hK hKr R hR
+    exact exists_uniform_normal_radius_on_compact hΓ hT hα' hΦ0 hΦ hf' (hC1 T ht) hK hKr hR
 
 end Poincare.FixedChartUniformNormalRadius
