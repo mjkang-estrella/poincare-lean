@@ -3,6 +3,58 @@
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-08 Supplied Cartan route complete: unit recognition is a theorem
+
+Plan `harness/reports/parametrization-plan-3.md` tasks 11 to 19 all landed
+on `main`, each gated by `harness/gate.sh` (focused build, forbidden-token
+scan, module-wide axiom scan exactly `{propext, Classical.choice,
+Quot.sound}`). Modules, in dependency order:
+`CartanSuppliedFinitePatchCover`, `CartanSuppliedUniformPatchSwitch`,
+`CartanSuppliedBufferedPairAgreement`, `CartanSuppliedPatchPolicy`,
+`CartanSuppliedWholeCellRealization`, `CartanSuppliedSubdivisionTransport`,
+`CartanSuppliedHomotopyEndpoints`, `CartanSuppliedTerminalTransport`,
+`CartanSuppliedRestrictedDevelopment`, `CartanSuppliedUnitRecognition`.
+
+Consequences now checked on `main`:
+
+- `CartanSuppliedUnitRecognition.unitRecognition :
+  UnitConstantCurvatureSphereRecognition3 M` for every closed simply
+  connected second countable smooth 3-manifold, on its original chart
+  instance (transfer through
+  `ConnectionInstanceNaturality.exists_controlled_recognition_reduction'`).
+- `Poincare.universal_unit_constant_curvature_sphere_recognition`
+  (`Global/UniversalUnitRecognition.lean`) discharges the `unit-recognition`
+  mission endpoint. `python3 scripts/theorem_registry.py graph --mission
+  harness/v2/missions/unit-recognition.json --require-closed` exits 0 with
+  `all_obligations_discharged: true`. The mission was rewritten: the refuted
+  H1/H2 obligation nodes are replaced by checked nodes for the supplied route.
+- `poincareConjecture_of_universalHamiltonConvergence :
+  UniversalHamiltonConvergenceStatement → PoincareConjecture` and
+  `poincareConjectureStatement_of_exists_smoothability_of_universalHamiltonConvergence :
+  ExistsSmoothabilitySmoothManifoldStatement → UniversalHamiltonConvergenceStatement →
+  PoincareConjectureStatement` (`Global/HamiltonPoincareReduction.lean`).
+
+Remaining boundary to the reserved theorem `Poincare.poincare_conjecture`
+(still intentionally absent):
+
+1. Universal Hamilton convergence (`hamilton-front` mission, two open
+   obligations: the five analytic inputs and the endpoint). No Cartan, patch,
+   mesh, homotopy, or recognition premise remains in front of it.
+2. Existence-shaped smoothability of compact simply connected topological
+   3-manifolds (`ExistsSmoothabilitySmoothManifoldStatement`, the Moise-type
+   bridge from the smooth `PoincareConjecture` to the frozen topological
+   statement). Not yet registered as a mission obligation.
+
+The alternative `grounded-topology` route (surgery sources and covering
+construction) is unchanged and still has two open obligations.
+
+Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
+chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
+<task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
+imports only task 15. Liveness from the Bash tool must use `/bin/ps` (the rtk
+hook filters bare `ps`).
+
+
 ## 2026-09-08 Mapped geodesic assembly worker result
 
 Branch `worker/mapped-geodesic-assembly`, base `cead6503`, verified proof

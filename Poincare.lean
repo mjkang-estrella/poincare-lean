@@ -28,6 +28,7 @@ import Poincare.Global.CartanSuppliedSourceMap
 import Poincare.Global.CartanSuppliedSubdivisionTransport
 import Poincare.Global.CartanSuppliedTerminalTransport
 import Poincare.Global.CartanSuppliedUniformPatchSwitch
+import Poincare.Global.CartanSuppliedUnitRecognition
 import Poincare.Global.CartanSuppliedWholeCellRealization
 import Poincare.Global.ConnectionInstanceNaturality
 import Poincare.Global.ControlledChartInstance
@@ -48,6 +49,7 @@ import Poincare.Global.FixedChartUniformPreferredGermAgreement
 import Poincare.Global.FixedChartUniformSourceNormal
 import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.GeodesicFlowJointDerivative
+import Poincare.Global.HamiltonPoincareReduction
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
 import Poincare.Global.Statement
@@ -125,6 +127,7 @@ import Poincare.Global.GeodesicReanchorLaw
 import Poincare.Global.RoundSphereCurvature
 import Poincare.Global.ExponentialRayLaw
 import Poincare.Global.SuccessorEqualityRadiusPersistence
+import Poincare.Global.UniversalUnitRecognition
 import Poincare.Global.VolumeDensity
 import Poincare.Global.CoordinateVolumeDensityVariation
 import Poincare.Global.CoordinateChartFrameDensityVariation

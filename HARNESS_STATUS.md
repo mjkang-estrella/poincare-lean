@@ -1,5 +1,7 @@
 # Orchestration Harness Status
 
+2026-09-08 MILESTONE: unit-curvature sphere recognition is a theorem on every closed simply connected smooth 3-manifold (`CartanSuppliedUnitRecognition.unitRecognition`; mission `unit-recognition.json` closed, `graph --require-closed` exit 0). The manifold-level Poincare conjecture now follows from `UniversalHamiltonConvergenceStatement` alone (`Global/HamiltonPoincareReduction.lean`); the frozen topological statement additionally needs `ExistsSmoothabilitySmoothManifoldStatement`. Reserved theorem still absent. See HANDOFF.md top section.
+
 2026-09-07 worker result, pending integration review: `hamilton-front.json` registers the five open Hamilton inputs and checked conditional convergence reduction; see `harness/reports/hamilton-front-mission_done.md`.
 
 Maintained by the orchestrator (Claude Fable 5); workers are codex gpt-5.5
