@@ -620,5 +620,26 @@ theorem chartMetric_isInvertible_of_cutoff
   rw [← hval]
   exact anchorBlendedMetricFlow_isInvertible (fun _ => g) anchor 0 z
 
+/-- The full Lie expression is the landed formal second jet plus its explicit first-jet remainder. -/
+theorem lie_eq_secondJet_add_first
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let J := fderiv ℝ G z
+    let H := fderiv ℝ (fderiv ℝ G) z
+    let B := GeodesicTransport.chartChristoffelField bg anchor
+    let W := anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0
+    J (W z) v w + G z (fderiv ℝ W z v) w + G z v (fderiv ℝ W z w) =
+      lieSecondJet (inverseEntries (G z)) (fun a b p q => H a b p q) v w +
+        lieFirst (G z) J (B z) (fderiv ℝ B z) v w := by
+  dsimp only
+  rw [lie_eq_secondCoordinate_add_first g bg anchor z hz hcut v w,
+    lieSecondCoordinate_eq_lieSecondJet _ _
+      (chartMetric_isInvertible_of_cutoff g anchor z hcut)
+      (CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor z)
+      (chartMetric_secondJet_metric_symm g anchor z hz)]
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
