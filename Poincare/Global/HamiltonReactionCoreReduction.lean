@@ -211,4 +211,24 @@ theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3
   hamiltonConvergencePinchedLimit3_of_finiteEnergyFlowExistence3
     (finiteEnergyFlowExistence3_of_hamiltonReactionCore3 h)
 
+/-- The open residual reaction-core obligation on every compatible smooth
+three-manifold, preserving the independent compact-parameter universe. -/
+def UniversalHamiltonReactionCoreStatement : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3.{u, v} N
+
+/-- Universal existence of the residual core suffices for universal
+Hamilton convergence. Existence of that core remains an input. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCore
+    (h : UniversalHamiltonReactionCoreStatement.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  letI : MeasurableSpace N := borel N
+  letI : BorelSpace N := ⟨rfl⟩
+  exact hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3 (h N)
+
 end Poincare
