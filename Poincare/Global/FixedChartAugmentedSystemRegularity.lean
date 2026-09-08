@@ -65,4 +65,28 @@ theorem exists_flow_initialState_C1_full_interval [ProperSpace X] [CompleteSpace
   exact hc.comp (continuous_id.prodMk continuous_const).continuousOn (fun y hy => ⟨hy, ht⟩)
 
 
+/-- Joint continuity on an open set of initial states supplies local compact
+trajectory tubes. C1 dependence holds everywhere on that same open set. -/
+theorem flow_contDiffOn_one_full_interval [ProperSpace X] [CompleteSpace X]
+    {F : X → X} (hF : ContDiff ℝ 2 F)
+    {α : X → ℝ → X} {S : Set X} (hS : IsOpen S)
+    {T : ℝ} (hT : 0 < T)
+    (hc : ContinuousOn (Function.uncurry α) (S ×ˢ Icc (-T) T))
+    (hα : ∀ q ∈ S, α q 0 = q ∧
+      ∀ t ∈ Icc (-T) T, HasDerivWithinAt (α q) (F (α q t)) (Icc (-T) T) t) :
+    ∀ t ∈ Icc (-T) T, ContDiffOn ℝ 1 (fun q => α q t) S := by
+  intro t ht q hq
+  obtain ⟨r, hr, hsub⟩ : ∃ r > 0, closedBall q r ⊆ S :=
+    Metric.nhds_basis_closedBall.mem_iff.mp (hS.mem_nhds hq)
+  have hcompact := ((isCompact_closedBall q r).prod isCompact_Icc).image_of_continuousOn
+    (hc.mono (Set.prod_mono hsub Subset.rfl))
+  obtain ⟨a, ha⟩ := hcompact.isBounded.subset_closedBall q
+  obtain ⟨Φ, _, _, _, _, hC1⟩ := exists_flow_initialState_C1_full_interval
+    (α := α) (p := q) (r := r) (a := a) hF hT (by
+      intro y hy
+      have hyc := ball_subset_closedBall hy
+      exact ⟨(hα y (hsub hyc)).1, (hα y (hsub hyc)).2,
+        fun s hs => ha ⟨(y, s), ⟨hyc, hs⟩, rfl⟩⟩)
+  exact ((hC1 t ht).contDiffAt (isOpen_ball.mem_nhds (mem_ball_self hr))).contDiffWithinAt
+
 end Poincare.FixedChartAugmentedSystemRegularity
