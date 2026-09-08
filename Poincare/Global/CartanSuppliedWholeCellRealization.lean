@@ -166,5 +166,12 @@ theorem exists_realization : ∀ (S : System g) (initial : CartanChain.ChainStat
     exists_sticky_chain S (fun n => p (subdivision.time n)) initial hinitial hsmall
   exact ⟨⟨subdivision, preferred, chain⟩, hsticky⟩
 
+/-- Every path in the common rooted skeleton has an actual supplied realization. -/
+theorem exists_rootedRealization_with_wholeCellMesh : ∀ (S : System g)
+    (skeleton : CartanAtlasRootedPathSkeleton.RootedCartanPathSkeleton g),
+    Nonempty (RootedRealization S skeleton) := by
+  intro S skeleton
+  exact ⟨⟨fun x => Classical.choose (exists_realization S skeleton.root (skeleton.path x))⟩⟩
+
 end CartanSuppliedWholeCellRealization
 end Poincare
