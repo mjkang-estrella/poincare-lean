@@ -65,4 +65,34 @@ theorem continuous_parameter_inverseChartPullbackVolumeDensity
   exact VolumeDensity.continuous_chartVolumeDensity
     (continuous_parameter_inverseChartPullbackGramMatrix metric hjet x z)
 
+/-- On a fixed coordinate set where the anchor cutoff is one, the genuine
+volume density is jointly continuous in the metric parameter and coordinate. -/
+theorem continuous_inverseChartPullbackVolumeDensity_on_cutoffOne
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2))
+    (x : M) (S : Set E) (hS : S ⊆ (extChartAt I x).target)
+    (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1) :
+    Continuous (fun p : K × S ↦ inverseChartPullbackVolumeDensity
+      (metric p.1) x ⟨p.2.1, hS p.2.2⟩) := by
+  apply VolumeDensity.continuous_chartVolumeDensity
+  apply continuous_pi
+  intro i
+  apply continuous_pi
+  intro j
+  have hp : Continuous (fun p : K × S ↦ (p.1, (p.2 : E))) :=
+    continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)
+  have h := (hjet (.value x (EuclideanSpace.basisFun (Fin n) ℝ i)
+      (EuclideanSpace.basisFun (Fin n) ℝ j))).comp hp
+  apply h.congr
+  intro p
+  rw [inverseChartPullbackGramMatrix_eq_field]
+  change CovariantDerivative.blendedChartMetric
+      (GeodesicTransport.cutoff (n := n) x)
+      (GeodesicTransport.backgroundMetric (n := n)) (metric p.1).inner x p.2.1 _ _ =
+    CovariantDerivative.chartMetric (metric p.1).inner x p.2.1 _ _
+  rw [CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+    _ _ _ _ (hχ p.2.1 p.2.2)]
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
