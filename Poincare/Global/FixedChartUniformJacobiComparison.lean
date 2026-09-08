@@ -23,6 +23,32 @@ open CartanSuppliedDifferentialSuccessor FixedChartLocalSuccessorExistence
 open FixedChartUniformDifferentialPullback
 
 
+section LinearContinuation
+variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] [CompleteSpace X]
+
+omit [CompleteSpace X] in
+/-- Solutions with matching values and derivatives glue at a time boundary. -/
+theorem hasDerivAt_glue {f g : ℝ → X} {c : ℝ} {d : X}
+    (hf : HasDerivAt f d c) (hg : HasDerivAt g d c) (heq : f c = g c) :
+    HasDerivAt (fun t => if t ≤ c then f t else g t) d c := by
+  have hl : HasDerivWithinAt (fun t => if t ≤ c then f t else g t) d (Iic c) c := by
+    apply hf.hasDerivWithinAt.congr
+    · intro t ht
+      exact if_pos ht
+    · simp
+  have hr : HasDerivWithinAt (fun t => if t ≤ c then f t else g t) d (Ici c) c := by
+    apply hg.hasDerivWithinAt.congr
+    · intro t ht
+      by_cases h : t ≤ c
+      · have : t = c := le_antisymm h ht
+        subst t
+        simpa using heq
+      · simp only [if_neg h]
+    · simpa using heq
+  exact (hl.union hr).hasDerivAt (by rw [Iic_union_Ici]; exact univ_mem)
+
+end LinearContinuation
+
 /-- A fundamental solution for the retained flow identifies its full state
  derivative, including both endpoints of the closed time interval. -/
 theorem flow_hasFDerivAt_of_fundamentalSolution {x₀ : M} {U : Set E}
