@@ -148,5 +148,72 @@ theorem exists_positive_lower_bound {ι : Type*} [Fintype ι]
   obtain ⟨δ, hδ, hle⟩ := h Finset.univ
   exact ⟨δ, hδ, fun i => hle i (Finset.mem_univ i)⟩
 
+/-- Buffer-pair estimates and core retention have radii fixed before any chain state. -/
+theorem exists_quantitativeCover : HasConstantSectionalCurvature3 g 1 →
+    Nonempty (QuantitativeCover g) := by
+  intro hcurv
+  classical
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨C⟩ := exists_patchCover g
+  obtain ⟨D⟩ := exists_patchCover roundSphereMetric3
+  let A := Fin C.count × Fin D.count
+  have hpairs : ∀ a : A, ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ),
+      FixedChartLocalSuccessorExistence.OnCompact (patch (C.patch a.1) (D.patch a.2))
+        (C.buffer a.1) (D.buffer a.2) η ∧
+      FixedChartLocalSuccessorEquality.OnCompact (patch (C.patch a.1) (D.patch a.2))
+        (C.buffer a.1) (D.buffer a.2) η ε := by
+    intro a
+    exact FixedChartLocalSuccessorEquality.exists_radii
+      (C.center a.1) (D.center a.2) (C.zone a.1) (D.zone a.2)
+      (C.patch a.1) (D.patch a.2) hcurv (C.cutoff a.1) (D.cutoff a.2)
+      (C.buffer a.1) (D.buffer a.2) (C.buffer_compact a.1) (C.buffer_subset a.1)
+      (D.buffer_compact a.2) (D.buffer_subset a.2)
+  choose η hη ε hε hdata hequality using hpairs
+  obtain ⟨step, hstep, hstep_le⟩ := exists_positive_lower_bound η hη
+  obtain ⟨evaluation, hevaluation, hevaluation_le⟩ := exists_positive_lower_bound ε hε
+  have hretention : ∀ a : A, ∃ ρ > (0 : ℝ),
+      ∀ s : CartanChain.ChainState g,
+        s.anchor ∈ C.core a.1 → s.target ∈ D.core a.2 →
+        ∀ z : M, dist z s.anchor < ρ →
+          z ∈ interior (C.buffer a.1) ∧
+          map (patch (C.patch a.1) (D.patch a.2)) s z ∈ interior (D.buffer a.2) := by
+    intro a
+    obtain ⟨ρ, hρ, hretain⟩ :=
+      FixedChartLocalSuccessorEquality.exists_uniform_domain_radius_into_open
+        (C.patch a.1) (D.patch a.2) (C.core a.1) (D.core a.2)
+        (C.core_compact a.1)
+        ((C.core_subset a.1).trans (interior_subset.trans (C.buffer_subset a.1)))
+        (D.core_compact a.2)
+        ((D.core_subset a.2).trans (interior_subset.trans (D.buffer_subset a.2)))
+        (interior (C.buffer a.1)) (interior (D.buffer a.2))
+        isOpen_interior (C.core_subset a.1) isOpen_interior (D.core_subset a.2)
+    refine ⟨ρ, hρ, ?_⟩
+    rintro ⟨x, p, L⟩ hx hp z hz
+    obtain ⟨hzW, hzZ, _⟩ := hretain x hx p hp L z hz
+    exact ⟨hzW, hzZ⟩
+  choose ρ hρ hretain using hretention
+  obtain ⟨retention, hretention_pos, hretention_le⟩ := exists_positive_lower_bound ρ hρ
+  refine ⟨{
+    source := C
+    target := D
+    step := step
+    evaluation := evaluation
+    retention := retention
+    step_pos := hstep
+    evaluation_pos := hevaluation
+    retention_pos := hretention_pos
+    h1 := ?_
+    h2 := ?_
+    retained := ?_ }⟩
+  · intro i j x hx p hp L z hz
+    exact hdata (i, j) x hx p hp L z (hz.trans_le (hstep_le (i, j)))
+  · intro i j x hx p hp L z d hz
+    obtain ⟨hsource, heq⟩ :=
+      hequality (i, j) x hx p hp L z d (hz.trans_le (hstep_le (i, j)))
+    exact ⟨(ball_subset_ball (hevaluation_le (i, j))).trans hsource,
+      heq.mono (ball_subset_ball (hevaluation_le (i, j)))⟩
+  · intro i j s hx hp z hz
+    exact hretain (i, j) s hx hp z (hz.trans_le (hretention_le (i, j)))
+
 end CartanSuppliedFinitePatchCover
 end Poincare
