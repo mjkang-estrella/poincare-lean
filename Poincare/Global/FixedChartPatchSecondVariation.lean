@@ -172,4 +172,50 @@ theorem exists_patch_flow_contDiffOn_two_short_time
   · intro y hy
     exact hder y hy t htT
 
+/-- The remaining step-1 assertion concerns the actual retained flow at
+its original time, on its original open state ball. The augmented curve is
+fixed by `C.α` and an operator solution initialized at the identity. -/
+def AugmentedSystemRegularity {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U) : Prop :=
+  ∃ Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E),
+    (∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      (C.α q 0, Φ q 0) = (q, ContinuousLinearMap.id ℝ (E × E)) ∧
+      ∀ t ∈ Icc (-C.T) C.T,
+        HasDerivWithinAt (fun s => (C.α q s, Φ q s))
+          (operatorAugmentedField
+            (geodesicFlowField (GeodesicTransport.chartChristoffelField g x₀))
+            (C.α q t, Φ q t)) (Icc (-C.T) C.T) t) ∧
+    ContDiffOn ℝ 1 (fun q => (C.α q C.T, Φ q C.T))
+      (ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+
+/-- Full-time augmented regularity implies the step-1 C2 endpoint target.
+No derivative identification is assumed: it follows from the flow equation
+and the full-interval Gronwall derivative theorem. -/
+theorem target_of_augmentedSystemRegularity
+    {x₀ : M} {U : Set E} (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (h : AugmentedSystemRegularity C) :
+    ContDiffOn ℝ 2 (fun q => C.α q C.T)
+      (ball (extChartAt I x₀ x₀, 0) (C.r : ℝ)) := by
+  obtain ⟨Φ, hflow, hC1⟩ := h
+  have h0 : ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      Φ q 0 = ContinuousLinearMap.id ℝ (E × E) :=
+    fun q hq => congrArg Prod.snd (hflow q hq).1
+  have hd : ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt (Φ q)
+        ((linearizedGeodesicFlowOperator
+          (GeodesicTransport.chartChristoffelField g x₀) (C.α q t)).comp (Φ q t))
+        (Icc (-C.T) C.T) t := by
+    intro q hq t ht
+    simpa [operatorAugmentedField, linearizedGeodesicFlowOperator] using
+      (((hflow q hq).2 t ht).hasFDerivWithinAt.snd).hasDerivWithinAt
+  have hf := patch_flow_hasFDerivAt_of_fundamentalSolution C h0 hd
+  intro q hq
+  apply ContDiffAt.contDiffWithinAt
+  apply (contDiffAt_succ_iff_hasFDerivAt (n := 1)).mpr
+  refine ⟨fun y => Φ y C.T,
+    ⟨ball (extChartAt I x₀ x₀, 0) (C.r : ℝ), isOpen_ball.mem_nhds hq, ?_⟩,
+    (hC1.contDiffAt (isOpen_ball.mem_nhds hq)).snd⟩
+  intro y hy
+  exact hf y hy C.T ⟨by linarith [C.T_pos], le_rfl⟩
+
 end Poincare.FixedChartPatchSecondVariation
