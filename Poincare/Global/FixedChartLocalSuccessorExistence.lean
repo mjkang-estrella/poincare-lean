@@ -195,5 +195,26 @@ theorem patchFrame_metric {x₀ : M} {U : Set E}
   rw [hframe]
   exact ht
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Framed alignments preserve the two fixed host metrics at the moving anchors. -/
+theorem linear_metric {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (x : M) (hx : x ∈ C.anchors) (p : RoundSphere3) (hp : p ∈ D.anchors)
+    (L : CartanMap.TangentAlignment g x p) (u v : E) :
+    CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ (extChartAt I p₀ p)
+      (linear (patch C D) ⟨x, p, L⟩ u) (linear (patch C D) ⟨x, p, L⟩ v) =
+      CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x) u v := by
+  calc
+    _ = CartanMap.targetAnchorChartMetric p
+        (patchFrame D p (linear (patch C D) ⟨x, p, L⟩ u))
+        (patchFrame D p (linear (patch C D) ⟨x, p, L⟩ v)) :=
+      (patchFrame_metric D p hp _ _).symm
+    _ = CartanMap.targetAnchorChartMetric p
+        (L (patchFrame C x u)) (L (patchFrame C x v)) := by simp [linear, patch]
+    _ = CartanMap.sourceAnchorChartMetric g x (patchFrame C x u) (patchFrame C x v) :=
+      L.map_app _ _
+    _ = _ := patchFrame_metric C x hx u v
+
 end FixedChartLocalSuccessorExistence
 end Poincare
