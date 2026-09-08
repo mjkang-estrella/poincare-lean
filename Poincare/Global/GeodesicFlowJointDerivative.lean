@@ -178,5 +178,110 @@ theorem flow_hasFDerivAt_initialState [ProperSpace X]
     apply hasFDerivAt_iff_isLittleO_nhds_zero.mpr
     simpa only [neg_neg] using hnres
 
+/-- Uniform dependence of the fundamental solution on its initial state,
+proved by comparing the two coefficient curves with Gronwall. -/
+theorem exists_fundamentalSolution_lipschitzOn_initialState [ProperSpace X]
+    {F : X → X} (hF : ContDiff ℝ 2 F)
+    {α : X → ℝ → X} {Φ : X → ℝ → X →L[ℝ] X}
+    {p : X} {r a T : ℝ} (hT : 0 ≤ T)
+    (hα : ∀ q ∈ ball p r, α q 0 = q ∧
+      (∀ s ∈ Icc 0 T, HasDerivWithinAt (α q) (F (α q s)) (Icc 0 T) s) ∧
+      ∀ s ∈ Icc 0 T, α q s ∈ closedBall p a)
+    (hΦ0 : ∀ q ∈ ball p r, Φ q 0 = ContinuousLinearMap.id ℝ X)
+    (hΦ : ∀ q ∈ ball p r, ∀ s ∈ Icc 0 T, HasDerivWithinAt (Φ q)
+      ((fderiv ℝ F (α q s)).comp (Φ q s)) (Icc 0 T) s) :
+    ∃ C : ℝ≥0, ∀ t ∈ Icc 0 T, LipschitzOnWith C (fun q => Φ q t) (ball p r) := by
+  have hF1 : ContDiff ℝ 1 F := hF.of_le (by norm_num)
+  obtain ⟨K, hLip⟩ := hF1.contDiffOn.exists_lipschitzOnWith
+    (by norm_num) (convex_closedBall p (a + 1)) (isCompact_closedBall p (a + 1))
+  obtain ⟨L, hcoeff⟩ := (hF.fderiv_right (m := 1) (by norm_num)).contDiffOn.exists_lipschitzOnWith
+    (by norm_num) (convex_closedBall p a) (isCompact_closedBall p a)
+  let J := ContinuousLinearMap.id ℝ X
+  let B : ℝ≥0 := ⟨‖J‖ * Real.exp ((K : ℝ) * T), by positivity⟩
+  let C : ℝ := ‖J‖ * ‖J‖ * ((L : ℝ) * (B : ℝ)) *
+    Real.exp ((K : ℝ) * T) * gronwallBound 0 K 1 T
+  refine ⟨C.toNNReal, ?_⟩
+  intro t ht
+  apply LipschitzOnWith.of_dist_le_mul
+  intro q₂ hq₂ q₁ hq₁
+  have hbound : ∀ q ∈ ball p r, ∀ s ∈ Ico (0 : ℝ) T,
+      ‖fderiv ℝ F (α q s)‖ ≤ (K : ℝ) := by
+    intro q hq s hs
+    exact norm_fderiv_le_of_lipschitzOn (𝕜 := ℝ)
+      (closedBall_radius_add_one_mem_nhds ((hα q hq).2.2 s (Ico_subset_Icc_self hs))) hLip
+  have hlin : ∀ q ∈ ball p r, ∀ h : X, ∀ s ∈ Icc (0 : ℝ) T,
+      HasDerivWithinAt (fun u => Φ q u h) (fderiv ℝ F (α q s) (Φ q s h))
+        (Icc 0 T) s := by
+    intro q hq h s hs
+    simpa using (hΦ q hq s hs).clm_apply (hasDerivWithinAt_const s (Icc 0 T) h)
+  have hdiff : ∀ s ∈ Ico (0 : ℝ) T,
+      ‖α q₂ s - α q₁ s‖ ≤ (B : ℝ) * ‖q₂ - q₁‖ := by
+    intro s hs
+    exact parameterizedFlow_sub_norm_le_of_initial_clm J hLip
+      (by simp [J, (hα q₂ hq₂).1, (hα q₁ hq₁).1])
+      (hα q₁ hq₁).2.1 (hα q₂ hq₂).2.1
+      (hα q₁ hq₁).2.2 (hα q₂ hq₂).2.2 (Ico_subset_Icc_self hs)
+  have hb := projected_linearODE_endpoint_clm_lipschitz_of_base_curves
+    (F := F) (γ₁ := α q₁) (γ₂ := α q₂)
+    (Ω₁ := fun h s => Φ q₁ s h) (Ω₂ := fun h s => Φ q₂ s h)
+    (D₁ := Φ q₁ t) (D₂ := Φ q₂ t) J J hT K.2 (norm_nonneg (q₂ - q₁)) hcoeff
+    (fun s hs => (hα q₁ hq₁).2.2 s (Ico_subset_Icc_self hs))
+    (fun s hs => (hα q₂ hq₂).2.2 s (Ico_subset_Icc_self hs)) hdiff
+    (hbound q₁ hq₁) (hbound q₂ hq₂)
+    (fun h => by simp [hΦ0 q₁ hq₁, J]) (fun h => by simp [hΦ0 q₂ hq₂, J])
+    (hlin q₁ hq₁) (hlin q₂ hq₂) (fun _ => rfl) (fun _ => rfl) ht
+  rw [dist_eq_norm, dist_eq_norm]
+  exact hb.trans (mul_le_mul_of_nonneg_right (Real.le_coe_toNNReal C) (norm_nonneg _))
+
+/-- The fundamental solution is jointly continuous in initial state and time. -/
+theorem continuousOn_fundamentalSolution [ProperSpace X]
+    {F : X → X} (hF : ContDiff ℝ 2 F)
+    {α : X → ℝ → X} {Φ : X → ℝ → X →L[ℝ] X}
+    {p : X} {r a T : ℝ} (hT : 0 ≤ T)
+    (hα : ∀ q ∈ ball p r, α q 0 = q ∧
+      (∀ s ∈ Icc (-T) T, HasDerivWithinAt (α q) (F (α q s)) (Icc (-T) T) s) ∧
+      ∀ s ∈ Icc (-T) T, α q s ∈ closedBall p a)
+    (hΦ0 : ∀ q ∈ ball p r, Φ q 0 = ContinuousLinearMap.id ℝ X)
+    (hΦ : ∀ q ∈ ball p r, ∀ s ∈ Icc (-T) T, HasDerivWithinAt (Φ q)
+      ((fderiv ℝ F (α q s)).comp (Φ q s)) (Icc (-T) T) s) :
+    ContinuousOn (fun qt : X × ℝ => Φ qt.1 qt.2) (ball p r ×ˢ Icc (-T) T) := by
+  have hsub : Icc (0 : ℝ) T ⊆ Icc (-T) T := by
+    intro s hs
+    exact ⟨by linarith [hs.1], hs.2⟩
+  have hnegmem : ∀ s ∈ Icc (0 : ℝ) T, -s ∈ Icc (-T) T := by
+    intro s hs
+    constructor <;> linarith [hs.1, hs.2]
+  obtain ⟨Cpos, hplus⟩ := exists_fundamentalSolution_lipschitzOn_initialState
+    (a := a) hF hT
+    (fun q hq => ⟨(hα q hq).1,
+      fun s hs => ((hα q hq).2.1 s (hsub hs)).mono hsub,
+      fun s hs => (hα q hq).2.2 s (hsub hs)⟩)
+    hΦ0 (fun q hq s hs => (hΦ q hq s (hsub hs)).mono hsub)
+  have hαn : ∀ q ∈ ball p r, α q (-0) = q ∧
+      (∀ s ∈ Icc 0 T, HasDerivWithinAt (fun u => α q (-u))
+        (-F (α q (-s))) (Icc 0 T) s) ∧
+      ∀ s ∈ Icc 0 T, α q (-s) ∈ closedBall p a := by
+    intro q hq
+    exact ⟨by simpa using (hα q hq).1,
+      fun s hs => hasDerivWithinAt_reflect ((hα q hq).2.1 (-s) (hnegmem s hs)),
+      fun s hs => (hα q hq).2.2 (-s) (hnegmem s hs)⟩
+  have hΦn : ∀ q ∈ ball p r, ∀ s ∈ Icc (0 : ℝ) T,
+      HasDerivWithinAt (fun u => Φ q (-u))
+        ((fderiv ℝ (-F) (α q (-s))).comp (Φ q (-s))) (Icc 0 T) s := by
+    intro q hq s hs
+    simpa only [fderiv_neg, ContinuousLinearMap.neg_comp] using
+      hasDerivWithinAt_reflect (hΦ q hq (-s) (hnegmem s hs))
+  obtain ⟨Cneg, hminus⟩ := exists_fundamentalSolution_lipschitzOn_initialState
+    (α := fun q s => α q (-s)) (Φ := fun q s => Φ q (-s)) hF.neg hT hαn
+    (by simpa using hΦ0) hΦn
+  apply continuousOn_prod_of_continuousOn_lipschitzOnWith _ (max Cpos Cneg)
+  · intro q hq
+    exact HasDerivWithinAt.continuousOn (hΦ q hq)
+  · intro t ht
+    by_cases ht0 : 0 ≤ t
+    · exact (hplus t ⟨ht0, ht.2⟩).weaken (le_max_left _ _)
+    · have hn : -t ∈ Icc (0 : ℝ) T := ⟨by linarith, by linarith [ht.1]⟩
+      simpa only [neg_neg] using (hminus (-t) hn).weaken (le_max_right Cpos Cneg)
+
 end GeodesicFlowJointDerivative
 end Poincare
