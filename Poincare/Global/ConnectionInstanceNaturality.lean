@@ -167,5 +167,33 @@ def conjugatedConnection (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
   exact ⟨conjugatedDerivative (inst := inst) inst' h g,
     conjugatedDerivative_isCovariantDerivativeOn (inst := inst) inst' h g⟩
 
+/-- Pullback of the metric pairing makes the conjugated connection metric compatible. -/
+theorem conjugatedConnection_metricCompatible
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    IsMetricCompatible (transport (inst := inst) inst' h g)
+      (conjugatedConnection (inst := inst) inst' h g) := by
+  letI := inst
+  intro x X Y hX hY v
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hYold := inverseTransportField_mdiffAt (inst := inst) inst' h Y x hY
+  have hc := g.leviCivita_metricCompatible hXold hYold (J (inst := inst) inst' h x v)
+  have hd := extDerivFun_naturality_total (inst := inst) inst' h
+    (fun y ↦ g.inner y (inverseTransportField (inst := inst) inst' h X y)
+      (inverseTransportField (inst := inst) inst' h Y y)) x v
+  change _ = g.inner x
+    (J (inst := inst) inst' h x ((J (inst := inst) inst' h x).symm
+      (g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
+        (J (inst := inst) inst' h x v))))
+    (inverseTransportField (inst := inst) inst' h Y x) +
+    g.inner x (inverseTransportField (inst := inst) inst' h X x)
+      (J (inst := inst) inst' h x ((J (inst := inst) inst' h x).symm
+        (g.leviCivita (inverseTransportField (inst := inst) inst' h Y) x
+          (J (inst := inst) inst' h x v))))
+  rw [ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]
+  exact hd.trans hc
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
