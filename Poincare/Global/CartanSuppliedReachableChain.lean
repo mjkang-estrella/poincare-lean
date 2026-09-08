@@ -61,5 +61,13 @@ theorem state_anchor_eq_node :
       rw [c.successor_eq n]
       rfl
 
+/-- Each next node lies in the actual supplied source of its reached predecessor. -/
+theorem node_mem_predecessor_source :
+  ∀ (Q : ℕ → CartanChain.ChainState g → Interpretation g) (nodes : ℕ → M)
+    (initial : CartanChain.ChainState g) (c : ReachableChain Q nodes initial) (n : ℕ),
+    nodes (n + 1) ∈ (germ (Q n (c.state n)) (c.state n)).source := by
+  intro Q nodes initial c n
+  exact (c.data n).source_mem
+
 end CartanSuppliedReachableChain
 end Poincare
