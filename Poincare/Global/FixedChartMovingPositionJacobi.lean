@@ -503,5 +503,51 @@ theorem normalized_zero_velocity {x₀ : M} {U : Set E}
   rw [hF]
   simp [FixedChartUniformNormalRadius.freeVariation, smul_smul, C.T_pos.ne']
 
+variable [T2Space M]
+open CartanSuppliedDifferentialSuccessor FixedChartLocalSuccessorExistence
+open FixedChartUniformDifferentialPullback
+
+/-- Moving initial positions on the source and sphere have identical Jacobi
+pairings under the fixed-chart tangent alignment, with independent patch times. -/
+theorem movingInitialPositionJacobiComparison (g : ClosedSmoothRiemannianMetric 3 M) :
+    FixedChartUniformJacobiComparison.MovingInitialPositionJacobiComparison g := by
+  intro x₀ p₀ U V C D hcurv hU hV x hx p hp L v
+  dsimp only
+  intro hvs hvt Φs Φt hs0 hsode ht0 htode a b
+  let l := linear (patch C D) ⟨x, p, L⟩
+  have hqs : (extChartAt I x₀ x, C.T⁻¹ • v) ∈
+      ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) := C.P_source_subset hvs.1.2
+  have hqt : (extChartAt I p₀ p, D.T⁻¹ • l v) ∈
+      ball (extChartAt I p₀ p₀, 0) (D.r : ℝ) := D.P_source_subset hvt.1.2
+  have hl := linear_metric C D x hx p hp L
+  by_cases hv : v = 0
+  · subst v
+    have hs := normalized_zero_velocity C
+      (show (extChartAt I x₀ x, (0 : E)) ∈ closedBall _ (C.r : ℝ) by
+        simpa using ball_subset_closedBall hqs) hs0 (by simpa using hsode)
+    have ht := normalized_zero_velocity D
+      (show (extChartAt I p₀ p, (0 : E)) ∈ closedBall _ (D.r : ℝ) by
+        simpa only [map_zero, smul_zero] using ball_subset_closedBall hqt)
+      ht0 (by simpa only [map_zero, smul_zero] using htode)
+    simp only [map_zero, smul_zero, hs.1, ht.1, hs.2, ht.2]
+    exact hl a b
+  · let B := CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x)
+    have hzero : (0 : ℝ) ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], C.T_pos.le⟩
+    have hcut := (flow_mem_target_cutoffOne C hU (ball_subset_closedBall hqs) hzero).2.self_of_nhds
+    rw [(C.flow_law _ (ball_subset_closedBall hqs)).1] at hcut
+    have hBpos : 0 < B v v := CovariantDerivative.chartMetric_posDef g.inner
+      (fun y w hw => g.inner_pos y hw) x₀
+      (cutoff_support_invertible x₀ _ (by rw [hcut]; exact one_ne_zero)) hv
+    let speed := Real.sqrt (B v v)
+    have hs : speed ≠ 0 := (Real.sqrt_pos.mpr hBpos).ne'
+    have hspeed : B v v = speed ^ 2 := (Real.sq_sqrt hBpos.le).symm
+    have hspeedt : CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+        (extChartAt I p₀ p) (l v) (l v) = speed ^ 2 := (hl v v).trans hspeed
+    have hsource := normalized_pairing_formula C hcurv hU hqs hs0 hsode hspeed hs a b
+    have htarget := normalized_pairing_formula D
+      roundSphereMetric3_hasConstantSectionalCurvature_one hV hqt ht0 htode hspeedt hs (l a) (l b)
+    dsimp only at hsource htarget
+    rw [hsource, htarget, hl a b, hl a v, hl b v, hl v v]
+
 end FixedChartMovingPositionJacobi
 end Poincare
