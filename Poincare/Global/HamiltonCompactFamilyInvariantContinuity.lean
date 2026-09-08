@@ -100,4 +100,87 @@ theorem continuousAt_scalarAt_of_ricciJet
         rw [(extChartAt I x).left_inv hpSource]
   exact hchartScalar.congr_of_eventuallyEq hEq
 
+/-- Coordinate Ricci jets give joint continuity of the intrinsic squared
+Ricci norm without a differentiable structure on the parameter. -/
+theorem continuousAt_ricciNormSqAt_of_ricciJet
+    {metric : K → ClosedSmoothRiemannianMetric n M} {k₀ : K} {x : M}
+    (h : MetricFamilyRicciJetChartContinuousAt metric k₀ x) :
+    ContinuousAt (fun p : K × M ↦ (metric p.1).ricciNormSqAt p.2) (k₀, x) := by
+  classical
+  let oneLocus : Set E :=
+    {z | ∀ᶠ z' in nhds z,
+      GeodesicTransport.cutoff (n := n) x z' = 1}
+  have hopen : IsOpen oneLocus := isOpen_setOf_eventually_nhds
+  have hone_mem : oneLocus ∈ nhds (extChartAt I x x) := by
+    apply hopen.mem_nhds
+    simpa [oneLocus] using
+      (GeodesicTransport.cutoff_eventuallyEq_one (n := n) x)
+  have hchart :
+      ContinuousAt (fun p : K × M ↦ extChartAt I x p.2) (k₀, x) :=
+    ContinuousAt.comp'
+      (f := fun p : K × M ↦ p.2)
+      (g := fun y : M ↦ extChartAt I x y)
+      (x := (k₀, x)) (continuousAt_extChartAt x) continuousAt_snd
+  have hchartPair :
+      ContinuousAt
+        (fun p : K × M ↦ (p.1, extChartAt I x p.2)) (k₀, x) :=
+    continuousAt_fst.prodMk hchart
+  have hcoord :
+      ContinuousAt
+        (fun p : K × E ↦ anchorChartRicciNormSqFlow (fun _ : ℝ ↦ metric p.1) x 0 p.2)
+        (k₀, extChartAt I x x) :=
+    by
+      unfold anchorChartRicciNormSqFlow
+      dsimp only
+      apply tendsto_finsetSum
+      intro j _
+      apply tendsto_finsetSum
+      intro i _
+      apply tendsto_finsetSum
+      intro k _
+      apply tendsto_finsetSum
+      intro l _
+      exact (((h.inverseCoeff j k).mul (h.inverseCoeff i l)).mul
+        (h.ricciEntry (Module.finBasis ℝ E k) (Module.finBasis ℝ E l))).mul
+        (h.ricciEntry (Module.finBasis ℝ E i) (Module.finBasis ℝ E j))
+  have hchartNorm :
+      ContinuousAt
+        (fun p : K × M ↦
+          anchorChartRicciNormSqFlow (fun _ : ℝ ↦ metric p.1) x 0 (extChartAt I x p.2))
+        (k₀, x) :=
+    ContinuousAt.comp'
+      (f := fun p : K × M ↦ (p.1, extChartAt I x p.2))
+      (g := fun p : K × E ↦ anchorChartRicciNormSqFlow (fun _ : ℝ ↦ metric p.1) x 0 p.2)
+      (x := (k₀, x)) hcoord hchartPair
+  have hsource :
+      ∀ᶠ p : K × M in nhds (k₀, x),
+        p.2 ∈ (extChartAt I x).source :=
+    continuousAt_snd.eventually (extChartAt_source_mem_nhds x)
+  have hone :
+      ∀ᶠ p : K × M in nhds (k₀, x),
+        extChartAt I x p.2 ∈ oneLocus :=
+    hchart.eventually hone_mem
+  have hEq :
+      (fun p : K × M ↦ (metric p.1).ricciNormSqAt p.2)
+        =ᶠ[nhds (k₀, x)]
+      (fun p : K × M ↦
+        anchorChartRicciNormSqFlow (fun _ : ℝ ↦ metric p.1) x 0 (extChartAt I x p.2)) := by
+    filter_upwards [hsource, hone] with p hpSource hpOne
+    have hz : extChartAt I x p.2 ∈ (extChartAt I x).target :=
+      (extChartAt I x).map_source hpSource
+    have hχone :
+        ∀ᶠ z' in nhds (extChartAt I x p.2),
+          GeodesicTransport.cutoff (n := n) x z' = 1 := by
+      simpa only [oneLocus] using hpOne
+    symm
+    calc
+      anchorChartRicciNormSqFlow (fun _ : ℝ ↦ metric p.1) x 0 (extChartAt I x p.2) =
+          (metric p.1).ricciNormSqAt
+            ((extChartAt I x).symm (extChartAt I x p.2)) :=
+        anchorChartRicciNormSqFlow_eq_ricciNormSqAt_zone
+          (fun _ : ℝ ↦ metric p.1) x 0 hz hχone
+      _ = (metric p.1).ricciNormSqAt p.2 := by
+        rw [(extChartAt I x).left_inv hpSource]
+  exact hchartNorm.congr_of_eventuallyEq hEq
+
 end Poincare.HamiltonCompactFamilyInvariantContinuity
