@@ -110,5 +110,62 @@ theorem exists_uniform_endpoint_radius {x₀ : M} {U : Set E}
   obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
   exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
 
+omit [CompactSpace M] [ConnectedSpace M] in
+/-- The fixed host metric is uniformly comparable to the model norm on
+every compact retained anchor set. -/
+theorem exists_uniform_host_metric_comparison {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) :
+    ∃ a > (0 : ℝ), ∃ b > (0 : ℝ), ∀ x ∈ K, ∀ v : E,
+      a * ‖v‖ ^ 2 ≤ CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x) v v ∧
+      CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x) v v ≤ b * ‖v‖ ^ 2 := by
+  let G : M → E →L[ℝ] E →L[ℝ] ℝ := fun x =>
+    CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x)
+  have hG : ContinuousOn G K := by
+    intro x hx
+    exact ((UniformAnchoredFTransition.chartMetric_contDiffAt_one_of_mem_target
+      g x₀ ((extChartAt I x₀).map_source (hKC hx).1)).continuousAt.comp
+        (continuousAt_extChartAt' (hKC hx).1)).continuousWithinAt
+  have hcompact : IsCompact (K ×ˢ sphere (0 : E) 1) := hK.prod (isCompact_sphere 0 1)
+  have hcontinuous : ContinuousOn (fun q : M × E => G q.1 q.2 q.2)
+      (K ×ˢ sphere (0 : E) 1) :=
+    ((hG.comp continuousOn_fst (fun _ hq => hq.1)).clm_apply continuousOn_snd).clm_apply
+      continuousOn_snd
+  have hpositive : ∀ q ∈ K ×ˢ sphere (0 : E) 1, 0 < G q.1 q.2 q.2 := by
+    intro q hq
+    apply CovariantDerivative.chartMetric_posDef g.inner (fun y v hv => g.pos y v hv) x₀
+      (isInvertible_mfderivWithin_extChartAt_symm
+        ((extChartAt I x₀).map_source (hKC hq.1).1))
+    have hn : ‖q.2‖ = 1 := by simpa using hq.2
+    intro hz
+    simp [hz] at hn
+  obtain ⟨a, ha, halower⟩ := hcompact.exists_forall_le' hcontinuous hpositive
+  have hbounded : Bornology.IsBounded (G '' K) := (hK.image_of_continuousOn hG).isBounded
+  obtain ⟨b, hb, hbound⟩ := hbounded.exists_pos_norm_le
+  refine ⟨a, ha, b, hb, ?_⟩
+  intro x hx v
+  constructor
+  · by_cases hv : v = 0
+    · simp [hv]
+    have hn := norm_ne_zero_iff.mpr hv
+    let w : E := ‖v‖⁻¹ • v
+    have hw : w ∈ sphere (0 : E) 1 := by
+      simpa only [mem_sphere, dist_zero_right] using norm_smul_inv_norm (𝕜 := ℝ) hv
+    have hr : ‖v‖ • w = v := by
+      simp [w, smul_smul, hn]
+    have he : G x v v = ‖v‖ ^ 2 * G x w w := by
+      conv_lhs => rw [← hr]
+      simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+      ring
+    change a * ‖v‖ ^ 2 ≤ G x v v
+    rw [he, mul_comm a]
+    exact mul_le_mul_of_nonneg_left (halower (x, w) ⟨hx, hw⟩) (sq_nonneg _)
+  · have hbG : ‖G x‖ ≤ b := hbound _ ⟨x, hx, rfl⟩
+    change G x v v ≤ b * ‖v‖ ^ 2
+    calc
+      G x v v ≤ ‖G x v v‖ := Real.le_norm_self _
+      _ ≤ ‖G x‖ * ‖v‖ * ‖v‖ := (G x).le_opNorm₂ v v
+      _ ≤ b * ‖v‖ ^ 2 := by nlinarith [sq_nonneg ‖v‖]
+
 end FixedChartLocalSuccessorExistence
 end Poincare
