@@ -22,6 +22,7 @@ namespace FixedChartUniformJacobiComparison
 open CartanSuppliedDifferentialSuccessor FixedChartLocalSuccessorExistence
 open FixedChartUniformDifferentialPullback
 
+
 /-- A fundamental solution for the retained flow identifies its full state
  derivative, including both endpoints of the closed time interval. -/
 theorem flow_hasFDerivAt_of_fundamentalSolution {x₀ : M} {U : Set E}
@@ -77,6 +78,25 @@ theorem coordinateEndpoint_fderiv {x₀ : M} {U : Set E}
     exact coordinateEndpoint_eq_normalizedEndpoint C x w hw
   rw [he.fderiv]
   rfl
+
+/-- The full-time fundamental solution gives the actual exponential derivative.
+This applies separately to the source patch and the round-sphere patch. -/
+theorem coordinateEndpoint_fderiv_of_fundamentalSolution {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (v a : E) (hv : v ∈ (C.endpoint x).source)
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (GeodesicTransport.chartChristoffelField g x₀)
+        (C.α (extChartAt I x₀ x, C.T⁻¹ • v) t)).comp (Φ t))
+          (Icc (-C.T) C.T) t) :
+    fderiv ℝ ((C.endpoint x).trans (chartAt E x₀)) v a =
+      (Φ C.T (0, C.T⁻¹ • a)).1 := by
+  have hq : (extChartAt I x₀ x, C.T⁻¹ • v) ∈
+      ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) := C.P_source_subset hv.1.2
+  have hf := (flow_hasFDerivAt_of_fundamentalSolution C hq hΦ0 hΦ
+    (show C.T ∈ Icc (-C.T) C.T from ⟨by linarith [C.T_pos], le_rfl⟩)).fderiv
+  rw [coordinateEndpoint_fderiv C x v a hv, hf]
 
 end FixedChartUniformJacobiComparison
 end Poincare
