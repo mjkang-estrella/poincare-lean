@@ -206,5 +206,75 @@ theorem exists_uniform_differential_radius {x₀ : M} {p₀ : RoundSphere3} {U V
   obtain ⟨_, B, hB⟩ := ht p hp _ htv
   exact ⟨A, B, hA, hB⟩
 
+/-- The remaining curvature-only assertion concerns only metric pairings away
+from the anchor. Endpoint strictness and invertibility are already proved above. -/
+def UniformNonzeroMetricPullback (g : ClosedSmoothRiemannianMetric 3 M) : Prop :=
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (K : Set M) (H : Set RoundSphere3), IsCompact K → K ⊆ C.anchors →
+    IsCompact H → H ⊆ D.anchors →
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η → z ≠ x →
+        let Q := patch C D
+        let v := Q.sourceNormal x z
+        let l := linear Q ⟨x, p, L⟩
+        ∀ a a' : E,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            (targetExp Q p (l v))
+            (fderiv ℝ (targetExp Q p) (l v) (l a))
+            (fderiv ℝ (targetExp Q p) (l v) (l a')) =
+          CovariantDerivative.chartMetric g.inner x₀ (sourceExp Q x v)
+            (fderiv ℝ (sourceExp Q x) v a) (fderiv ℝ (sourceExp Q x) v a')
+
+/-- The metric-only remainder, the zero identity, and the proved uniform
+differentials imply the exact original analytic interface. -/
+theorem uniformDifferentialPullback_of_uniformNonzeroMetricPullback
+    (hmetric : UniformNonzeroMetricPullback g)
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    UniformDifferentialPullback (patch C D) K H := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηd, hηd, hd⟩ := exists_uniform_differential_radius C D K H hK hKC hH hHD
+  obtain ⟨ηm, hηm, hm⟩ := hmetric x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨min ηd ηm, lt_min hηd hηm, ?_⟩
+  intro x hx p hp L z hz
+  obtain ⟨A, B, hA, hB⟩ := hd x hx p hp L z (hz.trans_le (min_le_left _ _))
+  refine ⟨A, B, hA, hB, ?_⟩
+  intro u u'
+  have hpull : ∀ a a' : E,
+      CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+        (targetExp (patch C D) p (linear (patch C D) ⟨x, p, L⟩ (C.normal x z)))
+        (fderiv ℝ (targetExp (patch C D) p)
+          (linear (patch C D) ⟨x, p, L⟩ (C.normal x z)) (linear (patch C D) ⟨x, p, L⟩ a))
+        (fderiv ℝ (targetExp (patch C D) p)
+          (linear (patch C D) ⟨x, p, L⟩ (C.normal x z)) (linear (patch C D) ⟨x, p, L⟩ a')) =
+      CovariantDerivative.chartMetric g.inner x₀ (sourceExp (patch C D) x (C.normal x z))
+        (fderiv ℝ (sourceExp (patch C D) x) (C.normal x z) a)
+        (fderiv ℝ (sourceExp (patch C D) x) (C.normal x z) a') := by
+    by_cases heq : z = x
+    · subst z
+      simpa only [C.normal_anchor x (hKC hx), map_zero] using
+        metric_pullback_zero C D x (hKC hx) p (hHD hp) L
+    · exact hm x hx p hp L z (hz.trans_le (min_le_right _ _)) heq
+  have h := hpull (A.symm u) (A.symm u')
+  have hAf : fderiv ℝ (sourceExp (patch C D) x) (C.normal x z) = (A : E →L[ℝ] E) :=
+    hA.hasFDerivAt.fderiv
+  have hBf : fderiv ℝ (targetExp (patch C D) p)
+      (linear (patch C D) ⟨x, p, L⟩ (C.normal x z)) = (B : E →L[ℝ] E) :=
+    hB.hasFDerivAt.fderiv
+  rw [hAf, hBf] at h
+  simpa only [ContinuousLinearEquiv.coe_coe, ContinuousLinearEquiv.apply_symm_apply] using h
+
 end FixedChartUniformDifferentialPullback
 end Poincare
