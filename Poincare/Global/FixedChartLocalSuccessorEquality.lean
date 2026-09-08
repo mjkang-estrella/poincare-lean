@@ -76,5 +76,43 @@ theorem exists_uniform_endpoint_radius_into_open {x₀ : M} {U : Set E}
   obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
   exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
 
+/-- Both successor anchors stay in prescribed open neighborhoods of the
+compact predecessor anchors. The radius also retains the actual germ source. -/
+theorem exists_uniform_domain_radius_into_open
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (W : Set M) (Z : Set RoundSphere3)
+    (hW : IsOpen W) (hKW : K ⊆ W) (hZ : IsOpen Z) (hHZ : H ⊆ Z) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+        z ∈ W ∧ map (patch C D) ⟨x, p, L⟩ z ∈ Z ∧
+        z ∈ (germ (patch C D) ⟨x, p, L⟩).source := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨δ, hδ, hδW⟩ := hK.exists_cthickening_subset_open hW hKW
+  obtain ⟨B, hB, hbound⟩ :=
+    FixedChartLocalSuccessorExistence.exists_uniform_linear_bound C D K H hK hKC hH hHD
+  obtain ⟨ρ, hρ, htarget⟩ := exists_uniform_endpoint_radius_into_open D H hH hHD Z hZ hHZ
+  obtain ⟨η, hη, hsource⟩ :=
+    FixedChartLocalSuccessorExistence.exists_uniform_normal_radius C K hK hKC (div_pos hρ hB)
+  refine ⟨min δ η, lt_min hδ hη, ?_⟩
+  intro x hx p hp L z hz
+  have hzW : z ∈ W :=
+    hδW (mem_cthickening_of_dist_le z x δ K hx (hz.trans_le (min_le_left _ _)).le)
+  obtain ⟨_, hzN, hv⟩ := hsource x hx z (hz.trans_le (min_le_right _ _))
+  have hnorm : ‖linear (patch C D) ⟨x, p, L⟩ (C.normal x z)‖ < ρ := by
+    calc
+      _ ≤ ‖(linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E)‖ * ‖C.normal x z‖ :=
+        (linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E).le_opNorm _
+      _ ≤ B * ‖C.normal x z‖ :=
+        mul_le_mul_of_nonneg_right (hbound x hx p hp L) (norm_nonneg _)
+      _ < ρ := by simpa only [mul_comm B] using (lt_div_iff₀ hB).mp hv
+  obtain ⟨htsrc, htZ⟩ := htarget p hp _ hnorm
+  exact ⟨hzW, htZ, hzN, mem_univ _, htsrc⟩
+
 end FixedChartLocalSuccessorEquality
 end Poincare
