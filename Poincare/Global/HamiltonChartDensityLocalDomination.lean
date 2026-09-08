@@ -102,4 +102,35 @@ theorem hasDerivAt_log_inverseChartDensity
   convert (C.hasDerivAt_inverseChartDensity i z htime).log hpos.ne' using 1
   field_simp
 
+/-- An intrinsic trace bound controls density ratios on a unit time strip. -/
+theorem inverseChartDensity_le_exp_mul
+    (C : FiniteExtendedChartCover (n := n) (M := M))
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (t K : ℝ) (hK : 0 ≤ K)
+    (hbound : ∀ τ ∈ Icc (t - 1) (t + 1), ∀ x : M,
+      ‖(1 / 2 : ℝ) * traceMetricVariationAt (gt τ) (timeDerivAt gt τ) x‖ ≤ K)
+    (i : Fin C.chartCount) (z : C.coordinateDomain i)
+    {τ : ℝ} (hτ : τ ∈ Icc (t - 1) (t + 1)) :
+    C.inverseChartDensity (gt τ) i z ≤ Real.exp K * C.inverseChartDensity (gt t) i z := by
+  have hderiv (s : ℝ) := hasDerivAt_log_inverseChartDensity C gt i z
+    (timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+      ((hjoint s (C.inverseChart i z)).of_le (by norm_num)))
+  have hlog := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (fun s (_ : s ∈ Icc (t - 1) (t + 1)) ↦ (hderiv s).hasDerivWithinAt)
+    (fun s hs ↦ hbound s hs (C.inverseChart i z)) (convex_Icc (t - 1) (t + 1))
+    (show t ∈ Icc (t - 1) (t + 1) by constructor <;> linarith) hτ
+  have hdist : ‖τ - t‖ ≤ 1 := by
+    rw [Real.norm_eq_abs, abs_le]
+    constructor <;> linarith [hτ.1, hτ.2]
+  have hlogle : Real.log (C.inverseChartDensity (gt τ) i z) ≤
+      K + Real.log (C.inverseChartDensity (gt t) i z) := by
+    have := le_trans (le_abs_self _) (le_trans hlog (mul_le_mul_of_nonneg_left hdist hK))
+    rw [mul_one] at this
+    linarith
+  have hpos (s : ℝ) : 0 < C.inverseChartDensity (gt s) i z :=
+    inverseChartPullbackVolumeDensity_pos (gt s) (C.anchor i) (C.coordinateTargetPoint i z)
+  have := Real.exp_le_exp.mpr hlogle
+  simpa only [Real.exp_add, Real.exp_log (hpos τ), Real.exp_log (hpos t)] using this
+
 end Poincare.HamiltonChartDensityLocalDomination
