@@ -113,6 +113,14 @@ finite-atlas parabolic Hölder contraction first. Its only class-A item, the
 compact ellipticity constant, landed as `Global/CompactCoefficientEllipticity.lean`
 (`exists_uniform_coercivity`, gate PASS).
 
+`hamilton-compact-family-invariant-continuity` landed as a verified partial
+result (`Global/HamiltonCompactFamilyInvariantContinuity.lean`, gate PASS):
+joint continuity of scalar curvature and squared traceless Ricci along any
+metric family with jointly continuous scalar third-jet profiles, in every
+dimension. The weak continuity of the finite volume measure along such a
+family is the open remainder; the follow-up
+`hamilton-family-volume-measure-continuity` targets it plus the jet-form core.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
