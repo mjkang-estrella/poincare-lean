@@ -1,3 +1,4 @@
+import Poincare.Global.FiniteFixedAnchorCutoffOneChartCover
 import Poincare.Global.HamiltonCompactFamilyInvariantContinuity
 import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HausdorffInverseChartGramContinuity
@@ -212,5 +213,62 @@ theorem continuous_integral_volumeMeasure_restrict_compact_chart
     dsimp only [F, ContinuousMap.coe_mk]
     rw [ENNReal.toReal_ofReal hn, smul_eq_mul]
     ring
+
+/-- A finite shrunken cutoff-one cover assembles continuous chart integrals
+into continuity of every intrinsic volume test integral. -/
+theorem continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2))
+    (f : C(M, ℝ)) :
+    Continuous (fun k ↦ ∫ y, f y ∂volumeMeasure (metric k)) := by
+  classical
+  obtain ⟨C⟩ := exists_finiteFixedAnchorCutoffOneChartCover (n := n) (M := M)
+  let a : Fin C.anchors.card → C.Index := C.anchors.equivFin.symm
+  let U : Fin C.anchors.card → Set M := fun i ↦ C.innerDomain (a i)
+  let P : Fin C.anchors.card → Set M := disjointed U
+  have hU : (⋃ i, U i) = univ := by
+    apply Subset.antisymm (subset_univ _)
+    intro y _
+    have hy : y ∈ ⋃ i, C.innerDomain i := by rw [C.innerDomain_cover]; trivial
+    obtain ⟨i, hi⟩ := mem_iUnion.mp hy
+    exact mem_iUnion.mpr ⟨C.anchors.equivFin i, by simpa [U, a] using hi⟩
+  have hPm : ∀ i, MeasurableSet (P i) := by
+    intro i
+    apply disjointedRec
+    · intro t j ht
+      exact ht.diff (C.isOpen_innerDomain (a j)).measurableSet
+    · exact (C.isOpen_innerDomain (a i)).measurableSet
+  have hPc : (⋃ i, P i) = univ := by
+    change (⋃ i, disjointed U i) = univ
+    rw [iUnion_disjointed, hU]
+  have hpiece : ∀ i, Continuous (fun k ↦ ∫ y in P i, f y ∂volumeMeasure (metric k)) := by
+    intro i
+    apply continuous_integral_volumeMeasure_restrict_compact_chart metric hjet
+      (a i : M) (C.compactCoordinateSet (a i))
+      (C.isCompact_compactCoordinateSet (a i))
+      (C.compactCoordinateSet_subset_chart_target (a i))
+      (fun z hz ↦ (C.compactCoordinateSet_subset_cutoffOneGermLocus (a i) hz).self_of_nhds)
+      (P i) (hPm i) _ f
+    intro y hy
+    have hyU : y ∈ C.innerDomain (a i) := disjointed_subset U i hy
+    have hyC : y ∈ closure (C.innerDomain (a i)) := subset_closure hyU
+    have hySource := (C.closure_innerDomain_subset_cutoffOneChartNeighborhood (a i) hyC).1
+    refine ⟨⟨extChartAt I (a i : M) y, ⟨y, hyC, rfl⟩⟩, ?_⟩
+    change (extChartAt I (a i : M)).symm (extChartAt I (a i : M) y) = y
+    exact (extChartAt I (a i : M)).left_inv hySource
+  have hsum := continuous_finsetSum Finset.univ (fun i _ ↦ hpiece i)
+  apply hsum.congr
+  intro k
+  symm
+  letI := volumeMeasure_isFiniteMeasure (metric k)
+  have hf : Integrable f (volumeMeasure (metric k)) :=
+    f.continuous.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
+  calc
+    (∫ y, f y ∂volumeMeasure (metric k)) =
+        ∫ y in ⋃ i, P i, f y ∂volumeMeasure (metric k) := by rw [hPc, setIntegral_univ]
+    _ = _ := integral_iUnion_fintype hPm (disjoint_disjointed U)
+      (fun _ ↦ hf.integrableOn)
 
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
