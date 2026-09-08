@@ -3,6 +3,35 @@
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-08 Fixed-chart uniform normal radius worker result
+
+Branch `worker/uniform-normal-radius`, base `41cfdfd2`, verified proof head
+`2cb7348e`. The new `FixedChartUniformNormalRadius.lean` proves the
+zero-velocity flow and full fundamental solution, the triangular joint
+anchor/endpoint derivative, strict differentiability, joint inverse
+neighborhoods, and compactly uniform injectivity and coverage radii.
+The final existence theorem instantiates the repository's exact uniform
+fixed-chart PL selector and retains the prescribed position neighborhood.
+
+For every compact anchor set inside that flow's open initial-position ball
+and every prescribed velocity bound `R > 0`, one `ρ > 0` gives injectivity
+on `ball 0 ρ` and coverage of `ball z ρ` by velocities in `ball 0 R` at every
+anchor. The inverse neighborhoods stay inside the original state ball.
+
+Direct Lean and the focused 3259-job build pass. All 11 theorem closures are
+exactly `[propext, Classical.choice, Quot.sound]`; the module-wide scan checks
+19 declarations with no nonstandard dependencies. Token and diff checks pass.
+No existing Lean file or root import changed. Commands, proof commits, and
+failed compiler evidence are in `harness/reports/uniform-normal-radius_done.md`.
+This worker result awaits orchestrator review.
+
+The construction makes no identification with the old `expAt`. The exponential
+family, H1/H2, and sphere recognition remain separate work.
+
+Exact first action for independent review:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.FixedChartUniformNormalRadius`.
+
+
 ## 2026-09-08 Joint geodesic initial-state derivative worker result
 
 Branch `worker/geodesic-position-derivative`, base
