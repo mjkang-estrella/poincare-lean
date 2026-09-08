@@ -62,5 +62,24 @@ theorem flow_speed_eq_initial {x₀ : M} {U : Set E}
     continuousOn_const Ioo_subset_Icc_self
     (by rw [closure_Ioo (show -C.T ≠ C.T by linarith [C.T_pos])]) ht
 
+/-- On a cutoff-one patch the same invariant is the actual chart metric,
+measured at the moving initial position. -/
+theorem flow_chartMetric_speed_eq_initial {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {q : E × E} (hq : q ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    CovariantDerivative.chartMetric g.inner x₀ (C.α q t).1 (C.α q t).2 (C.α q t).2 =
+      CovariantDerivative.chartMetric g.inner x₀ q.1 q.2 q.2 := by
+  have h0 : (0 : ℝ) ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], C.T_pos.le⟩
+  have hc0 := (flow_mem_target_cutoffOne C hU hq h0).2.self_of_nhds
+  rw [(C.flow_law q hq).1] at hc0
+  have h := flow_speed_eq_initial C hq ht
+  dsimp only [chartGeodesicMetric] at h
+  rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one
+    (g := g) (x₀ := x₀) (flow_mem_target_cutoffOne C hU hq ht).2.self_of_nhds,
+    blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀) hc0] at h
+  exact h
+
 end FixedChartMovingPositionJacobi
 end Poincare
