@@ -150,6 +150,37 @@ theorem contraction_eq_matrix (G T : Bilin) (hG : G.IsInvertible)
       intro j _
       rw [hA j i]
 
+/-- Finite-dimensional bilinear maps give continuous bilinear maps in the model space. -/
+def continuousBilinear (L : E →ₗ[ℝ] E →ₗ[ℝ] ℝ) : Bilin :=
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap : (E →ₗ[ℝ] ℝ) ≃ₗ[ℝ] (E →L[ℝ] ℝ)).toLinearMap.comp L)
+
+/-- The six Lie second-jet terms, bundled in their contracted slots. -/
+def lieTensor (H : E →L[ℝ] Jet1) (v w : E) : Bilin :=
+  continuousBilinear (LinearMap.mk₂ ℝ
+    (fun p q => H v p q w + H v q p w - H v w p q +
+      H w p q v + H w q p v - H w v p q)
+    (by intros; simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+    (by intros; simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+    (by intros; simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+    (by intros; simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring))
+
+/-- The six Ricci second-jet terms, bundled in their contracted slots. -/
+def ricciTensor (H : E →L[ℝ] Jet1) (v w : E) : Bilin :=
+  continuousBilinear (LinearMap.mk₂ ℝ
+    (fun p q => H p v w q + H p w v q - H p q v w -
+      H v p w q - H v w p q + H v q p w)
+    (by intros; simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+    (by intros; simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring)
+    (by intros; simp only [map_add, ContinuousLinearMap.add_apply]; ring)
+    (by intros; simp only [map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]; ring))
+
+/-- Evaluation of the bundled Lie contraction tensor is its explicit six-term expression. -/
+theorem lieTensor_apply (H : E →L[ℝ] Jet1) (v w p q : E) :
+    lieTensor H v w p q = H v p q w + H v q p w - H v w p q +
+      H w p q v + H w q p v - H w v p q := by
+  rfl
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
