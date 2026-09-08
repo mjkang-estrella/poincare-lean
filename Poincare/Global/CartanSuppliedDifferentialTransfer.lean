@@ -643,5 +643,32 @@ theorem patch_germ_eventuallyEq_generic :
   rw [hy]
   exact hi
 
+/-- The fixed-anchor generic interval theorem transfers through the vector-preserving adapter. -/
+theorem generic_interval_equality :
+  HasConstantSectionalCurvature3 g 1 → ∀ (x : M) (p : RoundSphere3),
+  ∃ ρ > (0 : ℝ), ∀ (L : CartanMap.TangentAlignment g x p) (z : M)
+    (d : Data (generic g) ⟨x, p, L⟩ z), ‖d.v‖ < ρ →
+    ∃ W : Set M, IsOpen W ∧ z ∈ W ∧
+      EqOn (map (generic g) ⟨x, p, L⟩) (map (generic g) d.successor)
+        (W ∩ ((germ (generic g) ⟨x, p, L⟩).source ∩
+          (germ (generic g) d.successor).source)) := by
+  intro hcurv x p
+  obtain ⟨ρ, hρ, hlocal⟩ :=
+    DifferentialSuccessorIntervalNaturality.exists_uniform_local_eqOn_differentialSuccessor_all
+      g hcurv x p
+  refine ⟨ρ, hρ, ?_⟩
+  intro L z d hd
+  obtain ⟨e, he, hv⟩ := toGeneric ⟨x, p, L⟩ z d
+  obtain ⟨W, hW, hz, hEq⟩ := hlocal L e (by rwa [hv])
+  let s : CartanChain.ChainState g := ⟨x, p, L⟩
+  have hznew : z ∈ e.successor.germ.source :=
+    CartanMap.anchor_mem_source g z (s.map z) e.alignment
+  refine ⟨W ∩ (s.germ.source ∩ e.successor.germ.source),
+    hW.inter (s.germ.open_source.inter e.successor.germ.open_source),
+    ⟨hz, e.anchor_mem_predecessor_source, hznew⟩, ?_⟩
+  intro y hy
+  rw [generic_map_eq, generic_map_eq, ← he]
+  exact hEq hy.1
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
