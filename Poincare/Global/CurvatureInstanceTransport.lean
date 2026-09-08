@@ -216,6 +216,36 @@ theorem conjugatedDerivative_apply (g : @ClosedSmoothRiemannianMetric 3 M _ inst
          (g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
            (J (inst := inst) inst' h x v))) := rfl
 
+/-- The additivity axiom for the raw conjugated derivative holds without
+assuming differential naturality of the Levi-Civita operator. -/
+theorem conjugatedDerivative_add
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (X Y : M → E) (x : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) X x)
+    (hY : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) Y x) :
+    conjugatedDerivative (inst := inst) inst' h g (X + Y) x =
+      conjugatedDerivative (inst := inst) inst' h g X x +
+        conjugatedDerivative (inst := inst) inst' h g Y x := by
+  letI := inst
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hYold := inverseTransportField_mdiffAt (inst := inst) inst' h Y x hY
+  have hadd : inverseTransportField (inst := inst) inst' h (X + Y) =
+      inverseTransportField (inst := inst) inst' h X +
+        inverseTransportField (inst := inst) inst' h Y := by
+    funext y
+    exact (J (inst := inst) inst' h y).map_add (X y) (Y y)
+  unfold conjugatedDerivative
+  rw [hadd, g.leviCivita.isCovariantDerivativeOnUniv.add hXold hYold]
+  apply ContinuousLinearMap.ext
+  intro v
+  exact (J (inst := inst) inst' h x).symm.map_add _ _
+
 /-- The actual curvature operator evaluated on the repository's local extensions. -/
 def curvatureValue (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
     (x : M) (u w a : E) : E :=
