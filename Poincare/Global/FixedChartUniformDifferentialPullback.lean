@@ -276,5 +276,23 @@ theorem uniformDifferentialPullback_of_uniformNonzeroMetricPullback
   rw [hAf, hBf] at h
   simpa only [ContinuousLinearEquiv.coe_coe, ContinuousLinearEquiv.apply_symm_apply] using h
 
+/-- Conditional reduction to the frozen task-8 conclusion. The curvature-only
+metric assertion above is the single unproved premise. -/
+theorem target_of_uniformNonzeroMetricPullback
+    (hmetric : UniformNonzeroMetricPullback g) :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (K : Set M) (H : Set RoundSphere3), IsCompact K → K ⊆ C.anchors →
+    IsCompact H → H ⊆ D.anchors →
+    ∃ η > (0 : ℝ), OnCompact (patch C D) K H η := by
+  intro x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  exact exists_onCompact_of_uniformDifferentialPullback C D K H hK hKC hH hHD
+    (uniformDifferentialPullback_of_uniformNonzeroMetricPullback hmetric
+      x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD)
+
 end FixedChartUniformDifferentialPullback
 end Poincare
