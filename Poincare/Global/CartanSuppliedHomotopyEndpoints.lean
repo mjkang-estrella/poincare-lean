@@ -297,5 +297,15 @@ theorem endpoint_eq_of_homotopy : ∀ (S : System g)
       (a k) (c k) h hhzero hhmono hhtimes (hhbound _)
   exact hR.trans ((grid_endpoint_eq S initial H t k htzero htmono httail hsmall a c).trans hT.symm)
 
+/-- Source simple connectivity supplies the sole homotopy input. -/
+theorem endpoint_eq [SimplyConnectedSpace M] : ∀ (S : System g)
+    (initial : CartanChain.ChainState g) {y : M}
+    (p q : Path initial.anchor y)
+    (R : Realization S initial p) (T : Realization S initial q),
+    R.endpoint = T.endpoint := by
+  intro S initial y p q R T
+  obtain ⟨H⟩ := SimplyConnectedSpace.paths_homotopic p q
+  exact endpoint_eq_of_homotopy S initial H R T
+
 end CartanSuppliedHomotopyEndpoints
 end Poincare
