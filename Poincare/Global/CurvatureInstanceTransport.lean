@@ -85,4 +85,25 @@ theorem modelContMDiffAt_iff_of_le {F : Type*} [NormedAddCommGroup F] [NormedSpa
     (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he' hx
   exact hold.trans hnew.symm
 
+/-- The inverse-J transport preserves tangent-section regularity. -/
+theorem transportField_contMDiff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → E)
+    (hX : fieldContMDiff inst inferInstance n X) :
+    fieldContMDiff inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 n
+      (transportField (inst := inst) inst' h X) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  apply (@fieldContMDiff_iff M _ inst' hs n _).2
+  intro a
+  apply (modelContMDiffAt_iff_of_le (inst := inst) inst' h hn _ a).1
+  have hX' := (fieldContMDiff_iff n X).1 hX a
+  have hD := (contMDiffAt_D (oldChart (inst := inst) a)
+    (newChart (inst := inst) inst' h a) a
+    (inst.mem_chart_source a) (inst'.mem_chart_source a)).of_le hn
+  apply (hD.clm_apply hX').congr_of_eventuallyEq
+  filter_upwards [(inst.chartAt a).open_source.mem_nhds (inst.mem_chart_source a),
+    (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
+  exact tangentCoordinates_transportField inst' h X a x hx hx'
+
 end Poincare.CurvatureInstanceTransport
