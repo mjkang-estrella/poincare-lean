@@ -46,5 +46,42 @@ theorem fieldDerivative_eq_contractionDerivative
   exact (anchorChartDeTurckContractionFlow_eq_chartCoordinateTangentField_zone
     (fun _ => g) bg anchor 0 hy hcy).symm
 
+/-- Constant-family coordinate evolution expanded through the actual
+Christoffel field and its inverse-metric contraction. -/
+theorem evolution_eq_coordinate_expression
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let Γ := GeodesicTransport.chartChristoffelField g anchor
+    let W := anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0
+    let b := Module.finBasis ℝ E
+    deTurckChartMetricEvolutionBilin (fun _ => g) bg anchor 0 z v w =
+      -2 * (∑ i, b.coord i
+        ((fderiv ℝ Γ z (b i)) v w - (fderiv ℝ Γ z v) (b i) w +
+          Γ z (b i) (Γ z v w) - Γ z v (Γ z (b i) w))) +
+      fderiv ℝ G z (W z) v w +
+      G z (fderiv ℝ W z v) w + G z v (fderiv ℝ W z w) := by
+  dsimp only
+  have hz' := (extChartAt (closedSmoothModelWithCorners 3) anchor).right_inv hz
+  have hLie := deTurckChartLieBilin_apply_chart_eq_advection_add_DW_slots
+    (fun _ => g) bg anchor 0
+    ((extChartAt (closedSmoothModelWithCorners 3) anchor).map_target hz)
+    (by simpa only [hz'] using hcut)
+    (deTurckVectorFieldRegularAt_holds (fun _ => g) bg 0) v w
+  simp only [hz'] at hLie
+  simp only [deTurckChartMetricEvolutionBilin, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [hLie, ← anchorChartRicciEntryFlow_eq_deTurckChartRicciBilin_zone
+    (fun _ => g) anchor 0 hz hcut,
+    fieldDerivative_eq_contractionDerivative g bg anchor z hz hcut]
+  simp only [deTurckChartMetricAdvectionAt,
+    ← anchorChartDeTurckContractionFlow_eq_chartCoordinateTangentField_zone
+      (fun _ => g) bg anchor 0 hz hcut]
+  simp only [anchorChartRicciEntryFlow, anchorChartCurvatureFlow,
+    anchorChartChristoffelFieldFlow, chartCurvatureOf]
+  simp only [LinearMap.coe_toContinuousLinearMap', add_assoc]
+
 end Manifold
 end Poincare.DeTurckPrincipalSecondJet
