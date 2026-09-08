@@ -76,5 +76,47 @@ theorem exists_fundamentalSolution_on_prescribed_Icc [CompleteSpace X]
   intro h t ht
   simpa [B] using (hΦ t ht).clm_apply (hasDerivWithinAt_const t (Icc (-T) T) h)
 
+/-- The Gronwall residual theorem with the identity initial-state injection.
+The perturbation ranges over the whole state space. -/
+theorem initialState_residual_isLittleO [ProperSpace X]
+    {F : X → X} (hF : ContDiff ℝ 1 F)
+    {α : X → ℝ → X} {Φ : ℝ → X →L[ℝ] X}
+    {p q : X} {r a T t : ℝ} (hT : 0 < T) (hq : q ∈ ball p r)
+    (hα : ∀ y ∈ ball p r, α y 0 = y ∧
+      (∀ s ∈ Icc 0 T, HasDerivWithinAt (α y) (F (α y s)) (Icc 0 T) s) ∧
+      ∀ s ∈ Icc 0 T, α y s ∈ closedBall p a)
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ X)
+    (hΦ : ∀ s ∈ Icc 0 T, HasDerivWithinAt Φ
+      ((fderiv ℝ F (α q s)).comp (Φ s)) (Icc 0 T) s)
+    (ht : t ∈ Icc 0 T) :
+    (fun h : X => α (q + h) t - α q t - Φ t h) =o[𝓝 (0 : X)] (fun h => h) := by
+  obtain ⟨K, hLip⟩ := hF.contDiffOn.exists_lipschitzOnWith
+    (by norm_num) (convex_closedBall p (a + 1)) (isCompact_closedBall p (a + 1))
+  have hpert : ∀ᶠ h in 𝓝 (0 : X),
+      α (q + h) 0 = α q 0 + (ContinuousLinearMap.id ℝ X) h ∧
+      (∀ s ∈ Icc 0 T, HasDerivWithinAt (α (q + h)) (F (α (q + h) s))
+        (Icc 0 T) s) ∧ ∀ s ∈ Icc 0 T, α (q + h) s ∈ closedBall p a := by
+    have hnear : ∀ᶠ h in 𝓝 (0 : X), q + h ∈ ball p r :=
+      (continuousAt_const.add continuousAt_id).preimage_mem_nhds
+        (by simpa using isOpen_ball.mem_nhds hq)
+    filter_upwards [hnear] with h hh
+    exact ⟨by simp [(hα (q + h) hh).1, (hα q hq).1], (hα (q + h) hh).2⟩
+  have hlin : ∀ᶠ h in 𝓝 (0 : X),
+      Φ 0 h = (ContinuousLinearMap.id ℝ X) h ∧
+      (∀ s ∈ Icc 0 T, HasDerivWithinAt (fun s => Φ s h)
+        (fderiv ℝ F (α q s) (Φ s h)) (Icc 0 T) s) ∧ Φ t h = Φ t h := by
+    apply Filter.Eventually.of_forall
+    intro h
+    refine ⟨by rw [hΦ0], ?_, rfl⟩
+    intro s hs
+    simpa using (hΦ s hs).clm_apply (hasDerivWithinAt_const s (Icc 0 T) h)
+  have hd := parameterizedFlowEndpoint_hasFDerivAt_of_linearized_gronwall_eventually
+    (J := ContinuousLinearMap.id ℝ X) (Ψ := fun h s => Φ s h)
+    hT hLip
+    (uniform_taylor_remainder_norm_le_on_compact_convex hF
+      (isCompact_closedBall p (a + 1)) (convex_closedBall p (a + 1)))
+    (hα q hq).2.1 (hα q hq).2.2 hpert hlin ht
+  exact hasFDerivAt_iff_isLittleO_nhds_zero.mp hd
+
 end GeodesicFlowJointDerivative
 end Poincare
