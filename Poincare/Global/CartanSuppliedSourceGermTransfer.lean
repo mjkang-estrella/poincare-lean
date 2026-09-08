@@ -65,5 +65,25 @@ theorem normal_symm_eventuallyEq_of_normal_eventuallyEq
       ((S'.normal x).left_inv hvs).symm
     _ = (S'.normal x).symm v := congrArg (S'.normal x).symm heq
 
+/-- The agreeing Cartan germs share an open source neighborhood of the anchor. -/
+theorem exists_open_common_source_agreement
+    (S S' : CartanSourceExponential.Family g)
+    (F : CartanTargetExponential.Family) (x : M) (p : RoundSphere3)
+    (K : E ≃L[ℝ] E)
+    (h : (S.normal x : M → E) =ᶠ[𝓝 x] (S'.normal x : M → E)) :
+    ∃ V, IsOpen V ∧ x ∈ V ∧
+      V ⊆ (CartanSuppliedSourceMap.germ S F x p K).source ∩
+        (CartanSuppliedSourceMap.germ S' F x p K).source ∧
+      EqOn (CartanSuppliedSourceMap.germ S F x p K)
+        (CartanSuppliedSourceMap.germ S' F x p K) V := by
+  have hagree := germ_eventuallyEq_of_normal_eventuallyEq S S' F x p K h
+  have hsource := (CartanSuppliedSourceMap.germ S F x p K).open_source.mem_nhds
+    (CartanSuppliedSourceMap.anchor_mem_source S F x p K)
+  have hsource' := (CartanSuppliedSourceMap.germ S' F x p K).open_source.mem_nhds
+    (CartanSuppliedSourceMap.anchor_mem_source S' F x p K)
+  rcases mem_nhds_iff.mp (inter_mem (inter_mem hsource hsource') hagree) with
+    ⟨V, hV, hVopen, hxV⟩
+  exact ⟨V, hVopen, hxV, fun z hz => (hV hz).1, fun z hz => (hV hz).2⟩
+
 end CartanSuppliedSourceGermTransfer
 end Poincare
