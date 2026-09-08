@@ -192,6 +192,40 @@ theorem localBound_of_jointMetricEntries
         mul_le_mul_of_nonneg_right hdensity hK
       _ = (K * Real.exp K) * C.inverseChartDensity (gt t) i z := by ring
 
+/-- The reaction core with its now-derived chart domination clause removed. -/
+def HamiltonReactionCore3' (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (c rate : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      0 < c ∧ (∀ t : Ici (0 : ℝ), c ≤ meanScalar (gt t.1)) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      0 < rate ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M,
+        normalizedTracelessRicciEvolutionReactionAt (gt t) x ≤
+          -rate * (gt t).tracelessRicciNormSqAt x) ∧
+      Continuous (fun k ↦ closedMetricFiniteVolumeMeasure (metric k)) ∧
+      Continuous (fun p : K × M ↦ (metric p.1).scalarAt p.2) ∧
+      Continuous (fun p : K × M ↦ (metric p.1).tracelessRicciNormSqAt p.2)
+
+/-- Joint entries reconstruct the removed domination clause on the same flow. -/
+theorem hamiltonReactionCore3_of_core'
+    (h : HamiltonReactionCore3'.{u, v} M) : HamiltonReactionCore3.{u, v} M := by
+  rcases h with ⟨K, topK, compactK, gt, metric, parameter, c, rate,
+    hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction,
+    hmeasure, hscalar, htraceless⟩
+  exact ⟨K, topK, compactK, gt, metric, parameter, c, rate,
+    hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction,
+    hmeasure, hscalar, htraceless, localBound_of_jointMetricEntries gt hjoint⟩
+
 end DimensionThree
 
 end Poincare.HamiltonChartDensityLocalDomination
