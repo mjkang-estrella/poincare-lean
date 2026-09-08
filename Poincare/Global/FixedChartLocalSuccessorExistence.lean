@@ -278,5 +278,90 @@ theorem exists_uniform_domain_radius {x₀ : M} {p₀ : RoundSphere3} {U V : Set
   obtain ⟨htsrc, htanchor⟩ := htarget p hp _ hnorm
   exact ⟨hzC, htanchor, hzN, mem_univ _, htsrc⟩
 
+/-- The remaining analytic requirement uses the actual supplied normal vector.
+It asserts strict endpoint derivatives and their metric pullback on one radius
+chosen before the moving anchors and alignments. -/
+def UniformDifferentialPullback (Q : Interpretation g) (K : Set M)
+    (H : Set RoundSphere3) : Prop :=
+  letI : MetricSpace M := g.toMetricSpace
+  ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+    ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+      let s : CartanChain.ChainState g := ⟨x, p, L⟩
+      let v := Q.sourceNormal x z
+      ∃ A B : E ≃L[ℝ] E,
+        HasStrictFDerivAt (sourceExp Q x) (A : E →L[ℝ] E) v ∧
+        HasStrictFDerivAt (targetExp Q p) (B : E →L[ℝ] E) (linear Q s v) ∧
+        ∀ u u' : E,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner (Q.targetHost p)
+            (targetExp Q p (linear Q s v))
+            (chartDifferential Q s A B u) (chartDifferential Q s A B u') =
+          CovariantDerivative.chartMetric g.inner (Q.sourceHost x)
+            (sourceExp Q x v) u u'
+
+/-- The verified domain estimate and the stated analytic remainder construct
+every coordinate field and the actual induced alignment. This is conditional. -/
+theorem exists_onCompact_of_uniformDifferentialPullback
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (hanalytic : UniformDifferentialPullback (patch C D) K H) :
+    ∃ η > (0 : ℝ), OnCompact (patch C D) K H η := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηd, hηd, hdomain⟩ := exists_uniform_domain_radius C D K H hK hKC hH hHD
+  obtain ⟨ηa, hηa, hfields⟩ := hanalytic
+  refine ⟨min ηd ηa, lt_min hηd hηa, ?_⟩
+  intro x hx p hp L z hz
+  obtain ⟨hzC, hzD, hzsource⟩ := hdomain x hx p hp L z (hz.trans_le (min_le_left _ _))
+  obtain ⟨A, B, hA, hB, hpull⟩ := hfields x hx p hp L z (hz.trans_le (min_le_right _ _))
+  let Q := patch C D
+  let s : CartanChain.ChainState g := ⟨x, p, L⟩
+  let v : E := Q.sourceNormal x z
+  have hzinv : (Q.sourceNormal x).symm v = z := (Q.sourceNormal x).left_inv hzsource.1
+  have hzhost : z ∈ (extChartAt I x₀).source := hzC.1
+  have hphost : map Q s z ∈ (extChartAt I p₀).source := hzD.1
+  have hvsource : v ∈ (sourceExp Q x).source := by
+    refine ⟨(Q.sourceNormal x).map_source hzsource.1, ?_⟩
+    change (Q.sourceNormal x).symm v ∈ (chartAt E x₀).source
+    rw [hzinv]
+    simpa only [extChartAt_source] using hzhost
+  have hvtarget : linear Q s v ∈ (targetExp Q p).source := by
+    refine ⟨hzsource.2.2, ?_⟩
+    change map Q s z ∈ (chartAt E p₀).source
+    simpa only [extChartAt_source] using hphost
+  have hinv := (sourceExp Q x).hasStrictFDerivAt_symm
+    ((sourceExp Q x).map_source hvsource)
+    (show HasStrictFDerivAt (sourceExp Q x) (A : E →L[ℝ] E)
+        ((sourceExp Q x).symm (sourceExp Q x v)) by
+      rw [(sourceExp Q x).left_inv hvsource]
+      exact hA)
+  have hlin := (linear Q s).hasStrictFDerivAt.comp (sourceExp Q x v) hinv
+  have hout : HasStrictFDerivAt (targetExp Q p) (B : E →L[ℝ] E)
+      (linear Q s ((sourceExp Q x).symm (sourceExp Q x v))) := by
+    rw [(sourceExp Q x).left_inv hvsource]
+    exact hB
+  let w : CoordinateData Q s z := {
+    source_anchor_valid := hKC hx
+    target_anchor_valid := hHD hp
+    source_mem := hzsource
+    v := v, A := A, B := B
+    source_vector_mem := hvsource
+    target_vector_mem := hvtarget
+    source_mem_oldChart := hzhost
+    target_mem_oldChart := hphost
+    source_coordinate := by
+      change extChartAt I x₀ z = (chartAt E x₀) ((Q.sourceNormal x).symm v)
+      rw [hzinv]
+      rfl
+    target_coordinate := rfl
+    source_exp_derivative := hA
+    target_exp_derivative := hB
+    cartan_chart_derivative := hout.comp (sourceExp Q x v) hlin
+    metric_pullback := hpull }
+  obtain ⟨d, _⟩ := CartanSuppliedDifferentialTransfer.data_of_coordinateData Q s z w
+  exact ⟨hzC, hzD, hzsource, ⟨d⟩⟩
+
 end FixedChartLocalSuccessorExistence
 end Poincare
