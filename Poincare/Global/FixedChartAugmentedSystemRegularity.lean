@@ -89,4 +89,48 @@ theorem flow_contDiffOn_one_full_interval [ProperSpace X] [CompleteSpace X]
         fun s hs => ha ⟨(y, s), ⟨hyc, hs⟩, rfl⟩⟩)
   exact ((hC1 t ht).contDiffAt (isOpen_ball.mem_nhds (mem_ball_self hr))).contDiffWithinAt
 
+universe u
+local notation "E" => ClosedSmoothModel 3
+local notation "I" => closedSmoothModelWithCorners 3
+variable {M : Type u} [TopologicalSpace M] [ChartedSpace E M]
+  [IsManifold I ∞ M]
+variable {g : ClosedSmoothRiemannianMetric 3 M}
+
+/-- The retained fundamental solution lifts the patch to an actual flow for
+all initial operators, jointly continuous throughout the full retained time. -/
+theorem exists_patch_operatorAugmentedFlow
+    {x₀ : M} {U : Set E} (C : FixedChartUniformSourceNormal.Patch g x₀ U) :
+    ∃ Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E),
+      let β := fun (y : (E × E) × ((E × E) →L[ℝ] (E × E))) (t : ℝ) =>
+        (C.α y.1 t, (Φ y.1 t).comp y.2)
+      let S := ball (extChartAt I x₀ x₀, (0 : E)) (C.r : ℝ) ×ˢ
+        (Set.univ : Set ((E × E) →L[ℝ] (E × E)))
+      (∀ y ∈ S, β y 0 = y ∧ ∀ t ∈ Icc (-C.T) C.T,
+        HasDerivWithinAt (β y)
+          (operatorAugmentedField
+            (geodesicFlowField (GeodesicTransport.chartChristoffelField g x₀))
+            (β y t)) (Icc (-C.T) C.T) t) ∧
+      ContinuousOn (Function.uncurry β) (S ×ˢ Icc (-C.T) C.T) := by
+  obtain ⟨Φ, h0, hd, _, hc⟩ :=
+    FixedChartUniformJacobiComparison.exists_patch_fundamentalSolution C
+  refine ⟨Φ, ?_, ?_⟩
+  · intro y hy
+    refine ⟨?_, ?_⟩
+    · simp [(C.flow_law y.1 (ball_subset_closedBall hy.1)).1, h0 y.1 hy.1]
+    · intro t ht
+      exact operatorAugmentedFlow_hasDerivWithinAt
+        ((C.flow_law y.1 (ball_subset_closedBall hy.1)).2 t ht)
+        (hd y.1 hy.1 t ht) y.2
+  · have hm : Continuous (fun yt :
+        (((E × E) × ((E × E) →L[ℝ] (E × E))) × ℝ) => (yt.1.1, yt.2)) :=
+      continuous_fst.fst.prodMk continuous_snd
+    let S := ball (extChartAt I x₀ x₀, (0 : E)) (C.r : ℝ) ×ˢ
+      (Set.univ : Set ((E × E) →L[ℝ] (E × E)))
+    have hcα := C.continuous_flow.comp
+      (hm.continuousOn (s := S ×ˢ Icc (-C.T) C.T))
+      (fun yt hyt => ⟨ball_subset_closedBall hyt.1.1, hyt.2⟩)
+    have hcΦ := hc.comp (hm.continuousOn (s := S ×ˢ Icc (-C.T) C.T))
+      (fun yt hyt => ⟨hyt.1.1, hyt.2⟩)
+    exact hcα.prodMk (hcΦ.clm_comp continuous_fst.snd.continuousOn)
+
 end Poincare.FixedChartAugmentedSystemRegularity
