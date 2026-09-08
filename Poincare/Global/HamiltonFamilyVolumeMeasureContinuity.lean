@@ -53,4 +53,16 @@ theorem continuous_parameter_inverseChartPullbackGramMatrix
   intro j
   exact continuous_inner_of_thirdJetProfiles_continuous metric hjet _ _ _
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Every inverse-chart volume density is continuous in the metric parameter. -/
+theorem continuous_parameter_inverseChartPullbackVolumeDensity
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2))
+    (x : M) (z : (extChartAt I x).target) :
+    Continuous (fun k ↦ inverseChartPullbackVolumeDensity (metric k) x z) := by
+  exact VolumeDensity.continuous_chartVolumeDensity
+    (continuous_parameter_inverseChartPullbackGramMatrix metric hjet x z)
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
