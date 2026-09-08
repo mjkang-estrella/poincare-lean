@@ -103,6 +103,37 @@ theorem extDerivFun_naturality_total (f : M → ℝ) (x : M) (v : E) :
       fun hf' ↦ hf ((modelMDifferentiableAt_iff (inst := inst) inst' h f x).2 hf')
     simp only [extDerivFun, mfderiv, if_neg hf, if_neg hf', ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply]
 
+/-- Inverse field transport preserves local section regularity, including that of local extensions. -/
+theorem inverseTransportField_contMDiffAt {n : ℕ∞ω} (hn : n ≤ ∞)
+    (X : M → E) (a : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      ContMDiffAt I ((I).prod 𝓘(ℝ, E)) n
+        (fun x : M ↦ (⟨x, X x⟩ : TotalSpace E (TangentSpace I))) a) :
+    letI := inst
+    ContMDiffAt I ((I).prod 𝓘(ℝ, E)) n
+      (fun x : M ↦ (⟨x, inverseTransportField (inst := inst) inst' h X x⟩ :
+        TotalSpace E (TangentSpace I))) a := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  have hcoord : letI := inst'
+      ContMDiffAt I 𝓘(ℝ, E) n
+        (fun x ↦ tangentCoordinates inst' hs a x (X x)) a := by
+    letI := inst'
+    letI : IsManifold I ∞ M := hs
+    exact (Bundle.contMDiffAt_section (IB := I) (F := E) («E» := TangentSpace I) a).1 hX
+  have hXold := (modelContMDiffAt_iff_of_le (inst := inst) inst' h hn _ a).2 hcoord
+  apply (Bundle.contMDiffAt_section (IB := I) (F := E) («E» := TangentSpace I) a).2
+  have hD := (contMDiffAt_D (newChart (inst := inst) inst' h a)
+    (oldChart (inst := inst) a) a
+    (inst'.mem_chart_source a) (inst.mem_chart_source a)).of_le hn
+  apply (hD.clm_apply hXold).congr_of_eventuallyEq
+  filter_upwards [(inst.chartAt a).open_source.mem_nhds (inst.mem_chart_source a),
+    (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
+  exact tangentCoordinates_transport (inst := inst) inst' h a x hx hx' (X x)
+
 section Connection
 variable [T2Space M]
 
