@@ -138,6 +138,48 @@ theorem exists_controlled_chartedSpace [IsManifold I ∞ M] :
     fun x ↦ hmax (inst'.chart_mem_atlas x), hsmooth, heq,
     s.finite_toSet.image _, hsub⟩
 
+/-- The same controlled instance satisfies the preferred-source clause
+required by generic joint regularity. -/
+theorem exists_controlled_chartedSpace_source_persistence [IsManifold I ∞ M] :
+    ∃ (inst' : ChartedSpace E M) (δ : ℝ), 0 < δ ∧
+      (∀ x : M, ball x δ ⊆ (@chartAt E _ M _ inst' x).source) ∧
+      (∀ x : M, @chartAt E _ M _ inst' x ∈
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I)) ∧
+      (letI := inst'; IsManifold I ∞ M) ∧
+      (∀ x : M, {y : M | x ∈ (@chartAt E _ M _ inst' y).source} ∈ 𝓝 x) ∧
+      @StructureGroupoid.maximalAtlas E M _ _ inst' (contDiffGroupoid ∞ I) =
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I) ∧
+      inst'.atlas.Finite ∧ inst'.atlas ⊆ inst.atlas := by
+  obtain ⟨inst', δ, hδ, hballs, hcharts, hsmooth, heq, hfinite, hsub⟩ :=
+    exists_controlled_chartedSpace (M := M)
+  exact ⟨inst', δ, hδ, hballs, hcharts, hsmooth,
+    source_slice_mem_nhds_of_ball_subset hδ hballs, heq, hfinite, hsub⟩
+
 end Metric
+
+section CompatibleMetric
+
+variable {M : Type u} [t : TopologicalSpace M] [inst : ChartedSpace E M]
+variable [IsManifold I ∞ M] [CompactSpace M]
+
+/-- Version for a fixed original topology and any compatible metric.
+`replaceTopology` keeps the distance of `d` and makes the topology
+definitionally equal to the original `t`. -/
+theorem exists_controlled_chartedSpace_of_compatibleMetric
+    (d : MetricSpace M) (hd : d.toUniformSpace.toTopologicalSpace = t) :
+    letI : MetricSpace M := d.replaceTopology hd.symm
+    ∃ (inst' : ChartedSpace E M) (δ : ℝ), 0 < δ ∧
+      (∀ x : M, ball x δ ⊆ (@chartAt E _ M _ inst' x).source) ∧
+      (∀ x : M, @chartAt E _ M _ inst' x ∈
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I)) ∧
+      (letI := inst'; IsManifold I ∞ M) ∧
+      (∀ x : M, {y : M | x ∈ (@chartAt E _ M _ inst' y).source} ∈ 𝓝 x) ∧
+      @StructureGroupoid.maximalAtlas E M _ _ inst' (contDiffGroupoid ∞ I) =
+        @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I) ∧
+      inst'.atlas.Finite ∧ inst'.atlas ⊆ inst.atlas := by
+  letI : MetricSpace M := d.replaceTopology hd.symm
+  exact exists_controlled_chartedSpace_source_persistence (M := M)
+
+end CompatibleMetric
 
 end Poincare.ControlledChartInstance
