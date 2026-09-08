@@ -272,3 +272,26 @@ theorem continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous
       (fun _ ↦ hf.integrableOn)
 
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
+
+namespace Poincare.HamiltonFamilyVolumeMeasureContinuity
+variable {M : Type u}
+variable [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+variable [MeasurableSpace M] [BorelSpace M]
+variable [ChartedSpace (ClosedSmoothModel 3) M]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+variable [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M]
+
+/-- Joint scalar third-jet profiles imply weak continuity of the original
+finite Riemannian volume measures. -/
+theorem continuous_closedMetricFiniteVolumeMeasure_of_thirdJetProfiles_continuous
+    (K : Type v) [TopologicalSpace K] [CompactSpace K]
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot 3 M,
+      Continuous (fun p : K × ClosedSmoothModel 3 ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2)) :
+    Continuous (fun k ↦ closedMetricFiniteVolumeMeasure (metric k)) := by
+  rw [FiniteMeasure.continuous_iff_forall_continuousMap_continuous_integral]
+  intro f
+  exact continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous metric hjet f
+
+end Poincare.HamiltonFamilyVolumeMeasureContinuity
