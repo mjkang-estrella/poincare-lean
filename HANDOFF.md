@@ -850,9 +850,12 @@ skeleton). Task 15 (`supplied-subdivision-transport`) landed
 (`CartanSuppliedSubdivisionTransport.lean`: supplied states transport across
 arbitrary monotone refinement factors and repeated nodes, so every two
 realizations of one path have equal endpoint states). Task 16
-(`supplied-homotopy-endpoints`) and task 17 (`supplied-terminal-transport`,
-which imports only task 15) are dispatched in parallel; 18 (needs both) and
-19 follow serially.
+(`supplied-homotopy-endpoints`) landed (`CartanSuppliedHomotopyEndpoints.lean`:
+small homotopy grids, the supplied ladder invariant with actual patch
+switches, endpoint equality for arbitrary realizations of homotopic paths, and
+path independence under `SimplyConnectedSpace M`). Task 17
+(`supplied-terminal-transport`) is in flight; 18 (needs 16 and 17) and 19
+follow serially.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
