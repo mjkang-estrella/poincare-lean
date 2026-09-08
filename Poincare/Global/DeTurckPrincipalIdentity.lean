@@ -199,5 +199,21 @@ theorem fieldDerivative_eq_jets
   dsimp only
   abel
 
+/-- The coordinate field value is the fixed algebraic first-jet contraction. -/
+theorem field_eq_value
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1) :
+    anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0 z =
+      fieldValue (CovariantDerivative.chartMetric g.inner anchor z)
+        (fderiv ℝ (CovariantDerivative.chartMetric g.inner anchor) z)
+        (GeodesicTransport.chartChristoffelField bg anchor z) := by
+  have hval : anchorBlendedMetricFlow (fun _ => g) anchor 0 z =
+      CovariantDerivative.chartMetric g.inner anchor z :=
+    CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      (GeodesicTransport.cutoff (n := 3) anchor)
+      (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hcut.self_of_nhds
+  simp only [anchorChartDeTurckContractionFlow, fieldValue,
+    anchorChartChristoffelFieldFlow, hval, christoffel_eq_connection g anchor z hcut]
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
