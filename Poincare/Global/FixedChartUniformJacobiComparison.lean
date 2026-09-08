@@ -169,6 +169,16 @@ theorem exists_linearODE_on_symmetric_Icc {A : ℝ → X →L[ℝ] X}
   simpa only [B, projIcc_of_mem hTT ht] using (hder t ht).hasDerivWithinAt
 
 
+/-- The full operator fundamental solution exists through the prescribed
+endpoint, even when the short-interval Picard bound fails for that time. -/
+theorem exists_fundamentalSolution_on_Icc {A : ℝ → X →L[ℝ] X}
+    {T : ℝ} (hT : 0 ≤ T) (hA : ContinuousOn A (Icc (-T) T)) :
+    ∃ Φ : ℝ → X →L[ℝ] X, Φ 0 = ContinuousLinearMap.id ℝ X ∧
+      ∀ t ∈ Icc (-T) T, HasDerivWithinAt Φ ((A t).comp (Φ t)) (Icc (-T) T) t := by
+  exact exists_linearODE_on_symmetric_Icc hT
+    ((ContinuousLinearMap.compL ℝ X X X).continuous.comp_continuousOn hA)
+    (ContinuousLinearMap.id ℝ X)
+
 end LinearContinuation
 
 /-- A fundamental solution for the retained flow identifies its full state
