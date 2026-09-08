@@ -2,6 +2,35 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Uniform endpoint reanchoring worker partial
+
+Branch `worker/uniform-endpoint-reanchoring`, base `5baf6aa8`, verified
+proof head `ff760da6`. The new `FixedChartUniformEndpointReanchoring.lean`
+proves uniform host-coordinate metric-pullback germs and a signed diagonal
+Christoffel law conditional on differentiability of the actual derivative.
+It also proves the corresponding chain rule, retained-flow time normalization,
+full-interval uniqueness, and compactly uniform endpoint displacement.
+
+One concrete remainder, `UniformMappedGeodesicEquation`, suffices for the
+exact endpoint target and the conditional H2 and H1+H2 consequences. Its
+producer remains open. Supplied-map derivative regularity, uniform trajectory
+retention in the transition neighborhood, and the actual successor initial
+velocity identity have not been discharged. No unconditional target name
+was introduced.
+
+All 11 public theorems passed direct Lean and were committed separately.
+The focused build passed with 3613 jobs; the scan reports 12 public declarations
+with no nonstandard dependencies. All named closures are exactly
+`[propext, Classical.choice, Quot.sound]`. Token and diff checks pass.
+No existing Lean file or root import changed. Commands, outputs, retries,
+proof commits, and the exact remainder are recorded in
+`harness/reports/uniform-endpoint-reanchoring_blocked.md`.
+This worker result awaits independent review.
+
+Exact first independent review action:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FixedChartUniformEndpointReanchoring.lean`.
+
+
 ## 2026-09-08 Supplied source germ transfer worker result
 
 Branch `worker/supplied-source-germ-transfer`, base `ae6ce9f4`, verified proof
