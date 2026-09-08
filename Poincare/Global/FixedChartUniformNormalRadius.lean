@@ -60,4 +60,46 @@ theorem flow_zero_velocity [FiniteDimensional ℝ E]
     (fun t _ => by simpa [geodesicFlowField] using hasDerivAt_const t (z, (0 : E)))
     (fun _ _ => hz) h0
 
+/-- At zero velocity the linearized field sends `(u,w)` to `(w,0)`. -/
+theorem linearized_zero_velocity
+    {Γ : E → E →L[ℝ] E →L[ℝ] E} {z : E}
+    (hΓ : DifferentiableAt ℝ Γ z) (p : E × E) :
+    linearizedGeodesicFlowOperator Γ (z, 0) p = (p.2, 0) := by
+  rw [linearizedGeodesicFlowOperator_eq_coordinateJacobiFlowOperator hΓ]
+  simp [coordinateJacobiAcceleration]
+
+/-- The entire fundamental solution at zero velocity is free motion. -/
+theorem fundamentalSolution_zero_velocity
+    {Γ : E → E →L[ℝ] E →L[ℝ] E} {z : E}
+    (hΓ : DifferentiableAt ℝ Γ z)
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)} {T : ℝ} (hT : 0 < T)
+    (h0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hd : ∀ t ∈ Icc (-T) T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator Γ (z, 0)).comp (Φ t)) (Icc (-T) T) t) :
+    ∀ t ∈ Icc (-T) T, Φ t = freeVariation t := by
+  intro t ht
+  apply ContinuousLinearMap.ext
+  intro p
+  let A := linearizedGeodesicFlowOperator Γ (z, 0)
+  have hlin : ∀ s ∈ Icc (-T) T, HasDerivWithinAt (fun u => Φ u p)
+      (A (Φ s p)) (Icc (-T) T) s := by
+    intro s hs
+    simpa [A] using (hd s hs).clm_apply (hasDerivWithinAt_const s (Icc (-T) T) p)
+  have hexpl : ∀ s : ℝ, HasDerivAt (fun u => freeVariation u p)
+      (A (freeVariation s p)) s := by
+    intro s
+    simpa [freeVariation, A, linearized_zero_velocity hΓ] using
+      ((hasDerivAt_const s p.1).add ((hasDerivAt_id s).smul_const p.2)).prodMk
+        (hasDerivAt_const s p.2)
+  have heq := ODE_solution_unique_of_mem_Icc
+    (v := fun _ => A) (s := fun _ => univ)
+    (fun _ _ => A.lipschitz.lipschitzOnWith)
+    (by constructor <;> linarith : (0 : ℝ) ∈ Ioo (-T) T)
+    (HasDerivWithinAt.continuousOn hlin)
+    (fun s hs => (hlin s (Ioo_subset_Icc_self hs)).hasDerivAt (Icc_mem_nhds hs.1 hs.2))
+    (fun _ _ => mem_univ _) (fun s _ => (hexpl s).continuousAt.continuousWithinAt)
+    (fun s _ => hexpl s) (fun _ _ => mem_univ _)
+    (by simp [h0, freeVariation])
+  exact heq ht
+
 end Poincare.FixedChartUniformNormalRadius
