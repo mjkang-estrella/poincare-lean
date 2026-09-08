@@ -339,4 +339,17 @@ theorem uniformBufferedPairAgreement (B : QuantitativeCover g) :
   exact he
 
 end CartanSuppliedBufferedPairAgreement
+
+namespace CartanSuppliedUniformPatchSwitch
+open CartanSuppliedFinitePatchCover
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- The frozen curvature-facing target. The stronger comparison above uses
+only the retained cutoff-one patches already supplied by the cover. -/
+theorem uniformBufferedPairAgreement_of_constantCurvature :
+    ∀ (hcurv : HasConstantSectionalCurvature3 g 1) (B : QuantitativeCover g),
+      CartanSuppliedUniformPatchSwitch.UniformBufferedPairAgreement B :=
+  fun _ B => CartanSuppliedBufferedPairAgreement.uniformBufferedPairAgreement B
+
+end CartanSuppliedUniformPatchSwitch
 end Poincare
