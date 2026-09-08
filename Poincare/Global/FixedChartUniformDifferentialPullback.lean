@@ -124,6 +124,17 @@ theorem exists_uniform_coordinateEndpoint_derivative_radius {x₀ : M} {U : Set 
   filter_upwards [(C.endpoint x).open_source.mem_nhds hvsrc] with w hw
   exact (coordinateEndpoint_eq_normalizedEndpoint C x w hw).symm
 
+/-- The actual coordinate endpoint has identity strict derivative at zero. -/
+theorem coordinateEndpoint_hasStrictFDerivAt_zero {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (hx : x ∈ C.anchors) :
+    HasStrictFDerivAt ((C.endpoint x).trans (chartAt E x₀))
+      (ContinuousLinearMap.id ℝ E) 0 := by
+  apply (normalizedEndpoint_hasStrictFDerivAt_zero C x hx).congr_of_eventuallyEq
+  filter_upwards [(C.endpoint x).open_source.mem_nhds
+    (C.zero_mem_endpoint_source x hx)] with v hv
+  exact (coordinateEndpoint_eq_normalizedEndpoint C x v hv).symm
+
 variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
 
 /-- Both supplied exponentials have strict equivalence derivatives on one manifold radius,
