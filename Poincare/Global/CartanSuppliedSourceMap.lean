@@ -44,5 +44,16 @@ theorem anchor_mem_source (S : CartanSourceExponential.Family g)
   simpa [germ, S.anchor_mem_source x, S.normal_anchor x,
     F.zero_mem_source p, F.chart_zero p, hp] using hptarget
 
+/-- The supplied germ sends its source anchor to its target anchor. -/
+theorem germ_anchor (S : CartanSourceExponential.Family g)
+    (F : CartanTargetExponential.Family) (x : M) (p : RoundSphere3)
+    (K : E ≃L[ℝ] E) : germ S F x p K x = p := by
+  have hp : (chartAt E p) p = (0 : E) := by
+    simpa [extChartAt_coe] using
+      RoundSphereTargetAnchorUniformity.extChartAt_roundSphere_self_eq_zero p
+  change (chartAt E p).symm (F.chart p (K (S.normal x x))) = p
+  rw [S.normal_anchor, map_zero, F.chart_zero, ← hp]
+  exact (chartAt E p).left_inv (mem_chart_source E p)
+
 end CartanSuppliedSourceMap
 end Poincare
