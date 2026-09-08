@@ -801,10 +801,19 @@ over the full retained interval, the same full-interval Grönwall argument
 already done for the base flow. Task `augmented-system-regularity` PROVED
 it (`FixedChartAugmentedSystemRegularity.lean`, merged): `augmentedSystemRegularity`
 and `patch_endpoint_contDiffOn_two`, so every patch endpoint map is `C²` on
-its full retained ball. Task `mapped-geodesic-assembly` is dispatched for
-the remaining assembly: chart-map `C²`, the uniform transition law, the
-mapped geodesic initial-value problem, and the frozen task-9 target
-`exists_radii` (H1 and H2 replacements together).
+its full retained ball. Task `mapped-geodesic-assembly` PROVED the
+assembly (`FixedChartMappedGeodesicAssembly.lean`, merged): chart-map `C²`,
+the uniform transition law, the mapped geodesic initial-value problem,
+`uniformEndpointReanchoring_of_constantCurvature`, `exists_onCompact`, and
+`FixedChartLocalSuccessorEquality.exists_radii`, byte-for-byte the frozen
+task-9 target. So on a fixed-chart patch of a controlled instance, for
+compact anchor sets and a unit-curvature metric, one step radius and one
+evaluation radius chosen before every moving parameter give supplied
+successor data (H1) and germ equality on the evaluation ball for every
+datum (H2). These are the well-posed replacements of the two obligations
+refuted on 2026-09-08, now proved. Task 10 (`supplied-reachable-chain`) is
+dispatched; the chain/mesh/overlap, restricted-atlas, and development
+adapter files remain, to be specified with the same exactness after task 10.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
