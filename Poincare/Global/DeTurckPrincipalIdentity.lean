@@ -48,6 +48,30 @@ def fieldFirst (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E)
     -G.inverse (J a (connection G J r (b i))) + connection G J dr (b i) -
       DB a r (b i) - B dr (b i)
 
+/-- The two second-jet Lie slots before converting the basis contraction to matrix entries. -/
+def lieSecondCoordinate (G : Bilin) (H : E →L[ℝ] Jet1) (v w : E) : ℝ :=
+  G (fieldSecond G H v) w + G v (fieldSecond G H w)
+
+/-- The Lie remainder, including metric advection, is an explicit first-jet function. -/
+def lieFirst (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) (v w : E) : ℝ :=
+  J (fieldValue G J B) v w + G (fieldFirst G J B DB v) w +
+    G v (fieldFirst G J B DB w)
+
+/-- The second-jet terms in the curvature trace in the landed finite basis. -/
+def ricciSecondCoordinate (G : Bilin) (H : E →L[ℝ] Jet1) (v w : E) : ℝ :=
+  let b := Module.finBasis ℝ E
+  ∑ i, b.coord i (connection G (H (b i)) v w - connection G (H v) (b i) w)
+
+/-- The curvature remainder contains only inverse-metric derivatives and connection products. -/
+def ricciFirst (G : Bilin) (J : Jet1) (v w : E) : ℝ :=
+  let b := Module.finBasis ℝ E
+  ∑ i, b.coord i
+    (-G.inverse (J (b i) (connection G J v w)) +
+      G.inverse (J v (connection G J (b i) w)) +
+      connection G J (b i) (connection G J v w) -
+      connection G J v (connection G J (b i) w))
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
@@ -214,6 +238,26 @@ theorem field_eq_value
       (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hcut.self_of_nhds
   simp only [anchorChartDeTurckContractionFlow, fieldValue,
     anchorChartChristoffelFieldFlow, hval, christoffel_eq_connection g anchor z hcut]
+
+/-- The actual Lie expression splits into its coordinate second-jet part and explicit first-jet remainder. -/
+theorem lie_eq_secondCoordinate_add_first
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let J := fderiv ℝ G z
+    let H := fderiv ℝ (fderiv ℝ G) z
+    let B := GeodesicTransport.chartChristoffelField bg anchor
+    let W := anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0
+    J (W z) v w + G z (fderiv ℝ W z v) w + G z v (fderiv ℝ W z w) =
+      lieSecondCoordinate (G z) H v w + lieFirst (G z) J (B z) (fderiv ℝ B z) v w := by
+  dsimp only
+  rw [field_eq_value g bg anchor z hcut,
+    fieldDerivative_eq_jets g bg anchor z hz hcut v,
+    fieldDerivative_eq_jets g bg anchor z hz hcut w]
+  simp only [lieSecondCoordinate, lieFirst, map_add, ContinuousLinearMap.add_apply]
+  ring
 
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
