@@ -468,5 +468,44 @@ theorem exists_geodesic_flow_initialState_C1 [FiniteDimensional ℝ E]
   exact exists_flow_initialState_C1_of_contDiffAt (hU.preimage continuous_fst)
     (fun q hq => contDiffAt_geodesicFlowField_two (hΓ q.1 hq)) hε hcont hmem hα
 
+/-- The frozen initial-state derivative statement, for any fundamental solution
+on the given PL interval. Both position and velocity perturbations are present. -/
+theorem geodesic_flow_hasFDerivAt_initialState [FiniteDimensional ℝ E]
+    {Γ : E → E →L[ℝ] E →L[ℝ] E} {U : Set E} (hU : IsOpen U)
+    (hΓ : ∀ z ∈ U, ContDiffAt ℝ 2 Γ z)
+    {α : (E × E) → ℝ → E × E}
+    {Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E)}
+    {z₀ : E} {r ε : ℝ} (hε : 0 < ε)
+    (hcont : ContinuousOn (Function.uncurry α)
+      (closedBall (z₀, (0 : E)) r ×ˢ Icc (-ε) ε))
+    (hmem : ∀ q ∈ closedBall (z₀, (0 : E)) r,
+      ∀ t ∈ Icc (-ε) ε, (α q t).1 ∈ U)
+    (hα : ∀ q ∈ closedBall (z₀, (0 : E)) r, α q 0 = q ∧
+      ∀ t ∈ Icc (-ε) ε, HasDerivWithinAt (α q)
+        (geodesicFlowField Γ (α q t)) (Icc (-ε) ε) t)
+    (hΦ0 : ∀ q ∈ ball (z₀, (0 : E)) r, Φ q 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ q ∈ ball (z₀, (0 : E)) r, ∀ t ∈ Icc (-ε) ε,
+      HasDerivWithinAt (Φ q)
+        ((linearizedGeodesicFlowOperator Γ (α q t)).comp (Φ q t)) (Icc (-ε) ε) t) :
+    ∀ q ∈ ball (z₀, (0 : E)) r, ∀ t ∈ Ioo (-ε) ε,
+      HasFDerivAt (fun q' : E × E => α q' t) (Φ q t) q := by
+  obtain ⟨G, hG, a, hGa⟩ := exists_smoothField_near_uniformFlow
+    (hU.preimage continuous_fst)
+    (fun q hq => contDiffAt_geodesicFlowField_two (hΓ q.1 hq)) hcont hmem
+  have hαG : ∀ q ∈ ball (z₀, (0 : E)) r, α q 0 = q ∧
+      (∀ t ∈ Icc (-ε) ε, HasDerivWithinAt (α q) (G (α q t)) (Icc (-ε) ε) t) ∧
+      ∀ t ∈ Icc (-ε) ε, α q t ∈ closedBall (z₀, (0 : E)) a := by
+    intro q hq
+    have hqc := ball_subset_closedBall hq
+    refine ⟨(hα q hqc).1, ?_, fun t ht => (hGa q hqc t ht).1⟩
+    intro t ht
+    rw [(hGa q hqc t ht).2.eq_of_nhds]
+    exact (hα q hqc).2 t ht
+  intro q hq t ht
+  apply flow_hasFDerivAt_initialState (hG.of_le (by norm_num)) hε hq hαG (hΦ0 q hq) ?_
+    (Ioo_subset_Icc_self ht)
+  intro s hs
+  simpa only [(hGa q (ball_subset_closedBall hq) s hs).2.fderiv_eq] using hΦ q hq s hs
+
 end GeodesicFlowJointDerivative
 end Poincare
