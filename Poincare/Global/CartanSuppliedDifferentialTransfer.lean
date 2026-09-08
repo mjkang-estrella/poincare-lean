@@ -102,5 +102,20 @@ private theorem reverse_chartTransitionMFDeriv_eq_symm
       rfl
     _ = T.symm w := by rw [hcomp]; rfl
 
+omit [T2Space M] in
+/-- The supplied host-coordinate map agrees with the manifold map on the host source. -/
+private theorem chartMap_apply_host (Q : Interpretation g)
+    (s : CartanChain.ChainState g) (y : M)
+    (hy : y ∈ (extChartAt I (Q.sourceHost s.anchor)).source) :
+    chartMap Q s (extChartAt I (Q.sourceHost s.anchor) y) =
+      extChartAt I (Q.targetHost s.target) (map Q s y) := by
+  change (chartAt E (Q.targetHost s.target))
+    ((Q.targetNormal s.target).symm (linear Q s
+      (Q.sourceNormal s.anchor ((chartAt E (Q.sourceHost s.anchor)).symm
+        ((chartAt E (Q.sourceHost s.anchor)) y))))) = _
+  rw [(chartAt E (Q.sourceHost s.anchor)).left_inv
+    (by simpa only [extChartAt_source] using hy)]
+  rfl
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
