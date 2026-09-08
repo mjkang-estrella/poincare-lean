@@ -360,5 +360,13 @@ theorem successor_eq_of_eqOn_open :
   exact chainState_eq_of_target_eq_of_clm_eq d.alignment e.alignment htarget
     (alignment_clm_eq_of_eventuallyEq Q R s t z d e hcharts)
 
+omit [T2Space M] in
+/-- The supplied successor is independent of every analytic witness. -/
+theorem successor_eq : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g)
+  (z : M) (d e : Data Q s z), d.successor = e.successor := by
+  intro Q s z d e
+  exact successor_eq_of_eqOn_open Q Q s s z d e univ isOpen_univ (mem_univ z)
+    (fun _ _ => rfl)
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
