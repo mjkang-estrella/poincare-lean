@@ -2,6 +2,31 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Curvature transport worker partial
+
+Branch `worker/curvature-transport`, base `99419b12559e2f220d868c56983a26cc10716603`,
+proof head `330e7f07`. `CurvatureInstanceTransport.lean` proves inverse-J
+transport of tangent-section Cn regularity in both directions for every
+`n ≤ ∞`, pointwise differentiability transport, and additivity of the raw
+conjugated Levi-Civita operator. These results have no naturality premise.
+
+Connection bundling, compatibility, torsion, curvature transport, and the
+controlled-instance sphere-recognition reductions retain the explicit
+`ConnectionCurvatureNaturality` premise. Its pointwise connection and
+curvature-tensor identities are both unproved. The result does not supply
+unconditional curvature transport or sphere recognition.
+
+Direct elaboration and the focused 3071-job build pass. All 23 declaration
+closures are exactly `[propext, Classical.choice, Quot.sound]`; token and diff
+checks pass. No existing Lean file or root import changed. This worker result
+awaits orchestrator review. Commands, failed attempts, and commits are in
+`harness/reports/curvature-transport_blocked.md`.
+
+Exact first action for independent review:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.CurvatureInstanceTransport`.
+The next mathematical action is the cross-instance scalar exterior-derivative
+chain rule stated in the report, needed for the raw conjugated Leibniz law.
+
 ## 2026-09-08 Cached audit payload wiring
 
 Worker branch `worker/audit-payload-wiring`, base `7acd90a8`, now builds the

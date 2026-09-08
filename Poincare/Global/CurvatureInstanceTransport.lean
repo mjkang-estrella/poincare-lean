@@ -6,6 +6,10 @@ import Poincare.Global.SphereTheorem
 
 The geometric identification `J` maps new fibers to old fibers. Its inverse
 therefore transports old vector fields to the new tangent bundle.
+
+Section regularity and additivity of the conjugated derivative are proved
+unconditionally. Connection, curvature, and sphere-recognition transport
+retain the explicit `ConnectionCurvatureNaturality` hypothesis.
 -/
 
 noncomputable section
@@ -216,7 +220,7 @@ theorem conjugatedDerivative_apply (g : @ClosedSmoothRiemannianMetric 3 M _ inst
          (g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
            (J (inst := inst) inst' h x v))) := rfl
 
-/-- The additivity axiom for the raw conjugated derivative holds without
+/-- The additivity law for the raw conjugated derivative holds without
 assuming differential naturality of the Levi-Civita operator. -/
 theorem conjugatedDerivative_add
     (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
