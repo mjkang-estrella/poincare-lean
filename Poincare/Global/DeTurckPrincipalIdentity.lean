@@ -641,5 +641,27 @@ theorem lie_eq_secondJet_add_first
       (CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor z)
       (chartMetric_secondJet_metric_symm g anchor z hz)]
 
+/-- The full curvature trace is the landed formal second jet plus its explicit first-jet remainder. -/
+theorem ricci_eq_secondJet_add_first
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let Γ := GeodesicTransport.chartChristoffelField g anchor
+    let H := fderiv ℝ (fderiv ℝ G) z
+    let b := Module.finBasis ℝ E
+    (∑ i, b.coord i
+      ((fderiv ℝ Γ z (b i)) v w - (fderiv ℝ Γ z v) (b i) w +
+        Γ z (b i) (Γ z v w) - Γ z v (Γ z (b i) w))) =
+      ricciSecondJet (inverseEntries (G z)) (fun a b p q => H a b p q) v w +
+        ricciFirst (G z) (fderiv ℝ G z) v w := by
+  dsimp only
+  rw [ricci_eq_secondCoordinate_add_first g anchor z hz hcut v w,
+    ricciSecondCoordinate_eq_ricciSecondJet _ _
+      (chartMetric_isInvertible_of_cutoff g anchor z hcut)
+      (CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor z)
+      (chartMetric_secondJet_metric_symm g anchor z hz)]
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
