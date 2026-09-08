@@ -242,5 +242,32 @@ theorem exists_uniform_endpoint_chartTransition {a b : M} {U V : Set E}
   simpa only [C.endpoint_apply, D.endpoint_apply,
     FixedChartUniformNormalRadius.expChart] using hend
 
+/-- Inverting the uniformly compared endpoints gives the actual normal
+transition law, including both normal source domains. -/
+theorem exists_uniform_normal_chartTransition {a b : M} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g a U)
+    (D : FixedChartUniformSourceNormal.Patch g b V)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus a)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus b)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) (hKD : K ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ z : M, dist z x < ρ →
+      z ∈ (C.normal x).source ∩ (D.normal x).source ∧
+      D.normal x z = GeodesicTransport.chartTransitionDeriv a b
+        (extChartAt I a x) (C.normal x z) := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨r, hr, he⟩ := exists_uniform_endpoint_chartTransition C D hU hV K hK hKC hKD
+  obtain ⟨ρC, hρC, hC⟩ := FixedChartLocalSuccessorExistence.exists_uniform_normal_radius C K hK hKC hr
+  obtain ⟨ρD, hρD, hD⟩ := FixedChartLocalSuccessorExistence.exists_uniform_normal_radius D K hK hKD zero_lt_one
+  refine ⟨min ρC ρD, lt_min hρC hρD, ?_⟩
+  intro x hx z hz
+  obtain ⟨_, hzC, hv⟩ := hC x hx z (hz.trans_le (min_le_left _ _))
+  have hzD := (hD x hx z (hz.trans_le (min_le_right _ _))).2.1
+  obtain ⟨_, hw, heq⟩ := he x hx (C.normal x z) hv
+  have hleft : C.endpoint x (C.normal x z) = z := (C.normal x).left_inv hzC
+  rw [hleft] at heq
+  refine ⟨⟨hzC, hzD⟩, ?_⟩
+  exact (congrArg (D.normal x) heq).trans ((D.endpoint x).left_inv hw)
+
 end CartanSuppliedBufferedPairAgreement
 end Poincare
