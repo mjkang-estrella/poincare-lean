@@ -118,5 +118,65 @@ theorem initialState_residual_isLittleO [ProperSpace X]
     (hα q hq).2.1 (hα q hq).2.2 hpert hlin ht
   exact hasFDerivAt_iff_isLittleO_nhds_zero.mp hd
 
+/-- Reflection of a symmetric-interval solution onto its positive half. -/
+theorem hasDerivWithinAt_reflect {Y : Type*}
+    [NormedAddCommGroup Y] [NormedSpace ℝ Y]
+    {f : ℝ → Y} {f' : Y} {T s : ℝ}
+    (hf : HasDerivWithinAt f f' (Icc (-T) T) (-s)) :
+    HasDerivWithinAt (fun u => f (-u)) (-f') (Icc 0 T) s := by
+  have hm : MapsTo (fun u : ℝ => -u) (Icc 0 T) (Icc (-T) T) := by
+    intro u hu
+    constructor <;> linarith [hu.1, hu.2]
+  simpa [Function.comp_def] using hf.scomp s (hasDerivAt_neg s).hasDerivWithinAt hm
+
+/-- Full-state Frechet differentiability on both halves of the PL interval. -/
+theorem flow_hasFDerivAt_initialState [ProperSpace X]
+    {F : X → X} (hF : ContDiff ℝ 1 F)
+    {α : X → ℝ → X} {Φ : ℝ → X →L[ℝ] X}
+    {p q : X} {r a T t : ℝ} (hT : 0 < T) (hq : q ∈ ball p r)
+    (hα : ∀ y ∈ ball p r, α y 0 = y ∧
+      (∀ s ∈ Icc (-T) T, HasDerivWithinAt (α y) (F (α y s)) (Icc (-T) T) s) ∧
+      ∀ s ∈ Icc (-T) T, α y s ∈ closedBall p a)
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ X)
+    (hΦ : ∀ s ∈ Icc (-T) T, HasDerivWithinAt Φ
+      ((fderiv ℝ F (α q s)).comp (Φ s)) (Icc (-T) T) s)
+    (ht : t ∈ Icc (-T) T) :
+    HasFDerivAt (fun y => α y t) (Φ t) q := by
+  have hsub : Icc (0 : ℝ) T ⊆ Icc (-T) T := by
+    intro s hs
+    exact ⟨by linarith [hs.1], hs.2⟩
+  by_cases ht0 : 0 ≤ t
+  · apply hasFDerivAt_iff_isLittleO_nhds_zero.mpr
+    apply initialState_residual_isLittleO (a := a) hF hT hq ?_ hΦ0 ?_ ⟨ht0, ht.2⟩
+    · intro y hy
+      exact ⟨(hα y hy).1, fun s hs => ((hα y hy).2.1 s (hsub hs)).mono hsub,
+        fun s hs => (hα y hy).2.2 s (hsub hs)⟩
+    · intro s hs
+      exact (hΦ s (hsub hs)).mono hsub
+  · have hn : -t ∈ Icc (0 : ℝ) T := ⟨by linarith, by linarith [ht.1]⟩
+    have hnegmem : ∀ s ∈ Icc (0 : ℝ) T, -s ∈ Icc (-T) T := by
+      intro s hs
+      constructor <;> linarith [hs.1, hs.2]
+    have hαn : ∀ y ∈ ball p r, α y (-0) = y ∧
+        (∀ s ∈ Icc 0 T, HasDerivWithinAt (fun u => α y (-u))
+          (-F (α y (-s))) (Icc 0 T) s) ∧
+        ∀ s ∈ Icc 0 T, α y (-s) ∈ closedBall p a := by
+      intro y hy
+      exact ⟨by simpa using (hα y hy).1,
+        fun s hs => hasDerivWithinAt_reflect ((hα y hy).2.1 (-s) (hnegmem s hs)),
+        fun s hs => (hα y hy).2.2 (-s) (hnegmem s hs)⟩
+    have hΦn : ∀ s ∈ Icc (0 : ℝ) T,
+        HasDerivWithinAt (fun u => Φ (-u))
+          ((fderiv ℝ (-F) (α q (-s))).comp (Φ (-s))) (Icc 0 T) s := by
+      intro s hs
+      simpa only [fderiv_neg, ContinuousLinearMap.neg_comp] using
+        hasDerivWithinAt_reflect (hΦ (-s) (hnegmem s hs))
+    have hnres := initialState_residual_isLittleO
+      (α := fun y s => α y (-s)) (Φ := fun s => Φ (-s))
+      hF.neg hT hq hαn
+      (by simpa using hΦ0) hΦn hn
+    apply hasFDerivAt_iff_isLittleO_nhds_zero.mpr
+    simpa only [neg_neg] using hnres
+
 end GeodesicFlowJointDerivative
 end Poincare
