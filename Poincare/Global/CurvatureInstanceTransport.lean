@@ -264,5 +264,30 @@ theorem conjugatedConnection_eq_leviCivita
   intro X x hX
   exact (transport (inst := inst) inst' h g).eq_leviCivita_of_metricCompatible_torsion hc ht hX
 
+/-- Curvature naturality and the verified metric pullback transport every
+constant sectional curvature value, including the required unit value. -/
+theorem hasConstantSectionalCurvature3_transport
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (hN : ConnectionCurvatureNaturality (inst := inst) inst' h g)
+    (κ : ℝ) (hcurv : letI := inst; HasConstantSectionalCurvature3 g κ) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    HasConstantSectionalCurvature3 (transport (inst := inst) inst' h g) κ := by
+  letI := inst
+  have hR := hN.2
+  let innerOld := g.inner
+  let g' := transport (inst := inst) inst' h g
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  intro x u w a b
+  change innerOld x (J (inst := inst) inst' h x (curvatureValue g' x u w a))
+    (J (inst := inst) inst' h x b) = _
+  rw [hR x u w a]
+  have hc := hcurv x (J (inst := inst) inst' h x u) (J (inst := inst) inst' h x w)
+    (J (inst := inst) inst' h x a) (J (inst := inst) inst' h x b)
+  exact hc
+
 end Connection
 end Poincare.CurvatureInstanceTransport
