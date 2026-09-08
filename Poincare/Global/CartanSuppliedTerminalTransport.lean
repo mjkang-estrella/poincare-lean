@@ -201,5 +201,40 @@ theorem exists_trans_subdivision {x y z : M} (p : Path x y) (q : Path y z)
   exact ⟨⟨times, A.terminal + B.terminal, hzero, hmono, hstrict, htail, hwhole⟩,
     rfl, hleft, hright⟩
 
+/-- Matching a finite segment compares full states even with a different initial state. -/
+theorem segment_state_eq (S : System g) (initial middle : CartanChain.ChainState g)
+    (nodes other : ℕ → M) (a b : ℕ → S.cover.Label)
+    (c : ReachableChain (policy S.cover a) nodes initial)
+    (d : ReachableChain (policy S.cover b) other middle)
+    (hc : initial.anchor = nodes 0) (hd : middle.anchor = other 0)
+    (m K : ℕ) (hstart : c.state m = middle)
+    (hnodes : ∀ n ≤ K, nodes (m + n) = other n) :
+    (letI : MetricSpace M := g.toMetricSpace
+     ∀ n < K, dist (other (n + 1)) (other n) < S.mesh) →
+    ∀ n ≤ K, c.state (m + n) = d.state n := by
+  letI : MetricSpace M := g.toMetricSpace
+  intro hmesh n
+  induction n with
+  | zero => intro _; simpa using hstart.trans d.initial_eq.symm
+  | succ n ih =>
+      intro hn
+      have hi := ih (by omega)
+      have hb := block_state_eq S initial nodes a c hc (m + n) 1
+        (select S.cover (b n) (d.state n)) (by rw [hi]; exact select_valid _ _ _)
+      have hsmall : ∀ k ≤ 1, dist (nodes (m + n + k)) (c.state (m + n)).anchor < S.mesh := by
+        intro k hk
+        rw [hi, state_anchor_eq_node _ _ _ d hd]
+        rcases Nat.eq_zero_or_pos k with hkzero | hkpos
+        · subst k
+          rw [Nat.add_zero, hnodes n (by omega), dist_self]
+          exact mesh_pos S
+        · have hkone : k = 1 := by omega
+          subst k
+          rw [Nat.add_assoc, hnodes (n + 1) hn]
+          exact hmesh n (by omega)
+      have hh := hb hsmall
+      rw [Nat.add_assoc, hnodes (n + 1) hn, hi] at hh
+      exact (hh (d.data n)).trans (d.successor_eq n).symm
+
 end CartanSuppliedTerminalTransport
 end Poincare
