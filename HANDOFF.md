@@ -609,8 +609,25 @@ of the patch exponentials at the moving vector and the metric pullback
 identity, i.e. the local-isometry content of the Cartan map uniform in the
 anchor; `exists_onCompact_of_uniformDifferentialPullback` reduces the frozen
 task-8 target to it. Task `uniform-differential-pullback` (curvature-only)
-is dispatched for that remainder; task 9 (the H2 replacement) is dispatched
-in parallel; task 10 follows.
+is dispatched for that remainder. Task 9
+(`fixed-chart-local-successor-equality`, the H2 replacement) stopped with
+its own milestone partial, merged: `FixedChartLocalSuccessorEquality.exists_uniform_common_source_radii`
+gives two radii, chosen before every moving anchor, alignment, point, and
+datum, such that the ball about the successor anchor lies in both germ
+sources (seven declarations, standard axioms). Its exact remainder is
+`UniformEndpointReanchoring`: the predecessor map applied to the supplied
+endpoint centered at the successor anchor equals the supplied target endpoint
+at the image, with uniform radii; this is the exponential naturality of the
+Cartan map uniform in the anchor (the per-anchor version is
+`DifferentialSuccessorNaturality.exists_map_expAt_ray_naturality_radius`).
+`exists_onCompact_of_uniformEndpointReanchoring` and
+`exists_radii_of_uniformDifferentialPullback_of_uniformEndpointReanchoring`
+reduce the frozen task-9 target to the two remainders. So the H1/H2
+replacements on the patch now stand on exactly two curvature-only analytic
+statements, both uniform versions of theorems already proved per anchor: the
+local isometry of the Cartan map (`UniformDifferentialPullback`) and its
+exponential naturality (`UniformEndpointReanchoring`). The second depends on
+the first; its task is dispatched after the pullback lands.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
