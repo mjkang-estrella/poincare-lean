@@ -2,6 +2,33 @@
 
 Snapshot date: 2026-09-07 (UTC)
 
+## 2026-09-07 Controlled preferred-chart worker result
+
+Branch `worker/controlled-chart-instance`, recorded base `c7338a642d2cf5bf3044f1ed5ca1a90bb86cf075`,
+proof head `df7b3ed3`. This worker result awaits orchestrator review.
+`Poincare/Global/ControlledChartInstance.lean` proves existence of a finite
+atlas of original smooth charts whose preferred sources contain one positive
+uniform metric ball. It proves equality of the old and new maximal atlases,
+the fixed-endpoint source-neighborhood property, and scalar `ContMDiff`
+equivalence for every `n ≤ ∞`. The compatible-metric theorem explicitly uses
+`d.toUniformSpace.toTopologicalSpace = t` and `d.replaceTopology hd.symm` to
+preserve the original topology.
+
+The focused build completed successfully with 2702 jobs. Direct elaboration,
+the frozen-target and scalar-equivalence probes, and `git diff --check`
+passed. All nine theorem closures are exactly
+`[propext, Classical.choice, Quot.sound]`; the forbidden-token scan is empty.
+No existing Lean file or root import was edited. Details and actual compiler
+output are in `harness/reports/controlled-chart-instance_done.md`.
+This does not prove generic exponential joint regularity, H1/H2, or metric
+and curvature transport. Those remain separate mathematical tasks.
+
+Exact first action for independent review, after applying the worker commits
+against the recorded base:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.ControlledChartInstance`.
+The next mathematical task is `ClosedSmoothRiemannianMetric` transport across
+the compatible instances, using the new scalar smoothness transport lemma.
+
 ## 2026-09-07 M5-glob-69 worker obstruction
 
 Worker branch `worker/M5-glob-69`, base `d08f4a52`, proof commits `df566640`
