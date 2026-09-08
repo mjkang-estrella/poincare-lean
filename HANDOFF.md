@@ -282,6 +282,46 @@ under motion of the anchors), or H1 through
 as the anchors move, using `UniformTangentAlignmentRigidity.exists_uniform_cartanMap_isLocalIsometry`).
 Freeze the chosen statement with a schema-2.1 contract before dispatch.
 
+## 2026-09-08 Repair track and audit payload caching
+
+Integrated on `main` after the orchestrator's gate and review (codex workers,
+`harness/dispatch_codex.sh`):
+
+- `Poincare/Global/ControlledChartInstance.lean` (task
+  `controlled-chart-instance`): a compact manifold admits a finite
+  `ChartedSpace` instance with the same smooth maximal atlas whose preferred
+  chart sources contain a uniform ball around their anchors
+  (`exists_controlled_chartedSpace_source_persistence`,
+  `exists_controlled_chartedSpace_of_compatibleMetric`), and scalar
+  smoothness agrees between such instances
+  (`scalarContMDiff_iff_of_atlas_subset`).
+- `Poincare/Global/RiemannianMetricInstanceTransport.lean` (task
+  `metric-transport`, stopped as statement-invalid): the hom-bundle
+  trivialization formula `inner_trivialization_apply`; the raw-fiber transport
+  contract was refuted because the identification `TangentSpace I x = E` is
+  chart-dependent.
+- `Poincare/Global/RiemannianMetricInstanceTransportGeometric.lean` (task
+  `metric-transport-2`): the geometric transport `transport inst' h g` with
+  `transport_inner` (pullback by the chart-change derivative `J x` in both
+  slots), including the smoothness of the transported section. The induced
+  distance comparison is the exact remaining `def InducedDistanceAgreement`.
+- Dispatched next: `harness/tasks/curvature-transport.md` (vector-field and
+  Levi-Civita transport, `HasConstantSectionalCurvature3` transport, and the
+  reduction of unit recognition for an arbitrary instance to a controlled
+  instance).
+
+Validation: the audit payload wiring (task `audit-payload-wiring`) is merged.
+The Lean check payloads of the axiom, root-import, semantic, and completion
+audits live in the non-default Lake library `PoincareAudit` (`audit/`), built
+and cached by Lake; `scripts/audit_payload_equivalence.py --check` proves the
+modules are a lossless extraction of the legacy heredocs at
+`b2b96fc2` (83,887 checks and 10,210 axiom probes). The four scripts shrank
+from 129,000 to 25,000 lines. Same-tree comparison on `main` after the merge:
+sorted result lines identical for all four audits (112, 985, 124, and 13,390
+lines); warm timings axiom 56 s to 48 s, root import 68 s to 57 s, semantic
+82 s to 46 s, standalone completion 488 s to 415 s. The worker's evidence
+archive is kept outside git in `harness/logs/`.
+
 ## 2026-09-08 H1 and H2 are atlas-dependent as stated
 
 Three codex workers (tasks M5-glob-69, 70, 71; `harness/dispatch_codex.sh`)

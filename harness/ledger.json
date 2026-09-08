@@ -3886,7 +3886,42 @@
       "date": "2026-09-08",
       "objective": "Consolidated refutation of H1/H2 as stated",
       "report": "harness/reports/M5-glob-72_statement_refutation.md"
+    },
+    {
+      "id": "controlled-chart-instance",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/controlled-chart-instance_done.md"
+    },
+    {
+      "id": "metric-transport",
+      "tier": "M5",
+      "status": "blocked",
+      "date": "2026-09-08",
+      "report": "harness/reports/metric-transport_blocked.md"
+    },
+    {
+      "id": "metric-transport-2",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/metric-transport-2_done.md"
+    },
+    {
+      "id": "audit-payload-wiring",
+      "tier": "infra",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/audit-payload-wiring_done.md"
+    },
+    {
+      "id": "hamilton-front-mission",
+      "tier": "infra",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/hamilton-front-mission_done.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-08): H1/H2 as stated are REFUTED for arbitrary preferred charts (harness/reports/M5-glob-72_statement_refutation.md; modules GenericJointRegularityCounterexample, FixedChartSuccessorDataPersistence, SuccessorEqualityRadiusPersistence). Do not attack H1/H2 in their current form. Next: task controlled-chart-instance (controlled ChartedSpace instance with uniform-ball chart sources), then metric/curvature transport across instances, then re-run the Cartan chain over a controlled Family. Hamilton front is registered in harness/v2/missions/hamilton-front.json."
+  "current_goal": "RESUME POINT (2026-09-08): repair track after the H1/H2 refutation. Landed: ControlledChartInstance (finite instance, uniform-ball chart sources, same maximal atlas), RiemannianMetricInstanceTransportGeometric.transport (metric transport by the chart-change derivative J). In flight: curvature-transport (Levi-Civita and HasConstantSectionalCurvature3 transport, reduction of UnitConstantCurvatureSphereRecognition3 to a controlled instance). Then: re-run the Cartan chain on the controlled instance and attack the (now well-posed) H1/H2 analysis there."
 }

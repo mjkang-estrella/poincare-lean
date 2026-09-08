@@ -255,3 +255,12 @@ difficulty, never xhigh) with
 data persistence), `M5-glob-71` (joint regularity of the exponential chart in
 its anchor). Acceptance is `harness/gate.sh` plus the orchestrator's review;
 results are recorded in `harness/reports/` when they land.
+
+## Repair track (2026-09-08)
+
+After the H1/H2 refutation, codex workers landed the controlled chart
+instance (`ControlledChartInstance.lean`), the trivialization formula and the
+geometric metric transport (`RiemannianMetricInstanceTransport*.lean`), all
+gate PASS with the standard axiom footprint; the curvature/Levi-Civita
+transport task is dispatched. The audit payload library `PoincareAudit` is
+wired into the scaffold audits with verified identical results.
