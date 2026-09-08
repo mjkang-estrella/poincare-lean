@@ -3,6 +3,35 @@
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-08 Joint geodesic initial-state derivative worker result
+
+Branch `worker/geodesic-position-derivative`, base
+`1e8df02f77da1b7e8879839991ad75c259f82301`, verified proof head `de042d58`.
+The new `GeodesicFlowJointDerivative.lean` proves the frozen joint
+initial-position/initial-velocity `HasFDerivAt` theorem under local C2
+Christoffel regularity in finite-dimensional charts. It constructs the full
+operator-valued fundamental solution on one common interval, proves joint
+operator-norm continuity and C1 endpoints, and instantiates the exact
+variable-initial-state continuous PL package while retaining its prescribed
+position neighborhood.
+
+Direct Lean and the focused 3258-job build pass. All 14 theorem closures are
+exactly `[propext, Classical.choice, Quot.sound]`; the module-wide scan checks
+15 declarations with no nonstandard dependencies. Token and diff checks pass.
+No existing Lean file or root import changed. The report and failed compiler
+evidence are recorded in `harness/reports/geodesic-position-derivative_done.md`.
+This worker result awaits orchestrator review.
+
+The optional explicit differential of the position endpoint at zero velocity
+is not proved. The joint inverse-function construction, a new exponential
+family, H1/H2, and sphere recognition remain separate work.
+
+Exact first action for independent review:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.GeodesicFlowJointDerivative`.
+The next mathematical action is the differential of
+`(z,v) ↦ (z, (α (z,v) T).1)` at `(z,0)`.
+
+
 ## 2026-09-08 Connection naturality worker result
 
 Branch `worker/connection-naturality`, base `0af3ddc6008aa53120b04d91a1caea455e89b4ae`,
