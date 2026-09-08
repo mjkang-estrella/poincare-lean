@@ -836,8 +836,10 @@ uniform common source, and a fixed-anchor switch radius uniform over labels
 and alignments); its exact remainder is `UniformBufferedPairAgreement`, the
 agreement of two patch interpretations on a ball of radius uniform over
 compact buffer overlaps, i.e. uniform chart-transition naturality of the
-patch normals; task `uniform-buffered-pair-agreement` is dispatched for it.
-Tasks 13 to 19 follow serially.
+patch normals; task `uniform-buffered-pair-agreement` PROVED it
+(`CartanSuppliedBufferedPairAgreement.lean`), so task 12's frozen
+`exists_switchControl` is unconditional under curvature 1. Task 13
+(`supplied-patch-policy`) is dispatched; 14 to 19 follow serially.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.

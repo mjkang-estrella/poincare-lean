@@ -15,6 +15,7 @@ import Poincare.MaximumPrinciple
 import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
+import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer
 import Poincare.Global.CartanSuppliedFinitePatchCover
