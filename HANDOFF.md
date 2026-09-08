@@ -2,6 +2,37 @@
 
 Snapshot date: 2026-09-07 (UTC)
 
+## 2026-09-07 M5-glob-69 worker obstruction
+
+Worker branch `worker/M5-glob-69`, base `d08f4a52`, proof commits `df566640`
+and `8d1b76a7`. This is a worker result awaiting orchestrator review.
+The frozen curvature-only successor-equality persistence theorem was not
+proved or changed. The new module `SuccessorEqualityRadiusPersistence.lean`
+proves that even a positive admissible radius at fixed `(x,p)` forces every
+nearby total preferred chart to be injective on one common neighborhood.
+It also proves that constant total extensions outside chart balls shrinking
+toward a nonisolated anchor produce collisions, and that such collisions
+exclude the frozen persistence conclusion under constant curvature.
+
+The concern is equality of total partial-homeomorphism coercions outside
+their sources. The allowed chart choices do not impose a common neighborhood
+of injectivity there. A recharted round-sphere counterexample is described
+in `harness/reports/M5-glob-69_blocked.md`, but its metric and curvature have
+not been instantiated in Lean. The verified result is a conditional
+obstruction, not a complete Lean refutation or a proof of H2.
+
+The new module passed direct Lean elaboration and the focused `lake build`
+with 3579 jobs. All six new theorem closures are exactly
+`[propext, Classical.choice, Quot.sound]`; forbidden-token scans are empty.
+No existing Lean file, root import, mission, task, or ledger was changed.
+
+Exact first action: instantiate the report's shrinking preferred charts on
+the round sphere, then apply
+`SuccessorEqualityRadiusPersistence.preferredChartCollisionAccumulation_of_shrinking_constant_extensions`
+and
+`SuccessorEqualityRadiusPersistence.not_actualSuccessorEqualityRadiusLocalPersistence_of_constantCurvature_of_preferredChartCollisionAccumulation`.
+Review the frozen statement before resuming source/target flow-uniformity work.
+
 ## 2026-09-07 Validation refactor
 
 Branch `worker/audit-loops`, merged to `main` after the checks below. The
