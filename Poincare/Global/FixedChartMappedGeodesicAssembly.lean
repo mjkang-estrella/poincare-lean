@@ -72,5 +72,29 @@ theorem chartMap_contDiffAt_two_of_coordinateData
   exact ht'.comp (sourceExp Q s.anchor d.v)
     (f := fun q => linear Q s ((sourceExp Q s.anchor).symm q)) hl
 
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- H1 chooses the C2 neighborhood before all moving anchors and alignments. -/
+theorem exists_uniform_chartMap_contDiffAt_two
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+        ContDiffAt ℝ 2 (chartMap (patch C D) ⟨x, p, L⟩) (extChartAt I x₀ z) := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨η, hη, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨η, hη, ?_⟩
+  intro x hx p hp L z hz
+  obtain ⟨d⟩ := (hdata x hx p hp L z hz).2.2.2
+  exact chartMap_contDiffAt_two_of_coordinateData C D ⟨x, p, L⟩ z d.toCoordinateData
+
 end FixedChartMappedGeodesicAssembly
 end Poincare
