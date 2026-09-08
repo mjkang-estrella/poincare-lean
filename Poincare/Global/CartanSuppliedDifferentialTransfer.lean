@@ -509,5 +509,59 @@ theorem ofGeneric : ∀ (s : CartanChain.ChainState g) (z : M)
   obtain ⟨e, he⟩ := data_of_coordinateData (generic g) s z w
   exact ⟨e, generic_successor_eq s z e d, congrArg CoordinateData.v he⟩
 
+omit [T2Space M] in
+/-- Supplied generic data admits an old presentation with the same vector and successor. -/
+theorem toGeneric : ∀ (s : CartanChain.ChainState g) (z : M)
+    (e : Data (generic g) s z),
+    ∃ d : DifferentialInducedSuccessor.Data s z, d.successor = e.successor ∧ d.v = e.v := by
+  intro s z e
+  have hs := generic_sourceExp_comparison g s.anchor e.v
+    e.source_vector_mem.1.1 e.source_vector_mem.1.2
+  have ht := generic_sourceExp_comparison roundSphereMetric3 s.target (s.alignment e.v)
+    e.target_vector_mem.1.1 e.target_vector_mem.1.2
+  have hse := hs.2.eq_of_nhds
+  have hte : targetExp (generic g) s.target (linear (generic g) s e.v) =
+      GeodesicTransport.expAtChartOpenPartialHomeomorph
+        (g := roundSphereMetric3) s.target (s.alignment e.v) := ht.2.eq_of_nhds
+  have hA := e.source_exp_derivative.congr_of_eventuallyEq hs.2
+  have hB : HasStrictFDerivAt
+      (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := roundSphereMetric3) s.target)
+      (e.B : E →L[ℝ] E) (s.alignment e.v) :=
+    e.target_exp_derivative.congr_of_eventuallyEq ht.2
+  let d : DifferentialInducedSuccessor.Data s z :=
+    { v := e.v
+      A := e.A
+      B := e.B
+      source_vector_mem := e.source_vector_mem.1.1
+      target_vector_mem := e.target_vector_mem.1.1
+      source_mem_oldChart := e.source_mem_oldChart
+      target_mem_oldChart := by
+        have h := e.target_mem_oldChart
+        change map (generic g) s z ∈ (extChartAt I s.target).source at h
+        rwa [generic_map_eq] at h
+      source_coordinate := e.source_coordinate.trans hse
+      target_coordinate := by
+        have h := e.target_coordinate
+        change extChartAt I s.target (map (generic g) s z) =
+          targetExp (generic g) s.target (linear (generic g) s e.v) at h
+        rwa [generic_map_eq, hte] at h
+      source_exp_derivative := hA
+      target_exp_derivative := hB
+      cartan_chart_derivative :=
+        CartanDifferential.cartanChartMap_hasStrictFDerivAt_of_expAtChart
+          g s.anchor s.target s.alignment e.source_vector_mem.1.1 hA hB
+      metric_pullback := by
+        intro u u'
+        have h := e.metric_pullback u u'
+        change CovariantDerivative.chartMetric roundSphereMetric3.inner s.target
+          (targetExp (generic g) s.target (linear (generic g) s e.v))
+          (chartDifferential (generic g) s e.A e.B u)
+          (chartDifferential (generic g) s e.A e.B u') =
+          CovariantDerivative.chartMetric g.inner s.anchor
+            (sourceExp (generic g) s.anchor e.v) u u' at h
+        rw [hse, hte] at h
+        exact h }
+  exact ⟨d, (generic_successor_eq s z e d).symm, rfl⟩
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
