@@ -117,6 +117,110 @@ def endpointEquiv (T : ℝ) (hT : T ≠ 0) : (E × E) ≃L[ℝ] (E × E) where
   continuous_invFun := continuous_fst.prodMk
     ((continuous_snd.sub continuous_fst).const_smul T⁻¹)
 
+
+/-- A joint inverse gives uniform fiber injectivity and target-ball coverage.
+The preimage velocities can be required to lie in any prescribed ball of
+positive radius `R`. The partial homeomorphism's source stays in `D`. -/
+theorem uniform_normal_radius_near_of_strict [CompleteSpace E]
+    {α : (E × E) → ℝ → E × E} {T : ℝ} {z₀ : E} {D : Set (E × E)}
+    (hT : 0 < T) (hD : IsOpen D) (hz₀ : (z₀, (0 : E)) ∈ D)
+    (hzero : expChart α T z₀ 0 = z₀)
+    (hd : HasStrictFDerivAt (F α T) (endpointDerivative T) (z₀, 0))
+    {R : ℝ} (hR : 0 < R) :
+    ∃ ρ > (0 : ℝ), ∃ e : OpenPartialHomeomorph (E × E) (E × E),
+      (e : (E × E) → E × E) = F α T ∧
+      (z₀, (0 : E)) ∈ e.source ∧ e.source ⊆ D ∧
+      e.source ⊆ univ ×ˢ ball (0 : E) R ∧
+      ball z₀ ρ ×ˢ ball (0 : E) ρ ⊆ e.source ∧
+      ∀ z ∈ ball z₀ ρ,
+        InjOn (expChart α T z) (ball (0 : E) ρ) ∧
+        ball z ρ ⊆ expChart α T z '' ball (0 : E) R := by
+  let hd' : HasStrictFDerivAt (F α T) (endpointEquiv (E := E) T hT.ne').toContinuousLinearMap
+      (z₀, 0) := by
+    convert hd using 1
+  let e₀ := hd'.toOpenPartialHomeomorph (F α T)
+  let e := e₀.restrOpen (D ∩ (univ ×ˢ ball (0 : E) R))
+    (hD.inter (isOpen_univ.prod isOpen_ball))
+  have he : (e : (E × E) → E × E) = F α T := rfl
+  have hm : (z₀, (0 : E)) ∈ e.source :=
+    ⟨hd'.mem_toOpenPartialHomeomorph_source, hz₀, mem_univ _, mem_ball_self hR⟩
+  have hsource : e.source ⊆ D ∩ (univ ×ˢ ball (0 : E) R) := fun _ hp => hp.2
+  have htarget : (z₀, z₀) ∈ e.target := by
+    simpa [he, F, hzero] using e.map_source hm
+  obtain ⟨a, ha, has⟩ := Metric.isOpen_iff.mp e.open_source _ hm
+  obtain ⟨b, hb, hbt⟩ := Metric.isOpen_iff.mp e.open_target _ htarget
+  let ρ := min a (b / 2)
+  have hρ : 0 < ρ := lt_min ha (half_pos hb)
+  have hρa : ρ ≤ a := min_le_left _ _
+  have hρb : ρ ≤ b / 2 := min_le_right _ _
+  have hs : ball z₀ ρ ×ˢ ball (0 : E) ρ ⊆ e.source := by
+    rw [ball_prod_same]
+    exact (ball_subset_ball hρa).trans has
+  refine ⟨ρ, hρ, e, he, hm, fun p hp => (hsource hp).1,
+    fun p hp => (hsource hp).2, hs, ?_⟩
+  intro z hz
+  constructor
+  · intro v hv w hw hvw
+    have heq : e (z, v) = e (z, w) := by simp [he, F, hvw]
+    exact congrArg Prod.snd (e.injOn (hs ⟨hz, hv⟩) (hs ⟨hz, hw⟩) heq)
+  · intro y hy
+    have hz' : dist z z₀ < b := (mem_ball.mp hz).trans_le (by linarith)
+    have hy' : dist y z₀ < b := lt_of_le_of_lt (dist_triangle y z z₀)
+      (by have := mem_ball.mp hy; have := mem_ball.mp hz; linarith)
+    have ht : (z, y) ∈ e.target := hbt (by simp [mem_ball, Prod.dist_eq, hz', hy'])
+    have hp := e.map_target ht
+    have hi : F α T (e.symm (z, y)) = (z, y) := by
+      rw [← he]
+      exact e.right_inv ht
+    have hfirst : (e.symm (z, y)).1 = z := congrArg Prod.fst hi
+    refine ⟨(e.symm (z, y)).2, (hsource hp).2.2, ?_⟩
+    have hsecond := congrArg Prod.snd hi
+    simpa only [F, hfirst] using hsecond
+
+/-- A finite subcover makes the injectivity and coverage radius uniform on
+any compact set of anchors. The velocity bound `R` remains prescribed. -/
+theorem exists_uniform_normal_radius_on_compact_of_strict [CompleteSpace E]
+    {α : (E × E) → ℝ → E × E} {T : ℝ} {D : Set (E × E)} {K : Set E}
+    (hT : 0 < T) (hD : IsOpen D) (hK : IsCompact K)
+    (hKD : ∀ z ∈ K, (z, (0 : E)) ∈ D)
+    (hzero : ∀ z ∈ K, expChart α T z 0 = z)
+    (hd : ∀ z ∈ K, HasStrictFDerivAt (F α T) (endpointDerivative T) (z, 0))
+    {R : ℝ} (hR : 0 < R) :
+    ∃ ρ > (0 : ℝ), ∀ z ∈ K,
+      InjOn (expChart α T z) (ball (0 : E) ρ) ∧
+      ball z ρ ⊆ expChart α T z '' ball (0 : E) R := by
+  classical
+  have hlocal : ∀ x : K, ∃ ρ > (0 : ℝ), ∀ z ∈ ball x.1 ρ,
+      InjOn (expChart α T z) (ball (0 : E) ρ) ∧
+      ball z ρ ⊆ expChart α T z '' ball (0 : E) R := by
+    intro x
+    obtain ⟨ρ, hρ, e, he, hm, hsub, hv, hs, h⟩ :=
+      uniform_normal_radius_near_of_strict hT hD (hKD x x.2)
+        (hzero x x.2) (hd x x.2) hR
+    exact ⟨ρ, hρ, h⟩
+  choose rad hrad hlocal using hlocal
+  obtain ⟨s, hs⟩ := hK.elim_finite_subcover (fun x : K => ball x.1 (rad x))
+    (fun _ => isOpen_ball) (by
+      intro z hz
+      exact mem_iUnion.mpr ⟨⟨z, hz⟩, mem_ball_self (hrad ⟨z, hz⟩)⟩)
+  have hmin : ∀ s : Finset K, ∃ ρ > (0 : ℝ), ∀ x ∈ s, ρ ≤ rad x := by
+    intro s
+    induction s using Finset.induction_on with
+    | empty => exact ⟨1, zero_lt_one, by simp⟩
+    | @insert x s hx ih =>
+      obtain ⟨ρ, hρ, hρs⟩ := ih
+      refine ⟨min (rad x) ρ, lt_min (hrad x) hρ, ?_⟩
+      intro y hy
+      rcases Finset.mem_insert.mp hy with rfl | hy
+      · exact min_le_left _ _
+      · exact (min_le_right _ _).trans (hρs y hy)
+  obtain ⟨ρ, hρ, hρs⟩ := hmin s
+  refine ⟨ρ, hρ, ?_⟩
+  intro z hz
+  obtain ⟨x, hx, hzx⟩ := mem_iUnion₂.mp (hs hz)
+  exact ⟨(hlocal x z hzx).1.mono (ball_subset_ball (hρs x hx)),
+    (ball_subset_ball (hρs x hx)).trans (hlocal x z hzx).2⟩
+
 section Flow
 
 variable [FiniteDimensional ℝ E]
