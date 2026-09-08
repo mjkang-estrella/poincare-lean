@@ -71,5 +71,36 @@ private theorem reverse_chartTransitionMFDeriv_comp_forward_eq_id
       have hw := congrArg (fun L : E →L[ℝ] E => L w) hnewCLM
       simpa [ContinuousLinearMap.comp_apply] using hw
 
+private theorem reverse_chartTransitionMFDeriv_eq_symm
+    (p₀ y₀ : RoundSphere3)
+    (hy : y₀ ∈ (extChartAt I p₀).source)
+    (T : E ≃L[ℝ] E)
+    (hTco : (T : E →L[ℝ] E) =
+      GeodesicTransport.chartTransitionMFDeriv
+        (x₀ := y₀) (y₀ := p₀) (extChartAt I y₀ y₀)) :
+    GeodesicTransport.chartTransitionMFDeriv
+        (x₀ := p₀) (y₀ := y₀) (extChartAt I p₀ y₀) =
+      (T.symm : E →L[ℝ] E) := by
+  let DT : E →L[ℝ] E :=
+    GeodesicTransport.chartTransitionMFDeriv
+      (x₀ := y₀) (y₀ := p₀) (extChartAt I y₀ y₀)
+  let Drev : E →L[ℝ] E :=
+    GeodesicTransport.chartTransitionMFDeriv
+      (x₀ := p₀) (y₀ := y₀) (extChartAt I p₀ y₀)
+  have hcomp : Drev.comp DT = ContinuousLinearMap.id ℝ E := by
+    simpa [Drev, DT] using
+      reverse_chartTransitionMFDeriv_comp_forward_eq_id p₀ y₀ hy
+  apply ContinuousLinearMap.ext
+  intro w
+  calc
+    Drev w = Drev (T (T.symm w)) := by rw [T.apply_symm_apply]
+    _ = (Drev.comp DT) (T.symm w) := by
+      rw [ContinuousLinearMap.comp_apply]
+      have hTco' : (T : E →L[ℝ] E) = DT := by
+        simpa [DT] using hTco
+      rw [← hTco']
+      rfl
+    _ = T.symm w := by rw [hcomp]; rfl
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
