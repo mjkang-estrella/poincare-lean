@@ -294,5 +294,49 @@ theorem linear_chartTransition_of_normal_chartTransition
   simpa only [linear, patch, ContinuousLinearEquiv.trans_apply,
     ContinuousLinearEquiv.apply_symm_apply] using congrArg L hsource.symm
 
+/-- Compact overlap normal naturality and target endpoint naturality make
+all buffered interpretations agree, uniformly before either anchor or alignment.
+The supplied cutoff-one patches already contain the needed geometric data. -/
+theorem uniformBufferedPairAgreement (B : QuantitativeCover g) :
+    CartanSuppliedUniformPatchSwitch.UniformBufferedPairAgreement B := by
+  letI : MetricSpace M := g.toMetricSpace
+  intro a b
+  let K := B.source.buffer a.1 ∩ B.source.buffer b.1
+  let H := B.target.buffer a.2 ∩ B.target.buffer b.2
+  have hK : IsCompact K := (B.source.buffer_compact a.1).inter (B.source.buffer_compact b.1)
+  have hH : IsCompact H := (B.target.buffer_compact a.2).inter (B.target.buffer_compact b.2)
+  have hKa : K ⊆ (B.source.patch a.1).anchors := fun _ hx => B.source.buffer_subset a.1 hx.1
+  have hKb : K ⊆ (B.source.patch b.1).anchors := fun _ hx => B.source.buffer_subset b.1 hx.2
+  have hHa : H ⊆ (B.target.patch a.2).anchors := fun _ hp => B.target.buffer_subset a.2 hp.1
+  have hHb : H ⊆ (B.target.patch b.2).anchors := fun _ hp => B.target.buffer_subset b.2 hp.2
+  obtain ⟨ρN, hρN, hN⟩ := exists_uniform_normal_chartTransition
+    (B.source.patch a.1) (B.source.patch b.1) (B.source.cutoff a.1) (B.source.cutoff b.1)
+    K hK hKa hKb
+  obtain ⟨ρE, hρE, hE⟩ := exists_uniform_endpoint_chartTransition
+    (B.target.patch a.2) (B.target.patch b.2) (B.target.cutoff a.2) (B.target.cutoff b.2)
+    H hH hHa hHb
+  obtain ⟨R, hR, hbound⟩ := FixedChartLocalSuccessorExistence.exists_uniform_linear_bound
+    (B.source.patch a.1) (B.target.patch a.2) K H hK hKa hH hHa
+  obtain ⟨ρS, hρS, hS⟩ := FixedChartLocalSuccessorExistence.exists_uniform_normal_radius
+    (B.source.patch a.1) K hK hKa (div_pos hρE hR)
+  refine ⟨min ρN ρS, lt_min hρN hρS, ?_⟩
+  intro x hx p hp L z hz
+  have hn := (hN x hx z (hz.trans_le (min_le_left _ _))).2
+  have hv := (hS x hx z (hz.trans_le (min_le_right _ _))).2.2
+  have hw : ‖linear (B.interp a) ⟨x, p, L⟩ ((B.source.patch a.1).normal x z)‖ < ρE := by
+    calc
+      _ ≤ ‖(linear (B.interp a) ⟨x, p, L⟩ : E →L[ℝ] E)‖ *
+          ‖(B.source.patch a.1).normal x z‖ :=
+        (linear (B.interp a) ⟨x, p, L⟩ : E →L[ℝ] E).le_opNorm _
+      _ ≤ R * ‖(B.source.patch a.1).normal x z‖ :=
+        mul_le_mul_of_nonneg_right (hbound x hx p hp L) (norm_nonneg _)
+      _ < ρE := by simpa only [mul_comm R] using (lt_div_iff₀ hR).mp hv
+  have he := (hE p hp _ hw).2.2
+  dsimp only [QuantitativeCover.interp] at he
+  rw [linear_chartTransition_of_normal_chartTransition
+    (B.source.patch a.1) (B.source.patch b.1) (B.target.patch a.2) (B.target.patch b.2)
+    x (hKa hx) (hKb hx) p (hHa hp) (hHb hp) L z hn] at he
+  exact he
+
 end CartanSuppliedBufferedPairAgreement
 end Poincare
