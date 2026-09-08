@@ -592,9 +592,15 @@ Task 6 landed as
 `CartanSuppliedDifferentialSuccessor.lean` (the `Interpretation` of a chain
 state by supplied source and target exponentials with the generic and patch
 instances, `CoordinateData`, `Data`, `Data.successor`, and the five frozen
-laws, 84 scanned declarations). Task 7 (`supplied-differential-transfer`) is
-dispatched; 8 to 10 follow in order, each task file derived verbatim from the
-report as the earlier ones were.
+laws, 84 scanned declarations). Task 7 landed as
+`CartanSuppliedDifferentialTransfer.lean` (ten theorems: data from
+coordinate data, successor equality laws, generic-to-supplied and
+supplied-to-generic transfers, the patch germ agreement, the generic interval
+equality, the local equality transfer, and the patch successor at the
+anchor). Task 8 (`fixed-chart-local-successor-existence`, the well-posed
+replacement of H1 on the patch) is dispatched; 9 (the H2 replacement) and
+10 (the supplied reachable chain) follow, each task file derived verbatim
+from the report as the earlier ones were.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
