@@ -247,5 +247,22 @@ theorem conjugatedConnection_metricCompatible_torsion
     rw [he Y x hY, he X x hX]
     exact (CovariantDerivative.torsion_eq_zero_iff _).1 g'.leviCivita_torsion hX hY
 
+/-- The exact pointwise equality supplied by the repository's uniqueness theorem. -/
+theorem conjugatedConnection_eq_leviCivita
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (hN : ConnectionCurvatureNaturality (inst := inst) inst' h g) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    ∀ (X : M → E) (x : M), MDiffAtTangentField X x →
+      conjugatedConnection (inst := inst) inst' h g hN X x =
+        (transport (inst := inst) inst' h g).leviCivita X x := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  obtain ⟨hc, ht⟩ := conjugatedConnection_metricCompatible_torsion (inst := inst) inst' h g hN
+  intro X x hX
+  exact (transport (inst := inst) inst' h g).eq_leviCivita_of_metricCompatible_torsion hc ht hX
+
 end Connection
 end Poincare.CurvatureInstanceTransport
