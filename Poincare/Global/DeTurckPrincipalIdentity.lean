@@ -585,5 +585,27 @@ theorem ricci_eq_secondCoordinate_add_first
   simp only [map_add, map_sub, map_neg]
   ring
 
+/-- The metric slots of the actual second chart jet are symmetric. -/
+theorem chartMetric_secondJet_metric_symm
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (a b p q : E) :
+    fderiv ℝ (fderiv ℝ (CovariantDerivative.chartMetric g.inner anchor)) z a b p q =
+      fderiv ℝ (fderiv ℝ (CovariantDerivative.chartMetric g.inner anchor)) z a b q p := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  have hsym : ∀ y p q, G y p q = G y q p :=
+    CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor
+  have hfirst (y b p q : E) : fderiv ℝ G y b p q = fderiv ℝ G y b q p := by
+    by_cases hd : DifferentiableAt ℝ G y
+    · exact CovariantDerivative.fderiv_metric_symm G hd hsym b p q
+    · simp only [fderiv_zero_of_not_differentiableAt hd, ContinuousLinearMap.zero_apply]
+  have hG : ContDiffAt ℝ 2 G z :=
+    deTurckChartMetric_contDiffAt_two_of_mem_target g anchor hz
+  have hJ := (hG.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero
+  change fderiv ℝ (fderiv ℝ G) z a b p q = fderiv ℝ (fderiv ℝ G) z a b q p
+  rw [RicciFlow.RicciFlow.fderiv_clm_family_apply hJ a b]
+  exact CovariantDerivative.fderiv_metric_symm (fun y => fderiv ℝ G y b)
+    (hJ.clm_apply (differentiableAt_const b)) (fun y p q => hfirst y b p q) a p q
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
