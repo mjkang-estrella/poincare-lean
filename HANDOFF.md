@@ -90,6 +90,16 @@ short-time existence on closed 3-manifolds; report only). Also landed:
 `Global/FiniteTriangulationStatements.lean` (finite complex compactness and
 the open finite-triangulation interface, survey items 5.1 and 5.3).
 
+`reaction-record-decomposition` landed (`Global/HamiltonReactionCoreReduction.lean`,
+gate PASS, 9 declarations): density integrability, density-derivative
+measurability, the area formula, and time differentiability of the chart-frame
+record are proved from joint C³ entries plus a local integrable domination
+clause; the residual core `HamiltonReactionCore3` (normalized flow, compact
+realization with three continuity clauses, positive mean floor, reaction
+domination, joint C³ entries, local domination) reconstructs the reaction
+record and yields the endpoint. Pinned as `hamilton-reaction-core` in
+`hamilton-front.json`. All existence content remains open.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

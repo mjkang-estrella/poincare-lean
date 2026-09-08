@@ -7,7 +7,8 @@
     "Poincare.Global.HamiltonFrontStatements",
     "Poincare.Global.HamiltonReactionEndpoint",
     "Poincare.Global.HamiltonFiniteEnergyFlowInterface",
-    "Poincare.Global.HamiltonEndpointEquivalences"
+    "Poincare.Global.HamiltonEndpointEquivalences",
+    "Poincare.Global.HamiltonReactionCoreReduction"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -21,6 +22,10 @@
     {
       "url": "harness/reports/hamilton-front-decomposition_done.md",
       "role": "Decomposition survey: the reaction record alone, or the finite-energy flow interface, produces the endpoint; universal Hamilton convergence is equivalent to universal positive Einstein existence."
+    },
+    {
+      "url": "harness/reports/reaction-record-decomposition_done.md",
+      "role": "Field audit of the reaction record; the residual core HamiltonReactionCore3 drops density integrability, derivative measurability, and the area formula."
     }
   ],
   "nodes": [
@@ -40,6 +45,24 @@
       "description": "Checked conditional reduction through the compact-tensor formal-profile constructor, finite traceless energy, finite absolute dissipation, positive-Einstein existence, and the Hamilton pinched-limit bridge.",
       "depends_on": [
         "hamilton-front-inputs"
+      ]
+    },
+    {
+      "id": "hamilton-reaction-core",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core",
+      "description": "Universal existence of the residual reaction core (normalized flow, compact realization, positive mean floor, reaction domination, joint C3 entries, local integrable density domination, compact-family continuity). Smaller than the reaction record. Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonReactionCoreStatement",
+      "expected_statement_sha256": "bdfd9c550f18f799d830d31749310f06712e5b10a946165bbcb8d741c9152104"
+    },
+    {
+      "id": "reaction-core-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonReactionCore",
+      "description": "Checked: the residual reaction core reconstructs the reaction record and yields the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core"
       ]
     },
     {
@@ -93,7 +116,8 @@
       "depends_on": [
         "hamilton-front-reduction",
         "reaction-reduction",
-        "finite-energy-reduction"
+        "finite-energy-reduction",
+        "reaction-core-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
