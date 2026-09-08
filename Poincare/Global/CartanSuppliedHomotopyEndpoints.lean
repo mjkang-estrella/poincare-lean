@@ -237,5 +237,34 @@ theorem exists_grid_refining (S : System g) (initial : CartanChain.ChainState g)
     ⟨hi0.trans hb.1, hb.2.trans hi1⟩ ⟨hj0.trans hc.1, hc.2.trans hj1⟩
     ⟨hj0.trans hd.1, hd.2.trans hj1⟩
 
+/-- Boundary transport includes the constant tail between an embedded terminal
+sample and the grid terminal index. The sampled chain may have repeated nodes. -/
+theorem endpoint_eq_sampled_chain (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (p : Path initial.anchor y) (R : Realization S initial p)
+    (t : ℕ → unitInterval) (k : ℕ) (htzero : t 0 = 0) (htmono : Monotone t)
+    (nodes : ℕ → M) (hnodes : nodes = fun n => p (t n))
+    (a : ℕ → S.cover.Label) (c : ReachableChain (policy S.cover a) nodes initial)
+    (f : ℕ → ℕ) (hfzero : f 0 = 0) (hfmono : Monotone f)
+    (htimes : ∀ n, R.subdivision.time n = t (f n))
+    (hfbound : f R.subdivision.terminal ≤ k) :
+    R.endpoint = c.state k := by
+  subst nodes
+  have hinitial : initial.anchor = p (t 0) := by simp [htzero]
+  have hR := refinement_chain_state_eq S initial p R t htzero htmono
+    a c f hfzero hfmono htimes R.subdivision.terminal
+  have hterminal : t (f R.subdivision.terminal) = 1 := by
+    rw [← htimes, R.subdivision.tail _ le_rfl]
+  have hconstant : ∀ j ≤ k - f R.subdivision.terminal,
+      p (t (f R.subdivision.terminal + j)) = p (t (f R.subdivision.terminal)) := by
+    intro j _hj
+    have ht : t (f R.subdivision.terminal + j) = t (f R.subdivision.terminal) :=
+      le_antisymm (by rw [hterminal]; exact (t _).property.2)
+        (htmono (by omega))
+    rw [ht]
+  have hc := state_eq_of_constant_nodes S initial (fun n => p (t n))
+    a c hinitial (f R.subdivision.terminal) (k - f R.subdivision.terminal) hconstant
+  rw [Nat.add_sub_of_le hfbound] at hc
+  exact hR.trans hc.symm
+
 end CartanSuppliedHomotopyEndpoints
 end Poincare
