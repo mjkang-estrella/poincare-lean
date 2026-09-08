@@ -2,6 +2,33 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+
+## 2026-09-08 Connection naturality worker result
+
+Branch `worker/connection-naturality`, base `0af3ddc6008aa53120b04d91a1caea455e89b4ae`,
+verified proof head `487a4158`. The new
+`ConnectionInstanceNaturality.lean` discharges both clauses of
+`CurvatureInstanceTransport.ConnectionCurvatureNaturality` without `hN`.
+Scalar derivatives and Lie brackets transform by the geometric identification;
+Leibniz, metric compatibility, zero torsion, and Levi-Civita uniqueness give
+connection naturality. Local regularity, germ locality, and curvature
+tensoriality give curvature values on the canonical extensions.
+
+The controlled-instance sphere-recognition reduction and its compatible-metric
+existential form now have no naturality premise. Recognition on the controlled
+instance remains an input. This result does not prove sphere recognition or
+the Poincare conjecture.
+
+Direct Lean, the focused 3072-job build, the three exact-signature probes,
+and diff/token checks pass. All 20 declaration closures are exactly
+`[propext, Classical.choice, Quot.sound]`. No existing Lean file or root
+import changed. Commands, outputs, proof commits, and evidence paths are in
+`harness/reports/connection-naturality_done.md`. This worker result awaits
+orchestrator review.
+
+Exact first action for independent review:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.ConnectionInstanceNaturality`.
+
 ## 2026-09-08 Curvature transport worker partial
 
 Branch `worker/curvature-transport`, base `99419b12559e2f220d868c56983a26cc10716603`,
