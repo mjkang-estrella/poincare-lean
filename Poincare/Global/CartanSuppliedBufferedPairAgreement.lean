@@ -101,8 +101,9 @@ theorem exists_uniform_transported_flow_radius {a b : M} {U V : Set E}
         (γ t).1 ∈ (extChartAt I a).target ∧
         (extChartAt I a).symm (γ t).1 ∈ D.anchors) ∧
       ContinuousOn β (Icc (0 : ℝ) 1) ∧
-      ∀ t ∈ Ioo (0 : ℝ) 1, HasDerivAt β
-        (geodesicFlowField (GeodesicTransport.chartChristoffelField g b) (β t)) t := by
+      ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt β
+        (geodesicFlowField (GeodesicTransport.chartChristoffelField g b) (β t))
+        (Icc (0 : ℝ) 1) t := by
   letI : MetricSpace M := g.toMetricSpace
   obtain ⟨ε, hε, hεD⟩ := hK.exists_cthickening_subset_open D.isOpen_anchors hKD
   obtain ⟨ρ, hρ, hflow⟩ := FixedChartMappedGeodesicAssembly.exists_uniform_flow_displacement_radius
@@ -134,7 +135,7 @@ theorem exists_uniform_transported_flow_radius {a b : M} {U V : Set E}
       (((hF.continuousAt_fderiv (by norm_num)).comp_continuousWithinAt
         (f := fun s => (γ s).1) (hc.fst t ht)).clm_apply (hc.snd t ht))
   · intro t ht
-    have ht' := Ioo_subset_Icc_self ht
+    have ht' := ht
     have hy := (hpos t ht').2
     have hF := chartTransition_contDiffAt a b (hpos t ht').1 hy.1
     have hcutC := (FixedChartMovingPositionJacobi.flow_mem_target_cutoffOne C hU hq
@@ -145,12 +146,16 @@ theorem exists_uniform_transported_flow_radius {a b : M} {U V : Set E}
         (show (0 : ℝ) ∈ Icc (-D.T) D.T by constructor <;> linarith [D.T_pos])).2
       rw [(D.flow_law _ hzero).1] at h
       exact h
-    exact GeodesicTransport.chartTransitionState_hasDerivAt_of_cutoff_eq_one_nhds g a b
-      ((hd t ht').hasDerivAt (Icc_mem_nhds ht.1 ht.2))
+    have htrans := GeodesicTransport.chartChristoffelField_chartTransitionDeriv_eq_signed_transport_of_eventually_cutoff_eq_one
+      (g := g) (x₀ := a) (y₀ := b) (z := (γ t).1)
       ((isOpen_extChartAt_target a).mem_nhds (hpos t ht').1)
       ((continuousAt_extChartAt_symm'' (hpos t ht').1).tendsto
         ((isOpen_extChartAt_source b).mem_nhds hy.1))
-      hcutC (hF.continuousAt.tendsto.eventually hcutD)
+      hcutC (hF.continuousAt.tendsto.eventually hcutD) (γ t).2 (γ t).2
+    exact FixedChartUniformEndpointReanchoring.mappedState_hasDerivWithinAt_of_differentiable_fderiv
+      F _ _ (hd t ht) (hF.differentiableAt (by norm_num))
+      ((hF.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
+        (by norm_num)) htrans
 
 end CartanSuppliedBufferedPairAgreement
 end Poincare
