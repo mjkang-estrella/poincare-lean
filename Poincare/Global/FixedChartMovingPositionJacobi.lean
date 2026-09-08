@@ -290,5 +290,35 @@ theorem transverse_norms_eq_pinned [T2Space M] {x₀ : M} {U : Set E}
   dsimp only [chartGeodesicMetric]
   rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀) hcut]
 
+/-- Differentiating the time-dilation state produces a radial Jacobi solution
+at any interior time, independently of the initial position. -/
+theorem radial_state_hasDerivAt {x₀ : M} {γ : ℝ → E × E} {t : ℝ}
+    (hγ : HasDerivAt γ (geodesicFlowField (chartChristoffelField g x₀) (γ t)) t) :
+    let Γ := chartChristoffelField g x₀
+    let A := fun s => -(Γ (γ s).1 (γ s).2 (γ s).2)
+    let R := fun s => (s • (γ s).2, (γ s).2 + s • A s)
+    HasDerivAt R (linearizedGeodesicFlowOperator Γ (γ t) (R t)) t := by
+  dsimp only
+  let Γ := chartChristoffelField g x₀
+  let V := fun s => (γ s).2
+  let A := fun s => -(Γ (γ s).1 (V s) (V s))
+  have hz := geodesic_position_hasDerivAt hγ
+  have hv : HasDerivAt V (A t) t := geodesic_velocity_hasDerivAt hγ
+  have hΓd := (chartChristoffelField_contDiff g x₀).differentiable (by norm_num) (γ t).1
+  have hΓ := hΓd.hasFDerivAt.comp_hasDerivAt t hz
+  have hA : HasDerivAt A
+      (-(((fderiv ℝ Γ (γ t).1) (V t)) (V t) (V t) +
+        Γ (γ t).1 (A t) (V t) + Γ (γ t).1 (V t) (A t))) t := by
+    simpa only [Γ, A, V, ContinuousLinearMap.add_apply] using
+      ((hΓ.clm_apply hv).clm_apply hv).neg
+  have hR := ((hasDerivAt_id t).smul hv).prodMk
+    (hv.add ((hasDerivAt_id t).smul hA))
+  rw [linearizedGeodesicFlowOperator_eq_coordinateJacobiFlowOperator hΓd]
+  convert hR using 1
+  simp only [coordinateJacobiFlowOperator_apply, coordinateJacobiAcceleration,
+      map_smul, map_add, ContinuousLinearMap.smul_apply, ContinuousLinearMap.add_apply,
+      one_smul, Γ, A, V, id_eq]
+  congr 1 <;> module
+
 end FixedChartMovingPositionJacobi
 end Poincare
