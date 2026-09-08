@@ -78,4 +78,10 @@ theorem slice_zero_mem_source [Zero E] {A : Set E}
     ∀ z ∈ A, 0 ∈ (slice P hfst z).source := by
   exact hzero
 
+/-- The joint source over an open anchor set is open. -/
+theorem isOpen_slice_sourceLocus {A : Set E} (hA : IsOpen A) :
+    IsOpen {q : E × E | q.1 ∈ A ∧ q.2 ∈ (slice P hfst q.1).source} := by
+  change IsOpen (Prod.fst ⁻¹' A ∩ P.source)
+  exact (hA.preimage continuous_fst).inter P.open_source
+
 end Poincare.FixedChartEndpointSlices
