@@ -216,5 +216,36 @@ theorem linear_metric {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
       L.map_app _ _
     _ = _ := patchFrame_metric C x hx u v
 
+omit [CompactSpace M] [ConnectedSpace M] in
+/-- One operator bound covers all alignments as both retained anchors move
+over arbitrary compact sets. -/
+theorem exists_uniform_linear_bound {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    ∃ B > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ L : CartanMap.TangentAlignment g x p,
+        ‖(linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E)‖ ≤ B := by
+  obtain ⟨_, _, b, hb, hsource⟩ := exists_uniform_host_metric_comparison C K hK hKC
+  obtain ⟨a, ha, _, _, htarget⟩ := exists_uniform_host_metric_comparison D H hH hHD
+  refine ⟨Real.sqrt (b / a), Real.sqrt_pos.mpr (div_pos hb ha), ?_⟩
+  intro x hx p hp L
+  apply ContinuousLinearMap.opNorm_le_of_unit_norm (Real.sqrt_nonneg _)
+  intro v hv
+  have hlow := (htarget p hp (linear (patch C D) ⟨x, p, L⟩ v)).1
+  rw [linear_metric C D x (hKC hx) p (hHD hp) L] at hlow
+  have hupp := (hsource x hx v).2
+  rw [hv, one_pow, mul_one] at hupp
+  have hsquare : ‖linear (patch C D) ⟨x, p, L⟩ v‖ ^ 2 ≤ b / a := by
+    apply (le_div_iff₀ ha).mpr
+    nlinarith
+  have hroot := Real.sq_sqrt (div_pos hb ha).le
+  have hn := norm_nonneg (linear (patch C D) ⟨x, p, L⟩ v)
+  have hr := Real.sqrt_nonneg (b / a)
+  change ‖linear (patch C D) ⟨x, p, L⟩ v‖ ≤ Real.sqrt (b / a)
+  nlinarith
+
 end FixedChartLocalSuccessorExistence
 end Poincare
