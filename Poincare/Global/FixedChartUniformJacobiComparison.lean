@@ -256,5 +256,58 @@ theorem coordinateEndpoint_fderiv_of_fundamentalSolution {x₀ : M} {U : Set E}
     (show C.T ∈ Icc (-C.T) C.T from ⟨by linarith [C.T_pos], le_rfl⟩)).fderiv
   rw [coordinateEndpoint_fderiv C x v a hv, hf]
 
+/-- Reconstruct the jointly continuous fundamental solution for the actual
+retained patch on its entire time interval. Neither the flow nor its time changes. -/
+theorem exists_patch_fundamentalSolution {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U) :
+    ∃ Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E),
+      (∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+        Φ q 0 = ContinuousLinearMap.id ℝ (E × E)) ∧
+      (∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ), ∀ t ∈ Icc (-C.T) C.T,
+        HasDerivWithinAt (Φ q)
+          ((linearizedGeodesicFlowOperator (GeodesicTransport.chartChristoffelField g x₀)
+            (C.α q t)).comp (Φ q t)) (Icc (-C.T) C.T) t) ∧
+      (∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ), ∀ t ∈ Icc (-C.T) C.T,
+        HasFDerivAt (fun y => C.α y t) (Φ q t) q) ∧
+      ContinuousOn (fun qt : (E × E) × ℝ => Φ qt.1 qt.2)
+        (ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) ×ˢ Icc (-C.T) C.T) := by
+  classical
+  have hF := GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff_two g x₀
+  have hex : ∀ q : E × E, ∃ Φ : ℝ → (E × E) →L[ℝ] (E × E),
+      q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) →
+      Φ 0 = ContinuousLinearMap.id ℝ (E × E) ∧
+      ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+        ((linearizedGeodesicFlowOperator (GeodesicTransport.chartChristoffelField g x₀)
+          (C.α q t)).comp (Φ t)) (Icc (-C.T) C.T) t := by
+    intro q
+    by_cases hq : q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ)
+    · have hc : ContinuousOn
+          (fun t => linearizedGeodesicFlowOperator
+            (GeodesicTransport.chartChristoffelField g x₀) (C.α q t)) (Icc (-C.T) C.T) :=
+        ((hF.of_le (by norm_num : (1 : ℕ∞ω) ≤ 2)).continuous_fderiv one_ne_zero).comp_continuousOn
+          (HasDerivWithinAt.continuousOn (C.flow_law q (ball_subset_closedBall hq)).2)
+      obtain ⟨Φ, h0, hd⟩ := exists_fundamentalSolution_on_Icc C.T_pos.le hc
+      exact ⟨Φ, fun _ => ⟨h0, hd⟩⟩
+    · exact ⟨fun _ => ContinuousLinearMap.id ℝ (E × E), fun h => (hq h).elim⟩
+  choose Φ hΦ using hex
+  have h0 := fun q hq => (hΦ q hq).1
+  have hd := fun q hq => (hΦ q hq).2
+  have hcompact := ((isCompact_closedBall (extChartAt I x₀ x₀, (0 : E)) (C.r : ℝ)).prod
+    isCompact_Icc).image_of_continuousOn C.continuous_flow
+  obtain ⟨a, ha⟩ := hcompact.isBounded.subset_closedBall (extChartAt I x₀ x₀, 0)
+  have hα : ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      C.α q 0 = q ∧
+      (∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt (C.α q)
+        (geodesicFlowField (GeodesicTransport.chartChristoffelField g x₀) (C.α q t))
+        (Icc (-C.T) C.T) t) ∧
+      ∀ t ∈ Icc (-C.T) C.T, C.α q t ∈ closedBall (extChartAt I x₀ x₀, 0) a := by
+    intro q hq
+    exact ⟨(C.flow_law q (ball_subset_closedBall hq)).1,
+      (C.flow_law q (ball_subset_closedBall hq)).2,
+      fun t ht => ha ⟨(q, t), ⟨ball_subset_closedBall hq, ht⟩, rfl⟩⟩
+  exact ⟨Φ, h0, hd,
+    fun q hq t ht => flow_hasFDerivAt_of_fundamentalSolution C hq (h0 q hq) (hd q hq) ht,
+    GeodesicFlowJointDerivative.continuousOn_fundamentalSolution hF C.T_pos.le hα h0 hd⟩
+
 end FixedChartUniformJacobiComparison
 end Poincare
