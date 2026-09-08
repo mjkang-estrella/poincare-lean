@@ -5,7 +5,8 @@
   "description": "The frozen topological Poincare statement via Ricci flow and the supplied Cartan route. Unit-curvature sphere recognition is checked (unit-recognition mission, closed 2026-09-08). Two obligations remain: universal Hamilton convergence (the hamilton-front mission endpoint) and existence-shaped smoothability of compact simply connected topological 3-manifolds (Moise-type). The checked reduction Poincare.poincareConjectureStatement_of_exists_smoothability_of_universalHamiltonConvergence consumes exactly these two premises.",
   "modules": [
     "Poincare.Global.UniversalUnitRecognition",
-    "Poincare.Global.HamiltonPoincareReduction"
+    "Poincare.Global.HamiltonPoincareReduction",
+    "Poincare.Global.SelectedFiniteNerveSmoothingStatements"
   ],
   "endpoint": {
     "name": "Poincare.poincare_conjecture",
@@ -23,9 +24,31 @@
     {
       "url": "Poincare/Global/TopologicalCompletionBridge.lean",
       "role": "Smoothability interface and the bridge from the smooth PoincareConjecture to the frozen topological statement."
+    },
+    {
+      "url": "harness/reports/smoothability-bridge-survey_done.md",
+      "role": "Survey of smoothability routes; section 5.2 proposes the selected finite-nerve smoothing node."
     }
   ],
   "nodes": [
+    {
+      "id": "selected-finite-nerve-smoothing",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_selected_finite_nerve_smoothing",
+      "description": "For every compact Hausdorff simply connected topological 3-manifold, one finite atlas nerve reduction whose transitions admit simultaneous local smooth conjugacies (the repository-vocabulary form of the Moise/PL smoothing input). Open; this exact declaration is absent.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.SelectedFiniteNerveSmoothing.SelectedFiniteNerveSmoothingStatement",
+      "expected_statement_sha256": "71d0c4ef68bc38075b40e393f9afa1ee122689299b4475e3b5e08a5bac752543"
+    },
+    {
+      "id": "nerve-smoothing-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.SelectedFiniteNerveSmoothing.existsSmoothability_of_selectedFiniteNerveSmoothing",
+      "description": "Checked: the landed local-transition-atlas assembly turns the selected finite-nerve smoothing input into existence-shaped smoothability.",
+      "depends_on": [
+        "selected-finite-nerve-smoothing"
+      ]
+    },
     {
       "id": "hamilton-convergence",
       "kind": "obligation",
@@ -40,7 +63,9 @@
       "kind": "obligation",
       "declaration": "Poincare.universal_exists_smoothability",
       "description": "Existence-shaped smoothability: every compact Hausdorff simply connected topological 3-manifold admits a charted-space instance that is a smooth manifold (Moise-type). Open; this exact declaration is absent.",
-      "depends_on": [],
+      "depends_on": [
+        "nerve-smoothing-reduction"
+      ],
       "expected_type_symbol": "Poincare.ExistsSmoothabilitySmoothManifoldStatement",
       "expected_statement_sha256": "963c22dbccd99d1d9e670a9beb93a25d7b014b809dddc58d104840cdb7022f62"
     },

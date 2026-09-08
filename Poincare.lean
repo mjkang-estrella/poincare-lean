@@ -52,6 +52,7 @@ import Poincare.Global.GeodesicFlowJointDerivative
 import Poincare.Global.HamiltonPoincareReduction
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
+import Poincare.Global.SelectedFiniteNerveSmoothingStatements
 import Poincare.Global.Statement
 import Poincare.Global.Alignment
 import Poincare.Global.RiemannianContext
