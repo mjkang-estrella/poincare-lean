@@ -171,5 +171,21 @@ theorem generic_map_eq : ∀ (s : CartanChain.ChainState g), map (generic g) s =
   rw [CartanSourceExponential.genericFamily_apply, CartanMap.cartanMap_apply]
   rfl
 
+/-- The stored host-chart coordinate identifies the actual supplied normal vector. -/
+theorem vector_eq : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g)
+  (z : M) (d : Data Q s z), d.v = Q.sourceNormal s.anchor z := by
+  intro Q s z d
+  have hz : z ∈ (chartAt E (Q.sourceHost s.anchor)).source := by
+    simpa only [extChartAt_source] using d.source_mem_oldChart
+  have hc : (chartAt E (Q.sourceHost s.anchor)) z =
+      (chartAt E (Q.sourceHost s.anchor)) ((Q.sourceNormal s.anchor).symm d.v) := by
+    simpa only [extChartAt_coe] using d.source_coordinate
+  have he : z = (Q.sourceNormal s.anchor).symm d.v :=
+    (chartAt E (Q.sourceHost s.anchor)).injOn hz d.source_vector_mem.2 hc
+  calc
+    d.v = Q.sourceNormal s.anchor ((Q.sourceNormal s.anchor).symm d.v) :=
+      ((Q.sourceNormal s.anchor).right_inv d.source_vector_mem.1).symm
+    _ = Q.sourceNormal s.anchor z := congrArg (Q.sourceNormal s.anchor) he.symm
+
 end CartanSuppliedDifferentialSuccessor
 end Poincare
