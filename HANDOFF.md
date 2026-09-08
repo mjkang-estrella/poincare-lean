@@ -854,8 +854,11 @@ realizations of one path have equal endpoint states). Task 16
 small homotopy grids, the supplied ladder invariant with actual patch
 switches, endpoint equality for arbitrary realizations of homotopic paths, and
 path independence under `SimplyConnectedSpace M`). Task 17
-(`supplied-terminal-transport`) is in flight; 18 (needs 16 and 17) and 19
-follow serially.
+(`supplied-terminal-transport`) landed (`CartanSuppliedTerminalTransport.lean`:
+short paths inside a mesh ball, every short-path terminal datum equals the
+full reached state, and concatenation transport from the exact reached
+middle state). Task 18 (`supplied-restricted-development`) is dispatched;
+19 (`CartanSuppliedUnitRecognition`) follows.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
