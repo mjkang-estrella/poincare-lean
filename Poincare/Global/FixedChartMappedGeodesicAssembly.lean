@@ -393,5 +393,31 @@ theorem exists_onCompact
     (uniformEndpointReanchoring_of_constantCurvature
       x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD)
 
+/-- The frozen task-9 statement: H1 and H2 at the same predecessor radius,
+with an independent uniform evaluation radius and every actual datum. -/
+theorem exists_radii :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (K : Set M) (H : Set RoundSphere3), IsCompact K → K ⊆ C.anchors →
+    IsCompact H → H ⊆ D.anchors →
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ),
+      FixedChartLocalSuccessorExistence.OnCompact (patch C D) K H η ∧
+      OnCompact (patch C D) K H η ε := by
+  intro x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηd, hηd, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨ηe, hηe, ε, hε, hequality⟩ := exists_onCompact
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨min ηd ηe, lt_min hηd hηe, ε, hε, ?_, ?_⟩
+  · intro x hx p hp L z hz
+    exact hdata x hx p hp L z (hz.trans_le (min_le_left _ _))
+  · intro x hx p hp L z d hz
+    exact hequality x hx p hp L z d (hz.trans_le (min_le_right _ _))
+
 end FixedChartLocalSuccessorEquality
 end Poincare
