@@ -211,5 +211,37 @@ theorem transverse_normSystem [T2Space M] {x₀ : M} {U : Set E}
       (transverse_orthogonal C hU hq hΦ0 hΦ w horth htc)
       (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ _)
 
+/-- The scalar norm system has its sine/cosine solution on any prescribed
+finite interval. No Picard radius or short-time bound is needed. -/
+theorem normSystem_eq_pinned {T speed q : ℝ} (hT : 0 < T) (hs : speed ≠ 0)
+    {N : ℝ → ℝ × ℝ × ℝ} (hc : ContinuousOn N (Icc (-T) T))
+    (hd : ∀ t ∈ Ioo (-T) T, HasDerivAt N
+      (2 * (N t).2.1, (N t).2.2 - speed ^ 2 * (N t).1,
+        -2 * speed ^ 2 * (N t).2.1) t)
+    (h0 : N 0 = (0, 0, q)) {t : ℝ} (ht : t ∈ Icc (-T) T) :
+    N t = (JacobiNormSystem.speedPinnedA speed q t,
+      JacobiNormSystem.speedPinnedB speed q t,
+      JacobiNormSystem.speedPinnedC speed q t) := by
+  let A := RigidityComplete.speedNormSystemAop speed
+  let P : ℝ → ℝ × ℝ × ℝ := fun t =>
+    (JacobiNormSystem.speedPinnedA speed q t,
+      JacobiNormSystem.speedPinnedB speed q t,
+      JacobiNormSystem.speedPinnedC speed q t)
+  have hP : ∀ t, HasDerivAt P (A (P t)) t := by
+    intro t
+    simpa only [A, P, RigidityComplete.speedNormSystemAop_apply] using
+      (JacobiNormSystem.speedPinnedA_hasDerivAt hs q t).prodMk
+        ((JacobiNormSystem.speedPinnedB_hasDerivAt hs q t).prodMk
+          (JacobiNormSystem.speedPinnedC_hasDerivAt hs q t))
+  exact ODE_solution_unique_of_mem_Icc
+    (v := fun _ => A) (s := fun _ => univ)
+    (fun _ _ => A.lipschitz.lipschitzOnWith)
+    (show (0 : ℝ) ∈ Ioo (-T) T by constructor <;> linarith)
+    hc (fun t ht => by simpa only [A, RigidityComplete.speedNormSystemAop_apply] using hd t ht)
+    (fun _ _ => mem_univ _) (fun t _ => (hP t).continuousAt.continuousWithinAt)
+    (fun t _ => hP t) (fun _ _ => mem_univ _)
+    (by simpa only [P, JacobiNormSystem.speedPinnedA_zero,
+      JacobiNormSystem.speedPinnedB_zero, JacobiNormSystem.speedPinnedC_zero] using h0) ht
+
 end FixedChartMovingPositionJacobi
 end Poincare
