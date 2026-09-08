@@ -295,3 +295,40 @@ theorem continuous_closedMetricFiniteVolumeMeasure_of_thirdJetProfiles_continuou
   exact continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous metric hjet f
 
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
+
+namespace Poincare.HamiltonFamilyVolumeMeasureContinuity
+
+/-- The reaction core with its three compact-family continuity clauses
+replaced by joint scalar third-jet profile continuity. All flow existence,
+reaction, positive-mean, and local domination requirements are retained. -/
+def HamiltonReactionCore3Jet (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (c rate : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      0 < c ∧ (∀ t : Ici (0 : ℝ), c ≤ meanScalar (gt t.1)) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      0 < rate ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M,
+        normalizedTracelessRicciEvolutionReactionAt (gt t) x ≤
+          -rate * (gt t).tracelessRicciNormSqAt x) ∧
+      (∀ slot : MetricEntryThirdJetSlot 3 M,
+        Continuous (fun p : K × ClosedSmoothModel 3 ↦
+          metricEntryThirdJetProfile (metric p.1) slot p.2)) ∧
+      (let C := compactFiniteExtendedChartCover (n := 3) (M := M)
+       ∀ t : ℝ, ∃ s ∈ 𝓝 t,
+         ∃ B : (i : Fin C.chartCount) → C.coordinateDomain i → ℝ,
+           (∀ i, Integrable (B i) (coordinateLebesgueMeasure (C.coordinateDomain i))) ∧
+           (∀ i, ∀ᵐ z ∂(coordinateLebesgueMeasure (C.coordinateDomain i)),
+             ∀ τ ∈ s, ‖finiteExtendedChartFrameDensityDerivative C gt τ i z‖ ≤ B i z))
+
+
+end Poincare.HamiltonFamilyVolumeMeasureContinuity
