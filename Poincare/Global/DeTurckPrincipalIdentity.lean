@@ -296,6 +296,26 @@ theorem connectionOperator_apply (G : Bilin) (J : Jet1) (u v : E) :
     connectionOperator G J u v = connection G J u v := by
   rfl
 
+/-- The derivative remainder is a continuous linear function of its derivative direction. -/
+def fieldFirstOperator (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) : E →L[ℝ] E :=
+  let b := Module.finBasis ℝ E
+  let C := connectionOperator G J
+  ∑ i,
+    let r := G.inverse (LinearMap.toContinuousLinearMap (b.coord i))
+    let dr := -(G.inverse.comp (J.flip r));
+    -(G.inverse.comp (J.flip (C r (b i)))) + (C.flip (b i)).comp dr -
+      (DB.flip r).flip (b i) - (B.flip (b i)).comp dr
+
+/-- Evaluation of the bundled derivative remainder agrees with the first-jet formula. -/
+theorem fieldFirstOperator_apply (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) (a : E) :
+    fieldFirstOperator G J B DB a = fieldFirst G J B DB a := by
+  simp only [fieldFirstOperator, fieldFirst, ContinuousLinearMap.sum_apply,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply, connectionOperator_apply]
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
