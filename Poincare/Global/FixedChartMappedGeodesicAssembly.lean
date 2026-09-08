@@ -358,5 +358,20 @@ theorem uniformMappedGeodesicEquation_of_constantCurvature
       ((hC2.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
         (by norm_num)) (htrans (γ t).2)
 
+/-- Curvature alone gives the exact uniform supplied endpoint reanchoring law. -/
+theorem uniformEndpointReanchoring_of_constantCurvature
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    FixedChartLocalSuccessorEquality.UniformEndpointReanchoring (patch C D) K H :=
+  target_of_uniformMappedGeodesicEquation C D K H hK hKC hH hHD
+    (uniformMappedGeodesicEquation_of_constantCurvature
+      x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD)
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
