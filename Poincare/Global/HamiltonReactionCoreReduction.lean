@@ -197,4 +197,11 @@ theorem reactionDecayAnalyticData3_of_hamiltonReactionCore3
     scalarJointContinuous := hscalar
     tracelessRicciNormSqJointContinuous := htraceless }⟩
 
+/-- The reduced reaction core supplies the finite-energy flow interface. -/
+theorem finiteEnergyFlowExistence3_of_hamiltonReactionCore3
+    (h : HamiltonReactionCore3.{u, v} M) :
+    HamiltonFiniteEnergyFlowExistence3.{u, v} M := by
+  obtain ⟨r⟩ := reactionDecayAnalyticData3_of_hamiltonReactionCore3 h
+  exact finiteEnergyFlowExistence3_of_reactionDecayAnalyticData3 r
+
 end Poincare
