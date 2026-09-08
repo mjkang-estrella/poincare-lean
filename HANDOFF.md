@@ -1,6 +1,29 @@
 # Handoff Snapshot
 
-Snapshot date: 2026-09-07 (UTC)
+Snapshot date: 2026-09-08 (UTC)
+
+## 2026-09-08 Cached audit payload wiring
+
+Worker branch `worker/audit-payload-wiring`, base `7acd90a8`, now builds the
+fixed payloads in `audit/PoincareAudit` from the four Lean-heavy audit scripts.
+The generated parser checks and reserved-theorem probe remain live. Token
+coverage reads each audit's own modules, including two preserved comment-only
+semantic markers. The legacy-revision equivalence check passes.
+
+Same-tree old/new comparison preserved all 112 axiom, 979 root-import, 124
+semantic, and 13,397 completion result/header lines and every exit code.
+Status generation fell from 448.222 s to 296.975 s in single warm-cache runs.
+Both snapshots record `reserved theorem absent only`; `CURRENT_STATUS.md`
+was restored and is not part of this change. All 55 script tests and 66 runtime
+tests passed. Renaming one checked theorem in a scratch copy made the cached
+root-import audit fail; restoring it made the target build pass again.
+
+No proof source changed and no merge or acceptance was performed. Full
+commands, timings, retained live checks, and fault evidence are in
+`harness/reports/audit-payload-wiring_done.md` and its evidence archive.
+
+Exact first action: review the worker diff from `7acd90a8`, then independently
+run `python3 scripts/audit_payload_equivalence.py --check` before integration.
 
 
 ## 2026-09-07 Metric transport worker obstruction

@@ -92,6 +92,13 @@ Run `lake build`, `scripts/completion_audit.sh`, or
 small worker attempt. The completion audit is expected to exit nonzero while
 the reserved theorem is absent.
 
+The fixed Lean audit payloads live in `audit/PoincareAudit`. The axiom,
+root-import, semantic, and completion scripts build their modules with Lake,
+which caches unchanged checks. Generated parser-visible checks and the
+reserved-theorem probe still run through `lake env lean`.
+`python3 scripts/audit_payload_equivalence.py --check` compares the cached
+payload sources with the archived legacy revision.
+
 The audit scripts need only POSIX `sh`, `awk`, `python3`, and `lake`. They use
 ripgrep when an `rg` binary is on `PATH` and otherwise fall back to the
 bundled Python subset in `scripts/bin/rg`. `scripts/write_status_summary.sh`
