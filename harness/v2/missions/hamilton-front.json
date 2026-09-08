@@ -9,7 +9,7 @@
     "Poincare.Global.HamiltonFiniteEnergyFlowInterface",
     "Poincare.Global.HamiltonEndpointEquivalences",
     "Poincare.Global.HamiltonReactionCoreReduction",
-    "Poincare.Global.HamiltonChartDensityLocalDomination"
+    "Poincare.Global.HamiltonReactionCoreReduced"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -58,13 +58,13 @@
       "declaration": "Poincare.universal_hamilton_reaction_core_reduced",
       "description": "Universal existence of the reduced reaction core (normalized flow on forward time, compact realization with weak volume-measure and joint curvature continuity, positive mean floor, uniform reaction domination, joint C3 metric entries). The local density domination clause is now derived. Open.",
       "depends_on": [],
-      "expected_type_symbol": "Poincare.UniversalHamiltonReactionCoreStatement'",
-      "expected_statement_sha256": "REPLACE"
+      "expected_type_symbol": "Poincare.UniversalHamiltonReactionCoreReducedStatement",
+      "expected_statement_sha256": "2755dbdd6e34ad721652664302621713e36b6dfcba2fc47188e49a800fac9f5c"
     },
     {
       "id": "reaction-core-reduced-reduction",
       "kind": "checked",
-      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonReactionCore'",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonReactionCoreReduced",
       "description": "Checked: the reduced core reconstructs the domination clause and yields the endpoint.",
       "depends_on": [
         "hamilton-reaction-core-reduced"
