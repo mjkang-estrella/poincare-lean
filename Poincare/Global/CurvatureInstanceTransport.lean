@@ -289,5 +289,23 @@ theorem hasConstantSectionalCurvature3_transport
     (J (inst := inst) inst' h x a) (J (inst := inst) inst' h x b)
   exact hc
 
+section Recognition
+variable [SecondCountableTopology M] [CompactSpace M] [ConnectedSpace M]
+  [SimplyConnectedSpace M]
+
+/-- Sphere recognition on the controlled instance gives recognition on the
+original instance, conditional on the stated differential naturality identities. -/
+theorem target_of_ConnectionCurvatureNaturality
+    (hN : ∀ g : @ClosedSmoothRiemannianMetric 3 M _ inst _,
+      ConnectionCurvatureNaturality (inst := inst) inst' h g)
+    (hrec : @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 _ _ _) :
+    @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst _ _ _ _ := by
+  letI := inst
+  intro g hcurv
+  exact hrec (transport (inst := inst) inst' h g)
+    (hasConstantSectionalCurvature3_transport (inst := inst) inst' h g (hN g) 1 hcurv)
+
+end Recognition
 end Connection
 end Poincare.CurvatureInstanceTransport
