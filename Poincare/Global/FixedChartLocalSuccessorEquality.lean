@@ -153,5 +153,57 @@ theorem exists_uniform_common_source_radii
   exact (hnew z (interior_subset hzK') (map (patch C D) ⟨x, p, L⟩ z)
     (interior_subset hpH') d.alignment y (hyz.trans_le (min_le_right _ _))).2.2
 
+/-- The remaining endpoint identity is uniform in the predecessor parameters
+and in all actual derivative witnesses. Its velocity belongs to the supplied
+successor endpoint domain. No equality or domain radius is assumed in M. -/
+def UniformEndpointReanchoring (Q : Interpretation g) (K : Set M)
+    (H : Set RoundSphere3) : Prop :=
+  letI : MetricSpace M := g.toMetricSpace
+  ∃ η > (0 : ℝ), ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+    ∀ (L : CartanMap.TangentAlignment g x p) (z : M)
+      (d : Data Q ⟨x, p, L⟩ z), dist z x < η →
+      ∀ v : E, ‖v‖ < ρ → v ∈ (Q.sourceNormal z).target →
+        map Q ⟨x, p, L⟩ ((Q.sourceNormal z).symm v) =
+          (Q.targetNormal (map Q ⟨x, p, L⟩ z)).symm (linear Q d.successor v)
+
+/-- Uniform normal-vector control converts the endpoint remainder to the
+full-ball equality contract, retaining the independently proved domains. -/
+theorem exists_onCompact_of_uniformEndpointReanchoring
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (he : UniformEndpointReanchoring (patch C D) K H) :
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ), OnCompact (patch C D) K H η ε := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηe, hηe, ρ, hρ, hendpoint⟩ := he
+  obtain ⟨K', hK', hKK', hK'C⟩ := exists_compact_between hK C.isOpen_anchors hKC
+  obtain ⟨δ, hδ, hδK'⟩ := hK.exists_cthickening_subset_open isOpen_interior hKK'
+  obtain ⟨εn, hεn, hnormal⟩ :=
+    FixedChartLocalSuccessorExistence.exists_uniform_normal_radius C K' hK' hK'C hρ
+  obtain ⟨ηd, hηd, εd, hεd, hdomains⟩ :=
+    exists_uniform_common_source_radii C D K H hK hKC hH hHD
+  refine ⟨min ηd (min δ ηe), lt_min hηd (lt_min hδ hηe),
+    min εd εn, lt_min hεd hεn, ?_⟩
+  intro x hx p hp L z d hz
+  have hzd : dist z x < ηd := hz.trans_le (min_le_left _ _)
+  have hzδ : dist z x < δ :=
+    (hz.trans_le (min_le_right _ _)).trans_le (min_le_left _ _)
+  have hze : dist z x < ηe :=
+    (hz.trans_le (min_le_right _ _)).trans_le (min_le_right _ _)
+  have hzK' : z ∈ K' := interior_subset
+    (hδK' (mem_cthickening_of_dist_le z x δ K hx hzδ.le))
+  refine ⟨(ball_subset_ball (min_le_left _ _)).trans (hdomains x hx p hp L z d hzd), ?_⟩
+  intro y hy
+  have hyz : dist y z < εn := lt_of_lt_of_le hy (min_le_right _ _)
+  obtain ⟨_, hyN, hv⟩ := hnormal z hzK' y hyz
+  have h := hendpoint x hx p hp L z d hze (C.normal z y) hv
+    ((C.normal z).map_source hyN)
+  change map (patch C D) ⟨x, p, L⟩ ((C.normal z).symm (C.normal z y)) = _ at h
+  rw [(C.normal z).left_inv hyN] at h
+  exact h
+
 end FixedChartLocalSuccessorEquality
 end Poincare
