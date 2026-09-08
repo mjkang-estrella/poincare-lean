@@ -43,4 +43,29 @@ theorem anchorFrame_isInvertible (x : M) (hx : x ∈ C.anchors) :
   exact (isInvertible_mfderiv_extChartAt hy).comp
     (isInvertible_mfderivWithin_extChartAt_symm hz)
 
+/-- Equality of endpoint germs gives equality of inverse normal germs.
+Continuity pulls the velocity neighborhood back to the anchor, where both
+partial inverse laws apply. -/
+theorem normal_eventuallyEq_generic_in_anchor_frame_of_endpoint_agreement
+    (x : M) (hx : x ∈ C.anchors)
+    (h : (C.endpoint x : E → M) =ᶠ[𝓝 (0 : E)]
+      (fun v => GeodesicTransport.expAt g x (anchorFrame x₀ x v))) :
+    (fun z : M => anchorFrame x₀ x (C.normal x z)) =ᶠ[𝓝 x]
+      (fun z : M => (CartanSourceExponential.genericFamily g).normal x z) := by
+  have hn : Tendsto (C.normal x) (𝓝 x) (𝓝 (0 : E)) := by
+    simpa only [C.normal_anchor x hx] using
+      ((C.normal x).continuousAt (C.anchor_mem_normal_source x hx)).tendsto
+  have hJ : Tendsto (anchorFrame x₀ x) (𝓝 (0 : E)) (𝓝 (0 : E)) := by
+    simpa only [map_zero] using ((anchorFrame x₀ x).continuous.continuousAt (x := (0 : E))).tendsto
+  have hinv := GeodesicTransport.expAtChartOpenPartialHomeomorph_eventually_left_inverse g x
+  filter_upwards [hn h, (hJ.comp hn) hinv,
+    (C.normal x).open_source.mem_nhds (C.anchor_mem_normal_source x hx)] with z hz hi hs
+  have he : GeodesicTransport.expAt g x (anchorFrame x₀ x (C.normal x z)) = z :=
+    hz.symm.trans ((C.normal x).left_inv hs)
+  change (GeodesicTransport.expAtChartOpenPartialHomeomorph g x).symm
+    (extChartAt I x (GeodesicTransport.expAt g x
+      (anchorFrame x₀ x (C.normal x z)))) = anchorFrame x₀ x (C.normal x z) at hi
+  rw [he] at hi
+  exact hi.symm
+
 end Poincare.FixedChartUniformPreferredGermAgreement
