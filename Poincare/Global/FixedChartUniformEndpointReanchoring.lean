@@ -214,5 +214,27 @@ theorem exists_uniform_christoffel_transition_of_differentiable_fderiv
   rw [heq]
   exact anchor_cutoff D hV hpD
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Rescaling both time and velocity gives the same geodesic equation on
+`[0,1]`, even when source and target patches have different retained times. -/
+theorem normalizedFlow_hasDerivWithinAt {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {q : E × E} (hq : q ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {t : ℝ} (ht : t ∈ Icc (0 : ℝ) 1) :
+    let γ := fun s : ℝ => ((C.α q (C.T * s)).1, C.T • (C.α q (C.T * s)).2)
+    HasDerivWithinAt γ
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField g x₀) (γ t))
+      (Icc (0 : ℝ) 1) t := by
+  have htimes : MapsTo (fun s : ℝ => C.T * s) (Icc (0 : ℝ) 1) (Icc (-C.T) C.T) := by
+    intro s hs
+    constructor <;> nlinarith [C.T_pos, hs.1, hs.2]
+  have hscale : HasDerivWithinAt (fun s : ℝ => C.T * s) C.T (Icc (0 : ℝ) 1) t := by
+    simpa using ((hasDerivAt_id t).const_mul C.T).hasDerivWithinAt (s := Icc (0 : ℝ) 1)
+  have hd := ((C.flow_law q hq).2 (C.T * t) (htimes ht)).scomp t hscale htimes
+  have hp := HasFDerivWithinAt.hasDerivWithinAt (HasFDerivWithinAt.fst hd.hasFDerivWithinAt)
+  have hv := HasFDerivWithinAt.hasDerivWithinAt (HasFDerivWithinAt.snd hd.hasFDerivWithinAt)
+  have hpair := hp.prodMk (hv.const_smul C.T)
+  simpa [geodesicFlowField, smul_smul] using hpair
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
