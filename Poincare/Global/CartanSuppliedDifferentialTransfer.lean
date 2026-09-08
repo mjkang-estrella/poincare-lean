@@ -308,5 +308,17 @@ theorem data_of_coordinateData : ∀ (Q : Interpretation g)
            alignment := L
            hasFDerivAt_reanchoredChartMap := htotal.congr_of_eventuallyEq heq }, rfl⟩
 
+omit [T2Space M] in
+/-- Equality of the coordinate germs determines the underlying alignment operator. -/
+theorem alignment_clm_eq_of_eventuallyEq :
+  ∀ (Q R : Interpretation g) (s t : CartanChain.ChainState g) (z : M)
+    (d : Data Q s z) (e : Data R t z),
+  reanchoredChartMap Q s z =ᶠ[𝓝 (extChartAt I z z)] reanchoredChartMap R t z →
+  (d.alignment.toContinuousLinearEquiv : E →L[ℝ] E) =
+    (e.alignment.toContinuousLinearEquiv : E →L[ℝ] E) := by
+  intro Q R s t z d e h
+  exact d.hasFDerivAt_reanchoredChartMap.fderiv.symm.trans
+    (h.fderiv_eq.trans e.hasFDerivAt_reanchoredChartMap.fderiv)
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
