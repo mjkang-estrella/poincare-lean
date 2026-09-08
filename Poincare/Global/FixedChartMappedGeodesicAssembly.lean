@@ -215,5 +215,81 @@ theorem exists_uniform_christoffel_transition
     ((hC2.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
       (by norm_num))⟩
 
+/-- Small normalized velocities keep the entire retained trajectory uniformly
+close to each anchor in a compact set, with its actual chart domain. -/
+theorem exists_uniform_flow_displacement_radius {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    {ε : ℝ} (hε : 0 < ε) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ v : E, ‖v‖ < ρ →
+      (extChartAt I x₀ x, C.T⁻¹ • v) ∈
+        closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ) ∧
+      ∀ t ∈ Icc (-C.T) C.T,
+        (C.α (extChartAt I x₀ x, C.T⁻¹ • v) t).1 ∈ (extChartAt I x₀).target ∧
+        dist ((extChartAt I x₀).symm
+          (C.α (extChartAt I x₀ x, C.T⁻¹ • v) t).1) x < ε := by
+  letI : MetricSpace M := g.toMetricSpace
+  let J := Icc (-C.T) C.T
+  let f : E × (M × J) → E × E := fun a => (extChartAt I x₀ a.2.1, C.T⁻¹ • a.1)
+  let S : Set (E × (M × J)) := {a | a.2.1 ∈ (extChartAt I x₀).source ∧ f a ∈ C.P.source}
+  have hopen : IsOpen S := by
+    apply isOpen_iff_mem_nhds.mpr
+    intro a ha
+    have hf : ContinuousAt f a :=
+      ((continuousAt_extChartAt' ha.1).comp
+        (f := fun b : E × (M × J) => b.2.1) continuousAt_snd.fst).prodMk
+        (continuousAt_const.smul continuousAt_fst)
+    exact inter_mem
+      ((continuous_snd.fst.isOpen_preimage _ (isOpen_extChartAt_source x₀)).mem_nhds ha.1)
+      (hf (C.P.open_source.mem_nhds ha.2))
+  have hc : ContinuousOn (fun a : E × (M × J) => (C.α (f a) a.2.2).1) S := by
+    apply C.continuous_flow.fst.comp
+      (f := fun a : E × (M × J) => (f a, (a.2.2 : ℝ))) (s := S) _
+      (fun a ha => ⟨ball_subset_closedBall (C.P_source_subset ha.2), a.2.2.property⟩)
+    apply ContinuousOn.prodMk
+    · apply ContinuousOn.prodMk
+      · exact (continuousOn_extChartAt x₀).comp continuous_snd.fst.continuousOn
+          (fun a ha => ha.1)
+      · exact (continuous_const.smul continuous_fst).continuousOn
+    · exact (continuous_subtype_val.comp continuous_snd.snd).continuousOn
+  have he : ∀ᶠ v : E in 𝓝 0, ∀ a ∈ K ×ˢ (univ : Set J),
+      f (v, a) ∈ C.P.source ∧
+      (C.α (f (v, a)) a.2).1 ∈ (extChartAt I x₀).target ∧
+      dist ((extChartAt I x₀).symm (C.α (f (v, a)) a.2).1) a.1 < ε := by
+    apply (hK.prod isCompact_univ).eventually_forall_of_forall_eventually
+    intro a ha
+    have hx := hKC ha.1
+    have hf0 : f (0, a) = (extChartAt I x₀ a.1, 0) := by simp [f]
+    have hsrc : f (0, a) ∈ C.P.source := by rw [hf0]; exact C.zero_mem_source _ hx.2
+    have hS : ((0 : E), a) ∈ S := ⟨hx.1, hsrc⟩
+    have hq := ball_subset_closedBall (C.P_source_subset hsrc)
+    have hstat := FixedChartUniformNormalRadius.flow_zero_velocity
+      (contDiff_geodesicFlowField (GeodesicTransport.chartChristoffelField_contDiff g x₀))
+      C.T_pos (by simpa only [hf0] using (C.flow_law _ hq).1)
+      (by simpa only [hf0] using (C.flow_law _ hq).2) a.2 a.2.property
+    have hpos : (C.α (f (0, a)) a.2).1 = extChartAt I x₀ a.1 := by
+      rw [hf0, hstat]
+    have ht : (C.α (f (0, a)) a.2).1 ∈ (extChartAt I x₀).target := by
+      rw [hpos]; exact (extChartAt I x₀).map_source hx.1
+    have hca := hc.continuousAt (hopen.mem_nhds hS)
+    have hdist := ((continuousAt_extChartAt_symm'' ht).comp
+      (f := fun a : E × (M × J) => (C.α (f a) a.2.2).1) hca).dist continuousAt_snd.fst
+    have heps : dist ((extChartAt I x₀).symm (C.α (f (0, a)) a.2).1) a.1 < ε := by
+      rw [hpos, (extChartAt I x₀).left_inv hx.1, dist_self]
+      exact hε
+    filter_upwards [hopen.mem_nhds hS,
+      hca ((isOpen_extChartAt_target x₀).mem_nhds ht),
+      hdist.eventually (gt_mem_nhds heps)] with b hb hbt hbd
+    exact ⟨hb.2, hbt, hbd⟩
+  obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
+  refine ⟨ρ, hρ, ?_⟩
+  intro x hx v hv
+  have h := hball (show v ∈ ball (0 : E) ρ by simpa using hv)
+  have hzero : (0 : ℝ) ∈ J := ⟨by linarith [C.T_pos], C.T_pos.le⟩
+  refine ⟨ball_subset_closedBall (C.P_source_subset (h (x, ⟨0, hzero⟩) ⟨hx, mem_univ _⟩).1), ?_⟩
+  intro t ht
+  exact (h (x, ⟨t, ht⟩) ⟨hx, mem_univ _⟩).2
+
 end FixedChartMappedGeodesicAssembly
 end Poincare
