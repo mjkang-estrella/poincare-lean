@@ -385,5 +385,27 @@ private theorem generic_sourceExp_comparison (g : ClosedSmoothRiemannianMetric 3
     filter_upwards [htend ((chartAt E x).open_target.mem_nhds hc)] with a ha
     exact (chartAt E x).right_inv ha
 
+omit [T2Space M] in
+/-- The supplied chart derivative follows from the endpoint derivatives and their local inverse. -/
+private theorem chartMap_hasStrictFDerivAt (Q : Interpretation g)
+    (s : CartanChain.ChainState g) (v : E) (A B : E ≃L[ℝ] E)
+    (hv : v ∈ (sourceExp Q s.anchor).source)
+    (hA : HasStrictFDerivAt (sourceExp Q s.anchor) (A : E →L[ℝ] E) v)
+    (hB : HasStrictFDerivAt (targetExp Q s.target) (B : E →L[ℝ] E) (linear Q s v)) :
+    HasStrictFDerivAt (chartMap Q s) (chartDifferential Q s A B)
+      (sourceExp Q s.anchor v) := by
+  have hinv := (sourceExp Q s.anchor).hasStrictFDerivAt_symm
+    ((sourceExp Q s.anchor).map_source hv)
+    (show HasStrictFDerivAt (sourceExp Q s.anchor) (A : E →L[ℝ] E)
+      ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor v)) by
+      rw [(sourceExp Q s.anchor).left_inv hv]
+      exact hA)
+  have hlin := (linear Q s).hasStrictFDerivAt.comp (sourceExp Q s.anchor v) hinv
+  have hout : HasStrictFDerivAt (targetExp Q s.target) (B : E →L[ℝ] E)
+      (linear Q s ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor v))) := by
+    rw [(sourceExp Q s.anchor).left_inv hv]
+    exact hB
+  exact hout.comp (sourceExp Q s.anchor v) hlin
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
