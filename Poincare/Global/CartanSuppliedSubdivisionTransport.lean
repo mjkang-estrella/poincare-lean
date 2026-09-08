@@ -136,5 +136,33 @@ theorem refinement_state_eq : ∀ (S : System g) (initial : CartanChain.ChainSta
   exact refinement_chain_state_eq S initial p R T.subdivision.time
     T.subdivision.zero T.subdivision.mono T.preferred T.chain f hfzero hfmono htimes
 
+/-- Repeated nodes preserve full supplied states, including finite terminal tails. -/
+theorem state_eq_of_constant_nodes (S : System g) (initial : CartanChain.ChainState g)
+    (nodes : ℕ → M) (preferred : ℕ → S.cover.Label)
+    (c : ReachableChain (policy S.cover preferred) nodes initial)
+    (hinitial : initial.anchor = nodes 0) (m N : ℕ)
+    (hconstant : ∀ k ≤ N, nodes (m + k) = nodes m) :
+    c.state (m + N) = c.state m := by
+  induction N with
+  | zero => rfl
+  | succ N ih =>
+      have hprev := ih (fun k hk => hconstant k (by omega))
+      have hz : nodes (m + N + 1) = (c.state (m + N)).anchor := by
+        rw [state_anchor_eq_node _ _ _ c hinitial]
+        have hn : nodes (m + N + 1) = nodes m := by
+          simpa only [Nat.add_assoc] using hconstant (N + 1) le_rfl
+        exact hn.trans (hconstant N (by omega)).symm
+      let a := select S.cover (preferred (m + N)) (c.state (m + N))
+      have hzero : ∀ z, z = (c.state (m + N)).anchor →
+          ∀ d : Data (S.cover.interp a) (c.state (m + N)) z,
+            d.successor = c.state (m + N) := by
+        intro z hz d
+        subst z
+        exact CartanSuppliedDifferentialTransfer.patch_successor_at_anchor
+          _ _ _ _ (S.cover.source.patch a.1) (S.cover.target.patch a.2)
+          (S.cover.source.cutoff a.1) (S.cover.target.cutoff a.2) _ d
+      simpa only [Nat.add_assoc] using
+        (c.successor_eq (m + N)).trans ((hzero _ hz (c.data (m + N))).trans hprev)
+
 end CartanSuppliedSubdivisionTransport
 end Poincare
