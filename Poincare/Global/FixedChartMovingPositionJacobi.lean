@@ -320,5 +320,54 @@ theorem radial_state_hasDerivAt {x₀ : M} {γ : ℝ → E × E} {t : ℝ}
       one_smul, Γ, A, V, id_eq]
   congr 1 <;> module
 
+/-- The radial position variation is time times the transported velocity,
+on the full retained interval and at arbitrary moving initial position. -/
+theorem radial_position_eq_time_smul_velocity {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {q : E × E} (hq : q ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α q t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    (Φ t (0, q.2)).1 = t • (C.α q t).2 := by
+  let Γ := chartChristoffelField g x₀
+  let A := fun s => linearizedGeodesicFlowOperator Γ (C.α q s)
+  let V := fun s => (C.α q s).2
+  let R := fun s => (s • V s, V s + s • (-(Γ (C.α q s).1 (V s) (V s))))
+  have hc := HasDerivWithinAt.continuousOn (C.flow_law _ hq).2
+  have hΓ := (chartChristoffelField_contDiff g x₀).continuous.comp_continuousOn hc.fst
+  have hRc : ContinuousOn R (Icc (-C.T) C.T) :=
+    (continuousOn_id.smul hc.snd).prodMk (hc.snd.add
+      (continuousOn_id.smul (((hΓ.clm_apply hc.snd).clm_apply hc.snd).neg)))
+  have hRd : ∀ s ∈ Ioo (-C.T) C.T, HasDerivAt R (A s (R s)) s := by
+    intro s hs
+    exact radial_state_hasDerivAt
+      (((C.flow_law _ hq).2 s (Ioo_subset_Icc_self hs)).hasDerivAt
+        (Icc_mem_nhds hs.1 hs.2))
+  have hlin : ∀ s ∈ Icc (-C.T) C.T, HasDerivWithinAt (fun s => Φ s (0, q.2))
+      (A s (Φ s (0, q.2))) (Icc (-C.T) C.T) s := by
+    intro s hs
+    simpa [A] using (hΦ s hs).clm_apply
+      (hasDerivWithinAt_const s (Icc (-C.T) C.T) (0, q.2))
+  have hF := geodesicFlowField_chartChristoffelField_contDiff_two g x₀
+  have hAc : ContinuousOn A (Icc (-C.T) C.T) :=
+    ((hF.of_le (by norm_num : (1 : ℕ∞ω) ≤ 2)).continuous_fderiv one_ne_zero).comp_continuousOn hc
+  obtain ⟨k, hk⟩ := isCompact_Icc.exists_bound_of_continuousOn hAc
+  let K : ℝ≥0 := ⟨max k 0, le_max_right _ _⟩
+  have hK : ∀ s ∈ Ioo (-C.T) C.T, ‖A s‖₊ ≤ K := by
+    intro s hs
+    exact_mod_cast (hk s (Ioo_subset_Icc_self hs)).trans (le_max_left k 0)
+  have heq := ODE_solution_unique_of_mem_Icc
+    (v := fun t => A t) (s := fun _ => univ)
+    (fun s hs => ((A s).lipschitz.weaken (hK s hs)).lipschitzOnWith)
+    (show (0 : ℝ) ∈ Ioo (-C.T) C.T by constructor <;> linarith [C.T_pos])
+    (HasDerivWithinAt.continuousOn hlin)
+    (fun s hs => (hlin s (Ioo_subset_Icc_self hs)).hasDerivAt (Icc_mem_nhds hs.1 hs.2))
+    (fun _ _ => mem_univ _) hRc hRd (fun _ _ => mem_univ _)
+    (by simp [hΦ0, R, V, (C.flow_law _ hq).1])
+  exact congrArg Prod.fst (heq ht)
+
 end FixedChartMovingPositionJacobi
 end Poincare
