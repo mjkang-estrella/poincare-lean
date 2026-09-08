@@ -194,5 +194,15 @@ theorem successor_fields : ∀ (Q : Interpretation g) (s : CartanChain.ChainStat
   intro Q s z d
   exact ⟨rfl, rfl, d.source_mem⟩
 
+/-- A zero stored normal vector forces the new point to be the predecessor anchor. -/
+theorem eq_anchor_of_vector_eq_zero :
+  ∀ (Q : Interpretation g) (s : CartanChain.ChainState g) (z : M)
+    (d : Data Q s z), d.v = 0 → z = s.anchor := by
+  intro Q s z d hv
+  apply (Q.sourceNormal s.anchor).injOn d.source_mem.1
+    (Q.source_anchor_mem s.anchor d.source_anchor_valid)
+  rw [← vector_eq Q s z d, hv,
+    Q.source_anchor_zero s.anchor d.source_anchor_valid]
+
 end CartanSuppliedDifferentialSuccessor
 end Poincare
