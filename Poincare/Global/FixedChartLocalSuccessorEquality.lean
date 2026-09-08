@@ -205,5 +205,31 @@ theorem exists_onCompact_of_uniformEndpointReanchoring
   rw [(C.normal z).left_inv hyN] at h
   exact h
 
+/-- Combine the allowed H1 remainder with the still unproved endpoint
+reanchoring remainder. This does not assert the curvature-only H2 target. -/
+theorem exists_radii_of_uniformDifferentialPullback_of_uniformEndpointReanchoring
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (hd : FixedChartLocalSuccessorExistence.UniformDifferentialPullback (patch C D) K H)
+    (he : UniformEndpointReanchoring (patch C D) K H) :
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ),
+      FixedChartLocalSuccessorExistence.OnCompact (patch C D) K H η ∧
+      OnCompact (patch C D) K H η ε := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηd, hηd, hdata⟩ :=
+    FixedChartLocalSuccessorExistence.exists_onCompact_of_uniformDifferentialPullback
+      C D K H hK hKC hH hHD hd
+  obtain ⟨ηe, hηe, ε, hε, hequality⟩ :=
+    exists_onCompact_of_uniformEndpointReanchoring C D K H hK hKC hH hHD he
+  refine ⟨min ηd ηe, lt_min hηd hηe, ε, hε, ?_, ?_⟩
+  · intro x hx p hp L z hz
+    exact hdata x hx p hp L z (hz.trans_le (min_le_left _ _))
+  · intro x hx p hp L z d hz
+    exact hequality x hx p hp L z d (hz.trans_le (min_le_right _ _))
+
 end FixedChartLocalSuccessorEquality
 end Poincare
