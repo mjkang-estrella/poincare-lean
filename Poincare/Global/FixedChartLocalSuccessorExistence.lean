@@ -247,5 +247,36 @@ theorem exists_uniform_linear_bound {x₀ : M} {p₀ : RoundSphere3} {U V : Set 
   change ‖linear (patch C D) ⟨x, p, L⟩ v‖ ≤ Real.sqrt (b / a)
   nlinarith
 
+/-- The source and both successor anchors in the requested compact contract
+share one positive radius, independently of all tangent alignments. -/
+theorem exists_uniform_domain_radius {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+        z ∈ (patch C D).sourceAnchors ∧
+        map (patch C D) ⟨x, p, L⟩ z ∈ (patch C D).targetAnchors ∧
+        z ∈ (germ (patch C D) ⟨x, p, L⟩).source := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨B, hB, hbound⟩ := exists_uniform_linear_bound C D K H hK hKC hH hHD
+  obtain ⟨ρ, hρ, htarget⟩ := exists_uniform_endpoint_radius D H hH hHD
+  obtain ⟨η, hη, hsource⟩ := exists_uniform_normal_radius C K hK hKC (div_pos hρ hB)
+  refine ⟨η, hη, ?_⟩
+  intro x hx p hp L z hz
+  obtain ⟨hzC, hzN, hv⟩ := hsource x hx z hz
+  have hnorm : ‖linear (patch C D) ⟨x, p, L⟩ (C.normal x z)‖ < ρ := by
+    calc
+      _ ≤ ‖(linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E)‖ * ‖C.normal x z‖ :=
+        (linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E).le_opNorm _
+      _ ≤ B * ‖C.normal x z‖ :=
+        mul_le_mul_of_nonneg_right (hbound x hx p hp L) (norm_nonneg _)
+      _ < ρ := by simpa only [mul_comm B] using (lt_div_iff₀ hB).mp hv
+  obtain ⟨htsrc, htanchor⟩ := htarget p hp _ hnorm
+  exact ⟨hzC, htanchor, hzN, mem_univ _, htsrc⟩
+
 end FixedChartLocalSuccessorExistence
 end Poincare
