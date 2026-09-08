@@ -125,4 +125,45 @@ theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
     (fun k z ↦ f z * inverseChartPullbackVolumeDensity
       (metric k) x ⟨z.1, hS z.2⟩) hF
 
+variable [SecondCountableTopology M]
+
+/-- The landed area formula restricts to any compact coordinate set. -/
+theorem compact_inverseChart_hausdorffChartDensityEquality
+    (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (S : Set E) (hSc : IsCompact S) (hS : S ⊆ (extChartAt I x).target) :
+    let ψ : S → M := fun z ↦ inverseExtendedChartParametrization x ⟨z.1, hS z.2⟩
+    HausdorffChartDensityEquality g S ψ (range ψ)
+      (fun z ↦ inverseChartPullbackVolumeDensity g x ⟨z.1, hS z.2⟩) := by
+  letI : CompactSpace S := isCompact_iff_compactSpace.mp hSc
+  let T := (extChartAt I x).target
+  let ι : S → T := Set.inclusion hS
+  let ψ : T → M := inverseExtendedChartParametrization x
+  have hι : Topology.IsEmbedding ι := Topology.IsEmbedding.inclusion hS
+  have hψ : Topology.IsEmbedding ψ := inverseExtendedChartParametrization_isEmbedding x
+  have hsmall : MeasurableSet (range (ψ ∘ ι)) :=
+    (isCompact_range (hψ.continuous.comp hι.continuous)).measurableSet
+  have hpre : ψ ⁻¹' range (ψ ∘ ι) = range ι := by
+    ext z
+    constructor
+    · rintro ⟨w, hw⟩
+      exact ⟨w, hψ.injective hw⟩
+    · rintro ⟨w, rfl⟩
+      exact ⟨w, rfl⟩
+  have hsub : range (ψ ∘ ι) ⊆ range ψ := by
+    rintro y ⟨z, rfl⟩
+    exact ⟨ι z, rfl⟩
+  change Measure.map (ψ ∘ ι)
+      (rawHausdorffCoordinateDensityMeasure S
+        (fun z ↦ inverseChartPullbackVolumeDensity g x (ι z))) =
+    (volumeMeasure g).restrict (range (ψ ∘ ι))
+  rw [← Measure.map_map hψ.continuous.measurable hι.continuous.measurable,
+    map_rawHausdorffCoordinateDensityMeasure_inclusion
+      (isOpen_extChartAt_target x).measurableSet hSc.measurableSet hS,
+    ← hpre, ← Measure.restrict_map hψ.continuous.measurable hsmall]
+  rw [show Measure.map ψ (rawHausdorffCoordinateDensityMeasure T
+      (inverseChartPullbackVolumeDensity g x)) =
+        (volumeMeasure g).restrict (range ψ) from
+      inverseChart_hausdorffChartDensityEquality g x]
+  exact Measure.restrict_restrict_of_subset hsub
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
