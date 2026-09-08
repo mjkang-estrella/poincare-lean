@@ -407,5 +407,24 @@ private theorem chartMap_hasStrictFDerivAt (Q : Interpretation g)
     exact hB
   exact hout.comp (sourceExp Q s.anchor v) hlin
 
+omit [T2Space M] in
+/-- Generic supplied and old data have the same actual derivative and successor. -/
+private theorem generic_successor_eq (s : CartanChain.ChainState g) (z : M)
+    (e : Data (generic g) s z) (d : DifferentialInducedSuccessor.Data s z) :
+    e.successor = d.successor := by
+  have hcharts : reanchoredChartMap (generic g) s z =
+      DifferentialInducedSuccessor.reanchoredChartMap s z := by
+    funext a
+    change extChartAt I (map (generic g) s z)
+      (map (generic g) s ((extChartAt I z).symm a)) =
+      extChartAt I (s.map z) (s.map ((extChartAt I z).symm a))
+    rw [generic_map_eq]
+  have hd : HasFDerivAt (reanchoredChartMap (generic g) s z)
+      (d.alignment.toContinuousLinearEquiv : E →L[ℝ] E) (extChartAt I z z) := by
+    rw [hcharts]
+    exact d.hasFDerivAt_reanchoredChartMap
+  exact chainState_eq_of_target_eq_of_clm_eq e.alignment d.alignment
+    (congrFun (generic_map_eq s) z) (e.hasFDerivAt_reanchoredChartMap.unique hd)
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
