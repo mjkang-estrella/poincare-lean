@@ -64,5 +64,51 @@ theorem chartMap_fderiv_metric (Q : Interpretation g)
       d.target_coordinate, d.source_coordinate]
     exact d.metric_pullback a b
 
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- Curvature supplies a metric-pullback germ in the fixed host coordinates
+at every point of a single uniform manifold neighborhood. -/
+theorem exists_uniform_chartMetric_pullback_germ
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+      let F := chartMap (patch C D) ⟨x, p, L⟩
+      ∀ᶠ q in 𝓝 (extChartAt I x₀ z),
+        HasStrictFDerivAt F (fderiv ℝ F q) q ∧
+        (fderiv ℝ F q).IsInvertible ∧
+        q ∈ (extChartAt I x₀).target ∧ F q ∈ (extChartAt I p₀).target ∧
+        ∀ a b : E,
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+            (F q) (fderiv ℝ F q a) (fderiv ℝ F q b) =
+          CovariantDerivative.chartMetric g.inner x₀ q a b := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨η, hη, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨η, hη, ?_⟩
+  intro x hx p hp L z hz
+  dsimp only
+  have hzsrc : z ∈ (extChartAt I x₀).source := (hdata x hx p hp L z hz).1.1
+  have hzt := (extChartAt I x₀).map_source hzsrc
+  have he : ∀ᶠ q in 𝓝 (extChartAt I x₀ z),
+      (extChartAt I x₀).symm q ∈ ball x η := by
+    apply (continuousAt_extChartAt_symm'' hzt).tendsto
+    rw [(extChartAt I x₀).left_inv hzsrc]
+    exact isOpen_ball.mem_nhds hz
+  filter_upwards [he, (isOpen_extChartAt_target x₀).mem_nhds hzt] with q hq hqt
+  obtain ⟨d⟩ := (hdata x hx p hp L ((extChartAt I x₀).symm q) hq).2.2.2
+  have hd := chartMap_fderiv_metric (patch C D) ⟨x, p, L⟩
+    ((extChartAt I x₀).symm q) d.toCoordinateData
+  dsimp only [patch] at hd
+  rw [(extChartAt I x₀).right_inv hqt] at hd
+  exact hd
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
