@@ -1,6 +1,7 @@
 import Poincare.Global.FixedChartUniformSourceNormal
 import Poincare.Global.CartanSuppliedSourceGermTransfer
 import Poincare.Global.ChartTransitionGeodesicMap
+import Poincare.Global.CartanFixedChartGenericInverseEndpointODEPrimitive
 
 /-!
 # Fixed-anchor frame and inverse comparison for a retained flow
@@ -105,5 +106,23 @@ theorem eventually_position_mem_forall_time (x : M) (hx : x ∈ C.anchors)
     exact hc'.tendsto hv'
   filter_upwards [he] with w hw t ht
   exact hw ⟨t, ht⟩
+
+/-- Chart transitions are smooth at points of the actual overlap. -/
+theorem chartTransition_contDiffAt (a b : M) {z : E}
+    (hz : z ∈ (extChartAt I a).target)
+    (hb : (extChartAt I a).symm z ∈ (extChartAt I b).source) :
+    ContDiffAt ℝ 2 (GeodesicTransport.chartTransition a b) z := by
+  have hb' : (extChartAt I a).symm z ∈ (chartAt E b).source := by
+    rwa [extChartAt_source] at hb
+  have ho : ContMDiffAt I (modelWithCornersSelf ℝ E) 2 (extChartAt I b)
+      ((extChartAt I a).symm z) := contMDiffAt_extChartAt' hb'
+  have hiw : ContMDiffWithinAt (modelWithCornersSelf ℝ E) I 2
+      ((extChartAt I a).symm) (range I) z :=
+    contMDiffWithinAt_extChartAt_symm_range a hz
+  have hi : ContMDiffAt (modelWithCornersSelf ℝ E) I 2
+      ((extChartAt I a).symm) z := by
+    simpa [ModelWithCorners.range_eq_univ] using hiw
+  exact contMDiffAt_iff_contDiffAt.mp
+    (by simpa [GeodesicTransport.chartTransition, Function.comp_def] using ho.comp z hi)
 
 end Poincare.FixedChartUniformPreferredGermAgreement
