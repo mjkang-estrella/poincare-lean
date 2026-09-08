@@ -143,4 +143,50 @@ theorem transportField_contMDiff_iff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → 
     exact hback
   · exact transportField_contMDiff inst' h hn X
 
+section Connection
+variable [T2Space M]
+
+/-- Conjugate the old Levi-Civita operator, including its direction argument. -/
+def conjugatedDerivative (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    (M → E) → M → E →L[ℝ] E :=
+  letI := inst
+  fun X x ↦ (J (inst := inst) inst' h x).symm.toContinuousLinearMap.comp
+    ((g.leviCivita (inverseTransportField (inst := inst) inst' h X) x).comp
+      (J (inst := inst) inst' h x).toContinuousLinearMap)
+
+/-- The conjugated operator has the required vector-field formula. -/
+theorem conjugatedDerivative_apply (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (X : M → E) (x : M) (v : E) :
+    conjugatedDerivative (inst := inst) inst' h g X x v =
+      (letI := inst
+       (J (inst := inst) inst' h x).symm
+         (g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
+           (J (inst := inst) inst' h x v))) := rfl
+
+/-- The actual curvature operator evaluated on the repository's local extensions. -/
+def curvatureValue (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (x : M) (u w a : E) : E :=
+  letI := inst
+  CovariantDerivative.curvatureOp g.leviCivita
+    (FiberBundle.extend E (x := x) u) (FiberBundle.extend E (x := x) w)
+    (FiberBundle.extend E (x := x) a) x
+
+/-- Remaining differential naturality identities. The first is required only
+on differentiable sections, as in Levi-Civita uniqueness. The second compares
+the actual curvature tensors, independently of any constant-curvature premise.
+Neither identity is proved by the tangent-section regularity results above. -/
+def ConnectionCurvatureNaturality (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) : Prop :=
+  let R := curvatureValue (inst := inst) g
+  let cov := conjugatedDerivative (inst := inst) inst' h g
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let g' := transport (inst := inst) inst' h g
+  (∀ (X : M → E) (x : M), MDiffAtTangentField X x → cov X x = g'.leviCivita X x) ∧
+    (∀ (x : M) (u w a : E),
+      J (inst := inst) inst' h x (curvatureValue g' x u w a) =
+        R x (J (inst := inst) inst' h x u) (J (inst := inst) inst' h x w)
+          (J (inst := inst) inst' h x a))
+
+end Connection
 end Poincare.CurvatureInstanceTransport
