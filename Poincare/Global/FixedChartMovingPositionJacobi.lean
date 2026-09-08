@@ -7,6 +7,7 @@ The initial state ranges over the original patch ball. Time is never shrunk.
 -/
 
 noncomputable section
+set_option maxHeartbeats 1200000
 open Filter Metric Set
 open scoped Manifold ContDiff Topology NNReal
 namespace Poincare
@@ -117,6 +118,63 @@ theorem velocityVariation_hasDerivAt {x₀ : M} {U : Set E}
   have hf' : HasFDerivAt (fun y => C.α y t) (Φ t) (z, v + (0 : ℝ) • w) := by
     simpa only [zero_smul, add_zero] using hf
   exact hf'.comp_hasDerivAt 0 hs
+
+/-- Initial transverse vectors remain orthogonal to the velocity through the
+closed endpoints. All flow-variation and speed premises are discharged. -/
+theorem transverse_orthogonal {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {z v : E} (hq : (z, v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, v) t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    (w : E) (horth : CovariantDerivative.chartMetric g.inner x₀ z v w = 0)
+    {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    CovariantDerivative.chartMetric g.inner x₀ (C.α (z, v) t).1
+      (Φ t (0, w)).1 (C.α (z, v) t).2 = 0 := by
+  have hqc := ball_subset_closedBall hq
+  have h0 : (0 : ℝ) ∈ Ioo (-C.T) C.T := ⟨by linarith [C.T_pos], C.T_pos⟩
+  have hc0 := (flow_mem_target_cutoffOne C hU hqc (Ioo_subset_Icc_self h0)).2.self_of_nhds
+  rw [(C.flow_law _ hqc).1] at hc0
+  have horth' : chartGeodesicMetric g x₀ z v w = 0 := by
+    dsimp only [chartGeodesicMetric]
+    rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀) hc0]
+    exact horth
+  have hΨ : ∀ s ∈ Icc (-C.T) C.T, HasDerivWithinAt (fun s => Φ s (0, w))
+      (linearizedGeodesicFlowFieldAlong (chartChristoffelField g x₀)
+        (C.α (z, v)) s (Φ s (0, w))) (Icc (-C.T) C.T) s := by
+    intro s hs
+    simpa using (hΦ s hs).clm_apply (hasDerivWithinAt_const s (Icc (-C.T) C.T) (0, w))
+  have heq : EqOn
+      (fun s => chartGeodesicMetric g x₀ (C.α (z, v) s).1
+        (Φ s (0, w)).1 (C.α (z, v) s).2) (fun _ => 0) (Ioo (-C.T) C.T) := by
+    intro s hs
+    exact chart_initialVelocity_integrated_transverse_gauss_orthogonal g x₀
+      (α := C.α) (z₀ := z) (v := v) (w := w) (Ψ := fun τ => Φ τ (0, w))
+      (a := -C.T) (b := C.T) (t := s)
+      (fun τ hτ => ((C.flow_law _ hqc).2 τ (Ioo_subset_Icc_self hτ)).hasDerivAt
+        (Icc_mem_nhds hτ.1 hτ.2))
+      (fun τ hτ => (hΨ τ (Ioo_subset_Icc_self hτ)).hasDerivAt (Icc_mem_nhds hτ.1 hτ.2))
+      (fun τ hτ => velocityVariation_hasDerivAt C hq hΦ0 hΦ w (Ioo_subset_Icc_self hτ))
+      (fun τ hτ => perturbed_flow_speed_eq_initial C hq w (Ioo_subset_Icc_self hτ))
+      (fun τ _ => IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ _)
+      (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ z)
+      (C.flow_law _ hqc).1 (by simp [hΦ0]) h0 horth' hs
+  have hc := HasDerivWithinAt.continuousOn (C.flow_law _ hqc).2
+  have hm : Continuous (chartGeodesicMetric g x₀) :=
+    continuous_iff_continuousAt.mpr (fun z =>
+      (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ z).continuousAt)
+  have hall := heq.of_subset_closure
+    (((hm.comp_continuousOn hc.fst).clm_apply
+      (HasDerivWithinAt.continuousOn hΨ).fst).clm_apply hc.snd)
+    continuousOn_const Ioo_subset_Icc_self
+    (by rw [closure_Ioo (show -C.T ≠ C.T by linarith [C.T_pos])]) ht
+  dsimp only [chartGeodesicMetric] at hall
+  rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀)
+    (flow_mem_target_cutoffOne C hU hqc ht).2.self_of_nhds] at hall
+  exact hall
 
 end FixedChartMovingPositionJacobi
 end Poincare
