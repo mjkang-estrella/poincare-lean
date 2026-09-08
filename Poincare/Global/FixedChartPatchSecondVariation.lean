@@ -29,6 +29,19 @@ theorem operatorAugmentedField_contDiff_one {F : X → X}
   exact ((hF.of_le (by norm_num)).comp contDiff_fst).prodMk
     (((hF.fderiv_right (m := 1) (by norm_num)).comp contDiff_fst).clm_comp contDiff_snd)
 
+/-- Right composition propagates any initial operator through the same
+fundamental solution, giving a full augmented-state flow. -/
+theorem operatorAugmentedFlow_hasDerivWithinAt
+    {F : X → X} {α : ℝ → X} {Φ : ℝ → X →L[ℝ] X}
+    {J : Set ℝ} {t : ℝ}
+    (hα : HasDerivWithinAt α (F (α t)) J t)
+    (hΦ : HasDerivWithinAt Φ ((fderiv ℝ F (α t)).comp (Φ t)) J t)
+    (Y : X →L[ℝ] X) :
+    HasDerivWithinAt (fun s => (α s, (Φ s).comp Y))
+      (operatorAugmentedField F (α t, (Φ t).comp Y)) J t := by
+  simpa [operatorAugmentedField, ContinuousLinearMap.comp_assoc] using
+    hα.prodMk (hΦ.clm_comp (hasDerivWithinAt_const t J Y))
+
 universe u
 local notation "E" => ClosedSmoothModel 3
 local notation "I" => closedSmoothModelWithCorners 3
