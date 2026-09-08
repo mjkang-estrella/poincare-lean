@@ -110,7 +110,8 @@ of its section 3; Schauder solvability, finite-atlas linear inverse,
 nonlinear residual estimate, smooth regularity). The boundary cannot be split
 into one chartwise linear assumption plus proved bookkeeping. Route ranking:
 finite-atlas parabolic Hölder contraction first. Its only class-A item, the
-compact ellipticity constant, is dispatched as `compact-coefficient-ellipticity`.
+compact ellipticity constant, landed as `Global/CompactCoefficientEllipticity.lean`
+(`exists_uniform_coercivity`, gate PASS).
 
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
