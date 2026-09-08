@@ -88,4 +88,18 @@ theorem continuous_trace_timeDeriv
       (timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
         ((hjoint p.1 p.2).of_le (by norm_num)))) (by intro a c; rfl)
 
+/-- Taking the logarithm cancels the coordinate density from its first variation. -/
+theorem hasDerivAt_log_inverseChartDensity
+    (C : FiniteExtendedChartCover (n := n) (M := M))
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M)
+    {t : ℝ} (i : Fin C.chartCount) (z : C.coordinateDomain i)
+    (htime : TimeDifferentiableAt gt t (C.inverseChart i z)) :
+    HasDerivAt (fun τ ↦ Real.log (C.inverseChartDensity (gt τ) i z))
+      ((1 / 2 : ℝ) * traceMetricVariationAt (gt t) (timeDerivAt gt t)
+        (C.inverseChart i z)) t := by
+  have hpos : 0 < C.inverseChartDensity (gt t) i z :=
+    inverseChartPullbackVolumeDensity_pos (gt t) (C.anchor i) (C.coordinateTargetPoint i z)
+  convert (C.hasDerivAt_inverseChartDensity i z htime).log hpos.ne' using 1
+  field_simp
+
 end Poincare.HamiltonChartDensityLocalDomination
