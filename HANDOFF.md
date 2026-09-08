@@ -654,8 +654,18 @@ conditional consequences reduce the uniform pullback and the frozen task-8
 target to it. The report names the lower-level lemmas that already allow
 arbitrary initial position (the transverse Gauss lemma, the curvature
 contraction, the Jacobi norm system). Task
-`moving-position-jacobi-comparison` is dispatched for it; the
-endpoint-reanchoring task follows.
+`moving-position-jacobi-comparison` PROVED it: `FixedChartMovingPositionJacobi.lean`
+(eighteen declarations, standard axioms, merged) contains
+`movingInitialPositionJacobiComparison`, `uniformNonzeroMetricPullback`,
+`uniformDifferentialPullback_of_constantCurvature`, and `exists_radius`, whose
+statement is byte-for-byte the frozen task-8 target: on a fixed-chart patch,
+for compact anchor sets, one radius chosen before the source anchor, target
+anchor, alignment, and point yields supplied successor data with actual source
+membership. This is the well-posed replacement of H1, proved. The remaining
+analytic statement for the H2 replacement is `UniformEndpointReanchoring`
+(uniform exponential naturality of the supplied Cartan map); task
+`uniform-endpoint-reanchoring` is dispatched for it, with the uniform local
+isometry now available as input.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
