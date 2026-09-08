@@ -25,6 +25,29 @@ theorem koszul_apply (J : Jet1) (u v q : E) :
     koszul J u v q = (1 / 2 : ℝ) * (J u v q + J v u q - J q u v) := by
   rfl
 
+/-- The contracted connection difference evaluated from the first metric jet. -/
+def fieldValue (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E) : E :=
+  let b := Module.finBasis ℝ E
+  ∑ i,
+    let r := G.inverse (LinearMap.toContinuousLinearMap (b.coord i))
+    connection G J r (b i) - B r (b i)
+
+/-- The second-jet contribution to the derivative of the contracted field. -/
+def fieldSecond (G : Bilin) (H : E →L[ℝ] Jet1) (a : E) : E :=
+  let b := Module.finBasis ℝ E
+  ∑ i, connection G (H a)
+    (G.inverse (LinearMap.toContinuousLinearMap (b.coord i))) (b i)
+
+/-- The derivative remainder uses only the first metric jet and fixed background data. -/
+def fieldFirst (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) (a : E) : E :=
+  let b := Module.finBasis ℝ E
+  ∑ i,
+    let r := G.inverse (LinearMap.toContinuousLinearMap (b.coord i))
+    let dr := -G.inverse (J a r);
+    -G.inverse (J a (connection G J r (b i))) + connection G J dr (b i) -
+      DB a r (b i) - B dr (b i)
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
@@ -141,6 +164,39 @@ theorem fieldDerivative_eq_raised_derivative
   simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
     ContinuousLinearMap.comp_apply, ContinuousLinearMap.flip_apply,
     ContinuousLinearMap.neg_apply, ContinuousLinearMap.zero_apply, map_zero, zero_add]
+  abel
+
+/-- The full derivative separates into a second-jet contraction and a uniform first-jet remainder. -/
+theorem fieldDerivative_eq_jets
+    (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (a : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let J := fderiv ℝ G z
+    let H := fderiv ℝ (fderiv ℝ G) z
+    let B := GeodesicTransport.chartChristoffelField bg anchor
+    fderiv ℝ (anchorChartDeTurckContractionFlow (fun _ => g) bg anchor 0) z a =
+      fieldSecond (G z) H a + fieldFirst (G z) J (B z) (fderiv ℝ B z) a := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  let Blend := anchorBlendedMetricFlow (fun _ => g) anchor 0
+  have heq : Blend =ᶠ[nhds z] G := by
+    filter_upwards [hcut] with y hy
+    exact CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      (GeodesicTransport.cutoff (n := 3) anchor)
+      (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hy
+  have hval := heq.self_of_nhds
+  have hder : fderiv ℝ Blend z = fderiv ℝ G z := heq.fderiv_eq
+  dsimp only [Blend, G] at hval hder
+  dsimp only
+  rw [fieldDerivative_eq_raised_derivative g bg anchor z a]
+  dsimp only
+  simp only [hval, hder, christoffelDerivative_eq_jets g anchor z hz hcut,
+    christoffel_eq_connection g anchor z hcut]
+  simp only [fieldSecond, fieldFirst, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  dsimp only
   abel
 
 end Manifold
