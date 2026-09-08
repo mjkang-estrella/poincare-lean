@@ -164,5 +164,49 @@ theorem state_eq_of_constant_nodes (S : System g) (initial : CartanChain.ChainSt
       simpa only [Nat.add_assoc] using
         (c.successor_eq (m + N)).trans ((hzero _ hz (c.data (m + N))).trans hprev)
 
+/-- S11's common finite refinement compares arbitrary subdivisions and schedules
+on one path. No simple-connectivity hypothesis enters this comparison. -/
+theorem endpoint_eq_same_path : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (p : Path initial.anchor y) (R T : Realization S initial p),
+  R.endpoint = T.endpoint := by
+  intro S initial y p R T
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨t, K, f, h, _hK, htzero, htmono, _httail, hfmono, hhmono,
+      hfzero, hhzero, hfbound, hhbound, hfvalue, hhvalue, _hfstrict,
+      hRbracket, _hTbracket⟩ :=
+    DifferentialSuccessorFiniteSubdivisionRefinement.exists_common_monotone_refinement_strict_factor
+      R.subdivision.time T.subdivision.time R.subdivision.zero T.subdivision.zero
+      R.subdivision.mono T.subdivision.mono R.subdivision.terminal T.subdivision.terminal
+      R.subdivision.tail T.subdivision.tail R.subdivision.strict
+  have hinitial : initial.anchor = p (t 0) := by simp [htzero]
+  have hsmall : ∀ n, dist (p (t (n + 1))) (p (t n)) < S.mesh := by
+    intro n
+    obtain ⟨j, hjleft, hjright⟩ := hRbracket n
+    have hmono := htmono (Nat.le_succ n)
+    exact R.subdivision.wholeCell j _ _
+      ⟨hjleft.trans hmono, hjright⟩ ⟨hjleft, hmono.trans hjright⟩
+  obtain ⟨preferred, c, _hzero, _hsticky⟩ :=
+    exists_sticky_chain S (fun n => p (t n)) initial hinitial hsmall
+  have hR := refinement_chain_state_eq S initial p R t htzero htmono preferred c
+    f hfzero hfmono (fun n => (hfvalue n).symm) R.subdivision.terminal
+  have hT := refinement_chain_state_eq S initial p T t htzero htmono preferred c
+    h hhzero hhmono (fun n => (hhvalue n).symm) T.subdivision.terminal
+  have hterminal : ∀ n, n ≤ K → t n = 1 → c.state n = c.state K := by
+    intro n hn htn
+    have hconstant : ∀ k ≤ K - n, p (t (n + k)) = p (t n) := by
+      intro k _hk
+      have heq : t (n + k) = t n :=
+        le_antisymm (by rw [htn]; exact (t (n + k)).property.2)
+          (htmono (by omega))
+      rw [heq]
+    have hc := state_eq_of_constant_nodes S initial (fun n => p (t n))
+      preferred c hinitial n (K - n) hconstant
+    rw [Nat.add_sub_of_le hn] at hc
+    exact hc.symm
+  exact hR.trans ((hterminal _ (hfbound _) (by
+      rw [hfvalue, R.subdivision.tail _ le_rfl])).trans
+    ((hterminal _ (hhbound _) (by
+      rw [hhvalue, T.subdivision.tail _ le_rfl])).symm.trans hT.symm))
+
 end CartanSuppliedSubdivisionTransport
 end Poincare
