@@ -598,9 +598,19 @@ coordinate data, successor equality laws, generic-to-supplied and
 supplied-to-generic transfers, the patch germ agreement, the generic interval
 equality, the local equality transfer, and the patch successor at the
 anchor). Task 8 (`fixed-chart-local-successor-existence`, the well-posed
-replacement of H1 on the patch) is dispatched; 9 (the H2 replacement) and
-10 (the supplied reachable chain) follow, each task file derived verbatim
-from the report as the earlier ones were.
+replacement of H1 on the patch) stopped with a verified partial that is
+itself a milestone: `FixedChartLocalSuccessorExistence.exists_uniform_domain_radius`
+gives ONE radius, chosen before the source anchor, target anchor, alignment,
+and point, for the domain conjuncts of the supplied successor data on
+compact anchor sets, together with the moving-anchor operator bound and host
+metric comparison (fifteen declarations, standard axioms, merged). The exact
+remainder is `UniformDifferentialPullback`: uniform strict differentiability
+of the patch exponentials at the moving vector and the metric pullback
+identity, i.e. the local-isometry content of the Cartan map uniform in the
+anchor; `exists_onCompact_of_uniformDifferentialPullback` reduces the frozen
+task-8 target to it. Task `uniform-differential-pullback` (curvature-only)
+is dispatched for that remainder; task 9 (the H2 replacement) is dispatched
+in parallel; task 10 follows.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
