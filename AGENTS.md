@@ -76,6 +76,12 @@ sh scripts/root_import_audit.sh
 sh scripts/axiom_audit.sh
 ```
 
+The fixed Lean payloads for the axiom, root-import, semantic, and completion
+audits live in `audit/PoincareAudit` and are built and cached by Lake. Keep
+`python3 scripts/audit_payload_equivalence.py --check` passing when changing
+the audit wiring; generated parser checks and the reserved-theorem probe
+remain live Lean checks.
+
 Use `lake build` and the completion/status scripts at explicit integration
 checkpoints. Do not launch overlapping full builds from multiple jobs.
 

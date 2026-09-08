@@ -9,7 +9,7 @@ fails elaboration unless the axiom closure of each constant is contained in
 `{propext, Classical.choice, Quot.sound}`.  Nothing is logged on success, so a Lake
 rebuild of a cached audit module replays no messages.
 
-The error text is parsed by `scripts/audit_driver.py` (`axiom` audit), which maps a
+The error text is parsed by `scripts/axiom_audit.sh`, which maps a
 `sorryAx`/placeholder dependency and a nonstandard axiom onto the same `FAIL:` lines the
 legacy `#print axioms` text scan produced.
 -/

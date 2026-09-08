@@ -8,6 +8,10 @@ legacy heredocs by `scripts/audit_payload_equivalence.py --check`.  Keep one
 declaration per line.
 -/
 
+-- Legacy comment-only markers for the manual stale-name coverage check.
+-- #check Poincare.mfderivWithin_extChartAt_symm_target_eq_range
+-- #check Poincare.mfderivWithin_extChartAt_symm_target_eq_range_eq
+
 #guard_msgs (drop info, drop warning) in #check Poincare.poincareCompletionCertificate_component_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
 #guard_msgs (drop info, drop warning) in #check Poincare.poincareCompletionCertificate_package_layer_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq
 #guard_msgs (drop info, drop warning) in #check Poincare.poincareCompletionCertificate_milestone_requirements_payload_of_completion_certificate_of_equation_boundary_remaining_dependency_package_and_boundary_extraction_derivation_target_payload_to_forgetful_dependencies_eq

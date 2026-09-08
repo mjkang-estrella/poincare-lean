@@ -77,7 +77,9 @@ class RgFallbackTest(unittest.TestCase):
                  ["-v", "alpha", "t1.txt"], ["-P", "--no-filename", "-o", "alpha(?= t)", "t1.txt"],
                  ["-q", r"^alpha\b", "t1.txt"], ["-q", r"beta\s+two$", "t1.txt"]]
         for case in cases:
-            real = subprocess.run(["rg", *case], cwd=self.tmp, text=True, capture_output=True, check=False)
+            # Parallel ripgrep may finish files in either order. These cases list
+            # paths in lexical order, so make the reference traversal deterministic.
+            real = subprocess.run(["rg", "--sort", "path", *case], cwd=self.tmp, text=True, capture_output=True, check=False)
             self.assertEqual(self.run_shim(*case), (real.returncode, real.stdout), case)
 
 

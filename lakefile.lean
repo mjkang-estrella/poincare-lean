@@ -13,7 +13,7 @@ lean_lib Poincare where
 
 -- Checked-in audit payloads (formerly shell heredocs). Not a default target:
 -- `lake build` is unchanged; `lake build PoincareAudit` elaborates the audit surface
--- and Lake caches the result. See scripts/audit_driver.py.
+-- and Lake caches the result. See scripts/audit_payload_equivalence.py.
 lean_lib PoincareAudit where
   srcDir := "audit"
   roots := #[`PoincareAudit]
