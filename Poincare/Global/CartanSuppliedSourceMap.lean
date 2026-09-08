@@ -55,5 +55,13 @@ theorem germ_anchor (S : CartanSourceExponential.Family g)
   rw [S.normal_anchor, map_zero, F.chart_zero, ← hp]
   exact (chartAt E p).left_inv (mem_chart_source E p)
 
+/-- The forward map is the stated composition, including its total extension. -/
+theorem germ_apply (S : CartanSourceExponential.Family g)
+    (F : CartanTargetExponential.Family) (x : M) (p : RoundSphere3)
+    (K : E ≃L[ℝ] E) :
+    (germ S F x p K : M → RoundSphere3) =
+      fun z => (chartAt E p).symm (F.chart p (K (S.normal x z))) :=
+  rfl
+
 end CartanSuppliedSourceMap
 end Poincare
