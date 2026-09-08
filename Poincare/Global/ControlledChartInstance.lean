@@ -64,6 +64,42 @@ theorem isManifold_and_maximalAtlas_eq
   exact ⟨StructureGroupoid.compatible_of_mem_maximalAtlas he he'new,
     StructureGroupoid.compatible_of_mem_maximalAtlas he'new he⟩
 
+/-- Scalar smoothness with the source charted-space argument made explicit. -/
+def scalarContMDiff (charts : ChartedSpace E M) (n : ℕ∞ω) (f : M → ℝ) : Prop :=
+  letI := charts
+  ContMDiff I 𝓘(ℝ) n f
+
+/-- Compatible smooth atlases have the same scalar `C^n` functions for every
+`n ≤ ∞`. No analyticity claim is made from smooth chart compatibility. -/
+theorem scalarContMDiff_iff_of_atlas_subset [IsManifold I ∞ M]
+    (inst' : ChartedSpace E M)
+    (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
+    {n : ℕ∞ω} (hn : n ≤ ∞) (f : M → ℝ) :
+    scalarContMDiff inst n f ↔ scalarContMDiff inst' n f := by
+  letI := inst
+  have hnewSmooth := (isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  have hnew : letI := inst'; IsManifold I n M := by
+    letI := inst'
+    letI : IsManifold I ∞ M := hnewSmooth
+    exact IsManifold.of_le hn
+  letI : IsManifold I n M := IsManifold.of_le hn
+  unfold scalarContMDiff ContMDiff ContMDiffAt
+  apply forall_congr'
+  intro x
+  let e := @chartAt E _ M _ inst' x
+  have heold : e ∈ IsManifold.maximalAtlas I n M :=
+    StructureGroupoid.maximalAtlas_mono (contDiffGroupoid_le hn)
+      (h (inst'.chart_mem_atlas x))
+  have hx : x ∈ e.source := inst'.mem_chart_source x
+  have holdiff := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ)) (f := f) (s := univ) heold hx
+  letI := inst'
+  letI : IsManifold I n M := hnew
+  have henew : e ∈ IsManifold.maximalAtlas I n M := IsManifold.chart_mem_maximalAtlas x
+  have hnewiff := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ)) (f := f) (s := univ) henew hx
+  exact holdiff.trans hnewiff.symm
+
 end SmoothStructure
 
 section Metric
