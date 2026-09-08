@@ -826,8 +826,18 @@ universal statement. Two qualifications are recorded there: the cover is a
 finite refinement of patches (not one patch per chart), and the policy keeps
 a label while both anchors stay in compact operating cores inside the open
 patch anchor sets, since the H1/H2 theorem is uniform only on compact sets.
-Task 11 (`supplied-finite-patch-cover`) is dispatched; 12 to 19 follow
-serially, each task file derived verbatim from the report.
+Task 11 (`supplied-finite-patch-cover`) landed
+(`CartanSuppliedFinitePatchCover.lean`: patch cover with cores, buffers, and
+Lebesgue number; `QuantitativeCover` with uniform step and evaluation radii
+from the patch H1/H2 theorem). Task 12 (`supplied-uniform-patch-switch`)
+landed a partial (`CartanSuppliedUniformPatchSwitch.lean`, forty scanned
+declarations: `buffered_eventuallyEq`, `mesh_pos`, `transition_eqOn`, the
+uniform common source, and a fixed-anchor switch radius uniform over labels
+and alignments); its exact remainder is `UniformBufferedPairAgreement`, the
+agreement of two patch interpretations on a ball of radius uniform over
+compact buffer overlaps, i.e. uniform chart-transition naturality of the
+patch normals; task `uniform-buffered-pair-agreement` is dispatched for it.
+Tasks 13 to 19 follow serially.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
