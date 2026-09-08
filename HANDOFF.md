@@ -3,6 +3,36 @@
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-08 Mapped geodesic assembly worker result
+
+Branch `worker/mapped-geodesic-assembly`, base `cead6503`, verified proof
+head `2023d14b`. The one new `FixedChartMappedGeodesicAssembly.lean` proves
+all four frozen targets. The mapped-geodesic and endpoint-reanchoring
+producers are in `FixedChartUniformEndpointReanchoring`; `exists_onCompact`
+and the exact task-9 `exists_radii` are in `FixedChartLocalSuccessorEquality`.
+
+C2 regularity transfers from the retained endpoints through the actual
+supplied inverse. It discharges the uniform Christoffel transition law.
+The actual datum determines the mapped initial velocity, and compactness
+gives full-time trajectory displacement control. The normalized geodesic
+solves the target initial-value problem on all of `[0,1]`. Both radii precede
+all moving parameters; the final H2 includes full-ball source containment
+and equality for every datum, together with H1 at the same predecessor radius.
+
+All ten public theorems passed direct Lean and were committed separately.
+The focused build passed with 3616 jobs; four signature probes passed.
+All twelve theorem closures, including private helpers, are exactly
+`[propext, Classical.choice, Quot.sound]`. Token and diff checks pass.
+No existing Lean file or root import changed. Commands, actual output,
+compiler retries, and the proof commits are recorded in
+`harness/reports/mapped-geodesic-assembly_done.md`.
+
+This result awaits independent orchestrator review and import integration.
+Global recognition and the Poincare endpoint are not asserted here.
+Exact first independent review action:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FixedChartMappedGeodesicAssembly.lean`.
+
+
 ## 2026-09-08 Augmented system full-time regularity worker result
 
 Branch `worker/augmented-system-regularity`, base `2992f59d`, verified proof
