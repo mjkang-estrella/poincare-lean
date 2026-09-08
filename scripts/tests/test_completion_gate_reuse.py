@@ -47,6 +47,10 @@ class CompletionGateReuseTest(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertNotIn("unreachable", result.stdout)
 
+    def test_theorem_contract_audit_prints_its_sentinel_header(self) -> None:
+        text = (ROOT / "scripts" / "theorem_contract_audit.sh").read_text(encoding="utf-8")
+        self.assertIn('echo "== Theorem contract audit =="', text)
+
     def test_status_summary_passes_results_directory(self) -> None:
         text = (ROOT / "scripts" / "write_status_summary.sh").read_text(encoding="utf-8")
         self.assertIn('COMPLETION_AUDIT_GATE_RESULTS_DIR="$tmp_dir" sh scripts/completion_audit.sh', text)

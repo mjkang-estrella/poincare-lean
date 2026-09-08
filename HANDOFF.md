@@ -39,6 +39,11 @@ semantics:
   made the completion boundary read as "unexpected completion audit
   failures" although the only real failures are the absent reserved theorem.
   On this tree the scan reports zero hits.
+- `scripts/theorem_contract_audit.sh` prints its `== Theorem contract audit ==`
+  header again; the 2026-09-05 rewrite to `frozen_contract_audit.py` had
+  dropped it while `completion_audit.sh` still requires that sentinel in
+  `CURRENT_STATUS.md`, so the snapshot sentinel check failed on the first
+  regeneration.
 - Tests: `scripts/tests/test_rg_fallback.py`,
   `scripts/tests/test_completion_gate_reuse.py`,
   `scripts/tests/test_lean_placeholder_scan.py`; the harness runtime, deploy,
