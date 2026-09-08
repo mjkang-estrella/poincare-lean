@@ -82,6 +82,41 @@ theorem coefficients_apply (s : M → Bilin) {a x : M}
     rfl
   · simpa using hx
 
+/-- In the boundaryless model the common-core transition is an ordinary derivative. -/
+theorem D_eq_fderiv (i j : IsManifold.maximalAtlas I ∞ M) (x : M) :
+    D i j x = fderiv ℝ (j.1 ∘ i.1.symm) (i.1 x) := by
+  simp only [D, tangentBundleCore_coordChange, OpenPartialHomeomorph.extend,
+    mfld_simps, fderivWithin_univ]
+
+/-- A transition derivative between fixed smooth charts is smooth on their overlap. -/
+theorem contMDiffAt_D (i j : IsManifold.maximalAtlas I ∞ M) (x : M)
+    (hi : x ∈ i.1.source) (hj : x ∈ j.1.source) :
+    ContMDiffAt I 𝓘(ℝ, E →L[ℝ] E) ∞ (D i j) x := by
+  have hd : ContDiffOn ℝ ∞ (fderiv ℝ (j.1 ∘ i.1.symm))
+      (i.1.symm.trans j.1).source := by
+    letI := commonCharts (inst := inst)
+    haveI : IsManifold I (∞ + 1) M := by
+      simpa using (inferInstance : IsManifold I ∞ M)
+    have hd := contDiffOn_fderiv_coord_change («I» := I) (n := ∞) i j
+    simpa only [OpenPartialHomeomorph.extend, mfld_simps, fderivWithin_univ] using hd
+  have hx : i.1 x ∈ (i.1.symm.trans j.1).source :=
+    ⟨i.1.map_source hi, by
+      change i.1.symm (i.1 x) ∈ j.1.source
+      simpa only [i.1.left_inv hi] using hj⟩
+  have hderiv := (hd.contDiffAt ((i.1.symm.trans j.1).open_source.mem_nhds hx)).contMDiffAt
+  have hchart := contMDiffAt_of_mem_maximalAtlas i.2 hi
+  change ContMDiffAt I 𝓘(ℝ, E →L[ℝ] E) ∞ (fun y ↦ D i j y) x
+  simp_rw [D_eq_fderiv]
+  exact hderiv.comp x hchart
+
+omit [IsManifold I ∞ M] in
+/-- Pullback of bilinear forms by a smooth family of linear maps is smooth. -/
+theorem contMDiffAt_pull {b : M → Bilin} {L : M → E →L[ℝ] E} {x : M}
+    (hb : ContMDiffAt I 𝓘(ℝ, Bilin) ∞ b x)
+    (hL : ContMDiffAt I 𝓘(ℝ, E →L[ℝ] E) ∞ L x) :
+    ContMDiffAt I 𝓘(ℝ, Bilin) ∞ (fun y ↦ pull (b y) (L y)) x :=
+  (hL.clm_precomp (F₃ := ℝ)).clm_comp (hb.clm_comp hL)
+
 variable (inst' : ChartedSpace E M)
   (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
 
