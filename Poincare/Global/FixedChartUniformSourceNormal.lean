@@ -93,4 +93,84 @@ theorem exists_patch (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
   rw [congrFun hP]
   exact Prod.ext rfl (congrArg Prod.fst hstat)
 
+namespace Patch
+
+variable {g : ClosedSmoothRiemannianMetric 3 M} {x₀ : M} {U : Set E}
+variable (C : Patch g x₀ U)
+
+/-- The retained product map preserves the anchor coordinate. -/
+theorem preserves_fst : ∀ q ∈ C.P.source, (C.P q).1 = q.1 := by
+  intro q _
+  rw [congrFun C.P_eq]
+  rfl
+
+/-- Time normalization, from time-one velocities to the common flow time. -/
+def timeRescaling : E ≃L[ℝ] E :=
+  { LinearEquiv.smulOfNeZero ℝ E C.T⁻¹ (inv_ne_zero C.T_pos.ne') with
+    continuous_toFun := continuous_const.smul continuous_id
+    continuous_invFun := continuous_const.smul continuous_id }
+
+/-- Exact endpoint slice followed by the inverse fixed manifold chart. -/
+def endpoint (x : M) : OpenPartialHomeomorph E M :=
+  (C.timeRescaling.toHomeomorph.toOpenPartialHomeomorph.trans
+    (FixedChartEndpointSlices.slice C.P C.preserves_fst (extChartAt I x₀ x))).trans
+      (chartAt E x₀).symm
+
+/-- Normal vectors in the fixed chart's time-one velocity frame. -/
+def normal (x : M) : OpenPartialHomeomorph M E := (C.endpoint x).symm
+
+/-- Anchors retained in both the fixed manifold chart and the product patch. -/
+def anchors : Set M :=
+  CartanSourceExponentialLocalFamilyTransport.anchorSet x₀ C.A
+
+/-- The manifold anchor set is open. -/
+theorem isOpen_anchors : IsOpen C.anchors :=
+  CartanSourceExponentialLocalFamilyTransport.isOpen_anchorSet x₀ C.A_open
+
+/-- The central manifold point is retained. -/
+theorem center_mem_anchors : x₀ ∈ C.anchors :=
+  ⟨mem_extChartAt_source x₀, C.center_mem⟩
+
+/-- The forward chart is exactly the specified time-normalized endpoint. -/
+theorem endpoint_apply (x : M) (v : E) :
+    C.endpoint x v = (extChartAt I x₀).symm
+      (FixedChartUniformNormalRadius.expChart C.α C.T
+        (extChartAt I x₀ x) (C.T⁻¹ • v)) := by
+  change (chartAt E x₀).symm
+    (C.P (extChartAt I x₀ x, C.T⁻¹ • v)).2 = _
+  rw [congrFun C.P_eq]
+  rfl
+
+/-- Zero belongs to the composed endpoint source at every retained anchor. -/
+theorem zero_mem_endpoint_source : ∀ x ∈ C.anchors, 0 ∈ (C.endpoint x).source := by
+  intro x hx
+  change (0 ∈ (C.timeRescaling.toHomeomorph.toOpenPartialHomeomorph.trans
+    (FixedChartEndpointSlices.slice C.P C.preserves_fst (extChartAt I x₀ x))).source) ∧ _
+  constructor
+  · change (0 ∈ (Set.univ : Set E)) ∧ (extChartAt I x₀ x, C.T⁻¹ • (0 : E)) ∈ C.P.source
+    exact ⟨mem_univ _, by simpa using C.zero_mem_source _ hx.2⟩
+  · change (C.P (extChartAt I x₀ x, C.T⁻¹ • (0 : E))).2 ∈ (chartAt E x₀).target
+    rw [smul_zero, C.stationary _ hx.2]
+    exact (chartAt E x₀).map_source (by simpa only [extChartAt_source] using hx.1)
+
+/-- The endpoint at zero is the retained anchor. -/
+theorem endpoint_zero : ∀ x ∈ C.anchors, C.endpoint x 0 = x := by
+  intro x hx
+  change (chartAt E x₀).symm (C.P (extChartAt I x₀ x, C.T⁻¹ • (0 : E))).2 = x
+  rw [smul_zero, C.stationary _ hx.2]
+  exact (chartAt E x₀).left_inv (by simpa only [extChartAt_source] using hx.1)
+
+/-- Each retained anchor lies in its normal source. -/
+theorem anchor_mem_normal_source : ∀ x ∈ C.anchors, x ∈ (C.normal x).source := by
+  intro x hx
+  simpa only [C.endpoint_zero x hx] using
+    (C.endpoint x).map_source (C.zero_mem_endpoint_source x hx)
+
+/-- Normal coordinates send each retained anchor to zero. -/
+theorem normal_anchor : ∀ x ∈ C.anchors, C.normal x x = 0 := by
+  intro x hx
+  simpa only [C.endpoint_zero x hx] using
+    (C.endpoint x).left_inv (C.zero_mem_endpoint_source x hx)
+
+end Patch
 end Poincare.FixedChartUniformSourceNormal
