@@ -461,6 +461,21 @@ theorem unitConstantCurvatureSphereRecognition3_of_controlled
   target_of_ConnectionCurvatureNaturality (inst := inst) inst' h
     (connectionCurvatureNaturality (inst := inst) inst' h) hrec
 
+/-- Any compatible metric supplies a finite controlled chart instance to which recognition reduces. -/
+theorem exists_controlled_recognition_reduction'
+    (d : MetricSpace M)
+    (hd : d.toUniformSpace.toTopologicalSpace = (inferInstance : TopologicalSpace M)) :
+    letI : MetricSpace M := d.replaceTopology hd.symm
+    ∃ (charts : ChartedSpace E M) (δ : ℝ), 0 < δ ∧
+      (∀ x : M, Metric.ball x δ ⊆ (charts.chartAt x).source) ∧
+      charts.atlas.Finite ∧ charts.atlas ⊆ inst.atlas ∧
+      ∃ hs : (letI := charts; IsManifold I ∞ M),
+        (@UnitConstantCurvatureSphereRecognition3 M _ _ _ charts hs _ _ _ →
+          @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst _ _ _ _) := by
+  letI := inst
+  exact exists_controlled_recognition_reduction (inst := inst) d hd
+    (fun charts hc g ↦ connectionCurvatureNaturality (inst := inst) charts hc g)
+
 end Recognition
 end Connection
 end Poincare.ConnectionInstanceNaturality
