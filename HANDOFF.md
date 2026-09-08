@@ -2,6 +2,55 @@
 
 Snapshot date: 2026-09-07 (UTC)
 
+## 2026-09-07 Validation refactor
+
+Branch `worker/audit-loops`, merged to `main` after the checks below. The
+scaffold audits were the validation bottleneck: `root_import_audit.sh` and
+`axiom_audit.sh` rescanned all 23,309 harvested theorem names once per
+route check and spawned one `rg` process per lookup, `write_status_summary.sh`
+ran every audit twice through `completion_audit.sh`, and every script
+required an `rg` binary that this Mac does not expose to non-interactive
+shells (the audits aborted with `rg: command not found`).
+
+Changes, each preserving the printed PASS/FAIL/MISSING lines and exit
+semantics:
+
+- The route-naming checks are single `awk` passes over the harvested name
+  list (`route_awk_lib` in the axiom and root-import audits; the semantic
+  family loops likewise). Same-tree comparison: old and new stdout are
+  byte-identical for the axiom (112 result lines), root-import (979), and
+  semantic (124) audits; renaming a route theorem makes old and new fail with
+  the same single FAIL line and exit 1.
+- `scripts/bin/rg` is a stdlib-only Python subset of ripgrep, prepended to
+  `PATH` by every audit script only when no `rg` binary exists. With no `rg`
+  on `PATH`, the interface, shape, mathlib-gap, semantic, root-import, axiom,
+  and formalization audits print the same result lines as with ripgrep.
+- `write_status_summary.sh` records each gate's exit status and passes the
+  directory to `completion_audit.sh` as `COMPLETION_AUDIT_GATE_RESULTS_DIR`;
+  the completion audit prints `REUSE:` under each gate header and aborts on a
+  recorded nonzero status. Standalone `sh scripts/completion_audit.sh` is
+  unchanged.
+- The axiom audit prints `FAIL: axiom footprint Lean check did not elaborate`
+  with the first Lean lines instead of exiting silently.
+- Tests: `scripts/tests/test_rg_fallback.py`,
+  `scripts/tests/test_completion_gate_reuse.py`; the scripts suite is 40
+  tests, the harness runtime suite unchanged.
+
+Warm-cache timings on the same tree, sequential runs:
+
+| Audit | Before | After (ripgrep) | After (fallback) |
+| --- | ---: | ---: | ---: |
+| axiom footprint | 522 s | 55 s | 74 s |
+| root import | 524 s | 64 s | 93 s |
+| semantic surface | 178 s | 81 s | 93 s |
+| interface | 14 s | 13 s | 22 s |
+
+Not merged: branch `worker/audit-refactor` (commit `9c2c7584`) holds an
+interrupted agent's extraction of the Lean check payloads into a non-default
+`lean_lib PoincareAudit` (`audit/PoincareAudit/*.lean`,
+`scripts/audit_payload_equivalence.py`). It would let Lake cache the Lean half
+of the audits, but it was never built or compared; treat it as unverified.
+
 ## 2026-09-07 Boundary correction
 
 Checked in `/Users/mjkang/Develop/poincare` on branch `main`, base `b2b96fc2`.
