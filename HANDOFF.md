@@ -150,6 +150,24 @@ under motion of the anchors), or H1 through
 as the anchors move, using `UniformTangentAlignmentRigidity.exists_uniform_cartanMap_isLocalIsometry`).
 Freeze the chosen statement with a schema-2.1 contract before dispatch.
 
+## 2026-09-07 Hamilton front registration
+
+Worker branch `worker/hamilton-front-mission`, based on
+`aa82826aec916ad9339e2da1049f80009cdf2c7a`, adds
+`Poincare/Global/HamiltonFrontStatements.lean` and the mission
+`harness/v2/missions/hamilton-front.json`. The structure preserves exactly the
+five inputs of the compact-tensor formal-profile constructor, including its
+independent compact-parameter universe. Checked reductions reach universal
+positive-Einstein existence, Hamilton convergence, and the conditional smooth
+`PoincareConjecture` composition with Cartan H1/H2. Neither universal Hamilton
+inputs nor the unconditional Hamilton endpoint is proved. The worker report
+`harness/reports/hamilton-front-mission_done.md` records compiler, registry, and
+test evidence, including an existing ripgrep output-order test flake and a
+passing unchanged rerun. Exact first action for the orchestrator: independently
+run `python3 scripts/theorem_registry.py graph --mission
+harness/v2/missions/hamilton-front.json --require-closed` and review the five
+input types before accepting or decomposing this mission.
+
 ## 2026-09-05 Main integration
 
 The integration checkout is now `/Users/mjkang/Develop/poincare`, branch `main`.

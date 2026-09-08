@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "id": "hamilton-front",
+  "base_commit": "aa82826aec916ad9339e2da1049f80009cdf2c7a",
+  "description": "Five open normalized-flow, compact tensor, scalar third-jet, and subordinate Laplacian inputs imply positive-Einstein existence and the Hamilton pinched-limit endpoint. The checked reduction does not produce the inputs. Universal inputs also require constructing a suitable flow on each manifold.",
+  "modules": [
+    "Poincare.Global.HamiltonFrontStatements"
+  ],
+  "endpoint": {
+    "name": "Poincare.universal_hamilton_convergence",
+    "type_symbol": "Poincare.UniversalHamiltonConvergenceStatement"
+  },
+  "references": [
+    {
+      "url": "harness/reports/hamilton-front-mission_done.md",
+      "role": "Worker signature probes and acceptance evidence; independent orchestrator review remains required."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "hamilton-front-inputs",
+      "kind": "obligation",
+      "declaration": null,
+      "description": "Universal nonempty HamiltonFrontInputs: reaction-decay flow, compact reference tensor control, componentwise third-jet equicontinuity and pointwise compact containment, and scalar subordinate Hausdorff Laplacian geometry. All five inputs remain open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonFrontInputsStatement",
+      "expected_statement_sha256": "e1e11cd30496b37d3465bb42383c6b27b4366aa73183e5e695cf82051afe0303"
+    },
+    {
+      "id": "hamilton-front-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonFrontInputs",
+      "description": "Checked conditional reduction through the compact-tensor formal-profile constructor, finite traceless energy, finite absolute dissipation, positive-Einstein existence, and the Hamilton pinched-limit bridge.",
+      "depends_on": [
+        "hamilton-front-inputs"
+      ]
+    },
+    {
+      "id": "hamilton-convergence",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_convergence",
+      "description": "Universal Hamilton pinched-limit endpoint. This exact unconditional declaration remains absent.",
+      "depends_on": [
+        "hamilton-front-reduction"
+      ],
+      "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
+      "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
+    }
+  ]
+}

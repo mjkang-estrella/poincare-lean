@@ -653,6 +653,7 @@ import Poincare.Global.HeatKernelSemigroup
 import Poincare.Global.HeatRegularizedPicard
 import Poincare.Global.BoundedUniformContinuousHeat
 import Poincare.Global.HeatSemigroupBUCStrongContinuity
+import Poincare.Global.HamiltonFrontStatements
 import Poincare.Global.HamiltonScalarNegativeBarrier
 import Poincare.Global.HamiltonScalarInteriorNegativeBarrier
 import Poincare.Global.HeatSemigroupBUCOperator
