@@ -39,5 +39,13 @@ theorem controlled_globalLocalDevelopment : ∀ (d : MetricSpace M),
   obtain ⟨R⟩ := exists_rootedRealization_with_wholeCellMesh S sk
   exact ⟨development R, isLocalHomeomorph_development S sk R⟩
 
+/-- Compact covering recognition applies to the supplied developing map. -/
+theorem controlled_unitRecognition : ∀ (d : MetricSpace M),
+  d.toUniformSpace.toTopologicalSpace = (inferInstance : TopologicalSpace M) →
+  Controlled inst d → UnitConstantCurvatureSphereRecognition3 M := by
+  intro d hd hc
+  exact RoundSphereSimpleConnected.unitConstantCurvatureSphereRecognition3_of_globalLocalDevelopment
+    (controlled_globalLocalDevelopment d hd hc)
+
 end CartanSuppliedUnitRecognition
 end Poincare
