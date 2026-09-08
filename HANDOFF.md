@@ -369,10 +369,30 @@ Integrated on `main` after the orchestrator's gate and review (codex workers,
   `ConnectionCurvatureNaturality` (the conjugated derivative equals the new
   Levi-Civita connection on differentiable fields, and curvature values
   conjugate by `J`). Sixteen theorems, standard axiom footprint.
-- Dispatched next: `harness/tasks/connection-naturality.md` (discharge that
-  boundary: cross-instance chain rule for scalar derivatives, Lie-bracket
-  naturality, Leibniz and compatibility for the conjugated operator,
-  uniqueness, curvature tensoriality).
+- `Poincare/Global/ConnectionInstanceNaturality.lean` (task
+  `connection-naturality`): the boundary is discharged
+  (`connectionCurvatureNaturality`), so the reduction is unconditional:
+  `exists_controlled_recognition_reduction'` gives, for any compatible metric,
+  a finite controlled charted-space instance with uniform-ball chart sources
+  such that unit-curvature sphere recognition for that instance implies
+  recognition for the original instance. Twenty-two declarations, standard
+  axiom footprint, wired into the root import.
+
+The next obstruction is one level down. The exponential chart
+`expAt g x` is built from three per-anchor `Classical.choose` selections
+(`GeodesicTransport.cutoff x` with no radius control,
+the Picard–Lindelöf flow package, and the inverse-function neighborhood), so
+joint statements in the anchor such as H1 and H2 cannot be proved even on the
+controlled instance without re-founding the exponential layer with explicit
+uniform constructions: the unblended fixed-chart geodesic flow on compact
+chart regions, joint `C¹` dependence on initial position and velocity, and a
+joint inverse-function argument on `(x, v) ↦ (x, exp_x v)` giving a uniform
+normal radius; then a chart family (`CartanSourceExponential.Family`) built
+from it, and the chain run over that family. The first bounded step is
+`harness/tasks/geodesic-position-derivative.md`.
+
+`harness/gate.sh` now performs a module-wide axiom scan (every declaration
+of the module) instead of relying on hand-listed names.
 
 Validation: the audit payload wiring (task `audit-payload-wiring`) is merged.
 The Lean check payloads of the axiom, root-import, semantic, and completion

@@ -3928,7 +3928,14 @@
       "status": "partial",
       "date": "2026-09-08",
       "report": "harness/reports/curvature-transport_blocked.md"
+    },
+    {
+      "id": "connection-naturality",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/connection-naturality_done.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-08): repair track after the H1/H2 refutation. Landed: ControlledChartInstance (finite instance, uniform-ball chart sources, same maximal atlas), RiemannianMetricInstanceTransportGeometric.transport (metric transport by the chart-change derivative J). Landed: CurvatureInstanceTransport (field transport, conjugated derivative; everything else conditional on ConnectionCurvatureNaturality). In flight: connection-naturality (discharge that boundary). Then: re-run the Cartan chain on the controlled instance and attack the (now well-posed) H1/H2 analysis there."
+  "current_goal": "RESUME POINT (2026-09-08): controlled-instance reduction is UNCONDITIONAL (ConnectionInstanceNaturality.exists_controlled_recognition_reduction'). Next obstruction: per-anchor Classical.choose in the exponential layer (cutoff, PL package, IFT neighborhood) blocks joint-in-anchor statements; re-found the exponential layer uniformly on the controlled instance. First task: geodesic-position-derivative. Hamilton front: harness/v2/missions/hamilton-front.json."
 }
