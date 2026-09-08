@@ -574,5 +574,19 @@ theorem uniformDifferentialPullback_of_constantCurvature
   uniformDifferentialPullback_of_uniformNonzeroMetricPullback
     (uniformNonzeroMetricPullback g) x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
 
+/-- The frozen task-8 conclusion, with one positive radius before all moving
+anchors, tangent alignments, successor points, and tangent inputs. -/
+theorem exists_radius (g : ClosedSmoothRiemannianMetric 3 M) :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (K : Set M) (H : Set RoundSphere3), IsCompact K → K ⊆ C.anchors →
+    IsCompact H → H ⊆ D.anchors →
+    ∃ η > (0 : ℝ), OnCompact (patch C D) K H η :=
+  target_of_uniformNonzeroMetricPullback (uniformNonzeroMetricPullback g)
+
 end FixedChartMovingPositionJacobi
 end Poincare
