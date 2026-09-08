@@ -204,4 +204,11 @@ theorem finiteEnergyFlowExistence3_of_hamiltonReactionCore3
   obtain ⟨r⟩ := reactionDecayAnalyticData3_of_hamiltonReactionCore3 h
   exact finiteEnergyFlowExistence3_of_reactionDecayAnalyticData3 r
 
+/-- The residual core reaches the existing Hamilton pinched-limit endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3
+    (h : HamiltonReactionCore3.{u, v} M) :
+    HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_finiteEnergyFlowExistence3
+    (finiteEnergyFlowExistence3_of_hamiltonReactionCore3 h)
+
 end Poincare
