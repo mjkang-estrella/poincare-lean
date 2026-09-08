@@ -103,5 +103,16 @@ theorem mesh_pos : ∀ S : System g, 0 < S.mesh := by
   exact div_pos (lt_min S.cover.step_pos (lt_min S.cover.evaluation_pos
     (lt_min S.cover.retention_pos S.switch.radius_pos))) (by norm_num)
 
+/-- The four-mesh transition ball fits inside each of the four control radii. -/
+theorem four_mul_mesh_le (S : System g) :
+    4 * S.mesh ≤ S.cover.step ∧ 4 * S.mesh ≤ S.cover.evaluation ∧
+    4 * S.mesh ≤ S.cover.retention ∧ 4 * S.mesh ≤ S.switch.radius := by
+  have hpos := mesh_pos S
+  have hle : 4 * S.mesh ≤ min S.cover.step (min S.cover.evaluation
+      (min S.cover.retention S.switch.radius)) := by
+    dsimp only [System.mesh] at hpos ⊢
+    linarith
+  simpa only [le_min_iff] using hle
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
