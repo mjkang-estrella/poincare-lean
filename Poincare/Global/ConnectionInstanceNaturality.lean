@@ -68,4 +68,28 @@ theorem mpullback_identity (X : M → E) :
   rw [ContinuousLinearMap.inverse_equiv]
   rfl
 
+/-- Lie brackets commute with transport at points where both fields are differentiable. -/
+theorem mlieBracket_transportField (X Y : M → E) (x : M)
+    (hX : letI := inst; MDiffAtTangentField (n := 3) X x)
+    (hY : letI := inst; MDiffAtTangentField (n := 3) Y x) :
+    (letI := inst';
+      VectorField.mlieBracket I (transportField (inst := inst) inst' h X)
+        (transportField (inst := inst) inst' h Y) x) =
+      transportField (inst := inst) inst' h
+        (letI := inst; VectorField.mlieBracket I X Y) x := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  have hs' : (letI := inst'; IsManifold I (minSmoothness ℝ 2) M) := by
+    letI := inst'
+    letI : IsManifold I ∞ M := hs
+    exact IsManifold.of_le (n := ∞) (by simp only [minSmoothness_of_isRCLikeNormedField]; exact ENat.natCast_le_of_coe_top_le_withTop le_rfl 2)
+  have hb := @VectorField.mpullback_mlieBracket ℝ _ E _ E _ _ I M _ inst'
+    E _ E _ _ I M _ inst hs' (IsManifold.of_le (n := ∞) (by simp only [minSmoothness_of_isRCLikeNormedField]; exact ENat.natCast_le_of_coe_top_le_withTop le_rfl 2)) inferInstance ∞ id X Y x hX hY
+    (contMDiffAt_identity (inst := inst) inst' h x) (by simp only [minSmoothness_of_isRCLikeNormedField]; exact ENat.natCast_le_of_coe_top_le_withTop le_rfl 2)
+  rw [mpullback_identity (inst := inst) inst' h,
+    mpullback_identity (inst := inst) inst' h,
+    mpullback_identity (inst := inst) inst' h] at hb
+  exact hb.symm
+
 end Poincare.ConnectionInstanceNaturality
