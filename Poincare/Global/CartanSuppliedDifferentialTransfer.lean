@@ -117,5 +117,196 @@ private theorem chartMap_apply_host (Q : Interpretation g)
     (by simpa only [extChartAt_source] using hy)]
   rfl
 
+omit [T2Space M] in
+/-- Coordinate pullback constructs the actual reanchored tangent isometry. -/
+theorem data_of_coordinateData : ∀ (Q : Interpretation g)
+  (s : CartanChain.ChainState g) (z : M) (w : CoordinateData Q s z),
+  ∃ d : Data Q s z, d.toCoordinateData = w := by
+  intro Q s z w
+  let x₀ := Q.sourceHost s.anchor
+  let x₁ := z
+  let p₀ := Q.targetHost s.target
+  let p₁ := map Q s z
+  let zM := sourceExp Q s.anchor w.v
+  let zT := targetExp Q s.target (linear Q s w.v)
+  let A := w.A
+  let B := w.B
+  have hx₁_old : x₁ ∈ (extChartAt I x₀).source := w.source_mem_oldChart
+  have hp₁_old : p₁ ∈ (extChartAt I p₀).source := w.target_mem_oldChart
+  have hxcoord : extChartAt I x₀ x₁ = zM := w.source_coordinate
+  have hpcoord : extChartAt I p₀ p₁ = zT := w.target_coordinate
+  have hpullback := w.metric_pullback
+  let zSource : E := extChartAt I x₁ x₁
+  have hzSource : zSource ∈ (extChartAt I x₁).target := by
+    exact
+      (extChartAt I x₁).map_source (mem_extChartAt_source x₁)
+  have hsourceSymm : (extChartAt I x₁).symm zSource = x₁ := by
+    exact
+      (extChartAt I x₁).left_inv (mem_extChartAt_source x₁)
+  have hySource : (extChartAt I x₁).symm zSource ∈ (extChartAt I x₀).source := by
+    rw [hsourceSymm]
+    exact hx₁_old
+  let sourceCLM : E →L[ℝ] E :=
+    GeodesicTransport.chartTransitionMFDeriv (x₀ := x₁) (y₀ := x₀) zSource
+  have hsourceCLM_inv : sourceCLM.IsInvertible := by
+    dsimp [sourceCLM, GeodesicTransport.chartTransitionMFDeriv]
+    exact
+      (isInvertible_mfderiv_extChartAt hySource).comp
+        (isInvertible_mfderivWithin_extChartAt_symm hzSource)
+  let sourceEquiv : E ≃L[ℝ] E :=
+    InducedAlignment.continuousLinearEquivOfInvertible sourceCLM hsourceCLM_inv
+  have hsourceEquiv_coe : (sourceEquiv : E →L[ℝ] E) = sourceCLM := by
+    simpa [sourceEquiv, InducedAlignment.continuousLinearEquivOfInvertible] using
+      Classical.choose_spec hsourceCLM_inv
+  have hsourceChartPoint :
+      GeodesicTransport.chartTransition (n := 3) x₁ x₀ zSource = zM := by
+    change extChartAt I x₀ ((extChartAt I x₁).symm zSource) = zM
+    rw [hsourceSymm]
+    exact hxcoord
+
+  let zTarget : E := extChartAt I p₁ p₁
+  have hzTarget : zTarget ∈ (extChartAt I p₁).target := by
+    exact
+      (extChartAt I p₁).map_source (mem_extChartAt_source p₁)
+  have htargetSymm : (extChartAt I p₁).symm zTarget = p₁ := by
+    exact
+      (extChartAt I p₁).left_inv (mem_extChartAt_source p₁)
+  have hyTarget : (extChartAt I p₁).symm zTarget ∈ (extChartAt I p₀).source := by
+    rw [htargetSymm]
+    exact hp₁_old
+  let targetCLM : E →L[ℝ] E :=
+    GeodesicTransport.chartTransitionMFDeriv (x₀ := p₁) (y₀ := p₀) zTarget
+  have htargetCLM_inv : targetCLM.IsInvertible := by
+    dsimp [targetCLM, GeodesicTransport.chartTransitionMFDeriv]
+    exact
+      (isInvertible_mfderiv_extChartAt hyTarget).comp
+        (isInvertible_mfderivWithin_extChartAt_symm hzTarget)
+  let targetEquiv : E ≃L[ℝ] E :=
+    InducedAlignment.continuousLinearEquivOfInvertible targetCLM htargetCLM_inv
+  have htargetEquiv_coe : (targetEquiv : E →L[ℝ] E) = targetCLM := by
+    simpa [targetEquiv, InducedAlignment.continuousLinearEquivOfInvertible] using
+      Classical.choose_spec htargetCLM_inv
+  have htargetChartPoint :
+      GeodesicTransport.chartTransition (n := 3) p₁ p₀ zTarget = zT := by
+    change extChartAt I p₀ ((extChartAt I p₁).symm zTarget) = zT
+    rw [htargetSymm]
+    exact hpcoord
+
+  let oldD : E ≃L[ℝ] E := (A.symm.trans (linear Q s)).trans B
+  have holdD :
+      (oldD : E →L[ℝ] E) =
+        chartDifferential Q s A B := by
+    ext u
+    rfl
+  let induced : E ≃L[ℝ] E :=
+    (sourceEquiv.trans oldD).trans targetEquiv.symm
+  have halign : ∀ u u' : E,
+      CartanMap.targetAnchorBilinForm p₁ (induced u) (induced u') =
+        CartanMap.sourceAnchorBilinForm g x₁ u u' := by
+    intro u u'
+    have htargetTransport :=
+      GeodesicTransport.chartMetric_chartTransitionMFDeriv
+        (g := roundSphereMetric3) (x₀ := p₁) (y₀ := p₀)
+        (z := zTarget) hyTarget (induced u) (induced u')
+    have htargetTransport' :
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₁ zTarget
+            (induced u) (induced u') =
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ zT
+            (oldD (sourceEquiv u)) (oldD (sourceEquiv u')) := by
+      have h := htargetTransport.symm
+      rw [htargetChartPoint] at h
+      change
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₁ zTarget
+            (induced u) (induced u') =
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ zT
+            (targetCLM (induced u)) (targetCLM (induced u')) at h
+      rw [← htargetEquiv_coe] at h
+      simpa [induced, oldD] using h
+    have hpull := hpullback (sourceEquiv u) (sourceEquiv u')
+    rw [← holdD] at hpull
+    have hsourceTransport :=
+      GeodesicTransport.chartMetric_chartTransitionMFDeriv
+        (g := g) (x₀ := x₁) (y₀ := x₀)
+        (z := zSource) hySource u u'
+    have hsourceTransport' :
+        CovariantDerivative.chartMetric g.inner x₀ zM
+            (sourceEquiv u) (sourceEquiv u') =
+          CovariantDerivative.chartMetric g.inner x₁ zSource u u' := by
+      have h := hsourceTransport
+      rw [hsourceChartPoint] at h
+      change
+        CovariantDerivative.chartMetric g.inner x₀ zM
+            (sourceCLM u) (sourceCLM u') =
+          CovariantDerivative.chartMetric g.inner x₁ zSource u u' at h
+      rw [← hsourceEquiv_coe] at h
+      exact h
+    calc
+      CartanMap.targetAnchorBilinForm p₁ (induced u) (induced u') =
+          CovariantDerivative.chartMetric roundSphereMetric3.inner p₁ zTarget
+            (induced u) (induced u') := rfl
+      _ = CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ zT
+            (oldD (sourceEquiv u)) (oldD (sourceEquiv u')) :=
+        htargetTransport'
+      _ = CovariantDerivative.chartMetric g.inner x₀ zM
+            (sourceEquiv u) (sourceEquiv u') := hpull
+      _ = CovariantDerivative.chartMetric g.inner x₁ zSource u u' :=
+        hsourceTransport'
+      _ = CartanMap.sourceAnchorBilinForm g x₁ u u' := rfl
+  let L : CartanMap.TangentAlignment g x₁ p₁ :=
+    { toLinearEquiv := induced.toLinearEquiv, map_app' := halign }
+  have hsourceDeriv : HasFDerivAt
+      (GeodesicTransport.chartTransition x₁ x₀) sourceCLM zSource :=
+    GeodesicTransport.chartTransition_hasFDerivAt_chartTransitionMFDeriv
+      x₁ x₀ hzSource hySource
+  have hcartan : HasFDerivAt (chartMap Q s) (oldD : E →L[ℝ] E)
+      (GeodesicTransport.chartTransition x₁ x₀ zSource) := by
+    rw [hsourceChartPoint, holdD]
+    exact w.cartan_chart_derivative.hasFDerivAt
+  have htargetPoint : chartMap Q s
+      (GeodesicTransport.chartTransition x₁ x₀ zSource) = extChartAt I p₀ p₁ := by
+    rw [hsourceChartPoint]
+    change targetExp Q s.target
+      (linear Q s ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor w.v))) = _
+    rw [(sourceExp Q s.anchor).left_inv w.source_vector_mem]
+    exact hpcoord.symm
+  have htargetOld : extChartAt I p₀ p₁ ∈ (extChartAt I p₀).target :=
+    (extChartAt I p₀).map_source hp₁_old
+  have htargetBack : (extChartAt I p₀).symm (extChartAt I p₀ p₁) ∈
+      (extChartAt I p₁).source := by
+    rw [(extChartAt I p₀).left_inv hp₁_old]
+    exact mem_extChartAt_source p₁
+  have houter := GeodesicTransport.chartTransition_hasFDerivAt_chartTransitionMFDeriv
+    p₀ p₁ htargetOld htargetBack
+  rw [reverse_chartTransitionMFDeriv_eq_symm p₀ p₁ hp₁_old targetEquiv
+    htargetEquiv_coe] at houter
+  rw [← htargetPoint] at houter
+  have htotal := houter.comp zSource (hcartan.comp zSource hsourceDeriv)
+  have hL : (L.toContinuousLinearEquiv : E →L[ℝ] E) =
+      (targetEquiv.symm : E →L[ℝ] E).comp
+        ((oldD : E →L[ℝ] E).comp sourceCLM) := by
+    rw [← hsourceEquiv_coe]
+    rfl
+  rw [← hL] at htotal
+  have htend : Tendsto (extChartAt I z).symm (𝓝 (extChartAt I z z)) (𝓝 z) := by
+    have hc : ContinuousAt ((extChartAt I z).symm : E → M) (extChartAt I z z) :=
+      continuousAt_extChartAt_symm z
+    have h := hc.tendsto
+    rw [(extChartAt I z).left_inv (mem_extChartAt_source z)] at h
+    exact h
+  have hmaptend : Tendsto (map Q s) (𝓝 z) (𝓝 (map Q s z)) :=
+    ((germ Q s).continuousAt w.source_mem).tendsto
+  have heq : reanchoredChartMap Q s z =ᶠ[𝓝 (extChartAt I z z)]
+      (GeodesicTransport.chartTransition p₀ p₁ ∘ chartMap Q s ∘
+        GeodesicTransport.chartTransition x₁ x₀) := by
+    filter_upwards [htend ((isOpen_extChartAt_source x₀).mem_nhds hx₁_old),
+      htend (hmaptend ((isOpen_extChartAt_source p₀).mem_nhds hp₁_old))] with a ha hb
+    change extChartAt I p₁ (map Q s ((extChartAt I z).symm a)) =
+      extChartAt I p₁ ((extChartAt I p₀).symm
+        (chartMap Q s (extChartAt I x₀ ((extChartAt I z).symm a))))
+    rw [chartMap_apply_host Q s _ ha, (extChartAt I p₀).left_inv hb]
+  exact ⟨{ toCoordinateData := w
+           alignment := L
+           hasFDerivAt_reanchoredChartMap := htotal.congr_of_eventuallyEq heq }, rfl⟩
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
