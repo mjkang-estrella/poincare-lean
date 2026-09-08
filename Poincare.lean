@@ -23,6 +23,7 @@ import Poincare.Global.CurvatureInstanceTransport
 import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.FixedChartUniformNormalRadius
+import Poincare.Global.FixedChartUniformPreferredGermAgreement
 import Poincare.Global.FixedChartUniformSourceNormal
 import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.GeodesicFlowJointDerivative
