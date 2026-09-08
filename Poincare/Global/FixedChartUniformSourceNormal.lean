@@ -230,5 +230,19 @@ def rawLocalFamily : CartanSourceExponential.LocalFamily g where
   diagonal_mem x hx := ⟨hx, C.anchor_mem_normal_source x hx⟩
   normal_diagonal := C.normal_anchor
 
+/-- Every endpoint-source velocity lies in the retained flow's initial ball. -/
+theorem endpoint_source_initial_mem {x : M} {v : E}
+    (hv : v ∈ (C.endpoint x).source) :
+    (extChartAt I x₀ x, C.T⁻¹ • v) ∈
+      closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ) := by
+  exact ball_subset_closedBall (C.P_source_subset hv.1.2)
+
+/-- The retained position control applies along every endpoint-source trajectory. -/
+theorem endpoint_source_position_mem {x : M} {v : E}
+    (hv : v ∈ (C.endpoint x).source) :
+    ∀ t ∈ Icc (-C.T) C.T,
+      (C.α (extChartAt I x₀ x, C.T⁻¹ • v) t).1 ∈ U :=
+  C.position_mem _ (C.endpoint_source_initial_mem hv)
+
 end Patch
 end Poincare.FixedChartUniformSourceNormal
