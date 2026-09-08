@@ -61,5 +61,32 @@ theorem inverseChartDensity_integrable
       (C.inverseChartDensity_nonneg g i z))).mp hfinite
   exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
 
+/-- The explicit density derivative is measurable as a pointwise limit of
+measurable difference quotients; no joint continuity on a chart closure is needed. -/
+theorem densityDerivative_measurable
+    (C : FiniteExtendedChartCover (n := n) (M := M))
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M)
+    (hJoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (t : ℝ) (i : Fin C.chartCount) :
+    Measurable (finiteExtendedChartFrameDensityDerivative C gt t i) := by
+  have hcont (s : ℝ) : Continuous (C.inverseChartDensity (gt s) i) :=
+    (continuous_inverseChartPullbackVolumeDensity (gt s) (C.anchor i)).comp
+      (continuous_subtype_val.subtype_mk fun z ↦ C.coordinateDomain_subset_target i z.2)
+  let step : ℕ → ℝ := fun k ↦ 1 / ((k : ℝ) + 1)
+  have hstep : Tendsto step atTop (𝓝[>] (0 : ℝ)) :=
+    tendsto_nhdsWithin_iff.mpr ⟨tendsto_one_div_add_atTop_nhds_zero_nat,
+      Eventually.of_forall fun k ↦ by change 0 < 1 / ((k : ℝ) + 1); positivity⟩
+  apply measurable_of_tendsto_metrizable
+    (f := fun k z ↦ (step k)⁻¹ *
+      (C.inverseChartDensity (gt (t + step k)) i z - C.inverseChartDensity (gt t) i z))
+  · intro k
+    exact ((hcont _).sub (hcont _)).measurable.const_mul _
+  · apply tendsto_pi_nhds.mpr
+    intro z
+    have htime : TimeDifferentiableAt gt t (C.inverseChart i z) :=
+      timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+        ((hJoint t (C.inverseChart i z)).of_le (by norm_num))
+    exact (C.hasDerivAt_inverseChartDensity i z htime).tendsto_slope_zero_right.comp hstep
+
 end HamiltonReactionCoreReduction
 end Poincare
