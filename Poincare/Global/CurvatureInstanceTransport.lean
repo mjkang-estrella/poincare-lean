@@ -188,5 +188,39 @@ def ConnectionCurvatureNaturality (g : @ClosedSmoothRiemannianMetric 3 M _ inst 
         R x (J (inst := inst) inst' h x u) (J (inst := inst) inst' h x w)
           (J (inst := inst) inst' h x a))
 
+/-- Differential naturality suffices to bundle the raw conjugated operator. -/
+theorem conjugatedDerivative_isCovariantDerivativeOn
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (hN : ConnectionCurvatureNaturality (inst := inst) inst' h g) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    IsCovariantDerivativeOn («I» := I) (V := TangentSpace I) E (conjugatedDerivative (inst := inst) inst' h g) univ := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let g' := transport (inst := inst) inst' h g
+  have he := hN.1
+  constructor
+  · intro X Y x hX hY _
+    rw [he (X + Y) x (mdifferentiableAt_add_section hX hY), he X x hX, he Y x hY]
+    exact g'.leviCivita.isCovariantDerivativeOnUniv.add hX hY
+  · intro X f x hX hf _
+    rw [he (f • X) x (hf.smul_section hX), he X x hX]
+    exact g'.leviCivita.isCovariantDerivativeOnUniv.leibniz hX hf
+
+/-- The conjugated connection, conditional on the differential naturality boundary. -/
+def conjugatedConnection (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (hN : ConnectionCurvatureNaturality (inst := inst) inst' h g) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    CovariantDerivative I E (TangentSpace I : M → Type _) := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  exact ⟨conjugatedDerivative (inst := inst) inst' h g,
+    conjugatedDerivative_isCovariantDerivativeOn (inst := inst) inst' h g hN⟩
+
 end Connection
 end Poincare.CurvatureInstanceTransport
