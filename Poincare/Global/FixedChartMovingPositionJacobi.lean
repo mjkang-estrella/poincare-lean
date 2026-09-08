@@ -243,5 +243,52 @@ theorem normSystem_eq_pinned {T speed q : ℝ} (hT : 0 < T) (hs : speed ≠ 0)
     (by simpa only [P, JacobiNormSystem.speedPinnedA_zero,
       JacobiNormSystem.speedPinnedB_zero, JacobiNormSystem.speedPinnedC_zero] using h0) ht
 
+/-- The actual transverse norm triple equals the sine/cosine solution through
+both retained endpoints, with the moving anchor metric as initial norm. -/
+theorem transverse_norms_eq_pinned [T2Space M] {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {z v : E} (hq : (z, v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, v) t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    (w : E) (horth : CovariantDerivative.chartMetric g.inner x₀ z v w = 0)
+    {speed : ℝ} (hspeed : CovariantDerivative.chartMetric g.inner x₀ z v v = speed ^ 2)
+    (hs : speed ≠ 0) {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    let q := CovariantDerivative.chartMetric g.inner x₀ z w w
+    GronwallMembership.normState g x₀ (C.α (z, v)) (fun s => Φ s (0, w)) t =
+      (JacobiNormSystem.speedPinnedA speed q t,
+        JacobiNormSystem.speedPinnedB speed q t,
+        JacobiNormSystem.speedPinnedC speed q t) := by
+  have hqc := ball_subset_closedBall hq
+  have hc := HasDerivWithinAt.continuousOn (C.flow_law _ hqc).2
+  have hJ := (HasDerivWithinAt.continuousOn hΦ).clm_apply
+    (continuousOn_const : ContinuousOn (fun _ : ℝ => ((0 : E), w)) (Icc (-C.T) C.T))
+  have hm : Continuous (chartGeodesicMetric g x₀) :=
+    continuous_iff_continuousAt.mpr (fun z =>
+      (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ z).continuousAt)
+  have hΓ := (chartChristoffelField_contDiff g x₀).continuous.comp_continuousOn hc.fst
+  have hD := hJ.snd.add ((hΓ.clm_apply hc.snd).clm_apply hJ.fst)
+  have hG := hm.comp_continuousOn hc.fst
+  have hN : ContinuousOn
+      (GronwallMembership.normState g x₀ (C.α (z, v)) (fun s => Φ s (0, w)))
+      (Icc (-C.T) C.T) :=
+    ((hG.clm_apply hJ.fst).clm_apply hJ.fst).prodMk
+      (((hG.clm_apply hJ.fst).clm_apply hD).prodMk ((hG.clm_apply hD).clm_apply hD))
+  have hz : (0 : ℝ) ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], C.T_pos.le⟩
+  have hcut := (flow_mem_target_cutoffOne C hU hqc hz).2.self_of_nhds
+  rw [(C.flow_law _ hqc).1] at hcut
+  apply normSystem_eq_pinned C.T_pos hs hN
+    (fun s hs => transverse_normSystem C hcurv hU hq hΦ0 hΦ w horth hspeed hs) ?_ ht
+  simp only [GronwallMembership.normState, GronwallMembership.correctedD,
+    JacobiNormSystem.normA, JacobiNormSystem.normB, JacobiNormSystem.normC,
+    hΦ0, ContinuousLinearMap.id_apply, (C.flow_law _ hqc).1, map_zero, add_zero,
+    ContinuousLinearMap.zero_apply]
+  dsimp only [chartGeodesicMetric]
+  rw [blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀) hcut]
+
 end FixedChartMovingPositionJacobi
 end Poincare
