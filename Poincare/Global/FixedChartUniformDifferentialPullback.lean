@@ -94,5 +94,35 @@ theorem normalizedEndpoint_eventually_equiv {x₀ : M} {U : Set E}
   refine ⟨ContinuousLinearEquiv.ofUnit a, ?_⟩
   simpa only [← ha] using hslice q hCq
 
+/-- One velocity ball gives strict equivalence derivatives for every compact anchor. -/
+theorem exists_uniform_coordinateEndpoint_derivative_radius {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) :
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ v : E, ‖v‖ < ρ →
+      v ∈ (C.endpoint x).source ∧
+      ∃ A : E ≃L[ℝ] E,
+        HasStrictFDerivAt ((C.endpoint x).trans (chartAt E x₀))
+          (A : E →L[ℝ] E) v := by
+  have he : ∀ᶠ v : E in 𝓝 0, ∀ x ∈ K,
+      ∃ A : E ≃L[ℝ] E,
+        HasStrictFDerivAt (fun w => normalizedEndpoint C (extChartAt I x₀ x, w))
+          (A : E →L[ℝ] E) v := by
+    apply hK.eventually_forall_of_forall_eventually
+    intro x hx
+    have hf : ContinuousAt (fun q : E × M => (extChartAt I x₀ q.2, q.1)) (0, x) :=
+      ((continuousAt_extChartAt' (hKC hx).1).comp continuousAt_snd).prodMk continuousAt_fst
+    exact hf (normalizedEndpoint_eventually_equiv C x (hKC hx))
+  obtain ⟨a, ha, hav⟩ := Metric.mem_nhds_iff.mp he
+  obtain ⟨b, hb, hbv⟩ := exists_uniform_endpoint_radius C K hK hKC
+  refine ⟨min a b, lt_min ha hb, ?_⟩
+  intro x hx v hv
+  have hva : v ∈ ball (0 : E) a := by
+    simpa using hv.trans_le (min_le_left a b)
+  have hvsrc := (hbv x hx v (hv.trans_le (min_le_right a b))).1
+  obtain ⟨A, hA⟩ := hav hva x hx
+  refine ⟨hvsrc, A, hA.congr_of_eventuallyEq ?_⟩
+  filter_upwards [(C.endpoint x).open_source.mem_nhds hvsrc] with w hw
+  exact (coordinateEndpoint_eq_normalizedEndpoint C x w hw).symm
+
 end FixedChartUniformDifferentialPullback
 end Poincare
