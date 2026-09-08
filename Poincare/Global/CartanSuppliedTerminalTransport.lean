@@ -1,9 +1,10 @@
 import Poincare.Global.CartanSuppliedSubdivisionTransport
 
 /-!
-# Transport through supplied subdivision blocks
+# Supplied terminal path transport
 
-Open agreement at each inserted node identifies the full differential successor.
+Short paths identify every terminal datum with the full reached state.
+Concatenated subdivisions compare both actual chain segments at their shared state.
 -/
 
 set_option autoImplicit false
@@ -235,6 +236,67 @@ theorem segment_state_eq (S : System g) (initial middle : CartanChain.ChainState
       have hh := hb hsmall
       rw [Nat.add_assoc, hnodes (n + 1) hn, hi] at hh
       exact (hh (d.data n)).trans (d.successor_eq n).symm
+
+/-- Concatenation transports from the actual endpoint state of the first chain. -/
+theorem endpoint_trans : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {x y : M} (p : Path initial.anchor x) (q : Path x y)
+    (R : Realization S initial p) (h : R.endpoint.anchor = x)
+    (T : Realization S R.endpoint (q.cast h rfl))
+    (C : Realization S initial (p.trans q)), C.endpoint = T.endpoint := by
+  intro S initial x y p q R h T C
+  letI : MetricSpace M := g.toMetricSpace
+  let B : Subdivision (g := g) q S.mesh := {
+    time := T.subdivision.time
+    terminal := T.subdivision.terminal
+    zero := T.subdivision.zero
+    mono := T.subdivision.mono
+    strict := T.subdivision.strict
+    tail := T.subdivision.tail
+    wholeCell := T.subdivision.wholeCell }
+  obtain ⟨D, hterminal, hleft, hright⟩ :=
+    exists_trans_subdivision p q R.subdivision B
+  have hzero : initial.anchor = (p.trans q) (D.time 0) := by simp [D.zero]
+  have hmesh : ∀ n, dist ((p.trans q) (D.time (n + 1)))
+      ((p.trans q) (D.time n)) < S.mesh := by
+    intro n
+    have hm := D.mono (Nat.le_succ n)
+    exact D.wholeCell n _ _ ⟨hm, le_rfl⟩ ⟨le_rfl, hm⟩
+  obtain ⟨a, c, _ha, _hsticky⟩ :=
+    exists_sticky_chain S (fun n => (p.trans q) (D.time n)) initial hzero hmesh
+  let A : Realization S initial (p.trans q) := ⟨D, a, c⟩
+  have hfirst : c.state R.subdivision.terminal = R.endpoint := by
+    have hh := segment_state_eq S initial initial
+      (fun n => (p.trans q) (D.time n)) (fun n => p (R.subdivision.time n))
+      a R.preferred c R.chain hzero (by simp [R.subdivision.zero])
+      0 R.subdivision.terminal (by simpa using c.initial_eq)
+      (by intro n hn; simp only [Nat.zero_add, hleft n hn, trans_halfTime])
+      (by
+        intro n _hn
+        have hm := R.subdivision.mono (Nat.le_succ n)
+        exact R.subdivision.wholeCell n _ _ ⟨hm, le_rfl⟩ ⟨le_rfl, hm⟩)
+      R.subdivision.terminal le_rfl
+    simpa only [Nat.zero_add, Realization.endpoint] using hh
+  have hsecond : c.state (R.subdivision.terminal + T.subdivision.terminal) = T.endpoint := by
+    apply segment_state_eq S initial R.endpoint
+      (fun n => (p.trans q) (D.time n))
+      (fun n => (q.cast h rfl) (T.subdivision.time n))
+      a T.preferred c T.chain hzero (by simp [T.subdivision.zero])
+      R.subdivision.terminal T.subdivision.terminal hfirst
+      (by
+        intro n _hn
+        dsimp only
+        rw [hright n, trans_secondTime]
+        rfl)
+      (by
+        intro n _hn
+        have hm := T.subdivision.mono (Nat.le_succ n)
+        exact T.subdivision.wholeCell n _ _ ⟨hm, le_rfl⟩ ⟨le_rfl, hm⟩)
+      T.subdivision.terminal le_rfl
+  have hA : A.endpoint = T.endpoint := by
+    change c.state D.terminal = _
+    rw [hterminal]
+    exact hsecond
+  exact (endpoint_eq_same_path S initial (p.trans q) C A).trans hA
 
 end CartanSuppliedTerminalTransport
 end Poincare
