@@ -3,6 +3,31 @@
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-08 Augmented system full-time regularity worker result
+
+Branch `worker/augmented-system-regularity`, base `2992f59d`, verified proof
+head `3347f3e5`. The new `FixedChartAugmentedSystemRegularity.lean` proves
+`augmentedSystemRegularity` with the unchanged imported definition and
+`patch_endpoint_contDiffOn_two` on the original retained ball at `C.T`.
+The full-interval fundamental-solution continuation, Gronwall derivative
+identification, and operator-norm continuity give a general full-time C1
+flow theorem. Compact neighborhoods inside the open augmented initial-state
+domain cover the entire retained ball, without shortening its time interval.
+
+All five theorems compiled and were committed separately. The focused build
+passed with 3615 jobs. The module scan reports five declarations with no
+nonstandard dependencies; every named closure is exactly
+`[propext, Classical.choice, Quot.sound]`. Both exact target probes and token
+and diff checks pass. No existing Lean file or root import changed.
+The report `harness/reports/augmented-system-regularity_done.md` records the
+commands, actual outputs, failed compiler attempt, and proof commits.
+This result awaits independent orchestrator review. The mapped-geodesic
+equation, H1/H2, and recognition remain separate work.
+
+Exact first independent review action:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FixedChartAugmentedSystemRegularity.lean`.
+
+
 ## 2026-09-08 Patch second variation worker partial
 
 Branch `worker/patch-second-variation`, base `d1a10d37`, verified proof head
