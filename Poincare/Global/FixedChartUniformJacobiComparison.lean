@@ -55,5 +55,28 @@ theorem flow_hasFDerivAt_of_fundamentalSolution {x₀ : M} {U : Set E}
   intro s hs
   simpa only [(hGa q (ball_subset_closedBall hq) s hs).2.fderiv_eq] using hΦ s hs
 
+/-- The actual coordinate exponential differentiates to the position component
+of the full retained endpoint derivative, with the required inverse-time input. -/
+theorem coordinateEndpoint_fderiv {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (v a : E) (hv : v ∈ (C.endpoint x).source) :
+    fderiv ℝ ((C.endpoint x).trans (chartAt E x₀)) v a =
+      (fderiv ℝ (fun q => C.α q C.T)
+        (extChartAt I x₀ x, C.T⁻¹ • v) (0, C.T⁻¹ • a)).1 := by
+  have hq := C.P_source_subset hv.1.2
+  have hfull := (C.endpoint_C1.contDiffAt (isOpen_ball.mem_nhds hq)).differentiableAt
+    (by norm_num)
+  have hs := hfull.hasFDerivAt.fst.comp v
+    ((hasFDerivAt_const (extChartAt I x₀ x) v).prodMk C.timeRescaling.hasFDerivAt)
+  have he : HasFDerivAt ((C.endpoint x).trans (chartAt E x₀))
+      (((ContinuousLinearMap.fst ℝ E E).comp
+        (fderiv ℝ (fun q => C.α q C.T) (extChartAt I x₀ x, C.T⁻¹ • v))).comp
+        ((0 : E →L[ℝ] E).prod (C.timeRescaling : E →L[ℝ] E))) v := by
+    apply hs.congr_of_eventuallyEq
+    filter_upwards [(C.endpoint x).open_source.mem_nhds hv] with w hw
+    exact coordinateEndpoint_eq_normalizedEndpoint C x w hw
+  rw [he.fderiv]
+  rfl
+
 end FixedChartUniformJacobiComparison
 end Poincare
