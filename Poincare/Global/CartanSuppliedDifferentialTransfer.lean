@@ -589,5 +589,16 @@ private theorem inverse_germ_of_framed_normal_germ
     N.symm (J.symm v) = N'.symm (N' (N.symm (J.symm v))) := (N'.left_inv hvs).symm
     _ = N'.symm v := congrArg N'.symm heq
 
+omit [T2Space M] in
+/-- On retained anchors the stored frame is the actual invertible chart derivative. -/
+private theorem patchFrame_coe {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U) (x : M) (hx : x ∈ C.anchors) :
+    (patchFrame C x : E →L[ℝ] E) =
+      FixedChartUniformPreferredGermAgreement.anchorFrame x₀ x := by
+  unfold patchFrame
+  rw [dif_pos hx]
+  exact Classical.choose_spec
+    (FixedChartUniformPreferredGermAgreement.anchorFrame_isInvertible C x hx)
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
