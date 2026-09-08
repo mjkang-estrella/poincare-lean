@@ -67,5 +67,48 @@ theorem exists_uniform_normal_radius {x₀ : M} {U : Set E}
   simpa [CartanSourceExponential.LocalFamily.controlledSourceLocus,
     FixedChartUniformSourceNormal.Patch.rawLocalFamily, mem_ball, dist_eq_norm] using hw.1.2
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Small velocities share the actual endpoint domain over a compact anchor
+set, and their endpoints remain available as new anchors. -/
+theorem exists_uniform_endpoint_radius {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) :
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ v : E, ‖v‖ < ρ →
+      v ∈ (C.endpoint x).source ∧ C.endpoint x v ∈ C.anchors := by
+  have he : ∀ᶠ v : E in 𝓝 0, ∀ x ∈ K,
+      v ∈ (C.endpoint x).source ∧ C.endpoint x v ∈ C.anchors := by
+    apply hK.eventually_forall_of_forall_eventually
+    intro x hx
+    have hxC := hKC hx
+    have hxchart : x ∈ (chartAt E x₀).source := by
+      simpa only [extChartAt_source] using hxC.1
+    let f : E × M → E × E := fun q => (extChartAt I x₀ q.2, C.T⁻¹ • q.1)
+    have hf : ContinuousAt f (0, x) :=
+      ((continuousAt_extChartAt' hxC.1).comp continuousAt_snd).prodMk
+        (continuousAt_const.smul continuousAt_fst)
+    have hf0 : f (0, x) = (extChartAt I x₀ x, 0) := by simp [f]
+    have hsrc : f (0, x) ∈ C.P.source := by
+      rw [hf0]
+      exact C.zero_mem_source _ hxC.2
+    have hp : ContinuousAt (fun q => (C.P (f q)).2) (0, x) :=
+      ((C.P.continuousAt hsrc).comp hf).snd
+    have hp0 : (C.P (f (0, x))).2 = extChartAt I x₀ x := by
+      rw [hf0, C.stationary _ hxC.2]
+    have htarget : (C.P (f (0, x))).2 ∈ (chartAt E x₀).target := by
+      rw [hp0]
+      exact (chartAt E x₀).map_source hxchart
+    have hc : ContinuousAt (fun q : E × M => C.endpoint q.2 q.1) (0, x) := by
+      exact ((chartAt E x₀).continuousAt_symm htarget).comp
+        (f := fun q : E × M => (C.P (f q)).2) hp
+    have he0 : C.endpoint x (0 : E) = x := C.endpoint_zero x hxC
+    have hret : ∀ᶠ q : E × M in 𝓝 (0, x), C.endpoint q.2 q.1 ∈ C.anchors := by
+      apply hc.tendsto
+      simpa only [he0] using C.isOpen_anchors.mem_nhds hxC
+    filter_upwards [hf.tendsto (C.P.open_source.mem_nhds hsrc),
+      hp.tendsto ((chartAt E x₀).open_target.mem_nhds htarget), hret] with q hq ht hr
+    exact ⟨⟨⟨mem_univ _, hq⟩, ht⟩, hr⟩
+  obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
+  exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
+
 end FixedChartLocalSuccessorExistence
 end Poincare
