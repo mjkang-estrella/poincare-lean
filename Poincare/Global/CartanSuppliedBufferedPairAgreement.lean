@@ -157,5 +157,90 @@ theorem exists_uniform_transported_flow_radius {a b : M} {U V : Set E}
       ((hF.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
         (by norm_num)) htrans
 
+/-- The two retained endpoints agree after the host chart derivative, with
+one velocity radius chosen before the anchor in the compact overlap. -/
+theorem exists_uniform_endpoint_chartTransition {a b : M} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g a U)
+    (D : FixedChartUniformSourceNormal.Patch g b V)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus a)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus b)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors) (hKD : K ⊆ D.anchors) :
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ v : E, ‖v‖ < ρ →
+      v ∈ (C.endpoint x).source ∧
+      GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x) v ∈
+        (D.endpoint x).source ∧
+      C.endpoint x v = D.endpoint x
+        (GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x) v) := by
+  obtain ⟨ρf, hρf, hf⟩ := exists_uniform_transported_flow_radius C D hU hV K hK hKC hKD
+  obtain ⟨ρC, hρC, hC⟩ := FixedChartLocalSuccessorExistence.exists_uniform_endpoint_radius C K hK hKC
+  obtain ⟨ρD, hρD, hD⟩ := FixedChartLocalSuccessorExistence.exists_uniform_endpoint_radius D K hK hKD
+  obtain ⟨R, hR, hbound⟩ := exists_uniform_chartTransition_bound C D K hK hKC hKD
+  refine ⟨min ρf (min ρC (ρD / R)), lt_min hρf (lt_min hρC (div_pos hρD hR)), ?_⟩
+  intro x hx v hv
+  let w := GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x) v
+  have hw : ‖w‖ < ρD := by
+    calc
+      _ ≤ ‖GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x)‖ * ‖v‖ :=
+        (GeodesicTransport.chartTransitionDeriv a b (extChartAt I a x)).le_opNorm v
+      _ ≤ R * ‖v‖ := mul_le_mul_of_nonneg_right (hbound x hx) (norm_nonneg v)
+      _ < ρD := by
+        have h := (hv.trans_le (min_le_right _ _)).trans_le (min_le_right _ _)
+        simpa only [mul_comm R] using (lt_div_iff₀ hR).mp h
+  have hvsrc := (hC x hx v ((hv.trans_le (min_le_right _ _)).trans_le (min_le_left _ _))).1
+  have hwsrc := (hD x hx w hw).1
+  obtain ⟨hq, hpositions, hβc, hβd⟩ := hf x hx v (hv.trans_le (min_le_left _ _))
+  let q := (extChartAt I a x, C.T⁻¹ • v)
+  let γ := fun t : ℝ => ((C.α q (C.T * t)).1, C.T • (C.α q (C.T * t)).2)
+  let β := GeodesicTransport.chartTransitionState a b γ
+  let r := (extChartAt I b x, D.T⁻¹ • w)
+  let η := fun t : ℝ => ((D.α r (D.T * t)).1, D.T • (D.α r (D.T * t)).2)
+  have hr := D.endpoint_source_initial_mem hwsrc
+  have hηd : ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt η
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField g b) (η t))
+      (Icc (0 : ℝ) 1) t := fun _ ht =>
+    FixedChartUniformEndpointReanchoring.normalizedFlow_hasDerivWithinAt D hr ht
+  have hηc := HasDerivWithinAt.continuousOn hηd
+  have hγ0 : γ 0 = (extChartAt I a x, v) := by
+    have hq0 : C.α q 0 = q := (C.flow_law _ hq).1
+    dsimp only [γ]
+    rw [mul_zero, hq0]
+    simp [q, smul_smul, C.T_pos.ne']
+  have hη0 : η 0 = (extChartAt I b x, w) := by
+    have hr0 : D.α r 0 = r := (D.flow_law _ hr).1
+    dsimp only [η]
+    rw [mul_zero, hr0]
+    simp [r, smul_smul, D.T_pos.ne']
+  have h0 : β 0 = η 0 := by
+    change (GeodesicTransport.chartTransition a b (γ 0).1,
+      GeodesicTransport.chartTransitionDeriv a b (γ 0).1 (γ 0).2) = _
+    rw [hγ0, hη0]
+    exact Prod.ext (congrArg (extChartAt I b) ((extChartAt I a).left_inv (hKC hx).1)) rfl
+  obtain ⟨R', hR'⟩ := ((isCompact_Icc.image_of_continuousOn hβc).union
+    (isCompact_Icc.image_of_continuousOn hηc)).isBounded.subset_closedBall (0 : E × E)
+  obtain ⟨A, hA⟩ := GeodesicTransport.geodesicFlowField_chartChristoffelField_lipschitzOn_closedBall
+    g b (0 : E × E) R'
+  have heq : EqOn β η (Icc (0 : ℝ) 1) :=
+    ODE_solution_unique_of_mem_Icc_right
+      (v := fun _ => geodesicFlowField (GeodesicTransport.chartChristoffelField g b))
+      (s := fun _ => closedBall (0 : E × E) R')
+      (fun _ _ => hA) hβc
+      (fun t ht => (hβd t (Ico_subset_Icc_self ht)).mono_of_mem_nhdsWithin
+        (Icc_mem_nhdsGE_of_mem ht))
+      (fun t ht => hR' (Or.inl ⟨t, Ico_subset_Icc_self ht, rfl⟩)) hηc
+      (fun t ht => (hηd t (Ico_subset_Icc_self ht)).mono_of_mem_nhdsWithin
+        (Icc_mem_nhdsGE_of_mem ht))
+      (fun t ht => hR' (Or.inr ⟨t, Ico_subset_Icc_self ht, rfl⟩)) h0
+  have h1 : (1 : ℝ) ∈ Icc (0 : ℝ) 1 := by simp
+  have hend := congrArg (fun s : E × E => (extChartAt I b).symm s.1) (heq h1)
+  refine ⟨hvsrc, hwsrc, ?_⟩
+  have hCb : (extChartAt I a).symm (C.α q C.T).1 ∈ (extChartAt I b).source := by
+    simpa only [mul_one] using (hpositions 1 h1).2.1
+  change (extChartAt I b).symm (extChartAt I b
+    ((extChartAt I a).symm (C.α q (C.T * 1)).1)) =
+    (extChartAt I b).symm (D.α r (D.T * 1)).1 at hend
+  rw [mul_one, mul_one, (extChartAt I b).left_inv hCb] at hend
+  simpa only [C.endpoint_apply, D.endpoint_apply,
+    FixedChartUniformNormalRadius.expChart] using hend
+
 end CartanSuppliedBufferedPairAgreement
 end Poincare
