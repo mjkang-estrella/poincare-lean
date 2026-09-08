@@ -65,4 +65,11 @@ def slice (z : E) : OpenPartialHomeomorph E E where
     (P.continuousOn_symm.comp (continuous_const.prodMk continuous_id).continuousOn
       (fun _ hy => hy)).snd
 
+/-- The stationary product zero section gives the slice's anchor value. -/
+theorem slice_zero [Zero E] {A : Set E}
+    (hstationary : ∀ z ∈ A, P (z, 0) = (z, z)) :
+    ∀ z ∈ A, slice P hfst z 0 = z := by
+  intro z hz
+  exact congrArg Prod.snd (hstationary z hz)
+
 end Poincare.FixedChartEndpointSlices
