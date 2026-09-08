@@ -1,6 +1,7 @@
 import Poincare.Global.DeTurckBUCCoefficientIdentification
 import Poincare.Global.DeTurckGaugedFlowClosure
 import Poincare.Global.DeTurckCoordinateJointRegularity
+import Poincare.Global.MetricFamilyCovRicciEntryContinuity
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 set_option autoImplicit false
@@ -196,6 +197,54 @@ theorem chartMetric_secondJet_cancellation
     exact congrArg (fun B : Bilin => B p q)
       (hG.isSymmSndFDerivAt (by norm_num) a b)
   · exact hsecond
+
+set_option maxHeartbeats 1000000 in
+set_option synthInstance.maxHeartbeats 100000 in
+set_option maxSynthPendingDepth 100 in
+omit [T2Space M] in
+/-- The spatial derivative of the landed Christoffel field, expressed using
+the genuine chart metric and its directional metric derivative. The second
+derivative occurs in the last Christoffel functional. -/
+theorem christoffelDerivative_eq_chartMetricSecondJet
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (a u v : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let H := fun y => fderiv ℝ G y a
+    fderiv ℝ (GeodesicTransport.chartChristoffelField g anchor) z a u v =
+      (-((G z).inverse.comp ((H z).comp (G z).inverse)))
+        (LinearMap.toContinuousLinearMap
+          (CovariantDerivative.christoffelFunctional G z v u)) +
+      (G z).inverse (LinearMap.toContinuousLinearMap
+        (CovariantDerivative.christoffelFunctional H z v u)) := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  let B := anchorBlendedMetricFlow (fun _ => g) anchor 0
+  have heq : B =ᶠ[nhds z] G := by
+    filter_upwards [hcut] with y hy
+    exact CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      (GeodesicTransport.cutoff (n := 3) anchor)
+      (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hy
+  have hfirst : fderiv ℝ B z = fderiv ℝ G z := heq.fderiv_eq
+  have hdir : (fun y => fderiv ℝ B y a) =ᶠ[nhds z]
+      (fun y => fderiv ℝ G y a) :=
+    (heq.fderiv (𝕜 := ℝ)).mono (fun _ h => congrArg (fun L : Jet1 => L a) h)
+  have hkg : CovariantDerivative.christoffelFunctional B z v u =
+      CovariantDerivative.christoffelFunctional G z v u := by
+    ext w
+    simp only [CovariantDerivative.christoffelFunctional, hfirst]
+  have hkh : CovariantDerivative.christoffelFunctional
+      (fun y => fderiv ℝ B y a) z v u =
+      CovariantDerivative.christoffelFunctional (fun y => fderiv ℝ G y a) z v u := by
+    ext w
+    simp only [CovariantDerivative.christoffelFunctional, hdir.fderiv_eq]
+  have hbase := anchorChartChristoffelFieldSpatialFDerivFamily_apply_eq_christoffelDeriv
+    (fun _ : Unit => g) anchor () z a u v
+  change fderiv ℝ (GeodesicTransport.chartChristoffelField g anchor) z a u v =
+    RicciFlow.christoffelDeriv B (fun y => fderiv ℝ B y a) z v u at hbase
+  dsimp only
+  rw [hbase]
+  simp only [RicciFlow.christoffelDeriv, heq.self_of_nhds, hfirst, hkg, hkh]
+  rfl
 
 end Manifold
 end Poincare.DeTurckPrincipalSecondJet
