@@ -88,5 +88,24 @@ theorem state_eq :
           (nodes (n + 1)) d f
       exact compare (c.state n) (e.state n) ih (c.data n) (e.data n)
 
+/-- Open agreement at each next node compares policies without identifying patch labels. -/
+theorem state_eq_of_open_agreement :
+  ∀ (Q R : ℕ → CartanChain.ChainState g → Interpretation g) (nodes : ℕ → M)
+    (initial : CartanChain.ChainState g)
+    (c : ReachableChain Q nodes initial) (e : ReachableChain R nodes initial),
+    (∀ n, ∃ W : Set M, IsOpen W ∧ nodes (n + 1) ∈ W ∧
+      EqOn (map (Q n (c.state n)) (c.state n))
+        (map (R n (e.state n)) (e.state n)) W) →
+    ∀ n, c.state n = e.state n := by
+  intro Q R nodes initial c e hagree n
+  cases n with
+  | zero => exact c.initial_eq.trans e.initial_eq.symm
+  | succ n =>
+      obtain ⟨W, hW, hz, hEq⟩ := hagree n
+      rw [c.successor_eq n, e.successor_eq n]
+      exact CartanSuppliedDifferentialTransfer.successor_eq_of_eqOn_open
+        (Q n (c.state n)) (R n (e.state n)) (c.state n) (e.state n)
+        (nodes (n + 1)) (c.data n) (e.data n) W hW hz hEq
+
 end CartanSuppliedReachableChain
 end Poincare
