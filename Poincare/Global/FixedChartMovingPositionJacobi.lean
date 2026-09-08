@@ -176,5 +176,40 @@ theorem transverse_orthogonal {x₀ : M} {U : Set E}
     (flow_mem_target_cutoffOne C hU hqc ht).2.self_of_nhds] at hall
   exact hall
 
+/-- For initial data `(0,w)` orthogonal to the moving initial velocity,
+the corrected norm triple satisfies `(A',B',C') = (2B,C-s²A,-2s²B)`.
+Only initial speed and initial orthogonality are assumptions. -/
+theorem transverse_normSystem [T2Space M] {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {z v : E} (hq : (z, v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, v) t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    (w : E) (horth : CovariantDerivative.chartMetric g.inner x₀ z v w = 0)
+    {speed : ℝ} (hspeed : CovariantDerivative.chartMetric g.inner x₀ z v v = speed ^ 2)
+    {t : ℝ} (ht : t ∈ Ioo (-C.T) C.T) :
+    let N := GronwallMembership.normState g x₀ (C.α (z, v)) (fun s => Φ s (0, w))
+    HasDerivAt N (2 * (N t).2.1, (N t).2.2 - speed ^ 2 * (N t).1,
+      -2 * speed ^ 2 * (N t).2.1) t := by
+  have hqc := ball_subset_closedBall hq
+  have htc := Ioo_subset_Icc_self ht
+  have hzone := flow_mem_target_cutoffOne C hU hqc htc
+  have hΨ : HasDerivAt (fun s => Φ s (0, w))
+      (linearizedGeodesicFlowFieldAlong (chartChristoffelField g x₀)
+        (C.α (z, v)) t (Φ t (0, w))) t := by
+    simpa using ((hΦ t htc).hasDerivAt (Icc_mem_nhds ht.1 ht.2)).clm_apply
+      (hasDerivAt_const t (0, w))
+  simpa only [RigidityComplete.speedNormSystemAop_apply] using
+    GronwallMembership.normState_hasDerivAt_speed g hcurv x₀
+      (RigidityComplete.speedNormSystemAop speed) (RigidityComplete.speedNormSystemAop_apply speed)
+      (((C.flow_law _ hqc).2 t htc).hasDerivAt (Icc_mem_nhds ht.1 ht.2))
+      hΨ hzone.1 hzone.2 ((flow_chartMetric_speed_eq_initial C hU hqc htc).trans hspeed)
+      (transverse_orthogonal C hU hq hΦ0 hΦ w horth htc)
+      (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ _)
+
 end FixedChartMovingPositionJacobi
 end Poincare
