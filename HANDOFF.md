@@ -143,6 +143,17 @@ reconstructs the full reaction record and yields the endpoint; pinned as
 `hamilton-reaction-core-final` in `hamilton-front.json`. Everything that
 remains in that core is Ricci-flow analysis proper.
 
+Ricci-flow route, first step (2026-09-08): `deturck-principal-second-jet`
+landed as a verified partial (`Global/DeTurckPrincipalSecondJet.lean`, gate
+PASS, 18 declarations): the constant-family DeTurck chart rate expands to the
+coordinate Ricci trace, advection and two derivative slots; the formal Ricci
+and Lie second-jet expressions cancel to exactly `spatialPrincipal` for the
+genuine chart metric; the Christoffel derivative is expressed in chart-metric
+jets. `principalIdentity` (the rate equals the inverse-metric contraction of
+the metric's second derivative plus a first-jet remainder chosen before the
+metric) is still open, with the exact residual displayed in the report; the
+follow-up `deturck-principal-identity` targets it.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
