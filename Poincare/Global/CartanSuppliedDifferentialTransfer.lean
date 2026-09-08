@@ -335,5 +335,30 @@ private theorem chainState_eq_of_target_eq_of_clm_eq {x : M} {p q : RoundSphere3
   cases h
   rfl
 
+omit [T2Space M] in
+/-- Open agreement of supplied maps identifies their differential successors. -/
+theorem successor_eq_of_eqOn_open :
+  ∀ (Q R : Interpretation g) (s t : CartanChain.ChainState g) (z : M)
+    (d : Data Q s z) (e : Data R t z) (W : Set M),
+    IsOpen W → z ∈ W → EqOn (map Q s) (map R t) W → d.successor = e.successor := by
+  intro Q R s t z d e W hW hz hEq
+  have htarget := hEq hz
+  have hmaps : map Q s =ᶠ[𝓝 z] map R t :=
+    Filter.eventuallyEq_of_mem (hW.mem_nhds hz) hEq
+  have htend : Tendsto (extChartAt I z).symm (𝓝 (extChartAt I z z)) (𝓝 z) := by
+    have hc : ContinuousAt ((extChartAt I z).symm : E → M) (extChartAt I z z) :=
+      continuousAt_extChartAt_symm z
+    have h := hc.tendsto
+    rw [(extChartAt I z).left_inv (mem_extChartAt_source z)] at h
+    exact h
+  have hcharts : reanchoredChartMap Q s z =ᶠ[𝓝 (extChartAt I z z)]
+      reanchoredChartMap R t z := by
+    filter_upwards [hmaps.comp_tendsto htend] with a ha
+    dsimp only [Function.comp_def] at ha
+    unfold reanchoredChartMap
+    rw [htarget, ha]
+  exact chainState_eq_of_target_eq_of_clm_eq d.alignment e.alignment htarget
+    (alignment_clm_eq_of_eventuallyEq Q R s t z d e hcharts)
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
