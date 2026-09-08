@@ -121,7 +121,7 @@ theorem exists_linearODE_on_Icc {A : ℝ → X →L[ℝ] X}
   exact ((div_lt_iff₀ hd).mp hn).le
 
 
-/-- Continuous linear coefficients admit solutions on an entire prescribed
+/-- Continuous linear coefficients have solutions on an entire prescribed
 symmetric interval, with no smallness condition on its length. -/
 theorem exists_linearODE_on_symmetric_Icc {A : ℝ → X →L[ℝ] X}
     {T : ℝ} (hT : 0 ≤ T) (hA : ContinuousOn A (Icc (-T) T)) (x : X) :
@@ -428,6 +428,23 @@ theorem target_of_movingInitialPositionJacobiComparison
       (fderiv ℝ (sourceExp (patch C D) x) v a')
   rw [hse, hte, hsd a, hsd a', htd a, htd a']
   exact hj
+
+/-- The original uniform differential interface follows from the same single
+geometric remainder. -/
+theorem uniformDifferentialPullback_of_movingInitialPositionJacobiComparison
+    (hJacobi : MovingInitialPositionJacobiComparison g)
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    UniformDifferentialPullback (patch C D) K H :=
+  uniformDifferentialPullback_of_uniformNonzeroMetricPullback
+    (target_of_movingInitialPositionJacobiComparison hJacobi)
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
 
 end FixedChartUniformJacobiComparison
 end Poincare
