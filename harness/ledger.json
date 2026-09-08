@@ -3921,7 +3921,14 @@
       "status": "done",
       "date": "2026-09-08",
       "report": "harness/reports/hamilton-front-mission_done.md"
+    },
+    {
+      "id": "curvature-transport",
+      "tier": "M5",
+      "status": "partial",
+      "date": "2026-09-08",
+      "report": "harness/reports/curvature-transport_blocked.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-08): repair track after the H1/H2 refutation. Landed: ControlledChartInstance (finite instance, uniform-ball chart sources, same maximal atlas), RiemannianMetricInstanceTransportGeometric.transport (metric transport by the chart-change derivative J). In flight: curvature-transport (Levi-Civita and HasConstantSectionalCurvature3 transport, reduction of UnitConstantCurvatureSphereRecognition3 to a controlled instance). Then: re-run the Cartan chain on the controlled instance and attack the (now well-posed) H1/H2 analysis there."
+  "current_goal": "RESUME POINT (2026-09-08): repair track after the H1/H2 refutation. Landed: ControlledChartInstance (finite instance, uniform-ball chart sources, same maximal atlas), RiemannianMetricInstanceTransportGeometric.transport (metric transport by the chart-change derivative J). Landed: CurvatureInstanceTransport (field transport, conjugated derivative; everything else conditional on ConnectionCurvatureNaturality). In flight: connection-naturality (discharge that boundary). Then: re-run the Cartan chain on the controlled instance and attack the (now well-posed) H1/H2 analysis there."
 }

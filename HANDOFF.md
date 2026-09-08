@@ -330,10 +330,22 @@ Integrated on `main` after the orchestrator's gate and review (codex workers,
   `transport_inner` (pullback by the chart-change derivative `J x` in both
   slots), including the smoothness of the transported section. The induced
   distance comparison is the exact remaining `def InducedDistanceAgreement`.
-- Dispatched next: `harness/tasks/curvature-transport.md` (vector-field and
-  Levi-Civita transport, `HasConstantSectionalCurvature3` transport, and the
-  reduction of unit recognition for an arbitrary instance to a controlled
-  instance).
+- `Poincare/Global/CurvatureInstanceTransport.lean` (task
+  `curvature-transport`, stopped with a verified partial): unconditional
+  vector-field transport with regularity equivalence in both directions, the
+  conjugated derivative and its additivity; the bundled connection, metric
+  compatibility, zero torsion, Levi-Civita agreement, constant-curvature
+  transport, and the recognition reduction
+  (`exists_controlled_recognition_reduction`: any compatible metric gives a
+  finite controlled instance to which unit recognition reduces) are all
+  conditional on the single explicit boundary
+  `ConnectionCurvatureNaturality` (the conjugated derivative equals the new
+  Levi-Civita connection on differentiable fields, and curvature values
+  conjugate by `J`). Sixteen theorems, standard axiom footprint.
+- Dispatched next: `harness/tasks/connection-naturality.md` (discharge that
+  boundary: cross-instance chain rule for scalar derivatives, Lie-bracket
+  naturality, Leibniz and compatibility for the conjugated operator,
+  uniqueness, curvature tensoriality).
 
 Validation: the audit payload wiring (task `audit-payload-wiring`) is merged.
 The Lean check payloads of the axiom, root-import, semantic, and completion

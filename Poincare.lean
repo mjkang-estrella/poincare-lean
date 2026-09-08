@@ -16,6 +16,7 @@ import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Global.ControlledChartInstance
+import Poincare.Global.CurvatureInstanceTransport
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.RiemannianMetricInstanceTransport
