@@ -124,5 +124,47 @@ theorem exists_uniform_coordinateEndpoint_derivative_radius {x₀ : M} {U : Set 
   filter_upwards [(C.endpoint x).open_source.mem_nhds hvsrc] with w hw
   exact (coordinateEndpoint_eq_normalizedEndpoint C x w hw).symm
 
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- Both supplied exponentials have strict equivalence derivatives on one manifold radius,
+chosen before either anchor, the alignment, and the successor point. -/
+theorem exists_uniform_differential_radius {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+        let Q := patch C D
+        let v := Q.sourceNormal x z
+        ∃ A B : E ≃L[ℝ] E,
+          HasStrictFDerivAt (sourceExp Q x) (A : E →L[ℝ] E) v ∧
+          HasStrictFDerivAt (targetExp Q p) (B : E →L[ℝ] E)
+            (linear Q ⟨x, p, L⟩ v) := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨b, hb, hbound⟩ := exists_uniform_linear_bound C D K H hK hKC hH hHD
+  obtain ⟨ρs, hρs, hs⟩ := exists_uniform_coordinateEndpoint_derivative_radius C K hK hKC
+  obtain ⟨ρt, hρt, ht⟩ := exists_uniform_coordinateEndpoint_derivative_radius D H hH hHD
+  obtain ⟨η, hη, hnormal⟩ := exists_uniform_normal_radius C K hK hKC
+    (lt_min hρs (div_pos hρt hb))
+  refine ⟨η, hη, ?_⟩
+  intro x hx p hp L z hz
+  obtain ⟨_, _, hv⟩ := hnormal x hx z hz
+  have hsv : ‖C.normal x z‖ < ρs := hv.trans_le (min_le_left _ _)
+  have htv : ‖linear (patch C D) ⟨x, p, L⟩ (C.normal x z)‖ < ρt := by
+    calc
+      _ ≤ ‖(linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E)‖ * ‖C.normal x z‖ :=
+        (linear (patch C D) ⟨x, p, L⟩ : E →L[ℝ] E).le_opNorm _
+      _ ≤ b * ‖C.normal x z‖ :=
+        mul_le_mul_of_nonneg_right (hbound x hx p hp L) (norm_nonneg _)
+      _ < ρt := by
+        simpa only [mul_comm b] using
+          (lt_div_iff₀ hb).mp (hv.trans_le (min_le_right _ _))
+  obtain ⟨_, A, hA⟩ := hs x hx _ hsv
+  obtain ⟨_, B, hB⟩ := ht p hp _ htv
+  exact ⟨A, B, hA, hB⟩
+
 end FixedChartUniformDifferentialPullback
 end Poincare
