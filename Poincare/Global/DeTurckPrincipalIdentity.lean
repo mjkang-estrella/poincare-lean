@@ -105,6 +105,51 @@ theorem inverse_pairing_symm (G : Bilin) (hG : G.IsInvertible)
   exact (congrArg (fun f : E →L[ℝ] ℝ => f (G.inverse q)) hp).symm.trans
     ((hs _ _).trans (congrArg (fun f : E →L[ℝ] ℝ => f (G.inverse p)) hq))
 
+/-- The landed finite-basis metric contraction is the fixed three-dimensional matrix contraction. -/
+theorem contraction_eq_matrix (G T : Bilin) (hG : G.IsInvertible)
+    (hs : ∀ u v, G u v = G v u) :
+    (∑ i, T (G.inverse (LinearMap.toContinuousLinearMap
+      ((Module.finBasis ℝ E).coord i))) ((Module.finBasis ℝ E) i)) =
+      ∑ i : Fin 3, ∑ j : Fin 3, inverseEntries G i j * T (basis3 i) (basis3 j) := by
+  let b := Module.finBasis ℝ E
+  let e := (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  let F := (G.inverse.comp T.flip).toLinearMap
+  have hA : ∀ i j, inverseEntries G i j = inverseEntries G j i := by
+    have hm : Matrix.IsSymm (fun i j : Fin 3 => G (basis3 i) (basis3 j)) :=
+      Matrix.IsSymm.ext (fun i j => hs (basis3 j) (basis3 i))
+    exact fun i j => hm.inv.apply j i
+  calc
+    _ = ∑ i, b.coord i (F (b i)) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      exact (inverse_pairing_symm G hG hs
+        (LinearMap.toContinuousLinearMap (b.coord i)) (T.flip (b i))).symm
+    _ = LinearMap.trace ℝ E F := RicciFlow.RicciFlow.sum_coord_eq_trace F
+    _ = ∑ i, e.coord i (F (e i)) := by
+      rw [LinearMap.trace_eq_matrix_trace ℝ e F, Matrix.trace]
+      simp only [Matrix.diag_apply, LinearMap.toMatrix_apply, Module.Basis.coord_apply]
+    _ = ∑ i, T (G.inverse (LinearMap.toContinuousLinearMap (e.coord i))) (e i) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      exact inverse_pairing_symm G hG hs
+        (LinearMap.toContinuousLinearMap (e.coord i)) (T.flip (e i))
+    _ = ∑ i, ∑ j, inverseEntries G i j * T (basis3 j) (basis3 i) := by
+      rw [inverseEntries_eq_coordinates G hG]
+      apply Finset.sum_congr rfl
+      intro i _
+      let r := G.inverse (LinearMap.toContinuousLinearMap (e.coord i))
+      change T r (e i) = ∑ j, e.repr r j * T (e j) (e i)
+      have hh := congrArg (fun x => T x (e i)) (e.sum_repr r)
+      simpa only [map_sum, map_smul, ContinuousLinearMap.sum_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul] using hh.symm
+    _ = _ := by
+      rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [hA j i]
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
