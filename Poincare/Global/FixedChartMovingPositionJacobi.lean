@@ -98,5 +98,25 @@ theorem perturbed_flow_speed_eq_initial {x₀ : M} {U : Set E}
   filter_upwards [he] with s hs
   exact flow_speed_eq_initial C (ball_subset_closedBall hs) ht
 
+/-- The arbitrary fundamental solution differentiates an actual velocity
+variation of the retained flow at every retained time. -/
+theorem velocityVariation_hasDerivAt {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {z v : E} (hq : (z, v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, v) t)).comp (Φ t)) (Icc (-C.T) C.T) t)
+    (w : E) {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    HasDerivAt (fun s : ℝ => C.α (z, v + s • w) t) (Φ t (0, w)) 0 := by
+  have hs : HasDerivAt (fun s : ℝ => (z, v + s • w)) (0, w) 0 := by
+    simpa using (hasDerivAt_const (0 : ℝ) z).prodMk
+      ((hasDerivAt_const (0 : ℝ) v).add ((hasDerivAt_id (0 : ℝ)).smul_const w))
+  have hf := flow_hasFDerivAt_of_fundamentalSolution C hq hΦ0 hΦ ht
+  have hf' : HasFDerivAt (fun y => C.α y t) (Φ t) (z, v + (0 : ℝ) • w) := by
+    simpa only [zero_smul, add_zero] using hf
+  exact hf'.comp_hasDerivAt 0 hs
+
 end FixedChartMovingPositionJacobi
 end Poincare
