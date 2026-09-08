@@ -156,4 +156,12 @@ theorem augmentedSystemRegularity
     simpa [J, Function.comp_def] using
       h.comp q (contDiffAt_id.prodMk (contDiffAt_const (c := J)))
 
+/-- The patch endpoint is C2 on the full original ball at the retained time. -/
+theorem patch_endpoint_contDiffOn_two
+    {x₀ : M} {U : Set E} (C : FixedChartUniformSourceNormal.Patch g x₀ U) :
+    ContDiffOn ℝ 2 (fun q => C.α q C.T)
+      (ball (extChartAt I x₀ x₀, 0) (C.r : ℝ)) :=
+  FixedChartPatchSecondVariation.target_of_augmentedSystemRegularity C
+    (augmentedSystemRegularity C)
+
 end Poincare.FixedChartAugmentedSystemRegularity
