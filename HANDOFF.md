@@ -2,6 +2,32 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+
+## 2026-09-08 Fixed-chart uniform source normal worker result
+
+Branch `worker/fixed-chart-uniform-source-normal`, base `0218a202`, proof head
+`26efa2d4`. The new `FixedChartUniformSourceNormal.lean` constructs the exact
+retained flow `Patch`, including the unchanged compact `K,R,ρ` clause, from
+the uniform normal-neighborhood theorem. Task 3's product slices, time
+rescaling, and the inverse fixed manifold chart give normal partial
+homeomorphisms with both anchor laws. The joint inverse source is open and
+its evaluator is continuous; `rawLocalFamily` has exactly those anchors,
+sources, and normal vectors. Position control is retained on endpoint sources.
+
+Direct elaboration, the focused 3548-job build, and the exact-field probes
+pass. All 16 theorem closures are exactly `[propext, Classical.choice, Quot.sound]`;
+the module-wide scan checks 64 declarations with only permitted dependencies.
+Token and diff checks pass. No existing Lean file or root import changed.
+The worker result awaits independent orchestrator acceptance. Commands,
+outputs, failed compiler evidence, and the proof diff are recorded in
+`harness/reports/fixed-chart-uniform-source-normal_done.md`.
+
+Exact first review action:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.FixedChartUniformSourceNormal`.
+The next mathematical task is inventory task 5's fixed-anchor frame/germ
+comparison. H1/H2 and recognition remain separate work.
+
+
 ## 2026-09-08 Fixed-chart endpoint slices worker result
 
 Branch `worker/fixed-chart-endpoint-slices`, base `5f57f9b6`, proof head
