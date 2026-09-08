@@ -72,6 +72,30 @@ def ricciFirst (G : Bilin) (J : Jet1) (v w : E) : ℝ :=
       connection G J (b i) (connection G J v w) -
       connection G J v (connection G J (b i) w))
 
+/-- The matrix inverse agrees with the coordinate coefficients of the inverse metric operator. -/
+theorem inverseEntries_eq_coordinates (G : Bilin) (hG : G.IsInvertible) :
+    inverseEntries G = fun i j => (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis.coord j
+      (G.inverse (LinearMap.toContinuousLinearMap
+        ((EuclideanSpace.basisFun (Fin 3) ℝ).toBasis.coord i))) := by
+  let b := (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  apply Matrix.inv_eq_left_inv
+  ext i k
+  change (∑ j, b.coord j (G.inverse (LinearMap.toContinuousLinearMap (b.coord i))) *
+    G (b j) (b k)) = (1 : Matrix (Fin 3) (Fin 3) ℝ) i k
+  let r := G.inverse (LinearMap.toContinuousLinearMap (b.coord i))
+  have hraise : G r = LinearMap.toContinuousLinearMap (b.coord i) :=
+    (hG.inverse_apply_eq.mp rfl).symm
+  calc
+    _ = G (∑ j, b.repr r j • b j) (b k) := by
+      simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul, Module.Basis.coord_apply, r]
+    _ = G r (b k) := by rw [b.sum_repr]
+    _ = _ := by
+      rw [hraise]
+      simp only [LinearMap.coe_toContinuousLinearMap', Module.Basis.coord_apply,
+        Module.Basis.repr_self_apply, Matrix.one_apply]
+      simp only [eq_comm]
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
