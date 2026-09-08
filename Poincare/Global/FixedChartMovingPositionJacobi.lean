@@ -81,5 +81,22 @@ theorem flow_chartMetric_speed_eq_initial {x₀ : M} {U : Set E}
     blendedChartMetric_eq_chartMetric_of_cutoff_eq_one (g := g) (x₀ := x₀) hc0] at h
   exact h
 
+/-- Nearby initial-velocity variations preserve speed with their own moving
+initial velocity. This is the eventual equality required by the Gauss lemma. -/
+theorem perturbed_flow_speed_eq_initial {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {z v : E} (hq : (z, v) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    (w : E) {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    (fun s : ℝ => chartGeodesicMetric g x₀ (C.α (z, v + s • w) t).1
+      (C.α (z, v + s • w) t).2 (C.α (z, v + s • w) t).2) =ᶠ[𝓝 0]
+    (fun s : ℝ => chartGeodesicMetric g x₀ z (v + s • w) (v + s • w)) := by
+  have hc : ContinuousAt (fun s : ℝ => (z, v + s • w)) 0 :=
+    continuousAt_const.prodMk (continuousAt_const.add (continuousAt_id.smul continuousAt_const))
+  have he : ∀ᶠ s : ℝ in 𝓝 0,
+      (z, v + s • w) ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) :=
+    hc.eventually (isOpen_ball.mem_nhds (by simpa using hq))
+  filter_upwards [he] with s hs
+  exact flow_speed_eq_initial C (ball_subset_closedBall hs) ht
+
 end FixedChartMovingPositionJacobi
 end Poincare
