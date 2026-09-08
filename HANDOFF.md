@@ -731,8 +731,21 @@ remainder to one concrete mapped-geodesic initial-value problem
 (`UniformMappedGeodesicEquation`). The unclosed step is second-order
 regularity of the patch endpoint map, which the landed joint-`C¹` theorem
 should give by applying it to the augmented flow-plus-fundamental-solution
-system; task `patch-second-variation` is dispatched for that and the
-assembly of the H2 replacement.
+system; task `patch-second-variation` landed a partial, merged
+(`FixedChartPatchSecondVariation.lean`, nine declarations): the operator
+augmented field and its `C²` regularity for the fixed-chart geodesic field,
+the augmented ODE for the flow paired with its fundamental solution, the
+full-interval derivative identification for the patch flow, and short-time
+`C²` of the patch flow on the half-radius ball
+(`exists_patch_flow_contDiffOn_two_short_time`). The single remainder is
+`AugmentedSystemRegularity C`: `C¹` dependence at the retained time `C.T` of
+the augmented flow on the full retained ball, which
+`target_of_augmentedSystemRegularity` turns into `C²` of the endpoint map.
+The flow theorems return a shorter time; the missing piece is continuation
+over the full retained interval, the same full-interval Grönwall argument
+already done for the base flow. Task `augmented-system-regularity` is
+dispatched for it; the chart-map `C²`, transition law, and mapped
+geodesic assembly follow.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.

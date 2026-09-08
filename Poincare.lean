@@ -26,6 +26,7 @@ import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartLocalSuccessorEquality
 import Poincare.Global.FixedChartLocalSuccessorExistence
 import Poincare.Global.FixedChartMovingPositionJacobi
+import Poincare.Global.FixedChartPatchSecondVariation
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.FixedChartUniformDifferentialPullback
 import Poincare.Global.FixedChartUniformEndpointReanchoring
