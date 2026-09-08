@@ -18,6 +18,7 @@ import Poincare.Statement
 import Poincare.Global.ConnectionInstanceNaturality
 import Poincare.Global.ControlledChartInstance
 import Poincare.Global.CurvatureInstanceTransport
+import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.FixedChartUniformNormalRadius
 import Poincare.Global.GenericJointRegularityCounterexample
