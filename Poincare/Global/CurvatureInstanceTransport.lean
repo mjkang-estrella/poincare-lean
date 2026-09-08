@@ -222,5 +222,30 @@ def conjugatedConnection (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
   exact ⟨conjugatedDerivative (inst := inst) inst' h g,
     conjugatedDerivative_isCovariantDerivativeOn (inst := inst) inst' h g hN⟩
 
+/-- The conditional conjugated connection is metric compatible and torsion free. -/
+theorem conjugatedConnection_metricCompatible_torsion
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (hN : ConnectionCurvatureNaturality (inst := inst) inst' h g) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    IsMetricCompatible (transport (inst := inst) inst' h g)
+        (conjugatedConnection (inst := inst) inst' h g hN) ∧
+      (conjugatedConnection (inst := inst) inst' h g hN).torsion = 0 := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let g' := transport (inst := inst) inst' h g
+  have he : ∀ (X : M → E) (x : M), MDiffAtTangentField X x →
+      conjugatedConnection (inst := inst) inst' h g hN X x = g'.leviCivita X x := hN.1
+  constructor
+  · intro x X Y hX hY v
+    rw [he X x hX, he Y x hY]
+    exact g'.leviCivita_metricCompatible hX hY v
+  · rw [CovariantDerivative.torsion_eq_zero_iff]
+    intro X Y x hX hY
+    rw [he Y x hY, he X x hX]
+    exact (CovariantDerivative.torsion_eq_zero_iff _).1 g'.leviCivita_torsion hX hY
+
 end Connection
 end Poincare.CurvatureInstanceTransport
