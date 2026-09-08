@@ -447,5 +447,19 @@ theorem target_of_uniformMappedGeodesicEquation
   rw [← hcs, hm, ← hct] at hend
   exact (extChartAt I p₀).injOn hmpsrc htesrc hend
 
+/-- The mapped geodesic equation gives H2 with both radii preceding all
+moving anchors, alignments, successor points, and derivative data. -/
+theorem exists_onCompact_of_uniformMappedGeodesicEquation
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (he : UniformMappedGeodesicEquation C D K H) :
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ),
+      FixedChartLocalSuccessorEquality.OnCompact (patch C D) K H η ε :=
+  FixedChartLocalSuccessorEquality.exists_onCompact_of_uniformEndpointReanchoring
+    C D K H hK hKC hH hHD (target_of_uniformMappedGeodesicEquation C D K H hK hKC hH hHD he)
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
