@@ -306,6 +306,33 @@ theorem target_of_ConnectionCurvatureNaturality
   exact hrec (transport (inst := inst) inst' h g)
     (hasConstantSectionalCurvature3_transport (inst := inst) inst' h g (hN g) 1 hcurv)
 
+/-- Any compatible metric supplies a finite controlled instance to which
+recognition reduces, provided differential naturality is proved for compatible atlases. -/
+theorem exists_controlled_recognition_reduction
+    (d : MetricSpace M)
+    (hd : d.toUniformSpace.toTopologicalSpace = (inferInstance : TopologicalSpace M))
+    (hN : ∀ (charts : ChartedSpace E M)
+      (hc : charts.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
+      (g : @ClosedSmoothRiemannianMetric 3 M _ inst _),
+      ConnectionCurvatureNaturality (inst := inst) charts hc g) :
+    letI : MetricSpace M := d.replaceTopology hd.symm
+    ∃ (charts : ChartedSpace E M) (δ : ℝ), 0 < δ ∧
+      (∀ x : M, Metric.ball x δ ⊆ (charts.chartAt x).source) ∧
+      charts.atlas.Finite ∧ charts.atlas ⊆ inst.atlas ∧
+      ∃ hs : (letI := charts; IsManifold I ∞ M),
+        (@UnitConstantCurvatureSphereRecognition3 M _ _ _ charts hs _ _ _ →
+          @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst _ _ _ _) := by
+  letI := inst
+  obtain ⟨charts, δ, hδ, hballs, _, hs, _, _, hfinite, hsub⟩ :=
+    ControlledChartInstance.exists_controlled_chartedSpace_of_compatibleMetric
+      (inst := inst) d hd
+  letI := inst
+  have hc : charts.atlas ⊆
+      @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I) :=
+    hsub.trans (StructureGroupoid.subset_maximalAtlas _)
+  exact ⟨charts, δ, hδ, hballs, hfinite, hsub, hs,
+    target_of_ConnectionCurvatureNaturality (inst := inst) charts hc (hN charts hc)⟩
+
 end Recognition
 end Connection
 end Poincare.CurvatureInstanceTransport
