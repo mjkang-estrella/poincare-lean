@@ -87,5 +87,15 @@ theorem trans_halfTime {x y z : M} (p : Path x y) (q : Path y z)
   change 2 * ((t : ℝ) / 2) = (t : ℝ)
   ring
 
+omit inst [IsManifold I ∞ M] [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Recover the second path, including the shared midpoint. -/
+theorem trans_secondTime {x y z : M} (p : Path x y) (q : Path y z)
+    (t : unitInterval) : (p.trans q) (secondTime t) = q t := by
+  have hv : (p.trans q).extend ((secondTime t : unitInterval) : ℝ) =
+      q.extend (2 * (secondTime t : ℝ) - 1) :=
+    Path.extend_trans_of_half_le p q (by dsimp [secondTime]; linarith [t.2.1])
+  have he : 2 * (secondTime t : ℝ) - 1 = (t : ℝ) := by dsimp [secondTime]; ring
+  simpa only [he, Path.extend_extends'] using hv
+
 end CartanSuppliedTerminalTransport
 end Poincare
