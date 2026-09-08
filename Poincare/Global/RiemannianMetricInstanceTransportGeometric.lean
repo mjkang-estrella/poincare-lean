@@ -258,4 +258,35 @@ theorem transportedInner_contMDiff (g : @ClosedSmoothRiemannianMetric 3 M _ inst
     (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
   exact coefficients_transportedInner inst' h g a x hx hx'
 
+/-- Transport a smooth Riemannian metric using the geometric tangent identification. -/
+def transport (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    @ClosedSmoothRiemannianMetric 3 M _ inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 := by
+  letI := inst
+  let b := transportedInner (inst := inst) inst' h g
+  have hsymm : ∀ x v w, b x v w = b x w v :=
+    fun x v w ↦ g.symm x (J inst' h x v) (J inst' h x w)
+  have hpos : ∀ x v, v ≠ 0 → 0 < b x v v := by
+    intro x v hv
+    exact g.pos x (J inst' h x v) ((J inst' h x).map_ne_zero_iff.mpr hv)
+  have hbounded : ∀ x, Bornology.IsVonNBounded ℝ {v | b x v v < 1} := by
+    intro x
+    apply ((g.isVonNBounded x).image (J inst' h x).symm.toContinuousLinearMap).subset
+    intro v hv
+    exact ⟨J inst' h x v, hv, (J inst' h x).symm_apply_apply v⟩
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  exact ⟨b, hsymm, hpos, hbounded, transportedInner_contMDiff (inst := inst) inst' h g⟩
+
+/-- The transported inner product is the pullback by the new-to-old derivative. -/
+theorem transport_inner (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
+    (x : M) (v w : E) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    (transport (inst := inst) inst' h g).inner x v w =
+      (letI := inst; g.inner x (J inst' h x v) (J inst' h x w)) := by
+  rfl
+
 end Poincare.RiemannianMetricInstanceTransportGeometric
