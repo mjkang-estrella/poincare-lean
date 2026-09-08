@@ -306,6 +306,40 @@ theorem exists_uniform_endpoint_displacement_radius {x₀ : M} {U : Set E}
   obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
   exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- The mapped-state chain rule works with a differentiable first derivative,
+including one-sided derivatives at the retained interval endpoints. -/
+theorem mappedState_hasDerivWithinAt_of_differentiable_fderiv
+    (F : E → E) (Γ₀ Γ₁ : E → E →L[ℝ] E →L[ℝ] E)
+    {γ : ℝ → E × E} {J : Set ℝ} {t : ℝ}
+    (hγ : HasDerivWithinAt γ (geodesicFlowField Γ₀ (γ t)) J t)
+    (hF : DifferentiableAt ℝ F (γ t).1)
+    (hD : DifferentiableAt ℝ (fderiv ℝ F) (γ t).1)
+    (htransition : Γ₁ (F (γ t).1) (fderiv ℝ F (γ t).1 (γ t).2)
+        (fderiv ℝ F (γ t).1 (γ t).2) =
+      fderiv ℝ F (γ t).1 (Γ₀ (γ t).1 (γ t).2 (γ t).2) -
+        fderiv ℝ (fderiv ℝ F) (γ t).1 (γ t).2 (γ t).2) :
+    HasDerivWithinAt (FTransitionGeodesicMap.mappedState F γ)
+      (geodesicFlowField Γ₁ (FTransitionGeodesicMap.mappedState F γ t)) J t := by
+  have hp : HasDerivWithinAt (fun s => (γ s).1) (γ t).2 J t := by
+    simpa [geodesicFlowField] using
+      HasFDerivWithinAt.hasDerivWithinAt (HasFDerivWithinAt.fst hγ.hasFDerivWithinAt)
+  have hv : HasDerivWithinAt (fun s => (γ s).2) (-Γ₀ (γ t).1 (γ t).2 (γ t).2) J t := by
+    simpa [geodesicFlowField] using
+      HasFDerivWithinAt.hasDerivWithinAt (HasFDerivWithinAt.snd hγ.hasFDerivWithinAt)
+  have hmp := hF.hasFDerivAt.comp_hasDerivWithinAt t hp
+  have hmd := hD.hasFDerivAt.comp_hasDerivWithinAt t hp
+  have hmv := hmd.clm_apply hv
+  have hvel : HasDerivWithinAt
+      (fun s => fderiv ℝ F (γ s).1 (γ s).2)
+      (-Γ₁ (F (γ t).1) (fderiv ℝ F (γ t).1 (γ t).2)
+        (fderiv ℝ F (γ t).1 (γ t).2)) J t := by
+    convert hmv using 1
+    rw [htransition]
+    simp only [Function.comp_apply, map_neg]
+    abel
+  exact hmp.prodMk hvel
+
 /-- The remaining analytic requirement: the actual derivative-mapped,
 time-normalized source trajectory solves the target geodesic equation with
 the actual successor velocity. Both radii precede every moving parameter. -/
