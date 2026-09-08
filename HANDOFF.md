@@ -2,6 +2,32 @@
 
 Snapshot date: 2026-09-07 (UTC)
 
+
+## 2026-09-07 Metric transport worker obstruction
+
+Branch `worker/metric-transport`, base
+`7e955466b24a22af0873a73f20a3b00d7e8f05b9`, proof commit `c9eb952c`.
+The new `RiemannianMetricInstanceTransport.inner_trivialization_apply`
+theorem computes metric coefficients using the derivative from the fixed
+anchor chart to the moving preferred chart, in both arguments. Direct
+elaboration, the focused 2702-job build, forbidden-token scan, and diff
+check pass. Its axiom closure is `[propext, Classical.choice, Quot.sound]`.
+No existing Lean file or root import was changed.
+
+The frozen transport preserving raw `inner` values is mathematically false.
+Choosing the identity chart at zero and the global doubling chart elsewhere
+on `ClosedSmoothModel 3` preserves the maximal atlas, but an unchanged
+Euclidean bilinear form has coefficients `g` at zero and `4g` elsewhere in
+the fixed identity-chart trivialization. The coordinate formula is verified
+in Lean; the concrete counterexample has not been fully instantiated in
+Lean. The worker stops under the invalid-statement rule and awaits review.
+See `harness/reports/metric-transport_blocked.md` for actual command output.
+
+Exact first action: revise the frozen `transport_inner` target to pull back
+both metric arguments by the derivative from the new preferred chart to
+the old preferred chart. Then prove the tangent-trivialization intertwining
+law for that geometric identification.
+
 ## 2026-09-07 Controlled preferred-chart worker result
 
 Branch `worker/controlled-chart-instance`, recorded base `c7338a642d2cf5bf3044f1ed5ca1a90bb86cf075`,
