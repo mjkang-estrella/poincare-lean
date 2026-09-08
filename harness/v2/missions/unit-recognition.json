@@ -2,7 +2,7 @@
   "schema_version": 1,
   "id": "unit-recognition",
   "base_commit": "b2b96fc28248c2a72cb2e08b4fda946d3b26e6d5",
-  "description": "The Cartan developing-map route to unit-curvature sphere recognition. Everything from the two joint-uniformity obligations H1 and H2 to the universal recognition statement is checked; H1 and H2 remain open. Their fixed-anchor slices are proved from constant curvature; the joint neighborhoods as anchors and alignments move on the compact diagonal are not.",
+  "description": "The Cartan developing-map route to unit-curvature sphere recognition. Everything from the two joint-uniformity obligations H1 and H2 to the universal recognition statement is checked; H1 and H2 remain open. Their fixed-anchor slices are proved from constant curvature; the joint neighborhoods as anchors and alignments move on the compact diagonal are not. STATUS 2026-09-08: H1 and H2 as stated are refuted for arbitrary preferred-chart selections (harness/reports/M5-glob-72_statement_refutation.md); they must be reformulated over a controlled chart family before they can be discharged.",
   "modules": [
     "Poincare.Global.CartanTwoNeighborhoodDevelopment"
   ],

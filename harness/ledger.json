@@ -3854,7 +3854,39 @@
       "objective": "Closure record: the F-transition law and interval naturality were closed curvature-only in commit d8f2e43c (2026-07-17) and never recorded; the live Cartan boundary is H1 (UnitCurvatureSuccessorDataNeighborhood3) and H2 (UnitCurvatureSuccessorEqualityNeighborhood3) in Poincare/Global/CartanTwoNeighborhoodDevelopment.lean.",
       "report": "harness/reports/M5-glob-68_closure.md",
       "module": "Poincare/Global/CartanTwoNeighborhoodDevelopment.lean"
+    },
+    {
+      "id": "M5-glob-69",
+      "tier": "M5",
+      "status": "blocked",
+      "date": "2026-09-07",
+      "objective": "see harness/reports/M5-glob-69_blocked.md (statement-invalid stop; verified obstruction lemmas merged)",
+      "report": "harness/reports/M5-glob-69_blocked.md"
+    },
+    {
+      "id": "M5-glob-70",
+      "tier": "M5",
+      "status": "blocked",
+      "date": "2026-09-07",
+      "objective": "see harness/reports/M5-glob-70_blocked.md (statement-invalid stop; verified obstruction lemmas merged)",
+      "report": "harness/reports/M5-glob-70_blocked.md"
+    },
+    {
+      "id": "M5-glob-71",
+      "tier": "M5",
+      "status": "blocked",
+      "date": "2026-09-07",
+      "objective": "see harness/reports/M5-glob-71_blocked.md (statement-invalid stop; verified obstruction lemmas merged)",
+      "report": "harness/reports/M5-glob-71_blocked.md"
+    },
+    {
+      "id": "M5-glob-72",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-08",
+      "objective": "Consolidated refutation of H1/H2 as stated",
+      "report": "harness/reports/M5-glob-72_statement_refutation.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-07, ledger corrected): the F-transition law is CLOSED (see harness/reports/M5-glob-68_closure.md); do not dispatch the M5-glob-67 resisting shape. The Cartan boundary is exactly H1 = Poincare.CartanTwoNeighborhoodDevelopment.UnitCurvatureSuccessorDataNeighborhood3 and H2 = Poincare.CartanTwoNeighborhoodDevelopment.UnitCurvatureSuccessorEqualityNeighborhood3; Poincare.poincareConjecture_of_hamiltonConvergence_of_two_neighborhoods composes them with Hamilton convergence. Machine-readable obligations: harness/v2/missions/unit-recognition.json. Hamilton-front open inputs are listed in HANDOFF.md (2026-09-07 section)."
+  "current_goal": "RESUME POINT (2026-09-08): H1/H2 as stated are REFUTED for arbitrary preferred charts (harness/reports/M5-glob-72_statement_refutation.md; modules GenericJointRegularityCounterexample, FixedChartSuccessorDataPersistence, SuccessorEqualityRadiusPersistence). Do not attack H1/H2 in their current form. Next: task controlled-chart-instance (controlled ChartedSpace instance with uniform-ball chart sources), then metric/curvature transport across instances, then re-run the Cartan chain over a controlled Family. Hamilton front is registered in harness/v2/missions/hamilton-front.json."
 }

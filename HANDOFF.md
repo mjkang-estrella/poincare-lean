@@ -181,6 +181,37 @@ under motion of the anchors), or H1 through
 as the anchors move, using `UniformTangentAlignmentRigidity.exists_uniform_cartanMap_isLocalIsometry`).
 Freeze the chosen statement with a schema-2.1 contract before dispatch.
 
+## 2026-09-08 H1 and H2 are atlas-dependent as stated
+
+Three codex workers (tasks M5-glob-69, 70, 71; `harness/dispatch_codex.sh`)
+attacked H2, H1, and the joint regularity of the exponential chart in its
+anchor. All three stopped under the contract's invalid-statement rule with
+Lean-checked obstructions, consolidated in
+`harness/reports/M5-glob-72_statement_refutation.md`: the statements are
+formulated for the arbitrary preferred charts `chartAt E x`, and a
+`ChartedSpace` instance may exclude a fixed point from every other chart, so
+`GenericJointRegularity` is false for every metric on the punctured model
+(`Poincare/Global/GenericJointRegularityCounterexample.lean`), H1 forces
+`PreferredChartSourcePersistence` (`FixedChartSuccessorDataPersistence.lean`),
+and H2 forces chart injectivity on common neighborhoods
+(`SuccessorEqualityRadiusPersistence.lean`). All new modules pass the gate with
+the standard axiom footprint and are wired into the root import.
+
+The mission `harness/v2/missions/unit-recognition.json` therefore records
+obligations that cannot be discharged in their current form; its description
+says so. The checked reduction from H1 and H2 remains valid but is now known to
+start from unprovable premises for pathological atlases. The Hamilton-front
+registration (`harness/v2/missions/hamilton-front.json`, worker
+`hamilton-front-mission`, gated and merged) is unaffected.
+
+Exact first action: task `harness/tasks/controlled-chart-instance.md`
+(dispatched to a codex worker at high effort): prove that a compact manifold
+admits a `ChartedSpace` instance with the same smooth structure whose
+preferred-chart sources contain a uniform ball around their anchors, from a
+finite subatlas and a Lebesgue number. The subsequent steps are metric and
+curvature transport across such instances and re-running the Cartan chain over
+a controlled `CartanSourceExponential.Family`.
+
 ## 2026-09-07 Hamilton front registration
 
 Worker branch `worker/hamilton-front-mission`, based on

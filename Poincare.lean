@@ -15,6 +15,8 @@ import Poincare.MaximumPrinciple
 import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
+import Poincare.Global.FixedChartSuccessorDataPersistence
+import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.Statement
 import Poincare.Global.Alignment
 import Poincare.Global.RiemannianContext
@@ -89,6 +91,7 @@ import Poincare.Global.GeodesicReanchor
 import Poincare.Global.GeodesicReanchorLaw
 import Poincare.Global.RoundSphereCurvature
 import Poincare.Global.ExponentialRayLaw
+import Poincare.Global.SuccessorEqualityRadiusPersistence
 import Poincare.Global.VolumeDensity
 import Poincare.Global.CoordinateVolumeDensityVariation
 import Poincare.Global.CoordinateChartFrameDensityVariation
