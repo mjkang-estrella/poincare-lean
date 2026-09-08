@@ -51,6 +51,37 @@ theorem D_self (i : IsManifold.maximalAtlas I ∞ M) (x : M)
 def oldChart (x : M) : IsManifold.maximalAtlas I ∞ M :=
   ⟨inst.chartAt x, IsManifold.chart_mem_maximalAtlas x⟩
 
+local notation "Bilin" => E →L[ℝ] E →L[ℝ] ℝ
+
+/-- Pull back a bilinear form in both arguments by a continuous linear map. -/
+def pull (b : Bilin) (L : E →L[ℝ] E) : Bilin :=
+  (L.precomp ℝ).comp (b.comp L)
+
+/-- Coefficients of a bilinear-form section for an explicitly selected atlas. -/
+def coefficients (charts : ChartedSpace E M)
+    (hs : letI := charts; IsManifold I ∞ M) (s : M → Bilin) (a x : M) : Bilin :=
+  letI := charts
+  letI : IsManifold I ∞ M := hs
+  (trivializationAt Bilin
+    (fun y : M ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ) a ⟨x, s x⟩).2
+
+set_option backward.isDefEq.respectTransparency false in
+/-- The hom-bundle coefficient formula holds for any bilinear section. -/
+theorem coefficients_apply (s : M → Bilin) {a x : M}
+    (hx : x ∈ (inst.chartAt a).source) (v w : E) :
+    coefficients inst inferInstance s a x v w =
+      s x (D (oldChart a) (oldChart x) x v) (D (oldChart a) (oldChart x) x w) := by
+  unfold coefficients
+  rw [hom_trivializationAt_apply]
+  simp only [ContinuousLinearMap.inCoordinates, ContinuousLinearMap.comp_apply]
+  rw [Trivialization.continuousLinearMapAt_apply_of_mem]
+  · rw [hom_trivializationAt_apply]
+    simp only [ContinuousLinearMap.inCoordinates, ContinuousLinearMap.comp_apply]
+    rw [TangentBundle.symmL_trivializationAt_eq_core hx]
+    simp [D, tangentBundleCore_coordChange, oldChart, mfld_simps]
+    rfl
+  · simpa using hx
+
 variable (inst' : ChartedSpace E M)
   (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
 
@@ -100,5 +131,38 @@ theorem J_trivialization (a x : M)
   change D (inst := inst) _ _ x (D (inst := inst) _ _ x v) = D (inst := inst) _ _ x (D (inst := inst) _ _ x v)
   rw [D_comp (inst := inst) _ _ _ x (inst'.mem_chart_source x) (inst.mem_chart_source x) ha,
     D_comp (inst := inst) _ _ _ x (inst'.mem_chart_source x) ha' ha]
+
+/-- The candidate transported metric tensor, with no smoothness assumption. -/
+def transportedInner (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (x : M) : Bilin :=
+  letI := inst
+  pull (g.inner x) (J (inst := inst) inst' h x).toContinuousLinearMap
+
+/-- Hom-bundle coefficients transform by the smooth fixed-anchor transition. -/
+theorem coefficients_transportedInner
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (a x : M)
+    (ha : x ∈ (inst.chartAt a).source) (ha' : x ∈ (inst'.chartAt a).source) :
+    letI := inst
+    coefficients inst'
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+        (transportedInner (inst := inst) inst' h g) a x =
+      pull (coefficients inst inferInstance g.inner a x)
+        (D (inst := inst) (newChart (inst := inst) inst' h a)
+          (oldChart (inst := inst) a) x) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  ext v w
+  have hnew := @coefficients_apply M _ inst' hs
+    (transportedInner (inst := inst) inst' h g) a x ha' v w
+  rw [hnew]
+  change g.inner x (J (inst := inst) inst' h x
+      (D (inst := inst) (newChart (inst := inst) inst' h a)
+        (newChart (inst := inst) inst' h x) x v))
+    (J (inst := inst) inst' h x
+      (D (inst := inst) (newChart (inst := inst) inst' h a)
+        (newChart (inst := inst) inst' h x) x w)) = _
+  rw [J_inverse_trivialization inst' h a x ha ha',
+    J_inverse_trivialization inst' h a x ha ha']
+  exact (coefficients_apply (inst := inst) g.inner ha _ _).symm
 
 end Poincare.RiemannianMetricInstanceTransportGeometric
