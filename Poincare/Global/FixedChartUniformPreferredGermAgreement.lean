@@ -7,8 +7,8 @@ import Poincare.Global.CartanFixedChartGenericInverseEndpointODEPrimitive
 # Fixed-anchor frame and inverse comparison for a retained flow
 
 The preferred-frame derivative is invertible on every retained chart overlap.
-Endpoint agreement transfers to inverse normal coordinates on their actual
-open domains. The remaining interval comparison is stated explicitly below.
+Interval ODE uniqueness identifies normalized endpoints with the preferred
+exponential. The inverse comparison retains both open source domains.
 -/
 
 noncomputable section
@@ -280,5 +280,17 @@ theorem normalized_endpoint_eventuallyEq_expAt
       ((extChartAt I x).left_inv hvchart).symm
     _ = (extChartAt I x).symm (η C.T).1 := by rw [hcoord, heq ht]
     _ = GeodesicTransport.expAt g x (anchorFrame x₀ x v) := hexp.symm
+
+/-- The retained inverse normal vector, expressed in the preferred anchor
+frame, agrees with the generic inverse normal vector near that anchor. -/
+theorem normal_eventuallyEq_generic_in_anchor_frame
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (x : M) (hx : x ∈ C.anchors) :
+    (fun z : M => anchorFrame x₀ x (C.normal x z)) =ᶠ[𝓝 x]
+      (fun z : M => (CartanSourceExponential.genericFamily g).normal x z) := by
+  apply normal_eventuallyEq_generic_in_anchor_frame_of_endpoint_agreement C x hx
+  filter_upwards [normalized_endpoint_eventuallyEq_expAt C hU x hx] with v hv
+  rw [C.endpoint_apply]
+  exact hv
 
 end Poincare.FixedChartUniformPreferredGermAgreement
