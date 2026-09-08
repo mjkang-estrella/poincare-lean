@@ -368,5 +368,22 @@ theorem successor_eq : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g)
   exact successor_eq_of_eqOn_open Q Q s s z d e univ isOpen_univ (mem_univ z)
     (fun _ _ => rfl)
 
+omit [T2Space M] in
+/-- The generic supplied endpoint cancels its extra host chart locally. -/
+private theorem generic_sourceExp_comparison (g : ClosedSmoothRiemannianMetric 3 M)
+    (x : M) (v : E)
+    (hv : v ∈ (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x).source)
+    (hc : GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x v ∈
+      (chartAt E x).target) :
+    v ∈ (sourceExp (generic g) x).source ∧
+      (sourceExp (generic g) x : E → E) =ᶠ[𝓝 v]
+        (GeodesicTransport.expAtChartOpenPartialHomeomorph (g := g) x : E → E) := by
+  constructor
+  · exact ⟨⟨hv, hc⟩, (chartAt E x).map_target hc⟩
+  · have htend := ((GeodesicTransport.expAtChartOpenPartialHomeomorph
+      (g := g) x).continuousAt hv).tendsto
+    filter_upwards [htend ((chartAt E x).open_target.mem_nhds hc)] with a ha
+    exact (chartAt E x).right_inv ha
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
