@@ -69,5 +69,16 @@ theorem universal_unitRecognition :
   intro N _ _ _ _ _ _ _ _
   exact unitRecognition (M := N)
 
+/-- Hamilton convergence is the remaining premise of this Poincare implication. -/
+theorem poincare_of_hamiltonConvergence :
+  (∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonConvergencePinchedLimit3 N) → PoincareConjecture.{u} := by
+  intro hHamilton
+  exact poincareConjecture_of_hamiltonConvergence_of_unitRecognition
+    hHamilton universal_unitRecognition
+
 end CartanSuppliedUnitRecognition
 end Poincare
