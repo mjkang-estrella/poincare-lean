@@ -133,4 +133,27 @@ theorem exists_patch_operatorAugmentedFlow
       (fun yt hyt => ⟨hyt.1.1, hyt.2⟩)
     exact hcα.prodMk (hcΦ.clm_comp continuous_fst.snd.continuousOn)
 
+/-- Full-time C1 dependence of the operator flow, restricted to initial
+operator identity, proves the unchanged augmented regularity assertion. -/
+theorem augmentedSystemRegularity
+    {x₀ : M} {U : Set E} (C : FixedChartUniformSourceNormal.Patch g x₀ U) :
+    FixedChartPatchSecondVariation.AugmentedSystemRegularity C := by
+  obtain ⟨Φ, hflow, hc⟩ := exists_patch_operatorAugmentedFlow C
+  let J := ContinuousLinearMap.id ℝ (E × E)
+  let S := ball (extChartAt I x₀ x₀, (0 : E)) (C.r : ℝ) ×ˢ
+    (Set.univ : Set ((E × E) →L[ℝ] (E × E)))
+  have hS : IsOpen S := isOpen_ball.prod isOpen_univ
+  have hC1 := flow_contDiffOn_one_full_interval
+    (chart_operatorAugmentedField_contDiff_two g x₀) hS C.T_pos hc hflow
+  refine ⟨Φ, ?_, ?_⟩
+  · intro q hq
+    simpa [J] using hflow (q, J) ⟨hq, mem_univ _⟩
+  · intro q hq
+    have ht : C.T ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], le_rfl⟩
+    have hqJ : (q, J) ∈ S := ⟨hq, mem_univ _⟩
+    have h := (hC1 C.T ht).contDiffAt (hS.mem_nhds hqJ)
+    apply ContDiffAt.contDiffWithinAt
+    simpa [J, Function.comp_def] using
+      h.comp q (contDiffAt_id.prodMk (contDiffAt_const (c := J)))
+
 end Poincare.FixedChartAugmentedSystemRegularity
