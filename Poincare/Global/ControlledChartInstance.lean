@@ -140,6 +140,18 @@ theorem chartedSpaceOfCover_ball_subset (s : Finset M) (δ : ℝ) (hδ : 0 < δ)
   Classical.choose_spec (hballs x)
 
 omit [CompactSpace M] in
+/-- Scalar smoothness is unchanged for the actual finite-cover construction. -/
+theorem chartedSpaceOfCover_scalarContMDiff_iff [IsManifold I ∞ M]
+    (s : Finset M) (δ : ℝ) (hδ : 0 < δ)
+    (hballs : ∀ x : M, ∃ i : s, ball x δ ⊆ (chartAt E (i : M)).source)
+    {n : ℕ∞ω} (hn : n ≤ ∞) (f : M → ℝ) :
+    scalarContMDiff inst n f ↔
+      scalarContMDiff (chartedSpaceOfCover s δ hδ hballs) n f := by
+  apply scalarContMDiff_iff_of_atlas_subset (inst := inst) _ _ hn f
+  rintro e ⟨i, _, rfl⟩
+  exact IsManifold.chart_mem_maximalAtlas i
+
+omit [CompactSpace M] in
 /-- Symmetry of distance turns uniform source balls into persistence of
 membership for a fixed endpoint while the chart anchor varies. -/
 theorem source_slice_mem_nhds_of_ball_subset {δ : ℝ} (hδ : 0 < δ)
