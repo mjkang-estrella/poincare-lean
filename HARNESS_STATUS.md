@@ -240,3 +240,14 @@ Lean-verified corrections to the entries above (evidence in
   `UnitCurvatureSuccessorEqualityNeighborhood3`), with the checked reduction
   `poincareConjecture_of_hamiltonConvergence_of_two_neighborhoods`; mission
   file `harness/v2/missions/unit-recognition.json`.
+
+## Codex worker dispatch (2026-09-07)
+
+Three frontier tasks were dispatched to codex workers (model from
+`~/.codex/config.toml`, reasoning effort xhigh) with
+`harness/dispatch_codex.sh`, which reuses the non-destructive worktree recipe
+(`/private/tmp/poincare-workers/<task>`, branch `worker/<task>`, cloned
+`.lake`): `M5-glob-69` (H2 radius persistence), `M5-glob-70` (H1 fixed-chart
+data persistence), `M5-glob-71` (joint regularity of the exponential chart in
+its anchor). Acceptance is `harness/gate.sh` plus the orchestrator's review;
+results are recorded in `harness/reports/` when they land.

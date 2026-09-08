@@ -1,46 +1,22 @@
 #!/bin/bash
-# Acceptance gate for worker output. The ONLY judge of task completion.
-# Usage: gate.sh <worktree_dir> <module_name> [target_decl ...]
-# Exit 0 = accepted. Any nonzero = rejected.
+# Acceptance gate for worker output (the only judge). Usage: gate.sh <worktree> <module> [decl ...]; exit 0 = accepted.
 set -uo pipefail
 WT="$1"; MODULE="$2"; shift 2
-TARGETS=("$@")
 cd "$WT" || exit 2
-
-echo "=== GATE: diff hygiene ==="
-DIFF=$(git diff HEAD)
-if echo "$DIFF" | grep -E '^\+.*\bsorry\b' | grep -v '^\+++'; then
-  echo "REJECT: added sorry"; exit 3
+FILE="$(echo "$MODULE" | tr . /).lean"
+echo "=== GATE: forbidden tokens in $FILE ==="
+if grep -nE '\b(sorry|admit)\b|^\s*axiom\b|native_decide|\bopaque\b|\bpostulate\b' "$FILE"; then echo "REJECT: forbidden token"; exit 3; fi
+echo "=== GATE: git diff --check ==="; git diff --check HEAD -- . || { echo "REJECT: whitespace"; exit 3; }
+echo "=== GATE: lake build $MODULE ==="
+OUT=$(lake build "$MODULE" 2>&1); RC=$?; echo "$OUT" | tail -25
+if [ $RC -ne 0 ] || echo "$OUT" | grep -qE '^error:|error: '; then echo "REJECT: build failed"; exit 4; fi
+if echo "$OUT" | grep -q "$FILE.*warning: declaration uses 'sorry'"; then echo "REJECT: sorry warning"; exit 4; fi
+if [ $# -gt 0 ]; then
+  echo "=== GATE: #print axioms ==="
+  AX=$(mktemp /tmp/gate_axioms_XXXX.lean)
+  { echo "import $MODULE"; for t in "$@"; do echo "#print axioms $t"; done; } > "$AX"
+  AXOUT=$(LEAN_NUM_THREADS=1 lake env lean "$AX" 2>&1); echo "$AXOUT"; rm -f "$AX"
+  if echo "$AXOUT" | grep -qE 'sorryAx|error'; then echo "REJECT: axiom audit"; exit 5; fi
+  if echo "$AXOUT" | grep -oE 'depends on axioms: \[[^]]*\]' | sed -E 's/.*\[|\]//g' | tr ',' '\n' | tr -d " '" | grep -v '^$' | grep -vxE "propext|Classical\.choice|Quot\.sound" | grep -q .; then echo "REJECT: non-core axiom"; exit 5; fi
 fi
-if echo "$DIFF" | grep -E '^\+.*\baxiom\b' | grep -v '^\+++'; then
-  echo "REJECT: added axiom"; exit 3
-fi
-
-echo "=== GATE: build $MODULE ==="
-if ! lake build "$MODULE" 2>&1 | tail -20; then
-  echo "REJECT: build failed"; exit 4
-fi
-
-if [ ${#TARGETS[@]} -gt 0 ]; then
-  echo "=== GATE: axiom audit on targets ==="
-  AX_FILE=$(mktemp /tmp/gate_axioms_XXXX.lean)
-  {
-    echo "import $MODULE"
-    for t in "${TARGETS[@]}"; do echo "#print axioms $t"; done
-  } > "$AX_FILE"
-  AX_OUT=$(lake env lean "$AX_FILE" 2>&1)
-  echo "$AX_OUT"
-  rm -f "$AX_FILE"
-  if echo "$AX_OUT" | grep -qE 'sorryAx|error'; then
-    echo "REJECT: axiom audit failed"; exit 5
-  fi
-  # every listed axiom must be a Mathlib-core one
-  if echo "$AX_OUT" | grep -oE 'depends on axioms: \[[^]]*\]' \
-       | sed -E 's/.*\[|\]//g' | tr ',' '\n' | tr -d " '" | grep -v '^$' \
-       | grep -vxE "propext|Classical\.choice|Quot\.sound" | grep -q .; then
-    echo "REJECT: non-core axiom in closure"; exit 5
-  fi
-fi
-
 echo "=== GATE: PASS ==="
-exit 0
