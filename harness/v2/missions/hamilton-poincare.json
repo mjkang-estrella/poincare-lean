@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "id": "hamilton-poincare",
+  "base_commit": "20a3c2d7a5711ecb655a7c925f8c7df0ab697b66",
+  "description": "The frozen topological Poincare statement via Ricci flow and the supplied Cartan route. Unit-curvature sphere recognition is checked (unit-recognition mission, closed 2026-09-08). Two obligations remain: universal Hamilton convergence (the hamilton-front mission endpoint) and existence-shaped smoothability of compact simply connected topological 3-manifolds (Moise-type). The checked reduction Poincare.poincareConjectureStatement_of_exists_smoothability_of_universalHamiltonConvergence consumes exactly these two premises.",
+  "modules": [
+    "Poincare.Global.UniversalUnitRecognition",
+    "Poincare.Global.HamiltonPoincareReduction"
+  ],
+  "endpoint": {
+    "name": "Poincare.poincare_conjecture",
+    "type_symbol": "Poincare.PoincareConjectureStatement"
+  },
+  "references": [
+    {
+      "url": "harness/v2/missions/hamilton-front.json",
+      "role": "Mission owning the Hamilton convergence obligation and its five analytic inputs."
+    },
+    {
+      "url": "harness/v2/missions/unit-recognition.json",
+      "role": "Closed mission for the unit recognition node."
+    },
+    {
+      "url": "Poincare/Global/TopologicalCompletionBridge.lean",
+      "role": "Smoothability interface and the bridge from the smooth PoincareConjecture to the frozen topological statement."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "hamilton-convergence",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_convergence",
+      "description": "Universal Hamilton pinched-limit endpoint: every closed simply connected smooth 3-manifold satisfies HamiltonConvergencePinchedLimit3. Open; owned by the hamilton-front mission.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
+      "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
+    },
+    {
+      "id": "exists-smoothability",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_exists_smoothability",
+      "description": "Existence-shaped smoothability: every compact Hausdorff simply connected topological 3-manifold admits a charted-space instance that is a smooth manifold (Moise-type). Open; this exact declaration is absent.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.ExistsSmoothabilitySmoothManifoldStatement",
+      "expected_statement_sha256": "963c22dbccd99d1d9e670a9beb93a25d7b014b809dddc58d104840cdb7022f62"
+    },
+    {
+      "id": "unit-recognition",
+      "kind": "checked",
+      "declaration": "Poincare.universal_unit_constant_curvature_sphere_recognition",
+      "description": "Checked unconditionally: universal unit-curvature sphere recognition by the supplied Cartan development route.",
+      "depends_on": []
+    },
+    {
+      "id": "hamilton-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.poincareConjectureStatement_of_exists_smoothability_of_universalHamiltonConvergence",
+      "description": "Checked conditional reduction: smoothability selects a smooth atlas, Hamilton convergence yields a unit-curvature metric, unit recognition gives the sphere homeomorphism.",
+      "depends_on": [
+        "hamilton-convergence",
+        "exists-smoothability",
+        "unit-recognition"
+      ]
+    },
+    {
+      "id": "poincare",
+      "kind": "obligation",
+      "declaration": "Poincare.poincare_conjecture",
+      "description": "Every compact Hausdorff simply connected topological three-manifold is homeomorphic to the standard three-sphere. This exact declaration remains intentionally absent.",
+      "depends_on": [
+        "hamilton-reduction"
+      ],
+      "expected_type_symbol": "Poincare.PoincareConjectureStatement",
+      "expected_statement_sha256": "883609fc4e756e69b7ed5befba349e33c90b283e404565aa69a1ee848b0c4ed9"
+    }
+  ]
+}

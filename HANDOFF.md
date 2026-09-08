@@ -48,6 +48,15 @@ Remaining boundary to the reserved theorem `Poincare.poincare_conjecture`
 The alternative `grounded-topology` route (surgery sources and covering
 construction) is unchanged and still has two open obligations.
 
+The exact remaining boundary is now machine-checked as the mission
+`harness/v2/missions/hamilton-poincare.json` (endpoint
+`Poincare.poincare_conjecture`): obligations `hamilton-convergence`
+(`Poincare.universal_hamilton_convergence`) and `exists-smoothability`
+(`Poincare.universal_exists_smoothability`, pinned type
+`ExistsSmoothabilitySmoothManifoldStatement`), checked nodes
+`unit-recognition` (unconditional) and `hamilton-reduction`. `graph` exits
+0 with three open obligations; `--require-closed` exits 2.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
