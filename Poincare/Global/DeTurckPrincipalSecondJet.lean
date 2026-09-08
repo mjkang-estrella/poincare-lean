@@ -84,4 +84,65 @@ theorem evolution_eq_coordinate_expression
   simp only [LinearMap.coe_toContinuousLinearMap', add_assoc]
 
 end Manifold
+/-- Formal second-derivative terms of the coordinate Ricci trace, before
+simplification by the symmetries of the metric second derivative. -/
+def ricciSecondJet (A : Matrix (Fin 3) (Fin 3) ℝ)
+    (H : E → E → E → E → ℝ) (v w : E) : ℝ :=
+  (1 / 2 : ℝ) * ∑ i : Fin 3, ∑ j : Fin 3,
+    A i j * (H (basis3 i) v w (basis3 j) +
+      H (basis3 i) w v (basis3 j) - H (basis3 i) (basis3 j) v w -
+      H v (basis3 i) w (basis3 j) - H v w (basis3 i) (basis3 j) +
+      H v (basis3 j) (basis3 i) w)
+
+/-- Formal second-derivative terms in the two Lie derivative slots of the
+contracted Christoffel field. -/
+def lieSecondJet (A : Matrix (Fin 3) (Fin 3) ℝ)
+    (H : E → E → E → E → ℝ) (v w : E) : ℝ :=
+  (1 / 2 : ℝ) * ∑ i : Fin 3, ∑ j : Fin 3,
+    A i j * (H v (basis3 i) (basis3 j) w +
+      H v (basis3 j) (basis3 i) w - H v w (basis3 i) (basis3 j) +
+      H w (basis3 i) (basis3 j) v + H w (basis3 j) (basis3 i) v -
+      H w v (basis3 i) (basis3 j))
+
+/-- Cancellation of the formal second-order terms. Their identification
+with the geometric derivatives in `evolution_eq_coordinate_expression`
+is a separate obligation. -/
+theorem secondJet_cancellation (A : Matrix (Fin 3) (Fin 3) ℝ)
+    (H : E → E → E → E → ℝ)
+    (hA : ∀ i j, A i j = A j i)
+    (hD : ∀ a b v w, H a b v w = H b a v w)
+    (hS : ∀ a b v w, H a b v w = H a b w v) (v w : E) :
+    -2 * ricciSecondJet A H v w + lieSecondJet A H v w =
+      ∑ i : Fin 3, ∑ j : Fin 3, A i j * H (basis3 i) (basis3 j) v w := by
+  have hswap (p q : E) :
+      (∑ i : Fin 3, ∑ j : Fin 3, A i j * H p (basis3 i) (basis3 j) q) =
+      ∑ i : Fin 3, ∑ j : Fin 3, A i j * H p (basis3 j) (basis3 i) q := by
+    rw [Finset.sum_comm]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    rw [hA j i]
+  calc
+    _ = ∑ i : Fin 3, ∑ j : Fin 3, A i j *
+        (H (basis3 i) (basis3 j) v w + (1 / 2 : ℝ) *
+          (H v (basis3 i) (basis3 j) w - H v (basis3 j) (basis3 i) w -
+           H w (basis3 i) (basis3 j) v + H w (basis3 j) (basis3 i) v)) := by
+      simp only [ricciSecondJet, lieSecondJet, Finset.mul_sum,
+        ← Finset.sum_add_distrib]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [hD (basis3 i) v, hD (basis3 i) w, hD w v,
+        hS v (basis3 i) w, hS w (basis3 i) v]
+      ring
+    _ = _ := by
+      simp only [mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib]
+      simp_rw [show ∀ i j (r : ℝ), A i j * ((1 / 2 : ℝ) * r) =
+        (1 / 2 : ℝ) * (A i j * r) by intros; ring]
+      simp only [← Finset.mul_sum]
+      rw [hswap v w, hswap w v]
+      ring
+
 end Poincare.DeTurckPrincipalSecondJet
