@@ -353,4 +353,9 @@ theorem hamiltonReactionCore3_of_jet
     continuous_closedMetricFiniteVolumeMeasure_of_thirdJetProfiles_continuous K metric hjet,
     hcurv.1, hcurv.2, hbound⟩
 
+/-- The jet-form reaction core reaches the Hamilton pinched-limit endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Jet
+    (h : HamiltonReactionCore3Jet.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3 (hamiltonReactionCore3_of_jet h)
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
