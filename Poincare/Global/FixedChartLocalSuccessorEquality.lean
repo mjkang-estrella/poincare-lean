@@ -114,5 +114,44 @@ theorem exists_uniform_domain_radius_into_open
   obtain ⟨htsrc, htZ⟩ := htarget p hp _ hnorm
   exact ⟨hzW, htZ, hzN, mem_univ _, htsrc⟩
 
+/-- A full ball lies in both actual sources, with both radii chosen before
+all moving anchors, alignments, and differential witnesses. -/
+theorem exists_uniform_common_source_radii
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3)
+    (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M)
+        (d : Data (patch C D) ⟨x, p, L⟩ z), dist z x < η →
+        ball z ε ⊆ (germ (patch C D) ⟨x, p, L⟩).source ∩
+          (germ (patch C D) d.successor).source := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨K', hK', hKK', hK'C⟩ := exists_compact_between hK C.isOpen_anchors hKC
+  obtain ⟨H', hH', hHH', hH'D⟩ := exists_compact_between hH D.isOpen_anchors hHD
+  obtain ⟨ηr, hηr, hretain⟩ := exists_uniform_domain_radius_into_open C D K H hK hKC hH hHD
+    (interior K') (interior H') isOpen_interior hKK' isOpen_interior hHH'
+  obtain ⟨ηo, hηo, hold⟩ :=
+    FixedChartLocalSuccessorExistence.exists_uniform_domain_radius C D K H hK hKC hH hHD
+  obtain ⟨ηn, hηn, hnew⟩ :=
+    FixedChartLocalSuccessorExistence.exists_uniform_domain_radius C D K' H' hK' hK'C hH' hH'D
+  refine ⟨min ηr (ηo / 2), lt_min hηr (half_pos hηo),
+    min (ηo / 2) ηn, lt_min (half_pos hηo) hηn, ?_⟩
+  intro x hx p hp L z d hz y hy
+  obtain ⟨hzK', hpH', _⟩ := hretain x hx p hp L z (hz.trans_le (min_le_left _ _))
+  have hyz : dist y z < min (ηo / 2) ηn := hy
+  have hyx : dist y x < ηo := by
+    have hz' := hz.trans_le (min_le_right ηr (ηo / 2))
+    have hy' := hyz.trans_le (min_le_left (ηo / 2) ηn)
+    calc
+      dist y x ≤ dist y z + dist z x := dist_triangle _ _ _
+      _ < ηo := by linarith
+  refine ⟨(hold x hx p hp L y hyx).2.2, ?_⟩
+  exact (hnew z (interior_subset hzK') (map (patch C D) ⟨x, p, L⟩ z)
+    (interior_subset hpH') d.alignment y (hyz.trans_le (min_le_right _ _))).2.2
+
 end FixedChartLocalSuccessorEquality
 end Poincare
