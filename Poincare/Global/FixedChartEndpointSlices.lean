@@ -24,4 +24,45 @@ theorem symm_fst {q : E × E} (hq : q ∈ P.target) :
   rw [P.right_inv hq] at h
   exact h.symm
 
+/-- Restriction to an anchor, retaining the exact vertical source and target. -/
+def slice (z : E) : OpenPartialHomeomorph E E where
+  toFun v := (P (z, v)).2
+  invFun y := (P.symm (z, y)).2
+  source := {v | (z, v) ∈ P.source}
+  target := {y | (z, y) ∈ P.target}
+  map_source' := by
+    intro v hv
+    have heq : (z, (P (z, v)).2) = P (z, v) :=
+      Prod.ext (hfst (z, v) hv).symm rfl
+    change (z, (P (z, v)).2) ∈ P.target
+    rw [heq]
+    exact P.map_source hv
+  map_target' := by
+    intro y hy
+    have heq : (z, (P.symm (z, y)).2) = P.symm (z, y) :=
+      Prod.ext (symm_fst P hfst hy).symm rfl
+    change (z, (P.symm (z, y)).2) ∈ P.source
+    rw [heq]
+    exact P.map_target hy
+  left_inv' := by
+    intro v hv
+    have heq : (z, (P (z, v)).2) = P (z, v) :=
+      Prod.ext (hfst (z, v) hv).symm rfl
+    change (P.symm (z, (P (z, v)).2)).2 = v
+    rw [heq, P.left_inv hv]
+  right_inv' := by
+    intro y hy
+    have heq : (z, (P.symm (z, y)).2) = P.symm (z, y) :=
+      Prod.ext (symm_fst P hfst hy).symm rfl
+    change (P (z, (P.symm (z, y)).2)).2 = y
+    rw [heq, P.right_inv hy]
+  open_source := P.open_source.preimage (continuous_const.prodMk continuous_id)
+  open_target := P.open_target.preimage (continuous_const.prodMk continuous_id)
+  continuousOn_toFun :=
+    (P.continuousOn.comp (continuous_const.prodMk continuous_id).continuousOn
+      (fun _ hv => hv)).snd
+  continuousOn_invFun :=
+    (P.continuousOn_symm.comp (continuous_const.prodMk continuous_id).continuousOn
+      (fun _ hy => hy)).snd
+
 end Poincare.FixedChartEndpointSlices
