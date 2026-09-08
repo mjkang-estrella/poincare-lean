@@ -846,8 +846,11 @@ equal schedules). Task 14 (`supplied-whole-cell-realization`) landed
 (`CartanSuppliedWholeCellRealization.lean`: strict whole-cell subdivisions
 of any path at any positive radius, supplied sticky realizations at the
 system mesh, endpoint anchoring, and a rooted realization of the common
-skeleton). Task 15 (`supplied-subdivision-transport`) is dispatched; 16 to
-19 follow serially.
+skeleton). Task 15 (`supplied-subdivision-transport`) landed
+(`CartanSuppliedSubdivisionTransport.lean`: supplied states transport across
+arbitrary monotone refinement factors and repeated nodes, so every two
+realizations of one path have equal endpoint states). Task 16
+(`supplied-homotopy-endpoints`) is dispatched; 17 to 19 follow serially.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.

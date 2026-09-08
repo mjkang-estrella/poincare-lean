@@ -23,6 +23,7 @@ import Poincare.Global.CartanSuppliedPatchPolicy
 import Poincare.Global.CartanSuppliedReachableChain
 import Poincare.Global.CartanSuppliedSourceGermTransfer
 import Poincare.Global.CartanSuppliedSourceMap
+import Poincare.Global.CartanSuppliedSubdivisionTransport
 import Poincare.Global.CartanSuppliedUniformPatchSwitch
 import Poincare.Global.CartanSuppliedWholeCellRealization
 import Poincare.Global.ConnectionInstanceNaturality
