@@ -63,5 +63,17 @@ theorem germ_apply (S : CartanSourceExponential.Family g)
       fun z => (chartAt E p).symm (F.chart p (K (S.normal x z))) :=
   rfl
 
+/-- Generic source and target families recover the existing Cartan forward map. -/
+theorem generic_map_eq (g : ClosedSmoothRiemannianMetric 3 M)
+    (x : M) (p : RoundSphere3) (L : CartanMap.TangentAlignment g x p) :
+    (germ (CartanSourceExponential.genericFamily g)
+      CartanTargetExponential.genericFamily x p
+      L.toContinuousLinearEquiv : M → RoundSphere3) =
+        CartanMap.cartanMap g x p L := by
+  rw [germ_apply]
+  funext z
+  rw [CartanSourceExponential.genericFamily_apply, CartanMap.cartanMap_apply]
+  rfl
+
 end CartanSuppliedSourceMap
 end Poincare
