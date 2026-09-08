@@ -129,6 +129,20 @@ trace, logarithmic density derivative, exponential density comparison), so
 `HamiltonReactionCore3'` drops it; pinned as `hamilton-reaction-core-reduced`
 in `hamilton-front.json` with its checked endpoint reduction.
 
+`hamilton-family-volume-measure-continuity` landed
+(`Global/HamiltonFamilyVolumeMeasureContinuity.lean`, gate PASS, 14
+declarations): weak continuity of the finite volume measure along a metric
+family with jointly continuous scalar third-jet profiles, through the
+cutoff-one chart cover, parametrized Gram density continuity, and the
+constant-measure moving-integral theorem; with the landed curvature clauses
+this gives the jet-form core. The orchestrator combined both clause removals
+into `Global/HamiltonReactionCoreFinal.lean`: `HamiltonReactionCore3Final`
+(forward-time normalized flow, joint C³ entries, compact realization with
+continuous jet profiles, positive mean floor, uniform reaction domination)
+reconstructs the full reaction record and yields the endpoint; pinned as
+`hamilton-reaction-core-final` in `hamilton-front.json`. Everything that
+remains in that core is Ricci-flow analysis proper.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

@@ -9,7 +9,8 @@
     "Poincare.Global.HamiltonFiniteEnergyFlowInterface",
     "Poincare.Global.HamiltonEndpointEquivalences",
     "Poincare.Global.HamiltonReactionCoreReduction",
-    "Poincare.Global.HamiltonReactionCoreReduced"
+    "Poincare.Global.HamiltonReactionCoreReduced",
+    "Poincare.Global.HamiltonReactionCoreFinal"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -31,6 +32,10 @@
     {
       "url": "harness/reports/hamilton-chart-density-local-domination_done.md",
       "role": "The local integrable domination clause of the reaction core is derived from joint C3 metric entries; the reduced core drops it."
+    },
+    {
+      "url": "harness/reports/hamilton-family-volume-measure-continuity_done.md",
+      "role": "Weak volume-measure continuity along a jet-continuous family; with the curvature clauses this replaces the three compact-family continuity clauses by jet-profile continuity."
     }
   ],
   "nodes": [
@@ -50,6 +55,24 @@
       "description": "Checked conditional reduction through the compact-tensor formal-profile constructor, finite traceless energy, finite absolute dissipation, positive-Einstein existence, and the Hamilton pinched-limit bridge.",
       "depends_on": [
         "hamilton-front-inputs"
+      ]
+    },
+    {
+      "id": "hamilton-reaction-core-final",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core_final",
+      "description": "Universal existence of the combined reduced reaction core: forward-time normalized Ricci flow with joint C3 metric entries, compact realization with jointly continuous scalar third-jet profiles, positive mean-scalar floor, uniform reaction domination. Both derived clause groups (local density domination; volume-measure and curvature continuity) are removed. Open: this is the analytic Ricci-flow content.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonReactionCoreFinalStatement",
+      "expected_statement_sha256": "b2414e43257299c1042dc7b96e5b7feb30a009f00fbad88a0f534e760df41c59"
+    },
+    {
+      "id": "reaction-core-final-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonReactionCoreFinal",
+      "description": "Checked: the combined reduced core reconstructs the reaction record and yields the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core-final"
       ]
     },
     {
@@ -141,7 +164,8 @@
         "reaction-reduction",
         "finite-energy-reduction",
         "reaction-core-reduction",
-        "reaction-core-reduced-reduction"
+        "reaction-core-reduced-reduction",
+        "reaction-core-final-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
