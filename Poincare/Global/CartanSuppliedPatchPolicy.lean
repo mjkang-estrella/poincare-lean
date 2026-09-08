@@ -52,5 +52,27 @@ theorem select_valid : ∀ (B : QuantitativeCover g) (a : B.Label)
   · exact ⟨Classical.choose_spec (B.source.covers s.anchor),
       Classical.choose_spec (B.target.covers s.target)⟩
 
+/-- H1 applies to the actual alignment at every node-anchored state. -/
+theorem stepAvailable : ∀ (S : System g) (a : ℕ → S.cover.Label) (nodes : ℕ → M),
+    (letI : MetricSpace M := g.toMetricSpace
+     ∀ n, dist (nodes (n + 1)) (nodes n) < S.mesh) →
+    StepAvailable (policy S.cover a) nodes := by
+  intro S a nodes
+  letI : MetricSpace M := g.toMetricSpace
+  intro hmesh n s hs
+  let label := select S.cover (a n) s
+  have hv := select_valid S.cover (a n) s
+  have hx := interior_subset (S.cover.source.core_subset label.1 hv.1)
+  have hp := interior_subset (S.cover.target.core_subset label.2 hv.2)
+  have hstep : S.mesh ≤ S.cover.step := by
+    have := (four_mul_mesh_le S).1
+    have := mesh_pos S
+    linarith
+  have hz : dist (nodes (n + 1)) s.anchor < S.cover.step := by
+    rw [hs]
+    exact (hmesh n).trans_le hstep
+  exact (S.cover.h1 label.1 label.2 s.anchor hx s.target hp
+    s.alignment (nodes (n + 1)) hz).2.2.2
+
 end CartanSuppliedPatchPolicy
 end Poincare
