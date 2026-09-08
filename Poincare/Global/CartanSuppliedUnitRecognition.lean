@@ -47,5 +47,21 @@ theorem controlled_unitRecognition : ∀ (d : MetricSpace M),
   exact RoundSphereSimpleConnected.unitConstantCurvatureSphereRecognition3_of_globalLocalDevelopment
     (controlled_globalLocalDevelopment d hd hc)
 
+/-- Recognition on a compatible controlled atlas transfers to the original atlas. -/
+theorem unitRecognition : UnitConstantCurvatureSphereRecognition3 M := by
+  intro g hcurv
+  let d : MetricSpace M := g.toMetricSpace
+  have hd : d.toUniformSpace.toTopologicalSpace =
+      (inferInstance : TopologicalSpace M) := rfl
+  obtain ⟨charts, δ, hδ, hball, hfinite, _hsub, hs, hrecognition⟩ :=
+    ConnectionInstanceNaturality.exists_controlled_recognition_reduction' (inst := inst) d hd
+  letI : ChartedSpace E M := charts
+  letI : IsManifold I ∞ M := hs
+  have hc : Controlled charts (d.replaceTopology hd.symm) :=
+    ⟨hfinite, δ, hδ, hball⟩
+  have hunit : UnitConstantCurvatureSphereRecognition3 M :=
+    controlled_unitRecognition (d.replaceTopology hd.symm) rfl hc
+  exact hrecognition hunit g hcurv
+
 end CartanSuppliedUnitRecognition
 end Poincare
