@@ -96,6 +96,15 @@ theorem inverseEntries_eq_coordinates (G : Bilin) (hG : G.IsInvertible) :
         Module.Basis.repr_self_apply, Matrix.one_apply]
       simp only [eq_comm]
 
+/-- Symmetry of the inverse metric pairing follows from symmetry of the metric. -/
+theorem inverse_pairing_symm (G : Bilin) (hG : G.IsInvertible)
+    (hs : ∀ u v, G u v = G v u) (p q : E →L[ℝ] ℝ) :
+    p (G.inverse q) = q (G.inverse p) := by
+  have hp : G (G.inverse p) = p := (hG.inverse_apply_eq.mp rfl).symm
+  have hq : G (G.inverse q) = q := (hG.inverse_apply_eq.mp rfl).symm
+  exact (congrArg (fun f : E →L[ℝ] ℝ => f (G.inverse q)) hp).symm.trans
+    ((hs _ _).trans (congrArg (fun f : E →L[ℝ] ℝ => f (G.inverse p)) hq))
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
