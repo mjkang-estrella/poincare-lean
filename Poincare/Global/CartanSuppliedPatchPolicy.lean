@@ -99,5 +99,50 @@ theorem exists_sticky_chain : ∀ (S : System g) (nodes : ℕ → M)
     successor_eq := fun _ => rfl }
   exact ⟨a, c, rfl, fun _ => rfl⟩
 
+/-- Switch agreement around each next node identifies full states across schedules. -/
+theorem chains_eq : ∀ (S : System g) (a b : ℕ → S.cover.Label)
+    (nodes : ℕ → M) (initial : CartanChain.ChainState g),
+    initial.anchor = nodes 0 →
+    (letI : MetricSpace M := g.toMetricSpace
+     ∀ n, dist (nodes (n + 1)) (nodes n) < S.mesh) →
+    ∀ (c : ReachableChain (policy S.cover a) nodes initial)
+      (d : ReachableChain (policy S.cover b) nodes initial), ∀ n, c.state n = d.state n := by
+  intro S a b nodes initial hinitial
+  letI : MetricSpace M := g.toMetricSpace
+  intro hmesh c d n
+  induction n with
+  | zero => exact c.initial_eq.trans d.initial_eq.symm
+  | succ n ih =>
+      let s := c.state n
+      let ca := select S.cover (a n) s
+      let cb := select S.cover (b n) s
+      have ha := select_valid S.cover (a n) s
+      have hb := select_valid S.cover (b n) s
+      have haB : S.cover.Buffered ca s :=
+        ⟨interior_subset (S.cover.source.core_subset ca.1 ha.1),
+          interior_subset (S.cover.target.core_subset ca.2 ha.2)⟩
+      have hbB : S.cover.Buffered cb s :=
+        ⟨interior_subset (S.cover.source.core_subset cb.1 hb.1),
+          interior_subset (S.cover.target.core_subset cb.2 hb.2)⟩
+      have hagree := (S.switch.agreement ca cb s haB hbB).2
+      have hanchor : s.anchor = nodes n :=
+        state_anchor_eq_node _ nodes initial c hinitial n
+      have hradius : S.mesh ≤ S.switch.radius := by
+        have := (four_mul_mesh_le S).2.2.2
+        have := mesh_pos S
+        linarith
+      have hz : nodes (n + 1) ∈ ball s.anchor S.switch.radius := by
+        rw [mem_ball, hanchor]
+        exact (hmesh n).trans_le hradius
+      have heq : EqOn (map (policy S.cover a n (c.state n)) (c.state n))
+          (map (policy S.cover b n (d.state n)) (d.state n))
+          (ball s.anchor S.switch.radius) := by
+        rw [← ih]
+        exact hagree
+      rw [c.successor_eq n, d.successor_eq n]
+      exact CartanSuppliedDifferentialTransfer.successor_eq_of_eqOn_open
+        _ _ _ _ (nodes (n + 1)) (c.data n) (d.data n)
+        (ball s.anchor S.switch.radius) isOpen_ball hz heq
+
 end CartanSuppliedPatchPolicy
 end Poincare
