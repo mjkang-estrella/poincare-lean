@@ -442,5 +442,12 @@ theorem curvatureValue_naturality
         FiberBundle.extend_apply_self]) hU hW
   exact hR.trans (hxy.trans hz)
 
+/-- Connection and curvature naturality across compatible chart instances. -/
+theorem connectionCurvatureNaturality
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    CurvatureInstanceTransport.ConnectionCurvatureNaturality (inst := inst) inst' h g :=
+  ⟨conjugatedConnection_eq_leviCivita (inst := inst) inst' h g,
+    curvatureValue_naturality (inst := inst) inst' h g⟩
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
