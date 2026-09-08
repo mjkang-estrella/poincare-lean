@@ -63,5 +63,11 @@ theorem unitRecognition : UnitConstantCurvatureSphereRecognition3 M := by
     controlled_unitRecognition (d.replaceTopology hd.symm) rfl hc
   exact hrecognition hunit g hcurv
 
+/-- Unit-curvature recognition holds over every closed simply connected smooth 3-manifold. -/
+theorem universal_unitRecognition :
+  CartanTwoNeighborhoodDevelopment.UniversalUnitConstantCurvatureSphereRecognitionStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  exact unitRecognition (M := N)
+
 end CartanSuppliedUnitRecognition
 end Poincare
