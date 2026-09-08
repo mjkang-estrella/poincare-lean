@@ -446,5 +446,21 @@ theorem uniformDifferentialPullback_of_movingInitialPositionJacobiComparison
     (target_of_movingInitialPositionJacobiComparison hJacobi)
     x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
 
+/-- The frozen task-8 radius conclusion, conditional only on the displayed
+moving-position Jacobi identity. -/
+theorem exists_radius_of_movingInitialPositionJacobiComparison
+    (hJacobi : MovingInitialPositionJacobiComparison g) :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (K : Set M) (H : Set RoundSphere3), IsCompact K → K ⊆ C.anchors →
+    IsCompact H → H ⊆ D.anchors →
+    ∃ η > (0 : ℝ), OnCompact (patch C D) K H η :=
+  target_of_uniformNonzeroMetricPullback
+    (target_of_movingInitialPositionJacobiComparison hJacobi)
+
 end FixedChartUniformJacobiComparison
 end Poincare
