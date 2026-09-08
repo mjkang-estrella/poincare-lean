@@ -374,4 +374,24 @@ theorem uniformEndpointReanchoring_of_constantCurvature
       x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD)
 
 end FixedChartUniformEndpointReanchoring
+namespace FixedChartLocalSuccessorEquality
+open CartanSuppliedDifferentialSuccessor FixedChartUniformEndpointReanchoring
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- H2 gives equality for every datum on a common full ball contained in both sources. -/
+theorem exists_onCompact
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ), OnCompact (patch C D) K H η ε :=
+  exists_onCompact_of_uniformEndpointReanchoring C D K H hK hKC hH hHD
+    (uniformEndpointReanchoring_of_constantCurvature
+      x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD)
+
+end FixedChartLocalSuccessorEquality
 end Poincare
