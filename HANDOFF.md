@@ -2,6 +2,34 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+
+## 2026-09-08 Patch second variation worker partial
+
+Branch `worker/patch-second-variation`, base `d1a10d37`, verified proof head
+`f13ece96`. The new `FixedChartPatchSecondVariation.lean` proves C2 regularity
+of the operator-valued augmented field and genuine C2 initial-state
+dependence of the retained patch flow on the ball of radius `C.r / 2` for
+all times in one common `[-τ,τ]`, with `0 < τ ≤ C.T`.
+
+The retained endpoint time `C.T` is not reached by that theorem. One exact
+remainder, `AugmentedSystemRegularity C`, asks for the actual augmented
+solution and C1 endpoint dependence on the original time interval and open
+state ball. Its checked `target_of_augmentedSystemRegularity` theorem gives
+the step-1 C2 endpoint assertion. It does not give the frozen mapped-geodesic
+target; that theorem and its three unconditional consequences remain absent.
+
+Six theorems passed direct Lean and were committed individually. The focused
+3614-job build passed. All six theorem closures are exactly
+`[propext, Classical.choice, Quot.sound]`; the module scan found no nonstandard
+dependencies. Token and diff checks passed. No existing Lean file or root
+import changed. Commands, actual output, failed compiler logs, and the exact
+remainder are in `harness/reports/patch-second-variation_blocked.md`.
+This worker result awaits independent review.
+
+Exact first independent review action:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FixedChartPatchSecondVariation.lean`.
+
+
 ## 2026-09-08 Uniform endpoint reanchoring worker partial
 
 Branch `worker/uniform-endpoint-reanchoring`, base `5baf6aa8`, verified
