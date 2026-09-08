@@ -195,5 +195,36 @@ theorem conjugatedConnection_metricCompatible
   rw [ContinuousLinearEquiv.apply_symm_apply, ContinuousLinearEquiv.apply_symm_apply]
   exact hd.trans hc
 
+/-- Lie-bracket naturality transfers zero torsion to the conjugated connection. -/
+theorem conjugatedConnection_torsion
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    (conjugatedConnection (inst := inst) inst' h g).torsion = 0 := by
+  letI := inst
+  have ht := g.leviCivita_torsion
+  rw [CovariantDerivative.torsion_eq_zero_iff] at ht
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  rw [CovariantDerivative.torsion_eq_zero_iff]
+  intro X Y x hX hY
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hYold := inverseTransportField_mdiffAt (inst := inst) inst' h Y x hY
+  have ho := ht hXold hYold
+  have hb := mlieBracket_transportField (inst := inst) inst' h
+    (inverseTransportField (inst := inst) inst' h X)
+    (inverseTransportField (inst := inst) inst' h Y) x hXold hYold
+  have hr (Z : M → E) : transportField (inst := inst) inst' h
+      (inverseTransportField (inst := inst) inst' h Z) = Z := by
+    funext y
+    exact (J (inst := inst) inst' h y).symm_apply_apply (Z y)
+  rw [hr X, hr Y] at hb
+  change (J (inst := inst) inst' h x).symm _ -
+    (J (inst := inst) inst' h x).symm _ = _
+  rw [← map_sub]
+  exact (congrArg (J (inst := inst) inst' h x).symm ho).trans hb.symm
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
