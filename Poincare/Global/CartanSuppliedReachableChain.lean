@@ -69,5 +69,24 @@ theorem node_mem_predecessor_source :
   intro Q nodes initial c n
   exact (c.data n).source_mem
 
+/-- Equal reached states feed the same policy, and differential witness choice is irrelevant. -/
+theorem state_eq :
+  ∀ (Q : ℕ → CartanChain.ChainState g → Interpretation g) (nodes : ℕ → M)
+    (initial : CartanChain.ChainState g) (c e : ReachableChain Q nodes initial),
+    ∀ n, c.state n = e.state n := by
+  intro Q nodes initial c e n
+  induction n with
+  | zero => exact c.initial_eq.trans e.initial_eq.symm
+  | succ n ih =>
+      rw [c.successor_eq n, e.successor_eq n]
+      have compare : ∀ (s t : CartanChain.ChainState g), s = t →
+          ∀ (d : Data (Q n s) s (nodes (n + 1)))
+            (f : Data (Q n t) t (nodes (n + 1))), d.successor = f.successor := by
+        intro s t h d f
+        subst t
+        exact CartanSuppliedDifferentialTransfer.successor_eq (Q n s) s
+          (nodes (n + 1)) d f
+      exact compare (c.state n) (e.state n) ih (c.data n) (e.data n)
+
 end CartanSuppliedReachableChain
 end Poincare
