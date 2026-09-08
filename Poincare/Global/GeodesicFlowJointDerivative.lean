@@ -377,5 +377,96 @@ theorem exists_contDiff_extension_near_compact [FiniteDimensional ℝ X]
     filter_upwards [eventually_nhdsSet_iff_forall.mp hone x hx] with y hy
     simp [G, hy]
 
+/-- Extend the vector field around the compact image of the given uniform
+flow. This changes neither the selected flow nor its linearization there. -/
+theorem exists_smoothField_near_uniformFlow [FiniteDimensional ℝ X]
+    {F : X → X} {U : Set X} (hU : IsOpen U)
+    (hF : ∀ x ∈ U, ContDiffAt ℝ 2 F x)
+    {α : X → ℝ → X} {p : X} {r ε : ℝ}
+    (hcont : ContinuousOn (Function.uncurry α) (closedBall p r ×ˢ Icc (-ε) ε))
+    (hmem : ∀ q ∈ closedBall p r, ∀ t ∈ Icc (-ε) ε, α q t ∈ U) :
+    ∃ G : X → X, ContDiff ℝ 2 G ∧ ∃ a : ℝ,
+      ∀ q ∈ closedBall p r, ∀ t ∈ Icc (-ε) ε,
+        α q t ∈ closedBall p a ∧ G =ᶠ[𝓝 (α q t)] F := by
+  let K := (Function.uncurry α) '' (closedBall p r ×ˢ Icc (-ε) ε)
+  have hK : IsCompact K :=
+    ((isCompact_closedBall p r).prod isCompact_Icc).image_of_continuousOn hcont
+  obtain ⟨G, hG, heq⟩ := exists_contDiff_extension_near_compact hU hK
+    (by rintro _ ⟨⟨q, t⟩, hqt, rfl⟩; exact hmem q hqt.1 t hqt.2) hF
+  obtain ⟨a, ha⟩ := hK.isBounded.subset_closedBall p
+  refine ⟨G, hG, a, ?_⟩
+  intro q hq t ht
+  have hk : α q t ∈ K := ⟨(q, t), ⟨hq, ht⟩, rfl⟩
+  exact ⟨ha hk, heq _ hk⟩
+
+/-- Joint C1 dependence under local C2 regularity on an open set containing
+all the trajectories in the supplied continuous PL package. -/
+theorem exists_flow_initialState_C1_of_contDiffAt [FiniteDimensional ℝ X]
+    {F : X → X} {U : Set X} (hU : IsOpen U)
+    (hF : ∀ x ∈ U, ContDiffAt ℝ 2 F x)
+    {α : X → ℝ → X} {p : X} {r ε : ℝ} (hε : 0 < ε)
+    (hcont : ContinuousOn (Function.uncurry α) (closedBall p r ×ˢ Icc (-ε) ε))
+    (hmem : ∀ q ∈ closedBall p r, ∀ t ∈ Icc (-ε) ε, α q t ∈ U)
+    (hα : ∀ q ∈ closedBall p r, α q 0 = q ∧
+      ∀ s ∈ Icc (-ε) ε, HasDerivWithinAt (α q) (F (α q s)) (Icc (-ε) ε) s) :
+    ∃ T > (0 : ℝ), T ≤ ε ∧ ∃ Φ : X → ℝ → X →L[ℝ] X,
+      (∀ q ∈ ball p r, Φ q 0 = ContinuousLinearMap.id ℝ X) ∧
+      (∀ q ∈ ball p r, ∀ t ∈ Icc (-T) T, HasDerivWithinAt (Φ q)
+        ((fderiv ℝ F (α q t)).comp (Φ q t)) (Icc (-T) T) t) ∧
+      (∀ q ∈ ball p r, ∀ t ∈ Icc (-T) T,
+        HasFDerivAt (fun y => α y t) (Φ q t) q) ∧
+      ContinuousOn (fun qt : X × ℝ => Φ qt.1 qt.2) (ball p r ×ˢ Icc (-T) T) ∧
+      ∀ t ∈ Icc (-T) T, ContDiffOn ℝ 1 (fun q => α q t) (ball p r) := by
+  obtain ⟨G, hG, a, hGa⟩ := exists_smoothField_near_uniformFlow hU hF hcont hmem
+  have hαG : ∀ q ∈ ball p r, α q 0 = q ∧
+      (∀ s ∈ Icc (-ε) ε, HasDerivWithinAt (α q) (G (α q s)) (Icc (-ε) ε) s) ∧
+      ∀ s ∈ Icc (-ε) ε, α q s ∈ closedBall p a := by
+    intro q hq
+    have hqc := ball_subset_closedBall hq
+    refine ⟨(hα q hqc).1, ?_, fun s hs => (hGa q hqc s hs).1⟩
+    intro s hs
+    rw [(hGa q hqc s hs).2.eq_of_nhds]
+    exact (hα q hqc).2 s hs
+  obtain ⟨T, hT, hTε, Φ, h0, hd, hf, hc, hC1⟩ := exists_flow_initialState_C1 hG hε hαG
+  refine ⟨T, hT, hTε, Φ, h0, ?_, hf, hc, hC1⟩
+  intro q hq t ht
+  have htε : t ∈ Icc (-ε) ε := ⟨by linarith [ht.1], ht.2.trans hTε⟩
+  simpa only [(hGa q (ball_subset_closedBall hq) t htε).2.fderiv_eq] using hd q hq t ht
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+/-- C2 Christoffel regularity gives C2 regularity of the full state field. -/
+theorem contDiffAt_geodesicFlowField_two
+    {Γ : E → E →L[ℝ] E →L[ℝ] E} {p : E × E}
+    (hΓ : ContDiffAt ℝ 2 Γ p.1) : ContDiffAt ℝ 2 (geodesicFlowField Γ) p := by
+  have hΓp := hΓ.comp p (contDiffAt_fst : ContDiffAt ℝ 2 (fun p : E × E => p.1) p)
+  have hv : ContDiffAt ℝ 2 (fun p : E × E => p.2) p := contDiffAt_snd
+  exact hv.prodMk ((hΓp.clm_apply hv).clm_apply hv).neg
+
+/-- The joint initial-position/initial-velocity C1 package for a Christoffel
+field that is C2 only on the open chart region occupied by the trajectories. -/
+theorem exists_geodesic_flow_initialState_C1 [FiniteDimensional ℝ E]
+    {Γ : E → E →L[ℝ] E →L[ℝ] E} {U : Set E} (hU : IsOpen U)
+    (hΓ : ∀ z ∈ U, ContDiffAt ℝ 2 Γ z)
+    {α : (E × E) → ℝ → E × E} {z₀ : E} {r ε : ℝ} (hε : 0 < ε)
+    (hcont : ContinuousOn (Function.uncurry α)
+      (closedBall (z₀, (0 : E)) r ×ˢ Icc (-ε) ε))
+    (hmem : ∀ q ∈ closedBall (z₀, (0 : E)) r,
+      ∀ t ∈ Icc (-ε) ε, (α q t).1 ∈ U)
+    (hα : ∀ q ∈ closedBall (z₀, (0 : E)) r, α q 0 = q ∧
+      ∀ t ∈ Icc (-ε) ε, HasDerivWithinAt (α q)
+        (geodesicFlowField Γ (α q t)) (Icc (-ε) ε) t) :
+    ∃ T > (0 : ℝ), T ≤ ε ∧ ∃ Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E),
+      (∀ q ∈ ball (z₀, (0 : E)) r, Φ q 0 = ContinuousLinearMap.id ℝ (E × E)) ∧
+      (∀ q ∈ ball (z₀, (0 : E)) r, ∀ t ∈ Icc (-T) T, HasDerivWithinAt (Φ q)
+        ((linearizedGeodesicFlowOperator Γ (α q t)).comp (Φ q t)) (Icc (-T) T) t) ∧
+      (∀ q ∈ ball (z₀, (0 : E)) r, ∀ t ∈ Icc (-T) T,
+        HasFDerivAt (fun y => α y t) (Φ q t) q) ∧
+      ContinuousOn (fun qt : (E × E) × ℝ => Φ qt.1 qt.2)
+        (ball (z₀, (0 : E)) r ×ˢ Icc (-T) T) ∧
+      ∀ t ∈ Icc (-T) T, ContDiffOn ℝ 1 (fun q => α q t) (ball (z₀, (0 : E)) r) := by
+  exact exists_flow_initialState_C1_of_contDiffAt (hU.preimage continuous_fst)
+    (fun q hq => contDiffAt_geodesicFlowField_two (hΓ q.1 hq)) hε hcont hmem hα
+
 end GeodesicFlowJointDerivative
 end Poincare
