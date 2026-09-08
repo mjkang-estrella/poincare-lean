@@ -95,4 +95,34 @@ theorem continuous_inverseChartPullbackVolumeDensity_on_cutoffOne
   rw [CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
     _ _ _ _ (hχ p.2.1 p.2.2)]
 
+/-- Compact coordinate sets inside the cutoff-one region give continuous
+weighted density integrals for an arbitrary topological parameter space.
+Currying into continuous maps on the compact coordinate set gives uniform
+control without a countability assumption on the parameter. -/
+theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2))
+    (x : M) (S : Set E) (hSc : IsCompact S)
+    (hS : S ⊆ (extChartAt I x).target)
+    (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1)
+    (f : C(S, ℝ)) (A : Set S) :
+    Continuous (fun k ↦ ∫ z : S, f z * inverseChartPullbackVolumeDensity
+      (metric k) x ⟨z.1, hS z.2⟩ ∂(coordinateLebesgueMeasure S).restrict A) := by
+  letI : CompactSpace S := isCompact_iff_compactSpace.mp hSc
+  let μ := coordinateLebesgueMeasure S
+  letI : IsFiniteMeasure μ := ⟨by
+    change Measure.comap ((↑) : S → E) volume univ < ⊤
+    rw [(MeasurableEmbedding.subtype_coe hSc.measurableSet).comap_apply]
+    simpa using hSc.measure_lt_top (μ := (volume : Measure E))⟩
+  have hF : Continuous (fun p : K × S ↦ f p.2 * inverseChartPullbackVolumeDensity
+      (metric p.1) x ⟨p.2.1, hS p.2.2⟩) :=
+    (f.continuous.comp continuous_snd).mul
+      (continuous_inverseChartPullbackVolumeDensity_on_cutoffOne metric hjet x S hS hχ)
+  exact continuous_movingIntegral_of_continuous_finiteMeasure_of_joint
+    (fun _ : K ↦ (⟨μ.restrict A, inferInstance⟩ : FiniteMeasure S)) continuous_const
+    (fun k z ↦ f z * inverseChartPullbackVolumeDensity
+      (metric k) x ⟨z.1, hS z.2⟩) hF
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
