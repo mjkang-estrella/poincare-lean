@@ -3,6 +3,31 @@
 Snapshot date: 2026-09-07 (UTC)
 
 
+## 2026-09-07 Geometric metric transport worker result
+
+Branch `worker/metric-transport-2`, base
+`80fcfacea10aa364aa7bd9d3e7670b136a4f57fb`, verified proof head `51df193e`.
+The new `RiemannianMetricInstanceTransportGeometric.lean` constructs `J` as
+an invertible new-to-old chart derivative, proves the tangent and hom-bundle
+coefficient bridges, transfers smoothness across compatible chart instances,
+and constructs `transport` with the frozen geometric `transport_inner`
+formula. The smoothness field is proved, not assumed. This supersedes the
+previous metric worker's open geometric transport action below.
+
+Direct elaboration and the focused 2704-job build pass. All 28 new declaration
+closures are exactly `[propext, Classical.choice, Quot.sound]`; forbidden-token
+and diff checks pass. No existing Lean file or root import was edited.
+The result awaits orchestrator review. Actual output and proof commits are in
+`harness/reports/metric-transport-2_done.md`.
+
+The optional induced-distance equality is not proved; its exact remaining
+shape is `RiemannianMetricInstanceTransportGeometric.InducedDistanceAgreement`.
+A separately bundled fiber `LinearIsometryEquiv` is also not supplied.
+
+Exact first action for independent review against the recorded base:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.RiemannianMetricInstanceTransportGeometric`.
+
+
 ## 2026-09-07 Metric transport worker obstruction
 
 Branch `worker/metric-transport`, base
