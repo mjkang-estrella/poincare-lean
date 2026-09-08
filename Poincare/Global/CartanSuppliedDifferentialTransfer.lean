@@ -600,5 +600,48 @@ private theorem patchFrame_coe {x₀ : M} {U : Set E}
   exact Classical.choose_spec
     (FixedChartUniformPreferredGermAgreement.anchorFrame_isInvertible C x hx)
 
+omit [T2Space M] in
+/-- Both retained patch normals give the generic Cartan germ after their frames cancel. -/
+theorem patch_germ_eventuallyEq_generic :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (s : CartanChain.ChainState g), s.anchor ∈ C.anchors → s.target ∈ D.anchors →
+    map (patch C D) s =ᶠ[𝓝 s.anchor] s.map := by
+  intro x₀ p₀ U V C D hU hV s hs ht
+  have hsource := FixedChartUniformPreferredGermAgreement.normal_eventuallyEq_generic_in_anchor_frame
+    C hU s.anchor hs
+  rw [← patchFrame_coe C s.anchor hs] at hsource
+  have htarget := FixedChartUniformPreferredGermAgreement.normal_eventuallyEq_generic_in_anchor_frame
+    D hV s.target ht
+  rw [← patchFrame_coe D s.target ht] at htarget
+  have hinverse := inverse_germ_of_framed_normal_germ
+    (D.normal s.target) ((CartanSourceExponential.genericFamily roundSphereMetric3).normal s.target)
+    s.target (patchFrame D s.target) (D.anchor_mem_normal_source s.target ht)
+    ((CartanSourceExponential.genericFamily roundSphereMetric3).anchor_mem_source s.target)
+    (D.normal_anchor s.target ht) htarget
+  have hnormal : ContinuousAt
+      ((CartanSourceExponential.genericFamily g).normal s.anchor : M → E) s.anchor :=
+    ((CartanSourceExponential.genericFamily g).normal s.anchor).continuousAt
+      ((CartanSourceExponential.genericFamily g).anchor_mem_source s.anchor)
+  have hinput : Tendsto
+      (fun y => s.alignment ((CartanSourceExponential.genericFamily g).normal s.anchor y))
+      (𝓝 s.anchor) (𝓝 (0 : E)) := by
+    have hc := s.alignment.toContinuousLinearEquiv.continuous.continuousAt.comp hnormal
+    simpa only [Function.comp_apply, (CartanSourceExponential.genericFamily g).normal_anchor,
+      map_zero] using hc.tendsto
+  rw [← generic_map_eq s]
+  filter_upwards [hsource, hinverse.comp_tendsto hinput] with y hy hi
+  change (D.normal s.target).symm ((patchFrame D s.target).symm
+    (s.alignment (patchFrame C s.anchor (C.normal s.anchor y)))) =
+    ((CartanSourceExponential.genericFamily roundSphereMetric3).normal s.target).symm
+      (s.alignment ((CartanSourceExponential.genericFamily g).normal s.anchor y))
+  change patchFrame C s.anchor (C.normal s.anchor y) =
+    (CartanSourceExponential.genericFamily g).normal s.anchor y at hy
+  rw [hy]
+  exact hi
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
