@@ -283,5 +283,74 @@ theorem continuousOn_fundamentalSolution [ProperSpace X]
     · have hn : -t ∈ Icc (0 : ℝ) T := ⟨by linarith, by linarith [ht.1]⟩
       simpa only [neg_neg] using (hminus (-t) hn).weaken (le_max_right Cpos Cneg)
 
+/-- A uniform flow in a compact state tube has a jointly continuous
+fundamental solution on one smaller common interval, and its endpoints are C1
+in the full initial state. The flow itself is the supplied PL selector. -/
+theorem exists_flow_initialState_C1 [ProperSpace X] [CompleteSpace X]
+    {F : X → X} (hF : ContDiff ℝ 2 F)
+    {α : X → ℝ → X} {p : X} {r a ε : ℝ} (hε : 0 < ε)
+    (hα : ∀ q ∈ ball p r, α q 0 = q ∧
+      (∀ s ∈ Icc (-ε) ε, HasDerivWithinAt (α q) (F (α q s)) (Icc (-ε) ε) s) ∧
+      ∀ s ∈ Icc (-ε) ε, α q s ∈ closedBall p a) :
+    ∃ T > (0 : ℝ), T ≤ ε ∧ ∃ Φ : X → ℝ → X →L[ℝ] X,
+      (∀ q ∈ ball p r, Φ q 0 = ContinuousLinearMap.id ℝ X) ∧
+      (∀ q ∈ ball p r, ∀ t ∈ Icc (-T) T, HasDerivWithinAt (Φ q)
+        ((fderiv ℝ F (α q t)).comp (Φ q t)) (Icc (-T) T) t) ∧
+      (∀ q ∈ ball p r, ∀ t ∈ Icc (-T) T,
+        HasFDerivAt (fun y => α y t) (Φ q t) q) ∧
+      ContinuousOn (fun qt : X × ℝ => Φ qt.1 qt.2) (ball p r ×ˢ Icc (-T) T) ∧
+      ∀ t ∈ Icc (-T) T, ContDiffOn ℝ 1 (fun q => α q t) (ball p r) := by
+  classical
+  have hF1 : ContDiff ℝ 1 F := hF.of_le (by norm_num)
+  obtain ⟨K, hLip⟩ := hF1.contDiffOn.exists_lipschitzOnWith
+    (by norm_num) (convex_closedBall p (a + 1)) (isCompact_closedBall p (a + 1))
+  let T : ℝ := min ε (1 / (4 * ((K : ℝ) + 1)))
+  have hT : 0 < T := lt_min hε (by positivity)
+  have hTε : T ≤ ε := min_le_left _ _
+  have hKT : (K : ℝ) * T ≤ 1 / 4 := by
+    have hden : 0 < 4 * ((K : ℝ) + 1) := by positivity
+    calc
+      (K : ℝ) * T ≤ (K : ℝ) * (1 / (4 * ((K : ℝ) + 1))) :=
+        mul_le_mul_of_nonneg_left (min_le_right _ _) K.2
+      _ ≤ 1 / 4 := by
+        rw [mul_one_div, div_le_div_iff₀ hden (by norm_num : (0 : ℝ) < 4)]
+        nlinarith
+  have hsub : Icc (-T) T ⊆ Icc (-ε) ε := by
+    intro s hs
+    exact ⟨by linarith [hs.1], hs.2.trans hTε⟩
+  have hαT : ∀ q ∈ ball p r, α q 0 = q ∧
+      (∀ s ∈ Icc (-T) T, HasDerivWithinAt (α q) (F (α q s)) (Icc (-T) T) s) ∧
+      ∀ s ∈ Icc (-T) T, α q s ∈ closedBall p a := by
+    intro q hq
+    exact ⟨(hα q hq).1, fun s hs => ((hα q hq).2.1 s (hsub hs)).mono hsub,
+      fun s hs => (hα q hq).2.2 s (hsub hs)⟩
+  have hex : ∀ q : X, ∃ Φ : ℝ → X →L[ℝ] X, q ∈ ball p r →
+      Φ 0 = ContinuousLinearMap.id ℝ X ∧
+      ∀ s ∈ Icc (-T) T, HasDerivWithinAt Φ
+        ((fderiv ℝ F (α q s)).comp (Φ s)) (Icc (-T) T) s := by
+    intro q
+    by_cases hq : q ∈ ball p r
+    · have hc : ContinuousOn (fun s => fderiv ℝ F (α q s)) (Icc (-T) T) :=
+        (hF1.continuous_fderiv (by norm_num)).comp_continuousOn
+          (HasDerivWithinAt.continuousOn (hαT q hq).2.1)
+      obtain ⟨Φ, h0, hd, _⟩ := exists_fundamentalSolution_on_prescribed_Icc hT.le hc K
+        (fun s hs => norm_fderiv_le_of_lipschitzOn (𝕜 := ℝ)
+          (closedBall_radius_add_one_mem_nhds ((hαT q hq).2.2 s hs)) hLip) hKT
+      exact ⟨Φ, fun _ => ⟨h0, hd⟩⟩
+    · exact ⟨fun _ => ContinuousLinearMap.id ℝ X, fun h => (hq h).elim⟩
+  choose Φ hΦ using hex
+  have h0 := fun q hq => (hΦ q hq).1
+  have hd := fun q hq => (hΦ q hq).2
+  have hder : ∀ q ∈ ball p r, ∀ t ∈ Icc (-T) T,
+      HasFDerivAt (fun y => α y t) (Φ q t) q :=
+    fun q hq t ht => flow_hasFDerivAt_initialState hF1 hT hq hαT (h0 q hq) (hd q hq) ht
+  have hc := continuousOn_fundamentalSolution hF hT.le hαT h0 hd
+  refine ⟨T, hT, hTε, Φ, h0, hd, hder, hc, ?_⟩
+  intro t ht q hq
+  apply ContDiffAt.contDiffWithinAt
+  apply contDiffAt_one_iff.mpr
+  refine ⟨fun y => Φ y t, ball p r, isOpen_ball.mem_nhds hq, ?_, fun y hy => hder y hy t ht⟩
+  exact hc.comp (continuous_id.prodMk continuous_const).continuousOn (fun y hy => ⟨hy, ht⟩)
+
 end GeodesicFlowJointDerivative
 end Poincare
