@@ -811,9 +811,16 @@ compact anchor sets and a unit-curvature metric, one step radius and one
 evaluation radius chosen before every moving parameter give supplied
 successor data (H1) and germ equality on the evaluation ball for every
 datum (H2). These are the well-posed replacements of the two obligations
-refuted on 2026-09-08, now proved. Task 10 (`supplied-reachable-chain`) is
-dispatched; the chain/mesh/overlap, restricted-atlas, and development
-adapter files remain, to be specified with the same exactness after task 10.
+refuted on 2026-09-08, now proved. Task 10 (`supplied-reachable-chain`) landed
+(`CartanSuppliedReachableChain.lean`, twenty-two scanned declarations):
+reachable chains under a per-step interpretation policy, existence from
+`StepAvailable`, anchor and source laws, and endpoint equality under open
+agreement. The chain/mesh/overlap, restricted-atlas, and development adapter
+files are specified next by task `parametrization-plan-3` (analysis only:
+finite patch cover and policy, chain realization with mesh control, homotopy
+invariance via the uniform evaluation radius, the restricted compatible atlas
+or direct total map, and the final adapters to the controlled-instance
+recognition and the universal statement).
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
