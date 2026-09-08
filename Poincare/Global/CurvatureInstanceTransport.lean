@@ -1,0 +1,63 @@
+import Poincare.Global.RiemannianMetricInstanceTransportGeometric
+import Poincare.Global.SphereTheorem
+
+/-!
+# Tangent fields across compatible chart instances
+
+The geometric identification `J` maps new fibers to old fibers. Its inverse
+therefore transports old vector fields to the new tangent bundle.
+-/
+
+noncomputable section
+open Bundle Filter Set
+open scoped Manifold ContDiff Topology
+namespace Poincare.CurvatureInstanceTransport
+open RiemannianMetricInstanceTransportGeometric
+local notation "E" => ClosedSmoothModel 3
+local notation "I" => closedSmoothModelWithCorners 3
+variable {M : Type*} [TopologicalSpace M] [inst : ChartedSpace E M]
+  [IsManifold I ∞ M]
+
+/-- Tangent-section regularity with the chart instance explicit. -/
+def fieldContMDiff (charts : ChartedSpace E M)
+    (hs : letI := charts; IsManifold I ∞ M) (n : ℕ∞ω) (X : M → E) : Prop :=
+  letI := charts
+  letI : IsManifold I ∞ M := hs
+  ContMDiff I ((I).prod 𝓘(ℝ, E)) n
+    (fun x : M ↦ (⟨x, X x⟩ : TotalSpace E (TangentSpace I)))
+
+/-- Preferred tangent trivializations detect section regularity. -/
+theorem fieldContMDiff_iff (n : ℕ∞ω) (X : M → E) :
+    fieldContMDiff inst inferInstance n X ↔
+      ∀ a, ContMDiffAt I 𝓘(ℝ, E) n
+        (fun x ↦ tangentCoordinates inst inferInstance a x (X x)) a := by
+  exact forall_congr' fun a ↦ Bundle.contMDiffAt_section
+    (IB := I) (F := E) («E» := TangentSpace I) (s := X) a
+
+variable (inst' : ChartedSpace E M)
+  (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
+
+/-- Transport from the old tangent fibers to the new ones. -/
+def transportField (X : Π x : M, TangentSpace I x) : M → E :=
+  fun x ↦ (J (inst := inst) inst' h x).symm (X x)
+
+/-- Transport from the new tangent fibers back to the old ones. -/
+def inverseTransportField (X : M → E) : Π x : M, TangentSpace I x :=
+  fun x ↦ J (inst := inst) inst' h x (X x)
+
+/-- New tangent coordinates are related to old ones by a fixed-anchor derivative. -/
+theorem tangentCoordinates_transportField (X : M → E) (a x : M)
+    (ha : x ∈ (inst.chartAt a).source) (ha' : x ∈ (inst'.chartAt a).source) :
+    tangentCoordinates inst'
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+        a x (transportField (inst := inst) inst' h X x) =
+      D (inst := inst) (oldChart (inst := inst) a) (newChart (inst := inst) inst' h a) x
+        (tangentCoordinates inst inferInstance a x (X x)) := by
+  letI := inst
+  have hb := tangentCoordinates_transport (inst := inst) inst' h a x ha ha'
+    (transportField (inst := inst) inst' h X x)
+  simp only [transportField, ContinuousLinearEquiv.apply_symm_apply] at hb
+  rw [hb, D_comp _ _ _ x ha' ha ha', D_self _ x ha']
+  rfl
+
+end Poincare.CurvatureInstanceTransport
