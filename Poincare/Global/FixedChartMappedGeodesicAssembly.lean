@@ -292,4 +292,71 @@ theorem exists_uniform_flow_displacement_radius {x₀ : M} {U : Set E}
   exact (h (x, ⟨t, ht⟩) ⟨hx, mem_univ _⟩).2
 
 end FixedChartMappedGeodesicAssembly
+
+namespace FixedChartUniformEndpointReanchoring
+open CartanSuppliedDifferentialSuccessor FixedChartMappedGeodesicAssembly
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- The derivative-mapped retained geodesic solves the target initial-value
+problem on the full unit interval, with both radii chosen uniformly first. -/
+theorem uniformMappedGeodesicEquation_of_constantCurvature
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    FixedChartUniformEndpointReanchoring.UniformMappedGeodesicEquation C D K H := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηt, hηt, htransition⟩ := exists_uniform_christoffel_transition
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨ηd, hηd, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨K', hK', hKK', hK'C⟩ := exists_compact_between hK C.isOpen_anchors hKC
+  obtain ⟨δ, hδ, hδK'⟩ := hK.exists_cthickening_subset_open isOpen_interior hKK'
+  obtain ⟨ρ, hρ, hflow⟩ := exists_uniform_flow_displacement_radius C K' hK' hK'C (half_pos hηt)
+  refine ⟨min ηd (min δ (ηt / 2)), lt_min hηd (lt_min hδ (half_pos hηt)), ρ, hρ, ?_⟩
+  intro x hx p hp L z d hz v hv _
+  have hzd := hz.trans_le (min_le_left _ _)
+  have hzδ := (hz.trans_le (min_le_right _ _)).trans_le (min_le_left _ _)
+  have hzt := (hz.trans_le (min_le_right _ _)).trans_le (min_le_right _ _)
+  have hzK' : z ∈ K' := interior_subset
+    (hδK' (mem_cthickening_of_dist_le z x δ K hx hzδ.le))
+  obtain ⟨hq, hpositions⟩ := hflow z hzK' v hv
+  obtain ⟨hzC, hpD, _⟩ := hdata x hx p hp L z hzd
+  let F := chartMap (patch C D) ⟨x, p, L⟩
+  let q := (extChartAt I x₀ z, C.T⁻¹ • v)
+  let γ := fun t : ℝ => ((C.α q (C.T * t)).1, C.T • (C.α q (C.T * t)).2)
+  change FTransitionGeodesicMap.mappedState F γ 0 = _ ∧ _
+  constructor
+  · have hγ0 : γ 0 = (extChartAt I x₀ z, v) := by
+      have h0 : C.α q 0 = q := (C.flow_law _ hq).1
+      simp only [γ, mul_zero, h0]
+      simp only [q, smul_smul, mul_inv_cancel₀ C.T_pos.ne', one_smul]
+    change (F (γ 0).1, fderiv ℝ F (γ 0).1 (γ 0).2) = _
+    rw [hγ0]
+    exact Prod.ext (FixedChartMappedGeodesicAssembly.chartMap_apply_host (patch C D) ⟨x, p, L⟩ z hzC.1)
+      (congrArg (fun A : E →L[ℝ] E => A v)
+        (chartMap_fderiv_eq_successor_linear C D ⟨x, p, L⟩ z d hzC hpD))
+  · intro t ht
+    have htime : C.T * t ∈ Icc (-C.T) C.T := by
+      constructor <;> nlinarith [C.T_pos, ht.1, ht.2]
+    obtain ⟨hct, hdist⟩ := hpositions (C.T * t) htime
+    let y := (extChartAt I x₀).symm (γ t).1
+    have hyx : dist y x < ηt := by
+      calc
+        dist y x ≤ dist y z + dist z x := dist_triangle _ _ _
+        _ < ηt := by change dist y z < ηt / 2 at hdist; linarith
+    have hcy : extChartAt I x₀ y = (γ t).1 := (extChartAt I x₀).right_inv hct
+    obtain ⟨hC2, htrans⟩ := htransition x hx p hp L y hyx
+    rw [hcy] at hC2 htrans
+    exact mappedState_hasDerivWithinAt_of_differentiable_fderiv F _ _
+      (normalizedFlow_hasDerivWithinAt C hq ht)
+      (hC2.differentiableAt (by norm_num))
+      ((hC2.fderiv_right (show (1 : WithTop ℕ∞) + 1 ≤ 2 by norm_num)).differentiableAt
+        (by norm_num)) (htrans (γ t).2)
+
+end FixedChartUniformEndpointReanchoring
 end Poincare
