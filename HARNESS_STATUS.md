@@ -243,8 +243,10 @@ Lean-verified corrections to the entries above (evidence in
 
 ## Codex worker dispatch (2026-09-07)
 
-Three frontier tasks were dispatched to codex workers (model from
-`~/.codex/config.toml`, reasoning effort xhigh) with
+Three frontier tasks were dispatched to codex workers (gpt-6-astra from
+`~/.codex/config.toml`; these first three ran at xhigh, and the operator's
+standing policy from 2026-09-07 onward is low, medium, or high by task
+difficulty, never xhigh) with
 `harness/dispatch_codex.sh`, which reuses the non-destructive worktree recipe
 (`/private/tmp/poincare-workers/<task>`, branch `worker/<task>`, cloned
 `.lake`): `M5-glob-69` (H2 radius persistence), `M5-glob-70` (H1 fixed-chart
