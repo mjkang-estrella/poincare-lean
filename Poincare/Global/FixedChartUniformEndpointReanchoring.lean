@@ -461,5 +461,31 @@ theorem exists_onCompact_of_uniformMappedGeodesicEquation
   FixedChartLocalSuccessorEquality.exists_onCompact_of_uniformEndpointReanchoring
     C D K H hK hKC hH hHD (target_of_uniformMappedGeodesicEquation C D K H hK hKC hH hHD he)
 
+/-- Combine the landed curvature-only H1 with the conditional H2 using the
+minimum of the two already uniform predecessor radii. -/
+theorem exists_radii_of_uniformMappedGeodesicEquation
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (he : UniformMappedGeodesicEquation C D K H) :
+    ∃ η > (0 : ℝ), ∃ ε > (0 : ℝ),
+      FixedChartLocalSuccessorExistence.OnCompact (patch C D) K H η ∧
+      FixedChartLocalSuccessorEquality.OnCompact (patch C D) K H η ε := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηd, hηd, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨ηe, hηe, ε, hε, hequality⟩ :=
+    exists_onCompact_of_uniformMappedGeodesicEquation C D K H hK hKC hH hHD he
+  refine ⟨min ηd ηe, lt_min hηd hηe, ε, hε, ?_, ?_⟩
+  · intro x hx p hp L z hz
+    exact hdata x hx p hp L z (hz.trans_le (min_le_left _ _))
+  · intro x hx p hp L z d hz
+    exact hequality x hx p hp L z d (hz.trans_le (min_le_right _ _))
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
