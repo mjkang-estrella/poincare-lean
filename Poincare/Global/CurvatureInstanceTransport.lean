@@ -106,4 +106,24 @@ theorem transportField_contMDiff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → E)
     (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
   exact tangentCoordinates_transportField inst' h X a x hx hx'
 
+/-- Transport back by J preserves tangent-section regularity. -/
+theorem inverseTransportField_contMDiff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → E)
+    (hX : fieldContMDiff inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 n X) :
+    fieldContMDiff inst inferInstance n (inverseTransportField (inst := inst) inst' h X) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  apply (fieldContMDiff_iff n _).2
+  intro a
+  have hX' := (@fieldContMDiff_iff M _ inst' hs n X).1 hX a
+  have hXold := (modelContMDiffAt_iff_of_le (inst := inst) inst' h hn _ a).2 hX'
+  have hD := (contMDiffAt_D (newChart (inst := inst) inst' h a)
+    (oldChart (inst := inst) a) a
+    (inst'.mem_chart_source a) (inst.mem_chart_source a)).of_le hn
+  apply (hD.clm_apply hXold).congr_of_eventuallyEq
+  filter_upwards [(inst.chartAt a).open_source.mem_nhds (inst.mem_chart_source a),
+    (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
+  exact tangentCoordinates_transport (inst := inst) inst' h a x hx hx' (X x)
+
 end Poincare.CurvatureInstanceTransport
