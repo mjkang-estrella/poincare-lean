@@ -102,4 +102,70 @@ theorem fundamentalSolution_zero_velocity
     (by simp [h0, freeVariation])
   exact heq ht
 
+/-- The endpoint derivative is invertible at every positive common time. -/
+def endpointEquiv (T : ℝ) (hT : T ≠ 0) : (E × E) ≃L[ℝ] (E × E) where
+  toLinearEquiv :=
+    { toLinearMap := (endpointDerivative T).toLinearMap
+      invFun := fun p => (p.1, T⁻¹ • (p.2 - p.1))
+      left_inv := by
+        intro p
+        simp [endpointDerivative, smul_smul, hT]
+      right_inv := by
+        intro p
+        simp [endpointDerivative, smul_smul, hT] }
+  continuous_toFun := (endpointDerivative T).continuous
+  continuous_invFun := continuous_fst.prodMk
+    ((continuous_snd.sub continuous_fst).const_smul T⁻¹)
+
+section Flow
+
+variable [FiniteDimensional ℝ E]
+variable {Γ : E → E →L[ℝ] E →L[ℝ] E}
+variable {α : (E × E) → ℝ → E × E}
+variable {Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E)}
+variable {c z : E} {r T : ℝ}
+variable (hΓ : ContDiff ℝ 1 Γ) (hT : 0 < T)
+variable (hα : ∀ q ∈ ball (c, (0 : E)) r, α q 0 = q ∧
+  ∀ t ∈ Icc (-T) T, HasDerivWithinAt (α q)
+    (geodesicFlowField Γ (α q t)) (Icc (-T) T) t)
+variable (hΦ0 : ∀ q ∈ ball (c, (0 : E)) r, Φ q 0 = ContinuousLinearMap.id ℝ _)
+variable (hΦ : ∀ q ∈ ball (c, (0 : E)) r, ∀ t ∈ Icc (-T) T,
+  HasDerivWithinAt (Φ q)
+    ((linearizedGeodesicFlowOperator Γ (α q t)).comp (Φ q t)) (Icc (-T) T) t)
+variable (hf : ∀ q ∈ ball (c, (0 : E)) r,
+  HasFDerivAt (fun y => α y T) (Φ q T) q)
+
+include hΓ hT hα hΦ0 hΦ
+
+/-- The supplied joint flow has the explicit zero-velocity fundamental solution. -/
+theorem flow_fundamentalSolution_zero_velocity (hz : (z, (0 : E)) ∈ ball (c, 0) r) :
+    ∀ t ∈ Icc (-T) T, Φ (z, 0) t = freeVariation t := by
+  have hs := flow_zero_velocity (contDiff_geodesicFlowField hΓ) hT
+    (hα (z, 0) hz).1 (hα (z, 0) hz).2
+  apply fundamentalSolution_zero_velocity (hΓ.differentiable one_ne_zero z) hT (hΦ0 _ hz)
+  intro t ht
+  simpa only [hs t ht] using hΦ (z, 0) hz t ht
+
+include hf
+
+/-- The full anchor/endpoint derivative is the triangular isomorphism. -/
+theorem hasFDerivAt_F_at_zero_velocity (hz : (z, (0 : E)) ∈ ball (c, 0) r) :
+    HasFDerivAt (F α T) (endpointDerivative T) (z, 0) := by
+  have heq := flow_fundamentalSolution_zero_velocity hΓ hT hα hΦ0 hΦ hz T
+    (by constructor <;> linarith)
+  have hd := (ContinuousLinearMap.fst ℝ E E).hasFDerivAt.prodMk (hf (z, 0) hz).fst
+  rw [heq] at hd
+  convert hd using 1
+
+/-- Joint C1 regularity upgrades this derivative to a strict derivative. -/
+theorem hasStrictFDerivAt_F
+    (hC1 : ContDiffOn ℝ 1 (fun q => α q T) (ball (c, (0 : E)) r))
+    (hz : (z, (0 : E)) ∈ ball (c, 0) r) :
+    HasStrictFDerivAt (F α T) (endpointDerivative T) (z, 0) := by
+  have hc := hC1.contDiffAt (isOpen_ball.mem_nhds hz)
+  exact (contDiffAt_fst.prodMk hc.fst).hasStrictFDerivAt'
+    (hasFDerivAt_F_at_zero_velocity hΓ hT hα hΦ0 hΦ hf hz) one_ne_zero
+
+end Flow
+
 end Poincare.FixedChartUniformNormalRadius
