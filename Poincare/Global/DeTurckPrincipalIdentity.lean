@@ -316,6 +316,49 @@ theorem fieldFirstOperator_apply (G : Bilin) (J : Jet1) (B : E →L[ℝ] E →L[
     ContinuousLinearMap.neg_apply, ContinuousLinearMap.comp_apply,
     ContinuousLinearMap.flip_apply, connectionOperator_apply]
 
+/-- The explicit Ricci remainder is bilinear in its two tensor slots. -/
+def ricciFirstBilin (G : Bilin) (J : Jet1) : Bilin :=
+  continuousBilinear (LinearMap.mk₂ ℝ (ricciFirst G J)
+    (by
+      intro v₁ v₂ w
+      simp only [ricciFirst, ← connectionOperator_apply]
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [map_add, map_sub, map_neg, ContinuousLinearMap.add_apply]
+      ring)
+    (by
+      intro c v w
+      simp only [ricciFirst, ← connectionOperator_apply, smul_eq_mul]
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [map_smul, map_add, map_sub, map_neg,
+        ContinuousLinearMap.smul_apply, smul_eq_mul]
+      ring)
+    (by
+      intro v w₁ w₂
+      simp only [ricciFirst, ← connectionOperator_apply]
+      rw [← Finset.sum_add_distrib]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [map_add, map_sub, map_neg, ContinuousLinearMap.add_apply]
+      ring)
+    (by
+      intro c v w
+      simp only [ricciFirst, ← connectionOperator_apply, smul_eq_mul]
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [map_smul, map_add, map_sub, map_neg,
+        ContinuousLinearMap.smul_apply, smul_eq_mul]
+      ring))
+
+/-- Evaluation of the bilinear Ricci remainder agrees with its coordinate expression. -/
+theorem ricciFirstBilin_apply (G : Bilin) (J : Jet1) (v w : E) :
+    ricciFirstBilin G J v w = ricciFirst G J v w := by
+  rfl
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
