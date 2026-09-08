@@ -121,6 +121,14 @@ dimension. The weak continuity of the finite volume measure along such a
 family is the open remainder; the follow-up
 `hamilton-family-volume-measure-continuity` targets it plus the jet-form core.
 
+`hamilton-chart-density-local-domination` landed
+(`Global/HamiltonChartDensityLocalDomination.lean`, gate PASS, 10
+declarations): the local integrable domination clause of the reaction core is
+derived from joint C³ metric entries (continuous intrinsic time-variation
+trace, logarithmic density derivative, exponential density comparison), so
+`HamiltonReactionCore3'` drops it; pinned as `hamilton-reaction-core-reduced`
+in `hamilton-front.json` with its checked endpoint reduction.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
