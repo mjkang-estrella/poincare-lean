@@ -270,6 +270,44 @@ theorem hasStrictFDerivAt_F
   exact (contDiffAt_fst.prodMk hc.fst).hasStrictFDerivAt'
     (hasFDerivAt_F_at_zero_velocity hΓ hT hα hΦ0 hΦ hf hz) one_ne_zero
 
+/-- Uniform normal neighborhoods for the supplied concrete geodesic flow.
+The open partial homeomorphism stays in the original state ball. -/
+theorem uniform_normal_radius_near
+    (hC1 : ContDiffOn ℝ 1 (fun q => α q T) (ball (c, (0 : E)) r))
+    (hz : (z, (0 : E)) ∈ ball (c, 0) r) {R : ℝ} (hR : 0 < R) :
+    ∃ ρ > (0 : ℝ), ∃ e : OpenPartialHomeomorph (E × E) (E × E),
+      (e : (E × E) → E × E) = F α T ∧
+      (z, (0 : E)) ∈ e.source ∧ e.source ⊆ ball (c, (0 : E)) r ∧
+      e.source ⊆ univ ×ˢ ball (0 : E) R ∧
+      ball z ρ ×ˢ ball (0 : E) ρ ⊆ e.source ∧
+      ∀ y ∈ ball z ρ,
+        InjOn (expChart α T y) (ball (0 : E) ρ) ∧
+        ball y ρ ⊆ expChart α T y '' ball (0 : E) R := by
+  apply uniform_normal_radius_near_of_strict hT isOpen_ball hz ?_
+    (hasStrictFDerivAt_F hΓ hT hα hΦ0 hΦ hf hC1 hz) hR
+  exact congrArg Prod.fst (flow_zero_velocity (contDiff_geodesicFlowField hΓ) hT
+    (hα (z, 0) hz).1 (hα (z, 0) hz).2 T (by constructor <;> linarith))
+
+/-- Every compact anchor set in the fixed chart state ball has one positive
+normal radius. Coverage holds within any prescribed positive velocity bound. -/
+theorem exists_uniform_normal_radius_on_compact
+    (hC1 : ContDiffOn ℝ 1 (fun q => α q T) (ball (c, (0 : E)) r))
+    {K : Set E} (hK : IsCompact K) (hKr : K ⊆ ball c r)
+    {R : ℝ} (hR : 0 < R) :
+    ∃ ρ > (0 : ℝ), ∀ z ∈ K,
+      InjOn (expChart α T z) (ball (0 : E) ρ) ∧
+      ball z ρ ⊆ expChart α T z '' ball (0 : E) R := by
+  have hm : ∀ z ∈ K, (z, (0 : E)) ∈ ball (c, 0) r := by
+    intro z hz
+    simpa using hKr hz
+  apply exists_uniform_normal_radius_on_compact_of_strict hT isOpen_ball hK hm ?_ ?_ hR
+  · intro z hz
+    exact congrArg Prod.fst (flow_zero_velocity (contDiff_geodesicFlowField hΓ) hT
+      (hα (z, 0) (hm z hz)).1 (hα (z, 0) (hm z hz)).2 T
+      (by constructor <;> linarith))
+  · intro z hz
+    exact hasStrictFDerivAt_F hΓ hT hα hΦ0 hΦ hf hC1 (hm z hz)
+
 end Flow
 
 end Poincare.FixedChartUniformNormalRadius
