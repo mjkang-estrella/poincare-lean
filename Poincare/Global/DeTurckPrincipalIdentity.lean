@@ -25,4 +25,40 @@ theorem koszul_apply (J : Jet1) (u v q : E) :
     koszul J u v q = (1 / 2 : ℝ) * (J u v q + J v u q - J q u v) := by
   rfl
 
+section Manifold
+universe u
+variable {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace E M] [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+
+/-- The actual Christoffel field in the cutoff-one region depends on the first metric jet. -/
+theorem christoffel_eq_connection
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (u v : E) :
+    GeodesicTransport.chartChristoffelField g anchor z u v =
+      connection (CovariantDerivative.chartMetric g.inner anchor z)
+        (fderiv ℝ (CovariantDerivative.chartMetric g.inner anchor) z) u v := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  let B := anchorBlendedMetricFlow (fun _ => g) anchor 0
+  have heq : B =ᶠ[nhds z] G := by
+    filter_upwards [hcut] with y hy
+    exact CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      (GeodesicTransport.cutoff (n := 3) anchor)
+      (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hy
+  have hbase := anchorChartChristoffelFieldOperatorFamily_apply_eq_christoffelClosedOp
+    (fun _ : Unit => g) anchor () z u v
+  change GeodesicTransport.chartChristoffelField g anchor z u v =
+    RicciFlow.RicciFlow.christoffelClosedOp B z v u at hbase
+  rw [hbase, RicciFlow.RicciFlow.christoffelClosedOp_apply]
+  rw [heq.self_of_nhds]
+  unfold connection koszul
+  congr 1
+  ext q
+  simp only [CovariantDerivative.christoffelFunctional, heq.fderiv_eq,
+    LinearMap.coe_toContinuousLinearMap', ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
+    ContinuousLinearMap.flip_apply, smul_eq_mul]
+  rfl
+
+end Manifold
 end Poincare.DeTurckPrincipalIdentity
