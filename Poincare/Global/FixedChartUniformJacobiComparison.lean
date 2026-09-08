@@ -309,5 +309,100 @@ theorem exists_patch_fundamentalSolution {x₀ : M} {U : Set E}
     fun q hq t ht => flow_hasFDerivAt_of_fundamentalSolution C hq (h0 q hq) (hd q hq) ht,
     GeodesicFlowJointDerivative.continuousOn_fundamentalSolution hF C.T_pos.le hα h0 hd⟩
 
+variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
+
+/-- The remaining geometric identity compares full-time Jacobi pairings along
+one source and one sphere geodesic with moving initial positions. Both velocities
+belong to the actual retained endpoint domains. There is no point-dependent radius
+in this assertion; uniform domain radii are already proved. -/
+def MovingInitialPositionJacobiComparison (g : ClosedSmoothRiemannianMetric 3 M) : Prop :=
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  HasConstantSectionalCurvature3 g 1 →
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ x ∈ C.anchors, ∀ p ∈ D.anchors,
+  ∀ (L : CartanMap.TangentAlignment g x p) (v : E),
+    let l := linear (patch C D) ⟨x, p, L⟩
+    let qs : E × E := (extChartAt I x₀ x, C.T⁻¹ • v)
+    let qt : E × E := (extChartAt I p₀ p, D.T⁻¹ • l v)
+    v ∈ (C.endpoint x).source → l v ∈ (D.endpoint p).source →
+    ∀ (Φs Φt : ℝ → (E × E) →L[ℝ] (E × E)),
+      Φs 0 = ContinuousLinearMap.id ℝ (E × E) →
+      (∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φs
+        ((linearizedGeodesicFlowOperator (GeodesicTransport.chartChristoffelField g x₀)
+          (C.α qs t)).comp (Φs t)) (Icc (-C.T) C.T) t) →
+      Φt 0 = ContinuousLinearMap.id ℝ (E × E) →
+      (∀ t ∈ Icc (-D.T) D.T, HasDerivWithinAt Φt
+        ((linearizedGeodesicFlowOperator
+          (GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀)
+          (D.α qt t)).comp (Φt t)) (Icc (-D.T) D.T) t) →
+      ∀ a a' : E,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₀ (D.α qt D.T).1
+          (Φt D.T (0, D.T⁻¹ • l a)).1 (Φt D.T (0, D.T⁻¹ • l a')).1 =
+        CovariantDerivative.chartMetric g.inner x₀ (C.α qs C.T).1
+          (Φs C.T (0, C.T⁻¹ • a)).1 (Φs C.T (0, C.T⁻¹ • a')).1
+
+/-- Full-time Jacobi comparison on the actual endpoint domains implies the
+frozen nonzero metric target. Compact domain and alignment bounds choose one
+radius before all moving anchors, alignments, successor points, and vectors. -/
+theorem target_of_movingInitialPositionJacobiComparison
+    (hJacobi : MovingInitialPositionJacobiComparison g) :
+    UniformNonzeroMetricPullback g := by
+  intro x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨Φs, hs0, hsode, _, _⟩ := exists_patch_fundamentalSolution C
+  obtain ⟨Φt, ht0, htode, _, _⟩ := exists_patch_fundamentalSolution D
+  obtain ⟨b, hb, hbound⟩ := exists_uniform_linear_bound C D K H hK hKC hH hHD
+  obtain ⟨ρs, hρs, hs⟩ := exists_uniform_endpoint_radius C K hK hKC
+  obtain ⟨ρt, hρt, ht⟩ := exists_uniform_endpoint_radius D H hH hHD
+  obtain ⟨η, hη, hnormal⟩ := exists_uniform_normal_radius C K hK hKC
+    (lt_min hρs (div_pos hρt hb))
+  refine ⟨η, hη, ?_⟩
+  intro x hx p hp L z hz _hne
+  dsimp only
+  intro a a'
+  let v := C.normal x z
+  let l := linear (patch C D) ⟨x, p, L⟩
+  obtain ⟨_, _, hv⟩ := hnormal x hx z hz
+  have hsv : ‖v‖ < ρs := hv.trans_le (min_le_left _ _)
+  have htv : ‖l v‖ < ρt := by
+    calc
+      _ ≤ ‖(l : E →L[ℝ] E)‖ * ‖v‖ := (l : E →L[ℝ] E).le_opNorm _
+      _ ≤ b * ‖v‖ := mul_le_mul_of_nonneg_right (hbound x hx p hp L) (norm_nonneg _)
+      _ < ρt := by
+        simpa only [mul_comm b] using
+          (lt_div_iff₀ hb).mp (hv.trans_le (min_le_right _ _))
+  have hvs := (hs x hx v hsv).1
+  have hvt := (ht p hp (l v) htv).1
+  let qs : E × E := (extChartAt I x₀ x, C.T⁻¹ • v)
+  let qt : E × E := (extChartAt I p₀ p, D.T⁻¹ • l v)
+  have hqs : qs ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) := C.P_source_subset hvs.1.2
+  have hqt : qt ∈ ball (extChartAt I p₀ p₀, 0) (D.r : ℝ) := D.P_source_subset hvt.1.2
+  have hj := hJacobi x₀ p₀ U V C D hcurv hU hV x (hKC hx) p (hHD hp) L v
+    hvs hvt (Φs qs) (Φt qt) (hs0 qs hqs) (hsode qs hqs)
+      (ht0 qt hqt) (htode qt hqt) a a'
+  have hse : sourceExp (patch C D) x v = (C.α qs C.T).1 :=
+    coordinateEndpoint_eq_normalizedEndpoint C x v hvs
+  have hte : targetExp (patch C D) p (l v) = (D.α qt D.T).1 :=
+    coordinateEndpoint_eq_normalizedEndpoint D p (l v) hvt
+  have hsd : ∀ a : E, fderiv ℝ (sourceExp (patch C D) x) v a =
+      (Φs qs C.T (0, C.T⁻¹ • a)).1 := fun a =>
+    coordinateEndpoint_fderiv_of_fundamentalSolution C x v a hvs (hs0 qs hqs) (hsode qs hqs)
+  have htd : ∀ a : E, fderiv ℝ (targetExp (patch C D) p) (l v) (l a) =
+      (Φt qt D.T (0, D.T⁻¹ • l a)).1 := fun a =>
+    coordinateEndpoint_fderiv_of_fundamentalSolution D p (l v) (l a) hvt
+      (ht0 qt hqt) (htode qt hqt)
+  change CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+    (targetExp (patch C D) p (l v))
+    (fderiv ℝ (targetExp (patch C D) p) (l v) (l a))
+    (fderiv ℝ (targetExp (patch C D) p) (l v) (l a')) =
+    CovariantDerivative.chartMetric g.inner x₀ (sourceExp (patch C D) x v)
+      (fderiv ℝ (sourceExp (patch C D) x) v a)
+      (fderiv ℝ (sourceExp (patch C D) x) v a')
+  rw [hse, hte, hsd a, hsd a', htd a, htd a']
+  exact hj
+
 end FixedChartUniformJacobiComparison
 end Poincare
