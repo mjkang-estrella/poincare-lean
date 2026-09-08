@@ -198,4 +198,87 @@ theorem eventually_transported_solves
       (hh.mono fun _ h => h.1) (hh.mono fun _ h => h.2.1)
       (hh.mono fun _ h => h.2.2.1) (hh.mono fun _ h => h.2.2.2)
 
+/-- The normalized retained endpoint agrees with the preferred exponential
+at each fixed anchor. The velocity neighborhood may depend on that anchor. -/
+theorem normalized_endpoint_eventuallyEq_expAt
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (x : M) (hx : x ∈ C.anchors) :
+    (fun v : E => (extChartAt I x₀).symm
+      (FixedChartUniformNormalRadius.expChart C.α C.T
+        (extChartAt I x₀ x) (C.T⁻¹ • v))) =ᶠ[𝓝 (0 : E)]
+      (fun v : E => GeodesicTransport.expAt g x (anchorFrame x₀ x v)) := by
+  obtain ⟨P⟩ := GeodesicTransport.exists_preferredChartExpAtTrajectoryPackage g x
+  let Q := P.reparameterize C.T C.T_pos
+  have hQt : Q.time = C.T := rfl
+  have hscale : Tendsto (fun v : E => C.T⁻¹ • v) (𝓝 (0 : E)) (𝓝 (0 : E)) := by
+    simpa only [id_eq, smul_zero] using
+      ((continuous_id.const_smul C.T⁻¹).continuousAt (x := (0 : E))).tendsto
+  have hJ : Tendsto (anchorFrame x₀ x) (𝓝 (0 : E)) (𝓝 (0 : E)) := by
+    simpa only [map_zero] using
+      ((anchorFrame x₀ x).continuous.continuousAt (x := (0 : E))).tendsto
+  have hsmall : ∀ᶠ v : E in 𝓝 (0 : E),
+      ‖anchorFrame x₀ x (C.T⁻¹ • v)‖ < Q.velocityRadius := by
+    simpa only [mem_ball, dist_zero_right] using
+      (hJ.comp hscale).eventually (ball_mem_nhds (0 : E) Q.velocityRadius_pos)
+  have hendsource := (C.endpoint x).open_source.mem_nhds (C.zero_mem_endpoint_source x hx)
+  have hend : Tendsto (C.endpoint x) (𝓝 (0 : E)) (𝓝 x) := by
+    simpa only [C.endpoint_zero x hx] using
+      ((C.endpoint x).continuousAt (C.zero_mem_endpoint_source x hx)).tendsto
+  have hchart : ∀ᶠ v : E in 𝓝 (0 : E), C.endpoint x v ∈ (extChartAt I x).source :=
+    hend.eventually ((isOpen_extChartAt_source x).mem_nhds
+    (mem_extChartAt_source x))
+  filter_upwards [hscale.eventually (eventually_transported_solves C hU x hx),
+    hsmall, hendsource, hchart] with v hsol hv hvs hvchart
+  let w := C.T⁻¹ • v
+  let u := anchorFrame x₀ x w
+  let γ := GeodesicTransport.chartTransitionState x₀ x
+    (C.α (extChartAt I x₀ x, w))
+  let η := Q.trajectory u
+  have hu : ‖u‖ < Q.velocityRadius := hv
+  have hγc : ContinuousOn γ (Icc (-C.T) C.T) := hsol.1
+  have hηd : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt η
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField g x) (η t))
+      (Icc (-C.T) C.T) t := by
+    simpa only [hQt] using Q.derivative u hu
+  have hηc := HasDerivWithinAt.continuousOn hηd
+  obtain ⟨R, hR⟩ := ((isCompact_Icc.image_of_continuousOn hγc).union
+    (isCompact_Icc.image_of_continuousOn hηc)).isBounded.subset_closedBall
+      (extChartAt I x x, (0 : E))
+  obtain ⟨K, hK⟩ :=
+    GeodesicTransport.geodesicFlowField_chartChristoffelField_lipschitzOn_closedBall
+      g x (extChartAt I x x, (0 : E)) R
+  have hinit : γ 0 = η 0 := by
+    have h0 := (C.flow_law _ (C.endpoint_source_initial_mem hvs)).1
+    have hη0 := Q.initial u hu
+    change C.α (extChartAt I x₀ x, w) 0 = (extChartAt I x₀ x, w) at h0
+    dsimp only [γ, η, GeodesicTransport.chartTransitionState]
+    rw [h0, hη0]
+    apply Prod.ext
+    · exact congrArg (extChartAt I x) ((extChartAt I x₀).left_inv hx.1)
+    · rfl
+  have heq : EqOn γ η (Icc (-C.T) C.T) :=
+    ODE_solution_unique_of_mem_Icc
+      (v := fun _ => geodesicFlowField (GeodesicTransport.chartChristoffelField g x))
+      (s := fun _ => closedBall (extChartAt I x x, (0 : E)) R)
+      (fun _ _ => hK) (by constructor <;> linarith [C.T_pos]) hγc hsol.2
+      (fun t ht => hR (Or.inl (mem_image_of_mem γ (Ioo_subset_Icc_self ht)))) hηc
+      (fun t ht => (hηd t (Ioo_subset_Icc_self ht)).hasDerivAt (Icc_mem_nhds ht.1 ht.2))
+      (fun t ht => hR (Or.inr (mem_image_of_mem η (Ioo_subset_Icc_self ht)))) hinit
+  have ht : C.T ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], le_rfl⟩
+  have hexp := Q.expAt_eq u hu C.T (by rw [hQt]; exact ⟨C.T_pos.le, le_rfl⟩)
+  have hTu : C.T • u = anchorFrame x₀ x v := by
+    simp [u, w, map_smul, smul_smul, C.T_pos.ne']
+  rw [hTu] at hexp
+  have hcoord : extChartAt I x (C.endpoint x v) = (γ C.T).1 := by
+    rw [C.endpoint_apply]
+    rfl
+  calc
+    (extChartAt I x₀).symm
+        (FixedChartUniformNormalRadius.expChart C.α C.T
+          (extChartAt I x₀ x) (C.T⁻¹ • v)) = C.endpoint x v := (C.endpoint_apply x v).symm
+    _ = (extChartAt I x).symm (extChartAt I x (C.endpoint x v)) :=
+      ((extChartAt I x).left_inv hvchart).symm
+    _ = (extChartAt I x).symm (η C.T).1 := by rw [hcoord, heq ht]
+    _ = GeodesicTransport.expAt g x (anchorFrame x₀ x v) := hexp.symm
+
 end Poincare.FixedChartUniformPreferredGermAgreement
