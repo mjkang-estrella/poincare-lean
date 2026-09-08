@@ -253,6 +253,49 @@ theorem ricciSecondCoordinate_eq_ricciSecondJet (G : Bilin) (H : E →L[ℝ] Jet
       rw [hA j i]
       rfl
 
+/-- The first-jet connection is bilinear in its two vector arguments. -/
+def connectionOperator (G : Bilin) (J : Jet1) : E →L[ℝ] E →L[ℝ] E :=
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap : (E →ₗ[ℝ] E) ≃ₗ[ℝ] (E →L[ℝ] E)).toLinearMap.comp
+      (LinearMap.mk₂ ℝ (connection G J)
+        (by
+          intros
+          unfold connection
+          rw [← map_add]
+          congr 1
+          ext q
+          simp only [koszul_apply, map_add, ContinuousLinearMap.add_apply]
+          ring)
+        (by
+          intros
+          unfold connection
+          rw [← map_smul]
+          congr 1
+          ext q
+          simp only [koszul_apply, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+          ring)
+        (by
+          intros
+          unfold connection
+          rw [← map_add]
+          congr 1
+          ext q
+          simp only [koszul_apply, map_add, ContinuousLinearMap.add_apply]
+          ring)
+        (by
+          intros
+          unfold connection
+          rw [← map_smul]
+          congr 1
+          ext q
+          simp only [koszul_apply, map_smul, ContinuousLinearMap.smul_apply, smul_eq_mul]
+          ring)))
+
+/-- Evaluation of the connection operator is the explicit connection expression. -/
+theorem connectionOperator_apply (G : Bilin) (J : Jet1) (u v : E) :
+    connectionOperator G J u v = connection G J u v := by
+  rfl
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
