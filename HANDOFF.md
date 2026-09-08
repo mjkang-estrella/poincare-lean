@@ -588,9 +588,13 @@ specified with type-checked targets in
 differential successor data, its transfer from coordinate data, the local
 successor existence and equality statements on the patch, which are the
 well-posed replacements of H1 and H2, and the supplied reachable chain).
-Task 6 (`supplied-differential-successor`) is dispatched; 7 to 10 follow in
-order, each task file derived verbatim from the report as
-`harness/tasks/supplied-differential-successor.md` was.
+Task 6 landed as
+`CartanSuppliedDifferentialSuccessor.lean` (the `Interpretation` of a chain
+state by supplied source and target exponentials with the generic and patch
+instances, `CoordinateData`, `Data`, `Data.successor`, and the five frozen
+laws, 84 scanned declarations). Task 7 (`supplied-differential-transfer`) is
+dispatched; 8 to 10 follow in order, each task file derived verbatim from the
+report as the earlier ones were.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
