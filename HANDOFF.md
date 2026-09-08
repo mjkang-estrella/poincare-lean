@@ -576,10 +576,16 @@ common source), `FixedChartEndpointSlices.lean` (per-anchor slices of a
 joint product inverse with exact loci and the four joint regularity laws),
 and `FixedChartUniformSourceNormal.lean` (the retained `Patch` built from the
 uniform fixed-chart exponential, its `normal` charts, anchor laws, open joint
-source locus, continuous evaluator, and `rawLocalFamily`). Task 5
-(`parametrization-task-5`, per-anchor germ agreement of the patch's
-normalized endpoint with the generic `expAt` in the anchor frame) is
-dispatched; the remaining files of the plan follow the report.
+source locus, continuous evaluator, and `rawLocalFamily`). Task 5 landed as
+`FixedChartUniformPreferredGermAgreement.lean` (invertible anchor frame,
+`normalized_endpoint_eventuallyEq_expAt`,
+`normal_eventuallyEq_generic_in_anchor_frame`): the patch's normal
+coordinates agree with the generic exponential's as germs at every anchor of
+the patch, which is the bridge that lets the chain's germ-level theorems
+transfer to the uniform family. The remaining files of the plan are only
+outlined in the inventory; task `parametrization-plan-2` (analysis only)
+specifies the next five with type-checked targets, including the exact
+well-posed replacements of H1 and H2 on the patch.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
