@@ -18,21 +18,18 @@ variable [ChartedSpace (ClosedSmoothModel n) M]
 variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
 variable [TopologicalSpace K]
 
-local notation "I" => closedSmoothModelWithCorners n
-local notation "E" => ClosedSmoothModel n
-
 omit [T2Space M] in
 /-- Value profiles at their own anchor give continuous intrinsic pairings
 at each fixed manifold point and pair of tangent vectors. -/
 theorem continuous_inner_of_thirdJetProfiles_continuous
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (a b : E) :
+    (x : M) (a b : (ClosedSmoothModel n)) :
     Continuous (fun k ↦ (metric k).inner x a b) := by
   have h := (hjet (.value x a b)).comp
-    (continuous_id.prodMk (continuous_const (y := extChartAt I x x)))
+    (continuous_id.prodMk (continuous_const (y := extChartAt (closedSmoothModelWithCorners n) x x)))
   simpa only [Function.comp_def, id_eq, metricEntryThirdJetProfile_value_anchor] using h
 
 variable [CompactSpace M] [ConnectedSpace M]
@@ -44,9 +41,9 @@ coordinate, including coordinates outside the anchor's cutoff support. -/
 theorem continuous_parameter_inverseChartPullbackGramMatrix
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (z : (extChartAt I x).target) :
+    (x : M) (z : (extChartAt (closedSmoothModelWithCorners n) x).target) :
     Continuous (fun k ↦ inverseChartPullbackGramMatrix (metric k) x z) := by
   apply continuous_pi
   intro i
@@ -59,9 +56,9 @@ omit [T2Space M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelS
 theorem continuous_parameter_inverseChartPullbackVolumeDensity
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (z : (extChartAt I x).target) :
+    (x : M) (z : (extChartAt (closedSmoothModelWithCorners n) x).target) :
     Continuous (fun k ↦ inverseChartPullbackVolumeDensity (metric k) x z) := by
   exact VolumeDensity.continuous_chartVolumeDensity
     (continuous_parameter_inverseChartPullbackGramMatrix metric hjet x z)
@@ -71,9 +68,9 @@ volume density is jointly continuous in the metric parameter and coordinate. -/
 theorem continuous_inverseChartPullbackVolumeDensity_on_cutoffOne
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (S : Set E) (hS : S ⊆ (extChartAt I x).target)
+    (x : M) (S : Set (ClosedSmoothModel n)) (hS : S ⊆ (extChartAt (closedSmoothModelWithCorners n) x).target)
     (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1) :
     Continuous (fun p : K × S ↦ inverseChartPullbackVolumeDensity
       (metric p.1) x ⟨p.2.1, hS p.2.2⟩) := by
@@ -82,7 +79,7 @@ theorem continuous_inverseChartPullbackVolumeDensity_on_cutoffOne
   intro i
   apply continuous_pi
   intro j
-  have hp : Continuous (fun p : K × S ↦ (p.1, (p.2 : E))) :=
+  have hp : Continuous (fun p : K × S ↦ (p.1, (p.2 : (ClosedSmoothModel n)))) :=
     continuous_fst.prodMk (continuous_subtype_val.comp continuous_snd)
   have h := (hjet (.value x (EuclideanSpace.basisFun (Fin n) ℝ i)
       (EuclideanSpace.basisFun (Fin n) ℝ j))).comp hp
@@ -103,10 +100,10 @@ control without a countability assumption on the parameter. -/
 theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (S : Set E) (hSc : IsCompact S)
-    (hS : S ⊆ (extChartAt I x).target)
+    (x : M) (S : Set (ClosedSmoothModel n)) (hSc : IsCompact S)
+    (hS : S ⊆ (extChartAt (closedSmoothModelWithCorners n) x).target)
     (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1)
     (f : C(S, ℝ)) (A : Set S) :
     Continuous (fun k ↦ ∫ z : S, f z * inverseChartPullbackVolumeDensity
@@ -114,9 +111,9 @@ theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
   letI : CompactSpace S := isCompact_iff_compactSpace.mp hSc
   let μ := coordinateLebesgueMeasure S
   letI : IsFiniteMeasure μ := ⟨by
-    change Measure.comap ((↑) : S → E) volume univ < ⊤
+    change Measure.comap ((↑) : S → (ClosedSmoothModel n)) volume univ < ⊤
     rw [(MeasurableEmbedding.subtype_coe hSc.measurableSet).comap_apply]
-    simpa using hSc.measure_lt_top (μ := (volume : Measure E))⟩
+    simpa using hSc.measure_lt_top (μ := (volume : Measure (ClosedSmoothModel n)))⟩
   have hF : Continuous (fun p : K × S ↦ f p.2 * inverseChartPullbackVolumeDensity
       (metric p.1) x ⟨p.2.1, hS p.2.2⟩) :=
     (f.continuous.comp continuous_snd).mul
@@ -129,12 +126,12 @@ theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
 /-- The landed area formula restricts to any compact coordinate set. -/
 theorem compact_inverseChart_hausdorffChartDensityEquality
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
-    (S : Set E) (hSc : IsCompact S) (hS : S ⊆ (extChartAt I x).target) :
+    (S : Set (ClosedSmoothModel n)) (hSc : IsCompact S) (hS : S ⊆ (extChartAt (closedSmoothModelWithCorners n) x).target) :
     let ψ : S → M := fun z ↦ inverseExtendedChartParametrization x ⟨z.1, hS z.2⟩
     HausdorffChartDensityEquality g S ψ (range ψ)
       (fun z ↦ inverseChartPullbackVolumeDensity g x ⟨z.1, hS z.2⟩) := by
   letI : CompactSpace S := isCompact_iff_compactSpace.mp hSc
-  let T := (extChartAt I x).target
+  let T := (extChartAt (closedSmoothModelWithCorners n) x).target
   let ι : S → T := Set.inclusion hS
   let ψ : T → M := inverseExtendedChartParametrization x
   have hι : Topology.IsEmbedding ι := Topology.IsEmbedding.inclusion hS
@@ -170,10 +167,10 @@ are continuous, with no regularity assumption on the boundary of the piece. -/
 theorem continuous_integral_volumeMeasure_restrict_compact_chart
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
-    (x : M) (S : Set E) (hSc : IsCompact S)
-    (hS : S ⊆ (extChartAt I x).target)
+    (x : M) (S : Set (ClosedSmoothModel n)) (hSc : IsCompact S)
+    (hS : S ⊆ (extChartAt (closedSmoothModelWithCorners n) x).target)
     (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1)
     (P : Set M) (hPm : MeasurableSet P)
     (hP : P ⊆ range (fun z : S ↦ inverseExtendedChartParametrization x ⟨z.1, hS z.2⟩))
@@ -219,7 +216,7 @@ into continuity of every intrinsic volume test integral. -/
 theorem continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous
     (metric : K → ClosedSmoothRiemannianMetric n M)
     (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
-      Continuous (fun p : K × E ↦
+      Continuous (fun p : K × (ClosedSmoothModel n) ↦
         metricEntryThirdJetProfile (metric p.1) slot p.2))
     (f : C(M, ℝ)) :
     Continuous (fun k ↦ ∫ y, f y ∂volumeMeasure (metric k)) := by
@@ -255,9 +252,9 @@ theorem continuous_integral_volumeMeasure_of_thirdJetProfiles_continuous
     have hyU : y ∈ C.innerDomain (a i) := disjointed_subset U i hy
     have hyC : y ∈ closure (C.innerDomain (a i)) := subset_closure hyU
     have hySource := (C.closure_innerDomain_subset_cutoffOneChartNeighborhood (a i) hyC).1
-    refine ⟨⟨extChartAt I (a i : M) y, ⟨y, hyC, rfl⟩⟩, ?_⟩
-    change (extChartAt I (a i : M)).symm (extChartAt I (a i : M) y) = y
-    exact (extChartAt I (a i : M)).left_inv hySource
+    refine ⟨⟨extChartAt (closedSmoothModelWithCorners n) (a i : M) y, ⟨y, hyC, rfl⟩⟩, ?_⟩
+    change (extChartAt (closedSmoothModelWithCorners n) (a i : M)).symm (extChartAt (closedSmoothModelWithCorners n) (a i : M) y) = y
+    exact (extChartAt (closedSmoothModelWithCorners n) (a i : M)).left_inv hySource
   have hsum := continuous_finsetSum Finset.univ (fun i _ ↦ hpiece i)
   apply hsum.congr
   intro k
