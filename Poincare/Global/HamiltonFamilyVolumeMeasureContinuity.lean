@@ -332,3 +332,25 @@ def HamiltonReactionCore3Jet (M : Type u)
 
 
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
+
+namespace Poincare.HamiltonFamilyVolumeMeasureContinuity
+variable {M : Type u}
+variable [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+variable [MeasurableSpace M] [BorelSpace M]
+variable [ChartedSpace (ClosedSmoothModel 3) M]
+variable [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+variable [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M]
+
+/-- The jet-form core reconstructs all three original family-continuity clauses. -/
+theorem hamiltonReactionCore3_of_jet
+    (h : HamiltonReactionCore3Jet.{u, v} M) : HamiltonReactionCore3.{u, v} M := by
+  rcases h with ⟨K, topK, compactK, gt, metric, parameter, c, rate,
+    hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction, hjet, hbound⟩
+  have hcurv := HamiltonCompactFamilyInvariantContinuity.curvatureContinuity_of_thirdJetProfiles_continuous
+    K metric hjet
+  exact ⟨K, topK, compactK, gt, metric, parameter, c, rate,
+    hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction,
+    continuous_closedMetricFiniteVolumeMeasure_of_thirdJetProfiles_continuous K metric hjet,
+    hcurv.1, hcurv.2, hbound⟩
+
+end Poincare.HamiltonFamilyVolumeMeasureContinuity
