@@ -57,4 +57,15 @@ theorem extDerivFun_naturality (f : M → ℝ) (x : M)
   rw [mfderiv_identity (inst := inst) inst' h] at he
   exact congrArg (fun L ↦ L v) he
 
+/-- Field transport is pullback by the identity between the two chart instances. -/
+theorem mpullback_identity (X : M → E) :
+    @VectorField.mpullback ℝ _ E _ E _ _ I M _ inst' E _ E _ _ I M _ inst id X =
+      transportField (inst := inst) inst' h X := by
+  funext x
+  rw [VectorField.mpullback, mfderiv_identity (inst := inst) inst' h]
+  change (J (inst := inst) inst' h x).toContinuousLinearMap.inverse (X x) =
+    (J (inst := inst) inst' h x).symm (X x)
+  rw [ContinuousLinearMap.inverse_equiv]
+  rfl
+
 end Poincare.ConnectionInstanceNaturality
