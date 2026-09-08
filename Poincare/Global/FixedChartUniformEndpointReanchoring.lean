@@ -110,5 +110,56 @@ theorem exists_uniform_chartMetric_pullback_germ
   rw [(extChartAt I x₀).right_inv hqt] at hd
   exact hd
 
+omit [CompactSpace M] [ConnectedSpace M] in
+/-- A differentiable derivative at the point suffices for the signed
+Christoffel law. Symmetry follows from the nearby first derivatives. -/
+theorem christoffel_transition_of_metric_germ
+    (x₀ : M) (p₀ : RoundSphere3) (F : E → E) (q : E)
+    (hgerm : ∀ᶠ w in 𝓝 q,
+      HasStrictFDerivAt F (fderiv ℝ F w) w ∧
+      (fderiv ℝ F w).IsInvertible ∧
+      w ∈ (extChartAt I x₀).target ∧ F w ∈ (extChartAt I p₀).target ∧
+      ∀ a b : E,
+        CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+          (F w) (fderiv ℝ F w a) (fderiv ℝ F w b) =
+        CovariantDerivative.chartMetric g.inner x₀ w a b)
+    (hD : DifferentiableAt ℝ (fderiv ℝ F) q)
+    (hcut₀ : ∀ᶠ w in 𝓝 q, GeodesicTransport.cutoff (n := 3) x₀ w = 1)
+    (hcut₁ : ∀ᶠ w in 𝓝 (F q), GeodesicTransport.cutoff (n := 3) p₀ w = 1)
+    (v : E) :
+    GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀ (F q)
+        (fderiv ℝ F q v) (fderiv ℝ F q v) =
+      fderiv ℝ F q (GeodesicTransport.chartChristoffelField g x₀ q v v) -
+        fderiv ℝ (fderiv ℝ F) q v v := by
+  obtain ⟨hF, hinv, hq, hFq, hpull⟩ := hgerm.self_of_nhds
+  let G₀ := CovariantDerivative.chartMetric g.inner x₀
+  let G₁ := CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+  have hnear : ∀ᶠ w in 𝓝 q, HasFDerivAt F (fderiv ℝ F w) w :=
+    hgerm.mono (fun _ hw => hw.1.hasFDerivAt)
+  have hsymm := second_derivative_symmetric_of_eventually hnear hD.hasFDerivAt
+  have hp : ∀ a b : E,
+      (fun w => G₁ (F w) (fderiv ℝ F w a) (fderiv ℝ F w b)) =ᶠ[𝓝 q]
+      (fun w => G₀ w a b) := fun a b => hgerm.mono (fun _ hw => hw.2.2.2.2 a b)
+  have hdiff := GeodesicTransport.differentiated_pullback_hdiff_of_eventuallyEq
+    G₀ G₁ F (fderiv ℝ F) hF.hasFDerivAt hD.hasFDerivAt
+    (UniformAnchoredFTransition.chartMetric_hasFDerivAt_of_mem_target g x₀ hq)
+    (UniformAnchoredFTransition.chartMetric_hasFDerivAt_of_mem_target
+      roundSphereMetric3 p₀ hFq) hp
+  let b₀ := UniformAnchoredFTransition.chartMetricBilin (G₀ q)
+  let b₁ := UniformAnchoredFTransition.chartMetricBilin (G₁ (F q))
+  have hb₀ : b₀.Nondegenerate :=
+    UniformAnchoredFTransition.chartMetricBilin_nondegenerate_of_mem_target g x₀ hq
+  have hb₁ : b₁.Nondegenerate :=
+    UniformAnchoredFTransition.chartMetricBilin_nondegenerate_of_mem_target
+      roundSphereMetric3 p₀ hFq
+  have hraw := GeodesicTransport.christoffelAt_map_eq_signed_transport_of_differentiated_pullback
+    G₀ G₁ F (fderiv ℝ F) hinv hsymm hdiff hpull
+    (CovariantDerivative.chartMetric_symm roundSphereMetric3.inner
+      (fun z a b => roundSphereMetric3.symm z a b) p₀ (F q))
+    b₀ b₁ hb₀ hb₁ (fun _ _ => rfl) (fun _ _ => rfl) v v
+  exact FTransitionGeodesicMap.chartChristoffelField_self_F_transition_of_christoffelAt
+    g x₀ p₀ F (fderiv ℝ F q) rfl hcut₀ hcut₁ b₀ b₁ hb₀ hb₁
+    (fun _ _ => rfl) (fun _ _ => rfl) v hraw
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
