@@ -60,5 +60,42 @@ theorem christoffel_eq_connection
     ContinuousLinearMap.flip_apply, smul_eq_mul]
   rfl
 
+/-- The Christoffel derivative splits into a second-jet term and an inverse-metric correction. -/
+theorem christoffelDerivative_eq_jets
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (a u v : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let J := fderiv ℝ G z
+    let H := fderiv ℝ (fderiv ℝ G) z
+    fderiv ℝ (GeodesicTransport.chartChristoffelField g anchor) z a u v =
+      -(G z).inverse (J a (connection (G z) J u v)) +
+        connection (G z) (H a) u v := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  have hG : ContDiffAt ℝ 2 G z :=
+    deTurckChartMetric_contDiffAt_two_of_mem_target g anchor hz
+  have hJ := (hG.fderiv_right (m := 1) (by norm_num)).differentiableAt one_ne_zero
+  have heval : fderiv ℝ (fun y => fderiv ℝ G y a) z =
+      fderiv ℝ (fderiv ℝ G) z a := by
+    ext b p q
+    have hh := congrArg (fun L : E →L[ℝ] Bilin => L b p q)
+      (hJ.hasFDerivAt.clm_apply (hasFDerivAt_const a z)).fderiv
+    have hh' : fderiv ℝ (fun y => fderiv ℝ G y a) z b p q =
+        fderiv ℝ (fderiv ℝ G) z b a p q := by simpa using hh
+    exact hh'.trans
+      (congrArg (fun B : Bilin => B p q)
+        (hG.isSymmSndFDerivAt (by norm_num) b a))
+  have hK (F : E → Bilin) :
+      LinearMap.toContinuousLinearMap (CovariantDerivative.christoffelFunctional F z v u) =
+        koszul (fderiv ℝ F z) v u := by
+    ext q
+    rfl
+  dsimp only [G] at heval
+  dsimp only
+  rw [christoffelDerivative_eq_chartMetricSecondJet g anchor z hcut a u v]
+  simp only [hK, heval]
+  rfl
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
