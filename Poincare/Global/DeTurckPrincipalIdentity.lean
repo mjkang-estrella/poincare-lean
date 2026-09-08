@@ -663,5 +663,28 @@ theorem ricci_eq_secondJet_add_first
       (CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor z)
       (chartMetric_secondJet_metric_symm g anchor z hz)]
 
+/-- The chart evolution has inverse-metric second-derivative principal part and a uniform first-jet remainder. -/
+theorem principalIdentity (bg : ClosedSmoothRiemannianMetric 3 M)
+    (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1) :
+    ∃ lower : Bilin → Jet1 → Bilin,
+      ∀ (g : ClosedSmoothRiemannianMetric 3 M) (v w : E),
+        deTurckChartMetricEvolutionBilin (fun _ => g) bg anchor 0 z v w =
+          spatialPrincipal (CovariantDerivative.chartMetric g.inner anchor) z v w +
+          lower (CovariantDerivative.chartMetric g.inner anchor z)
+            (fderiv ℝ (CovariantDerivative.chartMetric g.inner anchor) z) v w := by
+  let B := GeodesicTransport.chartChristoffelField bg anchor
+  refine ⟨lowerTerm (B z) (fderiv ℝ B z), ?_⟩
+  intro g v w
+  have hR := ricci_eq_secondJet_add_first g anchor z hz hcut v w
+  have hL := lie_eq_secondJet_add_first g bg anchor z hz hcut v w
+  have hcancel := chartMetric_secondJet_cancellation g anchor z hz v w
+  dsimp only at hR hL hcancel
+  rw [evolution_eq_coordinate_expression g bg anchor z hz hcut v w]
+  rw [hR, lowerTerm_apply]
+  dsimp only [B]
+  linarith only [hL, hcancel]
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
