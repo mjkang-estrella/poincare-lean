@@ -670,5 +670,31 @@ theorem generic_interval_equality :
   rw [generic_map_eq, generic_map_eq, ← he]
   exact hEq hy.1
 
+omit [T2Space M] in
+/-- Agreements near the successor transfer the old common-source germ equality. -/
+theorem local_equality_transfer :
+  ∀ (Q : Interpretation g) (s : CartanChain.ChainState g) (z : M)
+    (d : Data Q s z) (e : DifferentialInducedSuccessor.Data s z),
+    d.successor = e.successor →
+    map Q s =ᶠ[𝓝 z] s.map →
+    map Q d.successor =ᶠ[𝓝 z] e.successor.map →
+    (∃ W : Set M, IsOpen W ∧ z ∈ W ∧
+      EqOn s.germ e.successor.germ (W ∩ (s.germ.source ∩ e.successor.germ.source))) →
+    ∃ W : Set M, IsOpen W ∧ z ∈ W ∧
+      EqOn (map Q s) (map Q d.successor)
+        (W ∩ ((germ Q s).source ∩ (germ Q d.successor).source)) := by
+  intro Q s z d e hsucc hpre hpost hlocal
+  rw [hsucc] at hpost ⊢
+  obtain ⟨W, hW, hz, hEq⟩ := hlocal
+  have hznew : z ∈ e.successor.germ.source :=
+    CartanMap.anchor_mem_source g z (s.map z) e.alignment
+  have hagree : map Q s =ᶠ[𝓝 z] map Q e.successor := by
+    filter_upwards [hpre, hpost, hW.mem_nhds hz,
+      s.germ.open_source.mem_nhds e.anchor_mem_predecessor_source,
+      e.successor.germ.open_source.mem_nhds hznew] with y hy hy' hyW hyS hyT
+    exact hy.trans ((hEq ⟨hyW, hyS, hyT⟩).trans hy'.symm)
+  obtain ⟨V, hV, hVopen, hzV⟩ := mem_nhds_iff.mp hagree
+  exact ⟨V, hVopen, hzV, fun _ hy => hV hy.1⟩
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
