@@ -359,6 +359,22 @@ theorem ricciFirstBilin_apply (G : Bilin) (J : Jet1) (v w : E) :
     ricciFirstBilin G J v w = ricciFirst G J v w := by
   rfl
 
+/-- The first-jet remainder of the full evolution, with the background data fixed first. -/
+def lowerTerm (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) (G : Bilin) (J : Jet1) : Bilin :=
+  (-2 : ℝ) • ricciFirstBilin G J + J (fieldValue G J B) +
+    G.comp (fieldFirstOperator G J B DB) +
+    (G.flip.comp (fieldFirstOperator G J B DB)).flip
+
+/-- The chosen bilinear remainder is the explicit Ricci and Lie first-jet sum. -/
+theorem lowerTerm_apply (B : E →L[ℝ] E →L[ℝ] E)
+    (DB : E →L[ℝ] E →L[ℝ] E →L[ℝ] E) (G : Bilin) (J : Jet1) (v w : E) :
+    lowerTerm B DB G J v w = -2 * ricciFirst G J v w + lieFirst G J B DB v w := by
+  simp only [lowerTerm, lieFirst, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply, ricciFirstBilin_apply, fieldFirstOperator_apply, smul_eq_mul]
+  ring
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
