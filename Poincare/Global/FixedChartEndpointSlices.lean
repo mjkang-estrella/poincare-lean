@@ -90,4 +90,10 @@ theorem isOpen_slice_targetLocus {A : Set E} (hA : IsOpen A) :
   change IsOpen (Prod.fst ⁻¹' A ∩ P.target)
   exact (hA.preimage continuous_fst).inter P.open_target
 
+/-- Forward evaluation is jointly continuous on the exact restricted source. -/
+theorem continuousOn_slice_eval (A : Set E) :
+    ContinuousOn (fun q : E × E => slice P hfst q.1 q.2)
+      {q : E × E | q.1 ∈ A ∧ q.2 ∈ (slice P hfst q.1).source} := by
+  exact P.continuousOn.snd.mono (fun _ hq => hq.2)
+
 end Poincare.FixedChartEndpointSlices
