@@ -97,5 +97,11 @@ theorem exists_state_switch_radius (B : QuantitativeCover g)
   exact ⟨(ball_subset_ball (hle (a, b))).trans hs,
     he.mono (ball_subset_ball (hle (a, b)))⟩
 
+/-- All four geometric radii contribute a positive operating mesh. -/
+theorem mesh_pos : ∀ S : System g, 0 < S.mesh := by
+  intro S
+  exact div_pos (lt_min S.cover.step_pos (lt_min S.cover.evaluation_pos
+    (lt_min S.cover.retention_pos S.switch.radius_pos))) (by norm_num)
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
