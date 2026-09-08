@@ -4026,7 +4026,14 @@
       "status": "partial",
       "date": "2026-09-08",
       "report": "harness/reports/fixed-chart-local-successor-equality_blocked.md"
+    },
+    {
+      "id": "uniform-differential-pullback",
+      "tier": "M5",
+      "status": "partial",
+      "date": "2026-09-08",
+      "report": "harness/reports/uniform-differential-pullback_blocked.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-08): chain parametrization campaign per harness/reports/chain-parametrization-inventory.md. Tasks 1-4 landed (CartanSuppliedSourceMap, CartanSuppliedSourceGermTransfer, FixedChartEndpointSlices, FixedChartUniformSourceNormal). Task 5 landed (FixedChartUniformPreferredGermAgreement). Plan for tasks 6-10 is harness/reports/parametrization-plan-2.md. Task 6 landed (CartanSuppliedDifferentialSuccessor). Task 7 landed (CartanSuppliedDifferentialTransfer). Task 8 partial landed (uniform domain radius; remainder = UniformDifferentialPullback). Task 9 partial landed (uniform common-source radii; remainder = UniformEndpointReanchoring). In flight: uniform-differential-pullback. Then uniform-endpoint-reanchoring, then task 10 from that report, then then the successor/differential, local quantitative, chain/mesh/overlap, restricted-atlas, and development-adapter files. Controlled-instance reduction (ConnectionInstanceNaturality) and uniform fixed-chart exponential (GeodesicFlowJointDerivative, FixedChartUniformNormalRadius) are landed. Hamilton front: harness/v2/missions/hamilton-front.json."
+  "current_goal": "RESUME POINT (2026-09-08): chain parametrization campaign per harness/reports/chain-parametrization-inventory.md. Tasks 1-4 landed (CartanSuppliedSourceMap, CartanSuppliedSourceGermTransfer, FixedChartEndpointSlices, FixedChartUniformSourceNormal). Task 5 landed (FixedChartUniformPreferredGermAgreement). Plan for tasks 6-10 is harness/reports/parametrization-plan-2.md. Task 6 landed (CartanSuppliedDifferentialSuccessor). Task 7 landed (CartanSuppliedDifferentialTransfer). Task 8 partial landed (uniform domain radius; remainder = UniformDifferentialPullback). Task 9 partial landed (uniform common-source radii; remainder = UniformEndpointReanchoring). Pullback partial landed (uniform strict differentiability + zero-velocity metric identity); THE analytic core is now UniformNonzeroMetricPullback (uniform Jacobi comparison). In flight: uniform-nonzero-metric-pullback. Then uniform-endpoint-reanchoring, then task 10 from that report, then then the successor/differential, local quantitative, chain/mesh/overlap, restricted-atlas, and development-adapter files. Controlled-instance reduction (ConnectionInstanceNaturality) and uniform fixed-chart exponential (GeodesicFlowJointDerivative, FixedChartUniformNormalRadius) are landed. Hamilton front: harness/v2/missions/hamilton-front.json."
 }

@@ -26,6 +26,7 @@ import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartLocalSuccessorEquality
 import Poincare.Global.FixedChartLocalSuccessorExistence
 import Poincare.Global.FixedChartSuccessorDataPersistence
+import Poincare.Global.FixedChartUniformDifferentialPullback
 import Poincare.Global.FixedChartUniformNormalRadius
 import Poincare.Global.FixedChartUniformPreferredGermAgreement
 import Poincare.Global.FixedChartUniformSourceNormal

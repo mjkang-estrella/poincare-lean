@@ -626,8 +626,21 @@ reduce the frozen task-9 target to the two remainders. So the H1/H2
 replacements on the patch now stand on exactly two curvature-only analytic
 statements, both uniform versions of theorems already proved per anchor: the
 local isometry of the Cartan map (`UniformDifferentialPullback`) and its
-exponential naturality (`UniformEndpointReanchoring`). The second depends on
-the first; its task is dispatched after the pullback lands.
+exponential naturality (`UniformEndpointReanchoring`). The pullback task
+(`uniform-differential-pullback`) landed its partial, merged
+(`FixedChartUniformDifferentialPullback.lean`, eleven declarations): uniform
+strict differentiability of both patch exponentials at the moving supplied
+vector (`exists_uniform_differential_radius`, no curvature needed) and the
+metric identity at zero velocity (`metric_pullback_zero`). Its exact
+remainder, `UniformNonzeroMetricPullback`, is the metric pullback along
+nonzero vectors with one radius before all moving parameters, and
+`target_of_uniformNonzeroMetricPullback` derives the frozen task-8 target
+from it. This single curvature-only statement, the uniform Jacobi-field
+comparison on a fixed-chart patch, is now the analytic core of the
+unit-recognition route; everything from it to the smooth Poincaré statement
+(given Hamilton convergence) is either proved or reduced to it plus
+`UniformEndpointReanchoring`. Task `uniform-nonzero-metric-pullback` is
+dispatched for it; the endpoint-reanchoring task follows.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
