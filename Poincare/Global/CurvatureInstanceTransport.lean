@@ -126,4 +126,21 @@ theorem inverseTransportField_contMDiff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M �
     (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
   exact tangentCoordinates_transport (inst := inst) inst' h a x hx hx' (X x)
 
+/-- Tangent sections have the same regularity after geometric transport. -/
+theorem transportField_contMDiff_iff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → E) :
+    fieldContMDiff inst'
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 n
+        (transportField (inst := inst) inst' h X) ↔
+      fieldContMDiff inst inferInstance n X := by
+  letI := inst
+  constructor
+  · intro hX
+    have hback := inverseTransportField_contMDiff inst' h hn _ hX
+    have he : inverseTransportField (inst := inst) inst' h
+        (transportField (inst := inst) inst' h X) = X :=
+      funext fun x ↦ (J (inst := inst) inst' h x).apply_symm_apply (X x)
+    rw [he] at hback
+    exact hback
+  · exact transportField_contMDiff inst' h hn X
+
 end Poincare.CurvatureInstanceTransport
