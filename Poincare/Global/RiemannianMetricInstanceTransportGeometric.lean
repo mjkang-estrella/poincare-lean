@@ -117,6 +117,24 @@ theorem contMDiffAt_pull {b : M → Bilin} {L : M → E →L[ℝ] E} {x : M}
     ContMDiffAt I 𝓘(ℝ, Bilin) ∞ (fun y ↦ pull (b y) (L y)) x :=
   (hL.clm_precomp (F₃ := ℝ)).clm_comp (hb.clm_comp hL)
 
+/-- Smoothness of a tensor section with its bundle atlas specified explicitly. -/
+def sectionContMDiff (charts : ChartedSpace E M)
+    (hs : letI := charts; IsManifold I ∞ M) (s : M → Bilin) : Prop :=
+  letI := charts
+  letI : IsManifold I ∞ M := hs
+  ContMDiff I ((I).prod 𝓘(ℝ, Bilin)) ∞
+    (fun x : M ↦ (⟨x, s x⟩ : TotalSpace Bilin
+      (fun y : M ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)))
+
+/-- Smoothness of tensor sections is detected by the preferred trivializations. -/
+theorem sectionContMDiff_iff (s : M → Bilin) :
+    sectionContMDiff inst inferInstance s ↔
+      ∀ a, ContMDiffAt I 𝓘(ℝ, Bilin) ∞ (coefficients inst inferInstance s a) a := by
+  exact forall_congr' fun a ↦ Bundle.contMDiffAt_section
+    (IB := I) (F := Bilin)
+    («E» := fun y : M ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
+    (s := s) a
+
 variable (inst' : ChartedSpace E M)
   (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
 
@@ -199,5 +217,45 @@ theorem coefficients_transportedInner
   rw [J_inverse_trivialization inst' h a x ha ha',
     J_inverse_trivialization inst' h a x ha ha']
   exact (coefficients_apply (inst := inst) g.inner ha _ _).symm
+
+include h in
+/-- Source chart independence for maps into a normed vector space. -/
+theorem modelContMDiffAt_iff {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : M → F) (x : M) :
+    (letI := inst; ContMDiffAt I 𝓘(ℝ, F) ∞ f x) ↔
+      (letI := inst'; ContMDiffAt I 𝓘(ℝ, F) ∞ f x) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  let e := inst'.chartAt x
+  have he : e ∈ IsManifold.maximalAtlas I ∞ M := h (inst'.chart_mem_atlas x)
+  have hx : x ∈ e.source := inst'.mem_chart_source x
+  have hold := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he hx
+  letI := inst'
+  letI : IsManifold I ∞ M := hs
+  have he' : e ∈ IsManifold.maximalAtlas I ∞ M := IsManifold.chart_mem_maximalAtlas x
+  have hnew := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he' hx
+  exact hold.trans hnew.symm
+
+/-- The geometrically pulled-back tensor is smooth for the new bundle instance. -/
+theorem transportedInner_contMDiff (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    sectionContMDiff inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      (transportedInner (inst := inst) inst' h g) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  apply (@sectionContMDiff_iff M _ inst' hs _).2
+  intro a
+  apply (modelContMDiffAt_iff (inst := inst) inst' h _ a).1
+  have hg := (sectionContMDiff_iff g.inner).1 g.contMDiff a
+  have hD := contMDiffAt_D (newChart (inst := inst) inst' h a) (oldChart a) a
+    (inst'.mem_chart_source a) (inst.mem_chart_source a)
+  apply (contMDiffAt_pull hg hD).congr_of_eventuallyEq
+  filter_upwards [(inst.chartAt a).open_source.mem_nhds (inst.mem_chart_source a),
+    (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
+  exact coefficients_transportedInner inst' h g a x hx hx'
 
 end Poincare.RiemannianMetricInstanceTransportGeometric
