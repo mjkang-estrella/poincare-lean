@@ -88,5 +88,40 @@ theorem densityDerivative_measurable
         ((hJoint t (C.inverseChart i z)).of_le (by norm_num))
     exact (C.hasDerivAt_inverseChartDensity i z htime).tendsto_slope_zero_right.comp hstep
 
+/-- Only a local integrable bound remains in the chart-frame record once
+joint metric regularity is supplied. -/
+theorem chartFrameDensityData_of_joint_of_local_bound
+    (gt : ℝ → ClosedSmoothRiemannianMetric n M)
+    (hJoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hBound : let C := compactFiniteExtendedChartCover (n := n) (M := M)
+      ∀ t : ℝ, ∃ s ∈ 𝓝 t,
+        ∃ B : (i : Fin C.chartCount) → C.coordinateDomain i → ℝ,
+          (∀ i, Integrable (B i) (coordinateLebesgueMeasure (C.coordinateDomain i))) ∧
+          (∀ i, ∀ᵐ z ∂(coordinateLebesgueMeasure (C.coordinateDomain i)),
+            ∀ τ ∈ s, ‖finiteExtendedChartFrameDensityDerivative C gt τ i z‖ ≤ B i z)) :
+    Nonempty (CompactFiniteAtlasChartFrameDensityData gt) := by
+  classical
+  let C := compactFiniteExtendedChartCover (n := n) (M := M)
+  change ∀ t : ℝ, ∃ s ∈ 𝓝 t,
+    ∃ B : (i : Fin C.chartCount) → C.coordinateDomain i → ℝ,
+      (∀ i, Integrable (B i) (coordinateLebesgueMeasure (C.coordinateDomain i))) ∧
+      (∀ i, ∀ᵐ z ∂(coordinateLebesgueMeasure (C.coordinateDomain i)),
+        ∀ τ ∈ s, ‖finiteExtendedChartFrameDensityDerivative C gt τ i z‖ ≤ B i z) at hBound
+  choose s hs B hB hbound using hBound
+  refine ⟨{
+    timeSet := s
+    measureData := fun t ↦ FiniteExtendedChartFrameMeasureData.ofDensityIntegrable
+      C gt (s t) (fun τ _ i ↦ inverseChartDensity_integrable C (gt τ) i)
+    domination := fun t ↦ {
+      timeSet_mem := hs t
+      densityDerivative_aestronglyMeasurable_at := fun i ↦
+        (densityDerivative_measurable C gt hJoint t i).aestronglyMeasurable
+      dominatingFunction := B t
+      dominatingFunction_integrable := hB t
+      densityDerivative_bound := hbound t
+      timeDifferentiable := fun i z τ _ ↦
+        timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+          ((hJoint τ (C.inverseChart i z)).of_le (by norm_num)) } }⟩
+
 end HamiltonReactionCoreReduction
 end Poincare
