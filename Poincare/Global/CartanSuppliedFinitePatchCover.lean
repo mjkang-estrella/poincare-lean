@@ -130,5 +130,23 @@ theorem exists_patchCover : ∀ g : ClosedSmoothRiemannianMetric 3 M,
     obtain ⟨i, hi⟩ := hfinite x
     exact ⟨i, ball_subset_closedBall (hi (mem_ball_self hδ))⟩
 
+/-- A finite family of positive radii has a positive common lower bound. -/
+theorem exists_positive_lower_bound {ι : Type*} [Fintype ι]
+    (r : ι → ℝ) (hr : ∀ i, 0 < r i) : ∃ δ > (0 : ℝ), ∀ i, δ ≤ r i := by
+  classical
+  have h : ∀ s : Finset ι, ∃ δ > (0 : ℝ), ∀ i ∈ s, δ ≤ r i := by
+    intro s
+    induction s using Finset.induction_on with
+    | empty => exact ⟨1, zero_lt_one, by simp⟩
+    | @insert a s ha ih =>
+      obtain ⟨δ, hδ, hle⟩ := ih
+      refine ⟨min (r a) δ, lt_min (hr a) hδ, ?_⟩
+      intro i hi
+      rcases Finset.mem_insert.mp hi with rfl | hi
+      · exact min_le_left _ _
+      · exact (min_le_right _ _).trans (hle i hi)
+  obtain ⟨δ, hδ, hle⟩ := h Finset.univ
+  exact ⟨δ, hδ, fun i => hle i (Finset.mem_univ i)⟩
+
 end CartanSuppliedFinitePatchCover
 end Poincare
