@@ -47,6 +47,79 @@ theorem hasDerivAt_glue {f g : ℝ → X} {c : ℝ} {d : X}
     · simpa using heq
   exact (hl.union hr).hasDerivAt (by rw [Iic_union_Ici]; exact univ_mem)
 
+/-- A bounded continuous linear coefficient has a solution through any finite
+positive time. Short fundamental solutions are continued with matching derivatives. -/
+theorem exists_linearODE_on_Icc {A : ℝ → X →L[ℝ] X}
+    (hA : Continuous A) (K : ℝ≥0) (hK : ∀ t, ‖A t‖ ≤ (K : ℝ))
+    (x : X) (T : ℝ) :
+    ∃ f : ℝ → X, f 0 = x ∧
+      ∀ t ∈ Icc 0 T, HasDerivAt f (A t (f t)) t := by
+  let δ : ℝ := 1 / (4 * ((K : ℝ) + 1))
+  have hδ : 0 < δ := by dsimp [δ]; positivity
+  have hKδ : (K : ℝ) * δ ≤ 1 / 4 := by
+    dsimp [δ]
+    rw [mul_one_div, div_le_div_iff₀ (by positivity) (by norm_num : (0 : ℝ) < 4)]
+    nlinarith [K.2]
+  have hlocal : ∀ (c : ℝ) (y : X), ∃ f : ℝ → X, f c = y ∧
+      ∀ t ∈ Ioo (c - δ) (c + δ), HasDerivAt f (A t (f t)) t := by
+    intro c y
+    obtain ⟨P, hP0, hP, _⟩ :=
+      GeodesicFlowJointDerivative.exists_fundamentalSolution_on_prescribed_Icc hδ.le
+        (hA.comp (continuous_const.add continuous_id)).continuousOn K
+        (fun t _ => hK (c + t)) hKδ
+    refine ⟨fun t => P (t - c) y, ?_, ?_⟩
+    · simp [hP0]
+    · intro t ht
+      have htc : t - c ∈ Ioo (-δ) δ := by constructor <;> linarith [ht.1, ht.2]
+      have hp := (hP (t - c) (Ioo_subset_Icc_self htc)).hasDerivAt
+        (Icc_mem_nhds htc.1 htc.2)
+      have hpy := hp.clm_apply (hasDerivAt_const (t - c) y)
+      simpa using hpy.scomp t ((hasDerivAt_id t).sub_const c)
+  let d := δ / 2
+  have hd : 0 < d := half_pos hδ
+  have hdδ : d < δ := by dsimp [d]; linarith
+  have hstep : ∀ n : ℕ, ∃ f : ℝ → X, f 0 = x ∧
+      ∀ t ∈ Icc 0 ((n : ℝ) * d), HasDerivAt f (A t (f t)) t := by
+    intro n
+    induction n with
+    | zero =>
+      obtain ⟨f, hf0, hf⟩ := hlocal 0 x
+      refine ⟨f, hf0, ?_⟩
+      intro t ht
+      have : t = 0 := by simpa using ht
+      subst t
+      exact hf 0 ⟨by linarith, by linarith⟩
+    | succ n ih =>
+      obtain ⟨f, hf0, hf⟩ := ih
+      let c : ℝ := (n : ℝ) * d
+      have hc : 0 ≤ c := mul_nonneg (Nat.cast_nonneg _) hd.le
+      obtain ⟨k, hk0, hk⟩ := hlocal c (f c)
+      let F : ℝ → X := fun t => if t ≤ c then f t else k t
+      have hFc : F c = f c := by simp [F]
+      have hkc : HasDerivAt k (A c (f c)) c := by
+        simpa only [hk0] using hk c ⟨by linarith, by linarith⟩
+      refine ⟨F, by simpa [F, hc] using hf0, ?_⟩
+      intro t ht
+      have htend : t ≤ c + d := by
+        simpa only [Nat.cast_add, Nat.cast_one, add_mul, one_mul] using ht.2
+      rcases lt_trichotomy t c with hlt | heq | hgt
+      · have hft := hf t ⟨ht.1, hlt.le⟩
+        have he : F =ᶠ[𝓝 t] f := by
+          filter_upwards [Iio_mem_nhds hlt] with s hs
+          exact if_pos hs.le
+        simpa only [F, if_pos hlt.le] using hft.congr_of_eventuallyEq he
+      · subst t
+        simpa only [hFc] using hasDerivAt_glue (hf c ⟨hc, le_rfl⟩) hkc hk0.symm
+      · have hkt := hk t ⟨by linarith, by linarith⟩
+        have he : F =ᶠ[𝓝 t] k := by
+          filter_upwards [Ioi_mem_nhds hgt] with s hs
+          exact if_neg (not_le.mpr hs)
+        simpa only [F, if_neg (not_le.mpr hgt)] using hkt.congr_of_eventuallyEq he
+  obtain ⟨n, hn⟩ := exists_nat_gt (T / d)
+  obtain ⟨f, hf0, hf⟩ := hstep n
+  refine ⟨f, hf0, fun t ht => hf t ⟨ht.1, ht.2.trans ?_⟩⟩
+  exact ((div_lt_iff₀ hd).mp hn).le
+
 end LinearContinuation
 
 /-- A fundamental solution for the retained flow identifies its full state
