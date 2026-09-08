@@ -111,5 +111,23 @@ theorem development_eqOn_terminal_neighborhood [SimplyConnectedSpace M] :
     (sk.path z) ((sk.path x).trans q) (R.realization z) C
   exact congrArg CartanChain.ChainState.target (hroot.trans (htrans.trans hshort))
 
+/-- The verified terminal neighborhoods form a compatible restricted atlas. -/
+theorem exists_restrictedAtlas [SimplyConnectedSpace M] :
+  ∀ (S : System g) (sk : CartanAtlasRootedPathSkeleton.RootedCartanPathSkeleton g)
+    (R : RootedRealization S sk),
+  ∃ A : RestrictedAtlas M, A.germ = terminalGerm R ∧ A.diagonal = development R := by
+  intro S sk R
+  choose W hW hxW hsource heq using development_eqOn_terminal_neighborhood S sk R
+  let A : RestrictedAtlas M := {
+    germ := terminalGerm R
+    domain := W
+    isOpen_domain := hW
+    anchor_mem_domain := hxW
+    domain_subset_source := hsource
+    compatible := fun x y z hz => (heq x hz.1).symm.trans (heq y hz.2) }
+  refine ⟨A, rfl, ?_⟩
+  funext x
+  exact (heq x (hxW x)).symm
+
 end CartanSuppliedRestrictedDevelopment
 end Poincare
