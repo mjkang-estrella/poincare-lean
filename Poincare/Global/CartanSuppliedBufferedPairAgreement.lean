@@ -351,5 +351,13 @@ theorem uniformBufferedPairAgreement_of_constantCurvature :
       CartanSuppliedUniformPatchSwitch.UniformBufferedPairAgreement B :=
   fun _ B => CartanSuppliedBufferedPairAgreement.uniformBufferedPairAgreement B
 
+/-- Uniform pair agreement and the existing common-source estimate give
+one switch control for all buffered states and all label pairs. -/
+theorem exists_switchControl : HasConstantSectionalCurvature3 g 1 →
+    ∀ B : QuantitativeCover g, Nonempty (SwitchControl B) := by
+  intro hcurv B
+  exact exists_switchControl_of_uniformBufferedPairAgreement B
+    (uniformBufferedPairAgreement_of_constantCurvature hcurv B)
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
