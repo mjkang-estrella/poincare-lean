@@ -50,5 +50,16 @@ theorem buffered_eventuallyEq : ∀ (B : QuantitativeCover g)
       (B.source.buffer_subset c.1 hc.1) (B.target.buffer_subset c.2 hc.2)
   exact (hlocal a ha).trans (hlocal b hb).symm
 
+/-- H1 already supplies one common source ball for every buffered patch pair. -/
+theorem buffered_common_source (B : QuantitativeCover g) (a b : B.Label)
+    (s : CartanChain.ChainState g) (ha : B.Buffered a s) (hb : B.Buffered b s) :
+    letI : MetricSpace M := g.toMetricSpace
+    ball s.anchor B.step ⊆ (germ (B.interp a) s).source ∩
+      (germ (B.interp b) s).source := by
+  letI : MetricSpace M := g.toMetricSpace
+  intro z hz
+  exact ⟨(B.h1 a.1 a.2 s.anchor ha.1 s.target ha.2 s.alignment z hz).2.2.1,
+    (B.h1 b.1 b.2 s.anchor hb.1 s.target hb.2 s.alignment z hz).2.2.1⟩
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
