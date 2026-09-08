@@ -92,4 +92,15 @@ theorem mlieBracket_transportField (X Y : M → E) (x : M)
     mpullback_identity (inst := inst) inst' h] at hb
   exact hb.symm
 
+/-- The same identity respects the zero value of the derivative at nondifferentiable points. -/
+theorem extDerivFun_naturality_total (f : M → ℝ) (x : M) (v : E) :
+    (letI := inst'; extDerivFun («I» := I) f x v) =
+      (letI := inst; extDerivFun («I» := I) f x (J (inst := inst) inst' h x v)) := by
+  letI := inst
+  by_cases hf : MDifferentiableAt I 𝓘(ℝ, ℝ) f x
+  · exact extDerivFun_naturality (inst := inst) inst' h f x hf v
+  · have hf' : ¬ (letI := inst'; MDifferentiableAt I 𝓘(ℝ, ℝ) f x) :=
+      fun hf' ↦ hf ((modelMDifferentiableAt_iff (inst := inst) inst' h f x).2 hf')
+    simp only [extDerivFun, mfderiv, if_neg hf, if_neg hf', ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply]
+
 end Poincare.ConnectionInstanceNaturality
