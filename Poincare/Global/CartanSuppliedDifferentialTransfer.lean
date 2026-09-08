@@ -696,5 +696,28 @@ theorem local_equality_transfer :
   obtain ⟨V, hV, hVopen, hzV⟩ := mem_nhds_iff.mp hagree
   exact ⟨V, hVopen, hzV, fun _ hy => hV hy.1⟩
 
+omit [T2Space M] in
+/-- The geometric patch successor at its predecessor anchor is the same state. -/
+theorem patch_successor_at_anchor :
+  ∀ (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V),
+  U ⊆ IsometryInstantiate.cutoffOneLocus x₀ →
+  V ⊆ IsometryInstantiate.cutoffOneLocus p₀ →
+  ∀ (s : CartanChain.ChainState g)
+    (d : Data (patch C D) s s.anchor), d.successor = s := by
+  intro x₀ p₀ U V C D hU hV s d
+  obtain ⟨e, he, _⟩ := ofGeneric s s.anchor (DifferentialSuccessorZero.anchorData s)
+  have hmaps : map (patch C D) s =ᶠ[𝓝 s.anchor] map (generic g) s := by
+    rw [generic_map_eq]
+    exact patch_germ_eventuallyEq_generic x₀ p₀ U V C D hU hV s
+      d.source_anchor_valid d.target_anchor_valid
+  obtain ⟨W, hW, hWopen, hxW⟩ := mem_nhds_iff.mp hmaps
+  calc
+    d.successor = e.successor := successor_eq_of_eqOn_open
+      (patch C D) (generic g) s s s.anchor d e W hWopen hxW hW
+    _ = (DifferentialSuccessorZero.anchorData s).successor := he
+    _ = s := DifferentialSuccessorZero.anchorData_successor s
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
