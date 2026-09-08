@@ -10,6 +10,7 @@ All manifold radii precede the moving anchors, alignments, and data.
 
 noncomputable section
 set_option maxHeartbeats 1200000
+set_option maxRecDepth 4000
 open Filter Metric Set
 open scoped Manifold ContDiff Topology NNReal
 namespace Poincare
@@ -304,6 +305,113 @@ theorem exists_uniform_endpoint_displacement_radius {x₀ : M} {U : Set E}
     simpa only [C.endpoint_zero x hxC, dist_self] using hε
   obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
   exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
+
+/-- The remaining analytic requirement: the actual derivative-mapped,
+time-normalized source trajectory solves the target geodesic equation with
+the actual successor velocity. Both radii precede every moving parameter. -/
+def UniformMappedGeodesicEquation
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3) : Prop :=
+  letI : MetricSpace M := g.toMetricSpace
+  ∃ η > (0 : ℝ), ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+    ∀ (L : CartanMap.TangentAlignment g x p) (z : M)
+      (d : Data (patch C D) ⟨x, p, L⟩ z), dist z x < η →
+      ∀ v : E, ‖v‖ < ρ → v ∈ (C.endpoint z).source →
+        let F := chartMap (patch C D) ⟨x, p, L⟩
+        let q := (extChartAt I x₀ z, C.T⁻¹ • v)
+        let γ := fun t : ℝ => ((C.α q (C.T * t)).1, C.T • (C.α q (C.T * t)).2)
+        let β := FTransitionGeodesicMap.mappedState F γ
+        β 0 = (extChartAt I p₀ (map (patch C D) ⟨x, p, L⟩ z),
+          linear (patch C D) d.successor v) ∧
+        ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt β
+          (geodesicFlowField (GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀) (β t))
+          (Icc (0 : ℝ) 1) t
+
+/-- Full-interval uniqueness and common-source control turn the remaining
+mapped geodesic equation into the frozen endpoint identity. -/
+theorem target_of_uniformMappedGeodesicEquation
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors)
+    (he : UniformMappedGeodesicEquation C D K H) :
+    FixedChartLocalSuccessorEquality.UniformEndpointReanchoring (patch C D) K H := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηe, hηe, ρe, hρe, heq⟩ := he
+  obtain ⟨ηc, hηc, εc, hεc, hcommon⟩ :=
+    FixedChartLocalSuccessorEquality.exists_uniform_common_source_radii C D K H hK hKC hH hHD
+  obtain ⟨K', hK', hKK', hK'C⟩ := exists_compact_between hK C.isOpen_anchors hKC
+  obtain ⟨δ, hδ, hδK'⟩ := hK.exists_cthickening_subset_open isOpen_interior hKK'
+  obtain ⟨ρd, hρd, hdisplace⟩ := exists_uniform_endpoint_displacement_radius C K' hK' hK'C hεc
+  refine ⟨min ηe (min ηc δ), lt_min hηe (lt_min hηc hδ),
+    min ρe ρd, lt_min hρe hρd, ?_⟩
+  intro x hx p hp L z d hz v hv hvsrc
+  have hze := hz.trans_le (min_le_left _ _)
+  have hzc := (hz.trans_le (min_le_right _ _)).trans_le (min_le_left _ _)
+  have hzδ := (hz.trans_le (min_le_right _ _)).trans_le (min_le_right _ _)
+  have hzK' : z ∈ K' := interior_subset
+    (hδK' (mem_cthickening_of_dist_le z x δ K hx hzδ.le))
+  let Q := patch C D
+  let s : CartanChain.ChainState g := ⟨x, p, L⟩
+  let y := C.endpoint z v
+  have hvsrc' : v ∈ (C.endpoint z).source := hvsrc
+  have hyz : dist y z < εc := hdisplace z hzK' v (hv.trans_le (min_le_right _ _))
+  obtain ⟨hyold, hynew⟩ := hcommon x hx p hp L z d hzc hyz
+  have hinv : C.normal z y = v := (C.endpoint z).left_inv hvsrc'
+  have hvt : linear Q d.successor v ∈ (D.endpoint (map Q s z)).source := by
+    have h := hynew.2.2
+    change linear Q d.successor (C.normal z y) ∈ (D.endpoint (map Q s z)).source at h
+    rw [hinv] at h
+    exact h
+  let qt := (extChartAt I p₀ (map Q s z), D.T⁻¹ • linear Q d.successor v)
+  let γt := fun t : ℝ => ((D.α qt (D.T * t)).1, D.T • (D.α qt (D.T * t)).2)
+  have hqt := D.endpoint_source_initial_mem hvt
+  have hγt : ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt γt
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀) (γt t))
+      (Icc (0 : ℝ) 1) t := fun _ ht => normalizedFlow_hasDerivWithinAt D hqt ht
+  have hγ0 : γt 0 = (extChartAt I p₀ (map Q s z), linear Q d.successor v) := by
+    dsimp only [γt]
+    rw [mul_zero, (D.flow_law qt hqt).1]
+    simp [qt, smul_smul, D.T_pos.ne']
+  obtain ⟨hβ0, hβ⟩ := heq x hx p hp L z d hze v (hv.trans_le (min_le_left _ _)) hvsrc'
+  have hstates := geodesic_eqOn_unitInterval p₀ hβ hγt (hβ0.trans hγ0.symm)
+  have hend := congrArg Prod.fst (hstates (show (1 : ℝ) ∈ Icc (0 : ℝ) 1 by simp))
+  simp only [FTransitionGeodesicMap.mappedState, γt, mul_one] at hend
+  change chartMap Q s (FixedChartUniformDifferentialPullback.normalizedEndpoint C
+      (extChartAt I x₀ z, v)) =
+    FixedChartUniformDifferentialPullback.normalizedEndpoint D
+      (extChartAt I p₀ (map Q s z), linear Q d.successor v) at hend
+  have hysrc : y ∈ (extChartAt I x₀).source := by
+    have h := (C.endpoint z).map_source hvsrc'
+    change y ∈ (C.normal z).source at h
+    rw [C.normal_source] at h
+    exact h.1
+  have hmpsrc : map Q s y ∈ (extChartAt I p₀).source := by
+    have h := (D.endpoint p).map_source hyold.2.2
+    change map Q s y ∈ (D.normal p).source at h
+    rw [D.normal_source] at h
+    exact h.1
+  have htesrc : D.endpoint (map Q s z) (linear Q d.successor v) ∈
+      (extChartAt I p₀).source := by
+    have h := (D.endpoint (map Q s z)).map_source hvt
+    change D.endpoint (map Q s z) (linear Q d.successor v) ∈ (D.normal (map Q s z)).source at h
+    rw [D.normal_source] at h
+    exact h.1
+  have hcs : extChartAt I x₀ y =
+      FixedChartUniformDifferentialPullback.normalizedEndpoint C (extChartAt I x₀ z, v) :=
+    FixedChartUniformDifferentialPullback.coordinateEndpoint_eq_normalizedEndpoint C z v hvsrc'
+  have hct : extChartAt I p₀ (D.endpoint (map Q s z) (linear Q d.successor v)) =
+      FixedChartUniformDifferentialPullback.normalizedEndpoint D
+        (extChartAt I p₀ (map Q s z), linear Q d.successor v) :=
+    FixedChartUniformDifferentialPullback.coordinateEndpoint_eq_normalizedEndpoint
+      D (map Q s z) (linear Q d.successor v) hvt
+  have hm : chartMap Q s (extChartAt I x₀ y) = extChartAt I p₀ (map Q s y) :=
+    chartMap_apply_host Q s y hysrc
+  rw [← hcs, hm, ← hct] at hend
+  exact (extChartAt I p₀).injOn hmpsrc htesrc hend
 
 end FixedChartUniformEndpointReanchoring
 end Poincare
