@@ -236,5 +236,38 @@ theorem normalizedFlow_hasDerivWithinAt {x₀ : M} {U : Set E}
   have hpair := hp.prodMk (hv.const_smul C.T)
   simpa [geodesicFlowField, smul_smul] using hpair
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Smooth chart geodesic fields have uniqueness on the entire unit interval.
+The Lipschitz bound is taken on a compact ball containing both trajectories. -/
+theorem geodesic_eqOn_unitInterval
+    (p₀ : RoundSphere3) {β γ : ℝ → E × E}
+    (hβ : ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt β
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀) (β t))
+      (Icc (0 : ℝ) 1) t)
+    (hγ : ∀ t ∈ Icc (0 : ℝ) 1, HasDerivWithinAt γ
+      (geodesicFlowField (GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀) (γ t))
+      (Icc (0 : ℝ) 1) t)
+    (h0 : β 0 = γ 0) : EqOn β γ (Icc (0 : ℝ) 1) := by
+  have hcβ := HasDerivWithinAt.continuousOn hβ
+  have hcγ := HasDerivWithinAt.continuousOn hγ
+  have hcompact := (isCompact_Icc.image_of_continuousOn hcβ).union
+    (isCompact_Icc.image_of_continuousOn hcγ)
+  obtain ⟨a, ha⟩ := hcompact.isBounded.subset_closedBall (0 : E × E)
+  have hF := GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff_two
+    roundSphereMetric3 p₀
+  obtain ⟨B, hB⟩ := hF.contDiffOn.exists_lipschitzOnWith (by norm_num)
+    (convex_closedBall (0 : E × E) a) (isCompact_closedBall (0 : E × E) a)
+  apply ODE_solution_unique_of_mem_Icc_right (fun _ _ => hB) hcβ _ _ hcγ _ _ h0
+  · intro t ht
+    exact (hβ t (Ico_subset_Icc_self ht)).mono_of_mem_nhdsWithin
+      (Icc_mem_nhdsGE_of_mem ht)
+  · intro t ht
+    exact ha (Or.inl ⟨t, Ico_subset_Icc_self ht, rfl⟩)
+  · intro t ht
+    exact (hγ t (Ico_subset_Icc_self ht)).mono_of_mem_nhdsWithin
+      (Icc_mem_nhdsGE_of_mem ht)
+  · intro t ht
+    exact ha (Or.inr ⟨t, Ico_subset_Icc_self ht, rfl⟩)
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
