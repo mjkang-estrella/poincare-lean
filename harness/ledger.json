@@ -3942,7 +3942,14 @@
       "status": "done",
       "date": "2026-09-08",
       "report": "harness/reports/geodesic-position-derivative_done.md"
+    },
+    {
+      "id": "uniform-normal-radius",
+      "tier": "M5",
+      "status": "done",
+      "date": "2026-09-08",
+      "report": "harness/reports/uniform-normal-radius_done.md"
     }
   ],
-  "current_goal": "RESUME POINT (2026-09-08): controlled-instance reduction is UNCONDITIONAL (ConnectionInstanceNaturality.exists_controlled_recognition_reduction'). Next obstruction: per-anchor Classical.choose in the exponential layer (cutoff, PL package, IFT neighborhood) blocks joint-in-anchor statements; re-found the exponential layer uniformly on the controlled instance. Landed: GeodesicFlowJointDerivative (joint C1 of the chart flow in the initial state). In flight: uniform-normal-radius (joint IFT on (z,v) -> (z, exp_z v)). Hamilton front: harness/v2/missions/hamilton-front.json."
+  "current_goal": "RESUME POINT (2026-09-08): controlled-instance reduction is UNCONDITIONAL (ConnectionInstanceNaturality.exists_controlled_recognition_reduction'). Next obstruction: per-anchor Classical.choose in the exponential layer (cutoff, PL package, IFT neighborhood) blocks joint-in-anchor statements; re-found the exponential layer uniformly on the controlled instance. Landed: GeodesicFlowJointDerivative (joint C1 of the chart flow in the initial state). Landed: FixedChartUniformNormalRadius (uniform normal radius on compact chart regions). Next: parametrize the Cartan chain over an exponential-chart family (inventory task chain-parametrization-inventory), then run it on the controlled instance with the uniform family. Hamilton front: harness/v2/missions/hamilton-front.json."
 }

@@ -453,9 +453,29 @@ proves joint `C¹` dependence of the fixed-chart geodesic flow on the initial
 state with a fundamental solution of the full variational equation, and
 instantiates it on the repository's uniform Picard–Lindelöf chart flow
 (`exists_uniform_local_geodesic_chart_flow_initialState_C1`). The second
-step, dispatched as `harness/tasks/uniform-normal-radius.md`, is the joint
-inverse-function argument giving a uniform normal radius on compact chart
-regions.
+step landed too: `Poincare/Global/FixedChartUniformNormalRadius.lean` (task
+`uniform-normal-radius`, nineteen declarations, standard axiom footprint):
+stationarity of zero-velocity flows, the joint endpoint derivative
+`(u, w) ↦ (u, u + T • w)`, strict differentiability, the joint
+inverse-function neighborhood, and
+`exists_uniform_local_geodesic_chart_flow_normal_neighborhoods`: one
+positive normal radius for every anchor in a compact region of the chart's
+initial-position ball, with injectivity and ball coverage. Both are wired
+into the root import.
+
+Design conclusion for the next campaign. A globally jointly regular
+`CartanSourceExponential.Family` cannot in general be continuous across the
+chart switches of a finite atlas, so the usable notion is local: near every
+anchor one fixed chart and one uniform exponential. The Cartan chain
+(`CartanMap.openPartialHomeomorph`, `DifferentialInducedSuccessor.Data`, and
+their consumers) is hardwired to the per-anchor `expAt` selector, so the
+chain has to be parametrized over an exponential-chart family with the
+uniform family as an instance; germ-level theorems transfer by per-anchor
+agreement (ODE uniqueness on the cutoff-one zone), joint-in-anchor theorems
+must be re-proved for the uniform family. Task
+`harness/tasks/chain-parametrization-inventory.md` (analysis only) produces
+the exact dependency inventory and the first five bounded tasks of that
+parametrization.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
