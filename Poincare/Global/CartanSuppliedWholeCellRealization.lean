@@ -147,5 +147,24 @@ theorem exists_subdivision : ∀ {x y : M} (p : Path x y) (r : ℝ),
       simpa [hab] using hr
   exact ⟨⟨times, K, hrzero, hrmono, hrstrict, hrone, hwhole⟩⟩
 
+/-- Once the whole-cell subdivision is fixed, H1 supplies a sticky reached chain. -/
+theorem exists_realization : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (p : Path initial.anchor y),
+    ∃ R : Realization S initial p,
+      Sticky S.cover R.preferred (fun n => p (R.subdivision.time n)) initial R.chain := by
+  intro S initial y p
+  obtain ⟨subdivision⟩ := exists_subdivision (g := g) p S.mesh (mesh_pos S)
+  letI : MetricSpace M := g.toMetricSpace
+  have hinitial : initial.anchor = p (subdivision.time 0) := by
+    simp [subdivision.zero]
+  have hsmall : ∀ n, dist (p (subdivision.time (n + 1)))
+      (p (subdivision.time n)) < S.mesh := by
+    intro n
+    have hmono := subdivision.mono (Nat.le_succ n)
+    exact subdivision.wholeCell n _ _ ⟨hmono, le_rfl⟩ ⟨le_rfl, hmono⟩
+  obtain ⟨preferred, chain, _hzero, hsticky⟩ :=
+    exists_sticky_chain S (fun n => p (subdivision.time n)) initial hinitial hsmall
+  exact ⟨⟨subdivision, preferred, chain⟩, hsticky⟩
+
 end CartanSuppliedWholeCellRealization
 end Poincare
