@@ -566,10 +566,20 @@ identifies the exact hardwired definitions (`CartanMap.openPartialHomeomorph`,
 adapters), proposes parametrizing the interpretation of a Cartan state and its
 differential successor over supplied source and target exponential families
 (about fourteen new files), and specifies the first five bounded tasks with
-exact Lean targets. Tasks 1 (`supplied-source-map`, the supplied-family germ
-and its agreement with `CartanMap.cartanMap` on the generic families) and 3
-(`fixed-chart-endpoint-slices`, per-anchor slices of the joint product
-inverse) are dispatched; tasks 2, 4, and 5 follow in order from the report.
+exact Lean targets. Tasks 1 to 4 of that
+plan are landed on `main`, each gate PASS with the module-wide axiom scan and
+wired into the root import: `CartanSuppliedSourceMap.lean` (the germ of a
+supplied source family and target family, agreeing with `CartanMap.cartanMap`
+on the generic families), `CartanSuppliedSourceGermTransfer.lean` (germ
+agreement transfers along agreement of normal coordinates, with an open
+common source), `FixedChartEndpointSlices.lean` (per-anchor slices of a
+joint product inverse with exact loci and the four joint regularity laws),
+and `FixedChartUniformSourceNormal.lean` (the retained `Patch` built from the
+uniform fixed-chart exponential, its `normal` charts, anchor laws, open joint
+source locus, continuous evaluator, and `rawLocalFamily`). Task 5
+(`parametrization-task-5`, per-anchor germ agreement of the patch's
+normalized endpoint with the generic `expAt` in the anchor frame) is
+dispatched; the remaining files of the plan follow the report.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
