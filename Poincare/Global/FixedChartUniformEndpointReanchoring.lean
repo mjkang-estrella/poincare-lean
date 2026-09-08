@@ -161,5 +161,58 @@ theorem christoffel_transition_of_metric_germ
     g x₀ p₀ F (fderiv ℝ F q) rfl hcut₀ hcut₁ b₀ b₁ hb₀ hb₁
     (fun _ _ => rfl) (fun _ _ => rfl) v hraw
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+private theorem anchor_cutoff {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    {x : M} (hx : x ∈ C.anchors) :
+    ∀ᶠ w in 𝓝 (extChartAt I x₀ x), GeodesicTransport.cutoff (n := 3) x₀ w = 1 := by
+  have hq : (extChartAt I x₀ x, (0 : E)) ∈
+      closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ) := by
+    exact ball_subset_closedBall (by simpa using C.A_subset hx.2)
+  have h := (FixedChartMovingPositionJacobi.flow_mem_target_cutoffOne C hU hq
+    (show (0 : ℝ) ∈ Icc (-C.T) C.T by constructor <;> linarith [C.T_pos])).2
+  rw [(C.flow_law _ hq).1] at h
+  exact h
+
+/-- On one uniform neighborhood, the only extra regularity needed for the
+supplied map's Christoffel law is differentiability of its derivative. -/
+theorem exists_uniform_christoffel_transition_of_differentiable_fderiv
+    (x₀ : M) (p₀ : RoundSphere3) (U V : Set E)
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (hcurv : HasConstantSectionalCurvature3 g 1)
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (hV : V ⊆ IsometryInstantiate.cutoffOneLocus p₀)
+    (K : Set M) (H : Set RoundSphere3) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    (hH : IsCompact H) (hHD : H ⊆ D.anchors) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ η > (0 : ℝ), ∀ x ∈ K, ∀ p ∈ H,
+      ∀ (L : CartanMap.TangentAlignment g x p) (z : M), dist z x < η →
+      let F := chartMap (patch C D) ⟨x, p, L⟩
+      let q := extChartAt I x₀ z
+      DifferentiableAt ℝ (fderiv ℝ F) q → ∀ v : E,
+        GeodesicTransport.chartChristoffelField roundSphereMetric3 p₀ (F q)
+            (fderiv ℝ F q v) (fderiv ℝ F q v) =
+          fderiv ℝ F q (GeodesicTransport.chartChristoffelField g x₀ q v v) -
+            fderiv ℝ (fderiv ℝ F) q v v := by
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨ηg, hηg, hgerm⟩ := exists_uniform_chartMetric_pullback_germ
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  obtain ⟨ηd, hηd, hdata⟩ := FixedChartMovingPositionJacobi.exists_radius g
+    x₀ p₀ U V C D hcurv hU hV K H hK hKC hH hHD
+  refine ⟨min ηg ηd, lt_min hηg hηd, ?_⟩
+  intro x hx p hp L z hz
+  dsimp only
+  intro hD v
+  obtain ⟨hzC, hpD, _⟩ := hdata x hx p hp L z (hz.trans_le (min_le_right _ _))
+  apply christoffel_transition_of_metric_germ x₀ p₀ _ _
+    (hgerm x hx p hp L z (hz.trans_le (min_le_left _ _))) hD (anchor_cutoff C hU hzC) _ v
+  have heq : chartMap (patch C D) ⟨x, p, L⟩ (extChartAt I x₀ z) =
+      extChartAt I p₀ (map (patch C D) ⟨x, p, L⟩ z) :=
+    chartMap_apply_host (patch C D) ⟨x, p, L⟩ z hzC.1
+  rw [heq]
+  exact anchor_cutoff D hV hpD
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
