@@ -56,5 +56,43 @@ theorem coordinateEndpoint_eq_normalizedEndpoint {x₀ : M} {U : Set E}
   rw [(chartAt E x₀).right_inv ht, congrFun C.P_eq]
   rfl
 
+/-- Invertible velocity derivatives persist jointly in position and velocity. -/
+theorem normalizedEndpoint_eventually_equiv {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (hx : x ∈ C.anchors) :
+    ∀ᶠ q : E × E in 𝓝 (extChartAt I x₀ x, 0),
+      ∃ A : E ≃L[ℝ] E,
+        HasStrictFDerivAt (fun v => normalizedEndpoint C (q.1, v))
+          (A : E →L[ℝ] E) q.2 := by
+  let q₀ : E × E := (extChartAt I x₀ x, 0)
+  have hmem : (extChartAt I x₀ x, (0 : E)) ∈
+      ball (extChartAt I x₀ x₀, 0) (C.r : ℝ) := by
+    simpa using C.A_subset hx.2
+  have hc : ContDiffAt ℝ 1 (normalizedEndpoint C) q₀ := by
+    have h := (C.endpoint_C1.contDiffAt (isOpen_ball.mem_nhds hmem)).fst
+    have hi : ContDiffAt ℝ 1 (fun q : E × E => (q.1, C.T⁻¹ • q.2)) q₀ :=
+      contDiffAt_fst.prodMk ((contDiffAt_const (c := C.T⁻¹)).smul contDiffAt_snd)
+    have h' : ContDiffAt ℝ 1 (fun q => (C.α q C.T).1)
+        (q₀.1, C.T⁻¹ • q₀.2) := by simpa [q₀] using h
+    exact h'.comp q₀ (f := fun q : E × E => (q.1, C.T⁻¹ • q.2)) hi
+  let d : E × E → E →L[ℝ] E := fun q =>
+    (fderiv ℝ (normalizedEndpoint C) q).comp (ContinuousLinearMap.inr ℝ E E)
+  have hd : ContinuousAt d q₀ :=
+    (hc.continuousAt_fderiv one_ne_zero).clm_comp continuousAt_const
+  have hslice : ∀ q, ContDiffAt ℝ 1 (normalizedEndpoint C) q →
+      HasStrictFDerivAt (fun v => normalizedEndpoint C (q.1, v)) (d q) q.2 := by
+    intro q hq
+    exact (hq.hasStrictFDerivAt one_ne_zero).comp q.2
+      ((hasStrictFDerivAt_const q.1 q.2).prodMk (hasStrictFDerivAt_id q.2))
+  have hd0 : d q₀ = ContinuousLinearMap.id ℝ E :=
+    (hslice q₀ hc).hasFDerivAt.unique
+      (normalizedEndpoint_hasStrictFDerivAt_zero C x hx).hasFDerivAt
+  have hunit : IsUnit (d q₀) := by rw [hd0]; exact isUnit_one
+  have he : ∀ᶠ q in 𝓝 q₀, IsUnit (d q) := hd (Units.isOpen.mem_nhds hunit)
+  filter_upwards [he, hc.eventually (by norm_num)] with q hq hCq
+  rcases hq with ⟨a, ha⟩
+  refine ⟨ContinuousLinearEquiv.ofUnit a, ?_⟩
+  simpa only [← ha] using hslice q hCq
+
 end FixedChartUniformDifferentialPullback
 end Poincare
