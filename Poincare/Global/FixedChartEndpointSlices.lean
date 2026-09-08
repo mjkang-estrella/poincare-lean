@@ -96,4 +96,10 @@ theorem continuousOn_slice_eval (A : Set E) :
       {q : E × E | q.1 ∈ A ∧ q.2 ∈ (slice P hfst q.1).source} := by
   exact P.continuousOn.snd.mono (fun _ hq => hq.2)
 
+/-- Inverse evaluation is jointly continuous on the exact restricted target. -/
+theorem continuousOn_slice_symmEval (A : Set E) :
+    ContinuousOn (fun q : E × E => (slice P hfst q.1).symm q.2)
+      {q : E × E | q.1 ∈ A ∧ q.2 ∈ (slice P hfst q.1).target} := by
+  exact P.continuousOn_symm.snd.mono (fun _ hq => hq.2)
+
 end Poincare.FixedChartEndpointSlices
