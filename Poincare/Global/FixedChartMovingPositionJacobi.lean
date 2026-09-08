@@ -549,5 +549,14 @@ theorem movingInitialPositionJacobiComparison (g : ClosedSmoothRiemannianMetric 
     dsimp only at hsource htarget
     rw [hsource, htarget, hl a b, hl a v, hl b v, hl v v]
 
+variable [CompactSpace M] [ConnectedSpace M]
+
+/-- The moving-position comparison discharges the uniform nonzero metric
+pullback obligation for the actual retained endpoint maps. -/
+theorem uniformNonzeroMetricPullback (g : ClosedSmoothRiemannianMetric 3 M) :
+    FixedChartUniformDifferentialPullback.UniformNonzeroMetricPullback g :=
+  FixedChartUniformJacobiComparison.target_of_movingInitialPositionJacobiComparison
+    (movingInitialPositionJacobiComparison g)
+
 end FixedChartMovingPositionJacobi
 end Poincare
