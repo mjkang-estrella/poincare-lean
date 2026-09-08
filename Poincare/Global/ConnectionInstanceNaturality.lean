@@ -103,4 +103,38 @@ theorem extDerivFun_naturality_total (f : M → ℝ) (x : M) (v : E) :
       fun hf' ↦ hf ((modelMDifferentiableAt_iff (inst := inst) inst' h f x).2 hf')
     simp only [extDerivFun, mfderiv, if_neg hf, if_neg hf', ContinuousLinearMap.comp_apply, ContinuousLinearMap.zero_apply]
 
+section Connection
+variable [T2Space M]
+
+/-- The raw conjugated derivative satisfies Leibniz without a naturality premise. -/
+theorem conjugatedDerivative_leibniz
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) (X : M → E) (f : M → ℝ) (x : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) X x)
+    (hf : letI := inst'; MDifferentiableAt I 𝓘(ℝ, ℝ) f x) (v : E) :
+    conjugatedDerivative (inst := inst) inst' h g (f • X) x v =
+      f x • conjugatedDerivative (inst := inst) inst' h g X x v +
+        (letI := inst'; extDerivFun («I» := I) f x v) • X x := by
+  letI := inst
+  have hXold := inverseTransportField_mdiffAt (inst := inst) inst' h X x hX
+  have hfold := (modelMDifferentiableAt_iff (inst := inst) inst' h f x).2 hf
+  have hsmul : inverseTransportField (inst := inst) inst' h (f • X) =
+      f • inverseTransportField (inst := inst) inst' h X := by
+    funext y
+    exact (J (inst := inst) inst' h y).map_smul (f y) (X y)
+  unfold conjugatedDerivative
+  rw [hsmul, g.leviCivita.isCovariantDerivativeOnUniv.leibniz hXold hfold]
+  change (J (inst := inst) inst' h x).symm
+      (f x • (show E from g.leviCivita (inverseTransportField (inst := inst) inst' h X) x
+        (J (inst := inst) inst' h x v)) +
+        extDerivFun («I» := I) f x (J (inst := inst) inst' h x v) •
+          J (inst := inst) inst' h x (X x)) = _
+  rw [map_add, map_smul, map_smul, ContinuousLinearEquiv.symm_apply_apply]
+  congr 1
+  exact congrArg (fun r : ℝ ↦ r • X x)
+    (extDerivFun_naturality (inst := inst) inst' h f x hfold v).symm
+
+end Connection
 end Poincare.ConnectionInstanceNaturality
