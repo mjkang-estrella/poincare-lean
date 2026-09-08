@@ -358,4 +358,14 @@ theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Jet
     (h : HamiltonReactionCore3Jet.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
   hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3 (hamiltonReactionCore3_of_jet h)
 
+/-- Universal jet-form core existence, with independent manifold and
+compact-parameter universes and the original compatible Borel structures. -/
+def UniversalHamiltonReactionCoreJetStatement : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3Jet.{u, v} N
+
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
