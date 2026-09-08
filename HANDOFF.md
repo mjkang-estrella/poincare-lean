@@ -857,8 +857,12 @@ path independence under `SimplyConnectedSpace M`). Task 17
 (`supplied-terminal-transport`) landed (`CartanSuppliedTerminalTransport.lean`:
 short paths inside a mesh ball, every short-path terminal datum equals the
 full reached state, and concatenation transport from the exact reached
-middle state). Task 18 (`supplied-restricted-development`) is dispatched;
-19 (`CartanSuppliedUnitRecognition`) follows.
+middle state). Task 18 (`supplied-restricted-development`) landed
+(`CartanSuppliedRestrictedDevelopment.lean`: the total rooted-endpoint
+developing map equals the terminal fallback germ on an open neighborhood of
+every point, hence forms a restricted atlas and is a local homeomorphism to
+the round sphere under `SimplyConnectedSpace M`). Task 19
+(`supplied-unit-recognition`, the final adapter) is dispatched.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.

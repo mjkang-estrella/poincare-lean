@@ -22,6 +22,7 @@ import Poincare.Global.CartanSuppliedFinitePatchCover
 import Poincare.Global.CartanSuppliedHomotopyEndpoints
 import Poincare.Global.CartanSuppliedPatchPolicy
 import Poincare.Global.CartanSuppliedReachableChain
+import Poincare.Global.CartanSuppliedRestrictedDevelopment
 import Poincare.Global.CartanSuppliedSourceGermTransfer
 import Poincare.Global.CartanSuppliedSourceMap
 import Poincare.Global.CartanSuppliedSubdivisionTransport
