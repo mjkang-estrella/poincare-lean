@@ -129,5 +129,21 @@ theorem exists_restrictedAtlas [SimplyConnectedSpace M] :
   funext x
   exact (heq x (hxW x)).symm
 
+omit inst [IsManifold I ∞ M] [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Restricting each supplied germ to its atlas domain realizes the diagonal locally. -/
+theorem isLocalHomeomorph_diagonal : ∀ A : RestrictedAtlas M,
+    IsLocalHomeomorph A.diagonal := by
+  intro A
+  apply IsLocalHomeomorph.mk
+  intro x
+  let e := (A.germ x).restrOpen (A.domain x) (A.isOpen_domain x)
+  refine ⟨e, ?_, ?_⟩
+  · change x ∈ (A.germ x).source ∩ A.domain x
+    exact ⟨A.domain_subset_source x (A.anchor_mem_domain x), A.anchor_mem_domain x⟩
+  · intro z hz
+    change z ∈ (A.germ x).source ∩ A.domain x at hz
+    change A.germ z z = A.germ x z
+    exact A.compatible z x ⟨A.anchor_mem_domain z, hz.2⟩
+
 end CartanSuppliedRestrictedDevelopment
 end Poincare
