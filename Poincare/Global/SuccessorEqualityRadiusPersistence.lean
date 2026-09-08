@@ -46,6 +46,7 @@ theorem successor_germ_eq_of_chartAt_eq
     CartanMap.cartanMap g z (s.map z) d.alignment b
   simp only [CartanMap.cartanMap_apply, hab]
 
+omit [T2Space M] in
 /-- Equality with an injective predecessor forces injectivity of the total
 preferred chart on the part of the equality set in the predecessor source. -/
 theorem injOn_chartAt_of_eqOn_successor
@@ -104,6 +105,35 @@ of that same neighborhood. The points need not lie in that chart's source. -/
 def PreferredChartCollisionAccumulation (x : M) : Prop :=
   ∀ V : Set M, V ∈ 𝓝 x →
     ∃ z ∈ V, ∃ a ∈ V, ∃ b ∈ V, a ≠ b ∧ chartAt E z a = chartAt E z b
+
+/-- Constant total extensions outside balls shrinking toward a nonisolated
+anchor produce the precise collision obstruction. The condition concerns
+only off-ball chart values, with no assumptions on Cartan-map extensions. -/
+theorem preferredChartCollisionAccumulation_of_shrinking_constant_extensions
+    (g : ClosedSmoothRiemannianMetric 3 M) (x : M)
+    (hacc : AccPt x (𝓟 (univ : Set M)))
+    (hconstant :
+      letI : MetricSpace M := g.toMetricSpace
+      ∀ z : M, z ≠ x → ∀ a b : M,
+        dist z x / 2 ≤ dist a z → dist z x / 2 ≤ dist b z →
+          chartAt E z a = chartAt E z b) :
+    PreferredChartCollisionAccumulation x := by
+  letI : MetricSpace M := g.toMetricSpace
+  intro V hV
+  have hnear := accPt_iff_nhds.mp hacc
+  rcases hnear V hV with ⟨z, hz, hzx⟩
+  have hdist : 0 < dist z x := dist_pos.mpr hzx
+  have hsmall : 0 < dist z x / 4 := div_pos hdist (by norm_num)
+  rcases hnear (V ∩ ball x (dist z x / 4))
+      (inter_mem hV (ball_mem_nhds x hsmall)) with ⟨b, hb, hbx⟩
+  refine ⟨z, hz.1, x, mem_of_mem_nhds hV, b, hb.1.1, hbx.symm, ?_⟩
+  apply hconstant z hzx
+  · rw [dist_comm x z]
+    exact half_le_self hdist.le
+  · have hbsmall : dist b x < dist z x / 4 := hb.1.2
+    have htriangle := dist_triangle z b x
+    rw [dist_comm z b] at htriangle
+    linarith
 
 /-- Accumulating preferred-chart collisions rule out a positive common
 output radius even with predecessor source and target anchors fixed. -/
