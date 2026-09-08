@@ -145,4 +145,57 @@ theorem secondJet_cancellation (A : Matrix (Fin 3) (Fin 3) ℝ)
       rw [hswap v w, hswap w v]
       ring
 
+section Manifold
+universe u
+variable {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace E M] [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+
+set_option maxHeartbeats 1000000 in
+set_option synthInstance.maxHeartbeats 100000 in
+set_option maxSynthPendingDepth 100 in
+/-- The genuine metric second derivative satisfies all the symmetry
+conditions needed for the formal second-order cancellation. This statement
+does not identify the formal parts with the actual curvature and Lie terms. -/
+theorem chartMetric_secondJet_cancellation
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let H := fun a b p q => fderiv ℝ (fderiv ℝ G) z a b p q;
+    -2 * ricciSecondJet (inverseEntries (G z)) H v w +
+      lieSecondJet (inverseEntries (G z)) H v w = spatialPrincipal G z v w := by
+  let G := CovariantDerivative.chartMetric g.inner anchor
+  have hG : ContDiffAt ℝ 2 G z :=
+    deTurckChartMetric_contDiffAt_two_of_mem_target g anchor hz
+  have hsym : ∀ y p q, G y p q = G y q p :=
+    CovariantDerivative.chartMetric_symm g.inner g.inner_symm anchor
+  have hfirst (y b p q : E) : fderiv ℝ G y b p q = fderiv ℝ G y b q p := by
+    by_cases hd : DifferentiableAt ℝ G y
+    · exact CovariantDerivative.fderiv_metric_symm G hd hsym b p q
+    · simp only [fderiv_zero_of_not_differentiableAt hd, ContinuousLinearMap.zero_apply]
+  have hGD : ContDiffAt ℝ 1 (fderiv ℝ G) z := hG.fderiv_right (m := 1) (by norm_num)
+  have hsecond (a b p q : E) :
+      fderiv ℝ (fderiv ℝ G) z a b p q =
+        fderiv ℝ (fderiv ℝ G) z a b q p := by
+    have hb := (hGD.differentiableAt one_ne_zero).hasFDerivAt.clm_apply
+      (hasFDerivAt_const b z)
+    have heval (p q : E) :
+        fderiv ℝ (fun y => fderiv ℝ G y b) z a p q =
+          fderiv ℝ (fderiv ℝ G) z a b p q := by
+      simpa using congrArg (fun L : E →L[ℝ] Bilin => L a p q) hb.fderiv
+    rw [← heval p q, ← heval q p]
+    exact CovariantDerivative.fderiv_metric_symm
+      (fun y => fderiv ℝ G y b) hb.differentiableAt
+      (fun y p q => hfirst y b p q) a p q
+  apply secondJet_cancellation
+  · intro i j
+    have hmat : Matrix.IsSymm (fun i j : Fin 3 => G z (basis3 i) (basis3 j)) :=
+      Matrix.IsSymm.ext (fun i j => hsym z (basis3 j) (basis3 i))
+    exact hmat.inv.apply j i
+  · intro a b p q
+    exact congrArg (fun B : Bilin => B p q)
+      (hG.isSymmSndFDerivAt (by norm_num) a b)
+  · exact hsecond
+
+end Manifold
 end Poincare.DeTurckPrincipalSecondJet
