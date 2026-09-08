@@ -2,6 +2,25 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Fixed-chart endpoint slices worker result
+
+Branch `worker/fixed-chart-endpoint-slices`, base `5f57f9b6`, proof head
+`853f4b50`. The new `FixedChartEndpointSlices.lean` constructs exact vertical
+partial homeomorphism slices, deriving inverse anchor preservation from the
+source hypothesis and right inverse law. Both zero laws and all four joint
+openness/continuity laws compile. The focused build passes with 915 jobs;
+the exact-field probes pass and all 16 scanned declarations have only permitted
+dependencies. Every named closure is exactly `[propext, Classical.choice, Quot.sound]`.
+
+No existing Lean file or root import changed. The result awaits orchestrator
+review. Commands, output, failed compiler evidence, and the proof diff are in
+`harness/reports/fixed-chart-endpoint-slices_done.md`. Geodesic patch construction,
+H1/H2, and recognition remain separate work.
+
+Exact first review action:
+`LEAN_NUM_THREADS=1 lake build Poincare.Global.FixedChartEndpointSlices`.
+
+
 
 ## 2026-09-08 Fixed-chart uniform normal radius worker result
 
