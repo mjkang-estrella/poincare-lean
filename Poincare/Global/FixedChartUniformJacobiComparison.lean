@@ -309,6 +309,31 @@ theorem exists_patch_fundamentalSolution {x₀ : M} {U : Set E}
     fun q hq t ht => flow_hasFDerivAt_of_fundamentalSolution C hq (h0 q hq) (hd q hq) ht,
     GeodesicFlowJointDerivative.continuousOn_fundamentalSolution hF C.T_pos.le hα h0 hd⟩
 
+/-- In time-one coordinates the position variation has initial value zero
+and initial derivative exactly the input tangent vector. -/
+theorem normalizedJacobiField_initialData {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U) (q : E × E) (a : E)
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (GeodesicTransport.chartChristoffelField g x₀)
+        (C.α q t)).comp (Φ t)) (Icc (-C.T) C.T) t) :
+    (Φ 0 (0, C.T⁻¹ • a)).1 = 0 ∧
+      HasDerivAt (fun t : ℝ => (Φ (C.T * t) (0, C.T⁻¹ • a)).1) a 0 := by
+  have hz : (0 : ℝ) ∈ Ioo (-C.T) C.T := ⟨by linarith [C.T_pos], C.T_pos⟩
+  have hd := ((hΦ 0 (Ioo_subset_Icc_self hz)).hasDerivAt
+    (Icc_mem_nhds hz.1 hz.2)).clm_apply (hasDerivAt_const 0 (0, C.T⁻¹ • a))
+  have hlin : HasDerivAt (fun t => Φ t (0, C.T⁻¹ • a))
+      (linearizedGeodesicFlowFieldAlong (GeodesicTransport.chartChristoffelField g x₀)
+        (C.α q) 0 (Φ 0 (0, C.T⁻¹ • a))) 0 := by simpa using hd
+  have hpos := GeodesicTransport.chart_linearized_fst_hasDerivAt g x₀ hlin
+  have hpos' : HasDerivAt (fun t => (Φ t (0, C.T⁻¹ • a)).1)
+      (Φ 0 (0, C.T⁻¹ • a)).2 (C.T * 0) := by simpa only [mul_zero] using hpos
+  have hscaled := hpos'.scomp 0 (hasDerivAt_const_mul C.T)
+  constructor
+  · simp [hΦ0]
+  · simpa [hΦ0, smul_smul, C.T_pos.ne'] using hscaled
+
 variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
 
 /-- The remaining geometric identity compares full-time Jacobi pairings along
