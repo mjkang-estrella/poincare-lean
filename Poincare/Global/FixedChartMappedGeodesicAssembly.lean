@@ -36,5 +36,41 @@ theorem coordinateEndpoint_contDiffAt_two {x₀ : M} {U : Set E}
   filter_upwards [(C.endpoint x).open_source.mem_nhds hv] with w hw
   exact FixedChartUniformDifferentialPullback.coordinateEndpoint_eq_normalizedEndpoint C x w hw
 
+/-- Stored endpoint derivatives give C2 regularity of the exact supplied map. -/
+theorem chartMap_contDiffAt_two_of_coordinateData
+    {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (s : CartanChain.ChainState g) (z : M)
+    (d : CoordinateData (patch C D) s z) :
+    ContDiffAt ℝ 2 (chartMap (patch C D) s) (extChartAt I x₀ z) := by
+  let Q := patch C D
+  have hs : ContDiffAt ℝ 2 (sourceExp Q s.anchor) d.v :=
+    coordinateEndpoint_contDiffAt_two C s.anchor d.v d.source_vector_mem.1
+  have ht : ContDiffAt ℝ 2 (targetExp Q s.target) (linear Q s d.v) :=
+    coordinateEndpoint_contDiffAt_two D s.target _ d.target_vector_mem.1
+  have hinv := (sourceExp Q s.anchor).contDiffAt_symm
+    ((sourceExp Q s.anchor).map_source d.source_vector_mem)
+    (show HasFDerivAt (sourceExp Q s.anchor) (d.A : E →L[ℝ] E)
+      ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor d.v)) by
+      rw [(sourceExp Q s.anchor).left_inv d.source_vector_mem]
+      exact d.source_exp_derivative.hasFDerivAt)
+    (show ContDiffAt ℝ 2 (sourceExp Q s.anchor)
+      ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor d.v)) by
+      rw [(sourceExp Q s.anchor).left_inv d.source_vector_mem]
+      exact hs)
+  change ContDiffAt ℝ 2 (chartMap (patch C D) s)
+    (extChartAt I ((patch C D).sourceHost s.anchor) z)
+  rw [d.source_coordinate]
+  have ht' : ContDiffAt ℝ 2 (targetExp Q s.target)
+      (linear Q s ((sourceExp Q s.anchor).symm (sourceExp Q s.anchor d.v))) := by
+    rw [(sourceExp Q s.anchor).left_inv d.source_vector_mem]
+    exact ht
+  have hl : ContDiffAt ℝ 2 (fun q => linear Q s ((sourceExp Q s.anchor).symm q))
+      (sourceExp Q s.anchor d.v) :=
+    (linear Q s).contDiff.contDiffAt.comp _ hinv
+  exact ht'.comp (sourceExp Q s.anchor d.v)
+    (f := fun q => linear Q s ((sourceExp Q s.anchor).symm q)) hl
+
 end FixedChartMappedGeodesicAssembly
 end Poincare
