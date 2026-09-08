@@ -226,5 +226,22 @@ theorem conjugatedConnection_torsion
   rw [← map_sub]
   exact (congrArg (J (inst := inst) inst' h x).symm ho).trans hb.symm
 
+/-- The conjugated connection agrees with the new Levi-Civita connection on differentiable fields. -/
+theorem conjugatedConnection_eq_leviCivita
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    ∀ (X : M → E) (x : M), MDiffAtTangentField X x →
+      conjugatedDerivative (inst := inst) inst' h g X x =
+        (transport (inst := inst) inst' h g).leviCivita X x := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  intro X x hX
+  exact (transport (inst := inst) inst' h g).eq_leviCivita_of_metricCompatible_torsion
+    (conjugatedConnection_metricCompatible (inst := inst) inst' h g)
+    (conjugatedConnection_torsion (inst := inst) inst' h g) hX
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
