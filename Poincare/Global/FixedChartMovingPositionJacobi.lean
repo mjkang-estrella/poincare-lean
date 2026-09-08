@@ -481,5 +481,27 @@ theorem normalized_pairing_formula [T2Space M] {x₀ : M} {U : Set E}
     (by change CovariantDerivative.chartMetric g.inner x₀ z v v ≠ 0; rw [hspeed]; exact pow_ne_zero 2 hs)
     hr ho hn a b
 
+/-- At zero velocity the retained flow is stationary and every normalized
+position variation is exactly its input vector. -/
+theorem normalized_zero_velocity {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {z : E} (hq : (z, (0 : E)) ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {Φ : ℝ → (E × E) →L[ℝ] (E × E)}
+    (hΦ0 : Φ 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hΦ : ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt Φ
+      ((linearizedGeodesicFlowOperator (chartChristoffelField g x₀)
+        (C.α (z, 0) t)).comp (Φ t)) (Icc (-C.T) C.T) t) :
+    C.α (z, 0) C.T = (z, 0) ∧ ∀ a : E, (Φ C.T (0, C.T⁻¹ • a)).1 = a := by
+  have hγ := FixedChartUniformNormalRadius.flow_zero_velocity
+    (contDiff_geodesicFlowField (chartChristoffelField_contDiff g x₀))
+    C.T_pos (C.flow_law _ hq).1 (C.flow_law _ hq).2
+  have ht : C.T ∈ Icc (-C.T) C.T := ⟨by linarith [C.T_pos], le_rfl⟩
+  have hF := FixedChartUniformNormalRadius.fundamentalSolution_zero_velocity
+    ((chartChristoffelField_contDiff g x₀).differentiable (by norm_num) z)
+    C.T_pos hΦ0 (fun t ht => by simpa only [hγ t ht] using hΦ t ht) C.T ht
+  refine ⟨hγ C.T ht, fun a => ?_⟩
+  rw [hF]
+  simp [FixedChartUniformNormalRadius.freeVariation, smul_smul, C.T_pos.ne']
+
 end FixedChartMovingPositionJacobi
 end Poincare
