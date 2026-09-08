@@ -167,5 +167,33 @@ theorem exists_uniform_host_metric_comparison {x₀ : M} {U : Set E}
       _ ≤ ‖G x‖ * ‖v‖ * ‖v‖ := (G x).le_opNorm₂ v v
       _ ≤ b * ‖v‖ ^ 2 := by nlinarith [sq_nonneg ‖v‖]
 
+omit [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- The retained frame transports the host metric to the preferred anchor metric. -/
+theorem patchFrame_metric {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (hx : x ∈ C.anchors) (u v : E) :
+    CartanMap.sourceAnchorChartMetric g x (patchFrame C x u) (patchFrame C x v) =
+      CovariantDerivative.chartMetric g.inner x₀ (extChartAt I x₀ x) u v := by
+  have hframe : (patchFrame C x : E →L[ℝ] E) =
+      FixedChartUniformPreferredGermAgreement.anchorFrame x₀ x := by
+    unfold patchFrame
+    rw [dif_pos hx]
+    exact Classical.choose_spec
+      (FixedChartUniformPreferredGermAgreement.anchorFrame_isInvertible C x hx)
+  have hy : (extChartAt I x₀).symm (extChartAt I x₀ x) ∈ (extChartAt I x).source := by
+    rw [(extChartAt I x₀).left_inv hx.1]
+    exact mem_extChartAt_source x
+  have ht := GeodesicTransport.chartMetric_chartTransitionDeriv g x₀ x
+    ((extChartAt I x₀).map_source hx.1) hy u v
+  have hpoint : GeodesicTransport.chartTransition x₀ x (extChartAt I x₀ x) =
+      extChartAt I x x := by
+    change extChartAt I x ((extChartAt I x₀).symm (extChartAt I x₀ x)) = _
+    rw [(extChartAt I x₀).left_inv hx.1]
+  rw [hpoint] at ht
+  change CartanMap.sourceAnchorChartMetric g x
+    ((patchFrame C x : E →L[ℝ] E) u) ((patchFrame C x : E →L[ℝ] E) v) = _
+  rw [hframe]
+  exact ht
+
 end FixedChartLocalSuccessorExistence
 end Poincare
