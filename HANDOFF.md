@@ -53,11 +53,20 @@ Warm-cache timings on the same tree, sequential runs:
 | semantic surface | 178 s | 81 s | 93 s |
 | interface | 14 s | 13 s | 22 s |
 
+Integration checkpoint on `main` at `b807cd42`: `sh scripts/write_status_summary.sh`
+(build plus every audit once, then the completion audit reusing the recorded
+gate statuses) completed in 518 s and regenerated `CURRENT_STATUS.md` with
+every scaffold audit at status 0, completion audit status 1, and completion
+boundary status `reserved theorem absent only`.
+
 Not merged: branch `worker/audit-refactor` (commit `9c2c7584`) holds an
 interrupted agent's extraction of the Lean check payloads into a non-default
 `lean_lib PoincareAudit` (`audit/PoincareAudit/*.lean`,
 `scripts/audit_payload_equivalence.py`). It would let Lake cache the Lean half
-of the audits, but it was never built or compared; treat it as unverified.
+of the audits. On 2026-09-07 its own `--check` reported every module as a
+lossless extraction of the legacy heredocs (83,887 checks), but
+`lake build PoincareAudit` was not run and no driver consumes the modules;
+treat it as unverified.
 
 ## 2026-09-07 Boundary correction
 
