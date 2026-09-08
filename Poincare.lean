@@ -20,6 +20,7 @@ import Poincare.Global.ControlledChartInstance
 import Poincare.Global.CurvatureInstanceTransport
 import Poincare.Global.FixedChartSuccessorDataPersistence
 import Poincare.Global.GenericJointRegularityCounterexample
+import Poincare.Global.GeodesicFlowJointDerivative
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
 import Poincare.Global.Statement

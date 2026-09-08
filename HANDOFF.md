@@ -417,8 +417,16 @@ uniform constructions: the unblended fixed-chart geodesic flow on compact
 chart regions, joint `C¹` dependence on initial position and velocity, and a
 joint inverse-function argument on `(x, v) ↦ (x, exp_x v)` giving a uniform
 normal radius; then a chart family (`CartanSourceExponential.Family`) built
-from it, and the chain run over that family. The first bounded step is
-`harness/tasks/geodesic-position-derivative.md`.
+from it, and the chain run over that family. The first bounded step landed:
+`Poincare/Global/GeodesicFlowJointDerivative.lean` (task
+`geodesic-position-derivative`, fourteen theorems, standard axiom footprint)
+proves joint `C¹` dependence of the fixed-chart geodesic flow on the initial
+state with a fundamental solution of the full variational equation, and
+instantiates it on the repository's uniform Picard–Lindelöf chart flow
+(`exists_uniform_local_geodesic_chart_flow_initialState_C1`). The second
+step, dispatched as `harness/tasks/uniform-normal-radius.md`, is the joint
+inverse-function argument giving a uniform normal radius on compact chart
+regions.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
