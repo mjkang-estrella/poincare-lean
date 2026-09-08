@@ -44,4 +44,17 @@ theorem mfderiv_identity (x : M) :
     mfld_simps, fderivWithin_univ, Function.id_comp]
   rfl
 
+/-- Scalar exterior derivatives transform by the new-to-old tangent identification. -/
+theorem extDerivFun_naturality (f : M → ℝ) (x : M)
+    (hf : letI := inst; MDifferentiableAt I 𝓘(ℝ, ℝ) f x) (v : E) :
+    (letI := inst'; extDerivFun («I» := I) f x v) =
+      (letI := inst; extDerivFun («I» := I) f x (J (inst := inst) inst' h x v)) := by
+  letI := inst
+  have hd := @ContMDiffAt.mdifferentiableAt ℝ _ E _ _ E _ I M _ inst' E _ _ E _ I M _ inst id x ∞
+    (contMDiffAt_identity (inst := inst) inst' h x) (by simp)
+  have he := @mfderiv_comp ℝ _ E _ _ E _ I M _ inst' E _ _ E _ I M _ inst
+    ℝ _ _ ℝ _ 𝓘(ℝ, ℝ) ℝ _ _ id x f hf hd
+  rw [mfderiv_identity (inst := inst) inst' h] at he
+  exact congrArg (fun L ↦ L v) he
+
 end Poincare.ConnectionInstanceNaturality
