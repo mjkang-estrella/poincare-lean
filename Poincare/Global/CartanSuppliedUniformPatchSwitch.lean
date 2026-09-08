@@ -114,5 +114,40 @@ theorem four_mul_mesh_le (S : System g) :
     linarith
   simpa only [le_min_iff] using hle
 
+/-- H2 in the old patch and same-state switch control compare the next interpretation. -/
+theorem transition_eqOn : ∀ (S : System g) (a b : S.cover.Label)
+    (s : CartanChain.ChainState g) (z : M)
+    (d : Data (S.cover.interp a) s z),
+    S.cover.Valid a s → S.cover.Valid b d.successor →
+    letI : MetricSpace M := g.toMetricSpace
+    dist z s.anchor < 4 * S.mesh →
+      ball z (4 * S.mesh) ⊆ (germ (S.cover.interp a) s).source ∩
+        (germ (S.cover.interp b) d.successor).source ∧
+      EqOn (map (S.cover.interp a) s) (map (S.cover.interp b) d.successor)
+        (ball z (4 * S.mesh)) := by
+  intro S a b s z d ha hb
+  letI : MetricSpace M := g.toMetricSpace
+  intro hz
+  have hbounds := four_mul_mesh_le S
+  have haB : S.cover.Buffered a s :=
+    ⟨interior_subset (S.cover.source.core_subset a.1 ha.1),
+      interior_subset (S.cover.target.core_subset a.2 ha.2)⟩
+  have hbB : S.cover.Buffered b d.successor :=
+    ⟨interior_subset (S.cover.source.core_subset b.1 hb.1),
+      interior_subset (S.cover.target.core_subset b.2 hb.2)⟩
+  obtain ⟨hx, hp⟩ := S.cover.retained a.1 a.2 s ha.1 ha.2 z
+    (hz.trans_le hbounds.2.2.1)
+  have haNext : S.cover.Buffered a d.successor :=
+    ⟨interior_subset hx, interior_subset hp⟩
+  obtain ⟨hsource, heq⟩ := S.cover.h2 a.1 a.2 s.anchor haB.1 s.target haB.2
+    s.alignment z d (hz.trans_le hbounds.1)
+  obtain ⟨hswitchSource, hswitchEq⟩ := S.switch.agreement a b d.successor haNext hbB
+  have hEval : ball z (4 * S.mesh) ⊆ ball z S.cover.evaluation :=
+    ball_subset_ball hbounds.2.1
+  have hSwitch : ball z (4 * S.mesh) ⊆ ball d.successor.anchor S.switch.radius :=
+    ball_subset_ball hbounds.2.2.2
+  exact ⟨fun y hy => ⟨(hsource (hEval hy)).1, (hswitchSource (hSwitch hy)).2⟩,
+    fun y hy => (heq (hEval hy)).trans (hswitchEq (hSwitch hy))⟩
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
