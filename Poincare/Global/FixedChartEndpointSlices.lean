@@ -72,4 +72,10 @@ theorem slice_zero [Zero E] {A : Set E}
   intro z hz
   exact congrArg Prod.snd (hstationary z hz)
 
+/-- The supplied zero section lies in the exact slice source. -/
+theorem slice_zero_mem_source [Zero E] {A : Set E}
+    (hzero : ∀ z ∈ A, (z, (0 : E)) ∈ P.source) :
+    ∀ z ∈ A, 0 ∈ (slice P hfst z).source := by
+  exact hzero
+
 end Poincare.FixedChartEndpointSlices
