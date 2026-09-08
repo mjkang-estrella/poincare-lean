@@ -2,6 +2,27 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Supplied source germ transfer worker result
+
+Branch `worker/supplied-source-germ-transfer`, base `ae6ce9f4`, verified proof
+head `7a8ba3ae`. The new `CartanSuppliedSourceGermTransfer.lean` proves all
+three frozen targets: normal agreement transfers to Cartan germ agreement,
+inverse normal agreement near zero, and agreement on an open common source.
+The inverse proof uses continuity and both partial inverse laws on their
+domains, without an extra neighborhood premise.
+
+Direct Lean, the focused 3359-job build, all three exact name probes, and the
+module-wide scan pass. Each theorem closure is exactly
+`[propext, Classical.choice, Quot.sound]`. Token and diff checks pass.
+No existing Lean file or root import changed. The report
+`harness/reports/supplied-source-germ-transfer_done.md` records commands,
+outputs, three proof commits, the compiler retry, and the verified proof diff.
+This worker result awaits independent review. H1/H2 and recognition remain
+separate work.
+
+Exact first review action:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/CartanSuppliedSourceGermTransfer.lean`.
+
 ## 2026-09-08 Fixed-chart endpoint slices worker result
 
 Branch `worker/fixed-chart-endpoint-slices`, base `5f57f9b6`, proof head
