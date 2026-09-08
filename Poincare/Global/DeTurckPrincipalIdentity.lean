@@ -259,5 +259,28 @@ theorem lie_eq_secondCoordinate_add_first
   simp only [lieSecondCoordinate, lieFirst, map_add, ContinuousLinearMap.add_apply]
   ring
 
+/-- The actual curvature trace splits into its coordinate second-jet part and explicit first-jet remainder. -/
+theorem ricci_eq_secondCoordinate_add_first
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hz : z ∈ (extChartAt (closedSmoothModelWithCorners 3) anchor).target)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1)
+    (v w : E) :
+    let G := CovariantDerivative.chartMetric g.inner anchor
+    let Γ := GeodesicTransport.chartChristoffelField g anchor
+    let b := Module.finBasis ℝ E
+    (∑ i, b.coord i
+      ((fderiv ℝ Γ z (b i)) v w - (fderiv ℝ Γ z v) (b i) w +
+        Γ z (b i) (Γ z v w) - Γ z v (Γ z (b i) w))) =
+      ricciSecondCoordinate (G z) (fderiv ℝ (fderiv ℝ G) z) v w +
+        ricciFirst (G z) (fderiv ℝ G z) v w := by
+  dsimp only
+  simp only [christoffelDerivative_eq_jets g anchor z hz hcut,
+    christoffel_eq_connection g anchor z hcut,
+    ricciSecondCoordinate, ricciFirst, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro i _
+  simp only [map_add, map_sub, map_neg]
+  ring
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
