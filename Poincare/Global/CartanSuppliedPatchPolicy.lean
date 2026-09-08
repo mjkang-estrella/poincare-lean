@@ -74,5 +74,30 @@ theorem stepAvailable : ∀ (S : System g) (a : ℕ → S.cover.Label) (nodes : 
   exact (S.cover.h1 label.1 label.2 s.anchor hx s.target hp
     s.alignment (nodes (n + 1)) hz).2.2.2
 
+/-- Joint recursion chooses the next state and carries the label actually selected. -/
+theorem exists_sticky_chain : ∀ (S : System g) (nodes : ℕ → M)
+    (initial : CartanChain.ChainState g), initial.anchor = nodes 0 →
+    (letI : MetricSpace M := g.toMetricSpace
+     ∀ n, dist (nodes (n + 1)) (nodes n) < S.mesh) →
+    ∃ (a : ℕ → S.cover.Label)
+      (c : ReachableChain (policy S.cover a) nodes initial),
+      a 0 = fallback S.cover initial ∧ Sticky S.cover a nodes initial c := by
+  intro S nodes initial hinitial hmesh
+  let Stage (n : ℕ) :=
+    {s : CartanChain.ChainState g // s.anchor = nodes n} × S.cover.Label
+  let datum (n : ℕ) (r : Stage n) :
+      Data (policy S.cover (fun _ => r.2) n r.1.1) r.1.1 (nodes (n + 1)) :=
+    Classical.choice (stepAvailable S (fun _ => r.2) nodes hmesh n r.1.1 r.1.2)
+  let reached : ∀ n, Stage n :=
+    Nat.rec (⟨⟨initial, hinitial⟩, fallback S.cover initial⟩ : Stage 0)
+      (fun n r => ⟨⟨(datum n r).successor, rfl⟩, select S.cover r.2 r.1.1⟩)
+  let a : ℕ → S.cover.Label := fun n => (reached n).2
+  let c : ReachableChain (policy S.cover a) nodes initial := {
+    state := fun n => (reached n).1.1
+    initial_eq := rfl
+    data := fun n => datum n (reached n)
+    successor_eq := fun _ => rfl }
+  exact ⟨a, c, rfl, fun _ => rfl⟩
+
 end CartanSuppliedPatchPolicy
 end Poincare
