@@ -135,10 +135,15 @@ theorem sectionContMDiff_iff (s : M → Bilin) :
     («E» := fun y : M ↦ TangentSpace I y →L[ℝ] TangentSpace I y →L[ℝ] ℝ)
     (s := s) a
 
+/-- Tangent coordinates with the bundle instance specified explicitly. -/
+def tangentCoordinates (charts : ChartedSpace E M)
+    (hs : letI := charts; IsManifold I ∞ M) (a x : M) (v : E) : E :=
+  letI := charts
+  letI : IsManifold I ∞ M := hs
+  (trivializationAt E (TangentSpace I) a ⟨x, v⟩).2
+
 variable (inst' : ChartedSpace E M)
   (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
-
-local instance : ChartedSpace E M := inst
 
 /-- The new preferred chart as a member of the original maximal atlas. -/
 def newChart (x : M) : @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I) :=
@@ -288,5 +293,27 @@ theorem transport_inner (g : @ClosedSmoothRiemannianMetric 3 M _ inst _)
     (transport (inst := inst) inst' h g).inner x v w =
       (letI := inst; g.inner x (J inst' h x v) (J inst' h x w)) := by
   rfl
+
+/-- The pointwise bridge stated with the actual tangent-bundle trivializations. -/
+theorem tangentCoordinates_transport (a x : M)
+    (ha : x ∈ (inst.chartAt a).source) (ha' : x ∈ (inst'.chartAt a).source) (v : E) :
+    tangentCoordinates inst inferInstance a x (J (inst := inst) inst' h x v) =
+      D (inst := inst) (newChart (inst := inst) inst' h a) (oldChart (inst := inst) a) x
+        (tangentCoordinates inst'
+          (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+          a x v) :=
+  J_trivialization (inst := inst) inst' h a x ha ha' v
+
+/-- Optional remaining distance comparison, stated using the actual induced metrics.
+A proof must transport curve derivatives and lengths through `J`. -/
+def InducedDistanceAgreement [T2Space M] [CompactSpace M] [ConnectedSpace M]
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) : Prop :=
+  letI := inst
+  let d := g.toMetricSpace
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  let d' := (transport (inst := inst) inst' h g).toMetricSpace
+  ∀ x y : M, @dist M d'.toDist x y = @dist M d.toDist x y
 
 end Poincare.RiemannianMetricInstanceTransportGeometric
