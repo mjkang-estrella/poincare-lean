@@ -226,6 +226,12 @@ theorem hamiltonReactionCore3_of_core'
     hparam, hreal, hc, hlower, hflow, hjoint, hrate, hreaction,
     hmeasure, hscalar, htraceless, localBound_of_jointMetricEntries gt hjoint⟩
 
+/-- The reduced core reaches the existing Hamilton pinched-limit endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3'
+    (h : HamiltonReactionCore3'.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3
+    (hamiltonReactionCore3_of_core' h)
+
 end DimensionThree
 
 end Poincare.HamiltonChartDensityLocalDomination
