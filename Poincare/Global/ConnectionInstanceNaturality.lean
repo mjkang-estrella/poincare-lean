@@ -136,5 +136,24 @@ theorem conjugatedDerivative_leibniz
   exact congrArg (fun r : ℝ ↦ r • X x)
     (extDerivFun_naturality (inst := inst) inst' h f x hfold v).symm
 
+/-- Scalar naturality and additivity bundle the conjugated connection unconditionally. -/
+theorem conjugatedDerivative_isCovariantDerivativeOn
+    (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    IsCovariantDerivativeOn («I» := I) (V := TangentSpace I) E
+      (conjugatedDerivative (inst := inst) inst' h g) univ := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  constructor
+  · intro X Y x hX hY _
+    exact conjugatedDerivative_add (inst := inst) inst' h g X Y x hX hY
+  · intro X f x hX hf _
+    apply ContinuousLinearMap.ext
+    intro v
+    exact conjugatedDerivative_leibniz (inst := inst) inst' h g X f x hX hf v
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
