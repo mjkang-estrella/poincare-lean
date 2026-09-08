@@ -16,6 +16,7 @@ import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
+import Poincare.Global.CartanSuppliedDifferentialTransfer
 import Poincare.Global.CartanSuppliedSourceGermTransfer
 import Poincare.Global.CartanSuppliedSourceMap
 import Poincare.Global.ConnectionInstanceNaturality
