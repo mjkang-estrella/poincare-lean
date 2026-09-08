@@ -275,5 +275,38 @@ theorem exists_fixed_anchor_switch_radius (B : QuantitativeCover g)
   exact ⟨(ball_subset_ball (hle (a, b))).trans hs,
     he.mono (ball_subset_ball (hle (a, b)))⟩
 
+/-- The remaining geometric comparison on compact buffer intersections.
+Each pair's radius must precede both moving anchors and every alignment.
+Common source containment is supplied independently by H1. -/
+def UniformBufferedPairAgreement (B : QuantitativeCover g) : Prop :=
+  letI : MetricSpace M := g.toMetricSpace
+  ∀ a b : B.Label, ∃ ρ > (0 : ℝ),
+    ∀ x ∈ B.source.buffer a.1 ∩ B.source.buffer b.1,
+    ∀ p ∈ B.target.buffer a.2 ∩ B.target.buffer b.2,
+    ∀ L : CartanMap.TangentAlignment g x p,
+      EqOn (map (B.interp a) ⟨x, p, L⟩) (map (B.interp b) ⟨x, p, L⟩) (ball x ρ)
+
+/-- Finite pairwise comparison radii and H1's source radius give the exact
+switch contract. This theorem does not produce the uniform comparison premise. -/
+theorem exists_switchControl_of_uniformBufferedPairAgreement
+    (B : QuantitativeCover g) (h : UniformBufferedPairAgreement B) :
+    Nonempty (SwitchControl B) := by
+  classical
+  letI : MetricSpace M := g.toMetricSpace
+  letI : Fintype B.Label := inferInstanceAs
+    (Fintype (Fin B.source.count × Fin B.target.count))
+  have hpairs := fun c : B.Label × B.Label => h c.1 c.2
+  choose r hr hagree using hpairs
+  obtain ⟨δ, hδ, hle⟩ := exists_positive_lower_bound r hr
+  refine ⟨{
+    radius := min B.step δ
+    radius_pos := lt_min B.step_pos hδ
+    agreement := ?_ }⟩
+  intro a b s ha hb
+  exact ⟨(ball_subset_ball (min_le_left _ _)).trans
+      (buffered_common_source B a b s ha hb),
+    (hagree (a, b) s.anchor ⟨ha.1, hb.1⟩ s.target ⟨ha.2, hb.2⟩ s.alignment).mono
+      (ball_subset_ball ((min_le_right _ _).trans (hle (a, b))))⟩
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
