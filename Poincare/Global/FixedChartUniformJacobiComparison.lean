@@ -120,6 +120,55 @@ theorem exists_linearODE_on_Icc {A : ℝ → X →L[ℝ] X}
   refine ⟨f, hf0, fun t ht => hf t ⟨ht.1, ht.2.trans ?_⟩⟩
   exact ((div_lt_iff₀ hd).mp hn).le
 
+
+/-- Continuous linear coefficients admit solutions on an entire prescribed
+symmetric interval, with no smallness condition on its length. -/
+theorem exists_linearODE_on_symmetric_Icc {A : ℝ → X →L[ℝ] X}
+    {T : ℝ} (hT : 0 ≤ T) (hA : ContinuousOn A (Icc (-T) T)) (x : X) :
+    ∃ f : ℝ → X, f 0 = x ∧
+      ∀ t ∈ Icc (-T) T, HasDerivWithinAt f (A t (f t)) (Icc (-T) T) t := by
+  have hTT : -T ≤ T := by linarith
+  let B : ℝ → X →L[ℝ] X := fun t => A (projIcc (-T) T hTT t)
+  have hB : Continuous B :=
+    (continuousOn_iff_continuous_restrict.mp hA).comp continuous_projIcc
+  obtain ⟨k, hk⟩ := isCompact_Icc.exists_bound_of_continuousOn hA
+  let K : ℝ≥0 := ⟨max k 0, le_max_right _ _⟩
+  have hK : ∀ t, ‖B t‖ ≤ (K : ℝ) := fun t =>
+    (hk _ (projIcc (-T) T hTT t).property).trans (le_max_left _ _)
+  obtain ⟨f, hf0, hf⟩ := exists_linearODE_on_Icc hB K hK x T
+  obtain ⟨k, hk0, hk⟩ := exists_linearODE_on_Icc
+    ((hB.comp continuous_neg).neg) K (fun t => by simpa using hK (-t)) x T
+  let k' : ℝ → X := fun t => k (-t)
+  have hk' : ∀ t ∈ Icc (-T) 0, HasDerivAt k' (B t (k' t)) t := by
+    intro t ht
+    have hnt : -t ∈ Icc 0 T := ⟨by linarith [ht.2], by linarith [ht.1]⟩
+    simpa [k'] using (hk (-t) hnt).scomp t (hasDerivAt_neg t)
+  let F : ℝ → X := fun t => if t ≤ 0 then k' t else f t
+  have hF0 : F 0 = x := by simp [F, k', hk0]
+  have hder : ∀ t ∈ Icc (-T) T, HasDerivAt F (B t (F t)) t := by
+    intro t ht
+    rcases lt_trichotomy t 0 with hlt | heq | hgt
+    · have he : F =ᶠ[𝓝 t] k' := by
+        filter_upwards [Iio_mem_nhds hlt] with s hs
+        exact if_pos hs.le
+      simpa only [F, if_pos hlt.le] using
+        (hk' t ⟨ht.1, hlt.le⟩).congr_of_eventuallyEq he
+    · subst t
+      have hleft : HasDerivAt k' (B 0 x) 0 := by
+        simpa [k', hk0] using hk' 0 ⟨by linarith, le_rfl⟩
+      have hright : HasDerivAt f (B 0 x) 0 := by
+        simpa [hf0] using hf 0 ⟨le_rfl, hT⟩
+      simpa only [hF0] using hasDerivAt_glue hleft hright (by simp [k', hk0, hf0])
+    · have he : F =ᶠ[𝓝 t] f := by
+        filter_upwards [Ioi_mem_nhds hgt] with s hs
+        exact if_neg (not_le.mpr hs)
+      simpa only [F, if_neg (not_le.mpr hgt)] using
+        (hf t ⟨hgt.le, ht.2⟩).congr_of_eventuallyEq he
+  refine ⟨F, hF0, ?_⟩
+  intro t ht
+  simpa only [B, projIcc_of_mem hTT ht] using (hder t ht).hasDerivWithinAt
+
+
 end LinearContinuation
 
 /-- A fundamental solution for the retained flow identifies its full state
