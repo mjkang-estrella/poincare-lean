@@ -206,6 +206,53 @@ theorem lieSecondCoordinate_eq_lieSecondJet (G : Bilin) (H : E →L[ℝ] Jet1)
       rw [contraction_eq_matrix G (lieTensor H v w) hG hs]
       rfl
 
+/-- The curvature second-jet trace is exactly the landed formal Ricci second jet. -/
+theorem ricciSecondCoordinate_eq_ricciSecondJet (G : Bilin) (H : E →L[ℝ] Jet1)
+    (hG : G.IsInvertible) (hs : ∀ u v, G u v = G v u)
+    (hH : ∀ a b p q, H a b p q = H a b q p) (v w : E) :
+    ricciSecondCoordinate G H v w =
+      ricciSecondJet (inverseEntries G) (fun a b p q => H a b p q) v w := by
+  have hA : ∀ i j, inverseEntries G i j = inverseEntries G j i := by
+    have hm : Matrix.IsSymm (fun i j : Fin 3 => G (basis3 i) (basis3 j)) :=
+      Matrix.IsSymm.ext (fun i j => hs (basis3 j) (basis3 i))
+    exact fun i j => hm.inv.apply j i
+  calc
+    _ = (1 / 2 : ℝ) * ∑ i, (ricciTensor H v w).flip
+        (G.inverse (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i)))
+        ((Module.finBasis ℝ E) i) := by
+      simp only [ricciSecondCoordinate, Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro i _
+      simp only [connection, map_sub]
+      change (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+        (G.inverse (koszul (H ((Module.finBasis ℝ E) i)) w v)) -
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+        (G.inverse (koszul (H v) w ((Module.finBasis ℝ E) i))) = _
+      rw [inverse_pairing_symm G hG hs
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+        (koszul (H ((Module.finBasis ℝ E) i)) w v),
+        inverse_pairing_symm G hG hs
+        (LinearMap.toContinuousLinearMap ((Module.finBasis ℝ E).coord i))
+        (koszul (H v) w ((Module.finBasis ℝ E) i))]
+      simp only [koszul_apply]
+      change _ = (1 / 2 : ℝ) *
+        (H ((Module.finBasis ℝ E) i) v w _ + H ((Module.finBasis ℝ E) i) w v _ -
+          H ((Module.finBasis ℝ E) i) _ v w - H v ((Module.finBasis ℝ E) i) w _ -
+          H v w ((Module.finBasis ℝ E) i) _ + H v _ ((Module.finBasis ℝ E) i) w)
+      rw [hH ((Module.finBasis ℝ E) i) _ w v, hH v _ w ((Module.finBasis ℝ E) i)]
+      ring
+    _ = _ := by
+      rw [contraction_eq_matrix G (ricciTensor H v w).flip hG hs]
+      unfold ricciSecondJet
+      congr 1
+      rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [hA j i]
+      rfl
+
 section Manifold
 universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
