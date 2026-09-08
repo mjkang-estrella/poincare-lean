@@ -607,5 +607,18 @@ theorem chartMetric_secondJet_metric_symm
   exact CovariantDerivative.fderiv_metric_symm (fun y => fderiv ℝ G y b)
     (hJ.clm_apply (differentiableAt_const b)) (fun y p q => hfirst y b p q) a p q
 
+/-- The genuine chart metric is invertible wherever the cutoff equals one locally. -/
+theorem chartMetric_isInvertible_of_cutoff
+    (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
+    (hcut : ∀ᶠ y in nhds z, GeodesicTransport.cutoff (n := 3) anchor y = 1) :
+    (CovariantDerivative.chartMetric g.inner anchor z).IsInvertible := by
+  have hval : anchorBlendedMetricFlow (fun _ => g) anchor 0 z =
+      CovariantDerivative.chartMetric g.inner anchor z :=
+    CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      (GeodesicTransport.cutoff (n := 3) anchor)
+      (GeodesicTransport.backgroundMetric (n := 3)) g.inner anchor hcut.self_of_nhds
+  rw [← hval]
+  exact anchorBlendedMetricFlow_isInvertible (fun _ => g) anchor 0 z
+
 end Manifold
 end Poincare.DeTurckPrincipalIdentity
