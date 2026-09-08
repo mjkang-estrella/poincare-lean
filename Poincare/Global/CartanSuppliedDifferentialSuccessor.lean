@@ -160,5 +160,16 @@ theorem anchor_laws : ∀ (Q : Interpretation g) (s : CartanChain.ChainState g),
       ← Q.target_anchor_zero s.target hp]
     exact (Q.targetNormal s.target).left_inv (Q.target_anchor_mem s.target hp)
 
+/-- Identity frames and generic normals recover the old total forward map. -/
+theorem generic_map_eq : ∀ (s : CartanChain.ChainState g), map (generic g) s = s.map := by
+  intro s
+  funext z
+  change ((CartanSourceExponential.genericFamily roundSphereMetric3).normal s.target).symm
+    (s.alignment.toContinuousLinearEquiv
+      ((CartanSourceExponential.genericFamily g).normal s.anchor z)) =
+    CartanMap.cartanMap g s.anchor s.target s.alignment z
+  rw [CartanSourceExponential.genericFamily_apply, CartanMap.cartanMap_apply]
+  rfl
+
 end CartanSuppliedDifferentialSuccessor
 end Poincare
