@@ -320,5 +320,20 @@ theorem alignment_clm_eq_of_eventuallyEq :
   exact d.hasFDerivAt_reanchoredChartMap.fderiv.symm.trans
     (h.fderiv_eq.trans e.hasFDerivAt_reanchoredChartMap.fderiv)
 
+omit [T2Space M] in
+/-- The geometric state only depends on its target and the underlying alignment operator. -/
+private theorem chainState_eq_of_target_eq_of_clm_eq {x : M} {p q : RoundSphere3}
+    (L : CartanMap.TangentAlignment g x p) (K : CartanMap.TangentAlignment g x q)
+    (hp : p = q) (hL : (L.toContinuousLinearEquiv : E →L[ℝ] E) =
+      (K.toContinuousLinearEquiv : E →L[ℝ] E)) :
+    (⟨x, p, L⟩ : CartanChain.ChainState g) = ⟨x, q, K⟩ := by
+  subst q
+  have h : L = K := by
+    apply DFunLike.coe_injective
+    funext u
+    exact DFunLike.congr_fun hL u
+  cases h
+  rfl
+
 end CartanSuppliedDifferentialTransfer
 end Poincare
