@@ -2,6 +2,27 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Supplied source map worker result
+
+Branch `worker/supplied-source-map`, base
+`5f57f9b6085a0037461b703f79778e69fe638aad`, proof head `1d1480cd`.
+The new `CartanSuppliedSourceMap.lean` defines the supplied source/target germ
+and proves `anchor_mem_source`, `germ_anchor`, `germ_apply`, and
+`generic_map_eq`. The source and target anchor laws suffice without extra
+hypotheses. The generic comparison is equality of forward maps.
+
+Direct Lean, the focused 3358-job build, all four exact name probes, the
+module-wide scan, and token/diff checks pass. All four theorem closures are
+exactly `[propext, Classical.choice, Quot.sound]`. A bare-reflexivity attempt
+hit a kernel timeout; rewriting through the existing map formulas passed.
+The report `harness/reports/supplied-source-map_done.md` preserves the output
+and four proof commits. No existing Lean file or root import changed.
+This result awaits orchestrator review and does not prove H1/H2 or recognition.
+
+Exact first action for independent review:
+`LEAN_NUM_THREADS=1 lake env lean Poincare/Global/CartanSuppliedSourceMap.lean`.
+
+
 
 ## 2026-09-08 Fixed-chart uniform normal radius worker result
 
