@@ -507,5 +507,54 @@ theorem geodesic_flow_hasFDerivAt_initialState [FiniteDimensional ℝ E]
   intro s hs
   simpa only [(hGa q (ball_subset_closedBall hq) s hs).2.fderiv_eq] using hΦ q hq s hs
 
+/-- Apply the joint derivative construction to the repository's exact
+variable-initial-state continuous PL selector in one fixed three-dimensional
+chart. The prescribed position neighborhood is retained after shrinking time. -/
+theorem exists_uniform_local_geodesic_chart_flow_initialState_C1
+    {M : Type*} [TopologicalSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    (g : ClosedSmoothRiemannianMetric 3 M) (x₀ : M)
+    {U : Set (ClosedSmoothModel 3)}
+    (hU : U ∈ 𝓝 (extChartAt (closedSmoothModelWithCorners 3) x₀ x₀)) :
+    let z₀ := extChartAt (closedSmoothModelWithCorners 3) x₀ x₀
+    let Γ := GeodesicTransport.chartChristoffelField g x₀
+    ∃ r : ℝ≥0, 0 < r ∧ ∃ ε > (0 : ℝ),
+      ∃ α : (ClosedSmoothModel 3 × ClosedSmoothModel 3) → ℝ →
+        ClosedSmoothModel 3 × ClosedSmoothModel 3,
+      ∃ Φ : (ClosedSmoothModel 3 × ClosedSmoothModel 3) → ℝ →
+        (ClosedSmoothModel 3 × ClosedSmoothModel 3) →L[ℝ]
+          (ClosedSmoothModel 3 × ClosedSmoothModel 3),
+      (∀ q ∈ closedBall (z₀, 0) (r : ℝ), α q 0 = q ∧
+        ∀ t ∈ Icc (-ε) ε, HasDerivWithinAt (α q)
+          (geodesicFlowField Γ (α q t)) (Icc (-ε) ε) t) ∧
+      (∀ q ∈ closedBall (z₀, 0) (r : ℝ), ∀ t ∈ Icc (-ε) ε, (α q t).1 ∈ U) ∧
+      ContinuousOn (Function.uncurry α) (closedBall (z₀, 0) (r : ℝ) ×ˢ Icc (-ε) ε) ∧
+      (∀ q ∈ ball (z₀, 0) (r : ℝ), Φ q 0 = ContinuousLinearMap.id ℝ _) ∧
+      (∀ q ∈ ball (z₀, 0) (r : ℝ), ∀ t ∈ Icc (-ε) ε,
+        HasDerivWithinAt (Φ q)
+          ((linearizedGeodesicFlowOperator Γ (α q t)).comp (Φ q t)) (Icc (-ε) ε) t) ∧
+      (∀ q ∈ ball (z₀, 0) (r : ℝ), ∀ t ∈ Icc (-ε) ε,
+        HasFDerivAt (fun y => α y t) (Φ q t) q) ∧
+      ContinuousOn (fun qt => Φ qt.1 qt.2) (ball (z₀, 0) (r : ℝ) ×ˢ Icc (-ε) ε) ∧
+      ∀ t ∈ Icc (-ε) ε, ContDiffOn ℝ 1 (fun q => α q t) (ball (z₀, 0) (r : ℝ)) := by
+  dsimp only
+  obtain ⟨r, hr, ε₀, hε₀, β, hβ, hmem, hcont⟩ :=
+    GeodesicTransport.exists_uniform_local_geodesic_chart_flow_variableInitialState_continuousOn g x₀ hU
+  let α := Function.curry β
+  obtain ⟨T, hT, hTε, Φ, h0, hd, hf, hc, hC1⟩ :=
+    exists_flow_initialState_C1_of_contDiffAt (U := Set.univ) isOpen_univ
+      (fun _ _ => (GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff_two g x₀).contDiffAt)
+      (α := α) hε₀ hcont (fun _ _ _ _ => Set.mem_univ _) hβ
+  have hsub : Icc (-T) T ⊆ Icc (-ε₀) ε₀ := by
+    intro t ht
+    exact ⟨by linarith [ht.1], ht.2.trans hTε⟩
+  refine ⟨r, hr, T, hT, α, Φ, ?_, ?_, ?_, h0, hd, hf, hc, hC1⟩
+  · intro q hq
+    exact ⟨(hβ q hq).1, fun t ht => ((hβ q hq).2 t (hsub ht)).mono hsub⟩
+  · intro q hq t ht
+    exact hmem (q, t) ⟨hq, hsub ht⟩
+  · exact hcont.mono (Set.prod_mono Subset.rfl hsub)
+
 end GeodesicFlowJointDerivative
 end Poincare
