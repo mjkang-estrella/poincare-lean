@@ -35,5 +35,32 @@ theorem flow_mem_target_cutoffOne {x₀ : M} {U : Set E}
   exact cutoff_tsupport x₀ (subset_tsupport _
     (Function.mem_support.mpr (by rw [hcut.self_of_nhds]; exact one_ne_zero)))
 
+/-- Speed preservation on the entire retained interval, at arbitrary initial
+position and velocity in the original closed state ball. -/
+theorem flow_speed_eq_initial {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {q : E × E} (hq : q ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ))
+    {t : ℝ} (ht : t ∈ Icc (-C.T) C.T) :
+    chartGeodesicMetric g x₀ (C.α q t).1 (C.α q t).2 (C.α q t).2 =
+      chartGeodesicMetric g x₀ q.1 q.2 q.2 := by
+  have hder := (C.flow_law q hq).2
+  have hcont := HasDerivWithinAt.continuousOn hder
+  have hmetric : Continuous (chartGeodesicMetric g x₀) :=
+    continuous_iff_continuousAt.mpr (fun z =>
+      (IsometryComplete.chartGeodesicMetric_differentiableAt g x₀ z).continuousAt)
+  have heq : EqOn
+      (fun t => chartGeodesicMetric g x₀ (C.α q t).1 (C.α q t).2 (C.α q t).2)
+      (fun _ => chartGeodesicMetric g x₀ q.1 q.2 q.2) (Ioo (-C.T) C.T) := by
+    intro s hs
+    have h := chart_geodesic_speed_constantOn_Ioo g x₀
+      (fun τ hτ => (hder τ (Ioo_subset_Icc_self hτ)).hasDerivAt
+        (Icc_mem_nhds hτ.1 hτ.2)) hs
+      (show (0 : ℝ) ∈ Ioo (-C.T) C.T from ⟨by linarith [C.T_pos], C.T_pos⟩)
+    simpa only [(C.flow_law q hq).1] using h
+  exact heq.of_subset_closure
+    (((hmetric.comp_continuousOn hcont.fst).clm_apply hcont.snd).clm_apply hcont.snd)
+    continuousOn_const Ioo_subset_Icc_self
+    (by rw [closure_Ioo (show -C.T ≠ C.T by linarith [C.T_pos])]) ht
+
 end FixedChartMovingPositionJacobi
 end Poincare
