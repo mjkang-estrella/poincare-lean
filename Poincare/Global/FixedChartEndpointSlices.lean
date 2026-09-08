@@ -84,4 +84,10 @@ theorem isOpen_slice_sourceLocus {A : Set E} (hA : IsOpen A) :
   change IsOpen (Prod.fst ⁻¹' A ∩ P.source)
   exact (hA.preimage continuous_fst).inter P.open_source
 
+/-- The joint target over an open anchor set is open. -/
+theorem isOpen_slice_targetLocus {A : Set E} (hA : IsOpen A) :
+    IsOpen {q : E × E | q.1 ∈ A ∧ q.2 ∈ (slice P hfst q.1).target} := by
+  change IsOpen (Prod.fst ⁻¹' A ∩ P.target)
+  exact (hA.preimage continuous_fst).inter P.open_target
+
 end Poincare.FixedChartEndpointSlices
