@@ -582,10 +582,15 @@ source locus, continuous evaluator, and `rawLocalFamily`). Task 5 landed as
 `normal_eventuallyEq_generic_in_anchor_frame`): the patch's normal
 coordinates agree with the generic exponential's as germs at every anchor of
 the patch, which is the bridge that lets the chain's germ-level theorems
-transfer to the uniform family. The remaining files of the plan are only
-outlined in the inventory; task `parametrization-plan-2` (analysis only)
-specifies the next five with type-checked targets, including the exact
-well-posed replacements of H1 and H2 on the patch.
+transfer to the uniform family. The next five files are
+specified with type-checked targets in
+`harness/reports/parametrization-plan-2.md` (tasks 6 to 10: the supplied
+differential successor data, its transfer from coordinate data, the local
+successor existence and equality statements on the patch, which are the
+well-posed replacements of H1 and H2, and the supplied reachable chain).
+Task 6 (`supplied-differential-successor`) is dispatched; 7 to 10 follow in
+order, each task file derived verbatim from the report as
+`harness/tasks/supplied-differential-successor.md` was.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
