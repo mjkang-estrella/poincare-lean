@@ -135,6 +135,35 @@ theorem coordinateEndpoint_hasStrictFDerivAt_zero {x₀ : M} {U : Set E}
     (C.zero_mem_endpoint_source x hx)] with v hv
   exact (coordinateEndpoint_eq_normalizedEndpoint C x v hv).symm
 
+/-- At zero velocity the endpoint metric identity is exactly framed metric transport. -/
+theorem metric_pullback_zero {x₀ : M} {p₀ : RoundSphere3} {U V : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (D : FixedChartUniformSourceNormal.Patch roundSphereMetric3 p₀ V)
+    (x : M) (hx : x ∈ C.anchors) (p : RoundSphere3) (hp : p ∈ D.anchors)
+    (L : CartanMap.TangentAlignment g x p) (a a' : E) :
+    let Q := patch C D
+    CovariantDerivative.chartMetric roundSphereMetric3.inner p₀
+      (targetExp Q p 0)
+      (fderiv ℝ (targetExp Q p) 0 (linear Q ⟨x, p, L⟩ a))
+      (fderiv ℝ (targetExp Q p) 0 (linear Q ⟨x, p, L⟩ a')) =
+    CovariantDerivative.chartMetric g.inner x₀ (sourceExp Q x 0)
+      (fderiv ℝ (sourceExp Q x) 0 a) (fderiv ℝ (sourceExp Q x) 0 a') := by
+  have hs : fderiv ℝ (sourceExp (patch C D) x) 0 = ContinuousLinearMap.id ℝ E :=
+    (coordinateEndpoint_hasStrictFDerivAt_zero C x hx).hasFDerivAt.fderiv
+  have ht : fderiv ℝ (targetExp (patch C D) p) 0 = ContinuousLinearMap.id ℝ E :=
+    (coordinateEndpoint_hasStrictFDerivAt_zero D p hp).hasFDerivAt.fderiv
+  have hsz : sourceExp (patch C D) x 0 = extChartAt I x₀ x := by
+    change (chartAt E x₀) (C.endpoint x 0) = _
+    rw [C.endpoint_zero x hx]
+    rfl
+  have htz : targetExp (patch C D) p 0 = extChartAt I p₀ p := by
+    change (chartAt E p₀) (D.endpoint p 0) = _
+    rw [D.endpoint_zero p hp]
+    rfl
+  dsimp only
+  rw [hs, ht, hsz, htz]
+  exact linear_metric C D x hx p hp L a a'
+
 variable [T2Space M] [CompactSpace M] [ConnectedSpace M]
 
 /-- Both supplied exponentials have strict equivalence derivatives on one manifold radius,
