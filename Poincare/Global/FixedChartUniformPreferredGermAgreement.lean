@@ -125,4 +125,77 @@ theorem chartTransition_contDiffAt (a b : M) {z : E}
   exact contMDiffAt_iff_contDiffAt.mp
     (by simpa [GeodesicTransport.chartTransition, Function.comp_def] using ho.comp z hi)
 
+/-- Small fixed-anchor trajectories satisfy the preferred-frame ODE on the
+whole retained interval, with continuity at both endpoints. -/
+theorem eventually_transported_solves
+    (hU : U ⊆ IsometryInstantiate.cutoffOneLocus x₀)
+    (x : M) (hx : x ∈ C.anchors) :
+    ∀ᶠ w : E in 𝓝 (0 : E),
+      ContinuousOn (GeodesicTransport.chartTransitionState x₀ x
+        (C.α (extChartAt I x₀ x, w))) (Icc (-C.T) C.T) ∧
+      ∀ t ∈ Ioo (-C.T) C.T,
+        HasDerivAt (GeodesicTransport.chartTransitionState x₀ x
+          (C.α (extChartAt I x₀ x, w)))
+          (geodesicFlowField (GeodesicTransport.chartChristoffelField g x)
+            (GeodesicTransport.chartTransitionState x₀ x
+              (C.α (extChartAt I x₀ x, w)) t)) t := by
+  let z := extChartAt I x₀ x
+  let F := GeodesicTransport.chartTransition (n := 3) x₀ x
+  have hz : z ∈ (extChartAt I x₀).target := (extChartAt I x₀).map_source hx.1
+  have hinv : (extChartAt I x₀).symm z = x := (extChartAt I x₀).left_inv hx.1
+  have hx' : (extChartAt I x₀).symm z ∈ (extChartAt I x).source := by
+    rw [hinv]; exact mem_extChartAt_source x
+  have hq : (z, (0 : E)) ∈ closedBall (extChartAt I x₀ x₀, 0) (C.r : ℝ) :=
+    ball_subset_closedBall (C.P_source_subset (C.zero_mem_source z hx.2))
+  have hzU : z ∈ U := by
+    have h := C.position_mem (z, 0) hq 0 (by constructor <;> linarith [C.T_pos])
+    rw [(C.flow_law _ hq).1] at h
+    exact h
+  let V : Set E := {q | ∀ᶠ r in 𝓝 q,
+    r ∈ (extChartAt I x₀).target ∧
+    (extChartAt I x₀).symm r ∈ (extChartAt I x).source ∧
+    GeodesicTransport.cutoff (n := 3) x₀ r = 1 ∧
+    GeodesicTransport.cutoff (n := 3) x (F r) = 1}
+  have hV : V ∈ 𝓝 z := by
+    apply isOpen_setOf_eventually_nhds.mem_nhds
+    have h1 := (isOpen_extChartAt_target x₀).mem_nhds hz
+    have h2 := (continuousAt_extChartAt_symm'' hz).preimage_mem_nhds
+      ((isOpen_extChartAt_source x).mem_nhds hx')
+    have h3 := IsometryInstantiate.cutoff_eventuallyEq_one_of_mem_cutoffOneLocus (hU hzU)
+    have h4 : ∀ᶠ r in 𝓝 z, GeodesicTransport.cutoff (n := 3) x (F r) = 1 := by
+      have hf : F z = extChartAt I x x := by
+        simp only [F, GeodesicTransport.chartTransition_apply, hinv]
+      have ht : ∀ᶠ r in 𝓝 (F z), GeodesicTransport.cutoff (n := 3) x r = 1 := by
+        rw [hf]
+        exact GeodesicTransport.cutoff_eventuallyEq_one x
+      exact (chartTransition_contDiffAt x₀ x hz hx').continuousAt.tendsto.eventually ht
+    filter_upwards [h1, h2, h3, h4] with r h1 h2 h3 h4
+    exact ⟨h1, h2, h3, h4⟩
+  have hsmall : ∀ᶠ w : E in 𝓝 (0 : E), (z, w) ∈ C.P.source :=
+    (continuous_const.prodMk continuous_id).continuousAt.preimage_mem_nhds
+      (C.P.open_source.mem_nhds (C.zero_mem_source z hx.2))
+  filter_upwards [eventually_position_mem_forall_time C x hx hV, hsmall] with w hw hws
+  have hq' := ball_subset_closedBall (C.P_source_subset hws)
+  have hd := (C.flow_law (z, w) hq').2
+  have hc := HasDerivWithinAt.continuousOn hd
+  have hgood : ∀ t ∈ Icc (-C.T) C.T,
+      (C.α (z, w) t).1 ∈ (extChartAt I x₀).target ∧
+      (extChartAt I x₀).symm (C.α (z, w) t).1 ∈ (extChartAt I x).source := by
+    intro t ht
+    exact (mem_of_mem_nhds (hw t ht)).imp_right And.left
+  constructor
+  · intro t ht
+    have hF := chartTransition_contDiffAt x₀ x (hgood t ht).1 (hgood t ht).2
+    have hpos := hc.fst t ht
+    have hvel := hc.snd t ht
+    have hfirst := hF.continuousAt.comp_continuousWithinAt (f := fun s : ℝ => (C.α (z, w) s).1) hpos
+    have hsecond := (hF.continuousAt_fderiv (by norm_num)).comp_continuousWithinAt (f := fun s : ℝ => (C.α (z, w) s).1) hpos
+    exact hfirst.prodMk (hsecond.clm_apply hvel)
+  · intro t ht
+    have hh := hw t (Ioo_subset_Icc_self ht)
+    exact GeodesicTransport.chartTransitionState_hasDerivAt_of_cutoff_eq_one_nhds
+      g x₀ x ((hd t (Ioo_subset_Icc_self ht)).hasDerivAt (Icc_mem_nhds ht.1 ht.2))
+      (hh.mono fun _ h => h.1) (hh.mono fun _ h => h.2.1)
+      (hh.mono fun _ h => h.2.2.1) (hh.mono fun _ h => h.2.2.2)
+
 end Poincare.FixedChartUniformPreferredGermAgreement
