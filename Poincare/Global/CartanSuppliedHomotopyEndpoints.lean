@@ -266,5 +266,36 @@ theorem endpoint_eq_sampled_chain (S : System g) (initial : CartanChain.ChainSta
   rw [Nat.add_sub_of_le hfbound] at hc
   exact hR.trans hc.symm
 
+/-- Arbitrary supplied boundary realizations have equal endpoints along every
+relative-endpoint path homotopy. -/
+theorem endpoint_eq_of_homotopy : ∀ (S : System g)
+    (initial : CartanChain.ChainState g) {y : M}
+    {p q : Path initial.anchor y}, p.Homotopy q →
+  ∀ (R : Realization S initial p) (T : Realization S initial q),
+    R.endpoint = T.endpoint := by
+  intro S initial y p q H R T
+  letI : MetricSpace M := g.toMetricSpace
+  obtain ⟨t, k, f, h, htzero, htmono, httail, hsmall, hfmono, hhmono,
+      hfzero, hhzero, hfbound, hhbound, hftimes, hhtimes⟩ :=
+    exists_grid_refining S initial H R T
+  have hinitial : ∀ m, initial.anchor = H (t m, t 0) := by
+    intro m; rw [htzero]; exact (H.source (t m)).symm
+  have hstep : ∀ m n, dist (H (t m, t (n + 1))) (H (t m, t n)) < S.mesh := by
+    intro m n
+    exact hsmall m n _ _ _ _
+      ⟨le_rfl, htmono (Nat.le_succ m)⟩ ⟨le_rfl, htmono (Nat.le_succ m)⟩
+      ⟨htmono (Nat.le_succ n), le_rfl⟩ ⟨le_rfl, htmono (Nat.le_succ n)⟩
+  choose a c _ha _hc using
+    (fun m => exists_sticky_chain S (fun n => H (t m, t n)) initial (hinitial m) (hstep m))
+  have hR : R.endpoint = (c 0).state k :=
+    endpoint_eq_sampled_chain S initial p R t k htzero htmono
+      (fun n => H (t 0, t n)) (by funext n; simp [htzero])
+      (a 0) (c 0) f hfzero hfmono hftimes (hfbound _)
+  have hT : T.endpoint = (c k).state k :=
+    endpoint_eq_sampled_chain S initial q T t k htzero htmono
+      (fun n => H (t k, t n)) (by funext n; simp [httail k le_rfl])
+      (a k) (c k) h hhzero hhmono hhtimes (hhbound _)
+  exact hR.trans ((grid_endpoint_eq S initial H t k htzero htmono httail hsmall a c).trans hT.symm)
+
 end CartanSuppliedHomotopyEndpoints
 end Poincare
