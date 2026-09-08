@@ -49,7 +49,10 @@ import Poincare.Global.FixedChartUniformPreferredGermAgreement
 import Poincare.Global.FixedChartUniformSourceNormal
 import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.GeodesicFlowJointDerivative
+import Poincare.Global.HamiltonEndpointEquivalences
+import Poincare.Global.HamiltonFiniteEnergyFlowInterface
 import Poincare.Global.HamiltonPoincareReduction
+import Poincare.Global.HamiltonReactionEndpoint
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
 import Poincare.Global.SelectedFiniteNerveSmoothingStatements

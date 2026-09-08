@@ -2,9 +2,12 @@
   "schema_version": 1,
   "id": "hamilton-front",
   "base_commit": "aa82826aec916ad9339e2da1049f80009cdf2c7a",
-  "description": "Five open normalized-flow, compact tensor, scalar third-jet, and subordinate Laplacian inputs imply positive-Einstein existence and the Hamilton pinched-limit endpoint. The checked reduction does not produce the inputs. Universal inputs also require constructing a suitable flow on each manifold.",
+  "description": "Five open normalized-flow, compact tensor, scalar third-jet, and subordinate Laplacian inputs imply positive-Einstein existence and the Hamilton pinched-limit endpoint. The checked reduction does not produce the inputs. Universal inputs also require constructing a suitable flow on each manifold. UPDATE 2026-09-08: the reaction record alone produces the endpoint (HamiltonReactionEndpoint), and the smaller finite-energy normalized-flow interface (HamiltonFiniteEnergyFlowInterface) suffices; the four remaining inputs are not needed for the endpoint. Universal Hamilton convergence is equivalent to universal positive Einstein existence (HamiltonEndpointEquivalences). All existence statements remain open: producing the flow needs Ricci-flow existence and pinching theory absent from the pinned Mathlib.",
   "modules": [
-    "Poincare.Global.HamiltonFrontStatements"
+    "Poincare.Global.HamiltonFrontStatements",
+    "Poincare.Global.HamiltonReactionEndpoint",
+    "Poincare.Global.HamiltonFiniteEnergyFlowInterface",
+    "Poincare.Global.HamiltonEndpointEquivalences"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -14,6 +17,10 @@
     {
       "url": "harness/reports/hamilton-front-mission_done.md",
       "role": "Worker signature probes and acceptance evidence; independent orchestrator review remains required."
+    },
+    {
+      "url": "harness/reports/hamilton-front-decomposition_done.md",
+      "role": "Decomposition survey: the reaction record alone, or the finite-energy flow interface, produces the endpoint; universal Hamilton convergence is equivalent to universal positive Einstein existence."
     }
   ],
   "nodes": [
@@ -36,12 +43,57 @@
       ]
     },
     {
+      "id": "hamilton-reaction-existence",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_existence",
+      "description": "Universal existence of the reaction-decay normalized-flow record alone (one of the five inputs). Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonReactionExistenceStatement",
+      "expected_statement_sha256": "091749bbb6a5cfd61b0a75cd65b90c237f8ae2eefc658cf232a809d72b5d69ee"
+    },
+    {
+      "id": "finite-energy-flow-existence",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_finite_energy_flow_existence",
+      "description": "Universal existence of a forward-time normalized Ricci flow with integrable traceless Ricci energy, compact realization with continuous mean-energy pair, and positive mean-scalar floor. The smallest sufficient flow-existence interface found. Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.UniversalHamiltonFiniteEnergyFlowExistenceStatement",
+      "expected_statement_sha256": "0f0b5739a942ed7433d80a123c9746946b6b0c909e68abf26f956287ef0ce1e7"
+    },
+    {
+      "id": "reaction-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalHamiltonReactionExistence",
+      "description": "Checked: the reaction record alone yields the endpoint through the landed finite-energy compact-mean theorem.",
+      "depends_on": [
+        "hamilton-reaction-existence"
+      ]
+    },
+    {
+      "id": "finite-energy-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_of_universalFiniteEnergyFlowExistence",
+      "description": "Checked: the finite-energy flow interface yields the endpoint.",
+      "depends_on": [
+        "finite-energy-flow-existence"
+      ]
+    },
+    {
+      "id": "positive-einstein-equivalence",
+      "kind": "checked",
+      "declaration": "Poincare.universalHamiltonConvergence_iff_universalPositiveEinstein",
+      "description": "Checked unconditionally: universal Hamilton convergence is equivalent to universal positive Einstein existence.",
+      "depends_on": []
+    },
+    {
       "id": "hamilton-convergence",
       "kind": "obligation",
       "declaration": "Poincare.universal_hamilton_convergence",
       "description": "Universal Hamilton pinched-limit endpoint. This exact unconditional declaration remains absent.",
       "depends_on": [
-        "hamilton-front-reduction"
+        "hamilton-front-reduction",
+        "reaction-reduction",
+        "finite-energy-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"

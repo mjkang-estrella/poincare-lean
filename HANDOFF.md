@@ -57,6 +57,31 @@ The exact remaining boundary is now machine-checked as the mission
 `unit-recognition` (unconditional) and `hamilton-reduction`. `graph` exits
 0 with three open obligations; `--require-closed` exits 2.
 
+Survey results (2026-09-08, codex `gpt-6-astra` high, reports trimmed on
+main, full evidence on the retained `worker/*` branches):
+
+- `harness/reports/hamilton-front-decomposition_done.md`: the `reaction`
+  record alone produces the Hamilton endpoint, and a smaller finite-energy
+  normalized-flow interface suffices; universal Hamilton convergence is
+  equivalent to universal positive Einstein existence. Implemented as
+  `Global/HamiltonReactionEndpoint.lean`, `Global/HamiltonEndpointEquivalences.lean`
+  (also `poincareConjecture_of_universalPositiveEinstein`), and
+  `Global/HamiltonFiniteEnergyFlowInterface.lean`, all gated; registered in
+  `hamilton-front.json` as obligations `hamilton-reaction-existence` and
+  `finite-energy-flow-existence` with checked reductions. Every existence
+  statement stays open: a normalized Ricci flow on an arbitrary closed simply
+  connected 3-manifold needs parabolic existence, Shi-type estimates, and
+  pinching theory absent from the pinned Mathlib, and the universal statement
+  assumes no positive-Ricci initial metric (this is the Perelman-level core).
+- `harness/reports/smoothability-bridge-survey_done.md`: no A-sized core
+  step exists for Moise-type smoothability; estimated multi-year library
+  development (PL manifolds, triangulation, smoothing theory all absent from
+  Mathlib). The repository's finite-atlas assembly is real: its proposal 1
+  is implemented as `Global/SelectedFiniteNerveSmoothingStatements.lean`
+  (statement plus the checked edge to `ExistsSmoothabilitySmoothManifoldStatement`)
+  and pinned in `hamilton-poincare.json` as `selected-finite-nerve-smoothing`.
+  No alternative from currently reachable hypotheses was found.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
