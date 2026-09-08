@@ -149,5 +149,84 @@ theorem transition_eqOn : ∀ (S : System g) (a b : S.cover.Label)
   exact ⟨fun y hy => ⟨(hsource (hEval hy)).1, (hswitchSource (hSwitch hy)).2⟩,
     fun y hy => (heq (hEval hy)).trans (hswitchEq (hSwitch hy))⟩
 
+/-- At fixed source and target anchors the generic comparison is uniform over
+all tangent alignments. The operator bound controls the inverse-normal input. -/
+theorem buffered_eventuallyEq_generic_forall_alignment
+    (B : QuantitativeCover g) (a : B.Label) (x : M) (p : RoundSphere3)
+    (hx : x ∈ B.source.buffer a.1) (hp : p ∈ B.target.buffer a.2) :
+    ∀ᶠ z in 𝓝 x, ∀ L : CartanMap.TangentAlignment g x p,
+      map (B.interp a) ⟨x, p, L⟩ z = (⟨x, p, L⟩ : CartanChain.ChainState g).map z := by
+  let C := B.source.patch a.1
+  let D := B.target.patch a.2
+  have hxC : x ∈ C.anchors := B.source.buffer_subset a.1 hx
+  have hpD : p ∈ D.anchors := B.target.buffer_subset a.2 hp
+  have hsource := FixedChartUniformPreferredGermAgreement.normal_eventuallyEq_generic_in_anchor_frame
+    C (B.source.cutoff a.1) x hxC
+  have htarget := FixedChartUniformPreferredGermAgreement.normal_eventuallyEq_generic_in_anchor_frame
+    D (B.target.cutoff a.2) p hpD
+  have hJx : (patchFrame C x : E →L[ℝ] E) =
+      FixedChartUniformPreferredGermAgreement.anchorFrame (B.source.center a.1) x := by
+    unfold patchFrame
+    rw [dif_pos hxC]
+    exact Classical.choose_spec
+      (FixedChartUniformPreferredGermAgreement.anchorFrame_isInvertible C x hxC)
+  have hJp : (patchFrame D p : E →L[ℝ] E) =
+      FixedChartUniformPreferredGermAgreement.anchorFrame (B.target.center a.2) p := by
+    unfold patchFrame
+    rw [dif_pos hpD]
+    exact Classical.choose_spec
+      (FixedChartUniformPreferredGermAgreement.anchorFrame_isInvertible D p hpD)
+  rw [← hJx] at hsource
+  rw [← hJp] at htarget
+  let N := (CartanSourceExponential.genericFamily roundSphereMetric3).normal p
+  let J := patchFrame D p
+  have hz : (0 : E) ∈ (D.normal p).target := by
+    simpa only [D.normal_anchor p hpD] using
+      (D.normal p).map_source (D.anchor_mem_normal_source p hpD)
+  have hinvzero : (D.normal p).symm (0 : E) = p := by
+    rw [← D.normal_anchor p hpD]
+    exact (D.normal p).left_inv (D.anchor_mem_normal_source p hpD)
+  have htN : Tendsto (D.normal p).symm (𝓝 (0 : E)) (𝓝 p) := by
+    simpa only [hinvzero] using ((D.normal p).continuousAt_symm hz).tendsto
+  have htJ : Tendsto J.symm (𝓝 (0 : E)) (𝓝 (0 : E)) := by
+    simpa only [map_zero] using (J.symm.continuous.continuousAt (x := (0 : E))).tendsto
+  have ht := htN.comp htJ
+  have hinverse : ∀ᶠ v in 𝓝 (0 : E), (D.normal p).symm (J.symm v) = N.symm v := by
+    filter_upwards [ht htarget,
+      ht (N.open_source.mem_nhds
+        ((CartanSourceExponential.genericFamily roundSphereMetric3).anchor_mem_source p)),
+      htJ ((D.normal p).open_target.mem_nhds hz)] with v hv hvs hvt
+    have heq : N ((D.normal p).symm (J.symm v)) = v := by
+      calc
+        N ((D.normal p).symm (J.symm v)) =
+            J (D.normal p ((D.normal p).symm (J.symm v))) := hv.symm
+        _ = v := by rw [(D.normal p).right_inv hvt, J.apply_symm_apply]
+    exact ((N.left_inv hvs).symm.trans (congrArg N.symm heq))
+  obtain ⟨δ, hδ, hδeq⟩ := Metric.mem_nhds_iff.mp hinverse
+  obtain ⟨R, hR, hbound⟩ :=
+    CartanMap.exists_pos_uniform_tangentAlignment_operatorNorm_bound g x p
+  let Nsource := (CartanSourceExponential.genericFamily g).normal x
+  have hnormal : Tendsto Nsource (𝓝 x) (𝓝 (0 : E)) := by
+    simpa only [Nsource, CartanSourceExponential.Family.normal_anchor] using
+      (Nsource.continuousAt
+        ((CartanSourceExponential.genericFamily g).anchor_mem_source x)).tendsto
+  have hsmall : ∀ᶠ z in 𝓝 x, ‖Nsource z‖ < δ / R := by
+    simpa only [mem_ball, dist_zero_right] using
+      hnormal.eventually (ball_mem_nhds (0 : E) (div_pos hδ hR))
+  filter_upwards [hsource, hsmall] with z hzs hzn L
+  have hinput : ‖L (Nsource z)‖ < δ := by
+    calc
+      _ ≤ ‖(L.toContinuousLinearEquiv : E →L[ℝ] E)‖ * ‖Nsource z‖ :=
+        (L.toContinuousLinearEquiv : E →L[ℝ] E).le_opNorm _
+      _ ≤ R * ‖Nsource z‖ := mul_le_mul_of_nonneg_right (hbound L) (norm_nonneg _)
+      _ < δ := by simpa only [mul_comm R] using (lt_div_iff₀ hR).mp hzn
+  have hi := hδeq (show L (Nsource z) ∈ ball (0 : E) δ by simpa using hinput)
+  rw [← generic_map_eq (⟨x, p, L⟩ : CartanChain.ChainState g)]
+  change (D.normal p).symm (J.symm (L (patchFrame C x (C.normal x z)))) =
+    N.symm (L (Nsource z))
+  change patchFrame C x (C.normal x z) = Nsource z at hzs
+  rw [hzs]
+  exact hi
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
