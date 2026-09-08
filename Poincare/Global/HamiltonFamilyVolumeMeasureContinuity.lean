@@ -125,8 +125,6 @@ theorem continuous_integral_inverseChartPullbackVolumeDensity_on_compact
     (fun k z ↦ f z * inverseChartPullbackVolumeDensity
       (metric k) x ⟨z.1, hS z.2⟩) hF
 
-variable [SecondCountableTopology M]
-
 /-- The landed area formula restricts to any compact coordinate set. -/
 theorem compact_inverseChart_hausdorffChartDensityEquality
     (g : ClosedSmoothRiemannianMetric n M) (x : M)
@@ -165,5 +163,54 @@ theorem compact_inverseChart_hausdorffChartDensityEquality
         (volumeMeasure g).restrict (range ψ) from
       inverseChart_hausdorffChartDensityEquality g x]
   exact Measure.restrict_restrict_of_subset hsub
+
+/-- Volume integrals on a measurable piece of a compact cutoff-one chart
+are continuous, with no regularity assumption on the boundary of the piece. -/
+theorem continuous_integral_volumeMeasure_restrict_compact_chart
+    (metric : K → ClosedSmoothRiemannianMetric n M)
+    (hjet : ∀ slot : MetricEntryThirdJetSlot n M,
+      Continuous (fun p : K × E ↦
+        metricEntryThirdJetProfile (metric p.1) slot p.2))
+    (x : M) (S : Set E) (hSc : IsCompact S)
+    (hS : S ⊆ (extChartAt I x).target)
+    (hχ : ∀ z ∈ S, GeodesicTransport.cutoff (n := n) x z = 1)
+    (P : Set M) (hPm : MeasurableSet P)
+    (hP : P ⊆ range (fun z : S ↦ inverseExtendedChartParametrization x ⟨z.1, hS z.2⟩))
+    (f : C(M, ℝ)) :
+    Continuous (fun k ↦ ∫ y in P, f y ∂volumeMeasure (metric k)) := by
+  let ψ : S → M := fun z ↦ inverseExtendedChartParametrization x ⟨z.1, hS z.2⟩
+  have hψ : Continuous ψ := (inverseExtendedChartParametrization_isEmbedding x).continuous.comp
+    (continuous_subtype_val.subtype_mk fun z ↦ hS z.2)
+  let c : ℝ := rawHausdorffLebesgueScale n
+  let A : Set S := ψ ⁻¹' P
+  let F : C(S, ℝ) := ⟨fun z ↦ c * f (ψ z), (f.continuous.comp hψ).const_mul c⟩
+  have hcont := continuous_integral_inverseChartPullbackVolumeDensity_on_compact
+    metric hjet x S hSc hS hχ F A
+  apply hcont.congr
+  intro k
+  symm
+  have hchart := compact_inverseChart_hausdorffChartDensityEquality (metric k) x S hSc hS
+  change Measure.map ψ (rawHausdorffCoordinateDensityMeasure S
+    (fun z ↦ inverseChartPullbackVolumeDensity (metric k) x ⟨z.1, hS z.2⟩)) =
+      (volumeMeasure (metric k)).restrict (range ψ) at hchart
+  rw [← Measure.restrict_restrict_of_subset hP, ← hchart,
+    Measure.restrict_map hψ.measurable hPm,
+    integral_map hψ.measurable.aemeasurable f.continuous.aestronglyMeasurable]
+  rw [rawHausdorffCoordinateDensityMeasure,
+    restrict_withDensity (hPm.preimage hψ.measurable)]
+  have hd : Continuous (fun z : S ↦ inverseChartPullbackVolumeDensity (metric k) x ⟨z.1, hS z.2⟩) :=
+    (continuous_inverseChartPullbackVolumeDensity (metric k) x).comp
+      (continuous_subtype_val.subtype_mk fun z ↦ hS z.2)
+  rw [integral_withDensity_eq_integral_toReal_smul₀
+    ((hd.const_mul c).measurable.ennreal_ofReal.aemeasurable)
+    (Eventually.of_forall fun _ ↦ ENNReal.ofReal_lt_top)]
+  apply integral_congr_ae
+  exact Eventually.of_forall fun z ↦ by
+    have hn : 0 ≤ c * inverseChartPullbackVolumeDensity (metric k) x ⟨z.1, hS z.2⟩ :=
+      mul_nonneg (by dsimp [c]; positivity)
+        (inverseChartPullbackVolumeDensity_pos (metric k) x _).le
+    dsimp only [F, ContinuousMap.coe_mk]
+    rw [ENNReal.toReal_ofReal hn, smul_eq_mul]
+    ring
 
 end Poincare.HamiltonFamilyVolumeMeasureContinuity
