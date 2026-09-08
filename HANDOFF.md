@@ -815,12 +815,19 @@ refuted on 2026-09-08, now proved. Task 10 (`supplied-reachable-chain`) landed
 (`CartanSuppliedReachableChain.lean`, twenty-two scanned declarations):
 reachable chains under a per-step interpretation policy, existence from
 `StepAvailable`, anchor and source laws, and endpoint equality under open
-agreement. The chain/mesh/overlap, restricted-atlas, and development adapter
-files are specified next by task `parametrization-plan-3` (analysis only:
-finite patch cover and policy, chain realization with mesh control, homotopy
-invariance via the uniform evaluation radius, the restricted compatible atlas
-or direct total map, and the final adapters to the controlled-instance
-recognition and the universal statement).
+agreement. The remaining program is specified in
+`harness/reports/parametrization-plan-3.md` (task `parametrization-plan-3`,
+analysis only): nine serial tasks 11 to 19, each with type-checked targets:
+finite patch cover with cores and buffers, uniform patch switch, patch
+policy with an external label schedule, whole-cell realization, subdivision
+transport, homotopy endpoints, terminal transport, restricted development,
+and the final unit-recognition adapters to the controlled instance and the
+universal statement. Two qualifications are recorded there: the cover is a
+finite refinement of patches (not one patch per chart), and the policy keeps
+a label while both anchors stay in compact operating cores inside the open
+patch anchor sets, since the H1/H2 theorem is uniform only on compact sets.
+Task 11 (`supplied-finite-patch-cover`) is dispatched; 12 to 19 follow
+serially, each task file derived verbatim from the report.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
