@@ -269,5 +269,41 @@ theorem geodesic_eqOn_unitInterval
   · intro t ht
     exact ha (Or.inr ⟨t, Ico_subset_Icc_self ht, rfl⟩)
 
+/-- A single velocity radius bounds endpoint displacement at every compact
+anchor. The displacement tolerance is prescribed before choosing the radius. -/
+theorem exists_uniform_endpoint_displacement_radius {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (K : Set M) (hK : IsCompact K) (hKC : K ⊆ C.anchors)
+    {ε : ℝ} (hε : 0 < ε) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ ρ > (0 : ℝ), ∀ x ∈ K, ∀ v : E, ‖v‖ < ρ →
+      dist (C.endpoint x v) x < ε := by
+  letI : MetricSpace M := g.toMetricSpace
+  have he : ∀ᶠ v : E in 𝓝 0, ∀ x ∈ K, dist (C.endpoint x v) x < ε := by
+    apply hK.eventually_forall_of_forall_eventually
+    intro x hx
+    have hxC := hKC hx
+    let f : E × M → E × E := fun q => (extChartAt I x₀ q.2, C.T⁻¹ • q.1)
+    have hf : ContinuousAt f (0, x) :=
+      ((continuousAt_extChartAt' hxC.1).comp continuousAt_snd).prodMk
+        (continuousAt_const.smul continuousAt_fst)
+    have hf0 : f (0, x) = (extChartAt I x₀ x, 0) := by simp [f]
+    have hsrc : f (0, x) ∈ C.P.source := by
+      rw [hf0]
+      exact C.zero_mem_source _ hxC.2
+    have hp : ContinuousAt (fun q => (C.P (f q)).2) (0, x) :=
+      ((C.P.continuousAt hsrc).comp hf).snd
+    have hp0 : (C.P (f (0, x))).2 = extChartAt I x₀ x := by
+      rw [hf0, C.stationary _ hxC.2]
+    have htarget : (C.P (f (0, x))).2 ∈ (chartAt E x₀).target := by
+      rw [hp0]
+      exact (chartAt E x₀).map_source (by simpa only [extChartAt_source] using hxC.1)
+    have hc : ContinuousAt (fun q : E × M => C.endpoint q.2 q.1) (0, x) :=
+      ((chartAt E x₀).continuousAt_symm htarget).comp (f := fun q => (C.P (f q)).2) hp
+    apply (hc.dist continuousAt_snd).eventually (gt_mem_nhds _)
+    simpa only [C.endpoint_zero x hxC, dist_self] using hε
+  obtain ⟨ρ, hρ, hball⟩ := Metric.mem_nhds_iff.mp he
+  exact ⟨ρ, hρ, fun x hx v hv => hball (by simpa using hv) x hx⟩
+
 end FixedChartUniformEndpointReanchoring
 end Poincare
