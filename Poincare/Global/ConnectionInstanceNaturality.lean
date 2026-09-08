@@ -449,5 +449,18 @@ theorem connectionCurvatureNaturality
   ⟨conjugatedConnection_eq_leviCivita (inst := inst) inst' h g,
     curvatureValue_naturality (inst := inst) inst' h g⟩
 
+section Recognition
+variable [SecondCountableTopology M] [CompactSpace M] [ConnectedSpace M]
+  [SimplyConnectedSpace M]
+
+/-- Recognition on the compatible controlled instance implies recognition on the original instance. -/
+theorem unitConstantCurvatureSphereRecognition3_of_controlled
+    (hrec : @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst'
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1 _ _ _) :
+    @UnitConstantCurvatureSphereRecognition3 M _ _ _ inst _ _ _ _ :=
+  target_of_ConnectionCurvatureNaturality (inst := inst) inst' h
+    (connectionCurvatureNaturality (inst := inst) inst' h) hrec
+
+end Recognition
 end Connection
 end Poincare.ConnectionInstanceNaturality
