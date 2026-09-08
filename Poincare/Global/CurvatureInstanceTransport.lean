@@ -60,4 +60,29 @@ theorem tangentCoordinates_transportField (X : M → E) (a x : M)
   rw [hb, D_comp _ _ _ x ha' ha ha', D_self _ x ha']
   rfl
 
+include h in
+/-- Source chart independence for model-valued maps at every finite or smooth order. -/
+theorem modelContMDiffAt_iff_of_le {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {n : ℕ∞ω} (hn : n ≤ ∞) (f : M → F) (x : M) :
+    (letI := inst; ContMDiffAt I 𝓘(ℝ, F) n f x) ↔
+      (letI := inst'; ContMDiffAt I 𝓘(ℝ, F) n f x) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  letI : IsManifold I n M := IsManifold.of_le hn
+  let e := inst'.chartAt x
+  have he : e ∈ IsManifold.maximalAtlas I n M :=
+    StructureGroupoid.maximalAtlas_mono (contDiffGroupoid_le hn)
+      (h (inst'.chart_mem_atlas x))
+  have hx : x ∈ e.source := inst'.mem_chart_source x
+  have hold := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he hx
+  letI := inst'
+  letI : IsManifold I ∞ M := hs
+  letI : IsManifold I n M := IsManifold.of_le hn
+  have he' : e ∈ IsManifold.maximalAtlas I n M := IsManifold.chart_mem_maximalAtlas x
+  have hnew := contMDiffWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he' hx
+  exact hold.trans hnew.symm
+
 end Poincare.CurvatureInstanceTransport
