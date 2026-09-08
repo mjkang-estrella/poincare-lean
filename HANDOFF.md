@@ -82,6 +82,14 @@ main, full evidence on the retained `worker/*` branches):
   and pinned in `hamilton-poincare.json` as `selected-finite-nerve-smoothing`.
   No alternative from currently reachable hypotheses was found.
 
+Next campaign (dispatched 2026-09-08): `reaction-record-decomposition`
+(prove which reaction-record and finite-energy-interface fields follow from
+a smaller core; one new module allowed) and
+`ricci-flow-existence-interface-survey` (lemma-level plan for DeTurck
+short-time existence on closed 3-manifolds; report only). Also landed:
+`Global/FiniteTriangulationStatements.lean` (finite complex compactness and
+the open finite-triangulation interface, survey items 5.1 and 5.3).
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

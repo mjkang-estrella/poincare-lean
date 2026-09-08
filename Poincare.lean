@@ -33,6 +33,7 @@ import Poincare.Global.CartanSuppliedWholeCellRealization
 import Poincare.Global.ConnectionInstanceNaturality
 import Poincare.Global.ControlledChartInstance
 import Poincare.Global.CurvatureInstanceTransport
+import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity
 import Poincare.Global.FixedChartEndpointSlices
 import Poincare.Global.FixedChartLocalSuccessorEquality
