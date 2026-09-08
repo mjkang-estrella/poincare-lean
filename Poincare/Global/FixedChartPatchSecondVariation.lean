@@ -66,4 +66,34 @@ theorem chart_operatorAugmentedField_contDiff_two
     g x₀).comp contDiff_fst).prodMk
       ((hlin.comp contDiff_fst).clm_comp contDiff_snd)
 
+variable {g : ClosedSmoothRiemannianMetric 3 M}
+
+/-- Any full-interval fundamental solution is the derivative of the supplied
+patch flow, including at the retained endpoint time. -/
+theorem patch_flow_hasFDerivAt_of_fundamentalSolution
+    {x₀ : M} {U : Set E} (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    {Φ : (E × E) → ℝ → (E × E) →L[ℝ] (E × E)}
+    (h0 : ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      Φ q 0 = ContinuousLinearMap.id ℝ (E × E))
+    (hd : ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      ∀ t ∈ Icc (-C.T) C.T, HasDerivWithinAt (Φ q)
+        ((linearizedGeodesicFlowOperator
+          (GeodesicTransport.chartChristoffelField g x₀) (C.α q t)).comp (Φ q t))
+        (Icc (-C.T) C.T) t) :
+    ∀ q ∈ ball (extChartAt I x₀ x₀, 0) (C.r : ℝ),
+      ∀ t ∈ Icc (-C.T) C.T, HasFDerivAt (fun y => C.α y t) (Φ q t) q := by
+  let p : E × E := (extChartAt I x₀ x₀, 0)
+  have hcompact : IsCompact ((Function.uncurry C.α) ''
+      (closedBall p (C.r : ℝ) ×ˢ Icc (-C.T) C.T)) :=
+    ((isCompact_closedBall p (C.r : ℝ)).prod isCompact_Icc).image_of_continuousOn C.continuous_flow
+  obtain ⟨a, ha⟩ := hcompact.isBounded.subset_closedBall p
+  intro q hq t ht
+  apply GeodesicFlowJointDerivative.flow_hasFDerivAt_initialState
+    (GeodesicTransport.geodesicFlowField_chartChristoffelField_contDiff g x₀)
+    C.T_pos hq (a := a) ?_ (h0 q hq) (hd q hq) ht
+  intro y hy
+  have hyc := ball_subset_closedBall hy
+  exact ⟨(C.flow_law y hyc).1, (C.flow_law y hyc).2,
+    fun s hs => ha ⟨(y, s), ⟨hyc, hs⟩, rfl⟩⟩
+
 end Poincare.FixedChartPatchSecondVariation
