@@ -228,5 +228,52 @@ theorem buffered_eventuallyEq_generic_forall_alignment
   rw [hzs]
   exact hi
 
+/-- At fixed anchors one ball works for every label pair and every alignment.
+Only the dependence on the two moving anchors remains in this local result. -/
+theorem exists_fixed_anchor_switch_radius (B : QuantitativeCover g)
+    (x : M) (p : RoundSphere3) :
+    letI : MetricSpace M := g.toMetricSpace
+    ∃ ρ > (0 : ℝ), ∀ (a b : B.Label) (L : CartanMap.TangentAlignment g x p),
+      B.Buffered a ⟨x, p, L⟩ → B.Buffered b ⟨x, p, L⟩ →
+      ball x ρ ⊆ (germ (B.interp a) ⟨x, p, L⟩).source ∩
+        (germ (B.interp b) ⟨x, p, L⟩).source ∧
+      EqOn (map (B.interp a) ⟨x, p, L⟩) (map (B.interp b) ⟨x, p, L⟩)
+        (ball x ρ) := by
+  classical
+  letI : MetricSpace M := g.toMetricSpace
+  letI : Fintype B.Label := inferInstanceAs
+    (Fintype (Fin B.source.count × Fin B.target.count))
+  have hpairs : ∀ c : B.Label × B.Label, ∃ r > (0 : ℝ),
+      ∀ L : CartanMap.TangentAlignment g x p,
+      B.Buffered c.1 ⟨x, p, L⟩ → B.Buffered c.2 ⟨x, p, L⟩ →
+      ball x r ⊆ (germ (B.interp c.1) ⟨x, p, L⟩).source ∩
+        (germ (B.interp c.2) ⟨x, p, L⟩).source ∧
+      EqOn (map (B.interp c.1) ⟨x, p, L⟩) (map (B.interp c.2) ⟨x, p, L⟩)
+        (ball x r) := by
+    intro c
+    by_cases ha : x ∈ B.source.buffer c.1.1 ∧ p ∈ B.target.buffer c.1.2
+    · by_cases hb : x ∈ B.source.buffer c.2.1 ∧ p ∈ B.target.buffer c.2.2
+      · have hevent : ∀ᶠ z in 𝓝 x, ∀ L : CartanMap.TangentAlignment g x p,
+            map (B.interp c.1) ⟨x, p, L⟩ z = map (B.interp c.2) ⟨x, p, L⟩ z := by
+          filter_upwards [buffered_eventuallyEq_generic_forall_alignment B c.1 x p ha.1 ha.2,
+            buffered_eventuallyEq_generic_forall_alignment B c.2 x p hb.1 hb.2]
+            with z hza hzb L
+          exact (hza L).trans (hzb L).symm
+        obtain ⟨r, hr, heq⟩ := Metric.mem_nhds_iff.mp hevent
+        refine ⟨min r B.step, lt_min hr B.step_pos, ?_⟩
+        intro L hLa hLb
+        exact ⟨(ball_subset_ball (min_le_right _ _)).trans
+            (buffered_common_source B c.1 c.2 ⟨x, p, L⟩ hLa hLb),
+          fun z hz => heq (ball_subset_ball (min_le_left _ _) hz) L⟩
+      · exact ⟨1, zero_lt_one, fun _ _ h => (hb h).elim⟩
+    · exact ⟨1, zero_lt_one, fun _ h => (ha h).elim⟩
+  choose r hr hagree using hpairs
+  obtain ⟨ρ, hρ, hle⟩ := exists_positive_lower_bound r hr
+  refine ⟨ρ, hρ, ?_⟩
+  intro a b L ha hb
+  obtain ⟨hs, he⟩ := hagree (a, b) L ha hb
+  exact ⟨(ball_subset_ball (hle (a, b))).trans hs,
+    he.mono (ball_subset_ball (hle (a, b)))⟩
+
 end CartanSuppliedUniformPatchSwitch
 end Poincare
