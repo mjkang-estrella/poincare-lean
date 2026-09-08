@@ -100,6 +100,18 @@ domination, joint C³ entries, local domination) reconstructs the reaction
 record and yields the endpoint. Pinned as `hamilton-reaction-core` in
 `hamilton-front.json`. All existence content remains open.
 
+`ricci-flow-existence-interface-survey` landed (trimmed report; full
+appendices on the retained worker branch): the landed interfaces
+(`RicciFlowShortTimeExistence3`, DeTurck and pullback interfaces, BUC
+Euclidean existence, pointwise inverse-gauge existence) reduce short-time
+existence to a variable-coefficient quasilinear parabolic existence and
+regularity theorem with compatible global construction, class B (tasks 3-6
+of its section 3; Schauder solvability, finite-atlas linear inverse,
+nonlinear residual estimate, smooth regularity). The boundary cannot be split
+into one chartwise linear assumption plus proved bookkeeping. Route ranking:
+finite-atlas parabolic Hölder contraction first. Its only class-A item, the
+compact ellipticity constant, is dispatched as `compact-coefficient-ellipticity`.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
