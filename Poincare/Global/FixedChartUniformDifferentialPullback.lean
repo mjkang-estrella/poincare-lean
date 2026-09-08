@@ -44,5 +44,17 @@ theorem normalizedEndpoint_hasStrictFDerivAt_zero {x₀ : M} {U : Set E}
   change 0 + C.T • (C.T⁻¹ • w) = w
   simp [smul_smul, C.T_pos.ne']
 
+/-- The supplied coordinate endpoint cancels the fixed chart on its actual source. -/
+theorem coordinateEndpoint_eq_normalizedEndpoint {x₀ : M} {U : Set E}
+    (C : FixedChartUniformSourceNormal.Patch g x₀ U)
+    (x : M) (v : E) (hv : v ∈ (C.endpoint x).source) :
+    (C.endpoint x).trans (chartAt E x₀) v =
+      normalizedEndpoint C (extChartAt I x₀ x, v) := by
+  change (chartAt E x₀) ((chartAt E x₀).symm
+    (C.P (extChartAt I x₀ x, C.T⁻¹ • v)).2) = _
+  have ht : (C.P (extChartAt I x₀ x, C.T⁻¹ • v)).2 ∈ (chartAt E x₀).target := hv.2
+  rw [(chartAt E x₀).right_inv ht, congrFun C.P_eq]
+  rfl
+
 end FixedChartUniformDifferentialPullback
 end Poincare
