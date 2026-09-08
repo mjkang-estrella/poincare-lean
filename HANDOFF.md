@@ -691,10 +691,20 @@ statement is byte-for-byte the frozen task-8 target: on a fixed-chart patch,
 for compact anchor sets, one radius chosen before the source anchor, target
 anchor, alignment, and point yields supplied successor data with actual source
 membership. This is the well-posed replacement of H1, proved. The remaining
-analytic statement for the H2 replacement is `UniformEndpointReanchoring`
-(uniform exponential naturality of the supplied Cartan map); task
-`uniform-endpoint-reanchoring` is dispatched for it, with the uniform local
-isometry now available as input.
+analytic statement for the H2 replacement was `UniformEndpointReanchoring`;
+task `uniform-endpoint-reanchoring` landed a partial, merged
+(`FixedChartUniformEndpointReanchoring.lean`, twelve declarations): the
+uniform metric pullback germ from the landed H1 data, the chart-level Koszul
+transition law uniformly, conditional only on differentiability of the chart
+map's derivative, the mapped-state chain rule needing only that, full
+unit-interval geodesic uniqueness, the uniform displacement radius, and the
+reduction `target_of_uniformMappedGeodesicEquation` of the frozen H2
+remainder to one concrete mapped-geodesic initial-value problem
+(`UniformMappedGeodesicEquation`). The unclosed step is second-order
+regularity of the patch endpoint map, which the landed joint-`C¹` theorem
+should give by applying it to the augmented flow-plus-fundamental-solution
+system; task `patch-second-variation` is dispatched for that and the
+assembly of the H2 replacement.
 
 `harness/gate.sh` now performs a module-wide axiom scan (every declaration
 of the module) instead of relying on hand-listed names.
