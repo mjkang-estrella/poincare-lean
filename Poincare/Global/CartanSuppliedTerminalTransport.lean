@@ -38,5 +38,38 @@ theorem exists_short_paths : ∀ (S : System g) (x : M),
   intro z hz
   exact ⟨hz.somePath, hz.somePath_mem⟩
 
+/-- Every actual terminal datum has the full endpoint state of a short path. -/
+theorem short_path_endpoint : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} (q : Path initial.anchor y) (R : Realization S initial q),
+  (letI : MetricSpace M := g.toMetricSpace
+   ∀ t : unitInterval, dist (q t) initial.anchor < S.mesh) →
+  ∀ d : Data (S.cover.interp (fallback S.cover initial)) initial y,
+    R.endpoint = d.successor := by
+  intro S initial y q R hsmall
+  have hinitial : initial.anchor = q (R.subdivision.time 0) := by
+    simp [R.subdivision.zero]
+  have hv : S.cover.Valid (fallback S.cover initial) initial :=
+    ⟨Classical.choose_spec (S.cover.source.covers initial.anchor),
+      Classical.choose_spec (S.cover.target.covers initial.target)⟩
+  have hb := block_state_eq S initial (fun n => q (R.subdivision.time n))
+    R.preferred R.chain hinitial 0 R.subdivision.terminal
+    (fallback S.cover initial) (by rw [R.chain.initial_eq]; exact hv)
+  dsimp only at hb
+  simp only [Nat.zero_add, R.chain.initial_eq] at hb
+  have ht := hb (fun k _ => hsmall (R.subdivision.time k))
+  have transport : ∀ (s : CartanChain.ChainState g) (z : M),
+      s = initial → z = y →
+      (∀ d : Data (S.cover.interp (fallback S.cover initial)) s z,
+        R.endpoint = d.successor) →
+      ∀ d : Data (S.cover.interp (fallback S.cover initial)) initial y,
+        R.endpoint = d.successor := by
+    intro s z hs hz
+    subst s
+    subst z
+    exact id
+  exact transport _ _ R.chain.initial_eq
+    (by simp [R.subdivision.tail _ le_rfl]) ht
+
+
 end CartanSuppliedTerminalTransport
 end Poincare
