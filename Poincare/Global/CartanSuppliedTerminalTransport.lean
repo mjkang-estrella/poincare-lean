@@ -71,5 +71,21 @@ theorem short_path_endpoint : ∀ (S : System g) (initial : CartanChain.ChainSta
     (by simp [R.subdivision.tail _ le_rfl]) ht
 
 
+/-- The second half-interval embedding used to concatenate subdivisions. -/
+def secondTime (t : unitInterval) : unitInterval :=
+  ⟨(1 + (t : ℝ)) / 2, by constructor <;> linarith [t.2.1, t.2.2]⟩
+
+open CartanRootedOverlapReparameterizedBoundary (halfTime)
+
+omit inst [IsManifold I ∞ M] [T2Space M] [CompactSpace M] [ConnectedSpace M] in
+/-- Recover the first path at its half-interval parameter. -/
+theorem trans_halfTime {x y z : M} (p : Path x y) (q : Path y z)
+    (t : unitInterval) : (p.trans q) (halfTime t) = p t := by
+  rw [Path.trans_apply, dif_pos (by dsimp [halfTime]; linarith [t.2.2])]
+  congr 1
+  apply Subtype.ext
+  change 2 * ((t : ℝ) / 2) = (t : ℝ)
+  ring
+
 end CartanSuppliedTerminalTransport
 end Poincare
