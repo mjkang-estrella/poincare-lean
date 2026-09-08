@@ -138,5 +138,67 @@ theorem ladder_state_eq (S : System g) (initial : CartanChain.ChainState g)
       exact CartanSuppliedDifferentialTransfer.successor_eq_of_eqOn_open
         _ _ _ _ _ (e.data n) d W hW hz heq
 
+/-- Iterating supplied ladders compares the boundary rows, with zero rungs
+at their common endpoint preserving the full geometric state. -/
+theorem grid_endpoint_eq : ∀ (S : System g) (initial : CartanChain.ChainState g)
+    {y : M} {p q : Path initial.anchor y} (H : p.Homotopy q)
+    (t : ℕ → unitInterval) (k : ℕ),
+  t 0 = 0 → Monotone t → (∀ n ≥ k, t n = 1) → GridSmall S H t →
+  ∀ (a : ℕ → ℕ → S.cover.Label)
+    (c : ∀ m, ReachableChain (policy S.cover (a m))
+      (fun n => H (t m, t n)) initial),
+    (c 0).state k = (c k).state k := by
+  intro S initial y p q H t k htzero htmono httail hsmall a c
+  letI : MetricSpace M := g.toMetricSpace
+  have hleft : ∀ n, t n ∈ Icc (t n) (t (n + 1)) :=
+    fun n => ⟨le_rfl, htmono (Nat.le_succ n)⟩
+  have hright : ∀ n, t (n + 1) ∈ Icc (t n) (t (n + 1)) :=
+    fun n => ⟨htmono (Nat.le_succ n), le_rfl⟩
+  have hinitial : ∀ m, initial.anchor = H (t m, t 0) := by
+    intro m; rw [htzero]; exact (H.source (t m)).symm
+  have hpos := mesh_pos S
+  have hadj : ∀ m, (c m).state k = (c (m + 1)).state k := by
+    intro m
+    have hbottom : ∀ n, dist (H (t m, t (n + 1))) (H (t m, t n)) < S.mesh :=
+      fun n => hsmall m n _ _ _ _ (hleft m) (hleft m) (hright n) (hleft n)
+    have hvertical : ∀ n, dist (H (t (m + 1), t n)) (H (t m, t n)) < S.mesh :=
+      fun n => hsmall m n _ _ _ _ (hright m) (hleft m) (hleft n) (hleft n)
+    have htop : ∀ n, dist (H (t (m + 1), t (n + 1)))
+        (H (t (m + 1), t n)) < S.mesh :=
+      fun n => hsmall m n _ _ _ _ (hright m) (hright m) (hright n) (hleft n)
+    let label := select S.cover (a m k) ((c m).state k)
+    have hvalid := select_valid S.cover (a m k) ((c m).state k)
+    have hanchor := state_anchor_eq_node _ _ _ (c m) (hinitial m) k
+    obtain ⟨d⟩ : Nonempty (Data (S.cover.interp label) ((c m).state k)
+        (H (t (m + 1), t k))) :=
+      (S.cover.h1 label.1 label.2 _
+        (interior_subset (S.cover.source.core_subset label.1 hvalid.1)) _
+        (interior_subset (S.cover.target.core_subset label.2 hvalid.2))
+        ((c m).state k).alignment _ (by
+          rw [hanchor]
+          have := hvertical k
+          have := (four_mul_mesh_le S).1
+          linarith)).2.2.2
+    have heq := ladder_state_eq S initial _ _ (a m) (a (m + 1))
+      (c m) (c (m + 1)) (hinitial m) (hinitial (m + 1))
+      hbottom hvertical htop k d
+    have hz : H (t (m + 1), t k) = ((c m).state k).anchor := by
+      rw [hanchor, httail k le_rfl, H.target, H.target]
+    have hzero : ∀ z, z = ((c m).state k).anchor →
+        ∀ d : Data (S.cover.interp label) ((c m).state k) z,
+          d.successor = (c m).state k := by
+      intro z hz d
+      subst z
+      exact CartanSuppliedDifferentialTransfer.patch_successor_at_anchor
+        _ _ _ _ (S.cover.source.patch label.1) (S.cover.target.patch label.2)
+        (S.cover.source.cutoff label.1) (S.cover.target.cutoff label.2) _ d
+    exact ((heq.trans (hzero _ hz d))).symm
+  have hiterate : ∀ m, (c 0).state k = (c m).state k := by
+    intro m
+    induction m with
+    | zero => rfl
+    | succ m ih => exact ih.trans (hadj m)
+  exact hiterate k
+
 end CartanSuppliedHomotopyEndpoints
 end Poincare
