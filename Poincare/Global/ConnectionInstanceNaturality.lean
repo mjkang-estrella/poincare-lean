@@ -155,5 +155,17 @@ theorem conjugatedDerivative_isCovariantDerivativeOn
     intro v
     exact conjugatedDerivative_leibniz (inst := inst) inst' h g X f x hX hf v
 
+/-- The conjugated operator as a covariant derivative, with its laws proved. -/
+def conjugatedConnection (g : @ClosedSmoothRiemannianMetric 3 M _ inst _) :
+    letI := inst'
+    letI : IsManifold I ∞ M :=
+      (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+    CovariantDerivative I E (TangentSpace I : M → Type _) := by
+  letI := inst'
+  letI : IsManifold I ∞ M :=
+    (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+  exact ⟨conjugatedDerivative (inst := inst) inst' h g,
+    conjugatedDerivative_isCovariantDerivativeOn (inst := inst) inst' h g⟩
+
 end Connection
 end Poincare.ConnectionInstanceNaturality
