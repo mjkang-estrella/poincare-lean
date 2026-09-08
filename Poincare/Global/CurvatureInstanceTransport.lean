@@ -38,11 +38,13 @@ variable (inst' : ChartedSpace E M)
   (h : inst'.atlas ⊆ @StructureGroupoid.maximalAtlas E M _ _ inst (contDiffGroupoid ∞ I))
 
 /-- Transport from the old tangent fibers to the new ones. -/
-def transportField (X : Π x : M, TangentSpace I x) : M → E :=
+def transportField (X : M → E) :
+    (letI := inst'; Π x : M, TangentSpace I x) :=
   fun x ↦ (J (inst := inst) inst' h x).symm (X x)
 
 /-- Transport from the new tangent fibers back to the old ones. -/
-def inverseTransportField (X : M → E) : Π x : M, TangentSpace I x :=
+def inverseTransportField (X : M → E) :
+    (letI := inst; Π x : M, TangentSpace I x) :=
   fun x ↦ J (inst := inst) inst' h x (X x)
 
 /-- New tangent coordinates are related to old ones by a fixed-anchor derivative. -/
@@ -142,6 +144,57 @@ theorem transportField_contMDiff_iff {n : ℕ∞ω} (hn : n ≤ ∞) (X : M → 
     rw [he] at hback
     exact hback
   · exact transportField_contMDiff inst' h hn X
+
+include h in
+/-- Pointwise differentiability of model-valued maps is chart independent. -/
+theorem modelMDifferentiableAt_iff {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    (f : M → F) (x : M) :
+    (letI := inst; MDifferentiableAt I 𝓘(ℝ, F) f x) ↔
+      (letI := inst'; MDifferentiableAt I 𝓘(ℝ, F) f x) := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  let e := inst'.chartAt x
+  have he : e ∈ IsManifold.maximalAtlas I 1 M :=
+    StructureGroupoid.maximalAtlas_mono (contDiffGroupoid_le (show (1 : ℕ∞ω) ≤ ∞ by simp))
+      (h (inst'.chart_mem_atlas x))
+  have hx : x ∈ e.source := inst'.mem_chart_source x
+  have hold := mdifferentiableWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he hx
+  letI := inst'
+  letI : IsManifold I ∞ M := hs
+  have he' : e ∈ IsManifold.maximalAtlas I 1 M := IsManifold.chart_mem_maximalAtlas x
+  have hnew := mdifferentiableWithinAt_iff_source_of_mem_maximalAtlas
+    (I' := 𝓘(ℝ, F)) (f := f) (s := univ) he' hx
+  exact hold.trans hnew.symm
+
+/-- The pointwise differentiability required by the covariant-derivative
+axioms transfers from the new tangent bundle to the old one. -/
+theorem inverseTransportField_mdiffAt (X : M → E) (a : M)
+    (hX : letI := inst'
+      letI : IsManifold I ∞ M :=
+        (ControlledChartInstance.isManifold_and_maximalAtlas_eq (inst := inst) inst' h).1
+      MDiffAtTangentField (n := 3) X a) :
+    letI := inst
+    MDiffAtTangentField (n := 3) (inverseTransportField (inst := inst) inst' h X) a := by
+  letI := inst
+  have hs := (ControlledChartInstance.isManifold_and_maximalAtlas_eq
+    (inst := inst) inst' h).1
+  have hcoord : letI := inst'
+      MDifferentiableAt I 𝓘(ℝ, E)
+        (fun x ↦ tangentCoordinates inst' hs a x (X x)) a := by
+    letI := inst'
+    letI : IsManifold I ∞ M := hs
+    exact (mdifferentiableAt_section (IB := I) (F := E) («E» := TangentSpace I) X).1 hX
+  have hXold := (modelMDifferentiableAt_iff (inst := inst) inst' h _ a).2 hcoord
+  apply (mdifferentiableAt_section (IB := I) (F := E) («E» := TangentSpace I) _).2
+  have hD := (contMDiffAt_D (newChart (inst := inst) inst' h a)
+    (oldChart (inst := inst) a) a
+    (inst'.mem_chart_source a) (inst.mem_chart_source a)).mdifferentiableAt (by simp)
+  apply (hD.clm_apply hXold).congr_of_eventuallyEq
+  filter_upwards [(inst.chartAt a).open_source.mem_nhds (inst.mem_chart_source a),
+    (inst'.chartAt a).open_source.mem_nhds (inst'.mem_chart_source a)] with x hx hx'
+  exact tangentCoordinates_transport (inst := inst) inst' h a x hx hx' (X x)
 
 section Connection
 variable [T2Space M]
