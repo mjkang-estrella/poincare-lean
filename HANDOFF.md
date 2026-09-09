@@ -178,6 +178,22 @@ value, its first jet, and the fixed background jets. This closes the Ricci
 survey's task 2; the route's next steps are the class-B parabolic Schauder
 items (tasks 3 to 6) and the class-C gauge/normalization tasks 7 and 8.
 
+`closed-ricci-flow-normalization` landed
+(`Global/ClosedRicciFlowNormalization.lean`, gate PASS, 21 declarations):
+the survey's task 8. Universal regular short-time Ricci flows with joint C³
+entries yield universal normalized short-time flows with the same initial
+metric, through the exponential scale of the mean-scalar integral, the
+strictly increasing normalized clock with its local inverse, the log chart
+density derivative `-R` along the flow, a finite-slab density bound, moving
+integral continuity by dominated convergence, and hence mean-scalar
+continuity. The output family's own C³ regularity is not part of the
+contract and is not claimed.
+
+Ricci route status after today: tasks 1, 2, 8 of the existence survey are
+landed; tasks 3 to 6 (linear parabolic Schauder solvability, finite-atlas
+linear inverse, nonlinear residual estimate, smooth regularity) are the
+class-B analytic core, and task 7 depends on 6. No worker is in flight.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
