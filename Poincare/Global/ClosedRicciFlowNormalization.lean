@@ -2,6 +2,7 @@ import Poincare.Global.NormalizedFlowRescaling
 import Poincare.Global.MetricRescaleFiniteAtlasIntegrals
 import Poincare.Global.MetricRescaleFiniteAtlasForwardFlow
 import Poincare.Global.HamiltonChartDensityLocalDomination
+import Poincare.Global.MetricFlowJointScalarContinuity
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.Analysis.Calculus.InverseFunctionTheorem.Deriv
 
@@ -176,6 +177,171 @@ theorem normalizedFlowGoal_of_continuousOn_meanScalar
     · exact hflow (τ t) hτT x
     · exact timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
         ((hjoint (τ t) hτT x).of_le (by norm_num))
+
+/-- Along the actual unnormalized equation, the logarithmic chart density
+has derivative minus scalar curvature. -/
+theorem hasDerivAt_log_density_of_ricciFlow [SecondCountableTopology M]
+    (C : FiniteExtendedChartCover (n := 3) (M := M))
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {t : ℝ} (i : Fin C.chartCount) (z : C.coordinateDomain i)
+    (hflow : IsClosedRicciFlowSolutionAt gt t (C.inverseChart i z))
+    (hjoint : MetricEntriesJointContDiffAt gt t (C.inverseChart i z) 3) :
+    HasDerivAt (fun s ↦ Real.log (C.inverseChartDensity (gt s) i z))
+      (-(gt t).scalarAt (C.inverseChart i z)) t := by
+  have htrace := traceMetricVariationAt_timeDeriv_eq_negTwoRicci
+    (isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt hflow
+      (closedRicciFlowExtensionRegularAt_canonical gt t (C.inverseChart i z)))
+  convert HamiltonChartDensityLocalDomination.hasDerivAt_log_inverseChartDensity C gt i z
+    (timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+      (hjoint.of_le (by norm_num))) using 1
+  rw [htrace]
+  ring
+
+/-- A scalar bound on a finite slab gives a uniform integrable density
+majorant by comparison with the initial metric. -/
+theorem density_le_initial_of_scalar_bound [SecondCountableTopology M]
+    (C : FiniteExtendedChartCover (n := 3) (M := M))
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {U K : ℝ} (hU : 0 ≤ U) (hK : 0 ≤ K)
+    (hflow : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, IsClosedRicciFlowSolutionAt gt t x)
+    (hjoint : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, MetricEntriesJointContDiffAt gt t x 3)
+    (hbound : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, ‖(gt t).scalarAt x‖ ≤ K)
+    (i : Fin C.chartCount) (z : C.coordinateDomain i)
+    {t : ℝ} (ht : t ∈ Icc (0 : ℝ) U) :
+    C.inverseChartDensity (gt t) i z ≤
+      Real.exp (K * U) * C.inverseChartDensity (gt 0) i z := by
+  have hder (s : ℝ) (hs : s ∈ Icc (0 : ℝ) U) :=
+    hasDerivAt_log_density_of_ricciFlow C gt i z
+      (hflow s hs _) (hjoint s hs _)
+  have hlog := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (fun s hs ↦ (hder s hs).hasDerivWithinAt)
+    (fun s hs ↦ by simpa only [norm_neg] using hbound s hs (C.inverseChart i z))
+    (convex_Icc (0 : ℝ) U) (show (0 : ℝ) ∈ Icc 0 U from ⟨le_rfl, hU⟩) ht
+  have hdist : ‖t - 0‖ ≤ U := by simpa [Real.norm_eq_abs, abs_of_nonneg ht.1] using ht.2
+  have hlogle : Real.log (C.inverseChartDensity (gt t) i z) ≤
+      K * U + Real.log (C.inverseChartDensity (gt 0) i z) := by
+    have := (le_abs_self _).trans (hlog.trans (mul_le_mul_of_nonneg_left hdist hK))
+    rw [Real.norm_eq_abs] at hlog
+    linarith
+  have hpos (s : ℝ) : 0 < C.inverseChartDensity (gt s) i z :=
+    inverseChartPullbackVolumeDensity_pos (gt s) (C.anchor i) (C.coordinateTargetPoint i z)
+  have := Real.exp_le_exp.mpr hlogle
+  simpa only [Real.exp_add, Real.exp_log (hpos t), Real.exp_log (hpos 0)] using this
+
+/-- Moving integrals of jointly continuous functions are continuous on a
+compact Ricci-flow slab. The density majorant comes from the equation. -/
+theorem continuousOn_integral_of_ricciFlow
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {U : ℝ} (hU : 0 ≤ U)
+    (hflow : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, IsClosedRicciFlowSolutionAt gt t x)
+    (hjoint : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, MetricEntriesJointContDiffAt gt t x 3)
+    (f : ℝ → M → ℝ)
+    (hf : ContinuousOn (fun p : ℝ × M ↦ f p.1 p.2) (Icc 0 U ×ˢ univ)) :
+    ContinuousOn (fun t ↦ ∫ x, f t x ∂volumeMeasure (gt t)) (Icc 0 U) := by
+  letI : SecondCountableTopology M :=
+    ChartedSpace.secondCountable_of_sigmaCompact (ClosedSmoothModel 3) M
+  let C := compactFiniteExtendedChartCover (n := 3) (M := M)
+  have hscalar : ContinuousOn (fun p : ℝ × M ↦ (gt p.1).scalarAt p.2)
+      (Icc 0 U ×ˢ univ) :=
+    continuousOn_scalarAt_joint_of_metricEntriesJointContDiffAt_three
+      (fun p hp ↦ hjoint p.1 hp.1 p.2)
+  obtain ⟨B, hB⟩ := (isCompact_Icc.prod (isCompact_univ : IsCompact (univ : Set M))).exists_bound_of_continuousOn hscalar
+  obtain ⟨L, hL⟩ := (isCompact_Icc.prod (isCompact_univ : IsCompact (univ : Set M))).exists_bound_of_continuousOn hf
+  have hbound (t : ℝ) (ht : t ∈ Icc (0 : ℝ) U) (x : M) :
+      ‖(gt t).scalarAt x‖ ≤ |B| :=
+    (hB (t, x) ⟨ht, mem_univ x⟩).trans (le_abs_self B)
+  have hfbound (t : ℝ) (ht : t ∈ Icc (0 : ℝ) U) (x : M) :
+      ‖f t x‖ ≤ |L| :=
+    (hL (t, x) ⟨ht, mem_univ x⟩).trans (le_abs_self L)
+  have hfspace (t : ℝ) (ht : t ∈ Icc (0 : ℝ) U) : Continuous (f t) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id) (fun x ↦ ⟨ht, mem_univ x⟩)
+  have hftime (x : M) : ContinuousOn (fun t ↦ f t x) (Icc 0 U) :=
+    hf.comp (continuousOn_id.prodMk continuousOn_const) (fun t ht ↦ ⟨ht, mem_univ x⟩)
+  have hdensity (t : ℝ) (i : Fin C.chartCount) :=
+    HamiltonReactionCoreReduction.inverseChartDensity_integrable C (gt t) i
+  let D := (FiniteExtendedChartFrameMeasureData.ofDensityIntegrable C gt (Icc 0 U)
+    (fun t _ i ↦ hdensity t i)).toDecomposition
+  have hcoord (i : Fin C.chartCount) : ContinuousOn
+      (fun t ↦ ∫ z : C.coordinateDomain i,
+        (rawHausdorffLebesgueScale 3 : ℝ) * C.inverseChartDensity (gt t) i z *
+          f t (C.inverseChart i z) ∂coordinateLebesgueMeasure (C.coordinateDomain i)) (Icc 0 U) := by
+    apply continuousOn_of_dominated
+      (bound := fun z ↦ (‖(rawHausdorffLebesgueScale 3 : ℝ)‖ * Real.exp (|B| * U) * |L|) *
+        C.inverseChartDensity (gt 0) i z)
+    · intro t ht
+      exact ((hdensity t i).aestronglyMeasurable.const_mul _).mul
+        (((hfspace t ht).measurable.comp (C.inverseChart_measurable i)).aestronglyMeasurable)
+    · intro t ht
+      apply Eventually.of_forall
+      intro z
+      have hd : ‖C.inverseChartDensity (gt t) i z‖ ≤
+          Real.exp (|B| * U) * C.inverseChartDensity (gt 0) i z := by
+        rw [Real.norm_eq_abs, abs_of_nonneg (C.inverseChartDensity_nonneg (gt t) i z)]
+        exact density_le_initial_of_scalar_bound C gt hU (abs_nonneg B)
+          hflow hjoint hbound i z ht
+      calc
+        _ = ‖(rawHausdorffLebesgueScale 3 : ℝ)‖ * ‖C.inverseChartDensity (gt t) i z‖ *
+            ‖f t (C.inverseChart i z)‖ := by simp only [norm_mul]
+        _ ≤ ‖(rawHausdorffLebesgueScale 3 : ℝ)‖ *
+            (Real.exp (|B| * U) * C.inverseChartDensity (gt 0) i z) * |L| := by
+              exact mul_le_mul (mul_le_mul_of_nonneg_left hd (norm_nonneg _))
+                (hfbound t ht _) (norm_nonneg _)
+                (mul_nonneg (norm_nonneg _) (mul_nonneg (Real.exp_pos _).le
+                  (C.inverseChartDensity_nonneg (gt 0) i z)))
+        _ = _ := by ring
+    · exact (hdensity 0 i).const_mul _
+    · apply Eventually.of_forall
+      intro z
+      have hd : ContinuousOn (fun t ↦ C.inverseChartDensity (gt t) i z) (Icc 0 U) := by
+        intro t ht
+        exact (C.hasDerivAt_inverseChartDensity i z
+          (timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+            ((hjoint t ht _).of_le (by norm_num)))).continuousAt.continuousWithinAt
+      exact (continuousOn_const.mul hd).mul (hftime _)
+  have hsum := continuousOn_finsetSum (s := Finset.univ) (fun i _ ↦ hcoord i)
+  apply hsum.congr
+  intro t ht
+  letI := volumeMeasure_isFiniteMeasure (gt t)
+  exact (integral_eq_sum_rawHausdorff_coordinateDensity D ht (f t)
+    ((hfspace t ht).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)))
+
+/-- Mean scalar curvature is continuous on every compact regular Ricci-flow
+slab, using the actual finite volume and scalar integrals. -/
+theorem continuousOn_meanScalar_of_ricciFlow
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {U : ℝ} (hU : 0 ≤ U)
+    (hflow : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, IsClosedRicciFlowSolutionAt gt t x)
+    (hjoint : ∀ t ∈ Icc (0 : ℝ) U, ∀ x : M, MetricEntriesJointContDiffAt gt t x 3) :
+    ContinuousOn (fun t ↦ meanScalar (gt t)) (Icc 0 U) := by
+  have hvolume : ContinuousOn (fun t ↦ totalVolume (gt t)) (Icc 0 U) := by
+    have h := continuousOn_integral_of_ricciFlow gt hU hflow hjoint
+      (fun _ _ ↦ (1 : ℝ)) continuousOn_const
+    simpa [totalVolume, Measure.real] using h
+  have hscalar : ContinuousOn (fun t ↦ totalScalar (gt t)) (Icc 0 U) :=
+    continuousOn_integral_of_ricciFlow gt hU hflow hjoint
+      (fun t x ↦ (gt t).scalarAt x)
+      (continuousOn_scalarAt_joint_of_metricEntriesJointContDiffAt_three
+        (fun p hp ↦ hjoint p.1 hp.1 p.2))
+  exact hscalar.div hvolume (fun t _ ↦ totalVolume_ne_zero (gt t))
+
+/-- Every regular short-time Ricci flow supplies a normalized short-time
+flow with the same initial metric. -/
+theorem normalization
+    (h : ∀ g₀ : ClosedSmoothRiemannianMetric 3 M, regularRicciFlowGoal g₀) :
+    ∀ g₀ : ClosedSmoothRiemannianMetric 3 M, normalizedFlowGoal g₀ := by
+  intro g₀
+  obtain ⟨T, hT, gt, h0, hflow, hjoint⟩ := h g₀
+  have hhalf : 0 < T / 2 := by linarith
+  have hsub : Icc (0 : ℝ) (T / 2) ⊆ Ico (0 : ℝ) T := by
+    intro t ht
+    exact ⟨ht.1, lt_of_le_of_lt ht.2 (by linarith)⟩
+  have hflow' := fun t ht x ↦ hflow t (hsub ht) x
+  have hjoint' := fun t ht x ↦ hjoint t (hsub ht) x
+  exact normalizedFlowGoal_of_continuousOn_meanScalar g₀ gt hhalf h0
+    (fun t ht x ↦ hflow' t ⟨ht.1, ht.2.le⟩ x)
+    (fun t ht x ↦ hjoint' t ⟨ht.1, ht.2.le⟩ x)
+    ((continuousOn_meanScalar_of_ricciFlow gt hhalf.le hflow' hjoint').mono
+      (fun _ ht ↦ ⟨ht.1, ht.2.le⟩))
 
 end Manifold
 
