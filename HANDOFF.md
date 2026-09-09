@@ -151,8 +151,13 @@ and Lie second-jet expressions cancel to exactly `spatialPrincipal` for the
 genuine chart metric; the Christoffel derivative is expressed in chart-metric
 jets. `principalIdentity` (the rate equals the inverse-metric contraction of
 the metric's second derivative plus a first-jet remainder chosen before the
-metric) is still open, with the exact residual displayed in the report; the
-follow-up `deturck-principal-identity` targets it.
+metric) was then proved by the follow-up `deturck-principal-identity`
+(`Global/DeTurckPrincipalIdentity.lean`, gate PASS, 50 declarations): the
+witness is `lowerTerm (B z) (fderiv ℝ B z)` with `B` the background
+Christoffel field, an explicit finite algebraic expression in the metric
+value, its first jet, and the fixed background jets. This closes the Ricci
+survey's task 2; the route's next steps are the class-B parabolic Schauder
+items (tasks 3 to 6) and the class-C gauge/normalization tasks 7 and 8.
 
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh

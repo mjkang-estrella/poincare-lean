@@ -34,6 +34,7 @@ import Poincare.Global.CompactCoefficientEllipticity
 import Poincare.Global.ConnectionInstanceNaturality
 import Poincare.Global.ControlledChartInstance
 import Poincare.Global.CurvatureInstanceTransport
+import Poincare.Global.DeTurckPrincipalIdentity
 import Poincare.Global.DeTurckPrincipalSecondJet
 import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity
