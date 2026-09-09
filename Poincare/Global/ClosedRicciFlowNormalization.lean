@@ -123,4 +123,60 @@ theorem exists_normalizingTimeData {r : ℝ → ℝ} (hr : Continuous r)
     convert (hasDerivAt_baseScale hr (e.symm t)).comp t hd using 1
     field_simp [(baseScale_pos r (e.symm t)).ne']
 
+section Manifold
+
+variable {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (ClosedSmoothModel 3) M]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+  [CompactSpace M] [ConnectedSpace M]
+  [MeasurableSpace M] [BorelSpace M]
+
+/-- The finite-interval construction requires only continuity of the actual
+mean scalar on the retained base interval. All measure and time data used
+by the rescaling adapter are produced here. -/
+theorem normalizedFlowGoal_of_continuousOn_meanScalar
+    (g₀ : ClosedSmoothRiemannianMetric 3 M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    {T : ℝ} (hT : 0 < T) (h0 : gt 0 = g₀)
+    (hflow : ∀ t ∈ Ico (0 : ℝ) T, ∀ x : M,
+      IsClosedRicciFlowSolutionAt gt t x)
+    (hjoint : ∀ t ∈ Ico (0 : ℝ) T, ∀ x : M,
+      MetricEntriesJointContDiffAt gt t x 3)
+    (hmean : ContinuousOn (fun t ↦ meanScalar (gt t)) (Ico 0 T)) :
+    normalizedFlowGoal g₀ := by
+  letI : SecondCountableTopology M :=
+    ChartedSpace.secondCountable_of_sigmaCompact (ClosedSmoothModel 3) M
+  let U : ℝ := T / 2
+  have hU : 0 < U := by dsimp [U]; linarith
+  have hUT : U < T := by dsimp [U]; linarith
+  let clamp : ℝ → ℝ := fun t ↦ max 0 (min t U)
+  have hclamp : Continuous clamp := continuous_const.max (continuous_id.min continuous_const)
+  have hclamp_mem (t : ℝ) : clamp t ∈ Ico (0 : ℝ) T :=
+    ⟨le_max_left _ _, lt_of_le_of_lt (max_le hU.le (min_le_right _ _)) hUT⟩
+  let r : ℝ → ℝ := fun t ↦ meanScalar (gt (clamp t))
+  have hr : Continuous r := hmean.comp_continuous hclamp hclamp_mem
+  have hr_eq {t : ℝ} (ht : t ∈ Ico 0 U) : r t = meanScalar (gt t) := by
+    simp only [r, clamp, min_eq_left ht.2.le, max_eq_right ht.1]
+  obtain ⟨S, τ, c, hS, hτ0, hc0, hc, hreach, hdata⟩ := exists_normalizingTimeData hr hU
+  refine ⟨S, hS, timeReparameterizedConstRescaling gt τ c hc, ?_, ?_⟩
+  · change (gt (τ 0)).constSMul (c 0) (hc 0) = g₀
+    simp only [hτ0, hc0, h0]
+    cases g₀
+    simp [ClosedSmoothRiemannianMetric.constSMul]
+  · intro t ht x
+    have hτU := hreach ht
+    have hτT : τ t ∈ Ico (0 : ℝ) T := ⟨hτU.1, hτU.2.trans hUT⟩
+    apply
+      isClosedNormalizedRicciFlowSolutionAt_timeReparameterizedConstRescaling_of_ricciFlow_of_baseMeanScale_of_baseDensityIntegrable
+        (compactFiniteExtendedChartCover (n := 3) (M := M)) gt τ c hc
+        (fun s i ↦ HamiltonReactionCoreReduction.inverseChartDensity_integrable _ _ i)
+        (fun s ↦ totalVolume_ne_zero (gt (τ s)))
+        (hdata t ht).2.2.1
+    · simpa only [hr_eq hτU] using (hdata t ht).2.2.2
+    · exact hflow (τ t) hτT x
+    · exact timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+        ((hjoint (τ t) hτT x).of_le (by norm_num))
+
+end Manifold
+
 end Poincare.ClosedRicciFlowNormalization
