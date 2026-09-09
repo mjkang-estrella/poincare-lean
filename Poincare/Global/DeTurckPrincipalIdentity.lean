@@ -342,7 +342,7 @@ def ricciFirstBilin (G : Bilin) (J : Jet1) : Bilin :=
       rw [← Finset.sum_add_distrib]
       apply Finset.sum_congr rfl
       intro i _
-      simp only [map_add, map_sub, map_neg, ContinuousLinearMap.add_apply]
+      simp only [map_add, map_sub, map_neg]
       ring)
     (by
       intro c v w
@@ -350,8 +350,7 @@ def ricciFirstBilin (G : Bilin) (J : Jet1) : Bilin :=
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro i _
-      simp only [map_smul, map_add, map_sub, map_neg,
-        ContinuousLinearMap.smul_apply, smul_eq_mul]
+      simp only [map_smul, map_add, map_sub, map_neg, smul_eq_mul]
       ring))
 
 /-- Evaluation of the bilinear Ricci remainder agrees with its coordinate expression. -/
@@ -380,6 +379,7 @@ universe u
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
   [ChartedSpace E M] [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
 
+omit [T2Space M] in
 /-- The actual Christoffel field in the cutoff-one region depends on the first metric jet. -/
 theorem christoffel_eq_connection
     (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
@@ -447,6 +447,7 @@ theorem christoffelDerivative_eq_jets
   simp only [hK, heval]
   rfl
 
+omit [T2Space M] in
 /-- Differentiation of the contracted field includes the motion of the raised covectors. -/
 theorem fieldDerivative_eq_raised_derivative
     (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z a : E) :
@@ -526,6 +527,7 @@ theorem fieldDerivative_eq_jets
   dsimp only
   abel
 
+omit [T2Space M] in
 /-- The coordinate field value is the fixed algebraic first-jet contraction. -/
 theorem field_eq_value
     (g bg : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
@@ -607,6 +609,7 @@ theorem chartMetric_secondJet_metric_symm
   exact CovariantDerivative.fderiv_metric_symm (fun y => fderiv ℝ G y b)
     (hJ.clm_apply (differentiableAt_const b)) (fun y p q => hfirst y b p q) a p q
 
+omit [T2Space M] in
 /-- The genuine chart metric is invertible wherever the cutoff equals one locally. -/
 theorem chartMetric_isInvertible_of_cutoff
     (g : ClosedSmoothRiemannianMetric 3 M) (anchor : M) (z : E)
