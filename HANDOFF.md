@@ -2,6 +2,25 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-08 Worker normalization exact contract proved
+
+Branch `worker/closed-ricci-flow-normalization`, base `8345b27c`, verified
+proof head `e468a20b`. The new `Global/ClosedRicciFlowNormalization.lean`
+proves the survey's exact `normalization` theorem. The Ricci equation supplies
+a log-density derivative and an integrable density bound on compact time
+slabs; dominated convergence gives mean scalar continuity. The exponential
+scale and local inverse time map include ordinary derivatives at zero and
+reached-time containment. The original Appendix D definitions are unchanged.
+
+The focused Lean check, forbidden-token scan, whitespace check, exact target
+assignment, and exact dependency checks pass for all 21 noninternal
+declarations. This worker result is not merged or accepted. The frozen output
+predicate does not include joint C³ regularity of the normalized family; no
+proof of that stronger output clause is claimed. Full evidence and failed
+diagnostics are in `harness/reports/closed-ricci-flow-normalization_done.md`.
+
+First action: `git diff 8345b27c..e468a20b -- Poincare/Global/ClosedRicciFlowNormalization.lean`.
+
 
 ## 2026-09-08 Supplied Cartan route complete: unit recognition is a theorem
 
