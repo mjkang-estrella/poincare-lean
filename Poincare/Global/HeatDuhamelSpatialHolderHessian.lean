@@ -135,4 +135,23 @@ theorem norm_cancelled_hessian_integral_le {α K t : ℝ}
       rw [integral_const_mul, weighted_hessian_integral ht]
       ring
 
+/-- A positive constant depending only on the exponent bounds the actual heat Hessian. -/
+theorem exists_heat_hessian_holder_bound {α : ℝ} (hα : 0 < α) (hα1 : α < 1) :
+    ∃ C : ℝ, 0 < C ∧ ∀ {t M K : ℝ}, 0 < t → 0 ≤ K →
+      ∀ {f : E → ℝ}, AEStronglyMeasurable f volume → (∀ y, ‖f y‖ ≤ M) →
+      (∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) → ∀ x : E,
+      ‖fderiv ℝ (fderiv ℝ (heatSolution t f)) x‖ ≤ C * K * t ^ (α / 2 - 1) := by
+  refine ⟨max 1 (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α),
+    lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro t M K ht hK0 f hf hM hK x
+  rw [hessian_heatSolution_eq_cancelled_integral ht hf hM]
+  calc
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+        K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) :=
+      norm_cancelled_hessian_integral_le hα.le (by linarith) ht hK x
+    _ ≤ max 1 (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * K * t ^ (α / 2 - 1) := by
+      apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg ht.le _)
+      rw [mul_comm K]
+      exact mul_le_mul_of_nonneg_right (le_max_right _ _) hK0
+
 end Poincare.HeatDuhamelSpatialHolderHessian
