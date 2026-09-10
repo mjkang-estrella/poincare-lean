@@ -69,4 +69,12 @@ theorem hessian_heatSolution_eq_integral_sub {t M : ℝ} (ht : 0 < t)
     (fun y : E => f y • Hess t (x - y)) volume x
   simpa only [sub_sub_cancel] using hc.symm
 
+/-- Integrability also holds with bounded data translated against the fixed kernel. -/
+theorem integrable_data_sub_smul_hessian {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    Integrable (fun y : E => f (x - y) • Hess t y) := by
+  simpa only [sub_sub_cancel] using
+    (integrable_data_smul_hessian_sub ht hf hM x).comp_sub_left x
+
 end Poincare.HeatDuhamelSpatialHolderHessian
