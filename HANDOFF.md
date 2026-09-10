@@ -223,6 +223,14 @@ cancellation, but no variable-coefficient estimate. First gated tasks: K1
 `heat-kernel-hessian-moments`) and K2 (Duhamel Hessian sup estimate from
 spatial Hölder forcing, class B, needs K1).
 
+K1 landed (`Global/HeatKernelHessianMoments.lean`, gate PASS, 11
+declarations): for `0 < α < 1` and `0 < t ≤ 1`, the Hessian of the landed
+Gaussian kernel has integrable `‖x‖^α`-weighted norm with integral at most
+`C t^{α/2 - 1}`, is integrable, and integrates to zero (dilation of the
+bilinear Hessian formula, a Gaussian-times-power envelope, Haar scaling,
+second moments). K2 (`heat-duhamel-spatial-holder-hessian`, class B) is
+dispatched on top of it.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

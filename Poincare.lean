@@ -65,6 +65,7 @@ import Poincare.Global.HamiltonReactionCoreFinal
 import Poincare.Global.HamiltonReactionCoreReduced
 import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HamiltonReactionEndpoint
+import Poincare.Global.HeatKernelHessianMoments
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
 import Poincare.Global.SelectedFiniteNerveSmoothingStatements
