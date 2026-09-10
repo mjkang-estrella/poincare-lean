@@ -216,4 +216,19 @@ theorem intervalIntegrable_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ 
     hfc.aestronglyMeasurable (by simpa only [Real.norm_eq_abs] using hM s hmem) x
 
 
+/-- The heat kernel is jointly continuous away from zero time. -/
+theorem continuous_kernel_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => heatKernel (p.1 : ℝ) p.2) := by
+  have ht (p : Ioi (0 : ℝ) × E) : 0 < (p.1 : ℝ) := p.1.property
+  unfold heatKernel
+  apply Continuous.mul
+  · apply Continuous.rpow_const (by fun_prop)
+    intro p
+    left
+    exact mul_ne_zero (mul_ne_zero (by norm_num) Real.pi_ne_zero) (ht p).ne'
+  · apply Continuous.rexp
+    apply Continuous.div (by fun_prop) (by fun_prop)
+    intro p
+    exact mul_ne_zero (by norm_num) (ht p).ne'
+
 end Poincare.HeatDuhamelHessianDifferentiation
