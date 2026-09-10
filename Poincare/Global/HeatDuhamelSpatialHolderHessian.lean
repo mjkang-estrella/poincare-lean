@@ -232,4 +232,26 @@ theorem integrableOn_cancelled_hessian_time {α K T t : ℝ}
   exact norm_cancelled_hessian_integral_le hα.le (by linarith)
     (sub_pos.mpr s.property.2) (hK s (hmem s)) x
 
+/-- The cancelled Duhamel integral has the required spatial Hessian size. -/
+theorem norm_integral_cancelled_hessian_time_le {α K t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : 0 ≤ t) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo 0 t, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    ‖∫ s in (0 : ℝ)..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      (K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)) * (2 / α) * t ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hi : IntegrableOn (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) (Ioo 0 t) :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ht).mp
+      (intervalIntegrable_hessian_majorant hα t A)
+  have hb : ‖∫ s in Ioo (0 : ℝ) t, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      ∫ s in Ioo (0 : ℝ) t, A * (t - s) ^ (α / 2 - 1) := by
+    apply norm_integral_le_of_norm_le hi
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (sub_pos.mpr hs.2) (hK s hs) x
+  rw [restrict_Ioo_eq_restrict_Ioc, ← intervalIntegral.integral_of_le ht,
+    ← intervalIntegral.integral_of_le ht] at hb
+  simpa only [integral_hessian_majorant hα, A] using hb
+
 end Poincare.HeatDuhamelSpatialHolderHessian
