@@ -134,4 +134,10 @@ theorem hamiltonReactionCore3Final_of_initialPinchingEta
     (gt t) x (by linarith) (by linarith) hdpos.le hadm (hpos t ht x)
     ((hpres t ht).1 x) (hgap t ht x)
 
+/-- The sufficient initial-pinching core reaches the Hamilton endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3InitialPinching
+    (h : HamiltonReactionCore3InitialPinching.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Final
+    (hamiltonReactionCore3Final_of_initialPinching h)
+
 end Poincare.HamiltonInitialPinchingReactionCoreReduction
