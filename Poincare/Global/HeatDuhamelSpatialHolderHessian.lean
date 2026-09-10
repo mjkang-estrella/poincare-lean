@@ -104,4 +104,20 @@ theorem integrable_cancelled_hessian {t M : ℝ} (ht : 0 < t)
     (integrable_hessian ht).smul (f x)
   simpa only [sub_smul] using (integrable_data_sub_smul_hessian ht hf hM x).sub hc
 
+/-- Spatial Hölder increments supply the weighted Hessian majorant. -/
+theorem norm_cancelled_hessian_integrand_le {α K : ℝ} {f : E → ℝ}
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α)
+    (t : ℝ) (x y : E) :
+    ‖(f (x - y) - f x) • Hess t y‖ ≤ K * (‖Hess t y‖ * ‖y‖ ^ α) := by
+  have hd : ‖f (x - y) - f x‖ ≤ K * ‖y‖ ^ α := by
+    have h := hK (x - y) x
+    have he : x - y - x = -y := by abel
+    simpa only [he, norm_neg, Real.norm_eq_abs] using h
+  calc
+    ‖(f (x - y) - f x) • Hess t y‖ ≤ ‖f (x - y) - f x‖ * ‖Hess t y‖ :=
+      norm_real_smul_continuousLinearMap_two_le _ _
+    _ ≤ (K * ‖y‖ ^ α) * ‖Hess t y‖ :=
+      mul_le_mul_of_nonneg_right hd (norm_nonneg _)
+    _ = K * (‖Hess t y‖ * ‖y‖ ^ α) := by ring
+
 end Poincare.HeatDuhamelSpatialHolderHessian
