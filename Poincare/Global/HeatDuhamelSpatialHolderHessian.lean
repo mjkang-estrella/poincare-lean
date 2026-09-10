@@ -1,0 +1,257 @@
+import Poincare.Global.HeatKernelHessianMoments
+import Poincare.Global.HeatCauchyNext2
+import Poincare.Global.HeatMildBUCPositiveHolder
+
+set_option autoImplicit false
+
+noncomputable section
+
+open Set MeasureTheory
+open scoped Topology
+
+namespace Poincare.HeatDuhamelSpatialHolderHessian
+
+local notation "E" => Poincare.ClosedSmoothModel 3
+local instance : NormedAddCommGroup (E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
+local notation "Hess" => fun (t : ℝ) (x : E) =>
+  fderiv ℝ (fderiv ℝ (fun z : E => Poincare.heatKernel t z)) x
+
+open HeatKernelHessianMoments
+
+/-- The full translated Hessian integrand is integrable for bounded measurable data. -/
+theorem integrable_data_smul_hessian_sub {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    Integrable (fun y : E => f y • Hess t (x - y)) := by
+  have hi := (integrable_hessian ht).norm.comp_sub_left x
+  refine (hi.const_mul M).mono'
+    (smul_fderiv_fderiv_heatKernel_sub_aestronglyMeasurable t hf x) ?_
+  exact Filter.Eventually.of_forall fun y => by
+    calc
+      ‖f y • Hess t (x - y)‖ ≤ ‖f y‖ * ‖Hess t (x - y)‖ :=
+        norm_real_smul_continuousLinearMap_two_le _ _
+      _ ≤ M * ‖Hess t (x - y)‖ :=
+        mul_le_mul_of_nonneg_right (hM y) (norm_nonneg _)
+
+/-- The spatial Hessian of the heat convolution is the convolution with the full kernel Hessian. -/
+theorem hessian_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, f y • Hess t (x - y) := by
+  have htwo := contDiff_two_heatSolution_of_bounded_measurable ht hf hM
+  have hD := ((htwo.fderiv_right (m := 1) (by norm_num)).differentiable
+    (by norm_num) x).hasFDerivAt
+  have hi := integrable_data_smul_hessian_sub ht hf hM x
+  ext v w
+  have hc := hD.clm_apply (hasFDerivAt_const w x)
+  have hg := heatSolution_fderiv_apply_hasFDerivAt ht hf hM x w
+  have he := congrArg (fun L : E →L[ℝ] ℝ => L v) (hc.unique hg)
+  have hiv : Integrable (fun y : E => (f y • Hess t (x - y)) v) :=
+    (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) v).integrable_comp hi
+  rw [ContinuousLinearMap.integral_apply hi,
+    ContinuousLinearMap.integral_apply hiv]
+  dsimp only at he
+  rw [ContinuousLinearMap.integral_apply
+    (integrable_smul_fderiv_fderiv_heatKernel_sub_flip ht hf hM x w)] at he
+  simpa only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply, add_zero,
+    ContinuousLinearMap.smul_apply, smul_eq_mul, map_zero, zero_add] using he
+
+/-- Changing variables puts the kernel Hessian at the integration variable. -/
+theorem hessian_heatSolution_eq_integral_sub {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, f (x - y) • Hess t y := by
+  rw [hessian_heatSolution_eq_integral ht hf hM]
+  have hc := integral_sub_left_eq_self
+    (fun y : E => f y • Hess t (x - y)) volume x
+  simpa only [sub_sub_cancel] using hc.symm
+
+/-- Integrability also holds with bounded data translated against the fixed kernel. -/
+theorem integrable_data_sub_smul_hessian {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    Integrable (fun y : E => f (x - y) • Hess t y) := by
+  simpa only [sub_sub_cancel] using
+    (integrable_data_smul_hessian_sub ht hf hM x).comp_sub_left x
+
+/-- Tensor cancellation removes the value of the forcing at the observation point. -/
+theorem hessian_heatSolution_eq_cancelled_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, (f (x - y) - f x) • Hess t y := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hc : Integrable (fun y : E => f x • Hess t y) :=
+    (integrable_hessian ht).smul (f x)
+  rw [hessian_heatSolution_eq_integral_sub ht hf hM]
+  simp_rw [sub_smul]
+  rw [integral_sub (integrable_data_sub_smul_hessian ht hf hM x)
+    hc, integral_smul,
+    integral_hessian_eq_zero ht, smul_zero, sub_zero]
+
+/-- The cancelled Hessian integral remains a genuine Bochner integral. -/
+theorem integrable_cancelled_hessian {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    Integrable (fun y : E => (f (x - y) - f x) • Hess t y) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hc : Integrable (fun y : E => f x • Hess t y) :=
+    (integrable_hessian ht).smul (f x)
+  simpa only [sub_smul] using (integrable_data_sub_smul_hessian ht hf hM x).sub hc
+
+/-- Spatial Hölder increments supply the weighted Hessian majorant. -/
+theorem norm_cancelled_hessian_integrand_le {α K : ℝ} {f : E → ℝ}
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α)
+    (t : ℝ) (x y : E) :
+    ‖(f (x - y) - f x) • Hess t y‖ ≤ K * (‖Hess t y‖ * ‖y‖ ^ α) := by
+  have hd : ‖f (x - y) - f x‖ ≤ K * ‖y‖ ^ α := by
+    have h := hK (x - y) x
+    have he : x - y - x = -y := by abel
+    simpa only [he, norm_neg, Real.norm_eq_abs] using h
+  calc
+    ‖(f (x - y) - f x) • Hess t y‖ ≤ ‖f (x - y) - f x‖ * ‖Hess t y‖ :=
+      norm_real_smul_continuousLinearMap_two_le _ _
+    _ ≤ (K * ‖y‖ ^ α) * ‖Hess t y‖ :=
+      mul_le_mul_of_nonneg_right hd (norm_nonneg _)
+    _ = K * (‖Hess t y‖ * ‖y‖ ^ α) := by ring
+
+/-- Integrating the spatial Hölder majorant gives the sharp time power. -/
+theorem norm_cancelled_hessian_integral_le {α K t : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ht : 0 < t) {f : E → ℝ}
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+      K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) := by
+  calc
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+        ∫ y : E, K * (‖Hess t y‖ * ‖y‖ ^ α) :=
+      norm_integral_le_of_norm_le ((integrable_weighted_hessian hα hα2 ht).const_mul K)
+        (Filter.Eventually.of_forall fun y => norm_cancelled_hessian_integrand_le hK t x y)
+    _ = K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) := by
+      rw [integral_const_mul, weighted_hessian_integral ht]
+      ring
+
+/-- A positive constant depending only on the exponent bounds the actual heat Hessian. -/
+theorem exists_heat_hessian_holder_bound {α : ℝ} (hα : 0 < α) (hα1 : α < 1) :
+    ∃ C : ℝ, 0 < C ∧ ∀ {t M K : ℝ}, 0 < t → 0 ≤ K →
+      ∀ {f : E → ℝ}, AEStronglyMeasurable f volume → (∀ y, ‖f y‖ ≤ M) →
+      (∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) → ∀ x : E,
+      ‖fderiv ℝ (fderiv ℝ (heatSolution t f)) x‖ ≤ C * K * t ^ (α / 2 - 1) := by
+  refine ⟨max 1 (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α),
+    lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro t M K ht hK0 f hf hM hK x
+  rw [hessian_heatSolution_eq_cancelled_integral ht hf hM]
+  calc
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+        K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) :=
+      norm_cancelled_hessian_integral_le hα.le (by linarith) ht hK x
+    _ ≤ max 1 (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * K * t ^ (α / 2 - 1) := by
+      apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg ht.le _)
+      rw [mul_comm K]
+      exact mul_le_mul_of_nonneg_right (le_max_right _ _) hK0
+
+/-- The sharp Hessian time majorant is integrable, including its singular endpoint. -/
+theorem intervalIntegrable_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+    IntervalIntegrable (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) volume 0 t := by
+  have hi := (intervalIntegral.intervalIntegrable_rpow'
+    (a := (0 : ℝ)) (b := t) (r := α / 2 - 1) (by linarith)).comp_sub_left t
+  have hj : IntervalIntegrable (fun s : ℝ => (t - s) ^ (α / 2 - 1)) volume 0 t := by
+    simpa only [sub_zero, sub_self] using hi.symm
+  exact hj.const_mul A
+
+/-- Exact integration of the time majorant supplies the factor two over the exponent. -/
+theorem integral_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+    (∫ s in (0 : ℝ)..t, A * (t - s) ^ (α / 2 - 1)) =
+      A * (2 / α) * t ^ (α / 2) := by
+  rw [intervalIntegral.integral_const_mul]
+  have he : α / 2 - 1 = -(1 - α / 2) := by ring
+  simp_rw [he]
+  rw [integral_sub_rpow_neg (by linarith : 1 - α / 2 < 1)]
+  rw [show 1 - (1 - α / 2) = α / 2 by ring]
+  field_simp
+
+/-- Dilation gives joint continuity of the full Hessian at positive times. -/
+theorem continuous_hessian_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => Hess p.1 p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hunit : ContDiff ℝ 0 (Hess 1) :=
+    ((contDiff_heatKernel_spatial («E» := E) 1).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)
+  have ha : Continuous (fun p : Ioi (0 : ℝ) × E => Real.sqrt (p.1 : ℝ)) :=
+    Real.continuous_sqrt.comp (continuous_subtype_val.comp continuous_fst)
+  have hapos (p : Ioi (0 : ℝ) × E) : 0 < Real.sqrt (p.1 : ℝ) :=
+    Real.sqrt_pos.2 p.1.property
+  have hc : Continuous (fun p : Ioi (0 : ℝ) × E =>
+      (((Real.sqrt (p.1 : ℝ)) ^ 3)⁻¹ * ((Real.sqrt (p.1 : ℝ)) ^ 2)⁻¹) •
+        Hess 1 ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)) :=
+    ((ha.pow 3).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')).mul
+      ((ha.pow 2).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')) |>.smul
+      (hunit.continuous.comp ((ha.inv₀ (fun p => (hapos p).ne')).smul continuous_snd))
+  apply hc.congr
+  intro p
+  have h := hessian_sq_smul (Real.sqrt (p.1 : ℝ)) (hapos p)
+    ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
+  simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
+
+/-- The cancelled spatial integral is integrable over the Duhamel time interval. -/
+theorem integrableOn_cancelled_hessian_time {α K T t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T) {f : ℝ × E → ℝ}
+    (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    IntegrableOn (fun s : ℝ => ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y) (Ioo 0 t) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hmem (s : Ioo (0 : ℝ) t) : (s : ℝ) ∈ Icc 0 T :=
+    ⟨s.property.1.le, s.property.2.le.trans ht.2⟩
+  have hs : Continuous (fun p : Ioo (0 : ℝ) t × E => (p.1 : ℝ)) :=
+    continuous_subtype_val.comp continuous_fst
+  have hf1 : Continuous (fun p : Ioo (0 : ℝ) t × E => f ((p.1 : ℝ), x - p.2)) :=
+    hf.comp_continuous (hs.prodMk (continuous_const.sub continuous_snd))
+      (fun p => ⟨hmem p.1, mem_univ _⟩)
+  have hf2 : Continuous (fun p : Ioo (0 : ℝ) t × E => f ((p.1 : ℝ), x)) :=
+    hf.comp_continuous (hs.prodMk continuous_const)
+      (fun p => ⟨hmem p.1, mem_univ _⟩)
+  have hH : Continuous (fun p : Ioo (0 : ℝ) t × E => Hess (t - (p.1 : ℝ)) p.2) :=
+    continuous_hessian_pos.comp
+      (((continuous_const.sub hs).subtype_mk (fun p => sub_pos.mpr p.1.property.2)).prodMk
+        continuous_snd)
+  have hmeas := ((hf1.sub hf2).smul hH).stronglyMeasurable.integral_prod_right' (ν := volume)
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hi : IntegrableOn (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) (Ioo 0 t) :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+      (intervalIntegrable_hessian_majorant hα t A)
+  rw [integrableOn_iff_comap_subtypeVal measurableSet_Ioo] at hi ⊢
+  refine hi.mono' hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun s => ?_)
+  exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+    (sub_pos.mpr s.property.2) (hK s (hmem s)) x
+
+/-- The cancelled Duhamel integral has the required spatial Hessian size. -/
+theorem norm_integral_cancelled_hessian_time_le {α K t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : 0 ≤ t) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo 0 t, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    ‖∫ s in (0 : ℝ)..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      (K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)) * (2 / α) * t ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hi : IntegrableOn (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) (Ioo 0 t) :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ht).mp
+      (intervalIntegrable_hessian_majorant hα t A)
+  have hb : ‖∫ s in Ioo (0 : ℝ) t, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      ∫ s in Ioo (0 : ℝ) t, A * (t - s) ^ (α / 2 - 1) := by
+    apply norm_integral_le_of_norm_le hi
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (sub_pos.mpr hs.2) (hK s hs) x
+  rw [restrict_Ioo_eq_restrict_Ioc, ← intervalIntegral.integral_of_le ht,
+    ← intervalIntegral.integral_of_le ht] at hb
+  simpa only [integral_hessian_majorant hα, A] using hb
+
+end Poincare.HeatDuhamelSpatialHolderHessian
