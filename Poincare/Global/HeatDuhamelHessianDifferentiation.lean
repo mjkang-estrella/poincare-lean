@@ -300,4 +300,49 @@ theorem hasFDerivAt_duhamel {T t M : ℝ} (ht : t ∈ Icc 0 T)
     exact (heatSolution_hasFDerivAt (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable
       (by simpa only [Real.norm_eq_abs] using hM s (hmem s hs)) z).differentiableAt.hasFDerivAt
 
+/-- Second spatial differentiation uses the integrable cancelled Hessian. -/
+theorem hasFDerivAt_duhamel_gradient {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    HasFDerivAt (fun z : E => ∫ s in (0 : ℝ)..t,
+      fderiv ℝ (heatSolution (t - s) (fun y => f (s, y))) z)
+      (∫ s in (0 : ℝ)..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y) x := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hmem (s : ℝ) (hs : s ∈ Ioo 0 t) : s ∈ Icc 0 T :=
+    ⟨hs.1.le, hs.2.le.trans ht.2⟩
+  have hfc (s : ℝ) (hs : s ∈ Ioo 0 t) : Continuous (fun y : E => f (s, y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hmem s hs, mem_univ y⟩)
+  apply hasFDerivAt_integral_of_dominated_of_fderiv_le''
+    (F' := fun z s => ∫ y : E, (f (s, z - y) - f (s, z)) • Hess (t - s) y)
+    (s := univ) (bound := fun s => A * (t - s) ^ (α / 2 - 1)) (by simp)
+  · exact Filter.Eventually.of_forall fun z => by
+      simpa only [uIoc_of_le ht.1] using
+        (intervalIntegrable_gradient_heatSolution_time ht hf hM z).aestronglyMeasurable
+  · exact intervalIntegrable_gradient_heatSolution_time ht hf hM x
+  · have hi := (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mpr
+      (integrableOn_cancelled_hessian_time hα hα1 ht hf hK x)
+    simpa only [uIoc_of_le ht.1] using hi.aestronglyMeasurable
+  · rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs z _
+    exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (sub_pos.mpr hs.2) (hK s (hmem s hs)) z
+  · exact intervalIntegrable_hessian_majorant hα t A
+  · rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs z _
+    have hMs : ∀ y : E, ‖f (s, y)‖ ≤ M := by
+      simpa only [Real.norm_eq_abs] using hM s (hmem s hs)
+    have htwo := contDiff_two_heatSolution_of_bounded_measurable
+      (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable hMs
+    have hd := ((htwo.fderiv_right (m := 1) (by norm_num)).differentiable
+      (by norm_num) z).hasFDerivAt
+    rw [hessian_heatSolution_eq_cancelled_integral
+      (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable hMs z] at hd
+    exact hd
+
 end Poincare.HeatDuhamelHessianDifferentiation
