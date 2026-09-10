@@ -140,4 +140,20 @@ theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Energy
   hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Final
     (hamiltonReactionCore3Final_of_energy h)
 
+/-- Open existence obligation for the energy core on every compatible Borel manifold. -/
+def UniversalHamiltonReactionCoreEnergyStatement : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3Energy.{u, v} N
+
+/-- Universal energy cores supply the unchanged universal final cores. -/
+theorem universalHamiltonReactionCoreFinal_of_universalHamiltonReactionCoreEnergy
+    (h : UniversalHamiltonReactionCoreEnergyStatement.{u, v}) :
+    UniversalHamiltonReactionCoreFinalStatement.{u, v} := by
+  intro N _ _ _ _ _ _ _ _ _ _
+  exact hamiltonReactionCore3Final_of_energy (h N)
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
