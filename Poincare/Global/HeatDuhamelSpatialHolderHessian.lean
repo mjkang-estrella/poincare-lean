@@ -120,4 +120,19 @@ theorem norm_cancelled_hessian_integrand_le {α K : ℝ} {f : E → ℝ}
       mul_le_mul_of_nonneg_right hd (norm_nonneg _)
     _ = K * (‖Hess t y‖ * ‖y‖ ^ α) := by ring
 
+/-- Integrating the spatial Hölder majorant gives the sharp time power. -/
+theorem norm_cancelled_hessian_integral_le {α K t : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ht : 0 < t) {f : E → ℝ}
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+      K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) := by
+  calc
+    ‖∫ y : E, (f (x - y) - f x) • Hess t y‖ ≤
+        ∫ y : E, K * (‖Hess t y‖ * ‖y‖ ^ α) :=
+      norm_integral_le_of_norm_le ((integrable_weighted_hessian hα hα2 ht).const_mul K)
+        (Filter.Eventually.of_forall fun y => norm_cancelled_hessian_integrand_le hK t x y)
+    _ = K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * t ^ (α / 2 - 1) := by
+      rw [integral_const_mul, weighted_hessian_integral ht]
+      ring
+
 end Poincare.HeatDuhamelSpatialHolderHessian
