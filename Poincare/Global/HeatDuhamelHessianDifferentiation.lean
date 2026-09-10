@@ -268,4 +268,36 @@ theorem intervalIntegrable_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
       exact mul_le_mul_of_nonneg_right (hM s (hmem s) _) (heatKernel_nonneg hpos y)
     _ = M := by rw [integral_const_mul, integral_heatKernel_eq_one hpos, mul_one]
 
+/-- First spatial differentiation under the Duhamel time integral. -/
+theorem hasFDerivAt_duhamel {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    HasFDerivAt (fun z : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) z)
+      (∫ s in (0 : ℝ)..t, fderiv ℝ (heatSolution (t - s) (fun y => f (s, y))) x) x := by
+  let A := M * (∫ y : E, ‖Grad 1 y‖)
+  have hmem (s : ℝ) (hs : s ∈ Ioo 0 t) : s ∈ Icc 0 T :=
+    ⟨hs.1.le, hs.2.le.trans ht.2⟩
+  have hfc (s : ℝ) (hs : s ∈ Ioo 0 t) : Continuous (fun y : E => f (s, y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hmem s hs, mem_univ y⟩)
+  apply hasFDerivAt_integral_of_dominated_of_fderiv_le''
+    (F' := fun z s => fderiv ℝ (heatSolution (t - s) (fun y => f (s, y))) z)
+    (s := univ) (bound := fun s => A * (t - s) ^ (-(1 / 2 : ℝ))) (by simp)
+  · exact Filter.Eventually.of_forall fun z => by
+      simpa only [uIoc_of_le ht.1] using
+        (intervalIntegrable_heatSolution_time ht hf hM z).aestronglyMeasurable
+  · exact intervalIntegrable_heatSolution_time ht hf hM x
+  · simpa only [uIoc_of_le ht.1] using
+      (intervalIntegrable_gradient_heatSolution_time ht hf hM x).aestronglyMeasurable
+  · rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs z _
+    exact norm_gradient_heatSolution_le (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable
+      (by simpa only [Real.norm_eq_abs] using hM s (hmem s hs)) z
+  · exact intervalIntegrable_gradient_majorant t A
+  · rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs z _
+    exact (heatSolution_hasFDerivAt (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable
+      (by simpa only [Real.norm_eq_abs] using hM s (hmem s hs)) z).differentiableAt.hasFDerivAt
+
 end Poincare.HeatDuhamelHessianDifferentiation
