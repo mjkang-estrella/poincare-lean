@@ -36,6 +36,13 @@ theorem gradient_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
   simp only [ContinuousLinearMap.smul_apply, smul_eq_mul, innerSL_apply_apply,
     inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
   field_simp
-  <;> ring
+
+/-- The gradient kernel is Bochner integrable at positive time. -/
+theorem integrable_gradient {t : ℝ} (ht : 0 < t) :
+    Integrable (Grad t) := by
+  have h := (integrable_smul_fderiv_heatKernel_sub («E» := E) ht
+    (f := fun _ => (1 : ℝ)) aestronglyMeasurable_const
+    (C := 1) (by intro y; simp) (0 : E)).comp_sub_left (0 : E)
+  simpa only [one_smul, sub_sub_cancel] using h
 
 end Poincare.HeatDuhamelHessianDifferentiation
