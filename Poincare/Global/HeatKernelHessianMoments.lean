@@ -134,4 +134,13 @@ theorem weighted_hessian_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
   rw [show (1 / 2 : ℝ) * α = α / 2 by ring]
   ring
 
+/-- The full operator-valued Hessian is Bochner integrable. -/
+theorem integrable_hessian {t : ℝ} (ht : 0 < t) :
+    Integrable (fun x : E => Hess t x) := by
+  have hcont : ContDiff ℝ 0 (Hess t) :=
+    ((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)
+  apply (integrable_norm_iff hcont.continuous.aestronglyMeasurable).1
+  simpa using integrable_weighted_hessian (α := 0) (by norm_num) (by norm_num) ht
+
 end Poincare.HeatKernelHessianMoments
