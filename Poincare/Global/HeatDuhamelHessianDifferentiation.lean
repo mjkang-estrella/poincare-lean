@@ -73,4 +73,14 @@ theorem gradient_integral {t : ℝ} (ht : 0 < t) :
   rw [h, Real.sqrt_eq_rpow, Real.rpow_neg ht.le]
   ring
 
+/-- The full gradient of bounded measurable heat data in translated coordinates. -/
+theorem gradient_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (heatSolution t f) x = ∫ y : E, f (x - y) • Grad t y := by
+  rw [(heatSolution_hasFDerivAt ht hf hM x).fderiv]
+  have hc := integral_sub_left_eq_self
+    (fun y : E => f y • Grad t (x - y)) volume x
+  simpa only [sub_sub_cancel] using hc.symm
+
 end Poincare.HeatDuhamelHessianDifferentiation
