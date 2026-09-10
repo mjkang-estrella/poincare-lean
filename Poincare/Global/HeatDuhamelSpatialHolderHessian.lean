@@ -198,4 +198,38 @@ theorem continuous_hessian_pos :
     ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
   simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
 
+/-- The cancelled spatial integral is integrable over the Duhamel time interval. -/
+theorem integrableOn_cancelled_hessian_time {α K T t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T) {f : ℝ × E → ℝ}
+    (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    IntegrableOn (fun s : ℝ => ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y) (Ioo 0 t) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hmem (s : Ioo (0 : ℝ) t) : (s : ℝ) ∈ Icc 0 T :=
+    ⟨s.property.1.le, s.property.2.le.trans ht.2⟩
+  have hs : Continuous (fun p : Ioo (0 : ℝ) t × E => (p.1 : ℝ)) :=
+    continuous_subtype_val.comp continuous_fst
+  have hf1 : Continuous (fun p : Ioo (0 : ℝ) t × E => f ((p.1 : ℝ), x - p.2)) :=
+    hf.comp_continuous (hs.prodMk (continuous_const.sub continuous_snd))
+      (fun p => ⟨hmem p.1, mem_univ _⟩)
+  have hf2 : Continuous (fun p : Ioo (0 : ℝ) t × E => f ((p.1 : ℝ), x)) :=
+    hf.comp_continuous (hs.prodMk continuous_const)
+      (fun p => ⟨hmem p.1, mem_univ _⟩)
+  have hH : Continuous (fun p : Ioo (0 : ℝ) t × E => Hess (t - (p.1 : ℝ)) p.2) :=
+    continuous_hessian_pos.comp
+      (((continuous_const.sub hs).subtype_mk (fun p => sub_pos.mpr p.1.property.2)).prodMk
+        continuous_snd)
+  have hmeas := ((hf1.sub hf2).smul hH).stronglyMeasurable.integral_prod_right' (ν := volume)
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hi : IntegrableOn (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) (Ioo 0 t) :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+      (intervalIntegrable_hessian_majorant hα t A)
+  rw [integrableOn_iff_comap_subtypeVal measurableSet_Ioo] at hi ⊢
+  refine hi.mono' hmeas.aestronglyMeasurable (Filter.Eventually.of_forall fun s => ?_)
+  exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+    (sub_pos.mpr s.property.2) (hK s (hmem s)) x
+
 end Poincare.HeatDuhamelSpatialHolderHessian
