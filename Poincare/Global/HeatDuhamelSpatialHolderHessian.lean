@@ -77,4 +77,20 @@ theorem integrable_data_sub_smul_hessian {t M : ℝ} (ht : 0 < t)
   simpa only [sub_sub_cancel] using
     (integrable_data_smul_hessian_sub ht hf hM x).comp_sub_left x
 
+/-- Tensor cancellation removes the value of the forcing at the observation point. -/
+theorem hessian_heatSolution_eq_cancelled_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, (f (x - y) - f x) • Hess t y := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hc : Integrable (fun y : E => f x • Hess t y) :=
+    (integrable_hessian ht).smul (f x)
+  rw [hessian_heatSolution_eq_integral_sub ht hf hM]
+  simp_rw [sub_smul]
+  rw [integral_sub (integrable_data_sub_smul_hessian ht hf hM x)
+    hc, integral_smul,
+    integral_hessian_eq_zero ht, smul_zero, sub_zero]
+
 end Poincare.HeatDuhamelSpatialHolderHessian
