@@ -54,4 +54,21 @@ theorem scalarAt_pos_of_initial_scalar_pos
     mul_pos (div_pos hrho (by norm_num)) (Real.exp_pos _)
   exact hpos.trans (by simpa only [zero_add] using hp t ht x)
 
+omit [SecondCountableTopology M] [SimplyConnectedSpace M] in
+/-- Joint `C³` regularity and the normalized equation give spatial `C²`
+regularity of the ordinary Ricci quotient on a positive-scalar slice. -/
+theorem contMDiffAt_two_pinchingQuotientAt_of_normalizedFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ}
+    (hjoint : ∀ x, MetricEntriesJointContDiffAt gt t x 3)
+    (hflow : ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hpos : ∀ x, 0 < (gt t).scalarAt x) (x : M) :
+    ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gt t).pinchingQuotientAt y) x := by
+  have hEntries : ∀ y : M, TimeVariationExtContMDiffAt gt t y 2 := fun y ↦
+    timeVariationExtContMDiffAt_two_of_metricEntriesJointContDiffAt_three (hjoint y)
+  have hRic := ricciVariationField_extContMDiffAt_two_of_normalizedRicciFlow
+    hflow hEntries x
+  exact contMDiffAt_two_pinchingQuotientAt (gt t) x
+    (contMDiffAt_two_ricciNormSqAt_of_ricci_entries (gt t) x hRic)
+    (scalarAt_contMDiffAt_two_of_normalizedRicciFlow hflow hEntries x) (hpos x).ne'
+
 end Poincare.NormalizedFlowInitialPinchingPreservation
