@@ -187,4 +187,9 @@ theorem continuous_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
   rw [Real.sq_sqrt (sub_pos.mpr p.1.property.2).le] at h
   exact h.symm
 
+/-- The gradient time majorant is integrable through the endpoint. -/
+theorem intervalIntegrable_gradient_majorant (t A : ℝ) :
+    IntervalIntegrable (fun s : ℝ => A * (t - s) ^ (-(1 / 2 : ℝ))) volume 0 t := by
+  convert intervalIntegrable_hessian_majorant (α := 1) zero_lt_one t A using 1 <;> norm_num
+
 end Poincare.HeatDuhamelHessianDifferentiation
