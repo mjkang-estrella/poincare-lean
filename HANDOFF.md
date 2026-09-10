@@ -2,6 +2,27 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+
+## 2026-09-10 Worker Duhamel Hessian differentiation: exact K2 proved
+
+Branch `worker/heat-duhamel-hessian-differentiation`, base `0642d40e`,
+proof head `2807e763`. The new
+`Global/HeatDuhamelHessianDifferentiation.lean` proves the frozen
+`duhamel_hessian_bound`: zero initial trace, spatial C² regularity, genuine
+cancelled Hessian time integrability, equality with the actual Hessian and
+the `C K t^(α/2)` bound. The gradient moment scales exactly as `t^(-1/2)`;
+its time integrability closes both branches of the earlier worker probe.
+
+All 20 theorems were compiled and committed individually. The focused gate,
+exact frozen-statement assignment, token scan and whitespace check pass.
+All 21 declarations, including the local instance, have exactly the required
+foundational dependencies. Full probe output and proof diff are in
+`harness/reports/heat-duhamel-hessian-differentiation_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `git diff 0642d40e..2807e763 -- Poincare/Global/HeatDuhamelHessianDifferentiation.lean`.
+
+
 ## 2026-09-10 Worker Duhamel spatial Hessian: steps 1 and 2 proved
 
 Branch `worker/heat-duhamel-spatial-holder-hessian`, base `4c991f21`, proof
