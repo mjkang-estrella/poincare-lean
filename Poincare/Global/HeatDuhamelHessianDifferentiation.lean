@@ -414,4 +414,45 @@ theorem contDiff_two_duhamel {α T t M K : ℝ}
   rw [hDD]
   exact continuous_duhamel_hessian hα hα1 ht hf hM hK
 
+/-- The frozen spatial Hölder Duhamel Hessian estimate. -/
+theorem duhamel_hessian_bound :
+  (∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  (∀ x, u 0 x = 0) ∧
+  ∀ t ∈ Icc 0 T, ∀ x : E,
+    ContDiff ℝ 2 (u t) ∧
+    IntegrableOn (fun s : ℝ => ∫ y : E, (f (s,x-y)-f (s,x)) • Hess (t-s) y) (Ioo 0 t) ∧
+    fderiv ℝ (fderiv ℝ (u t)) x =
+      ∫ s in (0 : ℝ)..t, ∫ y : E, (f (s,x-y)-f (s,x)) • Hess (t-s) y ∧
+    ‖fderiv ℝ (fderiv ℝ (u t)) x‖ ≤ C * K * t ^ (α / 2)) := by
+  intro α hα hα1
+  let J := ∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α
+  refine ⟨max 1 (J * (2 / α)), lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro T _ _ f M K _ hK0 hf hM hK
+  dsimp only
+  refine ⟨?_, ?_⟩
+  · intro x
+    exact intervalIntegral.integral_same
+  · intro t ht x
+    refine ⟨contDiff_two_duhamel hα hα1 ht hf hM hK,
+      integrableOn_cancelled_hessian_time hα hα1 ht hf hK x,
+      hessian_duhamel_eq_integral hα hα1 ht hf hM hK x, ?_⟩
+    rw [hessian_duhamel_eq_integral hα hα1 ht hf hM hK x]
+    calc
+      ‖∫ s in (0 : ℝ)..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+          (K * J) * (2 / α) * t ^ (α / 2) :=
+        norm_integral_cancelled_hessian_time_le hα hα1 ht.1
+          (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht.2⟩) x
+      _ = (J * (2 / α)) * K * t ^ (α / 2) := by ring
+      _ ≤ max 1 (J * (2 / α)) * K * t ^ (α / 2) :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (le_max_right _ _) hK0)
+          (Real.rpow_nonneg ht.1 _)
+
 end Poincare.HeatDuhamelHessianDifferentiation
