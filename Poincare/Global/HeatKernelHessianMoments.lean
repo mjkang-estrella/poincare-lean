@@ -112,4 +112,14 @@ theorem weighted_hessian_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
       rw [integral_const_mul]
     _ = (a ^ 3)⁻¹ * (((a ^ 2)⁻¹ * a ^ α) * (∫ x : E, ‖Hess 1 x‖ * ‖x‖ ^ α)) := by ring
 
+/-- Weighted Bochner integrability at every positive time. -/
+theorem integrable_weighted_hessian {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
+    {t : ℝ} (ht : 0 < t) :
+    Integrable (fun x : E => ‖Hess t x‖ * ‖x‖ ^ α) := by
+  have ha : 0 < Real.sqrt t := Real.sqrt_pos.2 ht
+  rw [← Real.sq_sqrt ht.le]
+  apply (integrable_comp_smul_iff volume _ ha.ne').1
+  simp_rw [weighted_hessian_sq_smul (Real.sqrt t) ha]
+  exact (integrable_weighted_hessian_one hα hα2).const_mul _
+
 end Poincare.HeatKernelHessianMoments
