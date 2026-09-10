@@ -231,4 +231,41 @@ theorem continuous_kernel_pos :
     intro p
     exact mul_ne_zero (by norm_num) (ht p).ne'
 
+/-- Bounded cylinder data give a genuine time integral for the heat evolution. -/
+theorem intervalIntegrable_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    IntervalIntegrable
+      (fun s : ℝ => heatSolution (t - s) (fun y => f (s, y)) x) volume 0 t := by
+  have hmem (s : Ioo (0 : ℝ) t) : (s : ℝ) ∈ Icc 0 T :=
+    ⟨s.property.1.le, s.property.2.le.trans ht.2⟩
+  have hs : Continuous (fun p : Ioo (0 : ℝ) t × E => (p.1 : ℝ)) :=
+    continuous_subtype_val.comp continuous_fst
+  have hfc : Continuous (fun p : Ioo (0 : ℝ) t × E => f (p.1, x - p.2)) :=
+    hf.comp_continuous (hs.prodMk (continuous_const.sub continuous_snd))
+      (fun p => ⟨hmem p.1, mem_univ _⟩)
+  have hk : Continuous (fun p : Ioo (0 : ℝ) t × E => heatKernel (t - p.1) p.2) :=
+    continuous_kernel_pos.comp
+      (((continuous_const.sub hs).subtype_mk (fun p => sub_pos.mpr p.1.property.2)).prodMk
+        continuous_snd)
+  have hm := (hk.mul hfc).stronglyMeasurable.integral_prod_right' (ν := volume)
+  have hi := (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+    (intervalIntegrable_const : IntervalIntegrable (fun _ : ℝ => M) volume 0 t)
+  rw [intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1,
+    integrableOn_iff_comap_subtypeVal measurableSet_Ioo]
+  rw [integrableOn_iff_comap_subtypeVal measurableSet_Ioo] at hi
+  refine hi.mono' (by simpa only [heatSolution_apply] using hm.aestronglyMeasurable)
+    (Filter.Eventually.of_forall fun s => ?_)
+  have hpos := sub_pos.mpr s.property.2
+  dsimp only [Function.comp_apply]
+  rw [heatSolution_apply]
+  calc
+    ‖∫ y : E, heatKernel (t - s) y * f (s, x - y)‖ ≤
+        ∫ y : E, M * heatKernel (t - s) y := by
+      apply norm_integral_le_of_norm_le ((heatKernel_integrable («E» := E) hpos).const_mul M)
+      refine Filter.Eventually.of_forall fun y => ?_
+      rw [norm_mul, Real.norm_of_nonneg (heatKernel_nonneg hpos y), mul_comm]
+      exact mul_le_mul_of_nonneg_right (hM s (hmem s) _) (heatKernel_nonneg hpos y)
+    _ = M := by rw [integral_const_mul, integral_heatKernel_eq_one hpos, mul_one]
+
 end Poincare.HeatDuhamelHessianDifferentiation
