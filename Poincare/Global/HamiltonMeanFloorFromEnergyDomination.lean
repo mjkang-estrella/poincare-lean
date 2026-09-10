@@ -47,4 +47,28 @@ theorem movingDerivatives
       (globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree hjoint)
       t (hflow t ht) (hstokes t ht)
 
+/-- The exact survey mean-floor theorem from pointwise initial positivity. -/
+theorem meanFloorFromEnergy
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hflow : ∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hstokes : ∀ t ∈ Ici (0 : ℝ), ClosedLaplacianStokes (gt t) (fun x ↦ (gt t).scalarAt x))
+    (hinit : ∀ x, 0 < (gt 0).scalarAt x)
+    (henergy : ∀ t : Ici (0 : ℝ), normalizedFlowScalarVarianceTrack gt t.1 ≤
+      6 * normalizedFlowTracelessRicciEnergyTrack gt t.1) :
+    0 < meanScalar (gt 0) ∧ ∀ t : Ici (0 : ℝ), meanScalar (gt 0) ≤ meanScalar (gt t.1) := by
+  obtain ⟨hv, hs⟩ := movingDerivatives gt hjoint hflow hstokes
+  have hd := meanScalar_deriv_nonneg_of_normalizedFlow_Ici_of_scalarVarianceTrack_le_six_tracelessRicciEnergyTrack
+    gt (fun t ↦ hflow t.1 t.2) (fun t ↦ hs t.1 t.2) (fun t ↦ hv t.1 t.2) henergy
+  have hf : ∀ t ∈ Ici (0 : ℝ), DifferentiableAt ℝ (fun s ↦ meanScalar (gt s)) t := by
+    intro t ht
+    exact (hasDerivAt_meanScalar_three_of_normalizedFlow (hflow t ht) (hs t ht) (hv t ht)).differentiableAt
+  have hm := monotoneOn_of_deriv_nonneg (convex_Ici (0 : ℝ))
+    (continuousOn_meanScalar_of_normalizedRicciFlow gt hflow hjoint)
+    (fun t ht ↦ (hf t (interior_subset ht)).differentiableWithinAt)
+    (fun t ht ↦ hd ⟨t, interior_subset ht⟩)
+  obtain ⟨rho, hrho, hlower⟩ := exists_pos_scalar_floor_of_forall_scalarAt_pos (gt 0) hinit
+  exact ⟨meanScalar_pos_of_forall_scalarAt_ge (gt 0) hrho hlower,
+    fun t ↦ hm (by simp) t.2 t.2⟩
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
