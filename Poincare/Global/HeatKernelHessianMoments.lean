@@ -143,4 +143,31 @@ theorem integrable_hessian {t : ℝ} (ht : 0 < t) :
   apply (integrable_norm_iff hcont.continuous.aestronglyMeasurable).1
   simpa using integrable_weighted_hessian (α := 0) (by norm_num) (by norm_num) ht
 
+/-- Tensor cancellation follows by twice differentiating the heat evolution of one. -/
+theorem integral_hessian_eq_zero {t : ℝ} (ht : 0 < t) :
+    (∫ x : E, Hess t x) = 0 := by
+  have hmass : heatSolution t (fun _ : E => (1 : ℝ)) = fun _ => 1 := by
+    funext x
+    simpa only [heatSolution_apply, mul_one] using
+      (integral_heatKernel_eq_one («E» := E) ht)
+  ext v w
+  have hiv : Integrable (fun x : E => Hess t x v) := by
+    exact (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) v).integrable_comp (integrable_hessian ht)
+  rw [ContinuousLinearMap.integral_apply (integrable_hessian ht),
+    ContinuousLinearMap.integral_apply hiv]
+  have hder := heatSolution_fderiv_apply_hasFDerivAt ht
+    (f := fun _ : E => (1 : ℝ)) aestronglyMeasurable_const
+    (C := 1) (by intro y; simp) (0 : E) w
+  simp only [hmass, fderiv_const_apply, ContinuousLinearMap.zero_apply] at hder
+  have hc := hder.unique (hasFDerivAt_const (0 : ℝ) (0 : E))
+  have hi := integrable_smul_fderiv_fderiv_heatKernel_sub_flip ht
+    (f := fun _ : E => (1 : ℝ)) aestronglyMeasurable_const
+    (C := 1) (by intro y; simp) (0 : E) w
+  have hev := congrArg (fun L : E →L[ℝ] ℝ => L v) hc
+  dsimp only at hev
+  rw [ContinuousLinearMap.integral_apply hi] at hev
+  simp only [one_smul, ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply] at hev ⊢
+  rw [integral_sub_left_eq_self (fun y : E => Hess t y v w) volume (0 : E)] at hev
+  exact hev
+
 end Poincare.HeatKernelHessianMoments
