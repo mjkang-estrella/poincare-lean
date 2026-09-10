@@ -174,4 +174,28 @@ theorem integral_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
   rw [show 1 - (1 - α / 2) = α / 2 by ring]
   field_simp
 
+/-- Dilation gives joint continuity of the full Hessian at positive times. -/
+theorem continuous_hessian_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => Hess p.1 p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hunit : ContDiff ℝ 0 (Hess 1) :=
+    ((contDiff_heatKernel_spatial («E» := E) 1).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)
+  have ha : Continuous (fun p : Ioi (0 : ℝ) × E => Real.sqrt (p.1 : ℝ)) :=
+    Real.continuous_sqrt.comp (continuous_subtype_val.comp continuous_fst)
+  have hapos (p : Ioi (0 : ℝ) × E) : 0 < Real.sqrt (p.1 : ℝ) :=
+    Real.sqrt_pos.2 p.1.property
+  have hc : Continuous (fun p : Ioi (0 : ℝ) × E =>
+      (((Real.sqrt (p.1 : ℝ)) ^ 3)⁻¹ * ((Real.sqrt (p.1 : ℝ)) ^ 2)⁻¹) •
+        Hess 1 ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)) :=
+    ((ha.pow 3).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')).mul
+      ((ha.pow 2).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')) |>.smul
+      (hunit.continuous.comp ((ha.inv₀ (fun p => (hapos p).ne')).smul continuous_snd))
+  apply hc.congr
+  intro p
+  have h := hessian_sq_smul (Real.sqrt (p.1 : ℝ)) (hapos p)
+    ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
+  simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
+
 end Poincare.HeatDuhamelSpatialHolderHessian
