@@ -118,4 +118,40 @@ theorem initial_pinching_preserved
   exact (gt t).eigenvalue_pinched_of_pinchingQuotientAt_le
     hεle (hpos t ht x) (hbound x) b μ hEig
 
+/-- With a positive degraded floor and admissible exponent, the improved
+traceless quotient maximum stays below its initial maximum. -/
+theorem initial_pinching_improvement
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M) (ε₀ δ : ℝ)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hflow : ∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hinit : ∀ x, 0 < (gt 0).scalarAt x)
+    (hεpos : 1 / 6 < ε₀) (hεle : ε₀ ≤ 1 / 3)
+    (hfloor : GlobalRicciEigenvalueFloor3 (gt 0) ε₀)
+    (hδpos : 0 < δ) (hδle : δ ≤ 1)
+    (hδadm : δ ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 (2 * ε₀ - 1 / 3)) :
+    ∀ t ∈ Ici (0 : ℝ), tracelessPinchingMaximumTrack gt 0 δ t ≤
+      tracelessPinchingMaximumTrack gt 0 δ 0 := by
+  have hpos := scalarAt_pos_of_initial_scalar_pos gt hjoint hflow hinit
+  have hpres := initial_pinching_preserved gt ε₀ hjoint hflow hinit hεle hfloor
+  intro t ht
+  have hcont : ContinuousOn
+      (↿fun τ (x : M) ↦ (gt (0 + τ)).tracelessPinchingAt x δ)
+      (Icc (0 : ℝ) t ×ˢ (Set.univ : Set M)) :=
+    continuousOn_tracelessPinchingAt_timeShift_of_metricEntriesJointContDiffAt_three
+      (fun τ _ x ↦ hjoint (0 + τ) x)
+      (fun τ hτ x ↦ by simpa only [zero_add] using hpos τ hτ.1 x)
+  exact hamilton_pinching_improvement_continuousOn
+    (gt := gt) (t₀ := 0) (T := t) (ε := 2 * ε₀ - 1 / 3) (δ := δ)
+    rfl ht (by linarith) (by linarith) hδpos.le hδadm hcont
+    (fun τ hτ x ↦ by
+      simpa only [zero_add] using
+        contMDiffAt_two_tracelessPinchingAt_of_normalizedRicciFlow_joint_metric_entries_three
+          x δ (hflow τ hτ.1) (hjoint τ) (hpos τ hτ.1))
+    (fun τ hτ x ↦ by
+      simpa only [zero_add] using
+        NormalizedFlowPinchingEvolutionAutomatic.satisfiesTracelessPinchingImprovementEvolutionAt
+          hjoint (hflow τ hτ.1) (hpos τ hτ.1) hδpos hδle x)
+    (fun τ hτ ↦ by simpa only [zero_add] using (hpres τ hτ.1).1)
+    t ⟨ht, le_rfl⟩
+
 end Poincare.NormalizedFlowInitialPinchingPreservation
