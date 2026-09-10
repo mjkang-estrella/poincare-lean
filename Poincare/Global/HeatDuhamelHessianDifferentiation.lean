@@ -65,4 +65,12 @@ theorem gradient_integral_sq (a : ℝ) (ha : 0 < a) :
       rw [integral_const_mul]
     _ = (a ^ 3)⁻¹ * (a⁻¹ * (∫ y : E, ‖Grad 1 y‖)) := by ring
 
+/-- The exact first gradient moment has the inverse square-root time power. -/
+theorem gradient_integral {t : ℝ} (ht : 0 < t) :
+    (∫ y : E, ‖Grad t y‖) = (∫ y : E, ‖Grad 1 y‖) * t ^ (-(1 / 2 : ℝ)) := by
+  have h := gradient_integral_sq (Real.sqrt t) (Real.sqrt_pos.2 ht)
+  rw [Real.sq_sqrt ht.le] at h
+  rw [h, Real.sqrt_eq_rpow, Real.rpow_neg ht.le]
+  ring
+
 end Poincare.HeatDuhamelHessianDifferentiation
