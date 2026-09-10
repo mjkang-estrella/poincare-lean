@@ -3,6 +3,8 @@ import Poincare.Global.HeatSemigroupBUCPositiveGenerator
 import Poincare.Global.RiemannianContext
 import Mathlib.Analysis.SpecificLimits.Normed
 
+set_option autoImplicit false
+
 noncomputable section
 
 open MeasureTheory
@@ -54,7 +56,8 @@ theorem integrable_weighted_hessian_one {α : ℝ} (hα : 0 ≤ α) (hα2 : α �
   have hweight : Continuous (fun x : E => ‖x‖ ^ α * Real.exp (-(‖x‖ ^ 2 / 8))) :=
     ((Real.continuous_rpow_const hα).comp continuous_norm).mul
       (((continuous_norm.pow 2).div_const 8).neg.rexp)
-  have hbound := (integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq («E» := E) (a := (1 / 8 : ℝ)) (by norm_num)).mul_bdd
+  have hbound := (integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq
+      («E» := E) (a := (1 / 8 : ℝ)) (by norm_num)).mul_bdd
       hweight.aestronglyMeasurable
       (Filter.Eventually.of_forall fun x => show
         ‖‖x‖ ^ α * Real.exp (-(‖x‖ ^ 2 / 8))‖ ≤ 8 from by
@@ -92,7 +95,8 @@ theorem integrable_weighted_hessian_one {α : ℝ} (hα : 0 ≤ α) (hα2 : α �
 theorem weighted_hessian_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
     ‖Hess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α =
       ((a ^ 3)⁻¹ * (a ^ 2)⁻¹ * a ^ α) * (‖Hess 1 x‖ * ‖x‖ ^ α) := by
-  rw [hessian_sq_smul a ha x, norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * (a ^ 2)⁻¹ by positivity) (Hess 1 x),
+  rw [hessian_sq_smul a ha x,
+    norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * (a ^ 2)⁻¹ by positivity) (Hess 1 x),
     norm_smul_of_nonneg ha.le, Real.mul_rpow ha.le (norm_nonneg x)]
   ring
 
