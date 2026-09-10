@@ -27,4 +27,15 @@ theorem gradient_eq {t : ℝ} (ht : t ≠ 0) (x : E) :
   congr 1
   ring
 
+/-- Parabolic dilation of the spatial gradient. -/
+theorem gradient_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+    Grad (a ^ 2) (a • x) = ((a ^ 3)⁻¹ * a⁻¹) • Grad 1 x := by
+  rw [gradient_eq (pow_ne_zero _ ha.ne'), gradient_eq one_ne_zero,
+    heatKernel_sq_smul a ha x]
+  ext v
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul, innerSL_apply_apply,
+    inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
+  field_simp
+  <;> ring
+
 end Poincare.HeatDuhamelHessianDifferentiation
