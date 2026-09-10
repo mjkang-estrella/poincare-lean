@@ -395,4 +395,23 @@ theorem hessian_duhamel_eq_integral {α T t M K : ℝ}
   rw [hD]
   exact (hasFDerivAt_duhamel_gradient hα hα1 ht hf hM hK x).fderiv
 
+/-- Spatial C² regularity of the Duhamel formula under the frozen forcing hypotheses. -/
+theorem contDiff_two_duhamel {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) :
+    ContDiff ℝ 2 (fun z : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) z) := by
+  have hD := funext (fun z => (hasFDerivAt_duhamel ht hf hM z).fderiv)
+  have hDD := funext (fun z => (hasFDerivAt_duhamel_gradient hα hα1 ht hf hM hK z).fderiv)
+  change ContDiff ℝ (1 + 1) _
+  refine contDiff_succ_iff_fderiv.mpr
+    ⟨fun z => (hasFDerivAt_duhamel ht hf hM z).differentiableAt, by norm_num, ?_⟩
+  rw [hD]
+  apply contDiff_one_iff_fderiv.mpr
+  refine ⟨fun z => (hasFDerivAt_duhamel_gradient hα hα1 ht hf hM hK z).differentiableAt, ?_⟩
+  rw [hDD]
+  exact continuous_duhamel_hessian hα hα1 ht hf hM hK
+
 end Poincare.HeatDuhamelHessianDifferentiation
