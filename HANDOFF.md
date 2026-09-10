@@ -211,6 +211,18 @@ clause converts algebraically (landed
 `normalizedTracelessRicciEvolutionReactionAt_le_neg_rate_mul_of_cubic_domination`)
 from a uniform cubic pinching bound, which is itself class B.
 
+`parabolic-schauder-decomposition-survey` landed (trimmed report; full
+inventories on the retained worker branch): the linear parabolic step should
+be run in a parabolic Hölder norm (`Y_T`, `X_T` with actual derivative
+graphs), by constant-coefficient localization plus correction of a bounded
+parametrix (Neumann series; a generic version is proved in scratch). The
+repository already has the Gaussian kernel, bounded heat semigroup, BUC
+semilinear existence, spatial second-derivative formulas and temporal Dini
+cancellation, but no variable-coefficient estimate. First gated tasks: K1
+(scaled Hessian kernel moments and cancellation, class A, dispatched as
+`heat-kernel-hessian-moments`) and K2 (Duhamel Hessian sup estimate from
+spatial Hölder forcing, class B, needs K1).
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
