@@ -156,4 +156,11 @@ theorem universalHamiltonReactionCoreFinal_of_universalHamiltonReactionCoreEnerg
   intro N _ _ _ _ _ _ _ _ _ _
   exact hamiltonReactionCore3Final_of_energy (h N)
 
+/-- Universal energy cores yield universal Hamilton convergence. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCoreEnergy
+    (h : UniversalHamiltonReactionCoreEnergyStatement.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} :=
+  universalHamiltonConvergence_of_universalHamiltonReactionCoreFinal
+    (universalHamiltonReactionCoreFinal_of_universalHamiltonReactionCoreEnergy h)
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
