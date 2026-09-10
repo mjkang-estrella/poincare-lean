@@ -59,6 +59,7 @@ import Poincare.Global.HamiltonCompactFamilyInvariantContinuity
 import Poincare.Global.HamiltonEndpointEquivalences
 import Poincare.Global.HamiltonFamilyVolumeMeasureContinuity
 import Poincare.Global.HamiltonFiniteEnergyFlowInterface
+import Poincare.Global.HamiltonMeanFloorReduction
 import Poincare.Global.HamiltonPoincareReduction
 import Poincare.Global.HamiltonReactionCoreFinal
 import Poincare.Global.HamiltonReactionCoreReduced

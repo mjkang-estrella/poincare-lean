@@ -194,6 +194,23 @@ landed; tasks 3 to 6 (linear parabolic Schauder solvability, finite-atlas
 linear inverse, nonlinear residual estimate, smooth regularity) are the
 class-B analytic core, and task 7 depends on 6. No worker is in flight.
 
+2026-09-10: `hamilton-mean-floor-reduction` landed as a verified partial
+(`Global/HamiltonMeanFloorReduction.lean`, gate PASS, 8 declarations):
+normalized mean-scalar continuity on the whole forward ray (through the
+pointwise normalized equation and the continuous time-variation trace, no
+moving-integral differentiation), a continuous normalization primitive with
+its derivative at zero, the lower profile `(ρ/2)·exp(-P t) ≤ meanScalar`
+from positive initial scalar, and a positive floor on every compact
+interval. It also refutes the intended residual: a bounded normalization
+primitive is inconsistent with a positive mean floor on the ray (the
+primitive grows at least linearly). So the floor clause of
+`HamiltonReactionCore3Final` cannot be discharged by the scalar exponential
+comparison alone; the S9 integrated-energy-domination route (nonnegative
+mean derivative) is the remaining class-B candidate. The reaction domination
+clause converts algebraically (landed
+`normalizedTracelessRicciEvolutionReactionAt_le_neg_rate_mul_of_cubic_domination`)
+from a uniform cubic pinching bound, which is itself class B.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
