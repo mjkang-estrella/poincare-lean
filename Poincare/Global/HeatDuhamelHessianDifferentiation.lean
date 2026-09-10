@@ -141,4 +141,50 @@ theorem gradient_convolution_sq (a : ℝ) (ha : 0 < a) (f : E → ℝ) (x : E) :
     _ = (a ^ 3)⁻¹ • (a⁻¹ • (∫ y : E, f (x - a • y) • Grad 1 y)) := by
       rw [smul_smul]
 
+/-- The positive elapsed-time convolution gradient is jointly continuous. -/
+theorem continuous_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) :
+    Continuous (fun p : Ioo (0 : ℝ) t × E =>
+      fderiv ℝ (heatSolution (t - p.1) (fun y => f (p.1, y))) p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_one_le }
+  have hmem (s : Ioo (0 : ℝ) t) : (s : ℝ) ∈ Icc 0 T :=
+    ⟨s.property.1.le, s.property.2.le.trans ht.2⟩
+  have hs : Continuous (fun p : Ioo (0 : ℝ) t × E => (p.1 : ℝ)) :=
+    continuous_subtype_val.comp continuous_fst
+  have ha : Continuous (fun p : Ioo (0 : ℝ) t × E => Real.sqrt (t - p.1)) :=
+    Real.continuous_sqrt.comp (continuous_const.sub hs)
+  have hapos (p : Ioo (0 : ℝ) t × E) : 0 < Real.sqrt (t - p.1) :=
+    Real.sqrt_pos.2 (sub_pos.mpr p.1.property.2)
+  have hunit : Continuous (Grad 1) :=
+    ((contDiff_heatKernel_spatial («E» := E) 1).fderiv_right
+      (m := 0) (by norm_num)).continuous
+  have hn : Continuous (fun p : Ioo (0 : ℝ) t × E =>
+      ∫ y : E, f (p.1, p.2 - Real.sqrt (t - p.1) • y) • Grad 1 y) := by
+    apply continuous_of_dominated (bound := fun y : E => M * ‖Grad 1 y‖)
+    · intro p
+      exact ((hf.comp_continuous
+        (continuous_const.prodMk (continuous_const.sub (continuous_const.smul continuous_id)))
+        (fun y => ⟨hmem p.1, mem_univ _⟩)).smul hunit).aestronglyMeasurable
+    · intro p
+      exact Filter.Eventually.of_forall fun y =>
+        (norm_real_smul_continuousLinearMap_one_le _ _).trans
+          (mul_le_mul_of_nonneg_right (hM p.1 (hmem p.1) _ ) (norm_nonneg _))
+    · exact (integrable_gradient zero_lt_one).norm.const_mul M
+    · exact Filter.Eventually.of_forall fun y =>
+        (hf.comp_continuous (hs.prodMk (continuous_snd.sub (ha.smul continuous_const)))
+          (fun p => ⟨hmem p.1, mem_univ _⟩)).smul continuous_const
+  apply ((ha.inv₀ (fun p => (hapos p).ne')).smul hn).congr
+  intro p
+  have hfc : Continuous (fun y : E => f (p.1, y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hmem p.1, mem_univ y⟩)
+  rw [gradient_heatSolution_eq_integral (sub_pos.mpr p.1.property.2)
+    hfc.aestronglyMeasurable (by simpa only [Real.norm_eq_abs] using hM p.1 (hmem p.1))]
+  have h := gradient_convolution_sq (Real.sqrt (t - p.1)) (hapos p)
+    (fun y => f (p.1, y)) p.2
+  rw [Real.sq_sqrt (sub_pos.mpr p.1.property.2).le] at h
+  exact h.symm
+
 end Poincare.HeatDuhamelHessianDifferentiation
