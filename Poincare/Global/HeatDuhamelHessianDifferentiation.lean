@@ -83,4 +83,20 @@ theorem gradient_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
     (fun y : E => f y • Grad t (x - y)) volume x
   simpa only [sub_sub_cancel] using hc.symm
 
+/-- The sharp gradient majorant is uniform over observation points. -/
+theorem norm_gradient_heatSolution_le {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    ‖fderiv ℝ (heatSolution t f) x‖ ≤
+      M * (∫ y : E, ‖Grad 1 y‖) * t ^ (-(1 / 2 : ℝ)) := by
+  rw [gradient_heatSolution_eq_integral ht hf hM]
+  calc
+    ‖∫ y : E, f (x - y) • Grad t y‖ ≤ ∫ y : E, M * ‖Grad t y‖ := by
+      apply norm_integral_le_of_norm_le ((integrable_gradient ht).norm.const_mul M)
+      exact Filter.Eventually.of_forall fun y =>
+        (norm_real_smul_continuousLinearMap_one_le _ _).trans
+          (mul_le_mul_of_nonneg_right (hM (x - y)) (norm_nonneg _))
+    _ = M * (∫ y : E, ‖Grad 1 y‖) * t ^ (-(1 / 2 : ℝ)) := by
+      rw [integral_const_mul, gradient_integral ht, mul_assoc]
+
 end Poincare.HeatDuhamelHessianDifferentiation
