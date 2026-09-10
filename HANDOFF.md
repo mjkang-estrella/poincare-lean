@@ -297,6 +297,17 @@ principle theorems consume; the normalization terms cancel in the ordinary
 quotient and contribute a nonpositive term in the improved one. Item 2
 (`normalized-flow-initial-pinching-preservation`) is dispatched.
 
+K2 landed as a verified partial (`Global/HeatDuhamelSpatialHolderHessian.lean`,
+gate PASS, 14 theorems): the Hessian of the heat convolution equals the
+cancelled kernel integral `∫ (f(x−y) − f(x)) • Hess_t(y) dy` for bounded
+data, the weighted majorant `K·Jα·t^{α/2−1}` with its exact time integral
+`(2/α) t^{α/2}`, joint positive-time Hessian continuity, time integrability
+of the cancelled integrand under cylinder continuity and spatial Hölder
+control, and the double-integral bound. The remaining step is
+differentiation of the Duhamel time integral in space (two measurability and
+integrability branches of the dominated-derivative theorem are displayed);
+the follow-up `heat-duhamel-hessian-differentiation` targets it.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
