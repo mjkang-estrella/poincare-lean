@@ -140,4 +140,23 @@ theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3InitialPinching
   hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Final
     (hamiltonReactionCore3Final_of_initialPinching h)
 
+/-- Open existence obligation for initial-pinching cores on every compatible
+Borel structure of a closed simply connected smooth three-manifold. -/
+def UniversalHamiltonReactionCoreInitialPinchingStatement : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3InitialPinching.{u, v} N
+
+/-- Universal initial-pinching cores imply universal Hamilton convergence. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCoreInitialPinching
+    (h : UniversalHamiltonReactionCoreInitialPinchingStatement.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  letI : MeasurableSpace N := borel N
+  letI : BorelSpace N := ⟨rfl⟩
+  exact hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3InitialPinching (h N)
+
 end Poincare.HamiltonInitialPinchingReactionCoreReduction
