@@ -154,4 +154,13 @@ theorem exists_heat_hessian_holder_bound {α : ℝ} (hα : 0 < α) (hα1 : α < 
       rw [mul_comm K]
       exact mul_le_mul_of_nonneg_right (le_max_right _ _) hK0
 
+/-- The sharp Hessian time majorant is integrable, including its singular endpoint. -/
+theorem intervalIntegrable_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+    IntervalIntegrable (fun s : ℝ => A * (t - s) ^ (α / 2 - 1)) volume 0 t := by
+  have hi := (intervalIntegral.intervalIntegrable_rpow'
+    (a := (0 : ℝ)) (b := t) (r := α / 2 - 1) (by linarith)).comp_sub_left t
+  have hj : IntervalIntegrable (fun s : ℝ => (t - s) ^ (α / 2 - 1)) volume 0 t := by
+    simpa only [sub_zero, sub_self] using hi.symm
+  exact hj.const_mul A
+
 end Poincare.HeatDuhamelSpatialHolderHessian
