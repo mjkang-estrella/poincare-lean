@@ -308,6 +308,15 @@ differentiation of the Duhamel time integral in space (two measurability and
 integrability branches of the dominated-derivative theorem are displayed);
 the follow-up `heat-duhamel-hessian-differentiation` targets it.
 
+Item 2 landed (`Global/NormalizedFlowInitialPinchingPreservation.lean`,
+gate PASS, 5 declarations): pointwise positive scalar on every forward
+slice from positive initial scalar; spatial C² of the pinching quotient from
+joint C³ entries; and, from an initial eigenvalue floor `ε₀ ≤ 1/3`, the
+degraded floor `2ε₀ − 1/3` and the quotient bound `1 − 4ε₀ + 6ε₀²` on every
+forward slice by the landed maximum principle, plus the improved-quotient
+variant for `1/6 < ε₀`. Item 4 (`hamilton-initial-pinching-reaction-core`,
+the sufficient core adapter) is dispatched.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

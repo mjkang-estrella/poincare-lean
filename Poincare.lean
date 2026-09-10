@@ -68,6 +68,7 @@ import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HamiltonReactionEndpoint
 import Poincare.Global.HeatDuhamelSpatialHolderHessian
 import Poincare.Global.HeatKernelHessianMoments
+import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
 import Poincare.Global.ParabolicHolderSpace
 import Poincare.Global.RiemannianMetricInstanceTransport
