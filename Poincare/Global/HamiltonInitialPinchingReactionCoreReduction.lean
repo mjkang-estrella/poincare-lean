@@ -82,4 +82,56 @@ theorem hamiltonReactionCore3Final_of_initialPinching
     (hpres t ht).1 (hpres t ht).2 (hcompare t ht)
     (mul_le_mul_of_nonneg_left (hfloor.2 ⟨t, ht⟩) hgap.le)
 
+/-- Initial pinching with a direct uniform positive normalization gap. -/
+def HamiltonReactionCore3InitialPinchingEta (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (epsilon delta : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      (∀ slot : MetricEntryThirdJetSlot 3 M,
+        Continuous (fun p : K × ClosedSmoothModel 3 ↦
+          metricEntryThirdJetProfile (metric p.1) slot p.2)) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ x, 0 < (gt 0).scalarAt x) ∧
+      1/6 < epsilon ∧ epsilon ≤ 1/3 ∧
+      GlobalRicciEigenvalueFloor3 (gt 0) epsilon ∧
+      0 < delta ∧ delta ≤ 1 ∧
+      delta ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 (2 * epsilon - 1/3) ∧
+      (∀ t ∈ Ici (0 : ℝ), ClosedLaplacianStokes (gt t) (fun x ↦ (gt t).scalarAt x)) ∧
+      (∀ t : Ici (0 : ℝ), normalizedFlowScalarVarianceTrack gt t.1 ≤
+        6 * normalizedFlowTracelessRicciEnergyTrack gt t.1) ∧
+      (∃ eta : ℝ, 0 < eta ∧ ∀ t ∈ Ici (0 : ℝ), ∀ x,
+        2 * (2-delta) * (gt t).ricciNormSqAt x / (gt t).scalarAt x + eta ≤
+          (4/3 : ℝ) * meanScalar (gt t))
+
+/-- The direct normalization gap supplies the final core with rate `eta`. -/
+theorem hamiltonReactionCore3Final_of_initialPinchingEta
+    (h : HamiltonReactionCore3InitialPinchingEta.{u, v} M) :
+    HamiltonReactionCore3Final.{u, v} M := by
+  rcases h with ⟨K, topK, compactK, metric, gt, parameter, epsilon, delta,
+    hparam, hreal, hjet, hjoint, hflow, hinit, hepos, hele, hpin,
+    hdpos, hdle, hadm, hstokes, henergy, eta, heta, hgap⟩
+  letI : TopologicalSpace K := topK
+  haveI : CompactSpace K := compactK
+  have hfloor := HamiltonMeanFloorFromEnergyDomination.meanFloorFromEnergy
+    gt hjoint hflow hstokes hinit henergy
+  have hpos := NormalizedFlowInitialPinchingPreservation.scalarAt_pos_of_initial_scalar_pos
+    gt hjoint hflow hinit
+  have hpres := NormalizedFlowInitialPinchingPreservation.initial_pinching_preserved
+    gt epsilon hjoint hflow hinit hele hpin
+  refine ⟨K, topK, compactK, gt, metric, parameter, meanScalar (gt 0), eta,
+    hparam, hreal, hfloor.1, hfloor.2, hflow, hjoint, heta, ?_, hjet⟩
+  intro t ht x
+  exact normalizedTracelessRicciEvolutionReactionAt_le_neg_rate_mul_of_eigenvalue_pinching_of_normalization_gap
+    (gt t) x (by linarith) (by linarith) hdpos.le hadm (hpos t ht x)
+    ((hpres t ht).1 x) (hgap t ht x)
+
 end Poincare.HamiltonInitialPinchingReactionCoreReduction
