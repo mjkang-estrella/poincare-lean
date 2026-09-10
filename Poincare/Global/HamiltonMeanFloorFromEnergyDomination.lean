@@ -134,4 +134,10 @@ theorem hamiltonReactionCore3Final_of_energy
   exact ⟨K, topK, compactK, gt, metric, parameter, meanScalar (gt 0), rate,
     hparam, hreal, hfloor.1, hfloor.2, hflow, hjoint, hrate, hreaction, hjet⟩
 
+/-- The energy core reaches the Hamilton pinched-limit endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Energy
+    (h : HamiltonReactionCore3Energy.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Final
+    (hamiltonReactionCore3Final_of_energy h)
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
