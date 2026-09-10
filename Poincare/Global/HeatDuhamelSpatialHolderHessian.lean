@@ -93,4 +93,15 @@ theorem hessian_heatSolution_eq_cancelled_integral {t M : ℝ} (ht : 0 < t)
     hc, integral_smul,
     integral_hessian_eq_zero ht, smul_zero, sub_zero]
 
+/-- The cancelled Hessian integral remains a genuine Bochner integral. -/
+theorem integrable_cancelled_hessian {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    Integrable (fun y : E => (f (x - y) - f x) • Hess t y) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hc : Integrable (fun y : E => f x • Hess t y) :=
+    (integrable_hessian ht).smul (f x)
+  simpa only [sub_smul] using (integrable_data_sub_smul_hessian ht hf hM x).sub hc
+
 end Poincare.HeatDuhamelSpatialHolderHessian
