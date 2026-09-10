@@ -71,4 +71,51 @@ theorem contMDiffAt_two_pinchingQuotientAt_of_normalizedFlow
     (contMDiffAt_two_ricciNormSqAt_of_ricci_entries (gt t) x hRic)
     (scalarAt_contMDiffAt_two_of_normalizedRicciFlow hflow hEntries x) (hpos x).ne'
 
+/-- Initial eigenvalue pinching preserves its Ricci quotient bound on the whole
+forward ray and yields the explicit degraded eigenvalue floor. -/
+theorem initial_pinching_preserved
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M) (ε₀ : ℝ)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hflow : ∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hinit : ∀ x, 0 < (gt 0).scalarAt x) (hεle : ε₀ ≤ 1 / 3)
+    (hfloor : GlobalRicciEigenvalueFloor3 (gt 0) ε₀) :
+    ∀ t ∈ Ici (0 : ℝ),
+      GlobalRicciEigenvalueFloor3 (gt t) (2 * ε₀ - 1 / 3) ∧
+      GlobalPinchingQuotientBound3 (gt t) (1 - 4 * ε₀ + 6 * ε₀ ^ 2) := by
+  have hpos := scalarAt_pos_of_initial_scalar_pos gt hjoint hflow hinit
+  have hQ₂ : ∀ t ∈ Ici (0 : ℝ), ∀ x : M,
+      ContMDiffAt I 𝓘(ℝ) 2 (fun y : M ↦ (gt t).pinchingQuotientAt y) x :=
+    fun t ht x ↦ contMDiffAt_two_pinchingQuotientAt_of_normalizedFlow
+      (hjoint t) (hflow t ht) (hpos t ht) x
+  have hmax0 : pinchingMaximumTrack gt 0 0 ≤ 1 - 4 * ε₀ + 6 * ε₀ ^ 2 := by
+    obtain ⟨x, hx⟩ := exists_pinchingQuotientAt_isMaxOn (gt 0) (hQ₂ 0 (by simp))
+    have hbound := (gt 0).globalPinchingQuotientBound_of_globalRicciEigenvalueFloor
+      hinit hfloor x
+    simpa only [pinchingMaximumTrack, zero_add,
+      pinchingMaximumAt_eq_of_isMaxOn (gt 0) hx] using hbound
+  intro t ht
+  have hcont : ContinuousOn
+      (↿fun τ (x : M) ↦ (gt (0 + τ)).pinchingQuotientAt x)
+      (Icc (0 : ℝ) t ×ˢ (Set.univ : Set M)) :=
+    continuousOn_pinchingQuotientAt_timeShift_of_metricEntriesJointContDiffAt_three
+      (fun τ _ x ↦ hjoint (0 + τ) x)
+      (fun τ hτ x ↦ by simpa only [zero_add] using (hpos τ hτ.1 x).ne')
+  have hpres := hamilton_pinching_preserved_continuousOn
+    (gt := gt) (t₀ := 0) (T := t) rfl ht hcont
+    (fun τ hτ x ↦ by simpa only [zero_add] using hQ₂ τ hτ.1 x)
+    (fun τ hτ x ↦ by
+      simpa only [zero_add] using
+        NormalizedFlowPinchingEvolutionAutomatic.satisfiesPinchingQuotientEvolutionAt
+          hjoint (hflow τ hτ.1) (hpos τ hτ.1) x)
+  have hbound : GlobalPinchingQuotientBound3 (gt t) (1 - 4 * ε₀ + 6 * ε₀ ^ 2) := by
+    intro x
+    have hpoint : (gt t).pinchingQuotientAt x ≤ pinchingMaximumTrack gt 0 t := by
+      simpa only [pinchingMaximumTrack, zero_add] using
+        pinchingQuotientAt_le_pinchingMaximumAt (gt t) (hQ₂ t ht) x
+    exact hpoint.trans ((hpres t ⟨ht, le_rfl⟩).trans hmax0)
+  refine ⟨?_, hbound⟩
+  intro x b μ hEig
+  exact (gt t).eigenvalue_pinched_of_pinchingQuotientAt_le
+    hεle (hpos t ht x) (hbound x) b μ hEig
+
 end Poincare.NormalizedFlowInitialPinchingPreservation
