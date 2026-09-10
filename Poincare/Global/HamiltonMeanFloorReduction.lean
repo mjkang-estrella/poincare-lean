@@ -163,4 +163,38 @@ theorem normalizationPrimitive_unbounded_of_meanScalar_floor
   rw [heq] at hbound
   linarith [le_abs_self C]
 
+/-- The proposed bounded normalization residual is inconsistent with positive
+initial scalar curvature on an infinite jointly regular normalized flow. -/
+theorem not_exists_bounded_normalizationPrimitive_of_initial_scalar_pos
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (hflow : ∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hinit : ∀ x, 0 < (gt 0).scalarAt x) :
+    ¬ ∃ (P : ℝ → ℝ) (C : ℝ), Continuous P ∧
+      (∀ t ∈ Ici (0 : ℝ), HasDerivAt P ((2 / 3 : ℝ) * meanScalar (gt t)) t) ∧
+      ∀ t ∈ Ici (0 : ℝ), P t - P 0 ≤ C := by
+  rintro ⟨P, C, hP, hd, hupper⟩
+  have hs : Continuous (fun p : ℝ × M ↦ (gt p.1).scalarAt p.2) :=
+    continuous_iff_continuousAt.mpr fun p ↦
+      continuousAt_scalarAt_joint_of_metricEntriesJointContDiffAt_three (hjoint p.1 p.2)
+  have hL := globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree hjoint
+  obtain ⟨c, hc, hlow⟩ :=
+    exists_uniform_normalizedFlow_scalar_lower_of_initial_scalar_pos_of_normalizationPrimitive_bddAbove
+      (gt := gt) (t0 := 0) (C := C) (by simpa only [zero_add] using hs)
+      (fun t ht x ↦ by
+        simpa only [zero_add] using
+          satisfiesNormalizedHamiltonScalarEvolutionAt_of_normalizedFlow_of_globalLichnerowicz
+            (x := x) (hflow t ht) hL)
+      (fun t ht x ↦ by
+        simpa only [zero_add] using scalarAt_contMDiffAt_two_of_normalizedRicciFlow
+          (hflow t ht) (hL.timeVariationEntries t) x)
+      P hP (by simpa only [zero_add] using hd) hupper hinit
+  have hmean : ∀ t : Ici (0 : ℝ), c ≤ meanScalar (gt t.1) := by
+    intro t
+    exact le_meanScalar_of_forall_le_scalarAt (gt t.1) c
+      (by simpa only [zero_add] using hlow t.1 t.2)
+  obtain ⟨t, ht, hlt⟩ :=
+    normalizationPrimitive_unbounded_of_meanScalar_floor gt P hd hc hmean C
+  exact (not_lt_of_ge (hupper t ht)) hlt
+
 end Poincare
