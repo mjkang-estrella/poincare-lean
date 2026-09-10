@@ -345,4 +345,40 @@ theorem hasFDerivAt_duhamel_gradient {α T t M K : ℝ}
       (sub_pos.mpr hs.2) (hfc s hs).aestronglyMeasurable hMs z] at hd
     exact hd
 
+/-- The cancelled time-integrated Hessian is continuous in the observation point. -/
+theorem continuous_duhamel_hessian {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) :
+    Continuous (fun x : E => ∫ s in (0 : ℝ)..t, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hmem (s : ℝ) (hs : s ∈ Ioo 0 t) : s ∈ Icc 0 T :=
+    ⟨hs.1.le, hs.2.le.trans ht.2⟩
+  simp_rw [intervalIntegral.integral_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+  apply continuous_of_dominated (bound := fun s : ℝ => A * (t - s) ^ (α / 2 - 1))
+  · intro x
+    exact (integrableOn_cancelled_hessian_time hα hα1 ht hf hK x).aestronglyMeasurable
+  · intro x
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (sub_pos.mpr hs.2) (hK s (hmem s hs)) x
+  · exact (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+      (intervalIntegrable_hessian_majorant hα t A)
+  · filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    have hfc : Continuous (fun y : E => f (s, y)) :=
+      hf.comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hmem s hs, mem_univ y⟩)
+    have hMs : ∀ y : E, ‖f (s, y)‖ ≤ M := by
+      simpa only [Real.norm_eq_abs] using hM s (hmem s hs)
+    have htwo := contDiff_two_heatSolution_of_bounded_measurable
+      (sub_pos.mpr hs.2) hfc.aestronglyMeasurable hMs
+    have hc := ((htwo.fderiv_right (m := 1) (by norm_num)).fderiv_right
+      (m := 0) (by norm_num)).continuous
+    exact hc.congr (fun x => hessian_heatSolution_eq_cancelled_integral
+      (sub_pos.mpr hs.2) hfc.aestronglyMeasurable hMs x)
+
 end Poincare.HeatDuhamelHessianDifferentiation
