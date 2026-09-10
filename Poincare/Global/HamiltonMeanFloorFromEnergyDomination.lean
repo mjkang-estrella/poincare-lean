@@ -71,4 +71,26 @@ theorem meanFloorFromEnergy
   exact ⟨meanScalar_pos_of_forall_scalarAt_ge (gt 0) hrho hlower,
     fun t ↦ hm (by simp) t.2 t.2⟩
 
+/-- Positive initial mean suffices for the same uniform floor. -/
+theorem meanFloorFromEnergy_of_initialMeanPos
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (hjoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3)
+    (hflow : ∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hstokes : ∀ t ∈ Ici (0 : ℝ), ClosedLaplacianStokes (gt t) (fun x ↦ (gt t).scalarAt x))
+    (hinit : 0 < meanScalar (gt 0))
+    (henergy : ∀ t : Ici (0 : ℝ), normalizedFlowScalarVarianceTrack gt t.1 ≤
+      6 * normalizedFlowTracelessRicciEnergyTrack gt t.1) :
+    0 < meanScalar (gt 0) ∧ ∀ t : Ici (0 : ℝ), meanScalar (gt 0) ≤ meanScalar (gt t.1) := by
+  obtain ⟨hv, hs⟩ := movingDerivatives gt hjoint hflow hstokes
+  have hd := meanScalar_deriv_nonneg_of_normalizedFlow_Ici_of_scalarVarianceTrack_le_six_tracelessRicciEnergyTrack
+    gt (fun t ↦ hflow t.1 t.2) (fun t ↦ hs t.1 t.2) (fun t ↦ hv t.1 t.2) henergy
+  have hf : ∀ t ∈ Ici (0 : ℝ), DifferentiableAt ℝ (fun s ↦ meanScalar (gt s)) t := by
+    intro t ht
+    exact (hasDerivAt_meanScalar_three_of_normalizedFlow (hflow t ht) (hs t ht) (hv t ht)).differentiableAt
+  have hm := monotoneOn_of_deriv_nonneg (convex_Ici (0 : ℝ))
+    (continuousOn_meanScalar_of_normalizedRicciFlow gt hflow hjoint)
+    (fun t ht ↦ (hf t (interior_subset ht)).differentiableWithinAt)
+    (fun t ht ↦ hd ⟨t, interior_subset ht⟩)
+  exact ⟨hinit, fun t ↦ hm (by simp) t.2 t.2⟩
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
