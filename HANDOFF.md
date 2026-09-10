@@ -266,6 +266,15 @@ domination `V ≤ 6E`, and the energy core `HamiltonReactionCore3Energy`
 scalar Stokes) with its endpoint reduction; pinned as
 `hamilton-reaction-core-energy` in `hamilton-front.json`.
 
+Item 1 landed (`Global/NormalizedFlowPinchingEvolutionAutomatic.lean`,
+gate PASS): the ordinary pinching quotient evolution predicate and, for
+`0 < δ ≤ 1`, the traceless improvement evolution predicate are constructed
+from all-time joint C³ entries, the normalized equation on the slice, and
+positive scalar on the slice, at exactly the types the landed maximum
+principle theorems consume; the normalization terms cancel in the ordinary
+quotient and contribute a nonpositive term in the improved one. Item 2
+(`normalized-flow-initial-pinching-preservation`) is dispatched.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
