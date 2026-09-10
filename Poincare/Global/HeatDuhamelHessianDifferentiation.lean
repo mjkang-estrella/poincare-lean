@@ -381,4 +381,18 @@ theorem continuous_duhamel_hessian {α T t M K : ℝ}
     exact hc.congr (fun x => hessian_heatSolution_eq_cancelled_integral
       (sub_pos.mpr hs.2) hfc.aestronglyMeasurable hMs x)
 
+/-- The actual second derivative equals the cancelled double integral. -/
+theorem hessian_duhamel_eq_integral {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    fderiv ℝ (fderiv ℝ (fun z : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) z)) x =
+      ∫ s in (0 : ℝ)..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y := by
+  have hD := funext (fun z => (hasFDerivAt_duhamel ht hf hM z).fderiv)
+  rw [hD]
+  exact (hasFDerivAt_duhamel_gradient hα hα1 ht hf hM hK x).fderiv
+
 end Poincare.HeatDuhamelHessianDifferentiation
