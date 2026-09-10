@@ -45,4 +45,24 @@ theorem integrable_gradient {t : ℝ} (ht : 0 < t) :
     (C := 1) (by intro y; simp) (0 : E)).comp_sub_left (0 : E)
   simpa only [one_smul, sub_sub_cancel] using h
 
+/-- The spatial Jacobian leaves exactly one inverse length in the gradient moment. -/
+theorem gradient_integral_sq (a : ℝ) (ha : 0 < a) :
+    (∫ y : E, ‖Grad (a ^ 2) y‖) = a⁻¹ * (∫ y : E, ‖Grad 1 y‖) := by
+  letI : NormedSpace ℝ (E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_one_le }
+  have hchange := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => ‖Grad (a ^ 2) y‖) a (hR := ha.le)
+  apply mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne'))
+  calc
+    (a ^ 3)⁻¹ * (∫ y : E, ‖Grad (a ^ 2) y‖) =
+        ∫ y : E, ‖Grad (a ^ 2) (a • y)‖ := by
+      simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin, smul_eq_mul]
+        using hchange.symm
+    _ = ((a ^ 3)⁻¹ * a⁻¹) * (∫ y : E, ‖Grad 1 y‖) := by
+      simp_rw [gradient_sq_smul a ha]
+      simp_rw [norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * a⁻¹ by positivity)
+        (fderiv ℝ (fun z : E => heatKernel 1 z) _)]
+      rw [integral_const_mul]
+    _ = (a ^ 3)⁻¹ * (a⁻¹ * (∫ y : E, ‖Grad 1 y‖)) := by ring
+
 end Poincare.HeatDuhamelHessianDifferentiation
