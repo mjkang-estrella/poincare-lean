@@ -243,6 +243,20 @@ elements, and contractive restriction to shorter cylinders. This is the
 Banach carrier for the frozen-coefficient correction and the nonlinear
 fixed point of the parabolic route.
 
+`hamilton-pinching-to-reaction-survey` landed (trimmed; full appendices on
+the retained worker branch). Findings: the negative pinching reaction belongs
+to the scalar-normalized quotient, not the raw cubic reaction; the landed
+eigenvalue preservation degrades `ε` to `2ε − 1/3`; normalized scalar,
+lower-Ricci and traceless-energy evolutions are automatic from the flow plus
+joint C³ entries, but the normalized quotient predicates have no public
+producer yet; S9 needs moving-integral derivatives (volume automatic, total
+scalar needs closed Laplacian Stokes on the slices) and `V ≤ 6E`. A-plan:
+item 1 normalized quotient evolution, item 2 forward preservation from
+initial data, item 3 S9 mean floor with explicit Stokes premise (proof
+compiles in scratch), item 4 a sufficient core adapter. B residuals: the
+strict uniform normalization gap (for P1), `V ≤ 6E` (for P2), and a Stokes
+producer. Items 1 and 3 are dispatched.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
