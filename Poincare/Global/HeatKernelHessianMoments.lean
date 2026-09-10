@@ -122,4 +122,16 @@ theorem integrable_weighted_hessian {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2
   simp_rw [weighted_hessian_sq_smul (Real.sqrt t) ha]
   exact (integrable_weighted_hessian_one hα hα2).const_mul _
 
+/-- Exact positive-time scaling of the weighted Hessian integral. -/
+theorem weighted_hessian_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+    (∫ x : E, ‖Hess t x‖ * ‖x‖ ^ α) =
+      t ^ (α / 2 - 1) * (∫ x : E, ‖Hess 1 x‖ * ‖x‖ ^ α) := by
+  have h := weighted_hessian_integral_sq (Real.sqrt t) (Real.sqrt_pos.2 ht) α
+  rw [Real.sq_sqrt ht.le] at h
+  rw [h]
+  congr 1
+  rw [Real.sqrt_eq_rpow, ← Real.rpow_mul ht.le, Real.rpow_sub ht, Real.rpow_one]
+  rw [show (1 / 2 : ℝ) * α = α / 2 by ring]
+  ring
+
 end Poincare.HeatKernelHessianMoments
