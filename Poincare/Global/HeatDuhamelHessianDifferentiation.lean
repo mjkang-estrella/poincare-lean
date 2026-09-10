@@ -99,4 +99,27 @@ theorem norm_gradient_heatSolution_le {t M : ℝ} (ht : 0 < t)
     _ = M * (∫ y : E, ‖Grad 1 y‖) * t ^ (-(1 / 2 : ℝ)) := by
       rw [integral_const_mul, gradient_integral ht, mul_assoc]
 
+/-- Dilation gives joint continuity of the positive-time gradient kernel. -/
+theorem continuous_gradient_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => Grad p.1 p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_one_le }
+  have hunit : ContDiff ℝ 0 (Grad 1) :=
+    (contDiff_heatKernel_spatial («E» := E) 1).fderiv_right (m := 0) (by norm_num)
+  have ha : Continuous (fun p : Ioi (0 : ℝ) × E => Real.sqrt (p.1 : ℝ)) :=
+    Real.continuous_sqrt.comp (continuous_subtype_val.comp continuous_fst)
+  have hapos (p : Ioi (0 : ℝ) × E) : 0 < Real.sqrt (p.1 : ℝ) :=
+    Real.sqrt_pos.2 p.1.property
+  have hc : Continuous (fun p : Ioi (0 : ℝ) × E =>
+      (((Real.sqrt (p.1 : ℝ)) ^ 3)⁻¹ * (Real.sqrt (p.1 : ℝ))⁻¹) •
+        Grad 1 ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)) :=
+    ((ha.pow 3).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')).mul
+      (ha.inv₀ (fun p => (hapos p).ne')) |>.smul
+      (hunit.continuous.comp ((ha.inv₀ (fun p => (hapos p).ne')).smul continuous_snd))
+  apply hc.congr
+  intro p
+  have h := gradient_sq_smul (Real.sqrt (p.1 : ℝ)) (hapos p)
+    ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
+  simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
+
 end Poincare.HeatDuhamelHessianDifferentiation
