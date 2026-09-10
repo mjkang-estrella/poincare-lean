@@ -231,6 +231,18 @@ bilinear Hessian formula, a Gaussian-times-power envelope, Haar scaling,
 second moments). K2 (`heat-duhamel-spatial-holder-hessian`, class B) is
 dispatched on top of it.
 
+`parabolic-holder-carrier` landed (`Global/ParabolicHolderSpace.lean`,
+gate PASS, 54 declarations): the parabolic Hölder space `Y α T F` on the
+cylinder `Icc 0 T ×ˢ univ`, represented as a closed submodule of the
+complete sum-norm product of two `lp ∞` factors (values and scaled
+differences), hence `NormedAddCommGroup`, `NormedSpace ℝ`, and
+`CompleteSpace` for complete `F`, with the exact norm formula
+`supNorm + holderSeminorm`, the constructor `ofFunction`, pointwise and
+Hölder bounds, the sharp product bound `‖f * g‖ ≤ ‖f‖ * ‖g‖` on real-valued
+elements, and contractive restriction to shorter cylinders. This is the
+Banach carrier for the frozen-coefficient correction and the nonlinear
+fixed point of the parabolic route.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
