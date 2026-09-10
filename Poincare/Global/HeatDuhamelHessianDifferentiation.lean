@@ -190,6 +190,30 @@ theorem continuous_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
 /-- The gradient time majorant is integrable through the endpoint. -/
 theorem intervalIntegrable_gradient_majorant (t A : ℝ) :
     IntervalIntegrable (fun s : ℝ => A * (t - s) ^ (-(1 / 2 : ℝ))) volume 0 t := by
-  convert intervalIntegrable_hessian_majorant (α := 1) zero_lt_one t A using 1 <;> norm_num
+  convert intervalIntegrable_hessian_majorant (α := 1) zero_lt_one t A using 1
+  norm_num
+
+/-- The actual first spatial derivative is integrable in Duhamel time. -/
+theorem intervalIntegrable_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    IntervalIntegrable
+      (fun s : ℝ => fderiv ℝ (heatSolution (t - s) (fun y => f (s, y))) x) volume 0 t := by
+  have hc := (continuous_gradient_heatSolution_time ht hf hM).comp
+    (continuous_id.prodMk (continuous_const : Continuous (fun _ : Ioo (0 : ℝ) t => x)))
+  let A := M * (∫ y : E, ‖Grad 1 y‖)
+  have hi := (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+    (intervalIntegrable_gradient_majorant t A)
+  rw [intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1,
+    integrableOn_iff_comap_subtypeVal measurableSet_Ioo]
+  rw [integrableOn_iff_comap_subtypeVal measurableSet_Ioo] at hi
+  refine hi.mono' hc.aestronglyMeasurable (Filter.Eventually.of_forall fun s => ?_)
+  have hmem : (s : ℝ) ∈ Icc 0 T := ⟨s.property.1.le, s.property.2.le.trans ht.2⟩
+  have hfc : Continuous (fun y : E => f (s, y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hmem, mem_univ y⟩)
+  exact norm_gradient_heatSolution_le (sub_pos.mpr s.property.2)
+    hfc.aestronglyMeasurable (by simpa only [Real.norm_eq_abs] using hM s hmem) x
+
 
 end Poincare.HeatDuhamelHessianDifferentiation
