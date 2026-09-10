@@ -189,6 +189,31 @@ def ofFunction (f : ℝ × E → F) (hoff : ∀ p, p ∉ cylinder T → f p = 0)
 @[simp] theorem ofFunction_apply (f : ℝ × E → F) (hoff hb hh) (p : ℝ × E) :
     ofFunction (α := α) (T := T) f hoff hb hh p = f p := rfl
 
+/-- The graph representation imposes exactly the three function-level conditions. -/
+theorem exists_rep_iff (f : ℝ × E → F) :
+    (∃ y : Y (E := E) α T F, ∀ p, y p = f p) ↔
+      (∀ p, p ∉ cylinder T → f p = 0) ∧
+      (∃ M : ℝ, ∀ p ∈ cylinder T, ‖f p‖ ≤ M) ∧
+      (∃ K : ℝ, HasHolderBound α (cylinder T) f K) := by
+  constructor
+  · rintro ⟨y, hy⟩
+    have hf : (y : ℝ × E → F) = f := funext hy
+    rw [← hf]
+    exact ⟨fun _ hp => zero_off y hp, bounded y, ‖y‖, hasHolderBound y⟩
+  · rintro ⟨hoff, hb, hh⟩
+    exact ⟨ofFunction f hoff hb hh, fun _ => rfl⟩
+
+@[simp] theorem zero_apply (p : ℝ × E) : (0 : Y (E := E) α T F) p = 0 := rfl
+
+@[simp] theorem add_apply (f g : Y (E := E) α T F) (p : ℝ × E) :
+    (f + g) p = f p + g p := rfl
+
+@[simp] theorem sub_apply (f g : Y (E := E) α T F) (p : ℝ × E) :
+    (f - g) p = f p - g p := rfl
+
+@[simp] theorem smul_apply (c : ℝ) (f : Y (E := E) α T F) (p : ℝ × E) :
+    (c • f) p = c • f p := rfl
+
 @[ext] theorem ext {f g : Y (E := E) α T F} (h : ∀ p ∈ cylinder T, f p = g p) :
     f = g := by
   have hval : f.val.fst = g.val.fst := by
@@ -298,5 +323,122 @@ theorem isClosed_holderSubmodule :
 
 instance instCompleteSpace [CompleteSpace F] : CompleteSpace (Y (E := E) α T F) :=
   isClosed_holderSubmodule.isComplete.completeSpace_coe
+
+theorem supNorm_nonneg (f : Y (E := E) α T F) : 0 ≤ supNorm (cylinder T) f := by
+  rw [supNorm_eq]
+  exact norm_nonneg _
+
+theorem holderSeminorm_nonneg (f : Y (E := E) α T F) :
+    0 ≤ holderSeminorm α (cylinder T) f := by
+  rw [holderSeminorm_eq]
+  exact norm_nonneg _
+
+theorem le_supNorm (f : Y (E := E) α T F) (p : ℝ × E) :
+    ‖f p‖ ≤ supNorm (cylinder T) f := by
+  rw [supNorm_eq]
+  exact lp.norm_apply_le_norm (by simp) _ _
+
+theorem hasHolderBound_seminorm (f : Y (E := E) α T F) :
+    HasHolderBound α (cylinder T) f (holderSeminorm α (cylinder T) f) := by
+  intro p hp q hq
+  rw [holderSeminorm_eq]
+  by_cases h : p = q
+  · subst q
+    simp only [sub_self, norm_zero]
+    exact mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (parabolicDist_nonneg p p) _)
+  · let i : Pairs (cylinder (E := E) T) := ⟨(p, q), hp, hq, h⟩
+    have hi := lp.norm_apply_le_norm (by simp : (∞ : ℝ≥0∞) ≠ 0) f.val.snd i
+    rw [increment_norm] at hi
+    exact (div_le_iff₀ (Real.rpow_pos_of_pos (parabolicDist_pos h) α)).1 hi
+
+/-- The product estimate keeps the two sup norms separate from the two seminorms. -/
+theorem product_holderBound (f g : Y (E := E) α T ℝ) :
+    HasHolderBound α (cylinder T) (fun p => f p * g p)
+      (supNorm (cylinder T) f * holderSeminorm α (cylinder T) g +
+        holderSeminorm α (cylinder T) f * supNorm (cylinder T) g) := by
+  intro p hp q hq
+  calc
+    ‖f p * g p - f q * g q‖ =
+        ‖f p * (g p - g q) + (f p - f q) * g q‖ := by congr 1; ring
+    _ ≤ ‖f p * (g p - g q)‖ + ‖(f p - f q) * g q‖ := norm_add_le _ _
+    _ = ‖f p‖ * ‖g p - g q‖ + ‖f p - f q‖ * ‖g q‖ := by rw [norm_mul, norm_mul]
+    _ ≤ supNorm (cylinder T) f *
+          (holderSeminorm α (cylinder T) g * parabolicDist p q ^ α) +
+        (holderSeminorm α (cylinder T) f * parabolicDist p q ^ α) *
+          supNorm (cylinder T) g := by
+      apply add_le_add
+      · exact mul_le_mul (le_supNorm f p) (hasHolderBound_seminorm g p hp q hq)
+          (norm_nonneg _) (supNorm_nonneg f)
+      · exact mul_le_mul (hasHolderBound_seminorm f p hp q hq) (le_supNorm g q)
+          (norm_nonneg _) (mul_nonneg (holderSeminorm_nonneg f)
+            (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+    _ = _ := by ring
+
+def pointwiseMul (f g : Y (E := E) α T ℝ) : Y (E := E) α T ℝ :=
+  ofFunction (fun p => f p * g p)
+    (fun p hp => by dsimp only; rw [zero_off f hp, zero_mul])
+    ⟨supNorm (cylinder T) f * supNorm (cylinder T) g, fun p _ => by
+      rw [norm_mul]
+      exact mul_le_mul (le_supNorm f p) (le_supNorm g p) (norm_nonneg _) (supNorm_nonneg f)⟩
+    ⟨_, product_holderBound f g⟩
+
+instance instMul : Mul (Y (E := E) α T ℝ) := ⟨pointwiseMul⟩
+
+@[simp] theorem mul_apply (f g : Y (E := E) α T ℝ) (p : ℝ × E) :
+    (f * g) p = f p * g p := rfl
+
+theorem norm_mul_le (f g : Y (E := E) α T ℝ) : ‖f * g‖ ≤ ‖f‖ * ‖g‖ := by
+  have hb : ‖f * g‖ ≤ supNorm (cylinder T) f * supNorm (cylinder T) g +
+      (supNorm (cylinder T) f * holderSeminorm α (cylinder T) g +
+        holderSeminorm α (cylinder T) f * supNorm (cylinder T) g) := by
+    apply norm_le_of_bounds (f * g)
+    · exact mul_nonneg (supNorm_nonneg f) (supNorm_nonneg g)
+    · exact add_nonneg
+        (mul_nonneg (supNorm_nonneg f) (holderSeminorm_nonneg g))
+        (mul_nonneg (holderSeminorm_nonneg f) (supNorm_nonneg g))
+    · intro p _
+      rw [mul_apply, norm_mul]
+      exact mul_le_mul (le_supNorm f p) (le_supNorm g p) (norm_nonneg _) (supNorm_nonneg f)
+    · exact product_holderBound f g
+  rw [norm_eq f, norm_eq g]
+  nlinarith [mul_nonneg (holderSeminorm_nonneg f) (holderSeminorm_nonneg g)]
+
+/-- Pointwise multiplication stays in the carrier, with the sharp norm bound. -/
+theorem mul_mem (f g : Y (E := E) α T ℝ) :
+    (∀ p, (f * g) p = f p * g p) ∧ ‖f * g‖ ≤ ‖f‖ * ‖g‖ :=
+  ⟨mul_apply f g, norm_mul_le f g⟩
+
+omit [NormedAddCommGroup E] in
+theorem cylinder_mono {T' : ℝ} (hT : T' ≤ T) :
+    cylinder (E := E) T' ⊆ cylinder T := by
+  intro p hp
+  exact ⟨⟨hp.1.1, hp.1.2.trans hT⟩, hp.2⟩
+
+/-- Restriction uses the zero extension on the smaller cylinder. -/
+def restrict {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F) : Y (E := E) α T' F := by
+  classical
+  exact ofFunction (fun p => if p ∈ cylinder T' then f p else 0)
+    (fun p hp => if_neg hp)
+    ⟨‖f‖, fun p hp => by dsimp only; rw [if_pos hp]; exact norm_le f p⟩
+    ⟨‖f‖, fun p hp q hq => by
+      dsimp only
+      rw [if_pos hp, if_pos hq]
+      exact holder_le f (cylinder_mono hT hp) (cylinder_mono hT hq)⟩
+
+@[simp] theorem restrict_apply {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F)
+    {p : ℝ × E} (hp : p ∈ cylinder T') : restrict hT f p = f p := by
+  classical
+  exact if_pos hp
+
+theorem restrict_le {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F) :
+    ‖restrict hT f‖ ≤ ‖f‖ := by
+  rw [norm_eq f]
+  apply norm_le_of_bounds _ (supNorm_nonneg f) (holderSeminorm_nonneg f)
+  · intro p hp
+    rw [restrict_apply hT f hp]
+    exact le_supNorm f p
+  · intro p hp q hq
+    rw [restrict_apply hT f hp, restrict_apply hT f hq]
+    exact hasHolderBound_seminorm f p (cylinder_mono hT hp) q (cylinder_mono hT hq)
 
 end Poincare.ParabolicHolder
