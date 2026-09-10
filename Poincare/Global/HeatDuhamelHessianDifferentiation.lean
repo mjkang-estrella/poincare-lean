@@ -122,4 +122,23 @@ theorem continuous_gradient_pos :
     ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
   simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
 
+/-- Dilation puts the convolution gradient against a fixed unit-time kernel. -/
+theorem gradient_convolution_sq (a : ℝ) (ha : 0 < a) (f : E → ℝ) (x : E) :
+    (∫ y : E, f (x - y) • Grad (a ^ 2) y) =
+      a⁻¹ • (∫ y : E, f (x - a • y) • Grad 1 y) := by
+  letI : NormedSpace ℝ (E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_one_le }
+  have hchange := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => f (x - y) • Grad (a ^ 2) y) a (hR := ha.le)
+  apply (smul_right_injective (M := E →L[ℝ] ℝ) (inv_ne_zero (pow_ne_zero 3 ha.ne')))
+  calc
+    (a ^ 3)⁻¹ • (∫ y : E, f (x - y) • Grad (a ^ 2) y) =
+        ∫ y : E, f (x - a • y) • Grad (a ^ 2) (a • y) := by
+      simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin] using hchange.symm
+    _ = ((a ^ 3)⁻¹ * a⁻¹) • (∫ y : E, f (x - a • y) • Grad 1 y) := by
+      simp_rw [gradient_sq_smul a ha, smul_comm (f (x - a • _))]
+      rw [integral_smul]
+    _ = (a ^ 3)⁻¹ • (a⁻¹ • (∫ y : E, f (x - a • y) • Grad 1 y)) := by
+      rw [smul_smul]
+
 end Poincare.HeatDuhamelHessianDifferentiation
