@@ -163,4 +163,15 @@ theorem intervalIntegrable_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ
     simpa only [sub_zero, sub_self] using hi.symm
   exact hj.const_mul A
 
+/-- Exact integration of the time majorant supplies the factor two over the exponent. -/
+theorem integral_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+    (∫ s in (0 : ℝ)..t, A * (t - s) ^ (α / 2 - 1)) =
+      A * (2 / α) * t ^ (α / 2) := by
+  rw [intervalIntegral.integral_const_mul]
+  have he : α / 2 - 1 = -(1 - α / 2) := by ring
+  simp_rw [he]
+  rw [integral_sub_rpow_neg (by linarith : 1 - α / 2 < 1)]
+  rw [show 1 - (1 - α / 2) = α / 2 by ring]
+  field_simp
+
 end Poincare.HeatDuhamelSpatialHolderHessian
