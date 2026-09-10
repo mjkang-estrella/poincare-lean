@@ -170,4 +170,20 @@ theorem integral_hessian_eq_zero {t : ℝ} (ht : 0 < t) :
   rw [integral_sub_left_eq_self (fun y : E => Hess t y v w) volume (0 : E)] at hev
   exact hev
 
+/-- Sharp weighted Hessian moments and tensor cancellation for the heat kernel. -/
+theorem hessian_moments :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 0 < t → t ≤ 1 →
+      Integrable (fun x : E => ‖Hess t x‖ * ‖x‖ ^ α) ∧
+      (∫ x : E, ‖Hess t x‖ * ‖x‖ ^ α) ≤ C * t ^ (α / 2 - 1) ∧
+      Integrable (fun x : E => Hess t x) ∧ (∫ x : E, Hess t x) = 0 := by
+  intro α hα hα1
+  refine ⟨max 1 (∫ x : E, ‖Hess 1 x‖ * ‖x‖ ^ α),
+    lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro t ht _
+  refine ⟨integrable_weighted_hessian hα.le (by linarith) ht, ?_,
+    integrable_hessian ht, integral_hessian_eq_zero ht⟩
+  rw [weighted_hessian_integral ht, mul_comm (t ^ (α / 2 - 1))]
+  exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg ht.le _)
+
 end Poincare.HeatKernelHessianMoments
