@@ -2,6 +2,28 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-10 Worker Duhamel spatial Hessian: steps 1 and 2 proved
+
+Branch `worker/heat-duhamel-spatial-holder-hessian`, base `4c991f21`, proof
+head `eac76c3a`. The new `Global/HeatDuhamelSpatialHolderHessian.lean`
+proves the full bounded-data heat Hessian convolution identity and its
+cancelled form, the sharp spatial Hölder bound, time integrability of the
+cancelled integral, and its `t^(α/2)` norm estimate. Fourteen theorems were
+compiled and committed individually. All 15 declarations, including the
+local instance, have exactly the required foundational dependencies. The
+source, token, and whitespace gates pass.
+
+The frozen `duhamel_hessian_bound` is not proved or declared. The step-3
+differentiation probe closes its Hessian hypotheses but leaves time
+measurability and time integrability of the first spatial heat derivative
+unproved. First differentiation of the Duhamel value and C² continuity
+also remain. The class-B blocked report preserves exact goals, probe
+source/output, checks, and the final diff in
+`harness/reports/heat-duhamel-spatial-holder-hessian_blocked.md`. This
+worker result is not merged or accepted.
+
+First action: `rg -n 'hasFDerivAt_heatKernel_spatial|integrable_smul_fderiv_heatKernel_sub' Poincare/Global/HeatCauchyTheorem.lean Poincare/Global/HeatCauchyNext2.lean`.
+
 ## 2026-09-08 Worker normalization exact contract proved
 
 Branch `worker/closed-ricci-flow-normalization`, base `8345b27c`, verified
