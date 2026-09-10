@@ -257,6 +257,15 @@ compiles in scratch), item 4 a sufficient core adapter. B residuals: the
 strict uniform normalization gap (for P1), `V ≤ 6E` (for P2), and a Stokes
 producer. Items 1 and 3 are dispatched.
 
+Item 3 landed (`Global/HamiltonMeanFloorFromEnergyDomination.lean`, gate
+PASS, 9 declarations): the moving total-scalar and volume derivative
+identities from joint C³ entries with the closed Laplacian Stokes premise
+explicit, the S9 mean floor from positive initial mean and forward energy
+domination `V ≤ 6E`, and the energy core `HamiltonReactionCore3Energy`
+(existential floor replaced by initial mean positivity, `V ≤ 6E`, and
+scalar Stokes) with its endpoint reduction; pinned as
+`hamilton-reaction-core-energy` in `hamilton-front.json`.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

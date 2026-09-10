@@ -10,7 +10,8 @@
     "Poincare.Global.HamiltonEndpointEquivalences",
     "Poincare.Global.HamiltonReactionCoreReduction",
     "Poincare.Global.HamiltonReactionCoreReduced",
-    "Poincare.Global.HamiltonReactionCoreFinal"
+    "Poincare.Global.HamiltonReactionCoreFinal",
+    "Poincare.Global.HamiltonMeanFloorFromEnergyDomination"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -36,6 +37,10 @@
     {
       "url": "harness/reports/hamilton-family-volume-measure-continuity_done.md",
       "role": "Weak volume-measure continuity along a jet-continuous family; with the curvature clauses this replaces the three compact-family continuity clauses by jet-profile continuity."
+    },
+    {
+      "url": "harness/reports/hamilton-mean-floor-from-energy-domination_done.md",
+      "role": "S9 mean floor with explicit closed-Laplacian Stokes premise; the energy core replaces the existential mean floor by positive initial mean, forward energy domination V<=6E, and scalar Stokes."
     }
   ],
   "nodes": [
@@ -55,6 +60,24 @@
       "description": "Checked conditional reduction through the compact-tensor formal-profile constructor, finite traceless energy, finite absolute dissipation, positive-Einstein existence, and the Hamilton pinched-limit bridge.",
       "depends_on": [
         "hamilton-front-inputs"
+      ]
+    },
+    {
+      "id": "hamilton-reaction-core-energy",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core_energy",
+      "description": "Universal existence of the energy-form reaction core: the final core with the existential mean floor replaced by positive initial mean scalar, forward variance-energy domination (V <= 6E), and closed Laplacian Stokes for the scalar on forward slices. Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.HamiltonMeanFloorFromEnergyDomination.UniversalHamiltonReactionCoreEnergyStatement",
+      "expected_statement_sha256": "462dd7bd80384c2cb04e02c5901e77afb09f6c8b14609f5102a803e73472840c"
+    },
+    {
+      "id": "reaction-core-energy-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.HamiltonMeanFloorFromEnergyDomination.universalHamiltonConvergence_of_universalHamiltonReactionCoreEnergy",
+      "description": "Checked: the energy core yields the mean floor through S9 and hence the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core-energy"
       ]
     },
     {
@@ -165,7 +188,8 @@
         "finite-energy-reduction",
         "reaction-core-reduction",
         "reaction-core-reduced-reduction",
-        "reaction-core-final-reduction"
+        "reaction-core-final-reduction",
+        "reaction-core-energy-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
