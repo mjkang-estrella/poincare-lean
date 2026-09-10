@@ -93,4 +93,45 @@ theorem meanFloorFromEnergy_of_initialMeanPos
     (fun t ht ↦ hd ⟨t, interior_subset ht⟩)
   exact ⟨hinit, fun t ↦ hm (by simp) t.2 t.2⟩
 
+/-- The final reaction core with positive initial mean, energy domination,
+and scalar Stokes replacing the positive floor. Every analytic input is explicit. -/
+def HamiltonReactionCore3Energy (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (rate : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      0 < meanScalar (gt 0) ∧
+      (∀ t : Ici (0 : ℝ), normalizedFlowScalarVarianceTrack gt t.1 ≤
+        6 * normalizedFlowTracelessRicciEnergyTrack gt t.1) ∧
+      (∀ t ∈ Ici (0 : ℝ),
+        ClosedLaplacianStokes (gt t) (fun x ↦ (gt t).scalarAt x)) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      0 < rate ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x : M,
+        normalizedTracelessRicciEvolutionReactionAt (gt t) x ≤
+          -rate * (gt t).tracelessRicciNormSqAt x) ∧
+      (∀ slot : MetricEntryThirdJetSlot 3 M,
+        Continuous (fun p : K × ClosedSmoothModel 3 ↦
+          metricEntryThirdJetProfile (metric p.1) slot p.2))
+
+/-- Energy domination supplies the floor in the unchanged final core. -/
+theorem hamiltonReactionCore3Final_of_energy
+    (h : HamiltonReactionCore3Energy.{u, v} M) :
+    HamiltonReactionCore3Final.{u, v} M := by
+  rcases h with ⟨K, topK, compactK, gt, metric, parameter, rate,
+    hparam, hreal, hinit, henergy, hstokes, hflow, hjoint, hrate, hreaction, hjet⟩
+  letI : TopologicalSpace K := topK
+  haveI : CompactSpace K := compactK
+  have hfloor := meanFloorFromEnergy_of_initialMeanPos gt hjoint hflow hstokes hinit henergy
+  exact ⟨K, topK, compactK, gt, metric, parameter, meanScalar (gt 0), rate,
+    hparam, hreal, hfloor.1, hfloor.2, hflow, hjoint, hrate, hreaction, hjet⟩
+
 end Poincare.HamiltonMeanFloorFromEnergyDomination
