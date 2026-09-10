@@ -33,4 +33,29 @@ theorem integrable_data_smul_hessian_sub {t M : ℝ} (ht : 0 < t)
       _ ≤ M * ‖Hess t (x - y)‖ :=
         mul_le_mul_of_nonneg_right (hM y) (norm_nonneg _)
 
+/-- The spatial Hessian of the heat convolution is the convolution with the full kernel Hessian. -/
+theorem hessian_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, f y • Hess t (x - y) := by
+  have htwo := contDiff_two_heatSolution_of_bounded_measurable ht hf hM
+  have hD := ((htwo.fderiv_right (m := 1) (by norm_num)).differentiable
+    (by norm_num) x).hasFDerivAt
+  have hi := integrable_data_smul_hessian_sub ht hf hM x
+  ext v w
+  have hc := hD.clm_apply (hasFDerivAt_const w x)
+  have hg := heatSolution_fderiv_apply_hasFDerivAt ht hf hM x w
+  have he := congrArg (fun L : E →L[ℝ] ℝ => L v) (hc.unique hg)
+  have hiv : Integrable (fun y : E => (f y • Hess t (x - y)) v) :=
+    (ContinuousLinearMap.apply ℝ (E →L[ℝ] ℝ) v).integrable_comp hi
+  rw [ContinuousLinearMap.integral_apply hi,
+    ContinuousLinearMap.integral_apply hiv]
+  dsimp only at he
+  rw [ContinuousLinearMap.integral_apply
+    (integrable_smul_fderiv_fderiv_heatKernel_sub_flip ht hf hM x w)] at he
+  simpa only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
+    ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply, add_zero,
+    ContinuousLinearMap.smul_apply, smul_eq_mul, map_zero, zero_add] using he
+
 end Poincare.HeatDuhamelSpatialHolderHessian
