@@ -88,4 +88,12 @@ theorem integrable_weighted_hessian_one {α : ℝ} (hα : 0 ≤ α) (hα2 : α �
     _ = c * (((1 + ‖x‖ ^ 2) * Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2)) *
         (‖x‖ ^ α * Real.exp (-(‖x‖ ^ 2 / 8)))) := by rw [hK]; ring
 
+/-- Pointwise parabolic dilation including the radial weight. -/
+theorem weighted_hessian_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+    ‖Hess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α =
+      ((a ^ 3)⁻¹ * (a ^ 2)⁻¹ * a ^ α) * (‖Hess 1 x‖ * ‖x‖ ^ α) := by
+  rw [hessian_sq_smul a ha x, norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * (a ^ 2)⁻¹ by positivity) (Hess 1 x),
+    norm_smul_of_nonneg ha.le, Real.mul_rpow ha.le (norm_nonneg x)]
+  ring
+
 end Poincare.HeatKernelHessianMoments
