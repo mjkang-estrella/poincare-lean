@@ -58,4 +58,15 @@ theorem hessian_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
     ContinuousLinearMap.flip_apply, ContinuousLinearMap.zero_apply, add_zero,
     ContinuousLinearMap.smul_apply, smul_eq_mul, map_zero, zero_add] using he
 
+/-- Changing variables puts the kernel Hessian at the integration variable. -/
+theorem hessian_heatSolution_eq_integral_sub {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x =
+      ∫ y : E, f (x - y) • Hess t y := by
+  rw [hessian_heatSolution_eq_integral ht hf hM]
+  have hc := integral_sub_left_eq_self
+    (fun y : E => f y • Hess t (x - y)) volume x
+  simpa only [sub_sub_cancel] using hc.symm
+
 end Poincare.HeatDuhamelSpatialHolderHessian
