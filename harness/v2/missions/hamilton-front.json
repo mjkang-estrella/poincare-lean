@@ -11,7 +11,8 @@
     "Poincare.Global.HamiltonReactionCoreReduction",
     "Poincare.Global.HamiltonReactionCoreReduced",
     "Poincare.Global.HamiltonReactionCoreFinal",
-    "Poincare.Global.HamiltonMeanFloorFromEnergyDomination"
+    "Poincare.Global.HamiltonMeanFloorFromEnergyDomination",
+    "Poincare.Global.HamiltonInitialPinchingReactionCoreReduction"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -41,6 +42,10 @@
     {
       "url": "harness/reports/hamilton-mean-floor-from-energy-domination_done.md",
       "role": "S9 mean floor with explicit closed-Laplacian Stokes premise; the energy core replaces the existential mean floor by positive initial mean, forward energy domination V<=6E, and scalar Stokes."
+    },
+    {
+      "url": "harness/reports/hamilton-initial-pinching-reaction-core_done.md",
+      "role": "Sufficient core adapter: initial pointwise scalar positivity and an initial Ricci eigenvalue floor in (1/6, 1/3], with the explicit residual estimates (scalar-to-mean comparison with coefficient gap, V<=6E, scalar Stokes), reconstruct the final reaction core."
     }
   ],
   "nodes": [
@@ -60,6 +65,24 @@
       "description": "Checked conditional reduction through the compact-tensor formal-profile constructor, finite traceless energy, finite absolute dissipation, positive-Einstein existence, and the Hamilton pinched-limit bridge.",
       "depends_on": [
         "hamilton-front-inputs"
+      ]
+    },
+    {
+      "id": "hamilton-reaction-core-initial-pinching",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core_initial_pinching",
+      "description": "Universal existence of the initial-pinching reaction core: a forward normalized Ricci flow with joint C3 entries and compact jet-continuous realization, positive initial scalar, an initial eigenvalue floor epsilon in (1/6, 1/3], an admissible delta, and the residual estimates (scalar <= C * mean with coefficient gap 4/3 - 2(2-delta)(1-4eps+6eps^2)C > 0, variance-energy domination V <= 6E, closed Laplacian Stokes for the scalar on forward slices). The reaction and floor clauses of the final core are derived. Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.HamiltonInitialPinchingReactionCoreReduction.UniversalHamiltonReactionCoreInitialPinchingStatement",
+      "expected_statement_sha256": "a7ce96c074e86837bbe375143c2117383664d1f947f774abe725596b83af5759"
+    },
+    {
+      "id": "reaction-core-initial-pinching-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.HamiltonInitialPinchingReactionCoreReduction.universalHamiltonConvergence_of_universalHamiltonReactionCoreInitialPinching",
+      "description": "Checked: pinching preservation, the S9 mean floor, and the cubic-domination reaction bridge reconstruct the final core and yield the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core-initial-pinching"
       ]
     },
     {
@@ -189,7 +212,8 @@
         "reaction-core-reduction",
         "reaction-core-reduced-reduction",
         "reaction-core-final-reduction",
-        "reaction-core-energy-reduction"
+        "reaction-core-energy-reduction",
+        "reaction-core-initial-pinching-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"

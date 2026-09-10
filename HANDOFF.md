@@ -317,6 +317,24 @@ forward slice by the landed maximum principle, plus the improved-quotient
 variant for `1/6 < ε₀`. Item 4 (`hamilton-initial-pinching-reaction-core`,
 the sufficient core adapter) is dispatched.
 
+Item 4 landed (`Global/HamiltonInitialPinchingReactionCoreReduction.lean`,
+gate PASS, 7 declarations): `HamiltonReactionCore3InitialPinching` replaces
+the final core's mean-floor and reaction clauses by initial data (pointwise
+positive scalar, an eigenvalue floor `ε ∈ (1/6, 1/3]`, an admissible `δ`)
+plus three explicit residual estimates: scalar-to-mean comparison with
+coefficient gap `4/3 − 2(2−δ)(1−4ε+6ε²)C > 0`, `V ≤ 6E`, and scalar Stokes
+on forward slices; the `Eta` variant swaps the comparison/gap pair for a
+positive normalization gap. Both reconstruct the final core with
+`rate = γ · meanScalar(g₀)`; pinned as
+`hamilton-reaction-core-initial-pinching` in `hamilton-front.json`.
+
+Hamilton front after the pinching plan (2026-09-10): the analytic inputs
+that remain are (a) existence of the forward normalized flow with joint C³
+entries and a compact jet-continuous realization (the Ricci route), (b) the
+three residual estimates above, which are Hamilton 1982 sections 10 to 17
+content (scalar comparison, variance-energy domination) plus a
+closed-manifold Stokes producer.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
