@@ -199,4 +199,27 @@ theorem tendsto_heat_integrand_diagonal {T t M : ℝ} (ht : t ∈ Icc 0 T)
   rw [Real.sq_sqrt hpos.le] at he
   exact he.symm
 
+/-- The interior time derivative is integrable and its integral is the Duhamel Laplacian. -/
+theorem duhamel_time_derivative_integral {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    IntervalIntegrable (fun s : ℝ =>
+      deriv (fun r : ℝ => heatSolution (r - s) (fun y => f (s, y)) x) t) volume 0 t ∧
+    (∫ s in (0 : ℝ)..t,
+      deriv (fun r : ℝ => heatSolution (r - s) (fun y => f (s, y)) x) t) =
+      (Δ (fun z : E => ∫ s in (0 : ℝ)..t,
+        heatSolution (t - s) (fun y => f (s, y)) z)) x := by
+  have he : (fun s : ℝ =>
+      deriv (fun r : ℝ => heatSolution (r - s) (fun y => f (s, y)) x) t) =ᵐ[volume.restrict (Ι 0 t)]
+      (fun s : ℝ => (Δ (heatSolution (t - s) (fun y => f (s, y)))) x) := by
+    rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact (hasDerivAt_heat_integrand ⟨hs.1.le, hs.2.le.trans ht.2⟩ hs.2 hf hM x).deriv
+  refine ⟨(intervalIntegrable_heat_laplacian hα hα1 ht hf hM hK x).congr_ae he.symm, ?_⟩
+  rw [laplacian_duhamel_eq_integral hα hα1 ht hf hM hK x]
+  exact intervalIntegral.integral_congr_ae_restrict he
+
 end Poincare.HeatDuhamelHeatEquation
