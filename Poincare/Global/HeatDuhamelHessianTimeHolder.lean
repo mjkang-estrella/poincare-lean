@@ -255,4 +255,18 @@ theorem hessian_time_deriv_moment_bound :
   rw [weighted_hessian_time_deriv_integral ht, mul_comm (t ^ (α / 2 - 2))]
   exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg ht.le _)
 
+/-- The new time interval contributes only the half-exponent Hölder tail. -/
+theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht₁ : t₁ ∈ Icc 0 T)
+    (ht₂ : t₂ ∈ Icc 0 T) (h12 : t₁ ≤ t₂) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ s in t₁..t₂, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y‖ ≤
+      ((∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * |t₂ - t₁| ^ (α / 2) := by
+  have h := norm_integral_cancelled_hessian_near_le hα hα1 h12
+    (fun s hs => hK s ⟨ht₁.1.trans hs.1.le, hs.2.le.trans ht₂.2⟩) x
+  rw [abs_of_nonneg (sub_nonneg.mpr h12)]
+  convert h using 1 <;> ring
+
 end Poincare.HeatDuhamelHessianTimeHolder
