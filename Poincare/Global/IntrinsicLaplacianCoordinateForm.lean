@@ -434,4 +434,38 @@ theorem restrictedChart_measure
     ClosedLaplacianStokesProducer.openChart_measure g p
   rw [hfull, Measure.restrict_restrict_of_subset hsource, himage]
 
+/-- The genuine density remains integrable on a measurable subdomain of a chart. -/
+theorem restrictedChart_density_integrable
+    [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) {U : Set E}
+    (hU : MeasurableSet U) (hsub : U ⊆ (extChartAt I p).target) :
+    Integrable (fun z ↦ inverseChartPullbackVolumeDensity g p (Set.inclusion hsub z))
+      (coordinateLebesgueMeasure U) := by
+  let δ := fun z ↦ inverseChartPullbackVolumeDensity g p (Set.inclusion hsub z)
+  have hcont : Continuous δ := (continuous_inverseChartPullbackVolumeDensity g p).comp
+    (continuous_inclusion hsub)
+  have hscale : 0 < (rawHausdorffLebesgueScale n : ℝ) := by
+    exact_mod_cast Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+      (Measure.hausdorffMeasure (Module.finrank ℝ E : ℝ)) (volume : Measure E)
+  have hmeas : Measurable (fun z : U ↦ inverseExtendedChartParametrization (n := n) p
+      (Set.inclusion hsub z)) :=
+    (inverseExtendedChartParametrization_isEmbedding (n := n) p).continuous.measurable.comp
+    (measurable_inclusion hsub)
+  have hmass := congrArg (fun μ : Measure M ↦ μ univ) (restrictedChart_measure g p hU hsub)
+  dsimp only at hmass
+  rw [Measure.map_apply hmeas MeasurableSet.univ, preimage_univ,
+    Measure.restrict_apply MeasurableSet.univ, univ_inter] at hmass
+  have hfinite : ∫⁻ z, ENNReal.ofReal ((rawHausdorffLebesgueScale n : ℝ) * δ z)
+      ∂(coordinateLebesgueMeasure U) ≠ (⊤ : ℝ≥0∞) := by
+    rw [rawHausdorffCoordinateDensityMeasure, withDensity_apply _ MeasurableSet.univ,
+      Measure.restrict_univ] at hmass
+    rw [hmass]
+    letI := volumeMeasure_isFiniteMeasure g
+    exact measure_ne_top (volumeMeasure g) _
+  have hint := (lintegral_ofReal_ne_top_iff_integrable
+    (hcont.const_mul (rawHausdorffLebesgueScale n : ℝ)).aestronglyMeasurable
+    (Eventually.of_forall fun z ↦ mul_nonneg hscale.le
+      (inverseChartPullbackVolumeDensity_pos g p (Set.inclusion hsub z)).le)).mp hfinite
+  exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
+
 end Poincare.IntrinsicLaplacianCoordinateForm
