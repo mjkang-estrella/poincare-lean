@@ -305,4 +305,31 @@ theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
   simp only [hs] at he
   rw [← he, integral_hessian_majorant hα]
 
+/-- The recent part of a time increment costs twice the Hessian majorant. -/
+theorem near_hessian_time_difference_le {α K a t₁ t₂ : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (ha : a ≤ t₁) (h12 : t₁ ≤ t₂)
+    (hscale : t₁ - a ≤ t₂ - t₁) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a t₁, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y) -
+      (∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y)‖ ≤
+      (2 * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * (t₂ - t₁) ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)
+  have hA : 0 ≤ A := mul_nonneg
+    (mul_nonneg hK0 (integral_nonneg (fun y =>
+      mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))))
+    (div_nonneg (by norm_num) hα.le)
+  have hp : (t₁ - a) ^ (α / 2) ≤ (t₂ - t₁) ^ (α / 2) :=
+    Real.rpow_le_rpow (sub_nonneg.mpr ha) hscale (by linarith)
+  calc
+    _ ≤ ‖∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y‖ +
+      ‖∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y‖ :=
+      norm_sub_le _ _
+    _ ≤ A * (t₁ - a) ^ (α / 2) + A * (t₁ - a) ^ (α / 2) :=
+      add_le_add (norm_integral_cancelled_hessian_before_le hα hα1 hK0 ha h12 hK x)
+        (norm_integral_cancelled_hessian_before_le hα hα1 hK0 ha le_rfl hK x)
+    _ ≤ A * (t₂ - t₁) ^ (α / 2) + A * (t₂ - t₁) ^ (α / 2) :=
+      add_le_add (mul_le_mul_of_nonneg_left hp hA) (mul_le_mul_of_nonneg_left hp hA)
+    _ = _ := by dsimp [A]; ring
+
 end Poincare.HeatDuhamelHessianTimeHolder
