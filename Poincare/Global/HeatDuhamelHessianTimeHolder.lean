@@ -407,4 +407,50 @@ theorem norm_hessian_time_difference_le {a b : ℝ} (ha : 0 < a) (hab : a ≤ b)
   rw [← he]
   exact intervalIntegral.norm_integral_le_integral_norm hab
 
+/-- A weighted kernel Hessian time increment is linear away from time zero. -/
+theorem weighted_hessian_time_difference {α a b : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (hab : a ≤ b) :
+    Integrable (fun y : E => ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) ∧
+    (∫ y : E, ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) ≤
+      (b - a) * a ^ (α / 2 - 2) * (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) := by
+  let G : ℝ × E → ℝ := fun p => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  have hg : Integrable G ((volume.restrict (Icc a b)).prod volume) :=
+    integrable_time_weighted_hessian_deriv hα hα2 ha b
+  have hiMajor := hg.integral_prod_right
+  have hb (y : E) : ‖Hess b y - Hess a y‖ * ‖y‖ ^ α ≤ ∫ r in Icc a b, G (r, y) := by
+    calc
+      _ ≤ (∫ r in a..b, ‖DtHess (max a r) y‖) * ‖y‖ ^ α :=
+        mul_le_mul_of_nonneg_right (norm_hessian_time_difference_le ha hab y)
+          (Real.rpow_nonneg (norm_nonneg _) _)
+      _ = _ := by
+        rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab]
+        exact (intervalIntegral.integral_mul_const _ _).symm
+  have hH (t : ℝ) : Continuous (Hess t) :=
+    (((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)).continuous
+  have hi : Integrable (fun y : E => ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) :=
+    hiMajor.mono' (((hH b).sub (hH a)).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun y => by
+        change ‖‖Hess b y - Hess a y‖ * ‖y‖ ^ α‖ ≤ _
+        rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+        exact hb y)
+  refine ⟨hi, (integral_mono hi hiMajor hb).trans ?_⟩
+  rw [← integral_integral_swap hg]
+  calc
+    (∫ r in Icc a b, ∫ y : E, G (r, y)) ≤ ∫ _r in Icc a b, a ^ (α / 2 - 2) * J := by
+      apply integral_mono_ae hg.integral_prod_left (integrable_const _)
+      refine Filter.Eventually.of_forall fun r => ?_
+      change (∫ y : E, ‖DtHess (max a r) y‖ * ‖y‖ ^ α) ≤ _
+      rw [weighted_hessian_time_deriv_integral (ha.trans_le (le_max_left _ _))]
+      exact mul_le_mul_of_nonneg_right
+        (Real.rpow_le_rpow_of_nonpos ha (le_max_left _ _) (by linarith)) hJ
+    _ = _ := by
+      rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab,
+        intervalIntegral.integral_const, smul_eq_mul]
+      ring
+
 end Poincare.HeatDuhamelHessianTimeHolder
