@@ -133,4 +133,14 @@ theorem integrable_weighted_third_one {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤
     _ = c * (((1 + ‖x‖ ^ 2) * Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2)) *
         (‖x‖ ^ (α + 1) * Real.exp (-(‖x‖ ^ 2 / 8)))) := by rw [hK, hw]; ring
 
+/-- Parabolic dilation of the full third spatial derivative. -/
+theorem third_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+    Third (a ^ 2) (a • x) = ((a ^ 3)⁻¹ * (a ^ 3)⁻¹) • Third 1 x := by
+  ext u v w
+  simp only [ContinuousLinearMap.smul_apply, smul_eq_mul]
+  rw [third_apply (pow_ne_zero _ ha.ne'), third_apply one_ne_zero,
+    heatKernel_sq_smul a ha x]
+  simp only [inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
+  field_simp
+
 end Poincare.HeatDuhamelHessianSpatialHolder
