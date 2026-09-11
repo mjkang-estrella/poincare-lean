@@ -100,4 +100,23 @@ theorem coordinateScalar_support (p : M) (f : M → ℝ)
   exact ⟨hcompact.of_isClosed_subset (isClosed_tsupport _) hsub,
     hsub.trans (image_subset_iff.mpr fun x hx ↦ (extChartAt I p).map_source (hf hx))⟩
 
+/-- Zero extension preserves C² regularity for scalars supported inside the source. -/
+theorem coordinateScalar_contDiff_two (p : M) (f : M → ℝ)
+    (hf : tsupport f ⊆ (extChartAt I p).source)
+    (hreg : ContMDiff I 𝓘(ℝ) 2 f) :
+    ContDiff ℝ 2 (coordinateScalar (n := n) p f) := by
+  apply contDiff_iff_contDiffAt.mpr
+  intro z
+  by_cases hz : z ∈ (extChartAt I p).target
+  · have hinv := (contMDiffOn_extChartAt_symm (n := 2) p z hz).contMDiffAt
+      ((isOpen_extChartAt_target p).mem_nhds hz)
+    have hcomp := (hreg.contMDiffAt.comp z hinv).contDiffAt
+    apply hcomp.congr_of_eventuallyEq
+    filter_upwards [(isOpen_extChartAt_target p).mem_nhds hz] with y hy
+    exact indicator_of_mem hy _
+  · have hout : z ∉ tsupport (coordinateScalar (n := n) p f) :=
+      fun h ↦ hz ((coordinateScalar_support p f hf).2 h)
+    exact contDiffAt_const.congr_of_eventuallyEq
+      (notMem_tsupport_iff_eventuallyEq.mp hout)
+
 end Poincare.ClosedLaplacianStokesProducer
