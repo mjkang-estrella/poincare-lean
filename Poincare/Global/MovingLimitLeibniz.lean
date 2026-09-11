@@ -141,4 +141,37 @@ theorem hasDerivWithinAt_integral_moving_limit_of_secants
     ((hcdiag.mono (Icc_subset_Icc_right hr.2)).intervalIntegrable_of_Icc hr.1)]
   ring
 
+/-- An interior derivative comparison controls increments even at singular endpoints. -/
+theorem abs_sub_le_of_deriv_comparison
+    {g g' v v' : ℝ → ℝ} {a z : ℝ} (haz : a ≤ z)
+    (hg : ContinuousOn g (Icc a z)) (hv : ContinuousOn v (Icc a z))
+    (hdg : ∀ r ∈ Ioo a z, HasDerivAt g (g' r) r)
+    (hdv : ∀ r ∈ Ioo a z, HasDerivAt v (v' r) r)
+    (hb : ∀ r ∈ Ioo a z, |g' r| ≤ v' r) :
+    |g z - g a| ≤ v z - v a := by
+  have hm : MonotoneOn (fun r => v r - g r) (Icc a z) := by
+    apply monotoneOn_of_deriv_nonneg (convex_Icc _ _) (hv.sub hg)
+    · intro r hr
+      rw [interior_Icc] at hr
+      exact ((hdv r hr).sub (hdg r hr)).differentiableAt.differentiableWithinAt
+    · intro r hr
+      rw [interior_Icc] at hr
+      change 0 ≤ deriv (v - g) r
+      rw [((hdv r hr).sub (hdg r hr)).deriv]
+      exact sub_nonneg.mpr ((le_abs_self _).trans (hb r hr))
+  have hp : MonotoneOn (fun r => v r + g r) (Icc a z) := by
+    apply monotoneOn_of_deriv_nonneg (convex_Icc _ _) (hv.add hg)
+    · intro r hr
+      rw [interior_Icc] at hr
+      exact ((hdv r hr).add (hdg r hr)).differentiableAt.differentiableWithinAt
+    · intro r hr
+      rw [interior_Icc] at hr
+      change 0 ≤ deriv (v + g) r
+      rw [((hdv r hr).add (hdg r hr)).deriv]
+      have := (abs_le.mp (hb r hr)).1
+      linarith
+  have h1 := hm (left_mem_Icc.mpr haz) (right_mem_Icc.mpr haz) haz
+  have h2 := hp (left_mem_Icc.mpr haz) (right_mem_Icc.mpr haz) haz
+  exact abs_le.mpr ⟨by dsimp at h2; linarith, by dsimp at h1; linarith⟩
+
 end Poincare.MovingLimitLeibniz
