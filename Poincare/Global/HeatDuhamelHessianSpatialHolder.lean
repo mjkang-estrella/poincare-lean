@@ -317,4 +317,27 @@ theorem far_time_power_integral_le {α ρ t : ℝ}
     intro hz
     exact (not_le.mpr hρ2) hz.1
 
+/-- Both observation points can use the same cancellation constant. -/
+theorem hessian_heatSolution_eq_common_cancelled_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x z : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) z =
+      ∫ y : E, (f (x - y) - f x) • Hess t (y + (z - x)) := by
+  have hi : Integrable (fun y : E => f y • Hess t (z - y)) :=
+    integrable_data_smul_hessian_sub ht hf hM z
+  have hc : Integrable (fun y : E => f x • Hess t (z - y)) :=
+    ((integrable_hessian ht).comp_sub_left z).smul (f x)
+  have hz : (∫ y : E, Hess t (z - y)) = 0 := by
+    rw [integral_sub_left_eq_self, integral_hessian_eq_zero ht]
+  have he : (∫ y : E, (f y - f x) • Hess t (z - y)) =
+      fderiv ℝ (fderiv ℝ (heatSolution t f)) z := by
+    simp_rw [sub_smul]
+    rw [integral_sub hi hc, integral_smul, hz, smul_zero, sub_zero,
+      hessian_heatSolution_eq_integral ht hf hM]
+  rw [← he]
+  have hchange := integral_sub_left_eq_self
+    (fun y : E => (f y - f x) • Hess t (z - y)) volume x
+  have halg (y : E) : z - (x - y) = y + (z - x) := by abel
+  simpa only [halg] using hchange.symm
+
 end Poincare.HeatDuhamelHessianSpatialHolder
