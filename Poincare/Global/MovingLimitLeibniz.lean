@@ -226,4 +226,45 @@ theorem abs_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
     rw [hxid, hyid]
     nlinarith [hm]
 
+/-- The same bound survives clipping at zero, from either side of the base point. -/
+theorem abs_clipped_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
+    (hy : y ≠ 0) :
+    |(max x 0)^β - (max y 0)^β| ≤ |y|^(β-1) * |x-y| := by
+  have hb : 0 ≤ |y|^(β-1) := Real.rpow_nonneg (abs_nonneg _) _
+  rcases lt_or_gt_of_ne hy with hyneg | hypos
+  · rw [max_eq_right hyneg.le, Real.zero_rpow hβ.ne', sub_zero,
+      abs_of_nonneg (Real.rpow_nonneg (le_max_right x 0) _), abs_of_neg hyneg]
+    by_cases hx : x ≤ 0
+    · simp only [max_eq_right hx, Real.zero_rpow hβ.ne']
+      exact mul_nonneg (Real.rpow_nonneg (neg_nonneg.mpr hyneg.le) _) (abs_nonneg _)
+    have hxpos : 0 < x := lt_of_not_ge hx
+    rw [max_eq_left hxpos.le, abs_of_pos (sub_pos.mpr (hyneg.trans hxpos))]
+    rcases le_total x (-y) with hxy | hyx
+    · have hp := Real.rpow_le_rpow hxpos.le hxy hβ.le
+      have he : (-y)^β = (-y) * (-y)^(β-1) := by
+        rw [Real.rpow_sub_one (neg_ne_zero.mpr hy)]
+        field_simp
+      rw [he] at hp
+      have hq := mul_nonneg hxpos.le (Real.rpow_nonneg (neg_nonneg.mpr hyneg.le) (β-1))
+      nlinarith
+    · have hp := Real.rpow_le_rpow_of_nonpos (neg_pos.mpr hyneg) hyx (sub_nonpos.mpr hβ1)
+      have he : x^β = x * x^(β-1) := by
+        rw [Real.rpow_sub_one hxpos.ne']
+        field_simp
+      rw [he]
+      have hq := mul_le_mul_of_nonneg_left hp hxpos.le
+      have hz := mul_nonneg (neg_nonneg.mpr hyneg.le)
+        (Real.rpow_nonneg (neg_nonneg.mpr hyneg.le) (β-1))
+      nlinarith
+  · rw [max_eq_left hypos.le, abs_of_pos hypos]
+    have hh := abs_rpow_sub_le hβ hβ1 (le_max_right x 0) hypos
+    apply hh.trans
+    apply mul_le_mul_of_nonneg_left _ (Real.rpow_nonneg hypos.le _)
+    by_cases hx : 0 ≤ x
+    · rw [max_eq_left hx]
+    · have hx' : x < 0 := lt_of_not_ge hx
+      rw [max_eq_right hx'.le, zero_sub, abs_neg, abs_of_pos hypos,
+        abs_of_neg (sub_neg.mpr (hx'.trans hypos))]
+      linarith
+
 end Poincare.MovingLimitLeibniz
