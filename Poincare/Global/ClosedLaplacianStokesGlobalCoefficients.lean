@@ -137,4 +137,41 @@ theorem fderiv_chartWeight
     (hweight.hasFDerivAt.hasLineDerivAt v)).symm
   simpa only [zero_smul, add_zero, mul_assoc, mul_left_comm] using heq
 
+/-- Differentiating the inverse identity gives the full inverse-matrix derivative. -/
+theorem deriv_matrix_inv_entry {A : ℝ → Matrix (Fin n) (Fin n) ℝ} {t : ℝ}
+    (hA : ∀ i j, DifferentiableAt ℝ (fun s ↦ A s i j) t)
+    (hdet : (A t).det ≠ 0) (i j : Fin n) :
+    deriv (fun s ↦ (A s)⁻¹ i j) t =
+      -(∑ k, ∑ l, (A t)⁻¹ i k * deriv (fun s ↦ A s k l) t * (A t)⁻¹ l j) := by
+  classical
+  let B : Matrix (Fin n) (Fin n) ℝ := (A t)⁻¹
+  let D : Matrix (Fin n) (Fin n) ℝ := fun k l ↦ deriv (fun s ↦ A s k l) t
+  let Q : Matrix (Fin n) (Fin n) ℝ := fun k l ↦ deriv (fun s ↦ (A s)⁻¹ k l) t
+  have hB (k l : Fin n) : DifferentiableAt ℝ (fun s ↦ (A s)⁻¹ k l) t :=
+    differentiableAt_matrix_inv_entry_of_entries hA hdet k l
+  have hlocal : ∀ᶠ s in 𝓝 t, (A s).det ≠ 0 :=
+    (differentiableAt_matrix_det_of_entries hA).continuousAt.eventually_ne hdet
+  have hprod : Q * A t + B * D = 0 := by
+    ext k l
+    have hd := HasDerivAt.fun_sum (u := Finset.univ)
+      (fun m _ ↦ (hB k m).hasDerivAt.mul (hA m l).hasDerivAt)
+    have heq : (fun s ↦ ∑ m, (A s)⁻¹ k m * A s m l) =ᶠ[𝓝 t]
+        (fun _ ↦ (1 : Matrix (Fin n) (Fin n) ℝ) k l) := by
+      filter_upwards [hlocal] with s hs
+      exact congrArg (fun T : Matrix (Fin n) (Fin n) ℝ ↦ T k l)
+        (Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hs))
+    have hzero := (hd.congr_of_eventuallyEq heq.symm).unique (hasDerivAt_const t _)
+    simpa only [Matrix.add_apply, Matrix.mul_apply, Matrix.zero_apply,
+      ← Finset.sum_add_distrib, Q, B, D] using hzero
+  have hab : A t * B = 1 := Matrix.mul_nonsing_inv _ (isUnit_iff_ne_zero.mpr hdet)
+  have hq : Q = -(B * D * B) := by
+    have hh := congrArg (fun T : Matrix (Fin n) (Fin n) ℝ ↦ T * B) hprod
+    dsimp only at hh
+    rw [add_mul, Matrix.mul_assoc, hab, mul_one, zero_mul] at hh
+    exact eq_neg_of_add_eq_zero_left hh
+  have hentry := congrArg (fun T : Matrix (Fin n) (Fin n) ℝ ↦ T i j) hq
+  simp only [Matrix.neg_apply, Matrix.mul_apply, Finset.sum_mul, Q, B, D] at hentry
+  rw [Finset.sum_comm] at hentry
+  exact hentry
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
