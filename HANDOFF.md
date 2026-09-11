@@ -2,6 +2,30 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+## 2026-09-11 Worker Duhamel heat equation: boundary and interior integral proved
+
+Branch `worker/heat-duhamel-heat-equation`, base `c165951b`, proof head
+`28e88eb4`. The single new `Global/HeatDuhamelHeatEquation.lean` contains
+11 separately committed theorems: the exact Hessian-trace identity, actual
+Hessian/Laplacian time integrability, the Duhamel Laplacian interchange,
+the positive-time integrand derivative, Gaussian rescaling and joint
+zero-time continuity, the diagonal boundary limit, identification of the
+integrated time derivative, and zero initial value.
+
+The focused source check, empty token scan, whitespace check, and exact
+foundational-dependency checks for all 12 declarations pass. The frozen
+`duhamel_solves_heat_equation` remains unproved and undeclared. Its exact
+remaining goal is the moving-limit time derivative on `Icc 0 T`, including
+the terminal left derivative. The blocked report records the full frozen
+probe, the resisting domination shape, failed compiler output and proof
+diff in `harness/reports/heat-duhamel-heat-equation_blocked.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/HeatDuhamelHeatEquation.lean`.
+Then reproduce the remaining-goal snippet from the report before adding the
+right-sided Leibniz argument.
+
+
 
 ## 2026-09-10 Worker Duhamel Hessian differentiation: exact K2 proved
 
