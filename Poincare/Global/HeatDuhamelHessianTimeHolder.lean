@@ -453,4 +453,33 @@ theorem weighted_hessian_time_difference {α a b : ℝ}
         intervalIntegral.integral_const, smul_eq_mul]
       ring
 
+/-- The far-time fourth-order power integrates to the half Hölder exponent. -/
+theorem far_time_deriv_power_integral_le {α τ t : ℝ}
+    (hα1 : α < 1) (hτ : 0 < τ) (ht : τ ≤ t) :
+    τ * (∫ s in (0 : ℝ)..(t - τ), (t - s) ^ (α / 2 - 2)) ≤
+      (2 / (2 - α)) * τ ^ (α / 2) := by
+  have hq : α / 2 - 2 + 1 < 0 := by linarith
+  rw [intervalIntegral.integral_comp_sub_left
+    (fun r : ℝ => r ^ (α / 2 - 2)) t, sub_sub_cancel, sub_zero]
+  rw [integral_rpow (Or.inr ⟨by linarith, ?_⟩)]
+  · calc
+      τ * ((t ^ (α / 2 - 2 + 1) - τ ^ (α / 2 - 2 + 1)) / (α / 2 - 2 + 1)) ≤
+          τ * (-τ ^ (α / 2 - 2 + 1) / (α / 2 - 2 + 1)) := by
+        apply mul_le_mul_of_nonneg_left _ hτ.le
+        simp only [div_eq_mul_inv]
+        apply mul_le_mul_of_nonpos_right _ (inv_nonpos.mpr hq.le)
+        have hnn := Real.rpow_nonneg (hτ.le.trans ht) (α / 2 - 2 + 1)
+        simp only [div_eq_mul_inv] at hnn
+        linarith only [hnn]
+      _ = (2 / (2 - α)) * τ ^ (α / 2) := by
+        rw [show α / 2 - 2 + 1 = α / 2 - 1 by ring, Real.rpow_sub hτ, Real.rpow_one]
+        field_simp [hτ.ne', show 2 - α ≠ 0 by linarith, show α / 2 - 1 ≠ 0 by linarith]
+        ring_nf
+        all_goals
+          have hi := mul_inv_cancel₀ (show -2 + α ≠ 0 by linarith)
+          nlinarith only [hi]
+  · rw [uIcc_of_le ht]
+    intro hz
+    exact (not_le.mpr hτ) hz.1
+
 end Poincare.HeatDuhamelHessianTimeHolder
