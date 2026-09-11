@@ -178,4 +178,20 @@ theorem integrable_weighted_third {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
   simp_rw [weighted_third_sq_smul (Real.sqrt t) ha]
   exact (integrable_weighted_third_one hα hα1).const_mul _
 
+/-- Exact scaling of the third spatial derivative moment. -/
+theorem weighted_third_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+    (∫ x : E, ‖Third t x‖ * ‖x‖ ^ α) =
+      t ^ (α / 2 - 3 / 2) * (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α) := by
+  have h := weighted_third_integral_sq (Real.sqrt t) (Real.sqrt_pos.2 ht) α
+  rw [Real.sq_sqrt ht.le] at h
+  rw [h]
+  congr 1
+  have hp : (Real.sqrt t) ^ 3 = t ^ ((3 : ℝ) / 2) := by
+    rw [Real.sqrt_eq_rpow, ← Real.rpow_mul_natCast ht.le]
+    congr 1
+    norm_num
+  rw [hp, Real.sqrt_eq_rpow, ← Real.rpow_mul ht.le, Real.rpow_sub ht]
+  rw [show (1 / 2 : ℝ) * α = α / 2 by ring]
+  ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
