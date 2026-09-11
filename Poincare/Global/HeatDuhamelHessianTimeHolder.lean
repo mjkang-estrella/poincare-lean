@@ -200,4 +200,21 @@ theorem weighted_hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x
   ring
 
 
+/-- The Jacobian cancels the spatial normalization in the weighted integral. -/
+theorem weighted_hessian_time_deriv_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+    (∫ x : E, ‖DtHess (a ^ 2) x‖ * ‖x‖ ^ α) =
+      ((a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  have hchange := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => ‖DtHess (a ^ 2) y‖ * ‖y‖ ^ α) a (hR := ha.le)
+  apply mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne'))
+  calc
+    (a ^ 3)⁻¹ * (∫ x : E, ‖DtHess (a ^ 2) x‖ * ‖x‖ ^ α) =
+        ∫ x : E, ‖DtHess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α := by
+      simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin, smul_eq_mul] using hchange.symm
+    _ = ((a ^ 3)⁻¹ * (a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+      simp_rw [weighted_hessian_time_deriv_sq_smul a ha]
+      rw [integral_const_mul]
+    _ = (a ^ 3)⁻¹ * (((a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α)) := by ring
+
+
 end Poincare.HeatDuhamelHessianTimeHolder
