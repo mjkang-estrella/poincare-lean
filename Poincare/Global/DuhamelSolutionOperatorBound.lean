@@ -363,4 +363,75 @@ theorem norm_integral_inverse_sqrt_le {F : Type*} [NormedAddCommGroup F]
     _ = 2*A*(Real.sqrt b - Real.sqrt a) := by ring
     _ ≤ 2*A*Real.sqrt (b-a) := mul_le_mul_of_nonneg_left hs (by positivity)
 
+/-- Reversed time separates a forcing increment from a short gradient tail. -/
+theorem duhamel_gradient_time_holder_of_le {α T s t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hT1 : T ≤ 1)
+    (hs : s ∈ Icc 0 T) (ht : t ∈ Icc 0 T) (hst : s ≤ t)
+    (hM : 0 ≤ M) (hK : 0 ≤ K) {f : ℝ × E → ℝ}
+    (hf : ContinuousOn f (cylinder T))
+    (hfM : ∀ r ∈ Icc 0 T, ∀ y : E, |f (r,y)| ≤ M)
+    (hfK : HasHolderBound α (cylinder T) f K) (x : E) :
+    let u : ℝ → E → ℝ := fun r z =>
+      ∫ v in (0 : ℝ)..r, heatSolution (r-v) (fun y => f (v,y)) z
+    ‖fderiv ℝ (u t) x - fderiv ℝ (u s) x‖ ≤
+      2 * (∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖) * (M+K) * (t-s)^(α/2) := by
+  dsimp only
+  rw [duhamel_gradient_reversed ht hf hfM, duhamel_gradient_reversed hs hf hfM]
+  let J := ∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖
+  have hJ : 0 ≤ J := integral_nonneg (fun _ => norm_nonneg _)
+  let v : ℝ → ℝ → E →L[ℝ] ℝ := fun a r =>
+    fderiv ℝ (heatSolution r (fun y => f (a-r,y))) x
+  have hi (a : ℝ) (ha : a ∈ Icc 0 T) : IntervalIntegrable (v a) volume 0 a := by
+    have h := (intervalIntegrable_gradient_heatSolution_time ha hf hfM x).comp_sub_left a
+    simpa only [v, sub_zero, sub_self, sub_sub_cancel] using h.symm
+  have hsub0 : uIcc (0 : ℝ) s ⊆ uIcc 0 t := by
+    simpa only [uIcc_of_le hs.1, uIcc_of_le ht.1] using Icc_subset_Icc le_rfl hst
+  have hsub1 : uIcc s t ⊆ uIcc 0 t := by
+    simpa only [uIcc_of_le hst, uIcc_of_le ht.1] using Icc_subset_Icc hs.1 le_rfl
+  have hit0 := (hi t ht).mono_set hsub0
+  have hit1 := (hi t ht).mono_set hsub1
+  have hc (a : ℝ) (ha : a ∈ Icc 0 T) (r : ℝ) (hr : r ∈ Icc 0 a) :
+      Continuous (fun y : E => f (a-r,y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨⟨by linarith [hr.2], by linarith [hr.1, ha.2]⟩, mem_univ y⟩)
+  have hδ : 0 ≤ t-s := sub_nonneg.mpr hst
+  have hb0 : ‖∫ r in (0 : ℝ)..s, v t r - v s r‖ ≤
+      2 * (K * (t-s)^(α/2) * J) * Real.sqrt s := by
+    simpa only [sub_zero] using norm_integral_inverse_sqrt_le
+      (a := 0) (b := s) le_rfl hs.1 (by positivity : 0 ≤ K*(t-s)^(α/2)*J)
+      (g := fun r => v t r - v s r) (by
+        intro r hr
+        have hrt : r ∈ Icc 0 t := ⟨hr.1.le, hr.2.le.trans hst⟩
+        have hrs : r ∈ Icc 0 s := ⟨hr.1.le, hr.2.le⟩
+        apply gradient_heatSolution_sub_bound hr.1 (hc t ht r hrt).aestronglyMeasurable
+          (hc s hs r hrs).aestronglyMeasurable
+          (fun y => hfM (t-r) ⟨by linarith [hrt.2], by linarith [hrt.1, ht.2]⟩ y)
+          (fun y => hfM (s-r) ⟨by linarith [hrs.2], by linarith [hrs.1, hs.2]⟩ y)
+        intro y
+        have h := hfK (t-r,y) ⟨⟨by linarith [hrt.2], by linarith [hrt.1, ht.2]⟩, mem_univ y⟩
+          (s-r,y) ⟨⟨by linarith [hrs.2], by linarith [hrs.1, hs.2]⟩, mem_univ y⟩
+        simpa [parabolicDist, sub_sub_sub_cancel_right, abs_of_nonneg (sub_nonneg.mpr hst),
+          Real.sqrt_eq_rpow, ← Real.rpow_mul (sub_nonneg.mpr hst), mul_comm, div_eq_mul_inv] using h)
+  have hb1 : ‖∫ r in s..t, v t r‖ ≤ 2*(M*J)*Real.sqrt (t-s) := by
+    apply norm_integral_inverse_sqrt_le hs.1 hst (by positivity)
+    intro r hr
+    have hrt : r ∈ Icc 0 t := ⟨hs.1.trans hr.1.le, hr.2.le⟩
+    exact norm_gradient_heatSolution_le (lt_of_le_of_lt hs.1 hr.1)
+      (hc t ht r hrt).aestronglyMeasurable
+      (fun y => hfM (t-r) ⟨by linarith [hrt.2], by linarith [hrt.1, ht.2]⟩ y) x
+  have hδ1 : t-s ≤ 1 := by linarith [ht.2, hs.1]
+  have hpow : Real.sqrt (t-s) ≤ (t-s)^(α/2) := by
+    rw [Real.sqrt_eq_rpow]
+    exact Real.rpow_le_rpow_of_exponent_ge' hδ hδ1 (by linarith) (by linarith)
+  change ‖(∫ r in (0 : ℝ)..t, v t r) - ∫ r in (0 : ℝ)..s, v s r‖ ≤ _
+  rw [← intervalIntegral.integral_add_adjacent_intervals hit0 hit1,
+    add_sub_right_comm, ← intervalIntegral.integral_sub hit0 (hi s hs)]
+  calc
+    _ ≤ ‖∫ r in (0 : ℝ)..s, v t r - v s r‖ + ‖∫ r in s..t, v t r‖ := norm_add_le _ _
+    _ ≤ 2*(K*(t-s)^(α/2)*J)*Real.sqrt s + 2*(M*J)*Real.sqrt (t-s) := add_le_add hb0 hb1
+    _ ≤ 2*(K*(t-s)^(α/2)*J) + 2*(M*J)*(t-s)^(α/2) :=
+      add_le_add (mul_le_of_le_one_right (by positivity) (Real.sqrt_le_one.mpr (hs.2.trans hT1)))
+        (mul_le_mul_of_nonneg_left hpow (by positivity))
+    _ = 2*J*(M+K)*(t-s)^(α/2) := by ring
+
 end Poincare.DuhamelSolutionOperatorBound
