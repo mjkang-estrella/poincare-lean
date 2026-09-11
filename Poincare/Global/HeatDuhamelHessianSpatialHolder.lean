@@ -263,4 +263,22 @@ theorem near_hessian_difference_le {α K a t : ℝ}
         (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hJ)
           (div_nonneg (by norm_num) hα.le)) hK0)
 
+/-- The spatial Hölder estimate for the actual Duhamel Hessian when the near interval is all of time. -/
+theorem duhamel_hessian_spatial_holder_of_time_le_dist_sq {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T) (hK0 : 0 ≤ K)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x z : E) (hscale : t ≤ ‖x - z‖ ^ 2) :
+    let u : E → ℝ := fun x => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) x
+    ‖fderiv ℝ (fderiv ℝ u) x - fderiv ℝ (fderiv ℝ u) z‖ ≤
+      (2 * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * ‖x - z‖ ^ α := by
+  dsimp only
+  rw [hessian_duhamel_eq_integral hα hα1 ht hf hM hK x,
+    hessian_duhamel_eq_integral hα hα1 ht hf hM hK z]
+  exact near_hessian_difference_le hα hα1 hK0 ht.1
+    (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht.2⟩) x z (by simpa using hscale)
+
 end Poincare.HeatDuhamelHessianSpatialHolder
