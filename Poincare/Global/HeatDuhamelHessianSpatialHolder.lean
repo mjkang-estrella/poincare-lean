@@ -538,4 +538,37 @@ theorem weighted_hessian_translation_far {α t : ℝ}
       rw [show α / 2 + -(3 / 2 : ℝ) = α / 2 - 3 / 2 by ring]
       ring
 
+/-- The far-time spatial heat Hessian increment is linear in the observation distance. -/
+theorem norm_heat_hessian_difference_far_le {α t M K : ℝ}
+    (hα : 0 ≤ α) (hα1 : α ≤ 1) (ht : 0 < t) (hK0 : 0 ≤ K)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume) (hM : ∀ y, ‖f y‖ ≤ M)
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α)
+    (x z : E) (hscale : ‖x - z‖ ^ 2 ≤ t) :
+    ‖fderiv ℝ (fderiv ℝ (heatSolution t f)) x -
+      fderiv ℝ (fderiv ℝ (heatSolution t f)) z‖ ≤
+      ((∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖)) *
+        K * ‖x - z‖ * t ^ (α / 2 - 3 / 2) := by
+  rw [hessian_heatSolution_difference_eq_integral ht hf hM x z]
+  have hi := (weighted_hessian_translation hα hα1 ht (z - x)).1.const_mul K
+  have hb (y : E) : ‖(f (x - y) - f x) • (Hess t y - Hess t (y + (z - x)))‖ ≤
+      K * (‖Hess t (y + (z - x)) - Hess t y‖ * ‖y‖ ^ α) := by
+    have hd : ‖f (x - y) - f x‖ ≤ K * ‖y‖ ^ α := by
+      have he : x - y - x = -y := by abel
+      simpa only [he, norm_neg, Real.norm_eq_abs] using hK (x - y) x
+    calc
+      _ ≤ ‖f (x - y) - f x‖ * ‖Hess t y - Hess t (y + (z - x))‖ :=
+        norm_real_smul_continuousLinearMap_two_le _ _
+      _ ≤ (K * ‖y‖ ^ α) * ‖Hess t y - Hess t (y + (z - x))‖ :=
+        mul_le_mul_of_nonneg_right hd (norm_nonneg _)
+      _ = _ := by rw [norm_sub_rev (Hess t y)]; ring
+  calc
+    _ ≤ ∫ y : E, K * (‖Hess t (y + (z - x)) - Hess t y‖ * ‖y‖ ^ α) :=
+      norm_integral_le_of_norm_le hi (Filter.Eventually.of_forall hb)
+    _ = K * (∫ y : E, ‖Hess t (y + (z - x)) - Hess t y‖ * ‖y‖ ^ α) := integral_const_mul _ _
+    _ ≤ K * (‖z - x‖ * t ^ (α / 2 - 3 / 2) *
+        ((∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖))) :=
+      mul_le_mul_of_nonneg_left (weighted_hessian_translation_far hα hα1 ht (z - x)
+        (by simpa only [norm_sub_rev z x] using hscale)) hK0
+    _ = _ := by rw [norm_sub_rev z x]; ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
