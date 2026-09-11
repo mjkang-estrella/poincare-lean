@@ -290,4 +290,79 @@ theorem christoffelClosedOp_coord
   dsimp
   ring
 
+section Three
+variable {M₃ : Type u} [TopologicalSpace M₃] [T2Space M₃] [CompactSpace M₃]
+  [ConnectedSpace M₃] [MeasurableSpace M₃] [BorelSpace M₃]
+  [ChartedSpace (ClosedSmoothModel 3) M₃]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ M₃]
+local notation "I₃" => closedSmoothModelWithCorners 3
+local notation "E₃" => ClosedSmoothModel 3
+
+/-- The intrinsic Hessian entries in the inverse-chart frame have the standard
+coordinate second-derivative and Christoffel formula. -/
+theorem hessianAt_eq_coordinate_hessian
+    (g : ClosedSmoothRiemannianMetric 3 M₃) (p : M₃)
+    (f : M₃ → ℝ) (hs : tsupport f ⊆ (extChartAt I₃ p).source)
+    (hf : ContMDiff I₃ 𝓘(ℝ) 2 f)
+    {z : E₃} (hz : z ∈ (extChartAt I₃ p).target) (i j : Fin 3) :
+    let G := inverseChartPullbackGramMatrixField g p
+    let a : E₃ → Matrix (Fin 3) (Fin 3) ℝ := fun y ↦ (G y)⁻¹
+    let Γ := fun y k i j ↦ (1 / 2 : ℝ) * ∑ m, a y k m *
+      (coordinateDirectionalDerivative (fun q ↦ G q j m) i y +
+       coordinateDirectionalDerivative (fun q ↦ G q i m) j y -
+       coordinateDirectionalDerivative (fun q ↦ G q i j) m y)
+    let u := ClosedLaplacianStokesProducer.coordinateScalar (n := 3) p f
+    let D := mfderivWithin 𝓘(ℝ, E₃) I₃ (extChartAt I₃ p).symm (range I₃) z
+    g.hessianAt f ((extChartAt I₃ p).symm z)
+      (D (EuclideanSpace.basisFun (Fin 3) ℝ i))
+      (D (EuclideanSpace.basisFun (Fin 3) ℝ j)) =
+      coordinateSecondDerivative u i j z - ∑ k, Γ z k i j * coordinateDirectionalDerivative u k z := by
+  intro G a Γ u D
+  let H := CovariantDerivative.chartMetric g.inner p
+  let b := (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  have hd : DifferentiableAt ℝ H z :=
+    (deTurckChartMetric_contDiffAt_two_of_mem_target g p hz).differentiableAt two_ne_zero
+  have hpos (v : E₃) (hv : v ≠ 0) : 0 < H z v v :=
+    CovariantDerivative.chartMetric_posDef g.inner (fun y v hv ↦ g.inner_pos y hv) p
+      (isInvertible_mfderivWithin_extChartAt_symm hz) hv
+  have hnondeg : (RicciFlow.RicciFlow.metricBilin (H z)).Nondegenerate := by
+    constructor
+    · intro v hv
+      by_contra h
+      exact (ne_of_gt (hpos v h)) (hv v)
+    · intro v hv
+      by_contra h
+      exact (ne_of_gt (hpos v h)) (hv v)
+  have hinv : (H z).IsInvertible := CovariantDerivative.metric_isInvertible H
+    (RicciFlow.RicciFlow.metricBilin (H z)) hnondeg (fun _ _ ↦ rfl)
+  have hcoord (k : Fin 3) : b.coord k
+      (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) = Γ z k i j :=
+    christoffelClosedOp_coord H z hinv
+      (CovariantDerivative.chartMetric_symm g.inner (fun y v w ↦ g.inner_symm y v w) p z) hd k i j
+  have hu : ContDiff ℝ 2 u := ClosedLaplacianStokesProducer.coordinateScalar_contDiff_two p f hs hf
+  have hsecond : coordinateSecondDerivative u i j z = fderiv ℝ (fderiv ℝ u) z (b i) (b j) := by
+    have hdu := (hu.fderiv_right (m := 1) (by norm_num)).differentiable one_ne_zero z
+    have h := hdu.hasFDerivAt.clm_apply (hasFDerivAt_const (b j) z)
+    have hh := congrArg (fun L : E₃ →L[ℝ] ℝ ↦ L (b i)) h.fderiv
+    simpa [coordinateSecondDerivative, coordinateDirectionalDerivative, b,
+      EuclideanSpace.basisFun_apply] using hh
+  have hcorrect : fderiv ℝ u z
+      (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) =
+      ∑ k, Γ z k i j * coordinateDirectionalDerivative u k z := by
+    have h := congrArg (fderiv ℝ u z)
+      (b.sum_repr (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)))
+    have hexp : fderiv ℝ u z (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) =
+        ∑ k, b.coord k (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) *
+          fderiv ℝ u z (b k) := by
+      simpa only [map_sum, map_smul, smul_eq_mul, Module.Basis.coord_apply] using h.symm
+    simp_rw [hcoord] at hexp
+    simpa only [b, OrthonormalBasis.coe_toBasis, EuclideanSpace.basisFun_apply,
+      coordinateDirectionalDerivative] using hexp
+  rw [hessianAt_eq_chart_derivatives g p f hs hf hz]
+  change fderiv ℝ (fderiv ℝ u) z (b i) (b j) - fderiv ℝ u z
+    (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) = _
+  rw [← hsecond, hcorrect]
+
+end Three
+
 end Poincare.IntrinsicLaplacianCoordinateForm
