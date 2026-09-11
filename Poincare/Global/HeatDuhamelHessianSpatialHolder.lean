@@ -507,4 +507,35 @@ theorem weighted_hessian_translation {α t : ℝ}
           (integral_nonneg (fun y => norm_nonneg _))))
     _ = C := by simp
 
+/-- Beyond the spatial time scale, both translation terms have the same time power. -/
+theorem weighted_hessian_translation_far {α t : ℝ}
+    (hα : 0 ≤ α) (hα1 : α ≤ 1) (ht : 0 < t) (w : E) (hw : ‖w‖ ^ 2 ≤ t) :
+    (∫ y : E, ‖Hess t (y + w) - Hess t y‖ * ‖y‖ ^ α) ≤
+      ‖w‖ * t ^ (α / 2 - 3 / 2) *
+        ((∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖)) := by
+  have hp : ‖w‖ ^ α ≤ t ^ (α / 2) := by
+    have h := Real.rpow_le_rpow (sq_nonneg ‖w‖) hw (show 0 ≤ α / 2 by linarith)
+    rw [← Real.rpow_natCast_mul (norm_nonneg w)] at h
+    have he : (2 : ℝ) * (α / 2) = α := by ring
+    simpa only [Nat.cast_ofNat, he] using h
+  have hzero : (∫ y : E, ‖Third t y‖) =
+      t ^ (-(3 / 2 : ℝ)) * (∫ y : E, ‖Third 1 y‖) := by
+    simpa using weighted_third_integral ht 0
+  have hJ : 0 ≤ ∫ y : E, ‖Third 1 y‖ := integral_nonneg (fun y => norm_nonneg _)
+  calc
+    _ ≤ ‖w‖ * ((∫ y : E, ‖Third t y‖ * ‖y‖ ^ α) +
+        ‖w‖ ^ α * (∫ y : E, ‖Third t y‖)) := (weighted_hessian_translation hα hα1 ht w).2
+    _ = ‖w‖ * (t ^ (α / 2 - 3 / 2) * (∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) +
+        ‖w‖ ^ α * (t ^ (-(3 / 2 : ℝ)) * (∫ y : E, ‖Third 1 y‖))) := by
+      rw [weighted_third_integral ht, hzero]
+    _ ≤ ‖w‖ * (t ^ (α / 2 - 3 / 2) * (∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) +
+        t ^ (α / 2) * (t ^ (-(3 / 2 : ℝ)) * (∫ y : E, ‖Third 1 y‖))) := by
+      apply mul_le_mul_of_nonneg_left _ (norm_nonneg w)
+      exact add_le_add le_rfl (mul_le_mul_of_nonneg_right hp
+        (mul_nonneg (Real.rpow_nonneg ht.le _) hJ))
+    _ = _ := by
+      rw [← mul_assoc (t ^ (α / 2)), ← Real.rpow_add ht]
+      rw [show α / 2 + -(3 / 2 : ℝ) = α / 2 - 3 / 2 by ring]
+      ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
