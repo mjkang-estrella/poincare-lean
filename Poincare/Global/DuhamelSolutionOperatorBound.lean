@@ -63,4 +63,46 @@ theorem duhamel_time_derivative_bound :
       add_le_add (hfM t ht x) (mul_le_mul_of_nonneg_left hb (by norm_num))
     _ = M + 3 * C * K * t ^ (α / 2) := by ring
 
+/-- Tracing the parabolic Hessian increment controls the time derivative increment. -/
+theorem duhamel_time_derivative_holder :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    HasHolderBound α (cylinder T) f K →
+    let u : ℝ → E → ℝ := fun t x =>
+      ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+    HasHolderBound α (cylinder T) (fun p => f p + (Δ (u p.1)) p.2)
+      (K + 3 * C * K) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ :=
+    DuhamelParabolicHolderSeminorm.duhamel_hessian_parabolic_holder α hα hα1
+  refine ⟨C, hC, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  have hspace : ∀ t ∈ Icc 0 T, ∀ x y : E,
+      |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α := by
+    intro t ht x y
+    simpa [parabolicDist, Real.norm_eq_abs] using
+      hfK (t,x) ⟨ht, mem_univ x⟩ (t,y) ⟨ht, mem_univ y⟩
+  dsimp only
+  intro p hp q hq
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  have hb := hCb T hT hT1 f M K hM hK hf hfM hspace p hp q hq
+  have htrace : |(Δ (u p.1)) p.2 - (Δ (u q.1)) q.2| ≤
+      3 * ‖fderiv ℝ (fderiv ℝ (u p.1)) p.2 -
+        fderiv ℝ (fderiv ℝ (u q.1)) q.2‖ := by
+    simpa only [laplacian_eq_hessian_trace, ContinuousLinearMap.sub_apply,
+      Finset.sum_sub_distrib] using abs_trace_le
+        (fderiv ℝ (fderiv ℝ (u p.1)) p.2 - fderiv ℝ (fderiv ℝ (u q.1)) q.2)
+  change ‖(f p + (Δ (u p.1)) p.2) - (f q + (Δ (u q.1)) q.2)‖ ≤ _
+  rw [add_sub_add_comm]
+  calc
+    _ ≤ ‖f p - f q‖ + ‖(Δ (u p.1)) p.2 - (Δ (u q.1)) q.2‖ := norm_add_le _ _
+    _ ≤ K * parabolicDist p q ^ α + 3 * (C * K * parabolicDist p q ^ α) :=
+      add_le_add (hfK p hp q hq)
+        (htrace.trans (mul_le_mul_of_nonneg_left hb (by norm_num)))
+    _ = (K + 3 * C * K) * parabolicDist p q ^ α := by ring
+
 end Poincare.DuhamelSolutionOperatorBound
