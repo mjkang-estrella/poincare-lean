@@ -12,7 +12,9 @@
     "Poincare.Global.HamiltonReactionCoreReduced",
     "Poincare.Global.HamiltonReactionCoreFinal",
     "Poincare.Global.HamiltonMeanFloorFromEnergyDomination",
-    "Poincare.Global.HamiltonInitialPinchingReactionCoreReduction"
+    "Poincare.Global.HamiltonInitialPinchingReactionCoreReduction",
+    "Poincare.Global.IntrinsicLaplacianCoordinateForm",
+    "Poincare.Global.HamiltonStokesFreeReactionCore"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -46,6 +48,10 @@
     {
       "url": "harness/reports/hamilton-initial-pinching-reaction-core_done.md",
       "role": "Sufficient core adapter: initial pointwise scalar positivity and an initial Ricci eigenvalue floor in (1/6, 1/3], with the explicit residual estimates (scalar-to-mean comparison with coefficient gap, V<=6E, scalar Stokes), reconstruct the final reaction core."
+    },
+    {
+      "url": "harness/reports/intrinsic-laplacian-coordinate-form_done.md",
+      "role": "Unconditional closed Laplacian Stokes for every C2 scalar on a closed smooth 3-manifold, so the Stokes premise of the reaction cores is discharged."
     }
   ],
   "nodes": [
@@ -66,6 +72,31 @@
       "depends_on": [
         "hamilton-front-inputs"
       ]
+    },
+    {
+      "id": "hamilton-reaction-core-stokes-free",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core_stokes_free",
+      "description": "Universal existence of the Stokes-free initial-pinching reaction core: forward normalized Ricci flow with joint C3 entries and compact jet-continuous realization, positive initial scalar, initial eigenvalue floor in (1/6,1/3], admissible delta, scalar-to-mean comparison with coefficient gap, and variance-energy domination V <= 6E. The Stokes premise is now a theorem and has been removed. Open.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.HamiltonStokesFreeReactionCore.UniversalHamiltonReactionCoreInitialPinchingNSStatement",
+      "expected_statement_sha256": "c0b3c5a52b5b91488d438d1ad084abcab247fcddb9e43948d0e36b84914b44c3"
+    },
+    {
+      "id": "stokes-free-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.HamiltonStokesFreeReactionCore.universalHamiltonConvergence_of_NS",
+      "description": "Checked: the Stokes premise is automatic for the scalar curvature of the flow, so the Stokes-free core yields the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core-stokes-free"
+      ]
+    },
+    {
+      "id": "closed-laplacian-stokes",
+      "kind": "checked",
+      "declaration": "Poincare.IntrinsicLaplacianCoordinateForm.closedLaplacianStokes_of_contMDiff_two",
+      "description": "Checked unconditionally: on a closed smooth three-manifold the Laplacian of any C2 scalar is integrable with zero integral.",
+      "depends_on": []
     },
     {
       "id": "hamilton-reaction-core-initial-pinching",
@@ -213,7 +244,8 @@
         "reaction-core-reduced-reduction",
         "reaction-core-final-reduction",
         "reaction-core-energy-reduction",
-        "reaction-core-initial-pinching-reduction"
+        "reaction-core-initial-pinching-reduction",
+        "stokes-free-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"

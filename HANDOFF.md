@@ -513,6 +513,24 @@ zero initial value. The constant-coefficient solution is therefore fully
 characterized; `duhamel-solution-operator-bound` assembles the remaining
 component estimates into the bounded operator of step L3.
 
+`intrinsic-laplacian-coordinate-form` landed both parts
+(`Global/IntrinsicLaplacianCoordinateForm.lean`, gate PASS, 20 declarations):
+the intrinsic gradient's chart pullback is the coordinate metric gradient,
+the covariant Hessian equals `∂ᵢ∂ⱼφ̂ − Γᵏᵢⱼ ∂ₖφ̂` after removing the auxiliary
+cutoff, the metric trace is the inverse-Gram contraction in the chart frame,
+hence the coordinate form of the intrinsic Laplacian; then the
+restricted-domain record constructor and, unconditionally,
+`closedLaplacianStokes_of_contMDiff_two`: on a closed smooth three-manifold
+the Laplacian of any `C²` scalar is integrable with zero integral, plus the
+forward-flow corollary for scalar curvature.
+
+Consequently the orchestrator landed `Global/HamiltonStokesFreeReactionCore.lean`
+(gate PASS): the Stokes clause is deleted from the initial-pinching core,
+since it follows from the flow and joint `C³` clauses already present.
+Pinned as `hamilton-reaction-core-stokes-free`. **Two residual estimates now
+remain in front of the Hamilton endpoint**: the scalar-to-mean comparison
+with its coefficient gap, and the variance-energy domination `V ≤ 6E`.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

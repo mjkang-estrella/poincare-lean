@@ -70,12 +70,14 @@ import Poincare.Global.HamiltonReactionCoreFinal
 import Poincare.Global.HamiltonReactionCoreReduced
 import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HamiltonReactionEndpoint
+import Poincare.Global.HamiltonStokesFreeReactionCore
 import Poincare.Global.HeatDuhamelHeatEquation
 import Poincare.Global.HeatDuhamelHessianDifferentiation
 import Poincare.Global.HeatDuhamelHessianSpatialHolder
 import Poincare.Global.HeatDuhamelHessianTimeHolder
 import Poincare.Global.HeatDuhamelSpatialHolderHessian
 import Poincare.Global.HeatKernelHessianMoments
+import Poincare.Global.IntrinsicLaplacianCoordinateForm
 import Poincare.Global.MovingLimitLeibniz
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
