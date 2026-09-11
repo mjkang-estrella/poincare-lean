@@ -194,4 +194,18 @@ theorem weighted_third_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
   rw [show (1 / 2 : ℝ) * α = α / 2 by ring]
   ring
 
+/-- The third Gaussian moment has a positive constant independent of time. -/
+theorem third_moment_bound :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 0 < t →
+      Integrable (fun x : E => ‖Third t x‖ * ‖x‖ ^ α) ∧
+      (∫ x : E, ‖Third t x‖ * ‖x‖ ^ α) ≤ C * t ^ (α / 2 - 3 / 2) := by
+  intro α hα hα1
+  refine ⟨max 1 (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α),
+    lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro t ht
+  refine ⟨integrable_weighted_third hα.le hα1.le ht, ?_⟩
+  rw [weighted_third_integral ht, mul_comm (t ^ (α / 2 - 3 / 2))]
+  exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg ht.le _)
+
 end Poincare.HeatDuhamelHessianSpatialHolder
