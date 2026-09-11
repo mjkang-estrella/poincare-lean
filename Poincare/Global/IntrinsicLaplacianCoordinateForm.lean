@@ -468,6 +468,7 @@ theorem restrictedChart_density_integrable
       (inverseChartPullbackVolumeDensity_pos g p (Set.inclusion hsub z)).le)).mp hfinite
   exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
 
+omit [T2Space M] [IsManifold I ∞ M] in
 /-- Zero extension does not enlarge the coordinate support beyond the image
 of the manifold support. -/
 theorem coordinateScalar_tsupport_subset_image [CompactSpace M]
