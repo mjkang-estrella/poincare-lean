@@ -41,4 +41,32 @@ theorem openChart_measure (g : ClosedSmoothRiemannianMetric n M) (p : M) :
       exact (extChartAt I p).left_inv hx
   simpa only [hrange] using inverseChart_hausdorffChartDensityEquality g p
 
+/-- Finite Riemannian volume gives integrability of the density on the full chart. -/
+theorem openChart_density_integrable (g : ClosedSmoothRiemannianMetric n M) (p : M) :
+    Integrable (inverseChartPullbackVolumeDensity g p)
+      (coordinateLebesgueMeasure (extChartAt I p).target) := by
+  have hcont := continuous_inverseChartPullbackVolumeDensity g p
+  have hscale : 0 < (rawHausdorffLebesgueScale n : ℝ) := by
+    exact_mod_cast Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+      (Measure.hausdorffMeasure (Module.finrank ℝ E : ℝ)) (volume : Measure E)
+  have hmeas := (inverseExtendedChartParametrization_isEmbedding (n := n) p).continuous.measurable
+  have hmass := congrArg (fun μ : Measure M ↦ μ univ) (openChart_measure g p)
+  dsimp only at hmass
+  rw [Measure.map_apply hmeas MeasurableSet.univ, preimage_univ,
+    Measure.restrict_apply MeasurableSet.univ, univ_inter] at hmass
+  have hfinite :
+      ∫⁻ z, ENNReal.ofReal ((rawHausdorffLebesgueScale n : ℝ) *
+        inverseChartPullbackVolumeDensity g p z)
+        ∂(coordinateLebesgueMeasure (extChartAt I p).target) ≠ (⊤ : ℝ≥0∞) := by
+    rw [rawHausdorffCoordinateDensityMeasure, withDensity_apply _ MeasurableSet.univ,
+      Measure.restrict_univ] at hmass
+    rw [hmass]
+    letI := volumeMeasure_isFiniteMeasure g
+    exact measure_ne_top (volumeMeasure g) _
+  have hint := (lintegral_ofReal_ne_top_iff_integrable
+    (hcont.const_mul (rawHausdorffLebesgueScale n : ℝ)).aestronglyMeasurable
+    (Eventually.of_forall fun z ↦ mul_nonneg hscale.le
+      (inverseChartPullbackVolumeDensity_pos g p z).le)).mp hfinite
+  exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
+
 end Poincare.ClosedLaplacianStokesProducer
