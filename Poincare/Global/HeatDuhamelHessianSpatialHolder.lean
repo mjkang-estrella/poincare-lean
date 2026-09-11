@@ -359,4 +359,30 @@ theorem hessian_heatSolution_difference_eq_integral {t M : ℝ} (ht : 0 < t)
   simp_rw [smul_sub]
   rw [integral_sub (integrable_cancelled_hessian ht hf hM x) hij]
 
+/-- A translated Hessian difference is bounded by the third derivative along its segment. -/
+theorem norm_hessian_translation_le (t : ℝ) (y w : E) :
+    ‖Hess t (y + w) - Hess t y‖ ≤
+      ∫ r in (0 : ℝ)..1, ‖Third t (y + r • w)‖ * ‖w‖ := by
+  have hH : ContDiff ℝ 1 (Hess t) :=
+    ((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 2) (by norm_num)).fderiv_right (m := 1) (by norm_num)
+  have hD : Continuous (Third t) := (hH.fderiv_right (m := 0) (by norm_num)).continuous
+  have hline (r : ℝ) : HasDerivAt (fun q : ℝ => y + q • w) w r := by
+    simpa only [one_smul] using ((hasDerivAt_id r).smul_const w).const_add y
+  have hd (r : ℝ) : HasDerivAt (fun q : ℝ => Hess t (y + q • w))
+      (Third t (y + r • w) w) r :=
+    ((hH.differentiable (by norm_num) (y + r • w)).hasFDerivAt).comp_hasDerivAt r (hline r)
+  have hbound : Continuous (fun r : ℝ => ‖Third t (y + r • w)‖ * ‖w‖) :=
+    (hD.comp (continuous_const.add (continuous_id.smul continuous_const))).norm.mul continuous_const
+  have hi : IntervalIntegrable (fun r : ℝ => Third t (y + r • w) w) volume 0 1 :=
+    ((hD.comp (continuous_const.add (continuous_id.smul continuous_const))).clm_apply
+      continuous_const).intervalIntegrable 0 1
+  have he := intervalIntegral.integral_eq_sub_of_hasDerivAt (a := (0 : ℝ)) (b := 1)
+    (fun r _ => hd r) hi
+  simp only [one_smul, zero_smul, add_zero] at he
+  rw [← he]
+  apply intervalIntegral.norm_integral_le_of_norm_le zero_le_one
+    (Filter.Eventually.of_forall fun r _ => ContinuousLinearMap.le_opNorm _ _)
+    (hbound.intervalIntegrable 0 1)
+
 end Poincare.HeatDuhamelHessianSpatialHolder
