@@ -17,6 +17,23 @@ This worker result awaits independent review and is not merged or accepted.
 
 First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/DuhamelParabolicHolderSeminorm.lean`.
 
+## 2026-09-11 Worker moving-limit Leibniz: both parts proved
+
+Branch `worker/moving-limit-leibniz-rule`, base `bec9c447`, verified proof
+head `3e8cb854`. The single new `Global/MovingLimitLeibniz.lean` contains
+12 theorems. The general Leibniz rule uses a diagonal power bound on the
+parameter derivative. Clipping below the diagonal gives integrable secants
+from both sides, so the proof includes the initial and terminal endpoints.
+The final theorem copies the frozen `duhamel_solves_heat_equation` statement
+verbatim and supplies all hypotheses from the landed heat results.
+
+The focused Lean check, token scan, whitespace check, exact frozen-type
+assignment and all 12 dependency checks pass. Every theorem has exactly
+`[propext, Classical.choice, Quot.sound]`. Complete probe output and the
+proof diff are in `harness/reports/moving-limit-leibniz-rule_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/MovingLimitLeibniz.lean`.
 
 ## 2026-09-11 Worker Duhamel heat equation: boundary and interior integral proved
 
