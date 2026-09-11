@@ -996,7 +996,8 @@ zero_rpow
 ## Compiler attempt history
 
 Every focused Lean attempt and dependency probe is recorded below, including
-failures. `EXIT` is the actual Lean subprocess exit code. Successful checks
+failures. Whitespace-only compiler-output lines are normalized to empty lines
+so the report passes the whitespace gate. `EXIT` is the actual Lean subprocess exit code. Successful checks
 with no compiler output show only that exit code. Repeated console capture
 files are omitted because they duplicate the individual logs verbatim.
 Probe snapshots were kept under `/private/tmp/heat-time-evidence` during the
@@ -1071,9 +1072,9 @@ Snapshot SHA-256: `939f136b8d31c745238a07532feb8c47227f302ea93ca68f186deb3e4ed5c
 ```text
 Try this:
   [apply] ring_nf
-  
+
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
-    
+
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
 Poincare/Global/HeatDuhamelHessianTimeHolder.lean:23:52: error: unsolved goals
 case h.h
@@ -2732,9 +2733,9 @@ a✝ : t ^ (α * 2⁻¹ - 2 + 1) - τ ^ (α * 2⁻¹ - 2 + 1) < -τ ^ (α * 2⁻
 failed
 Try this:
   [apply] ring_nf
-  
+
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
-    
+
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
 Poincare/Global/HeatDuhamelHessianTimeHolder.lean:473:41: error: unsolved goals
 α τ t : ℝ
@@ -2767,9 +2768,9 @@ a✝ : t ^ (α * 2⁻¹ - 2 + 1) - τ ^ (α * 2⁻¹ - 2 + 1) < -τ ^ (α * 2⁻
 failed
 Try this:
   [apply] ring_nf
-  
+
   The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
-    
+
   Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
 Poincare/Global/HeatDuhamelHessianTimeHolder.lean:473:41: error: unsolved goals
 α τ t : ℝ
