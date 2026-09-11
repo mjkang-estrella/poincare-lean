@@ -118,4 +118,8 @@ theorem norm_ddu_le (g : Graph (E := E) α T) : ‖g.ddu‖ ≤ ‖g‖ := by
   have := norm_nonneg g.ddu
   linarith
 
+theorem sup_u_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.u p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.u p).trans (norm_u_le g)
+
 end Poincare.ParabolicSolutionGraph
