@@ -134,4 +134,38 @@ theorem duhamel_gradient_bound {T t M : ℝ} (ht : t ∈ Icc 0 T)
   rw [he] at hb
   simpa [A, Real.sqrt_eq_rpow, mul_assoc, mul_left_comm, mul_comm] using hb
 
+/-- A uniform time-derivative bound controls all value increments and the initial trace. -/
+theorem duhamel_value_time_estimates :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+    let u : ℝ → E → ℝ := fun t x =>
+      ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+    (∀ t ∈ Icc 0 T, ∀ x : E, |u t x| ≤ t * (M + 3 * C * K * T ^ (α/2))) ∧
+    (∀ t ∈ Icc 0 T, ∀ s ∈ Icc 0 T, ∀ x : E,
+      |u t x - u s x| ≤ (M + 3 * C * K * T ^ (α/2)) * |t-s|) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_time_derivative_bound α hα hα1
+  refine ⟨C, hC, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  have hd := hCb T hT hT1 f M K hM hK hf hfM hfK
+  have hb (r : ℝ) (hr : r ∈ Icc 0 T) (x : E) :
+      ‖f (r,x) + (Δ (u r)) x‖ ≤ M + 3 * C * K * T ^ (α/2) := by
+    apply (hd r hr x).2.trans
+    exact add_le_add le_rfl (mul_le_mul_of_nonneg_left
+      (Real.rpow_le_rpow hr.1 hr.2 (by linarith)) (by positivity))
+  have hi (t : ℝ) (ht : t ∈ Icc 0 T) (s : ℝ) (hs : s ∈ Icc 0 T) (x : E) :
+      |u t x - u s x| ≤ (M + 3 * C * K * T ^ (α/2)) * |t-s| := by
+    simpa only [Real.norm_eq_abs] using
+      Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+        (fun r hr => (hd r hr x).1) (fun r hr => hb r hr x) (convex_Icc (0 : ℝ) T) hs ht
+  refine ⟨?_, hi⟩
+  intro t ht x
+  simpa [u, abs_of_nonneg ht.1, mul_comm] using hi t ht 0 ⟨le_rfl, hT.le⟩ x
+
 end Poincare.DuhamelSolutionOperatorBound
