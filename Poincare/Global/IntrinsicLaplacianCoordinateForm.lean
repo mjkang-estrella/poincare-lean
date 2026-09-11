@@ -703,6 +703,19 @@ theorem closedLaplacianStokes_of_contMDiff_two
     have hval : a i z = A i z := (hae i z (image_mono subset_closure hz)).self_of_nhds
     rw [hval]
 
+/-- Joint C³ metric entries supply the scalar C² input along a forward
+normalized Ricci flow. -/
+theorem closedLaplacianStokes_scalarAt_of_normalizedRicciFlow
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M₃)
+    (hFlow : ∀ t ∈ Ici (0 : ℝ), ∀ x : M₃, IsClosedNormalizedRicciFlowSolutionAt gt t x)
+    (hJoint : ∀ t x, MetricEntriesJointContDiffAt gt t x 3) :
+    ∀ t ∈ Ici (0 : ℝ), ClosedLaplacianStokes (gt t) (fun x ↦ (gt t).scalarAt x) := by
+  intro t ht
+  apply closedLaplacianStokes_of_contMDiff_two
+  intro x
+  exact scalarAt_contMDiffAt_two_of_normalizedRicciFlow (hFlow t ht)
+    (fun y ↦ timeVariationExtContMDiffAt_two_of_metricEntriesJointContDiffAt_three (hJoint t y)) x
+
 end StokesThree
 
 end Poincare.IntrinsicLaplacianCoordinateForm
