@@ -398,4 +398,40 @@ theorem laplacianAt_eq_christoffelCoordinateLaplacian
 
 end Three
 
+/-- Restricting the genuine chart domain restricts the Riemannian chart measure. -/
+theorem restrictedChart_measure
+    [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) {U : Set E}
+    (hU : MeasurableSet U) (hsub : U ⊆ (extChartAt I p).target) :
+    HausdorffChartDensityEquality g U
+      (fun z ↦ inverseExtendedChartParametrization (n := n) p (Set.inclusion hsub z))
+      ((extChartAt I p).symm '' U)
+      (fun z ↦ inverseChartPullbackVolumeDensity g p (Set.inclusion hsub z)) := by
+  let ψ := inverseExtendedChartParametrization (n := n) p
+  let ι := Set.inclusion hsub
+  let μ := rawHausdorffCoordinateDensityMeasure (extChartAt I p).target
+    (inverseChartPullbackVolumeDensity g p)
+  have hψ : MeasurableEmbedding ψ :=
+    (inverseExtendedChartParametrization_isEmbedding (n := n) p).measurableEmbedding
+      (by rw [range_inverseExtendedChartParametrization]; exact (isOpen_extChartAt_source p).measurableSet)
+  have hmap := map_rawHausdorffCoordinateDensityMeasure_inclusion
+    (isOpen_extChartAt_target p).measurableSet hU hsub (inverseChartPullbackVolumeDensity g p)
+  have hres := hψ.restrict_map μ (ψ '' range ι)
+  rw [preimage_image_eq _ hψ.injective] at hres
+  have himage : ψ '' range ι = (extChartAt I p).symm '' U := by
+    ext x
+    constructor
+    · rintro ⟨q, ⟨z, rfl⟩, rfl⟩
+      exact ⟨z, z.2, rfl⟩
+    · rintro ⟨z, hz, rfl⟩
+      exact ⟨ι ⟨z, hz⟩, ⟨⟨z, hz⟩, rfl⟩, rfl⟩
+  have hsource : ψ '' range ι ⊆ (extChartAt I p).source := by
+    rintro x ⟨z, _, rfl⟩
+    exact (extChartAt I p).map_target z.2
+  change Measure.map (ψ ∘ ι) _ = _
+  rw [← Measure.map_map hψ.measurable (measurable_inclusion hsub), hmap, ← hres]
+  have hfull : Measure.map ψ μ = (volumeMeasure g).restrict (extChartAt I p).source :=
+    ClosedLaplacianStokesProducer.openChart_measure g p
+  rw [hfull, Measure.restrict_restrict_of_subset hsource, himage]
+
 end Poincare.IntrinsicLaplacianCoordinateForm
