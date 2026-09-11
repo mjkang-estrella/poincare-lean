@@ -269,4 +269,40 @@ theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
   rw [abs_of_nonneg (sub_nonneg.mpr h12)]
   convert h using 1 <;> ring
 
+/-- An interval ending before the observation time obeys the same short-interval bound. -/
+theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (hab : a ≤ b) (hbt : b ≤ t)
+    {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a b, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ s in a..b, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      (K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)) * (2 / α) * (b - a) ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hA : 0 ≤ A := mul_nonneg hK0 (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+  have hi : IntervalIntegrable (fun s : ℝ => A * (b - s) ^ (α / 2 - 1)) volume a b := by
+    have h := ((intervalIntegral.intervalIntegrable_rpow'
+      (a := (0 : ℝ)) (b := b - a) (r := α / 2 - 1) (by linarith)).comp_sub_left b).symm
+    simp only [sub_zero, sub_sub_cancel] at h
+    exact h.const_mul A
+  have hb : ‖∫ s in Ioo a b, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      ∫ s in Ioo a b, A * (b - s) ^ (α / 2 - 1) := by
+    apply norm_integral_le_of_norm_le
+      ((intervalIntegrable_iff_integrableOn_Ioo_of_le hab).mp hi)
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact (norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (by linarith [hs.2] : 0 < t - s) (hK s hs) x).trans
+      (mul_le_mul_of_nonneg_left
+        (Real.rpow_le_rpow_of_nonpos (sub_pos.mpr hs.2) (by linarith) (by linarith)) hA)
+  rw [restrict_Ioo_eq_restrict_Ioc, ← intervalIntegral.integral_of_le hab,
+    ← intervalIntegral.integral_of_le hab] at hb
+  refine hb.trans_eq ?_
+  have he := intervalIntegral.integral_comp_add_right (a := (0 : ℝ)) (b := b - a)
+    (fun s : ℝ => A * (b - s) ^ (α / 2 - 1)) a
+  simp only [zero_add, sub_add_cancel] at he
+  have hs (s : ℝ) : b - (s + a) = b - a - s := by ring
+  simp only [hs] at he
+  rw [← he, integral_hessian_majorant hα]
+
 end Poincare.HeatDuhamelHessianTimeHolder
