@@ -42,4 +42,46 @@ theorem exists_cutoff_of_isCompact {K U : Set E} (hK : IsCompact K)
   · intro z hz
     exact hone.filter_mono (nhds_le_nhdsSet hz)
 
+variable {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ConnectedSpace M]
+  [MeasurableSpace M] [BorelSpace M]
+  [ChartedSpace (ClosedSmoothModel n) M]
+  [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+local notation "I" => closedSmoothModelWithCorners n
+
+/-- The genuine weight and inverse metric extend smoothly with local agreement on a compact set. -/
+theorem exists_global_coefficients_on_compact
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) {K : Set E}
+    (hK : IsCompact K) (hKU : K ⊆ (extChartAt I p).target) :
+    ∃ (w : E → ℝ) (a : E → Fin n → Fin n → ℝ),
+      ContDiff ℝ ∞ w ∧ (∀ i j, ContDiff ℝ ∞ (fun z ↦ a z i j)) ∧
+      (∀ z ∈ K, w =ᶠ[𝓝 z] (fun y ↦ (rawHausdorffLebesgueScale n : ℝ) *
+        VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p y))) ∧
+      (∀ z ∈ K, a =ᶠ[𝓝 z] (fun y ↦ ((inverseChartPullbackGramMatrixField g p y)⁻¹ :
+        Matrix (Fin n) (Fin n) ℝ))) ∧
+      (∀ z : (extChartAt I p).target, (z : E) ∈ K →
+        w z = (rawHausdorffLebesgueScale n : ℝ) * inverseChartPullbackVolumeDensity g p z) := by
+  obtain ⟨χ, hχ, hχU, hone, _⟩ := exists_cutoff_of_isCompact hK
+    (isOpen_extChartAt_target p) hKU
+  let W := fun y ↦ (rawHausdorffLebesgueScale n : ℝ) *
+    VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p y)
+  let A := fun y ↦ (inverseChartPullbackGramMatrixField g p y)⁻¹
+  refine ⟨fun y ↦ χ y * W y, fun y i j ↦ χ y * A y i j, ?_, ?_, ?_, ?_, ?_⟩
+  · exact contDiff_cutoff_mul (isOpen_extChartAt_target p) hχ hχU
+      (ClosedLaplacianStokesProducer.chartWeight_regular g p).1
+  · intro i j
+    exact contDiff_cutoff_mul (isOpen_extChartAt_target p) hχ hχU
+      (ClosedLaplacianStokesProducer.chartInverseMetric_contDiffOn g p i j)
+  · intro z hz
+    filter_upwards [hone z hz] with y hy
+    simp only [hy, one_mul, W]
+  · intro z hz
+    filter_upwards [hone z hz] with y hy
+    funext i j
+    change χ y * A y i j = A y i j
+    rw [hy, one_mul]
+  · intro z hz
+    change χ z * W z = _
+    rw [(hone z hz).self_of_nhds, one_mul]
+    exact (ClosedLaplacianStokesProducer.chartWeight_regular g p).2 z
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
