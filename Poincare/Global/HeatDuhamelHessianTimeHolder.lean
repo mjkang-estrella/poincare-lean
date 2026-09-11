@@ -190,4 +190,14 @@ theorem hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
   simp only [inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
   field_simp
 
+/-- Pointwise parabolic dilation including the radial weight. -/
+theorem weighted_hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+    ‖DtHess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α =
+      ((a ^ 3)⁻¹ * (a ^ 4)⁻¹ * a ^ α) * (‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  rw [hessian_time_deriv_sq_smul a ha x,
+    norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * (a ^ 4)⁻¹ by positivity) (DtHess 1 x),
+    norm_smul_of_nonneg ha.le, Real.mul_rpow ha.le (norm_nonneg x)]
+  ring
+
+
 end Poincare.HeatDuhamelHessianTimeHolder
