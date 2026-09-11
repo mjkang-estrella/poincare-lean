@@ -650,4 +650,59 @@ def geometry_of_shrunk_coordinate_coefficients
     intrinsicCoordinateLaplacian_eq := fun i z ↦ hcoord i (Set.inclusion (hsub i) z) z.2
     localizedLaplacian_aestronglyMeasurable := fun i ↦ (hcontinuous i).aestronglyMeasurable }
 
+section StokesThree
+variable {M₃ : Type u} [TopologicalSpace M₃] [T2Space M₃] [CompactSpace M₃]
+  [ConnectedSpace M₃] [MeasurableSpace M₃] [BorelSpace M₃]
+  [ChartedSpace (ClosedSmoothModel 3) M₃]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ M₃]
+local notation "I₃" => closedSmoothModelWithCorners 3
+local notation "E₃" => ClosedSmoothModel 3
+
+/-- On a closed smooth three-manifold the Laplacian of a C² scalar is
+integrable and its integral is zero. -/
+theorem closedLaplacianStokes_of_contMDiff_two
+    (g : ClosedSmoothRiemannianMetric 3 M₃) (f : M₃ → ℝ)
+    (hf : ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 2 f) :
+    ClosedLaplacianStokes g f := by
+  letI : SecondCountableTopology M₃ := ChartedSpace.secondCountable_of_sigmaCompact E₃ M₃
+  let C := compactFiniteExtendedChartCover (n := 3) (M := M₃)
+  obtain ⟨V, ρ, w, a, _hcover, hV, hVs, _hcompact, hρ, hw, ha, hwe, hae⟩ :=
+    ClosedLaplacianStokesGlobalCoefficients.exists_shrunk_cover_global_coefficients g C
+  let G := fun i ↦ inverseChartPullbackGramMatrixField g (C.anchor i)
+  let A : Fin C.chartCount → E₃ → Matrix (Fin 3) (Fin 3) ℝ := fun i z ↦ (G i z)⁻¹
+  let Γ := fun i z j k l ↦ (1 / 2 : ℝ) * ∑ m, A i z j m *
+    (coordinateDirectionalDerivative (fun y ↦ G i y l m) k z +
+     coordinateDirectionalDerivative (fun y ↦ G i y k m) l z -
+     coordinateDirectionalDerivative (fun y ↦ G i y k l) m z)
+  have hle1 : (1 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    change ((1 : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)
+    exact WithTop.coe_le_coe.mpr le_top
+  have hle2 : (2 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    change ((2 : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)
+    exact WithTop.coe_le_coe.mpr le_top
+  apply (geometry_of_shrunk_coordinate_coefficients g f hf C V hV hVs ρ hρ w a Γ
+    (fun i ↦ (hw i).of_le hle1) (fun i j k ↦ (ha i j k).of_le hle1) ?_ ?_ ?_).closedLaplacianStokes
+  · intro i z hz
+    rw [(hwe i z (image_mono subset_closure hz)).self_of_nhds]
+    exact (ClosedLaplacianStokesProducer.chartWeight_regular g (C.anchor i)).2 z
+  · intro i z hz j
+    exact ClosedLaplacianStokesGlobalCoefficients.density_inverseMetric_compatibility_of_eventuallyEq
+      g (C.anchor i) (w i) (a i) z z.2
+      (hwe i z (image_mono subset_closure hz)) (hae i z (image_mono subset_closure hz)) j
+  · intro i z hz
+    have hlocal : ContMDiff I₃ 𝓘(ℝ) 2 (fun x ↦ ρ i x * f x) :=
+      ((ρ i).contMDiff.of_le hle2).mul hf
+    have h := laplacianAt_eq_christoffelCoordinateLaplacian g (C.anchor i) (V i) (hVs i)
+      (fun x ↦ ρ i x * f x) (tsupport_mul_subset_left.trans (hρ i)) hlocal z hz
+    change g.laplacianAt (fun x ↦ ρ i x * f x)
+      (inverseExtendedChartParametrization (n := 3) (C.anchor i) z) =
+      christoffelCoordinateLaplacian (A i) (Γ i)
+        (ClosedLaplacianStokesProducer.coordinateScalar (n := 3) (C.anchor i) (fun x ↦ ρ i x * f x)) z at h
+    rw [h]
+    unfold christoffelCoordinateLaplacian
+    have hval : a i z = A i z := (hae i z (image_mono subset_closure hz)).self_of_nhds
+    rw [hval]
+
+end StokesThree
+
 end Poincare.IntrinsicLaplacianCoordinateForm
