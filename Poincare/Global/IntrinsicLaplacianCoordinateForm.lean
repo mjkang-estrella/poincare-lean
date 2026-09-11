@@ -32,4 +32,27 @@ theorem laplacianAt_eq_inverseGram_hessian
   simp only [map_smul, smul_eq_mul]
   rfl
 
+/-- In the inverse-chart frame the Laplacian uses the genuine inverse Gram field. -/
+theorem laplacianAt_eq_chart_hessian
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ) (p : M)
+    (z : (extChartAt I p).target) :
+    g.laplacianAt f (inverseExtendedChartParametrization (n := n) p z) =
+      ∑ i, ∑ j, (inverseChartPullbackGramMatrixField g p z)⁻¹ i j *
+        g.hessianAt f ((extChartAt I p).symm z)
+          (mfderivWithin 𝓘(ℝ, E) I (extChartAt I p).symm (range I) z
+            (EuclideanSpace.basisFun (Fin n) ℝ i))
+          (mfderivWithin 𝓘(ℝ, E) I (extChartAt I p).symm (range I) z
+            (EuclideanSpace.basisFun (Fin n) ℝ j)) := by
+  let b := ClosedSmoothRiemannianMetric.inverseChartEuclideanTangentBasisAt p z.2
+  have hG : g.metricMatrixInBasisAt ((extChartAt I p).symm z) b =
+      inverseChartPullbackGramMatrixField g p z := by
+    ext i j
+    simp only [ClosedSmoothRiemannianMetric.metricMatrixInBasisAt_apply,
+      ClosedSmoothRiemannianMetric.metricBilinAt_apply, b,
+      ClosedSmoothRiemannianMetric.inverseChartEuclideanTangentBasisAt_apply]
+    rfl
+  change g.laplacianAt f ((extChartAt I p).symm z) = _
+  rw [laplacianAt_eq_inverseGram_hessian g f _ b, hG]
+  simp only [b, ClosedSmoothRiemannianMetric.inverseChartEuclideanTangentBasisAt_apply]
+
 end Poincare.IntrinsicLaplacianCoordinateForm
