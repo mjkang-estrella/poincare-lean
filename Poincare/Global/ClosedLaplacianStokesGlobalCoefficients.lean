@@ -198,4 +198,18 @@ theorem fderiv_chartInverseMetric
   simp only [zero_smul, add_zero] at hd
   simpa only [((hG _ _).hasFDerivAt.hasLineDerivAt v).deriv] using hd
 
+/-- The three-dimensional finite contraction behind the divergence identity. -/
+theorem density_inverse_contraction_three
+    (a : Matrix (Fin 3) (Fin 3) ℝ) (ha : a.IsSymm)
+    (D : Fin 3 → Fin 3 → Fin 3 → ℝ) (w : ℝ) (j : Fin 3) :
+    (∑ k, (((1 / 2 : ℝ) * w * (∑ p, ∑ q, a p q * D k q p)) * a k j +
+      w * (-(∑ p, ∑ q, a k p * D k p q * a q j)))) =
+    w * (-(∑ k, ∑ l, a k l * ((1 / 2 : ℝ) *
+      ∑ m, a j m * (D k l m + D l k m - D m k l)))) := by
+  simp only [Fin.sum_univ_three]
+  simp only [ha.apply j 0, ha.apply j 1, ha.apply j 2, show a 1 0 = a 0 1 from ha.apply 0 1,
+      show a 2 0 = a 0 2 from ha.apply 0 2,
+      show a 2 1 = a 1 2 from ha.apply 1 2]
+  ring
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
