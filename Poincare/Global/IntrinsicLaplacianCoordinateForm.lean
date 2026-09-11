@@ -209,4 +209,34 @@ theorem hessianAt_eq_blended_chart_hessian
     χ (innerSL ℝ) g.inner p hone.self_of_nhds]
   exact hresult
 
+/-- The intrinsic Hessian in a genuine chart has the ordinary second derivative
+and the connection of the genuine chart metric. -/
+theorem hessianAt_eq_chart_derivatives
+    [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) (p : M)
+    (f : M → ℝ) (hs : tsupport f ⊆ (extChartAt I p).source)
+    (hf : ContMDiff I 𝓘(ℝ) 2 f)
+    {z : E} (hz : z ∈ (extChartAt I p).target) (v w : E) :
+    let u := ClosedLaplacianStokesProducer.coordinateScalar (n := n) p f
+    let D := mfderivWithin 𝓘(ℝ, E) I (extChartAt I p).symm (range I) z
+    g.hessianAt f ((extChartAt I p).symm z) (D v) (D w) =
+      fderiv ℝ (fderiv ℝ u) z v w - fderiv ℝ u z
+        (RicciFlow.RicciFlow.christoffelClosedOp
+          (CovariantDerivative.chartMetric g.inner p) z v w) := by
+  obtain ⟨χ, hχ, hχsupp, hone, hbounds⟩ :=
+    ClosedLaplacianStokesGlobalCoefficients.exists_cutoff_of_isCompact
+      (isCompact_singleton (x := z)) (isOpen_extChartAt_target p)
+      (singleton_subset_iff.mpr hz)
+  have heq : CovariantDerivative.blendedChartMetric χ (innerSL ℝ) g.inner p =ᶠ[𝓝 z]
+      CovariantDerivative.chartMetric g.inner p := by
+    filter_upwards [hone z (mem_singleton z)] with q hq
+    exact CovariantDerivative.blendedChartMetric_eq_chartMetric_of_eq_one
+      χ (innerSL ℝ) g.inner p hq
+  have h := hessianAt_eq_blended_chart_hessian g p χ hχ hχsupp
+    (fun q ↦ (hbounds q).1) (fun q ↦ (hbounds q).2) hz
+    (hone z (mem_singleton z)) f hs hf v w
+  dsimp only at h ⊢
+  simpa only [RicciFlow.RicciFlow.christoffelClosedOp_apply,
+    CovariantDerivative.christoffelFunctional, heq.self_of_nhds, heq.fderiv_eq] using h
+
 end Poincare.IntrinsicLaplacianCoordinateForm
