@@ -482,4 +482,35 @@ theorem far_time_deriv_power_integral_le {α τ t : ℝ}
     intro hz
     exact (not_le.mpr hτ) hz.1
 
+/-- Cancellation transfers the weighted kernel time increment to Hölder forcing. -/
+theorem norm_cancelled_hessian_time_difference_le {α a b M K : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (hab : a ≤ b) (hK0 : 0 ≤ K)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume) (hM : ∀ y, ‖f y‖ ≤ M)
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ y : E, (f (x - y) - f x) • Hess b y) -
+      (∫ y : E, (f (x - y) - f x) • Hess a y)‖ ≤
+      ((∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * K * (b - a)) * a ^ (α / 2 - 2) := by
+  rw [← integral_sub (integrable_cancelled_hessian (ha.trans_le hab) hf hM x)
+    (integrable_cancelled_hessian ha hf hM x)]
+  simp_rw [← smul_sub]
+  have hi := (weighted_hessian_time_difference hα hα2 ha hab).1.const_mul K
+  have hb (y : E) : ‖(f (x - y) - f x) • (Hess b y - Hess a y)‖ ≤
+      K * (‖Hess b y - Hess a y‖ * ‖y‖ ^ α) := by
+    have hd : ‖f (x - y) - f x‖ ≤ K * ‖y‖ ^ α := by
+      have he : x - y - x = -y := by abel
+      simpa only [he, norm_neg, Real.norm_eq_abs] using hK (x - y) x
+    calc
+      _ ≤ ‖f (x - y) - f x‖ * ‖Hess b y - Hess a y‖ :=
+        norm_real_smul_continuousLinearMap_two_le _ _
+      _ ≤ (K * ‖y‖ ^ α) * ‖Hess b y - Hess a y‖ :=
+        mul_le_mul_of_nonneg_right hd (norm_nonneg _)
+      _ = _ := by ring
+  calc
+    _ ≤ ∫ y : E, K * (‖Hess b y - Hess a y‖ * ‖y‖ ^ α) :=
+      norm_integral_le_of_norm_le hi (Filter.Eventually.of_forall hb)
+    _ = K * (∫ y : E, ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) := integral_const_mul _ _
+    _ ≤ K * ((b - a) * a ^ (α / 2 - 2) * (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α)) :=
+      mul_le_mul_of_nonneg_left (weighted_hessian_time_difference hα hα2 ha hab).2 hK0
+    _ = _ := by ring
+
 end Poincare.HeatDuhamelHessianTimeHolder
