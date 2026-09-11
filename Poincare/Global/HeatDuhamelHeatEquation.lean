@@ -154,4 +154,23 @@ theorem continuousOn_rescaled_heat_integral {T M : ℝ}
         (continuous_const.sub ((Real.continuous_sqrt.comp continuous_fst).smul continuous_const))
     exact continuousOn_const.mul (hf.comp hc.continuousOn (fun p hp => ⟨hp.2, mem_univ _⟩))
 
+/-- Giving the heat convolution its initial value makes it jointly continuous at zero. -/
+theorem continuousOn_heat_integrand_extension {T M : ℝ}
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    ContinuousOn (fun p : ℝ × ℝ => if p.1 = 0 then f (p.2, x)
+      else heatSolution p.1 (fun y => f (p.2, y)) x) (Ici 0 ×ˢ Icc 0 T) := by
+  have hc := (continuousOn_rescaled_heat_integral hf hM x).mono
+    (show Ici (0 : ℝ) ×ˢ Icc 0 T ⊆ univ ×ˢ Icc 0 T from fun p hp => ⟨mem_univ _, hp.2⟩)
+  apply hc.congr
+  intro p hp
+  dsimp only
+  by_cases hz : p.1 = 0
+  · simp [hz, integral_mul_const, integral_heatKernel_eq_one (show (0 : ℝ) < 1 by norm_num)]
+  · rw [if_neg hz]
+    have hpos : 0 < p.1 := lt_of_le_of_ne hp.1 (Ne.symm hz)
+    have he := heatSolution_sq (Real.sqrt p.1) (Real.sqrt_pos.mpr hpos)
+      (fun y => f (p.2, y)) x
+    rwa [Real.sq_sqrt hpos.le] at he
+
 end Poincare.HeatDuhamelHeatEquation
