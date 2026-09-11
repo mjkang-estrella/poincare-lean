@@ -99,4 +99,25 @@ theorem laplacian_duhamel_eq_integral {α T t M K : ℝ}
   intro i _
   exact ⟨(hv _).1.apply_continuousLinearMap _, (hv _).2.apply_continuousLinearMap _⟩
 
+/-- Away from the diagonal, the integrand time derivative is its spatial Laplacian. -/
+theorem hasDerivAt_heat_integrand {T t s M : ℝ} (hs : s ∈ Icc 0 T) (hst : s < t)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ r ∈ Icc 0 T, ∀ y : E, |f (r, y)| ≤ M) (x : E) :
+    HasDerivAt (fun r : ℝ => heatSolution (r - s) (fun y => f (s, y)) x)
+      ((Δ (heatSolution (t - s) (fun y => f (s, y)))) x) t := by
+  have hc : Continuous (fun y : E => f (s, y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hs, mem_univ y⟩)
+  have hb : ∀ y : E, ‖f (s, y)‖ ≤ M := by
+    simpa only [Real.norm_eq_abs] using hM s hs
+  have hd := heatKernel_time_deriv_integral_hasDerivAt (sub_pos.mpr hst)
+    hc.aestronglyMeasurable hb x
+  have hd' : DifferentiableAt ℝ
+      (fun r : ℝ => heatSolution r (fun y => f (s, y)) x) (t - s) := by
+    simpa only [heatSolution_apply_swap] using hd.differentiableAt
+  have hp := hd'.hasDerivAt
+  rw [heatSolution_solves_heatEquation_of_bounded_measurable
+    (sub_pos.mpr hst) hc.aestronglyMeasurable hb x] at hp
+  simpa only [mul_one] using hp.comp t ((hasDerivAt_id t).sub_const s)
+
 end Poincare.HeatDuhamelHeatEquation
