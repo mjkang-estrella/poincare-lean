@@ -456,4 +456,55 @@ theorem integrable_segment_weighted_third {α t : ℝ}
     (add_le_add le_rfl (mul_le_mul_of_nonneg_right hwp
       (integral_nonneg (fun y => norm_nonneg _))))
 
+/-- Integrating the segment estimate gives a weighted translation estimate for the Hessian. -/
+theorem weighted_hessian_translation {α t : ℝ}
+    (hα : 0 ≤ α) (hα1 : α ≤ 1) (ht : 0 < t) (w : E) :
+    Integrable (fun y : E => ‖Hess t (y + w) - Hess t y‖ * ‖y‖ ^ α) ∧
+    (∫ y : E, ‖Hess t (y + w) - Hess t y‖ * ‖y‖ ^ α) ≤
+      ‖w‖ * ((∫ y : E, ‖Third t y‖ * ‖y‖ ^ α) + ‖w‖ ^ α * (∫ y : E, ‖Third t y‖)) := by
+  let G : ℝ × E → ℝ := fun p => ‖Third t (p.2 + p.1 • w)‖ * ‖p.2‖ ^ α
+  let C := (∫ y : E, ‖Third t y‖ * ‖y‖ ^ α) + ‖w‖ ^ α * (∫ y : E, ‖Third t y‖)
+  have hg : Integrable G ((volume.restrict (Icc (0 : ℝ) 1)).prod volume) :=
+    integrable_segment_weighted_third hα hα1 ht w
+  have hiMajor := hg.integral_prod_right.const_mul ‖w‖
+  have hb (y : E) : ‖Hess t (y + w) - Hess t y‖ * ‖y‖ ^ α ≤
+      ‖w‖ * (∫ r in Icc (0 : ℝ) 1, G (r, y)) := by
+    calc
+      _ ≤ (∫ r in (0 : ℝ)..1, ‖Third t (y + r • w)‖ * ‖w‖) * ‖y‖ ^ α :=
+        mul_le_mul_of_nonneg_right (norm_hessian_translation_le t y w)
+          (Real.rpow_nonneg (norm_nonneg _) _)
+      _ = _ := by
+        change _ = ‖w‖ * (∫ r in Icc (0 : ℝ) 1, ‖Third t (y + r • w)‖ * ‖y‖ ^ α)
+        rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le zero_le_one,
+          intervalIntegral.integral_mul_const, intervalIntegral.integral_mul_const]
+        ring
+  have hH : Continuous (Hess t) :=
+    (((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)).continuous
+  have hi : Integrable (fun y : E => ‖Hess t (y + w) - Hess t y‖ * ‖y‖ ^ α) :=
+    hiMajor.mono' (((hH.comp (continuous_id.add continuous_const)).sub hH).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun y => by
+        rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+        exact hb y)
+  refine ⟨hi, (integral_mono hi hiMajor hb).trans ?_⟩
+  rw [integral_const_mul]
+  have hswap : (∫ y : E, ∫ r in Icc (0 : ℝ) 1, G (r, y)) =
+      ∫ r in Icc (0 : ℝ) 1, ∫ y : E, G (r, y) :=
+    (integral_integral_swap hg).symm
+  rw [hswap]
+  apply mul_le_mul_of_nonneg_left _ (norm_nonneg w)
+  calc
+    (∫ r in Icc (0 : ℝ) 1, ∫ y : E, G (r, y)) ≤ ∫ _r in Icc (0 : ℝ) 1, C := by
+      apply integral_mono_ae hg.integral_prod_left (integrable_const C)
+      filter_upwards [ae_restrict_mem measurableSet_Icc] with r hr
+      have hwp : ‖r • w‖ ^ α ≤ ‖w‖ ^ α := by
+        apply Real.rpow_le_rpow (norm_nonneg _) _ hα
+        rw [norm_smul_of_nonneg hr.1]
+        nlinarith [norm_nonneg w, hr.2]
+      exact (weighted_third_translation hα hα1 ht (r • w)).2.trans
+        (add_le_add le_rfl (mul_le_mul_of_nonneg_right hwp
+          (integral_nonneg (fun y => norm_nonneg _))))
+    _ = C := by simp
+
 end Poincare.HeatDuhamelHessianSpatialHolder
