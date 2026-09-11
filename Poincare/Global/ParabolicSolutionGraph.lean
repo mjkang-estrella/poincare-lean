@@ -133,4 +133,11 @@ theorem sup_ut_le (g : Graph (E := E) α T) (p : ℝ × E) :
     ‖g.ut p‖ ≤ ‖g‖ :=
   (ParabolicHolder.norm_le g.ut p).trans (norm_ut_le g)
 
+theorem holder_ut_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.ut p - g.ut q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.ut hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_ut_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
 end Poincare.ParabolicSolutionGraph
