@@ -51,7 +51,7 @@ theorem third_apply {t : ℝ} (ht : t ≠ 0) (x u v w : E) :
     innerSL_apply_apply] at h
   rw [h]
   simp only [heatKernel, real_inner_comm]
-  ring
+  ring_nf
 
 /-- The unit-time third derivative has a cubic Gaussian envelope. -/
 theorem norm_third_one_le (x : E) :
@@ -228,7 +228,6 @@ theorem norm_integral_cancelled_hessian_near_le {α K a t : ℝ}
   rw [he] at hb
   exact hb
 
-set_option maxHeartbeats 800000 in
 /-- The near part of the spatial increment has the required Hölder power. -/
 theorem near_hessian_difference_le {α K a t : ℝ}
     (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (hat : a ≤ t)
@@ -310,7 +309,7 @@ theorem far_time_power_integral_le {α ρ t : ℝ}
         have hden : 1 - α ≠ 0 := by linarith
         have hden' : α / 2 - 3 / 2 + 1 ≠ 0 := hq.ne
         field_simp [hρ.ne', hden, hden', show -1 + α ≠ 0 by linarith]
-        <;> ring_nf
+        ring_nf
         all_goals
           have hi := mul_inv_cancel₀ (show -1 + α ≠ 0 by linarith)
           nlinarith only [hi]
