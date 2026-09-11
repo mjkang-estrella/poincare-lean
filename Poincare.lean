@@ -76,6 +76,7 @@ import Poincare.Global.HeatDuhamelHessianSpatialHolder
 import Poincare.Global.HeatDuhamelHessianTimeHolder
 import Poincare.Global.HeatDuhamelSpatialHolderHessian
 import Poincare.Global.HeatKernelHessianMoments
+import Poincare.Global.MovingLimitLeibniz
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
 import Poincare.Global.ParabolicHolderSpace

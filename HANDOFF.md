@@ -502,6 +502,17 @@ complete; what is left of L3 is the heat equation itself (blocked only on the
 moving-limit Leibniz rule) and the corresponding bounds for `uₜ`, which follow
 from the equation.
 
+`moving-limit-leibniz-rule` landed both parts
+(`Global/MovingLimitLeibniz.lean`, gate PASS, 12 theorems): a general
+Leibniz rule for an integral whose upper limit and integrand both move,
+proved from dominated clipped secants together with the fundamental theorem
+of calculus on a closed interval and a family of fractional-power secant
+estimates, and then the frozen `duhamel_solves_heat_equation` itself, so the
+Duhamel integral provably satisfies `∂ₜu = f + Δu` within the cylinder with
+zero initial value. The constant-coefficient solution is therefore fully
+characterized; `duhamel-solution-operator-bound` assembles the remaining
+component estimates into the bounded operator of step L3.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
