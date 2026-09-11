@@ -65,4 +65,37 @@ theorem hasDerivAt_hessian_time {t : ℝ} (ht : 0 < t) (x : E) :
   filter_upwards [eventually_gt_nhds ht] with r hr
   exact hessian_eq_tensor hr.ne' x
 
+
+local notation "DtHess" => fun (t : ℝ) (x : E) => deriv (fun r : ℝ => Hess r x) t
+
+/-- A quartic Gaussian envelope for the time derivative at unit time. -/
+theorem norm_hessian_time_deriv_one_le (x : E) :
+    ‖DtHess 1 x‖ ≤ heatKernel 1 x * (‖x‖ ^ 4 + ‖x‖ ^ 2 + 2) := by
+  change ‖deriv (fun r : ℝ => Hess r x) 1‖ ≤ _
+  rw [(hasDerivAt_hessian_time zero_lt_one x).deriv]
+  have hI : ‖euclideanForm‖ ≤ 1 := norm_innerSL_le ℝ
+  have hQ : ‖ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)‖ = ‖x‖ ^ 2 := by
+    rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]
+    ring
+  have hk : 0 ≤ heatKernel 1 x := heatKernel_nonneg zero_lt_one x
+  calc
+    _ ≤ ‖(heatKernel 1 x * (‖x‖ ^ 2 / (16 * 1 ^ 4) - 7 / (8 * 1 ^ 3))) •
+        (ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x))‖ +
+      ‖(heatKernel 1 x * (‖x‖ ^ 2 / (8 * 1 ^ 3) - 5 / (4 * 1 ^ 2))) • euclideanForm‖ :=
+      norm_sub_le _ _
+    _ ≤ (heatKernel 1 x * (‖x‖ ^ 2 / 16 + 7 / 8)) * ‖x‖ ^ 2 +
+        (heatKernel 1 x * (‖x‖ ^ 2 / 8 + 5 / 4)) * 1 := by
+      simp only [norm_smul, norm_mul, Real.norm_of_nonneg hk, hQ, one_pow, mul_one]
+      apply add_le_add
+      · gcongr
+        exact (norm_sub_le _ _).trans_eq (by simp [Real.norm_of_nonneg (sq_nonneg ‖x‖)])
+      · calc
+          _ ≤ (heatKernel 1 x * ‖‖x‖ ^ 2 / 8 - 5 / 4‖) * 1 :=
+            mul_le_mul_of_nonneg_left hI (by positivity)
+          _ ≤ _ := by
+            rw [mul_one]
+            apply mul_le_mul_of_nonneg_left _ hk
+            exact (norm_sub_le _ _).trans_eq (by simp [Real.norm_of_nonneg (sq_nonneg ‖x‖)])
+    _ ≤ _ := by nlinarith [mul_nonneg hk (sq_nonneg (‖x‖ ^ 2))]
+
 end Poincare.HeatDuhamelHessianTimeHolder
