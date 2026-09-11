@@ -513,4 +513,68 @@ theorem norm_cancelled_hessian_time_difference_le {α a b M K : ℝ}
       mul_le_mul_of_nonneg_left (weighted_hessian_time_difference hα hα2 ha hab).2 hK0
     _ = _ := by ring
 
+/-- The far part of the Duhamel time increment has the required half Hölder power. -/
+theorem far_hessian_time_difference_le {α T t₁ t₂ M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht₁ : t₁ ∈ Icc 0 T) (ht₂ : t₂ ∈ Icc 0 T)
+    (h12 : t₁ < t₂) (hscale : t₂ - t₁ < t₁) (hK0 : 0 ≤ K)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ s in (0 : ℝ)..(t₁ - (t₂ - t₁)), ∫ y : E,
+        (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y) -
+      (∫ s in (0 : ℝ)..(t₁ - (t₂ - t₁)), ∫ y : E,
+        (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y)‖ ≤
+      ((∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * (2 / (2 - α))) *
+        K * (t₂ - t₁) ^ (α / 2) := by
+  let a := t₁ - (t₂ - t₁)
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  let F := fun r s => ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (r - s) y
+  have ha : 0 < a := sub_pos.mpr hscale
+  have hτ : 0 < t₂ - t₁ := sub_pos.mpr h12
+  have hat : a ≤ t₁ := sub_le_self t₁ hτ.le
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  have hFi (r : ℝ) (hr : r ∈ Icc 0 T) (har : a ≤ r) :
+      IntervalIntegrable (F r) volume 0 a :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ha.le).mpr
+      ((integrableOn_cancelled_hessian_time hα hα1 hr hf hK x).mono_set
+        (Ioo_subset_Ioo le_rfl har))
+  have hip : IntervalIntegrable (fun r : ℝ => r ^ (α / 2 - 2)) volume (t₂ - t₁) t₁ := by
+    apply intervalIntegral.intervalIntegrable_rpow (Or.inr ?_)
+    rw [uIcc_of_le hscale.le]
+    intro hz
+    exact (not_le.mpr hτ) hz.1
+  have hiB : IntervalIntegrable
+      (fun s : ℝ => J * K * (t₂ - t₁) * (t₁ - s) ^ (α / 2 - 2)) volume 0 a := by
+    have h := (hip.comp_sub_left t₁).symm
+    simp only [sub_self] at h
+    exact h.const_mul (J * K * (t₂ - t₁))
+  have hbound : ‖∫ s in (0 : ℝ)..a, F t₂ s - F t₁ s‖ ≤
+      ∫ s in (0 : ℝ)..a, J * K * (t₂ - t₁) * (t₁ - s) ^ (α / 2 - 2) := by
+    apply intervalIntegral.norm_integral_le_of_norm_le ha.le _ hiB
+    refine Filter.Eventually.of_forall fun s hs => ?_
+    have hsT : s ∈ Icc 0 T := ⟨hs.1.le, (hs.2.trans hat).trans ht₁.2⟩
+    have hsτ : t₂ - t₁ ≤ t₁ - s := by dsimp [a] at hs; linarith [hs.2]
+    have hlag : 0 < t₁ - s := hτ.trans_le hsτ
+    have hfc : Continuous (fun y : E => f (s, y)) :=
+      hf.comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hsT, mem_univ y⟩)
+    have hMs : ∀ y : E, ‖f (s, y)‖ ≤ M := by simpa only [Real.norm_eq_abs] using hM s hsT
+    have hd := norm_cancelled_hessian_time_difference_le hα.le (by linarith) hlag
+      (show t₁ - s ≤ t₂ - s by linarith) hK0 hfc.aestronglyMeasurable hMs (hK s hsT) x
+    have he : t₂ - s - (t₁ - s) = t₂ - t₁ := by ring
+    simpa only [he] using hd
+  change ‖(∫ s in (0 : ℝ)..a, F t₂ s) - (∫ s in (0 : ℝ)..a, F t₁ s)‖ ≤ _
+  rw [← intervalIntegral.integral_sub (hFi t₂ ht₂ (hat.trans h12.le)) (hFi t₁ ht₁ hat)]
+  refine hbound.trans ?_
+  rw [intervalIntegral.integral_const_mul]
+  calc
+    (J * K * (t₂ - t₁)) * (∫ s in (0 : ℝ)..a, (t₁ - s) ^ (α / 2 - 2)) =
+      (J * K) * ((t₂ - t₁) * (∫ s in (0 : ℝ)..a, (t₁ - s) ^ (α / 2 - 2))) := by ring
+    _ ≤ (J * K) * ((2 / (2 - α)) * (t₂ - t₁) ^ (α / 2)) :=
+      mul_le_mul_of_nonneg_left (far_time_deriv_power_integral_le hα1 hτ hscale.le)
+        (mul_nonneg hJ hK0)
+    _ = _ := by ring
+
 end Poincare.HeatDuhamelHessianTimeHolder
