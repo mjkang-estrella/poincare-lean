@@ -207,6 +207,7 @@ def ofDerivatives
 
 variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
 
+omit [NormedSpace ℝ E] in
 theorem holder_tendstoUniformly {v : ℕ → Y (E := E) α T F} {w : Y (E := E) α T F}
     (h : Tendsto v atTop (𝓝 w)) : TendstoUniformly (fun n p => v n p) w atTop := by
   apply Metric.tendstoUniformly_iff.2
@@ -292,5 +293,12 @@ theorem isClosed_graphSubmodule :
     exact closed_time_derivative (convex_Icc 0 T)
       (fun n s hs => (hv n).2.2.2 s hs x) (fun s _ => hu.tendsto_at (s, x))
       (ht.comp (fun s : ℝ => (s, x))).tendstoUniformlyOn ht'
+
+instance instCompleteSpace : CompleteSpace (Graph (E := E) α T) := by
+  letI : CompleteSpace ↥(graphSubmodule (E := E) α T) :=
+    isClosed_graphSubmodule.isComplete.completeSpace_coe
+  let e : Graph (E := E) α T ≃ᵢ ↥(graphSubmodule (E := E) α T) :=
+    { graphEquiv with isometry_toFun := fun _ _ => rfl }
+  exact e.completeSpace
 
 end Poincare.ParabolicSolutionGraph
