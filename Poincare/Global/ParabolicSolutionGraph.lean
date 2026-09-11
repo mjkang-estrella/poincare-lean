@@ -144,4 +144,11 @@ theorem sup_du_le (g : Graph (E := E) α T) (p : ℝ × E) :
     ‖g.du p‖ ≤ ‖g‖ :=
   (ParabolicHolder.norm_le g.du p).trans (norm_du_le g)
 
+theorem holder_du_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.du p - g.du q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.du hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_du_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
 end Poincare.ParabolicSolutionGraph
