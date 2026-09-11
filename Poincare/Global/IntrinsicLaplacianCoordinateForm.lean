@@ -363,6 +363,39 @@ theorem hessianAt_eq_coordinate_hessian
     (RicciFlow.RicciFlow.christoffelClosedOp H z (b i) (b j)) = _
   rw [← hsecond, hcorrect]
 
+/-- The intrinsic scalar Laplacian equals the standard Christoffel-coordinate
+formula on each shrunk chart region. -/
+theorem laplacianAt_eq_christoffelCoordinateLaplacian
+    (g : ClosedSmoothRiemannianMetric 3 M₃) (p : M₃)
+    (V : Set M₃) (hV : closure V ⊆ (extChartAt I₃ p).source)
+    (φ : M₃ → ℝ) (hφ : tsupport φ ⊆ V)
+    (hf : ContMDiff I₃ 𝓘(ℝ) 2 φ)
+    (z : (extChartAt I₃ p).target) (hz : (z : E₃) ∈ (extChartAt I₃ p) '' V) :
+    let G := inverseChartPullbackGramMatrixField g p
+    let a : E₃ → Matrix (Fin 3) (Fin 3) ℝ := fun y ↦ (G y)⁻¹
+    let Γ := fun y j k l ↦ (1 / 2 : ℝ) * ∑ m, a y j m *
+      (coordinateDirectionalDerivative (fun q ↦ G q l m) k y +
+       coordinateDirectionalDerivative (fun q ↦ G q k m) l y -
+       coordinateDirectionalDerivative (fun q ↦ G q k l) m y)
+    g.laplacianAt φ (inverseExtendedChartParametrization (n := 3) p z) =
+      christoffelCoordinateLaplacian a Γ
+        (ClosedLaplacianStokesProducer.coordinateScalar (n := 3) p φ) z := by
+  intro G a Γ
+  have hs : tsupport φ ⊆ (extChartAt I₃ p).source :=
+    hφ.trans (subset_closure.trans hV)
+  have hzt : (z : E₃) ∈ (extChartAt I₃ p).target := by
+    obtain ⟨x, hx, hzx⟩ := hz
+    rw [← hzx]
+    exact (extChartAt I₃ p).map_source (hV (subset_closure hx))
+  rw [laplacianAt_eq_chart_hessian g φ p z]
+  unfold christoffelCoordinateLaplacian
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro j _
+  exact congrArg (fun t : ℝ ↦ a z i j * t)
+    (hessianAt_eq_coordinate_hessian g p φ hs hf hzt i j)
+
 end Three
 
 end Poincare.IntrinsicLaplacianCoordinateForm
