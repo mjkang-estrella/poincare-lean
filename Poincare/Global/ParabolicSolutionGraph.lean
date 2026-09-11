@@ -94,4 +94,12 @@ theorem norm_u_le (g : Graph (E := E) α T) : ‖g.u‖ ≤ ‖g‖ := by
   have := norm_nonneg g.ddu
   linarith
 
+theorem norm_ut_le (g : Graph (E := E) α T) : ‖g.ut‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
 end Poincare.ParabolicSolutionGraph
