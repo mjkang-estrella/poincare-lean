@@ -356,7 +356,6 @@ theorem continuous_hessian_time_deriv_pos :
   simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
 
 
-set_option maxHeartbeats 800000 in
 /-- The weighted time derivative is integrable jointly on every positive time slab. -/
 theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
     (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (b : ℝ) :
@@ -633,7 +632,9 @@ theorem duhamel_hessian_time_holder :
           (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht₁.2⟩) x
         have hn' : ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤
             (2 * B) * K * (t₂ - t₁) ^ (α / 2) := by
-          convert hn using 1 <;> dsimp [B] <;> ring
+          convert hn using 1
+          dsimp [B]
+          ring
         exact hn'.trans (mul_le_mul_of_nonneg_right
           (mul_le_mul_of_nonneg_right (by linarith : 2 * B ≤ 2 * B + F) hK0)
           (Real.rpow_nonneg (sub_nonneg.mpr h12) _))
@@ -651,7 +652,9 @@ theorem duhamel_hessian_time_holder :
         have h := near_hessian_time_difference_le hα hα1 hK0 hat h12
           (by dsimp [a]; linarith)
           (fun s hs => hK s ⟨ha.le.trans hs.1.le, hs.2.le.trans ht₁.2⟩) x
-        convert h using 1 <;> dsimp [B] <;> ring
+        convert h using 1
+        dsimp [B]
+        ring
       have hfar : ‖(∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)‖ ≤
           F * K * (t₂ - t₁) ^ (α / 2) :=
         far_hessian_time_difference_le hα hα1 ht₁ ht₂ hlt hscale hK0 hf hM hK x
