@@ -1,4 +1,5 @@
 import Poincare.Global.HeatDuhamelHessianDifferentiation
+import Mathlib.Analysis.MeanInequalitiesPow
 
 set_option autoImplicit false
 
@@ -384,5 +385,43 @@ theorem norm_hessian_translation_le (t : ℝ) (y w : E) :
   apply intervalIntegral.norm_integral_le_of_norm_le zero_le_one
     (Filter.Eventually.of_forall fun r _ => ContinuousLinearMap.le_opNorm _ _)
     (hbound.intervalIntegrable 0 1)
+
+/-- Translating the third derivative costs one unweighted moment in addition to its weighted moment. -/
+theorem weighted_third_translation {α t : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
+    (ht : 0 < t) (w : E) :
+    Integrable (fun y : E => ‖Third t (y + w)‖ * ‖y‖ ^ α) ∧
+    (∫ y : E, ‖Third t (y + w)‖ * ‖y‖ ^ α) ≤
+      (∫ y : E, ‖Third t y‖ * ‖y‖ ^ α) + ‖w‖ ^ α * (∫ y : E, ‖Third t y‖) := by
+  have hiα := (integrable_weighted_third hα hα1 ht).comp_add_right w
+  have hi0 : Integrable (fun y : E => ‖Third t y‖) := by
+    simpa using integrable_weighted_third (α := 0) (by norm_num) (by norm_num) ht
+  have hiw := (hi0.comp_add_right w).const_mul (‖w‖ ^ α)
+  have hmajor := hiα.add hiw
+  have hb (y : E) : ‖Third t (y + w)‖ * ‖y‖ ^ α ≤
+      ‖Third t (y + w)‖ * ‖y + w‖ ^ α + ‖w‖ ^ α * ‖Third t (y + w)‖ := by
+    have hnorm : ‖y‖ ≤ ‖y + w‖ + ‖w‖ := by
+      simpa only [add_sub_cancel_right] using norm_sub_le (y + w) w
+    have hp : ‖y‖ ^ α ≤ ‖y + w‖ ^ α + ‖w‖ ^ α :=
+      (Real.rpow_le_rpow (norm_nonneg y) hnorm hα).trans
+        (Real.rpow_add_le_add_rpow (norm_nonneg _) (norm_nonneg _) hα hα1)
+    calc
+      _ ≤ ‖Third t (y + w)‖ * (‖y + w‖ ^ α + ‖w‖ ^ α) :=
+        mul_le_mul_of_nonneg_left hp (norm_nonneg _)
+      _ = _ := by ring
+  have hD : Continuous (Third t) :=
+    ((((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 2) (by norm_num)).fderiv_right (m := 1) (by norm_num)).fderiv_right
+        (m := 0) (by norm_num)).continuous
+  have hi : Integrable (fun y : E => ‖Third t (y + w)‖ * ‖y‖ ^ α) :=
+    hmajor.mono' ((hD.comp (continuous_id.add continuous_const)).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun y => by
+        rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+        exact hb y)
+  refine ⟨hi, (integral_mono hi hmajor hb).trans_eq ?_⟩
+  simp only [Pi.add_apply]
+  rw [integral_add hiα hiw, integral_const_mul,
+    integral_add_right_eq_self (fun y : E => ‖Third t y‖ * ‖y‖ ^ α) w,
+    integral_add_right_eq_self (fun y : E => ‖Third t y‖) w]
 
 end Poincare.HeatDuhamelHessianSpatialHolder
