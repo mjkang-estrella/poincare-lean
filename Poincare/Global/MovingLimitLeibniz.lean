@@ -348,4 +348,47 @@ theorem hasDerivWithinAt_integral_moving_limit
       clipped_secant_le_of_deriv_rpow_bound hβ hβ1 hC hs.2 hr.2 ht.2 hst.symm
         hc (hderiv s hsT) (hbound s hsT)
 
+local notation "E" => Poincare.ClosedSmoothModel 3
+open HeatDuhamelHeatEquation
+
+/-- The existing Hessian estimate supplies the scalar time-derivative majorant. -/
+theorem exists_heat_integrand_deriv_bound {α T M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x-y‖^α)
+    (x : E) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ s ∈ Icc 0 T, ∀ r ∈ Ioc s T,
+      |deriv (fun ρ => heatSolution (ρ-s) (fun y => f (s,y)) x) r| ≤
+        C * (r-s)^(α/2-1) := by
+  obtain ⟨A, hA, hAb⟩ :=
+    HeatDuhamelSpatialHolderHessian.exists_heat_hessian_holder_bound hα hα1
+  refine ⟨3 * A * K, by positivity, ?_⟩
+  intro s hs r hr
+  have hc : Continuous (fun y : E => f (s,y)) :=
+    hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun y => ⟨hs, mem_univ y⟩)
+  have hH := hAb (sub_pos.mpr hr.1) hK0 hc.aestronglyMeasurable
+    (by simpa only [Real.norm_eq_abs] using hM s hs) (hK s hs) x
+  rw [(hasDerivAt_heat_integrand hs hr.1 hf hM x).deriv, laplacian_eq_hessian_trace]
+  calc
+    |∑ i : Fin 3, fderiv ℝ (fderiv ℝ (heatSolution (r-s) (fun y => f (s,y)))) x
+      (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i)| ≤
+      ∑ i : Fin 3, ‖fderiv ℝ (fderiv ℝ (heatSolution (r-s) (fun y => f (s,y)))) x
+        (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i)‖ :=
+      by
+        simpa only [Real.norm_eq_abs] using
+          (norm_sum_le Finset.univ (fun i : Fin 3 =>
+            fderiv ℝ (fderiv ℝ (heatSolution (r-s) (fun y => f (s,y)))) x
+              (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i)))
+    _ ≤ ∑ _i : Fin 3, A * K * (r-s)^(α/2-1) := by
+      apply Finset.sum_le_sum
+      intro i _
+      apply le_trans _ hH
+      simpa only [OrthonormalBasis.norm_eq_one, mul_one] using
+        ContinuousLinearMap.le_opNorm₂
+          (fderiv ℝ (fderiv ℝ (heatSolution (r-s) (fun y => f (s,y)))) x)
+          (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i)
+    _ = (3 * A * K) * (r-s)^(α/2-1) := by simp; ring
+
 end Poincare.MovingLimitLeibniz
