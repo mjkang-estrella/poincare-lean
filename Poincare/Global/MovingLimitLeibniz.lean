@@ -391,4 +391,53 @@ theorem exists_heat_integrand_deriv_bound {α T M K : ℝ}
           (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i)
     _ = (3 * A * K) * (r-s)^(α/2-1) := by simp; ring
 
+/-- The Duhamel solution satisfies the frozen inhomogeneous heat equation. -/
+theorem duhamel_solves_heat_equation :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  (∀ x : E, u 0 x = 0) ∧
+  ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasDerivWithinAt (fun r : ℝ => u r x)
+      (f (t, x) + ∑ i : Fin 3, fderiv ℝ (fderiv ℝ (u t)) x
+        (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i))
+      (Icc 0 T) t := by
+  intro α hα hα1 T hT hT1 f M K hM0 hK0 hf hM hK
+  dsimp only
+  refine ⟨fun x => duhamel_zero f x, ?_⟩
+  intro t ht x
+  rw [← laplacian_eq_hessian_trace]
+  rw [← (duhamel_time_derivative_integral hα hα1 ht hf hM hK x).2]
+  let F : ℝ → ℝ → ℝ := fun r s => if r-s = 0 then f (s,x)
+    else heatSolution (r-s) (fun y => f (s,y)) x
+  have hc : ContinuousOn (fun p : ℝ × ℝ => F p.1 p.2)
+      {p : ℝ × ℝ | p.2 ∈ Icc 0 T ∧ p.1 ∈ Icc 0 T ∧ p.2 ≤ p.1} :=
+    (continuousOn_heat_integrand_extension hf hM x).comp
+      ((continuous_fst.sub continuous_snd).prodMk continuous_snd).continuousOn
+      (fun p hp => ⟨sub_nonneg.mpr hp.2.2, hp.1⟩)
+  have hd : ∀ s ∈ Icc 0 T, ∀ r ∈ Ioc s T,
+      HasDerivAt (fun ρ => F ρ s)
+        (deriv (fun ρ => heatSolution (ρ-s) (fun y => f (s,y)) x) r) r := by
+    intro s hs r hr
+    have hd0 := (hasDerivAt_heat_integrand hs hr.1 hf hM x).differentiableAt.hasDerivAt
+    apply hd0.congr_of_eventuallyEq
+    filter_upwards [Ioi_mem_nhds hr.1] with ρ hρ
+    simp only [F, if_neg (ne_of_gt (sub_pos.mpr (show s < ρ from hρ)))]
+  obtain ⟨C, hC, hCb⟩ := exists_heat_integrand_deriv_bound hα hα1 hK0 hf hM hK x
+  have hsolve := hasDerivWithinAt_integral_moving_limit
+    (F := F) (b := f (t,x))
+    (D := fun r s => deriv (fun ρ => heatSolution (ρ-s) (fun y => f (s,y)) x) r)
+    ht (β := α / 2) (by linarith) (by linarith) hC hc (by simp only [F, sub_self, if_true]) hd hCb
+  apply hsolve.congr_of_mem _ ht
+  intro r hr
+  apply intervalIntegral.integral_congr_ae_restrict
+  rw [uIoc_of_le hr.1, ← restrict_Ioo_eq_restrict_Ioc]
+  filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+  simp only [F, if_neg (ne_of_gt (sub_pos.mpr hs.2))]
+
 end Poincare.MovingLimitLeibniz
