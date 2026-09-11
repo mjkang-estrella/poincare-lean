@@ -453,6 +453,15 @@ vanishes. Exactly one general calculus lemma remains, the Leibniz rule for
 an integral with a moving upper limit and a parameter-dependent integrand;
 the follow-up `moving-limit-leibniz-rule` isolates it and then applies it.
 
+The time half of L3 landed (`Global/HeatDuhamelHessianTimeHolder.lean`,
+gate PASS, 25 declarations): the time derivative of the Gaussian Hessian
+with its quartic envelope, weighted integrability and exact moment scaling
+`t^{α/2−2}`; the tail, near and far estimates; and
+`duhamel_hessian_time_holder`, a bound `C·K·|t₁−t₂|^{α/2}` on the Duhamel
+Hessian difference at a fixed point. With the spatial half this gives the
+full parabolic Hölder control of `D²u`; the short combination is dispatched
+as `duhamel-parabolic-holder-seminorm`.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
