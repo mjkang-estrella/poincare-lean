@@ -281,4 +281,40 @@ theorem duhamel_hessian_spatial_holder_of_time_le_dist_sq {α T t M K : ℝ}
   exact near_hessian_difference_le hα hα1 hK0 ht.1
     (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht.2⟩) x z (by simpa using hscale)
 
+/-- The far-time power integral supplies the factor two over one minus the exponent. -/
+theorem far_time_power_integral_le {α ρ t : ℝ}
+    (hα1 : α < 1) (hρ : 0 < ρ) (ht : ρ ^ 2 ≤ t) :
+    ρ * (∫ s in (0 : ℝ)..(t - ρ ^ 2), (t - s) ^ (α / 2 - 3 / 2)) ≤
+      (2 / (1 - α)) * ρ ^ α := by
+  have hρ2 : 0 < ρ ^ 2 := sq_pos_of_pos hρ
+  have hq : α / 2 - 3 / 2 + 1 < 0 := by linarith
+  rw [intervalIntegral.integral_comp_sub_left
+    (fun r : ℝ => r ^ (α / 2 - 3 / 2)) t, sub_sub_cancel, sub_zero]
+  rw [integral_rpow (Or.inr ⟨by linarith, ?_⟩)]
+  · calc
+      ρ * ((t ^ (α / 2 - 3 / 2 + 1) - (ρ ^ 2) ^ (α / 2 - 3 / 2 + 1)) /
+          (α / 2 - 3 / 2 + 1)) ≤
+          ρ * (-(ρ ^ 2) ^ (α / 2 - 3 / 2 + 1) / (α / 2 - 3 / 2 + 1)) := by
+        apply mul_le_mul_of_nonneg_left _ hρ.le
+        simp only [div_eq_mul_inv]
+        apply mul_le_mul_of_nonpos_right _ (inv_nonpos.mpr hq.le)
+        have hnn := Real.rpow_nonneg (hρ2.le.trans ht) (α / 2 - 3 / 2 + 1)
+        simp only [div_eq_mul_inv] at hnn
+        linarith only [hnn]
+      _ = (2 / (1 - α)) * ρ ^ α := by
+        rw [← Real.rpow_natCast_mul hρ.le]
+        simp only [Nat.cast_ofNat]
+        rw [show (2 : ℝ) * (α / 2 - 3 / 2 + 1) = α - 1 by ring]
+        rw [Real.rpow_sub hρ, Real.rpow_one]
+        have hden : 1 - α ≠ 0 := by linarith
+        have hden' : α / 2 - 3 / 2 + 1 ≠ 0 := hq.ne
+        field_simp [hρ.ne', hden, hden', show -1 + α ≠ 0 by linarith]
+        <;> ring_nf
+        all_goals
+          have hi := mul_inv_cancel₀ (show -1 + α ≠ 0 by linarith)
+          nlinarith only [hi]
+  · rw [uIcc_of_le ht]
+    intro hz
+    exact (not_le.mpr hρ2) hz.1
+
 end Poincare.HeatDuhamelHessianSpatialHolder
