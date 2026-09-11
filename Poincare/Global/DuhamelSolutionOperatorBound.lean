@@ -298,4 +298,25 @@ theorem duhamel_value_parabolic_holder :
       dsimp [D]
       nlinarith [mul_nonneg hC.le hM, mul_nonneg hJ hK]
 
+/-- A difference of bounded data has the same gradient kernel estimate. -/
+theorem gradient_heatSolution_sub_bound {t M N L : ℝ} (ht : 0 < t)
+    {f g : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hg : AEStronglyMeasurable g volume) (hfM : ∀ y, ‖f y‖ ≤ M)
+    (hgN : ∀ y, ‖g y‖ ≤ N) (hL : ∀ y, ‖f y - g y‖ ≤ L) (x : E) :
+    ‖fderiv ℝ (heatSolution t f) x - fderiv ℝ (heatSolution t g) x‖ ≤
+      L * (∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖) * t ^ (-(1/2 : ℝ)) := by
+  have hi := integrable_smul_fderiv_heatKernel_sub ht hf hfM x
+  have hj := integrable_smul_fderiv_heatKernel_sub ht hg hgN x
+  rw [(heatSolution_hasFDerivAt ht hf hfM x).fderiv,
+    (heatSolution_hasFDerivAt ht hg hgN x).fderiv, ← integral_sub hi hj]
+  have he : (fun y : E => f y • fderiv ℝ (heatKernel t) (x-y) -
+      g y • fderiv ℝ (heatKernel t) (x-y)) =
+      fun y => (f y - g y) • fderiv ℝ (heatKernel t) (x-y) := by
+    ext y v
+    simp [sub_smul]
+  rw [he]
+  have hb := norm_gradient_heatSolution_le ht (hf.sub hg) hL x
+  rw [(heatSolution_hasFDerivAt ht (hf.sub hg) hL x).fderiv] at hb
+  exact hb
+
 end Poincare.DuhamelSolutionOperatorBound
