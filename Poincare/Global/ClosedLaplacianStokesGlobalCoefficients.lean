@@ -24,4 +24,22 @@ theorem contDiff_cutoff_mul {U : Set E} {χ F : E → ℝ}
     filter_upwards [hzero] with y hy
     simp only [hy, Pi.zero_apply, zero_mul]
 
+/-- A compact subset of an open coordinate domain has a smooth cutoff equal to one nearby. -/
+theorem exists_cutoff_of_isCompact {K U : Set E} (hK : IsCompact K)
+    (hU : IsOpen U) (hKU : K ⊆ U) :
+    ∃ χ : E → ℝ, ContDiff ℝ ∞ χ ∧ tsupport χ ⊆ U ∧
+      (∀ z ∈ K, ∀ᶠ y in 𝓝 z, χ y = 1) ∧ (∀ z, χ z ∈ Icc 0 1) := by
+  obtain ⟨χ, hzero, hone, hbounds⟩ :=
+    exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, E)
+      hU.isClosed_compl hK.isClosed
+      (disjoint_compl_left_iff_subset.mpr hKU) (n := ⊤)
+  refine ⟨χ, χ.contMDiff.contDiff, ?_, ?_, hbounds⟩
+  · intro z hz
+    by_contra hzU
+    have hloc : (fun y ↦ χ y) =ᶠ[𝓝 z] 0 :=
+      hzero.filter_mono (nhds_le_nhdsSet hzU)
+    exact (notMem_tsupport_iff_eventuallyEq.mpr hloc) hz
+  · intro z hz
+    exact hone.filter_mono (nhds_le_nhdsSet hz)
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
