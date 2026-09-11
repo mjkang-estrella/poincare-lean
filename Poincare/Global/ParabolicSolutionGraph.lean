@@ -162,4 +162,12 @@ theorem holder_ddu_le (g : Graph (E := E) α T) {p q : ℝ × E}
     (mul_le_mul_of_nonneg_right (norm_ddu_le g)
       (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
 
+theorem time_bound (g : Graph (E := E) α T) {t : ℝ} (ht : t ∈ Icc 0 T)
+    (x : E) : ‖g.u (t, x)‖ ≤ t * ‖g.ut‖ := by
+  have h := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (fun s hs => g.hasDeriv_time s hs x)
+    (fun s _ => ParabolicHolder.norm_le g.ut (s, x)) (convex_Icc (0 : ℝ) T)
+    (show (0 : ℝ) ∈ Icc 0 T from ⟨le_rfl, ht.1.trans ht.2⟩) ht
+  simpa [g.zero_trace x, Real.norm_of_nonneg ht.1, mul_comm] using h
+
 end Poincare.ParabolicSolutionGraph
