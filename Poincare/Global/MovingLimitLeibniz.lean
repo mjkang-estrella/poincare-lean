@@ -197,4 +197,33 @@ theorem abs_sub_le_rpow_of_deriv_bound
   change |g v - g u| ≤ (C / β) * (v-s)^β - (C / β) * (u-s)^β at hi
   nlinarith [hi]
 
+/-- A fractional power has an integrable secant bound measured from a positive base point. -/
+theorem abs_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
+    (hx : 0 ≤ x) (hy : 0 < y) :
+    |x^β - y^β| ≤ y^(β-1) * |x-y| := by
+  have hyid : y^β = y * y^(β-1) := by
+    rw [Real.rpow_sub_one hy.ne']
+    field_simp
+  rcases eq_or_lt_of_le hx with hx0 | hx0
+  · subst x
+    rw [Real.zero_rpow hβ.ne', zero_sub, abs_neg,
+      abs_of_nonneg (Real.rpow_nonneg hy.le _), zero_sub, abs_neg, abs_of_pos hy, hyid]
+    exact le_of_eq (mul_comm _ _)
+  have hxid : x^β = x * x^(β-1) := by
+    rw [Real.rpow_sub_one hx0.ne']
+    field_simp
+  rcases le_total x y with hxy | hyx
+  · have hp := Real.rpow_le_rpow hx hxy hβ.le
+    have hq := Real.rpow_le_rpow_of_nonpos hx0 hxy (sub_nonpos.mpr hβ1)
+    rw [abs_of_nonpos (sub_nonpos.mpr hp), abs_of_nonpos (sub_nonpos.mpr hxy)]
+    have hm := mul_le_mul_of_nonneg_left hq hx
+    rw [hxid, hyid]
+    nlinarith [hm]
+  · have hp := Real.rpow_le_rpow hy.le hyx hβ.le
+    have hq := Real.rpow_le_rpow_of_nonpos hy hyx (sub_nonpos.mpr hβ1)
+    rw [abs_of_nonneg (sub_nonneg.mpr hp), abs_of_nonneg (sub_nonneg.mpr hyx)]
+    have hm := mul_le_mul_of_nonneg_left hq hx
+    rw [hxid, hyid]
+    nlinarith [hm]
+
 end Poincare.MovingLimitLeibniz
