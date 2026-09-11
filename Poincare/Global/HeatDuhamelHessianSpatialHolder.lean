@@ -152,4 +152,20 @@ theorem weighted_third_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
     norm_smul_of_nonneg ha.le, Real.mul_rpow ha.le (norm_nonneg x)]
   ring
 
+/-- The Jacobian cancels the spatial normalization in the weighted integral. -/
+theorem weighted_third_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+    (∫ x : E, ‖Third (a ^ 2) x‖ * ‖x‖ ^ α) =
+      ((a ^ 3)⁻¹ * a ^ α) * (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α) := by
+  have hchange := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => ‖Third (a ^ 2) y‖ * ‖y‖ ^ α) a (hR := ha.le)
+  apply mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne'))
+  calc
+    (a ^ 3)⁻¹ * (∫ x : E, ‖Third (a ^ 2) x‖ * ‖x‖ ^ α) =
+        ∫ x : E, ‖Third (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α := by
+      simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin, smul_eq_mul] using hchange.symm
+    _ = ((a ^ 3)⁻¹ * (a ^ 3)⁻¹ * a ^ α) * (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α) := by
+      simp_rw [weighted_third_sq_smul a ha]
+      rw [integral_const_mul]
+    _ = (a ^ 3)⁻¹ * (((a ^ 3)⁻¹ * a ^ α) * (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α)) := by ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
