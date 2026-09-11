@@ -1,5 +1,6 @@
 import Poincare.Global.ClosedLaplacianStokesProducer
 import Mathlib.Topology.ShrinkingLemma
+import Mathlib.Analysis.Calculus.LineDeriv.Basic
 
 noncomputable section
 open Bundle FiberBundle Filter MeasureTheory Set
@@ -106,5 +107,34 @@ theorem exists_shrunk_chart_cover
       (hclosure i hx))
   · apply SmoothPartitionOfUnity.exists_isSubordinate I isClosed_univ V hopen
     rw [hcover]
+
+/-- Jacobi's density formula in any spatial coordinate direction. -/
+theorem fderiv_chartWeight
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) {z : E}
+    (hz : z ∈ (extChartAt I p).target) (v : E) :
+    fderiv ℝ (fun y ↦ (rawHausdorffLebesgueScale n : ℝ) *
+        VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p y)) z v =
+      (1 / 2 : ℝ) * ((rawHausdorffLebesgueScale n : ℝ) *
+        VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p z)) *
+        ∑ i, ∑ j, (inverseChartPullbackGramMatrixField g p z)⁻¹ i j *
+          fderiv ℝ (fun y ↦ inverseChartPullbackGramMatrixField g p y j i) z v := by
+  let G := inverseChartPullbackGramMatrixField g p
+  have hG (i j : Fin n) : DifferentiableAt ℝ (fun y ↦ G y i j) z :=
+    ((contDiffOn_inverseChartPullbackGramMatrixField_entry g p i j z hz).contDiffAt
+      ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have hdet : (G z).det ≠ 0 := by
+    dsimp [G]
+    rw [← inverseChartPullbackGramMatrix_eq_field g p ⟨z, hz⟩]
+    exact (inverseChartPullbackGramMatrix_posDef g p ⟨z, hz⟩).det_pos.ne'
+  have hline := VolumeDensity.hasDerivAt_chartVolumeDensity_of_det_ne_zero
+    (G := fun t : ℝ ↦ G (z + t • v))
+    (G' := fun i j ↦ fderiv ℝ (fun y ↦ G y i j) z v)
+    (fun i j ↦ (hG i j).hasFDerivAt.hasLineDerivAt v)
+    (by simpa only [zero_smul, add_zero] using hdet)
+  have hweight := (((ClosedLaplacianStokesProducer.chartWeight_regular g p).1 z hz).contDiffAt
+    ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have heq := ((hline.const_mul (rawHausdorffLebesgueScale n : ℝ)).unique
+    (hweight.hasFDerivAt.hasLineDerivAt v)).symm
+  simpa only [zero_smul, add_zero, mul_assoc, mul_left_comm] using heq
 
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
