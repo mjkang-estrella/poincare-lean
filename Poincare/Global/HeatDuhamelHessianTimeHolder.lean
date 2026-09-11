@@ -113,4 +113,59 @@ theorem continuous_hessian_time_deriv {t : ℝ} (ht : 0 < t) :
     ((((contDiff_heatKernel_spatial («E» := E) t).continuous).mul
       (((continuous_norm.pow 2).div_const _).sub continuous_const)).smul continuous_const)
 
+
+/-- The quartic envelope remains integrable after a fractional radial weight. -/
+theorem integrable_weighted_hessian_time_deriv_one {α : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) :
+    Integrable (fun x : E => ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  let c : ℝ := (4 * Real.pi) ^ (-(3 : ℝ) / 2)
+  have hc : 0 ≤ c := by dsimp [c]; positivity
+  have hmajor := (integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq
+    («E» := E) (a := (1 / 8 : ℝ)) (by norm_num)).const_mul (512 * c)
+  apply hmajor.mono'
+    ((continuous_hessian_time_deriv zero_lt_one).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+  refine Filter.Eventually.of_forall fun x => ?_
+  change ‖‖DtHess 1 x‖ * ‖x‖ ^ α‖ ≤ _
+  rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+  have hk0 : 0 ≤ heatKernel 1 x := heatKernel_nonneg zero_lt_one x
+  have hw : ‖x‖ ^ α ≤ 1 + ‖x‖ ^ 2 := by
+    by_cases hx : ‖x‖ ≤ 1
+    · exact (Real.rpow_le_one (norm_nonneg x) hx hα).trans (by nlinarith [sq_nonneg ‖x‖])
+    · have h := Real.rpow_le_rpow_of_exponent_le (le_of_not_ge hx) hα2
+      rw [Real.rpow_two] at h
+      linarith
+  have hbase : 1 + ‖x‖ ^ 2 ≤ 16 * Real.exp (‖x‖ ^ 2 / 16) := by
+    have h := Real.add_one_le_exp (‖x‖ ^ 2 / 16)
+    linarith
+  have hsquare : (1 + ‖x‖ ^ 2) ^ 2 ≤ 256 * Real.exp (‖x‖ ^ 2 / 8) := by
+    have h := pow_le_pow_left₀ (by positivity : 0 ≤ 1 + ‖x‖ ^ 2) hbase 2
+    have he : Real.exp (‖x‖ ^ 2 / 16) ^ 2 = Real.exp (‖x‖ ^ 2 / 8) := by
+      rw [pow_two, ← Real.exp_add]
+      congr 1
+      ring
+    simpa only [mul_pow, he, show (16 : ℝ) ^ 2 = 256 by norm_num] using h
+  have hpoly : ‖x‖ ^ 4 + ‖x‖ ^ 2 + 2 ≤ 2 * (1 + ‖x‖ ^ 2) ^ 2 := by
+    nlinarith [sq_nonneg (‖x‖ ^ 2), sq_nonneg ‖x‖]
+  have hk : heatKernel (1 : ℝ) x = c * Real.exp (-(‖x‖ ^ 2 / 4)) := by
+    simp [heatKernel, c, ClosedSmoothModel, neg_div]
+  calc
+    _ ≤ (heatKernel 1 x * (‖x‖ ^ 4 + ‖x‖ ^ 2 + 2)) * ‖x‖ ^ α :=
+      mul_le_mul_of_nonneg_right (norm_hessian_time_deriv_one_le x) (by positivity)
+    _ ≤ (heatKernel 1 x * (2 * (1 + ‖x‖ ^ 2) ^ 2)) * (1 + ‖x‖ ^ 2) := by
+      gcongr
+    _ ≤ (heatKernel 1 x * (2 * (256 * Real.exp (‖x‖ ^ 2 / 8)))) * (1 + ‖x‖ ^ 2) := by
+      gcongr
+    _ = (512 * c) * ((1 + ‖x‖ ^ 2) * Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2)) := by
+      rw [hk]
+      have he : Real.exp (-(‖x‖ ^ 2 / 4)) * Real.exp (‖x‖ ^ 2 / 8) =
+          Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2) := by
+        rw [← Real.exp_add]
+        congr 1
+        ring
+      calc
+        _ = (512 * c) * ((1 + ‖x‖ ^ 2) *
+          (Real.exp (-(‖x‖ ^ 2 / 4)) * Real.exp (‖x‖ ^ 2 / 8))) := by ring
+        _ = _ := by rw [he]
+
 end Poincare.HeatDuhamelHessianTimeHolder
