@@ -571,4 +571,68 @@ theorem norm_heat_hessian_difference_far_le {α t M K : ℝ}
         (by simpa only [norm_sub_rev z x] using hscale)) hK0
     _ = _ := by rw [norm_sub_rev z x]; ring
 
+/-- The far part of the cancelled Duhamel Hessian has the spatial Hölder bound. -/
+theorem far_hessian_difference_le {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T) (hK0 : 0 ≤ K)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x z : E) (hρ : 0 < ‖x - z‖) (hscale : ‖x - z‖ ^ 2 < t) :
+    ‖(∫ s in (0 : ℝ)..(t - ‖x - z‖ ^ 2), ∫ y : E,
+        (f (s, x - y) - f (s, x)) • Hess (t - s) y) -
+      (∫ s in (0 : ℝ)..(t - ‖x - z‖ ^ 2), ∫ y : E,
+        (f (s, z - y) - f (s, z)) • Hess (t - s) y)‖ ≤
+      (((∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖)) *
+        (2 / (1 - α))) * K * ‖x - z‖ ^ α := by
+  let a := t - ‖x - z‖ ^ 2
+  let J := (∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖)
+  let F := fun (s : ℝ) (p : E) => ∫ y : E, (f (s, p - y) - f (s, p)) • Hess (t - s) y
+  have ha : 0 < a := sub_pos.mpr hscale
+  have hat : a ≤ t := sub_le_self t (sq_nonneg _)
+  have hρ2 : 0 < ‖x - z‖ ^ 2 := sq_pos_of_pos hρ
+  have hJ : 0 ≤ J := add_nonneg
+    (integral_nonneg (fun y => mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+    (integral_nonneg (fun y => norm_nonneg _))
+  have hFi (p : E) : IntervalIntegrable (fun s => F s p) volume 0 a :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ha.le).mpr
+      ((integrableOn_cancelled_hessian_time hα hα1 ht hf hK p).mono_set
+        (Ioo_subset_Ioo le_rfl hat))
+  have hip : IntervalIntegrable (fun r : ℝ => r ^ (α / 2 - 3 / 2)) volume (‖x - z‖ ^ 2) t := by
+    apply intervalIntegral.intervalIntegrable_rpow (Or.inr ?_)
+    rw [uIcc_of_le hscale.le]
+    intro hz
+    exact (not_le.mpr hρ2) hz.1
+  have hiB : IntervalIntegrable
+      (fun s : ℝ => J * K * ‖x - z‖ * (t - s) ^ (α / 2 - 3 / 2)) volume 0 a := by
+    have h := (hip.comp_sub_left t).symm
+    simp only [sub_self] at h
+    exact h.const_mul (J * K * ‖x - z‖)
+  have hbound : ‖∫ s in (0 : ℝ)..a, F s x - F s z‖ ≤
+      ∫ s in (0 : ℝ)..a, J * K * ‖x - z‖ * (t - s) ^ (α / 2 - 3 / 2) := by
+    apply intervalIntegral.norm_integral_le_of_norm_le ha.le _ hiB
+    refine Filter.Eventually.of_forall fun s hs => ?_
+    have hsT : s ∈ Icc 0 T := ⟨hs.1.le, (hs.2.trans hat).trans ht.2⟩
+    have hsτ : ‖x - z‖ ^ 2 ≤ t - s := by dsimp [a] at hs; linarith [hs.2]
+    have hτ : 0 < t - s := hρ2.trans_le hsτ
+    have hfc : Continuous (fun y : E => f (s, y)) :=
+      hf.comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hsT, mem_univ y⟩)
+    have hMs : ∀ y : E, ‖f (s, y)‖ ≤ M := by simpa only [Real.norm_eq_abs] using hM s hsT
+    dsimp only [F]
+    rw [← hessian_heatSolution_eq_cancelled_integral hτ hfc.aestronglyMeasurable hMs x,
+      ← hessian_heatSolution_eq_cancelled_integral hτ hfc.aestronglyMeasurable hMs z]
+    exact norm_heat_hessian_difference_far_le hα.le hα1.le hτ hK0
+      hfc.aestronglyMeasurable hMs (hK s hsT) x z hsτ
+  change ‖(∫ s in (0 : ℝ)..a, F s x) - (∫ s in (0 : ℝ)..a, F s z)‖ ≤ _
+  rw [← intervalIntegral.integral_sub (hFi x) (hFi z)]
+  refine hbound.trans ?_
+  rw [intervalIntegral.integral_const_mul]
+  calc
+    (J * K * ‖x - z‖) * (∫ s in (0 : ℝ)..a, (t - s) ^ (α / 2 - 3 / 2)) =
+        (J * K) * (‖x - z‖ * (∫ s in (0 : ℝ)..a, (t - s) ^ (α / 2 - 3 / 2))) := by ring
+    _ ≤ (J * K) * ((2 / (1 - α)) * ‖x - z‖ ^ α) :=
+      mul_le_mul_of_nonneg_left (far_time_power_integral_le hα1 hρ hscale.le) (mul_nonneg hJ hK0)
+    _ = _ := by ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
