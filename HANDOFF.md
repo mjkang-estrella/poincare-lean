@@ -2,6 +2,22 @@
 
 Snapshot date: 2026-09-08 (UTC)
 
+
+## 2026-09-11 Worker Duhamel parabolic Hölder bound proved
+
+Branch `worker/duhamel-parabolic-holder-seminorm`, base `ae66c744`, proof head
+`610b2e15`. The single new `Global/DuhamelParabolicHolderSeminorm.lean`
+proves the exact `duhamel_hessian_parabolic_holder` and its landed
+`hasHolderBound_duhamel_hessian` predicate form, with constant `C₁ + C₂`.
+Both theorems were compiled and committed separately. The exact task-statement
+assignment, forbidden-token scan, dependency checks for both declarations,
+and whitespace gate pass. Full probe output, the initial parser diagnostic,
+and proof diff are in `harness/reports/duhamel-parabolic-holder-seminorm_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/DuhamelParabolicHolderSeminorm.lean`.
+
+
 ## 2026-09-11 Worker Duhamel heat equation: boundary and interior integral proved
 
 Branch `worker/heat-duhamel-heat-equation`, base `c165951b`, proof head
