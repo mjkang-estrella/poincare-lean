@@ -367,6 +367,17 @@ Hessian equals the cancelled kernel double integral, and it is bounded by
 `C · K · t^{α/2}` with `C` independent of the forcing. The parabolic route's
 first analytic estimate is therefore landed.
 
+Step L0 completed (`Global/ParabolicSolutionGraph.lean`, gate PASS, 45
+declarations): the solution-graph carrier `Graph α T`, whose elements are
+genuine derivative graphs (value, time derivative, spatial differential and
+Hessian) with zero initial trace and all four components in the landed
+Hölder carrier, realized as a closed submodule of the product, hence a
+complete normed space with the exact sum-norm formula, component bounds,
+the mean-value time bound `‖u(t,x)‖ ≤ t‖uₜ‖`, and the `ofDerivatives`
+constructor. Together with `ParametrixNeumannCorrection` (step L7, proved
+directly) the algebraic scaffolding of the linear step is in place; what
+remains there is quantitative (L3 to L6).
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

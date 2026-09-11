@@ -73,6 +73,7 @@ import Poincare.Global.HeatKernelHessianMoments
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
 import Poincare.Global.ParabolicHolderSpace
+import Poincare.Global.ParabolicSolutionGraph
 import Poincare.Global.ParametrixNeumannCorrection
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
