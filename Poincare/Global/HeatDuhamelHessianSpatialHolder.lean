@@ -208,4 +208,23 @@ theorem third_moment_bound :
   rw [weighted_third_integral ht, mul_comm (t ^ (α / 2 - 3 / 2))]
   exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg ht.le _)
 
+/-- The near-time cancelled integral is bounded by the length of its time interval. -/
+theorem norm_integral_cancelled_hessian_near_le {α K a t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hat : a ≤ t) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a t, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ s in a..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      (K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)) * (2 / α) * (t - a) ^ (α / 2) := by
+  have hb := norm_integral_cancelled_hessian_time_le hα hα1 (sub_nonneg.mpr hat)
+    (f := fun p => f (p.1 + a, p.2))
+    (fun s hs => hK (s + a) ⟨by linarith [hs.1], by linarith [hs.2]⟩) x
+  have he := intervalIntegral.integral_comp_add_right
+    (a := (0 : ℝ)) (b := t - a)
+    (fun s => ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y) a
+  simp only [zero_add, sub_add_cancel] at he
+  have htau (s : ℝ) : t - a - s = t - (s + a) := by ring
+  simp only [htau] at hb
+  rw [he] at hb
+  exact hb
+
 end Poincare.HeatDuhamelHessianSpatialHolder
