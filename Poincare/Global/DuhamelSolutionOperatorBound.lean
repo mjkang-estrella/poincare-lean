@@ -434,4 +434,56 @@ theorem duhamel_gradient_time_holder_of_le {α T s t M K : ℝ}
         (mul_le_mul_of_nonneg_left hpow (by positivity))
     _ = 2*J*(M+K)*(t-s)^(α/2) := by ring
 
+/-- Spatial interpolation and reversed-time integration give the full gradient estimate. -/
+theorem duhamel_gradient_parabolic_holder :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    HasHolderBound α (cylinder T) f K →
+    HasHolderBound α (cylinder T)
+      (fun p : ℝ × E => fderiv ℝ (fun z : E => ∫ s in (0 : ℝ)..p.1,
+        heatSolution (p.1-s) (fun y => f (s,y)) z) p.2) (C * (M+K)) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_gradient_spatial_holder α hα hα1
+  let J := ∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖
+  have hJ : 0 ≤ J := integral_nonneg (fun _ => norm_nonneg _)
+  refine ⟨C+2*J, by positivity, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  have hspace : ∀ t ∈ Icc 0 T, ∀ x y : E,
+      |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α := by
+    intro t ht x y
+    simpa [parabolicDist, Real.norm_eq_abs] using
+      hfK (t,x) ⟨ht, mem_univ x⟩ (t,y) ⟨ht, mem_univ y⟩
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  intro p hp q hq
+  have hs := hCb T hT hT1 f M K hM hK hf hfM hspace p.1 hp.1 p.2 q.2
+  have ht : ‖fderiv ℝ (u p.1) q.2 - fderiv ℝ (u q.1) q.2‖ ≤
+      2*J*(M+K)*|p.1-q.1|^(α/2) := by
+    rcases le_total q.1 p.1 with hqp | hpq
+    · simpa only [abs_of_nonneg (sub_nonneg.mpr hqp)] using
+        duhamel_gradient_time_holder_of_le hα hα1 hT1 hq.1 hp.1 hqp hM hK hf hfM hfK q.2
+    · simpa only [norm_sub_rev, abs_of_nonpos (sub_nonpos.mpr hpq), neg_sub] using
+        duhamel_gradient_time_holder_of_le hα hα1 hT1 hp.1 hq.1 hpq hM hK hf hfM hfK q.2
+  have hsp : ‖p.2-q.2‖^α ≤ parabolicDist p q ^ α :=
+    Real.rpow_le_rpow (norm_nonneg _) (le_add_of_nonneg_right (Real.sqrt_nonneg _)) hα.le
+  have htp : |p.1-q.1|^(α/2) ≤ parabolicDist p q ^ α := by
+    calc
+      _ = (Real.sqrt |p.1-q.1|)^α := by
+        rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (abs_nonneg _)]
+        congr 1
+        ring
+      _ ≤ parabolicDist p q ^ α := Real.rpow_le_rpow (Real.sqrt_nonneg _)
+        (le_add_of_nonneg_left (norm_nonneg _)) hα.le
+  calc
+    ‖fderiv ℝ (u p.1) p.2 - fderiv ℝ (u q.1) q.2‖ ≤
+        ‖fderiv ℝ (u p.1) p.2 - fderiv ℝ (u p.1) q.2‖ +
+        ‖fderiv ℝ (u p.1) q.2 - fderiv ℝ (u q.1) q.2‖ := norm_sub_le_norm_sub_add_norm_sub ..
+    _ ≤ C*(M+K)*parabolicDist p q ^ α + 2*J*(M+K)*parabolicDist p q ^ α :=
+      add_le_add (hs.trans (mul_le_mul_of_nonneg_left hsp (by positivity)))
+        (ht.trans (mul_le_mul_of_nonneg_left htp (by positivity)))
+    _ = (C+2*J)*(M+K)*parabolicDist p q ^ α := by ring
+
 end Poincare.DuhamelSolutionOperatorBound
