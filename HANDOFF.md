@@ -402,6 +402,22 @@ applying Fubini; and the assembled
 `duhamel_hessian_spatial_holder`, a bound `C·K·‖x−z‖^α` on the difference of
 the Duhamel Hessians with `C` fixed before the time horizon and the forcing.
 
+`closed-laplacian-stokes-global-coefficients` landed as a verified partial
+(`Global/ClosedLaplacianStokesGlobalCoefficients.lean`, gate PASS, 11
+theorems): a finite shrinking of the chart cover with compact coordinate
+closures and a subordinate partition, simultaneous globally smooth
+extensions of the density weight and inverse Gram entries agreeing with the
+genuine fields near every point of those closures, the derivative formulas
+for both genuine fields, and the classical divergence identity
+`∑ₖ ∂ₖ(w aᵏʲ) = −w aᵏˡ Γʲₖₗ` in dimension three together with its transfer
+to locally agreeing extensions. Two things remain: the identification of the
+intrinsic Laplacian with its coordinate Christoffel form (the exact residual
+goal is printed in the report; the bridge is
+`LeviCivitaTransport.chartTransportedLeviCivitaValueAt_eq_closed_of_eventually_eq_one`),
+and a restricted-domain variant of the record constructor, since the landed
+one fixes each coordinate domain to an entire chart target. The follow-up
+`intrinsic-laplacian-coordinate-form` targets both.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
