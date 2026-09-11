@@ -291,4 +291,34 @@ theorem intervalIntegrable_abs_sub_rpow {β T t : ℝ}
     simp only [abs_of_nonpos (sub_nonpos.mpr hs.1.le), neg_sub]
   exact hl'.trans hr'
 
+/-- A power bound for the derivative supplies a common majorant for clipped secants. -/
+theorem clipped_secant_le_of_deriv_rpow_bound
+    {g g' : ℝ → ℝ} {s T r t C β : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
+    (hC : 0 ≤ C) (hs : s ≤ T) (hr : r ≤ T) (ht : t ≤ T) (hst : t ≠ s)
+    (hc : ContinuousOn g (Icc s T))
+    (hd : ∀ z ∈ Ioc s T, HasDerivAt g (g' z) z)
+    (hb : ∀ z ∈ Ioc s T, |g' z| ≤ C * (z-s)^(β-1)) :
+    |g (max r s) - g (max t s)| ≤ (C / β) * |t-s|^(β-1) * |r-t| := by
+  have hCβ : 0 ≤ C / β := div_nonneg hC hβ.le
+  have hinc (a b : ℝ) (ha : a ∈ Icc s T) (hb' : b ∈ Icc s T) :
+      |g a - g b| ≤ (C / β) * |(a-s)^β - (b-s)^β| := by
+    rcases le_total a b with hab | hba
+    · have hp := Real.rpow_le_rpow (sub_nonneg.mpr ha.1) (sub_le_sub_right hab s) hβ.le
+      rw [abs_sub_comm (g a) (g b), abs_sub_comm ((a-s)^β) ((b-s)^β),
+        abs_of_nonneg (sub_nonneg.mpr hp)]
+      exact abs_sub_le_rpow_of_deriv_bound hβ hc hd hb ha.1 hab hb'.2
+    · have hp := Real.rpow_le_rpow (sub_nonneg.mpr hb'.1) (sub_le_sub_right hba s) hβ.le
+      rw [abs_of_nonneg (sub_nonneg.mpr hp)]
+      exact abs_sub_le_rpow_of_deriv_bound hβ hc hd hb hb'.1 hba ha.2
+  have hi := hinc (max r s) (max t s)
+    ⟨le_max_right _ _, max_le hr hs⟩ ⟨le_max_right _ _, max_le ht hs⟩
+  have hp := abs_clipped_rpow_sub_le (x := r-s) (y := t-s) hβ hβ1
+    (sub_ne_zero.mpr hst)
+  have he (z : ℝ) : max z s - s = max (z-s) 0 := by
+    rw [← max_sub_sub_right, sub_self]
+  rw [he r, he t] at hi
+  have he' : r-s-(t-s) = r-t := by ring
+  rw [he'] at hp
+  exact hi.trans (by simpa only [mul_assoc] using mul_le_mul_of_nonneg_left hp hCβ)
+
 end Poincare.MovingLimitLeibniz
