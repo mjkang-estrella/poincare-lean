@@ -281,4 +281,17 @@ def geometry_of_coordinate_coefficients
       (localizedLaplacian_continuous_of_coefficients g (C.anchor i) _ (hsupport i) (hlocal i)
         (w i) (a i) (Γ i) (hw i) (ha i) (hweight i) (hcompat i) (hcoord i)).aestronglyMeasurable }
 
+/-- Entrywise smoothness suffices for smoothness of a determinant on an open chart. -/
+theorem contDiffOn_matrix_det (G : E → Matrix (Fin n) (Fin n) ℝ) (U : Set E)
+    (hG : ∀ i j, ContDiffOn ℝ ∞ (fun z ↦ G z i j) U) :
+    ContDiffOn ℝ ∞ (fun z ↦ (G z).det) U := by
+  classical
+  simp only [Matrix.det_apply']
+  apply ContDiffOn.sum
+  intro σ _
+  apply ContDiffOn.mul contDiffOn_const
+  apply contDiffOn_prod
+  intro i _
+  exact hG (σ i) i
+
 end Poincare.ClosedLaplacianStokesProducer
