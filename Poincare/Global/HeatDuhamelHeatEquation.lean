@@ -44,4 +44,23 @@ theorem intervalIntegrable_heat_hessian {α T t M K : ℝ}
   exact (hessian_heatSolution_eq_cancelled_integral (sub_pos.mpr hs.2)
     hc.aestronglyMeasurable (by simpa only [Real.norm_eq_abs] using hM s hsT) x).symm
 
+/-- Taking the trace preserves the time integrability supplied by cancellation. -/
+theorem intervalIntegrable_heat_laplacian {α T t M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E, |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x : E) :
+    IntervalIntegrable (fun s : ℝ =>
+      (Δ (heatSolution (t - s) (fun y => f (s, y)))) x) volume 0 t := by
+  have hi := intervalIntegrable_heat_hessian hα hα1 ht hf hM hK x
+  simp_rw [laplacian_eq_hessian_trace]
+  have hd (i : Fin 3) : IntervalIntegrable (fun s : ℝ =>
+      fderiv ℝ (fderiv ℝ (heatSolution (t - s) (fun y => f (s, y)))) x
+        (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i))
+      volume 0 t :=
+    ⟨(hi.1.apply_continuousLinearMap _).apply_continuousLinearMap _,
+      (hi.2.apply_continuousLinearMap _).apply_continuousLinearMap _⟩
+  simpa only [Finset.sum_apply] using IntervalIntegrable.sum Finset.univ (fun i _ => hd i)
+
 end Poincare.HeatDuhamelHeatEquation
