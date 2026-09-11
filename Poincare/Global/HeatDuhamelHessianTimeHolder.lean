@@ -391,4 +391,20 @@ theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
     exact mul_le_mul_of_nonneg_right
       (Real.rpow_le_rpow_of_nonpos ha (le_max_left _ _) (by linarith)) hJ
 
+/-- Integrating the actual time derivative bounds a kernel Hessian increment. -/
+theorem norm_hessian_time_difference_le {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) (y : E) :
+    ‖Hess b y - Hess a y‖ ≤ ∫ r in a..b, ‖DtHess (max a r) y‖ := by
+  have hD : Continuous (fun r : ℝ => DtHess (max a r) y) :=
+    continuous_hessian_time_deriv_pos.comp
+      (((continuous_const.max continuous_id).subtype_mk
+        (fun r => ha.trans_le (le_max_left _ _))).prodMk continuous_const)
+  have hd (r : ℝ) (hr : r ∈ uIcc a b) :
+      HasDerivAt (fun t : ℝ => Hess t y) (DtHess (max a r) y) r := by
+    rw [uIcc_of_le hab] at hr
+    rw [max_eq_right hr.1]
+    exact (hasDerivAt_hessian_time (ha.trans_le hr.1) y).differentiableAt.hasDerivAt
+  have he := intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hD.intervalIntegrable a b)
+  rw [← he]
+  exact intervalIntegral.norm_integral_le_integral_norm hab
+
 end Poincare.HeatDuhamelHessianTimeHolder
