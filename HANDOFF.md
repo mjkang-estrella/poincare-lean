@@ -442,6 +442,17 @@ and a restricted-domain variant of the record constructor, since the landed
 one fixes each coordinate domain to an entire chart target. The follow-up
 `intrinsic-laplacian-coordinate-form` targets both.
 
+`heat-duhamel-heat-equation` landed as a verified partial
+(`Global/HeatDuhamelHeatEquation.lean`, gate PASS, 11 theorems): Mathlib's
+Euclidean Laplacian equals the coordinate Hessian trace, the heat
+convolution Hessian and Laplacian are integrable in forcing time, the
+Laplacian of the Duhamel value is the time integral of the convolution
+Laplacian, the interior time derivative is the spatial Laplacian, the
+boundary limit along the diagonal is `f(t,x)`, and the value at time zero
+vanishes. Exactly one general calculus lemma remains, the Leibniz rule for
+an integral with a moving upper limit and a parameter-dependent integrand;
+the follow-up `moving-limit-leibniz-rule` isolates it and then applies it.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
