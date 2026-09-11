@@ -205,4 +205,16 @@ def ofDerivatives
   hasFDeriv_du := hddu
   hasDeriv_time := hut
 
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+
+theorem holder_tendstoUniformly {v : ℕ → Y (E := E) α T F} {w : Y (E := E) α T F}
+    (h : Tendsto v atTop (𝓝 w)) : TendstoUniformly (fun n p => v n p) w atTop := by
+  apply Metric.tendstoUniformly_iff.2
+  intro ε hε
+  filter_upwards [(Metric.tendsto_nhds.1 h) ε hε] with n hn p
+  have hb := Poincare.ParabolicHolder.norm_le (w - v n) p
+  change ‖w p - v n p‖ ≤ ‖w - v n‖ at hb
+  rw [dist_eq_norm]
+  exact hb.trans_lt (by simpa only [dist_eq_norm, norm_sub_rev] using hn)
+
 end Poincare.ParabolicSolutionGraph
