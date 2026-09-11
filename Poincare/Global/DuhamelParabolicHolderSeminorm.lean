@@ -66,4 +66,20 @@ theorem duhamel_hessian_parabolic_holder :
         (mul_le_mul_of_nonneg_left htpow (mul_nonneg hC₂.le hK))
     _ = (C₁ + C₂) * K * ParabolicHolder.parabolicDist p q ^ α := by ring
 
+/-- The Duhamel Hessian satisfies the landed parabolic Hölder predicate. -/
+theorem hasHolderBound_duhamel_hessian :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  ParabolicHolder.HasHolderBound α (ParabolicHolder.cylinder («E» := E) T)
+    (fun p : ℝ × E => fderiv ℝ (fderiv ℝ (u p.1)) p.2) (C * K) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hbound⟩ := duhamel_hessian_parabolic_holder α hα hα1
+  exact ⟨C, hC, hbound⟩
+
 end Poincare.DuhamelParabolicHolderSeminorm
