@@ -319,4 +319,17 @@ theorem gradient_heatSolution_sub_bound {t M N L : ℝ} (ht : 0 < t)
   rw [(heatSolution_hasFDerivAt ht (hf.sub hg) hL x).fderiv] at hb
   exact hb
 
+/-- Reversing Duhamel time keeps the gradient kernel fixed when comparing forcing times. -/
+theorem duhamel_gradient_reversed {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (cylinder T))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s,y)| ≤ M) (x : E) :
+    fderiv ℝ (fun z : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t-s) (fun y => f (s,y)) z) x =
+      ∫ s in (0 : ℝ)..t, fderiv ℝ (heatSolution s (fun y => f (t-s,y))) x := by
+  rw [(hasFDerivAt_duhamel ht hf hM x).fderiv]
+  have he := intervalIntegral.integral_comp_sub_left
+    (fun s : ℝ => fderiv ℝ (heatSolution s (fun y => f (t-s,y))) x)
+    (a := 0) (b := t) t
+  simpa only [sub_sub_cancel, sub_self, sub_zero] using he
+
 end Poincare.DuhamelSolutionOperatorBound
