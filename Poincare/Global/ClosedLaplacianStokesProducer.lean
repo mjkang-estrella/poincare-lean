@@ -204,4 +204,81 @@ theorem localizedLaplacian_continuous_of_coefficients
     rw [hcoord z]
     exact hdiv.symm
 
+/-- A partial producer with every residual coefficient obligation stated as
+an argument. Chart measures, partitioned scalar extensions and Laplacian
+measurability are constructed rather than supplied. -/
+def geometry_of_coordinate_coefficients
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ)
+    (hreg : ContMDiff I 𝓘(ℝ) 2 f)
+    (C : FiniteExtendedChartCover (n := n) (M := M))
+    (ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ)
+    (hρ : ρ.IsSubordinate (fun i ↦ (extChartAt I (C.anchor i)).source))
+    (w : Fin C.chartCount → E → ℝ)
+    (a : Fin C.chartCount → E → Fin n → Fin n → ℝ)
+    (Γ : Fin C.chartCount → E → Fin n → Fin n → Fin n → ℝ)
+    (hw : ∀ i, ContDiff ℝ 1 (w i))
+    (ha : ∀ i j k, ContDiff ℝ 1 (fun z ↦ a i z j k))
+    (hweight : ∀ i (z : (extChartAt I (C.anchor i)).target),
+      w i z = (rawHausdorffLebesgueScale n : ℝ) *
+        inverseChartPullbackVolumeDensity g (C.anchor i) z)
+    (hcompat : ∀ i (z : (extChartAt I (C.anchor i)).target) (j : Fin n),
+      (∑ k : Fin n, fderiv ℝ (fun y ↦ w i y * a i y k j) z
+        (EuclideanSpace.single k (1 : ℝ))) =
+        w i z * (-(∑ k : Fin n, ∑ l : Fin n, a i z k l * Γ i z j k l)))
+    (hcoord : ∀ i (z : (extChartAt I (C.anchor i)).target),
+      g.laplacianAt (fun x ↦ ρ i x * f x)
+        (inverseExtendedChartParametrization (n := n) (C.anchor i) z) =
+        christoffelCoordinateLaplacian (a i) (Γ i)
+          (coordinateScalar (n := n) (C.anchor i) (fun x ↦ ρ i x * f x)) z) :
+    FiniteSubordinateHausdorffLaplacianGeometry g f := by
+  have hsupport (i : Fin C.chartCount) :
+      tsupport (fun x ↦ ρ i x * f x) ⊆ (extChartAt I (C.anchor i)).source :=
+    tsupport_mul_subset_left.trans (hρ i)
+  have htwo : (2 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    rw [show (2 : ℕ∞ω) = ((2 : ℕ∞) : ℕ∞ω) from rfl,
+      show (∞ : ℕ∞ω) = ((⊤ : ℕ∞) : ℕ∞ω) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hlocal (i : Fin C.chartCount) :
+      ContMDiff I 𝓘(ℝ) 2 (fun x ↦ ρ i x * f x) :=
+    ((ρ i).contMDiff.of_le htwo).mul hreg
+  exact {
+    chartCount := C.chartCount
+    coordinateDomain := fun i ↦ (extChartAt I (C.anchor i)).target
+    coordinateDomain_measurable := fun i ↦ (isOpen_extChartAt_target (C.anchor i)).measurableSet
+    inverseChart := fun i ↦ inverseExtendedChartParametrization (n := n) (C.anchor i)
+    inverseChart_measurable := fun i ↦
+      (inverseExtendedChartParametrization_isEmbedding (n := n) (C.anchor i)).continuous.measurable
+    chartRegion := fun i ↦ (extChartAt I (C.anchor i)).source
+    chartRegion_isOpen := fun i ↦ isOpen_extChartAt_source (C.anchor i)
+    density := fun i ↦ inverseChartPullbackVolumeDensity g (C.anchor i)
+    density_nonneg := fun i ↦ Eventually.of_forall fun z ↦
+      (inverseChartPullbackVolumeDensity_pos g (C.anchor i) z).le
+    density_integrable := fun i ↦ openChart_density_integrable g (C.anchor i)
+    chartMeasure := fun i ↦ openChart_measure g (C.anchor i)
+    partition := ρ
+    partition_subordinate := hρ
+    f_contMDiff_two := hreg
+    coordinateRepresentative := fun i ↦
+      coordinateScalar (n := n) (C.anchor i) (fun x ↦ ρ i x * f x)
+    coordinateRepresentative_eq := fun i z ↦ indicator_of_mem z.2 _
+    coordinateRepresentative_contDiff_two := fun i ↦
+      coordinateScalar_contDiff_two (C.anchor i) _ (hsupport i) (hlocal i)
+    coordinateRepresentative_hasCompactSupport := fun i ↦
+      (coordinateScalar_support (C.anchor i) _ (hsupport i)).1
+    coordinateRepresentative_tsupport_subset_coordinateDomain := fun i ↦
+      (coordinateScalar_support (C.anchor i) _ (hsupport i)).2
+    weight := w
+    weight_contDiff_one := hw
+    weight_eq_density := hweight
+    inverseMetric := a
+    inverseMetric_contDiff_one := ha
+    christoffel := Γ
+    contractedChristoffel := fun i z j ↦ -(∑ k : Fin n, ∑ l : Fin n, a i z k l * Γ i z j k l)
+    contractedChristoffel_eq := fun _ _ _ ↦ rfl
+    density_inverseMetric_compatibility := hcompat
+    intrinsicCoordinateLaplacian_eq := hcoord
+    localizedLaplacian_aestronglyMeasurable := fun i ↦
+      (localizedLaplacian_continuous_of_coefficients g (C.anchor i) _ (hsupport i) (hlocal i)
+        (w i) (a i) (Γ i) (hw i) (ha i) (hweight i) (hcompat i) (hcoord i)).aestronglyMeasurable }
+
 end Poincare.ClosedLaplacianStokesProducer
