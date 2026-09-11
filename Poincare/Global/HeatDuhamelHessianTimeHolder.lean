@@ -1,0 +1,694 @@
+import Poincare.Global.HeatDuhamelHessianSpatialHolder
+set_option autoImplicit false
+set_option synthInstance.maxHeartbeats 200000
+set_option maxHeartbeats 800000
+noncomputable section
+open Set MeasureTheory
+open scoped Topology InnerProductSpace Interval
+namespace Poincare.HeatDuhamelHessianTimeHolder
+local notation "E" => Poincare.ClosedSmoothModel 3
+local instance : NormedAddCommGroup (E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
+local instance : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+  { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+local notation "Hess" => fun (t : ℝ) (x : E) =>
+  fderiv ℝ (fderiv ℝ (fun z : E => Poincare.heatKernel t z)) x
+open HeatKernelHessianMoments HeatDuhamelSpatialHolderHessian
+  HeatDuhamelHessianDifferentiation HeatDuhamelHessianSpatialHolder
+
+/-- The Euclidean inner product as a real bilinear operator. -/
+def euclideanForm : E →L[ℝ] E →L[ℝ] ℝ := innerSL ℝ
+
+/-- The Gaussian Hessian as a linear combination of two fixed bilinear forms. -/
+theorem hessian_eq_tensor {t : ℝ} (ht : t ≠ 0) (x : E) :
+    Hess t x = (heatKernel t x / (4 * t ^ 2)) •
+        (ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)) -
+      (heatKernel t x / (2 * t)) • euclideanForm := by
+  ext v w
+  have h := iteratedFDeriv_two_heatKernel_apply_bilinear_for_domination ht x v w
+  simp [iteratedFDeriv_two_apply] at h
+  rw [h]
+  change heatKernel t x * (⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ / (4 * t ^ 2) - ⟪v, w⟫_ℝ / (2 * t)) =
+    (heatKernel t x / (4 * t ^ 2)) * (⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ) -
+      (heatKernel t x / (2 * t)) * ⟪v, w⟫_ℝ
+  ring
+
+
+/-- The time derivative of the full Gaussian Hessian. -/
+theorem hasDerivAt_hessian_time {t : ℝ} (ht : 0 < t) (x : E) :
+    HasDerivAt (fun r : ℝ => Hess r x)
+      ((heatKernel t x * (‖x‖ ^ 2 / (16 * t ^ 4) - 7 / (8 * t ^ 3))) •
+          (ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)) -
+        (heatKernel t x * (‖x‖ ^ 2 / (8 * t ^ 3) - 5 / (4 * t ^ 2))) • euclideanForm) t := by
+  have hk : HasDerivAt (fun r : ℝ => heatKernel r x)
+      (heatKernel t x * (‖x‖ ^ 2 / (4 * t ^ 2) - 3 / (2 * t))) t := by
+    have h := (hasDerivAt_heatKernel_time ht x)
+    rw [← h.deriv, deriv_heatKernel_time_eq_heatKernel_mul ht x] at h
+    simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin, Nat.cast_ofNat] using h
+  have ha := hk.div (((hasDerivAt_id t).pow 2).const_mul 4)
+    (show 4 * t ^ 2 ≠ 0 by positivity)
+  have hb := hk.div ((hasDerivAt_id t).const_mul 2)
+    (show 2 * t ≠ 0 by positivity)
+  have ha' : HasDerivAt (fun r : ℝ => heatKernel r x / (4 * r ^ 2))
+      (heatKernel t x * (‖x‖ ^ 2 / (16 * t ^ 4) - 7 / (8 * t ^ 3))) t := by
+    convert ha using 1
+    dsimp
+    field_simp
+    ring
+  have hb' : HasDerivAt (fun r : ℝ => heatKernel r x / (2 * r))
+      (heatKernel t x * (‖x‖ ^ 2 / (8 * t ^ 3) - 5 / (4 * t ^ 2))) t := by
+    convert hb using 1
+    dsimp
+    field_simp
+    ring
+  apply ((ha'.smul_const (ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x))).sub
+    (hb'.smul_const euclideanForm)).congr_of_eventuallyEq
+  filter_upwards [eventually_gt_nhds ht] with r hr
+  exact hessian_eq_tensor hr.ne' x
+
+
+local notation "DtHess" => fun (t : ℝ) (x : E) => deriv (fun r : ℝ => Hess r x) t
+
+/-- A quartic Gaussian envelope for the time derivative at unit time. -/
+theorem norm_hessian_time_deriv_one_le (x : E) :
+    ‖DtHess 1 x‖ ≤ heatKernel 1 x * (‖x‖ ^ 4 + ‖x‖ ^ 2 + 2) := by
+  change ‖deriv (fun r : ℝ => Hess r x) 1‖ ≤ _
+  rw [(hasDerivAt_hessian_time zero_lt_one x).deriv]
+  have hI : ‖euclideanForm‖ ≤ 1 := norm_innerSL_le ℝ
+  have hQ : ‖ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)‖ = ‖x‖ ^ 2 := by
+    rw [ContinuousLinearMap.norm_smulRight_apply, innerSL_apply_norm]
+    ring
+  have hk : 0 ≤ heatKernel 1 x := heatKernel_nonneg zero_lt_one x
+  calc
+    _ ≤ ‖(heatKernel 1 x * (‖x‖ ^ 2 / (16 * 1 ^ 4) - 7 / (8 * 1 ^ 3))) •
+        (ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x))‖ +
+      ‖(heatKernel 1 x * (‖x‖ ^ 2 / (8 * 1 ^ 3) - 5 / (4 * 1 ^ 2))) • euclideanForm‖ :=
+      norm_sub_le _ _
+    _ ≤ (heatKernel 1 x * (‖x‖ ^ 2 / 16 + 7 / 8)) * ‖x‖ ^ 2 +
+        (heatKernel 1 x * (‖x‖ ^ 2 / 8 + 5 / 4)) * 1 := by
+      simp only [norm_smul, norm_mul, Real.norm_of_nonneg hk, hQ, one_pow, mul_one]
+      apply add_le_add
+      · gcongr
+        exact (norm_sub_le _ _).trans_eq (by simp [Real.norm_of_nonneg (sq_nonneg ‖x‖)])
+      · calc
+          _ ≤ (heatKernel 1 x * ‖‖x‖ ^ 2 / 8 - 5 / 4‖) * 1 :=
+            mul_le_mul_of_nonneg_left hI (by positivity)
+          _ ≤ _ := by
+            rw [mul_one]
+            apply mul_le_mul_of_nonneg_left _ hk
+            exact (norm_sub_le _ _).trans_eq (by simp [Real.norm_of_nonneg (sq_nonneg ‖x‖)])
+    _ ≤ _ := by nlinarith [mul_nonneg hk (sq_nonneg (‖x‖ ^ 2))]
+
+
+/-- Spatial continuity of the actual Hessian time derivative at positive time. -/
+theorem continuous_hessian_time_deriv {t : ℝ} (ht : 0 < t) :
+    Continuous (DtHess t) := by
+  have hQ : Continuous (fun x : E =>
+      ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)) :=
+    ((ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)).continuous.comp
+      euclideanForm.continuous).clm_apply euclideanForm.continuous
+  change Continuous (fun x : E => deriv (fun r : ℝ => Hess r x) t)
+  simp_rw [(hasDerivAt_hessian_time ht _).deriv]
+  exact ((((contDiff_heatKernel_spatial («E» := E) t).continuous).mul
+    (((continuous_norm.pow 2).div_const _).sub continuous_const)).smul hQ).sub
+    ((((contDiff_heatKernel_spatial («E» := E) t).continuous).mul
+      (((continuous_norm.pow 2).div_const _).sub continuous_const)).smul continuous_const)
+
+
+/-- The quartic envelope remains integrable after a fractional radial weight. -/
+theorem integrable_weighted_hessian_time_deriv_one {α : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) :
+    Integrable (fun x : E => ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  let c : ℝ := (4 * Real.pi) ^ (-(3 : ℝ) / 2)
+  have hc : 0 ≤ c := by dsimp [c]; positivity
+  have hmajor := (integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq
+    («E» := E) (a := (1 / 8 : ℝ)) (by norm_num)).const_mul (512 * c)
+  apply hmajor.mono'
+    ((continuous_hessian_time_deriv zero_lt_one).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+  refine Filter.Eventually.of_forall fun x => ?_
+  change ‖‖DtHess 1 x‖ * ‖x‖ ^ α‖ ≤ _
+  rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+  have hk0 : 0 ≤ heatKernel 1 x := heatKernel_nonneg zero_lt_one x
+  have hw : ‖x‖ ^ α ≤ 1 + ‖x‖ ^ 2 := by
+    by_cases hx : ‖x‖ ≤ 1
+    · exact (Real.rpow_le_one (norm_nonneg x) hx hα).trans (by nlinarith [sq_nonneg ‖x‖])
+    · have h := Real.rpow_le_rpow_of_exponent_le (le_of_not_ge hx) hα2
+      rw [Real.rpow_two] at h
+      linarith
+  have hbase : 1 + ‖x‖ ^ 2 ≤ 16 * Real.exp (‖x‖ ^ 2 / 16) := by
+    have h := Real.add_one_le_exp (‖x‖ ^ 2 / 16)
+    linarith
+  have hsquare : (1 + ‖x‖ ^ 2) ^ 2 ≤ 256 * Real.exp (‖x‖ ^ 2 / 8) := by
+    have h := pow_le_pow_left₀ (by positivity : 0 ≤ 1 + ‖x‖ ^ 2) hbase 2
+    have he : Real.exp (‖x‖ ^ 2 / 16) ^ 2 = Real.exp (‖x‖ ^ 2 / 8) := by
+      rw [pow_two, ← Real.exp_add]
+      congr 1
+      ring
+    simpa only [mul_pow, he, show (16 : ℝ) ^ 2 = 256 by norm_num] using h
+  have hpoly : ‖x‖ ^ 4 + ‖x‖ ^ 2 + 2 ≤ 2 * (1 + ‖x‖ ^ 2) ^ 2 := by
+    nlinarith [sq_nonneg (‖x‖ ^ 2), sq_nonneg ‖x‖]
+  have hk : heatKernel (1 : ℝ) x = c * Real.exp (-(‖x‖ ^ 2 / 4)) := by
+    simp [heatKernel, c, ClosedSmoothModel, neg_div]
+  calc
+    _ ≤ (heatKernel 1 x * (‖x‖ ^ 4 + ‖x‖ ^ 2 + 2)) * ‖x‖ ^ α :=
+      mul_le_mul_of_nonneg_right (norm_hessian_time_deriv_one_le x) (by positivity)
+    _ ≤ (heatKernel 1 x * (2 * (1 + ‖x‖ ^ 2) ^ 2)) * (1 + ‖x‖ ^ 2) := by
+      gcongr
+    _ ≤ (heatKernel 1 x * (2 * (256 * Real.exp (‖x‖ ^ 2 / 8)))) * (1 + ‖x‖ ^ 2) := by
+      gcongr
+    _ = (512 * c) * ((1 + ‖x‖ ^ 2) * Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2)) := by
+      rw [hk]
+      have he : Real.exp (-(‖x‖ ^ 2 / 4)) * Real.exp (‖x‖ ^ 2 / 8) =
+          Real.exp (-(1 / 8 : ℝ) * ‖x‖ ^ 2) := by
+        rw [← Real.exp_add]
+        congr 1
+        ring
+      calc
+        _ = (512 * c) * ((1 + ‖x‖ ^ 2) *
+          (Real.exp (-(‖x‖ ^ 2 / 4)) * Real.exp (‖x‖ ^ 2 / 8))) := by ring
+        _ = _ := by rw [he]
+
+
+/-- Parabolic dilation of the time derivative of the Gaussian Hessian. -/
+theorem hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+    DtHess (a ^ 2) (a • x) = ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) • DtHess 1 x := by
+  change deriv (fun r : ℝ => Hess r (a • x)) (a ^ 2) =
+    ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) • deriv (fun r : ℝ => Hess r x) 1
+  rw [(hasDerivAt_hessian_time (sq_pos_of_pos ha) (a • x)).deriv,
+    (hasDerivAt_hessian_time zero_lt_one x).deriv]
+  ext v w
+  change (heatKernel (a ^ 2) (a • x) *
+      (‖a • x‖ ^ 2 / (16 * (a ^ 2) ^ 4) - 7 / (8 * (a ^ 2) ^ 3))) *
+        (⟪a • x, v⟫_ℝ * ⟪a • x, w⟫_ℝ) -
+      (heatKernel (a ^ 2) (a • x) *
+        (‖a • x‖ ^ 2 / (8 * (a ^ 2) ^ 3) - 5 / (4 * (a ^ 2) ^ 2))) * ⟪v, w⟫_ℝ =
+    ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) *
+      ((heatKernel 1 x * (‖x‖ ^ 2 / (16 * 1 ^ 4) - 7 / (8 * 1 ^ 3))) *
+        (⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ) -
+      (heatKernel 1 x * (‖x‖ ^ 2 / (8 * 1 ^ 3) - 5 / (4 * 1 ^ 2))) * ⟪v, w⟫_ℝ)
+  rw [heatKernel_sq_smul a ha x, norm_smul_of_nonneg ha.le]
+  simp only [inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
+  field_simp
+
+/-- Pointwise parabolic dilation including the radial weight. -/
+theorem weighted_hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+    ‖DtHess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α =
+      ((a ^ 3)⁻¹ * (a ^ 4)⁻¹ * a ^ α) * (‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  rw [hessian_time_deriv_sq_smul a ha x,
+    norm_smul_of_nonneg (show 0 ≤ (a ^ 3)⁻¹ * (a ^ 4)⁻¹ by positivity) (DtHess 1 x),
+    norm_smul_of_nonneg ha.le, Real.mul_rpow ha.le (norm_nonneg x)]
+  ring
+
+
+/-- The Jacobian cancels the spatial normalization in the weighted integral. -/
+theorem weighted_hessian_time_deriv_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+    (∫ x : E, ‖DtHess (a ^ 2) x‖ * ‖x‖ ^ α) =
+      ((a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  have hchange := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => ‖DtHess (a ^ 2) y‖ * ‖y‖ ^ α) a (hR := ha.le)
+  apply mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne'))
+  calc
+    (a ^ 3)⁻¹ * (∫ x : E, ‖DtHess (a ^ 2) x‖ * ‖x‖ ^ α) =
+        ∫ x : E, ‖DtHess (a ^ 2) (a • x)‖ * ‖a • x‖ ^ α := by
+      simpa only [ClosedSmoothModel, finrank_euclideanSpace_fin, smul_eq_mul] using hchange.symm
+    _ = ((a ^ 3)⁻¹ * (a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+      simp_rw [weighted_hessian_time_deriv_sq_smul a ha]
+      rw [integral_const_mul]
+    _ = (a ^ 3)⁻¹ * (((a ^ 4)⁻¹ * a ^ α) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α)) := by ring
+
+
+/-- Weighted Bochner integrability at every positive time. -/
+theorem integrable_weighted_hessian_time_deriv {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
+    {t : ℝ} (ht : 0 < t) :
+    Integrable (fun x : E => ‖DtHess t x‖ * ‖x‖ ^ α) := by
+  have ha : 0 < Real.sqrt t := Real.sqrt_pos.2 ht
+  rw [← Real.sq_sqrt ht.le]
+  apply (integrable_comp_smul_iff volume _ ha.ne').1
+  simp_rw [weighted_hessian_time_deriv_sq_smul (Real.sqrt t) ha]
+  exact (integrable_weighted_hessian_time_deriv_one hα hα2).const_mul _
+
+
+/-- Exact scaling of the weighted Hessian time-derivative moment. -/
+theorem weighted_hessian_time_deriv_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+    (∫ x : E, ‖DtHess t x‖ * ‖x‖ ^ α) =
+      t ^ (α / 2 - 2) * (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α) := by
+  have h := weighted_hessian_time_deriv_integral_sq (Real.sqrt t) (Real.sqrt_pos.2 ht) α
+  rw [Real.sq_sqrt ht.le] at h
+  rw [h]
+  congr 1
+  have hp : (Real.sqrt t) ^ 4 = t ^ 2 := by nlinarith [Real.sq_sqrt ht.le]
+  rw [hp, Real.sqrt_eq_rpow, ← Real.rpow_mul ht.le, Real.rpow_sub ht, Real.rpow_two]
+  rw [show (1 / 2 : ℝ) * α = α / 2 by ring]
+  ring
+
+/-- The weighted time derivative has a positive constant uniform for all positive times. -/
+theorem hessian_time_deriv_moment_bound :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ t : ℝ, 0 < t →
+      Integrable (fun x : E => ‖DtHess t x‖ * ‖x‖ ^ α) ∧
+      (∫ x : E, ‖DtHess t x‖ * ‖x‖ ^ α) ≤ C * t ^ (α / 2 - 2) := by
+  intro α hα hα1
+  refine ⟨max 1 (∫ x : E, ‖DtHess 1 x‖ * ‖x‖ ^ α),
+    lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro t ht
+  refine ⟨integrable_weighted_hessian_time_deriv hα.le (by linarith) ht, ?_⟩
+  rw [weighted_hessian_time_deriv_integral ht, mul_comm (t ^ (α / 2 - 2))]
+  exact mul_le_mul_of_nonneg_right (le_max_right _ _) (Real.rpow_nonneg ht.le _)
+
+/-- The new time interval contributes only the half-exponent Hölder tail. -/
+theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht₁ : t₁ ∈ Icc 0 T)
+    (ht₂ : t₂ ∈ Icc 0 T) (h12 : t₁ ≤ t₂) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ s in t₁..t₂, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y‖ ≤
+      ((∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * |t₂ - t₁| ^ (α / 2) := by
+  have h := norm_integral_cancelled_hessian_near_le hα hα1 h12
+    (fun s hs => hK s ⟨ht₁.1.trans hs.1.le, hs.2.le.trans ht₂.2⟩) x
+  rw [abs_of_nonneg (sub_nonneg.mpr h12)]
+  convert h using 1
+  ring
+
+/-- An interval ending before the observation time obeys the same short-interval bound. -/
+theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (hab : a ≤ b) (hbt : b ≤ t)
+    {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a b, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖∫ s in a..b, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      (K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)) * (2 / α) * (b - a) ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α)
+  have hA : 0 ≤ A := mul_nonneg hK0 (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+  have hi : IntervalIntegrable (fun s : ℝ => A * (b - s) ^ (α / 2 - 1)) volume a b := by
+    have h := ((intervalIntegral.intervalIntegrable_rpow'
+      (a := (0 : ℝ)) (b := b - a) (r := α / 2 - 1) (by linarith)).comp_sub_left b).symm
+    simp only [sub_zero, sub_sub_cancel] at h
+    exact h.const_mul A
+  have hb : ‖∫ s in Ioo a b, ∫ y : E,
+      (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ ≤
+      ∫ s in Ioo a b, A * (b - s) ^ (α / 2 - 1) := by
+    apply norm_integral_le_of_norm_le
+      ((intervalIntegrable_iff_integrableOn_Ioo_of_le hab).mp hi)
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    exact (norm_cancelled_hessian_integral_le hα.le (by linarith)
+      (by linarith [hs.2] : 0 < t - s) (hK s hs) x).trans
+      (mul_le_mul_of_nonneg_left
+        (Real.rpow_le_rpow_of_nonpos (sub_pos.mpr hs.2) (by linarith) (by linarith)) hA)
+  rw [restrict_Ioo_eq_restrict_Ioc, ← intervalIntegral.integral_of_le hab,
+    ← intervalIntegral.integral_of_le hab] at hb
+  refine hb.trans_eq ?_
+  have he := intervalIntegral.integral_comp_add_right (a := (0 : ℝ)) (b := b - a)
+    (fun s : ℝ => A * (b - s) ^ (α / 2 - 1)) a
+  simp only [zero_add, sub_add_cancel] at he
+  have hs (s : ℝ) : b - (s + a) = b - a - s := by ring
+  simp only [hs] at he
+  rw [← he, integral_hessian_majorant hα]
+
+/-- The recent part of a time increment costs twice the Hessian majorant. -/
+theorem near_hessian_time_difference_le {α K a t₁ t₂ : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (ha : a ≤ t₁) (h12 : t₁ ≤ t₂)
+    (hscale : t₁ - a ≤ t₂ - t₁) {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a t₁, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y) -
+      (∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y)‖ ≤
+      (2 * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * (t₂ - t₁) ^ (α / 2) := by
+  let A := K * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)
+  have hA : 0 ≤ A := mul_nonneg
+    (mul_nonneg hK0 (integral_nonneg (fun y =>
+      mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))))
+    (div_nonneg (by norm_num) hα.le)
+  have hp : (t₁ - a) ^ (α / 2) ≤ (t₂ - t₁) ^ (α / 2) :=
+    Real.rpow_le_rpow (sub_nonneg.mpr ha) hscale (by linarith)
+  calc
+    _ ≤ ‖∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y‖ +
+      ‖∫ s in a..t₁, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y‖ :=
+      norm_sub_le _ _
+    _ ≤ A * (t₁ - a) ^ (α / 2) + A * (t₁ - a) ^ (α / 2) :=
+      add_le_add (norm_integral_cancelled_hessian_before_le hα hα1 hK0 ha h12 hK x)
+        (norm_integral_cancelled_hessian_before_le hα hα1 hK0 ha le_rfl hK x)
+    _ ≤ A * (t₂ - t₁) ^ (α / 2) + A * (t₂ - t₁) ^ (α / 2) :=
+      add_le_add (mul_le_mul_of_nonneg_left hp hA) (mul_le_mul_of_nonneg_left hp hA)
+    _ = _ := by dsimp [A]; ring
+
+/-- Dilation gives joint continuity of the full DtHessian at positive times. -/
+theorem continuous_hessian_time_deriv_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => DtHess p.1 p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hunit : Continuous (DtHess 1) := continuous_hessian_time_deriv zero_lt_one
+  have ha : Continuous (fun p : Ioi (0 : ℝ) × E => Real.sqrt (p.1 : ℝ)) :=
+    Real.continuous_sqrt.comp (continuous_subtype_val.comp continuous_fst)
+  have hapos (p : Ioi (0 : ℝ) × E) : 0 < Real.sqrt (p.1 : ℝ) :=
+    Real.sqrt_pos.2 p.1.property
+  have hc : Continuous (fun p : Ioi (0 : ℝ) × E =>
+      (((Real.sqrt (p.1 : ℝ)) ^ 3)⁻¹ * ((Real.sqrt (p.1 : ℝ)) ^ 4)⁻¹) •
+        DtHess 1 ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)) :=
+    ((ha.pow 3).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')).mul
+      ((ha.pow 4).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')) |>.smul
+      (hunit.comp ((ha.inv₀ (fun p => (hapos p).ne')).smul continuous_snd))
+  apply hc.congr
+  intro p
+  have h := hessian_time_deriv_sq_smul (Real.sqrt (p.1 : ℝ)) (hapos p)
+    ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
+  simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
+
+
+/-- The weighted time derivative is integrable jointly on every positive time slab. -/
+theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (b : ℝ) :
+    Integrable (fun p : ℝ × E => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α)
+      ((volume.restrict (Icc a b)).prod volume) := by
+  let G : ℝ × E → ℝ := fun p => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α
+  have hpos (p : ℝ × E) : 0 < max a p.1 := ha.trans_le (le_max_left _ _)
+  have hD : Continuous (fun p : ℝ × E => DtHess (max a p.1) p.2) :=
+    continuous_hessian_time_deriv_pos.comp
+      (((continuous_const.max continuous_fst).subtype_mk hpos).prodMk continuous_snd)
+  have hg : Continuous G := hD.norm.mul
+    ((Real.continuous_rpow_const hα).comp continuous_snd.norm)
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  apply (integrable_prod_iff hg.aestronglyMeasurable).mpr
+  constructor
+  · refine Filter.Eventually.of_forall ?_
+    intro r
+    change Integrable (fun y : E => ‖DtHess (max a r) y‖ * ‖y‖ ^ α) volume
+    exact integrable_weighted_hessian_time_deriv hα hα2 (ha.trans_le (le_max_left a r))
+  · have hm := hg.norm.stronglyMeasurable.integral_prod_right' (ν := volume)
+    refine (integrable_const (a ^ (α / 2 - 2) * J)).mono' hm.aestronglyMeasurable ?_
+    refine Filter.Eventually.of_forall fun r => ?_
+    have he : (∫ y : E, ‖G (r, y)‖) = ∫ y : E, G (r, y) := by
+      apply integral_congr_ae
+      exact Filter.Eventually.of_forall fun y => Real.norm_of_nonneg
+        (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+    rw [Real.norm_of_nonneg (integral_nonneg (fun y => norm_nonneg _)), he]
+    change (∫ y : E, ‖DtHess (max a r) y‖ * ‖y‖ ^ α) ≤ _
+    rw [weighted_hessian_time_deriv_integral (ha.trans_le (le_max_left _ _))]
+    exact mul_le_mul_of_nonneg_right
+      (Real.rpow_le_rpow_of_nonpos ha (le_max_left _ _) (by linarith)) hJ
+
+/-- Integrating the actual time derivative bounds a kernel Hessian increment. -/
+theorem norm_hessian_time_difference_le {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) (y : E) :
+    ‖Hess b y - Hess a y‖ ≤ ∫ r in a..b, ‖DtHess (max a r) y‖ := by
+  have hD : Continuous (fun r : ℝ => DtHess (max a r) y) :=
+    continuous_hessian_time_deriv_pos.comp
+      (((continuous_const.max continuous_id).subtype_mk
+        (fun r => ha.trans_le (le_max_left _ _))).prodMk continuous_const)
+  have hd (r : ℝ) (hr : r ∈ uIcc a b) :
+      HasDerivAt (fun t : ℝ => Hess t y) (DtHess (max a r) y) r := by
+    rw [uIcc_of_le hab] at hr
+    rw [max_eq_right hr.1]
+    exact (hasDerivAt_hessian_time (ha.trans_le hr.1) y).differentiableAt.hasDerivAt
+  have he := intervalIntegral.integral_eq_sub_of_hasDerivAt hd (hD.intervalIntegrable a b)
+  rw [← he]
+  exact intervalIntegral.norm_integral_le_integral_norm hab
+
+/-- A weighted kernel Hessian time increment is linear away from time zero. -/
+theorem weighted_hessian_time_difference {α a b : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (hab : a ≤ b) :
+    Integrable (fun y : E => ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) ∧
+    (∫ y : E, ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) ≤
+      (b - a) * a ^ (α / 2 - 2) * (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) := by
+  let G : ℝ × E → ℝ := fun p => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  have hg : Integrable G ((volume.restrict (Icc a b)).prod volume) :=
+    integrable_time_weighted_hessian_deriv hα hα2 ha b
+  have hiMajor := hg.integral_prod_right
+  have hb (y : E) : ‖Hess b y - Hess a y‖ * ‖y‖ ^ α ≤ ∫ r in Icc a b, G (r, y) := by
+    calc
+      _ ≤ (∫ r in a..b, ‖DtHess (max a r) y‖) * ‖y‖ ^ α :=
+        mul_le_mul_of_nonneg_right (norm_hessian_time_difference_le ha hab y)
+          (Real.rpow_nonneg (norm_nonneg _) _)
+      _ = _ := by
+        rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab]
+        exact (intervalIntegral.integral_mul_const _ _).symm
+  have hH (t : ℝ) : Continuous (Hess t) :=
+    (((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 1) (by norm_num)).fderiv_right (m := 0) (by norm_num)).continuous
+  have hi : Integrable (fun y : E => ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) :=
+    hiMajor.mono' (((hH b).sub (hH a)).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_norm)).aestronglyMeasurable
+      (Filter.Eventually.of_forall fun y => by
+        change ‖‖Hess b y - Hess a y‖ * ‖y‖ ^ α‖ ≤ _
+        rw [Real.norm_of_nonneg (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))]
+        exact hb y)
+  refine ⟨hi, (integral_mono hi hiMajor hb).trans ?_⟩
+  rw [← integral_integral_swap hg]
+  calc
+    (∫ r in Icc a b, ∫ y : E, G (r, y)) ≤ ∫ _r in Icc a b, a ^ (α / 2 - 2) * J := by
+      apply integral_mono_ae hg.integral_prod_left (integrable_const _)
+      refine Filter.Eventually.of_forall fun r => ?_
+      change (∫ y : E, ‖DtHess (max a r) y‖ * ‖y‖ ^ α) ≤ _
+      rw [weighted_hessian_time_deriv_integral (ha.trans_le (le_max_left _ _))]
+      exact mul_le_mul_of_nonneg_right
+        (Real.rpow_le_rpow_of_nonpos ha (le_max_left _ _) (by linarith)) hJ
+    _ = _ := by
+      rw [integral_Icc_eq_integral_Ioc, ← intervalIntegral.integral_of_le hab,
+        intervalIntegral.integral_const, smul_eq_mul]
+      ring
+
+/-- The far-time fourth-order power integrates to the half Hölder exponent. -/
+theorem far_time_deriv_power_integral_le {α τ t : ℝ}
+    (hα1 : α < 1) (hτ : 0 < τ) (ht : τ ≤ t) :
+    τ * (∫ s in (0 : ℝ)..(t - τ), (t - s) ^ (α / 2 - 2)) ≤
+      (2 / (2 - α)) * τ ^ (α / 2) := by
+  have hq : α / 2 - 2 + 1 < 0 := by linarith
+  rw [intervalIntegral.integral_comp_sub_left
+    (fun r : ℝ => r ^ (α / 2 - 2)) t, sub_sub_cancel, sub_zero]
+  rw [integral_rpow (Or.inr ⟨by linarith, ?_⟩)]
+  · calc
+      τ * ((t ^ (α / 2 - 2 + 1) - τ ^ (α / 2 - 2 + 1)) / (α / 2 - 2 + 1)) ≤
+          τ * (-τ ^ (α / 2 - 2 + 1) / (α / 2 - 2 + 1)) := by
+        apply mul_le_mul_of_nonneg_left _ hτ.le
+        simp only [div_eq_mul_inv]
+        apply mul_le_mul_of_nonpos_right _ (inv_nonpos.mpr hq.le)
+        have hnn := Real.rpow_nonneg (hτ.le.trans ht) (α / 2 - 2 + 1)
+        simp only [div_eq_mul_inv] at hnn
+        linarith only [hnn]
+      _ = (2 / (2 - α)) * τ ^ (α / 2) := by
+        rw [show α / 2 - 2 + 1 = α / 2 - 1 by ring, Real.rpow_sub hτ, Real.rpow_one]
+        field_simp [hτ.ne', show 2 - α ≠ 0 by linarith, show α / 2 - 1 ≠ 0 by linarith]
+        ring_nf
+        all_goals
+          have hi := mul_inv_cancel₀ (show -2 + α ≠ 0 by linarith)
+          nlinarith only [hi]
+  · rw [uIcc_of_le ht]
+    intro hz
+    exact (not_le.mpr hτ) hz.1
+
+/-- Cancellation transfers the weighted kernel time increment to Hölder forcing. -/
+theorem norm_cancelled_hessian_time_difference_le {α a b M K : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (hab : a ≤ b) (hK0 : 0 ≤ K)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume) (hM : ∀ y, ‖f y‖ ≤ M)
+    (hK : ∀ x y : E, |f x - f y| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ y : E, (f (x - y) - f x) • Hess b y) -
+      (∫ y : E, (f (x - y) - f x) • Hess a y)‖ ≤
+      ((∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * K * (b - a)) * a ^ (α / 2 - 2) := by
+  rw [← integral_sub (integrable_cancelled_hessian (ha.trans_le hab) hf hM x)
+    (integrable_cancelled_hessian ha hf hM x)]
+  simp_rw [← smul_sub]
+  have hi := (weighted_hessian_time_difference hα hα2 ha hab).1.const_mul K
+  have hb (y : E) : ‖(f (x - y) - f x) • (Hess b y - Hess a y)‖ ≤
+      K * (‖Hess b y - Hess a y‖ * ‖y‖ ^ α) := by
+    have hd : ‖f (x - y) - f x‖ ≤ K * ‖y‖ ^ α := by
+      have he : x - y - x = -y := by abel
+      simpa only [he, norm_neg, Real.norm_eq_abs] using hK (x - y) x
+    calc
+      _ ≤ ‖f (x - y) - f x‖ * ‖Hess b y - Hess a y‖ :=
+        norm_real_smul_continuousLinearMap_two_le _ _
+      _ ≤ (K * ‖y‖ ^ α) * ‖Hess b y - Hess a y‖ :=
+        mul_le_mul_of_nonneg_right hd (norm_nonneg _)
+      _ = _ := by ring
+  calc
+    _ ≤ ∫ y : E, K * (‖Hess b y - Hess a y‖ * ‖y‖ ^ α) :=
+      norm_integral_le_of_norm_le hi (Filter.Eventually.of_forall hb)
+    _ = K * (∫ y : E, ‖Hess b y - Hess a y‖ * ‖y‖ ^ α) := integral_const_mul _ _
+    _ ≤ K * ((b - a) * a ^ (α / 2 - 2) * (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α)) :=
+      mul_le_mul_of_nonneg_left (weighted_hessian_time_difference hα hα2 ha hab).2 hK0
+    _ = _ := by ring
+
+/-- The far part of the Duhamel time increment has the required half Hölder power. -/
+theorem far_hessian_time_difference_le {α T t₁ t₂ M K : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (ht₁ : t₁ ∈ Icc 0 T) (ht₂ : t₂ ∈ Icc 0 T)
+    (h12 : t₁ < t₂) (hscale : t₂ - t₁ < t₁) (hK0 : 0 ≤ K)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M)
+    (hK : ∀ s ∈ Icc 0 T, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α) (x : E) :
+    ‖(∫ s in (0 : ℝ)..(t₁ - (t₂ - t₁)), ∫ y : E,
+        (f (s, x - y) - f (s, x)) • Hess (t₂ - s) y) -
+      (∫ s in (0 : ℝ)..(t₁ - (t₂ - t₁)), ∫ y : E,
+        (f (s, x - y) - f (s, x)) • Hess (t₁ - s) y)‖ ≤
+      ((∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * (2 / (2 - α))) *
+        K * (t₂ - t₁) ^ (α / 2) := by
+  let a := t₁ - (t₂ - t₁)
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  let F := fun r s => ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (r - s) y
+  have ha : 0 < a := sub_pos.mpr hscale
+  have hτ : 0 < t₂ - t₁ := sub_pos.mpr h12
+  have hat : a ≤ t₁ := sub_le_self t₁ hτ.le
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  have hFi (r : ℝ) (hr : r ∈ Icc 0 T) (har : a ≤ r) :
+      IntervalIntegrable (F r) volume 0 a :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ha.le).mpr
+      ((integrableOn_cancelled_hessian_time hα hα1 hr hf hK x).mono_set
+        (Ioo_subset_Ioo le_rfl har))
+  have hip : IntervalIntegrable (fun r : ℝ => r ^ (α / 2 - 2)) volume (t₂ - t₁) t₁ := by
+    apply intervalIntegral.intervalIntegrable_rpow (Or.inr ?_)
+    rw [uIcc_of_le hscale.le]
+    intro hz
+    exact (not_le.mpr hτ) hz.1
+  have hiB : IntervalIntegrable
+      (fun s : ℝ => J * K * (t₂ - t₁) * (t₁ - s) ^ (α / 2 - 2)) volume 0 a := by
+    have h := (hip.comp_sub_left t₁).symm
+    simp only [sub_self] at h
+    exact h.const_mul (J * K * (t₂ - t₁))
+  have hbound : ‖∫ s in (0 : ℝ)..a, F t₂ s - F t₁ s‖ ≤
+      ∫ s in (0 : ℝ)..a, J * K * (t₂ - t₁) * (t₁ - s) ^ (α / 2 - 2) := by
+    apply intervalIntegral.norm_integral_le_of_norm_le ha.le _ hiB
+    refine Filter.Eventually.of_forall fun s hs => ?_
+    have hsT : s ∈ Icc 0 T := ⟨hs.1.le, (hs.2.trans hat).trans ht₁.2⟩
+    have hsτ : t₂ - t₁ ≤ t₁ - s := by dsimp [a] at hs; linarith [hs.2]
+    have hlag : 0 < t₁ - s := hτ.trans_le hsτ
+    have hfc : Continuous (fun y : E => f (s, y)) :=
+      hf.comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hsT, mem_univ y⟩)
+    have hMs : ∀ y : E, ‖f (s, y)‖ ≤ M := by simpa only [Real.norm_eq_abs] using hM s hsT
+    have hd := norm_cancelled_hessian_time_difference_le hα.le (by linarith) hlag
+      (show t₁ - s ≤ t₂ - s by linarith) hK0 hfc.aestronglyMeasurable hMs (hK s hsT) x
+    have he : t₂ - s - (t₁ - s) = t₂ - t₁ := by ring
+    simpa only [he] using hd
+  change ‖(∫ s in (0 : ℝ)..a, F t₂ s) - (∫ s in (0 : ℝ)..a, F t₁ s)‖ ≤ _
+  rw [← intervalIntegral.integral_sub (hFi t₂ ht₂ (hat.trans h12.le)) (hFi t₁ ht₁ hat)]
+  refine hbound.trans ?_
+  rw [intervalIntegral.integral_const_mul]
+  calc
+    (J * K * (t₂ - t₁)) * (∫ s in (0 : ℝ)..a, (t₁ - s) ^ (α / 2 - 2)) =
+      (J * K) * ((t₂ - t₁) * (∫ s in (0 : ℝ)..a, (t₁ - s) ^ (α / 2 - 2))) := by ring
+    _ ≤ (J * K) * ((2 / (2 - α)) * (t₂ - t₁) ^ (α / 2)) :=
+      mul_le_mul_of_nonneg_left (far_time_deriv_power_integral_le hα1 hτ hscale.le)
+        (mul_nonneg hJ hK0)
+    _ = _ := by ring
+
+/-- The time Hölder estimate for the actual Duhamel Hessian, including both endpoints. -/
+theorem duhamel_hessian_time_holder :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  ∀ t₁ ∈ Icc 0 T, ∀ t₂ ∈ Icc 0 T, ∀ x : E,
+    ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖
+      ≤ C * K * |t₁ - t₂| ^ (α / 2) := by
+  intro α hα hα1
+  let B := (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)
+  let F := (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * (2 / (2 - α))
+  have hB : 0 ≤ B := mul_nonneg (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+    (div_nonneg (by norm_num) hα.le)
+  have hF : 0 ≤ F := mul_nonneg (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+    (div_nonneg (by norm_num) (by linarith))
+  refine ⟨max 1 (3 * B + F), lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro T _ _ f M K _ hK0 hf hM hK
+  let u : ℝ → E → ℝ := fun t x => ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  change ∀ t₁ ∈ Icc 0 T, ∀ t₂ ∈ Icc 0 T, ∀ x : E,
+    ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖ ≤
+      max 1 (3 * B + F) * K * |t₁ - t₂| ^ (α / 2)
+  have ordered (t₁ : ℝ) (ht₁ : t₁ ∈ Icc 0 T) (t₂ : ℝ) (ht₂ : t₂ ∈ Icc 0 T)
+      (h12 : t₁ ≤ t₂) (x : E) :
+      ‖fderiv ℝ (fderiv ℝ (u t₂)) x - fderiv ℝ (fderiv ℝ (u t₁)) x‖ ≤
+        (3 * B + F) * K * (t₂ - t₁) ^ (α / 2) := by
+    by_cases he : t₁ = t₂
+    · subst t₂
+      simp [Real.zero_rpow (show α / 2 ≠ 0 by linarith)]
+    have hlt : t₁ < t₂ := lt_of_le_of_ne h12 he
+    let H := fun r s => ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (r - s) y
+    have hi (r : ℝ) (hr : r ∈ Icc 0 T) (b : ℝ) (hb : 0 ≤ b) (hbr : b ≤ r) :
+        IntervalIntegrable (H r) volume 0 b :=
+      (intervalIntegrable_iff_integrableOn_Ioo_of_le hb).mpr
+        ((integrableOn_cancelled_hessian_time hα hα1 hr hf hK x).mono_set
+          (Ioo_subset_Ioo le_rfl hbr))
+    have hsplit : (∫ s in (0 : ℝ)..t₂, H t₂ s) =
+        (∫ s in (0 : ℝ)..t₁, H t₂ s) + (∫ s in t₁..t₂, H t₂ s) :=
+      (intervalIntegral.integral_add_adjacent_intervals (hi t₂ ht₂ t₁ ht₁.1 h12)
+        ((hi t₂ ht₂ t₁ ht₁.1 h12).symm.trans (hi t₂ ht₂ t₂ ht₂.1 le_rfl))).symm
+    have htail : ‖∫ s in t₁..t₂, H t₂ s‖ ≤ B * K * (t₂ - t₁) ^ (α / 2) := by
+      simpa only [abs_of_nonneg (sub_nonneg.mpr h12)] using hessian_tail_bound hα hα1 ht₁ ht₂ h12 hK x
+    have hoverlap : ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤
+        (2 * B + F) * K * (t₂ - t₁) ^ (α / 2) := by
+      by_cases hsmall : t₁ ≤ t₂ - t₁
+      · have hn := near_hessian_time_difference_le hα hα1 hK0 ht₁.1 h12
+          (by simpa using hsmall)
+          (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht₁.2⟩) x
+        have hn' : ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤
+            (2 * B) * K * (t₂ - t₁) ^ (α / 2) := by
+          convert hn using 1
+          dsimp [B]
+          ring
+        exact hn'.trans (mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (by linarith : 2 * B ≤ 2 * B + F) hK0)
+          (Real.rpow_nonneg (sub_nonneg.mpr h12) _))
+      have hscale : t₂ - t₁ < t₁ := lt_of_not_ge hsmall
+      let a := t₁ - (t₂ - t₁)
+      have ha : 0 < a := sub_pos.mpr hscale
+      have hat : a ≤ t₁ := sub_le_self t₁ (sub_nonneg.mpr h12)
+      have hs (r : ℝ) (hr : r ∈ Icc 0 T) (htr : t₁ ≤ r) :
+          (∫ s in (0 : ℝ)..t₁, H r s) =
+            (∫ s in (0 : ℝ)..a, H r s) + (∫ s in a..t₁, H r s) :=
+        (intervalIntegral.integral_add_adjacent_intervals (hi r hr a ha.le (hat.trans htr))
+          ((hi r hr a ha.le (hat.trans htr)).symm.trans (hi r hr t₁ ht₁.1 htr))).symm
+      have hn : ‖(∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s)‖ ≤
+          (2 * B) * K * (t₂ - t₁) ^ (α / 2) := by
+        have h := near_hessian_time_difference_le hα hα1 hK0 hat h12
+          (by dsimp [a]; linarith)
+          (fun s hs => hK s ⟨ha.le.trans hs.1.le, hs.2.le.trans ht₁.2⟩) x
+        convert h using 1
+        dsimp [B]
+        ring
+      have hfar : ‖(∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)‖ ≤
+          F * K * (t₂ - t₁) ^ (α / 2) :=
+        far_hessian_time_difference_le hα hα1 ht₁ ht₂ hlt hscale hK0 hf hM hK x
+      rw [hs t₂ ht₂ h12, hs t₁ ht₁ le_rfl]
+      calc
+        _ = ‖((∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)) +
+            ((∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s))‖ := by congr 1; abel
+        _ ≤ ‖(∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)‖ +
+            ‖(∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s)‖ := norm_add_le _ _
+        _ ≤ F * K * (t₂ - t₁) ^ (α / 2) + (2 * B) * K * (t₂ - t₁) ^ (α / 2) :=
+          add_le_add hfar hn
+        _ = _ := by ring
+    rw [hessian_duhamel_eq_integral hα hα1 ht₂ hf hM hK x,
+      hessian_duhamel_eq_integral hα hα1 ht₁ hf hM hK x]
+    change ‖(∫ s in (0 : ℝ)..t₂, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤ _
+    rw [hsplit]
+    calc
+      _ = ‖((∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)) +
+          (∫ s in t₁..t₂, H t₂ s)‖ := by congr 1; abel
+      _ ≤ ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ +
+          ‖∫ s in t₁..t₂, H t₂ s‖ := norm_add_le _ _
+      _ ≤ (2 * B + F) * K * (t₂ - t₁) ^ (α / 2) + B * K * (t₂ - t₁) ^ (α / 2) :=
+        add_le_add hoverlap htail
+      _ = _ := by ring
+  intro t₁ ht₁ t₂ ht₂ x
+  have hraw : ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖ ≤
+      (3 * B + F) * K * |t₁ - t₂| ^ (α / 2) := by
+    rcases le_total t₁ t₂ with h12 | h21
+    · rw [abs_sub_comm t₁ t₂, abs_of_nonneg (sub_nonneg.mpr h12), norm_sub_rev]
+      exact ordered t₁ ht₁ t₂ ht₂ h12 x
+    · rw [abs_of_nonneg (sub_nonneg.mpr h21)]
+      exact ordered t₂ ht₂ t₁ ht₁ h21 x
+  exact hraw.trans (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_right (le_max_right 1 (3 * B + F)) hK0)
+    (Real.rpow_nonneg (abs_nonneg _) _))
+
+end Poincare.HeatDuhamelHessianTimeHolder
