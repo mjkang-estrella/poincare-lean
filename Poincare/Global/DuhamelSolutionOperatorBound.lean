@@ -505,4 +505,144 @@ theorem continuousOn_of_hasHolderBound {F : Type*} [NormedAddCommGroup F]
   filter_upwards [self_mem_nhdsWithin] with q hq
   exact hg q hq p hp
 
+set_option maxHeartbeats 800000 in
+/-- The constant-coefficient Duhamel solution is bounded in the full solution graph norm. -/
+theorem exists_solution_graph_bound :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ f : ParabolicHolder.Y («E» := E) α T ℝ,
+    ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
+      (∀ p ∈ ParabolicHolder.cylinder («E» := E) T,
+        G.u p = ∫ s in (0:ℝ)..p.1, Poincare.heatSolution (p.1 - s) (fun y => f (s, y)) p.2) ∧
+      ‖G‖ ≤ C * ‖f‖ := by
+  intro α hα hα1
+  obtain ⟨A, hA, hAb⟩ := duhamel_hessian_bound α hα hα1
+  obtain ⟨B, hB, hBb⟩ := DuhamelParabolicHolderSeminorm.hasHolderBound_duhamel_hessian α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_time_derivative_bound α hα hα1
+  obtain ⟨D, hD, hDb⟩ := duhamel_time_derivative_holder α hα hα1
+  obtain ⟨V, hV, hVb⟩ := duhamel_value_time_estimates α hα hα1
+  obtain ⟨W, hW, hWb⟩ := duhamel_value_parabolic_holder α hα hα1
+  obtain ⟨Q, hQ, hQb⟩ := duhamel_gradient_parabolic_holder α hα hα1
+  let J := ∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖
+  have hJ : 0 ≤ J := integral_nonneg (fun _ => norm_nonneg _)
+  refine ⟨(1+3*V)+2*W+(1+3*C)+(1+3*D)+2*J+2*Q+A+B, by positivity, ?_⟩
+  intro T hT hT1 f
+  let N := ‖f‖
+  have hN : 0 ≤ N := norm_nonneg f
+  have hfH : HasHolderBound α (cylinder T) f N := ParabolicHolder.hasHolderBound f
+  have hf : ContinuousOn f (cylinder T) := continuousOn_of_hasHolderBound hα hfH
+  have hfM : ∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ N :=
+    fun t _ x => ParabolicHolder.norm_le f (t,x)
+  have hfK : ∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x)-f (t,y)| ≤ N*‖x-y‖^α := by
+    intro t ht x y
+    simpa [parabolicDist, Real.norm_eq_abs] using hfH (t,x) ⟨ht, mem_univ x⟩ (t,y) ⟨ht, mem_univ y⟩
+  let u : ℝ → E → ℝ := fun t x => ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  let v : ℝ × E → ℝ := fun p => f p + (Δ (u p.1)) p.2
+  let d : ℝ × E → E →L[ℝ] ℝ := fun p => fderiv ℝ (u p.1) p.2
+  let dd : ℝ × E → E →L[ℝ] E →L[ℝ] ℝ := fun p => fderiv ℝ (fderiv ℝ (u p.1)) p.2
+  have hpow (t : ℝ) (ht : t ∈ Icc 0 T) : t^(α/2) ≤ 1 :=
+    Real.rpow_le_one ht.1 (ht.2.trans hT1) (by linarith)
+  have htime := hCb T hT hT1 f N N hN hN hf hfM hfK
+  have hvalue := hVb T hT hT1 f N N hN hN hf hfM hfK
+  have huB : ∀ p ∈ cylinder T, ‖u p.1 p.2‖ ≤ (1+3*V)*N := by
+    intro p hp
+    have hb : N+3*V*N*T^(α/2) ≤ (1+3*V)*N := by
+      have h := mul_le_of_le_one_right (by positivity : 0 ≤ 3*V*N)
+        (hpow T ⟨hT.le, le_rfl⟩)
+      nlinarith
+    exact (hvalue.1 p.1 hp.1 p.2).trans ((mul_le_mul_of_nonneg_left hb hp.1.1).trans
+      (mul_le_of_le_one_left (by positivity) (hp.1.2.trans hT1)))
+  have hvB : ∀ p ∈ cylinder T, ‖v p‖ ≤ (1+3*C)*N := by
+    intro p hp
+    have h := mul_le_of_le_one_right (by positivity : 0 ≤ 3*C*N) (hpow p.1 hp.1)
+    have hb := (htime p.1 hp.1 p.2).2
+    change |f p + (Δ (u p.1)) p.2| ≤ _
+    nlinarith
+  have hdB : ∀ p ∈ cylinder T, ‖d p‖ ≤ 2*J*N := by
+    intro p hp
+    have h := (duhamel_gradient_bound hp.1 hf hfM p.2).trans
+      (mul_le_of_le_one_right (by positivity) (Real.sqrt_le_one.mpr (hp.1.2.trans hT1)))
+    simpa only [d, J, mul_comm, mul_left_comm, mul_assoc] using h
+  have hddB : ∀ p ∈ cylinder T, ‖dd p‖ ≤ A*N := by
+    intro p hp
+    exact (((hAb T hT hT1 f N N hN hN hf hfM hfK).2 p.1 hp.1 p.2).2.2.2).trans
+      (mul_le_of_le_one_right (by positivity) (hpow p.1 hp.1))
+  have huH : HasHolderBound α (cylinder T) (fun p => u p.1 p.2) (2*W*N) := by
+    convert hWb T hT hT1 f N N hN hN hf hfM hfK using 1
+    ring
+  have hvH : HasHolderBound α (cylinder T) v ((1+3*D)*N) := by
+    convert hDb T hT hT1 f N N hN hN hf hfM hfH using 1
+    ring
+  have hdH : HasHolderBound α (cylinder T) d (2*Q*N) := by
+    convert hQb T hT hT1 f N N hN hN hf hfM hfH using 1
+    ring
+  have hddH : HasHolderBound α (cylinder T) dd (B*N) := hBb T hT hT1 f N N hN hN hf hfM hfK
+  have liftB {F : Type} [NormedAddCommGroup F] (g : ℝ × E → F) {b : ℝ}
+      (hb : ∀ p ∈ cylinder T, ‖g p‖ ≤ b) :
+      ∀ p ∈ cylinder T, ‖(cylinder T).indicator g p‖ ≤ b := by
+    intro p hp
+    simpa only [indicator_of_mem hp] using hb p hp
+  have liftH {F : Type} [NormedAddCommGroup F] (g : ℝ × E → F) {b : ℝ}
+      (hb : HasHolderBound α (cylinder T) g b) :
+      HasHolderBound α (cylinder T) ((cylinder T).indicator g) b := by
+    intro p hp q hq
+    simpa only [indicator_of_mem hp, indicator_of_mem hq] using hb p hp q hq
+  let iu := (cylinder T).indicator (fun p : ℝ × E => u p.1 p.2)
+  let iv := (cylinder T).indicator v
+  let idu := (cylinder T).indicator d
+  let iddu := (cylinder T).indicator dd
+  have huS (t : ℝ) (ht : t ∈ Icc 0 T) : (fun z : E => iu (t,z)) = u t := by
+    funext z
+    exact indicator_of_mem (show (t,z) ∈ cylinder T from ⟨ht, mem_univ z⟩) _
+  have hdS (t : ℝ) (ht : t ∈ Icc 0 T) : (fun z : E => idu (t,z)) = fderiv ℝ (u t) := by
+    funext z
+    exact indicator_of_mem (show (t,z) ∈ cylinder T from ⟨ht, mem_univ z⟩) _
+  have hzero : ∀ x : E, iu (0,x) = 0 := by
+    intro x
+    rw [show iu (0,x) = u 0 x from congrFun (huS 0 ⟨le_rfl, hT.le⟩) x]
+    exact intervalIntegral.integral_same
+  have hdu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z => iu (t,z)) (idu (t,x)) x := by
+    intro t ht x
+    rw [huS t ht]
+    have hd0 : idu (t,x) = fderiv ℝ (u t) x := congrFun (hdS t ht) x
+    rw [hd0]
+    exact (hasFDerivAt_duhamel ht hf hfM x).differentiableAt.hasFDerivAt
+  have hddu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z => idu (t,z)) (iddu (t,x)) x := by
+    intro t ht x
+    rw [hdS t ht]
+    change HasFDerivAt (fderiv ℝ (u t)) ((cylinder T).indicator dd (t,x)) x
+    rw [indicator_of_mem (show (t,x) ∈ cylinder T from ⟨ht, mem_univ x⟩)]
+    exact (((contDiff_two_duhamel hα hα1 ht hf hfM hfK).fderiv_right
+      (m := 1) (by norm_num)).differentiable_one x).hasFDerivAt
+  have hut : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasDerivWithinAt (fun s => iu (s,x)) (iv (t,x)) (Icc 0 T) t := by
+    intro t ht x
+    change HasDerivWithinAt _ ((cylinder T).indicator v (t,x)) _ _
+    rw [indicator_of_mem (show (t,x) ∈ cylinder T from ⟨ht, mem_univ x⟩)]
+    exact ((htime t ht x).1).congr_of_mem (fun s hs => congrFun (huS s hs) x) ht
+  let G : ParabolicSolutionGraph.Graph («E» := E) α T :=
+    ParabolicSolutionGraph.ofDerivatives iu iv idu iddu
+      (fun p hp => indicator_of_notMem hp _) ⟨_, liftB (fun p => u p.1 p.2) huB⟩ ⟨_, liftH (fun p => u p.1 p.2) huH⟩
+      (fun p hp => indicator_of_notMem hp _) ⟨_, liftB v hvB⟩ ⟨_, liftH v hvH⟩
+      (fun p hp => indicator_of_notMem hp _) ⟨_, liftB d hdB⟩ ⟨_, liftH d hdH⟩
+      (fun p hp => indicator_of_notMem hp _) ⟨_, liftB dd hddB⟩ ⟨_, liftH dd hddH⟩
+      hzero hdu hddu hut
+  refine ⟨G, ?_, ?_⟩
+  · intro p hp
+    change (cylinder T).indicator (fun q : ℝ × E => u q.1 q.2) p = u p.1 p.2
+    exact indicator_of_mem hp _
+  · have huN : ‖G.u‖ ≤ (1+3*V)*N+2*W*N :=
+      norm_le_of_bounds G.u (by positivity) (by positivity) (liftB (fun p => u p.1 p.2) huB) (liftH (fun p => u p.1 p.2) huH)
+    have hvN : ‖G.ut‖ ≤ (1+3*C)*N+(1+3*D)*N :=
+      norm_le_of_bounds G.ut (by positivity) (by positivity) (liftB v hvB) (liftH v hvH)
+    have hdN : ‖G.du‖ ≤ 2*J*N+2*Q*N :=
+      norm_le_of_bounds G.du (by positivity) (by positivity) (liftB d hdB) (liftH d hdH)
+    have hddN : ‖G.ddu‖ ≤ A*N+B*N :=
+      norm_le_of_bounds G.ddu (by positivity) (by positivity) (liftB dd hddB) (liftH dd hddH)
+    rw [ParabolicSolutionGraph.norm_eq]
+    change ‖G.u‖+‖G.ut‖+‖G.du‖+‖G.ddu‖ ≤ _ * N
+    nlinarith
+
 end Poincare.DuhamelSolutionOperatorBound
