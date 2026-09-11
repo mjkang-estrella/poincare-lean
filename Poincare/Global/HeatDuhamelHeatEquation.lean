@@ -173,4 +173,30 @@ theorem continuousOn_heat_integrand_extension {T M : ℝ}
       (fun y => f (p.2, y)) x
     rwa [Real.sq_sqrt hpos.le] at he
 
+/-- The Duhamel boundary term converges to the forcing at the observation point. -/
+theorem tendsto_heat_integrand_diagonal {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    Filter.Tendsto (fun s : ℝ => heatSolution (t - s) (fun y => f (s, y)) x)
+      (𝓝[Ico 0 t] t) (𝓝 (f (t, x))) := by
+  have hc : ContinuousOn (fun s : ℝ => ∫ y : E,
+      heatKernel 1 y * f (s, x - Real.sqrt (t - s) • y)) (Icc 0 T) :=
+    (continuousOn_rescaled_heat_integral hf hM x).comp
+      ((continuous_const.sub continuous_id).prodMk continuous_id).continuousOn
+      (fun s hs => ⟨mem_univ _, hs⟩)
+  have hl := (hc t ht).tendsto.mono_left
+    (nhdsWithin_mono t (show Ico 0 t ⊆ Icc 0 T from
+      fun s hs => ⟨hs.1, hs.2.le.trans ht.2⟩))
+  have hmass : (∫ y : E, heatKernel 1 y * f (t, x - Real.sqrt (t - t) • y)) =
+      f (t, x) := by
+    simp [integral_mul_const, integral_heatKernel_eq_one (show (0 : ℝ) < 1 by norm_num)]
+  rw [hmass] at hl
+  apply hl.congr'
+  filter_upwards [self_mem_nhdsWithin] with s hs
+  have hpos : 0 < t - s := sub_pos.mpr hs.2
+  have he := heatSolution_sq (Real.sqrt (t - s)) (Real.sqrt_pos.mpr hpos)
+    (fun y => f (s, y)) x
+  rw [Real.sq_sqrt hpos.le] at he
+  exact he.symm
+
 end Poincare.HeatDuhamelHeatEquation
