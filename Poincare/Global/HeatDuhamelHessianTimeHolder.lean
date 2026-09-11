@@ -98,4 +98,19 @@ theorem norm_hessian_time_deriv_one_le (x : E) :
             exact (norm_sub_le _ _).trans_eq (by simp [Real.norm_of_nonneg (sq_nonneg ‖x‖)])
     _ ≤ _ := by nlinarith [mul_nonneg hk (sq_nonneg (‖x‖ ^ 2))]
 
+
+/-- Spatial continuity of the actual Hessian time derivative at positive time. -/
+theorem continuous_hessian_time_deriv {t : ℝ} (ht : 0 < t) :
+    Continuous (DtHess t) := by
+  have hQ : Continuous (fun x : E =>
+      ContinuousLinearMap.smulRight (innerSL ℝ x) (innerSL ℝ x)) :=
+    ((ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)).continuous.comp
+      euclideanForm.continuous).clm_apply euclideanForm.continuous
+  change Continuous (fun x : E => deriv (fun r : ℝ => Hess r x) t)
+  simp_rw [(hasDerivAt_hessian_time ht _).deriv]
+  exact ((((contDiff_heatKernel_spatial («E» := E) t).continuous).mul
+    (((continuous_norm.pow 2).div_const _).sub continuous_const)).smul hQ).sub
+    ((((contDiff_heatKernel_spatial («E» := E) t).continuous).mul
+      (((continuous_norm.pow 2).div_const _).sub continuous_const)).smul continuous_const)
+
 end Poincare.HeatDuhamelHessianTimeHolder
