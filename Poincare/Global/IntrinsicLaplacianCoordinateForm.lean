@@ -261,4 +261,33 @@ theorem inverse_apply_coord
       rw [DeTurckPrincipalIdentity.inverseEntries_eq_coordinates G hG]
       rfl
 
+/-- The closed Christoffel operator has the standard inverse-Gram coordinates. -/
+theorem christoffelClosedOp_coord
+    (G : ClosedSmoothModel 3 → ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)
+    (z : ClosedSmoothModel 3) (hG : (G z).IsInvertible)
+    (hs : ∀ v w, G z v w = G z w v) (hd : DifferentiableAt ℝ G z)
+    (k i j : Fin 3) :
+    (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis.coord k
+      (RicciFlow.RicciFlow.christoffelClosedOp G z
+        (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ j)) =
+      (1 / 2 : ℝ) * ∑ m, DeTurckPrincipalSecondJet.inverseEntries (G z) k m *
+        (coordinateDirectionalDerivative (fun q ↦ G q
+            (EuclideanSpace.basisFun (Fin 3) ℝ j) (EuclideanSpace.basisFun (Fin 3) ℝ m)) i z +
+         coordinateDirectionalDerivative (fun q ↦ G q
+            (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ m)) j z -
+         coordinateDirectionalDerivative (fun q ↦ G q
+            (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ j)) m z) := by
+  have hderiv (a b v : ClosedSmoothModel 3) :
+      fderiv ℝ (fun q ↦ G q a b) z v = fderiv ℝ G z v a b := by
+    have h := (hd.hasFDerivAt.clm_apply (hasFDerivAt_const a z)).clm_apply
+      (hasFDerivAt_const b z)
+    simpa using congrArg (fun L : ClosedSmoothModel 3 →L[ℝ] ℝ ↦ L v) h.fderiv
+  rw [RicciFlow.RicciFlow.christoffelClosedOp_apply, inverse_apply_coord (G z) hG hs]
+  simp only [LinearMap.coe_toContinuousLinearMap', CovariantDerivative.christoffelFunctional,
+    coordinateDirectionalDerivative, ← EuclideanSpace.basisFun_apply, hderiv, Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro m _
+  dsimp
+  ring
+
 end Poincare.IntrinsicLaplacianCoordinateForm
