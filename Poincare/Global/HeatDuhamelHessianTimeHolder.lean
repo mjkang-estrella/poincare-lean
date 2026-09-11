@@ -168,4 +168,26 @@ theorem integrable_weighted_hessian_time_deriv_one {α : ℝ}
           (Real.exp (-(‖x‖ ^ 2 / 4)) * Real.exp (‖x‖ ^ 2 / 8))) := by ring
         _ = _ := by rw [he]
 
+
+/-- Parabolic dilation of the time derivative of the Gaussian Hessian. -/
+theorem hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+    DtHess (a ^ 2) (a • x) = ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) • DtHess 1 x := by
+  change deriv (fun r : ℝ => Hess r (a • x)) (a ^ 2) =
+    ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) • deriv (fun r : ℝ => Hess r x) 1
+  rw [(hasDerivAt_hessian_time (sq_pos_of_pos ha) (a • x)).deriv,
+    (hasDerivAt_hessian_time zero_lt_one x).deriv]
+  ext v w
+  change (heatKernel (a ^ 2) (a • x) *
+      (‖a • x‖ ^ 2 / (16 * (a ^ 2) ^ 4) - 7 / (8 * (a ^ 2) ^ 3))) *
+        (⟪a • x, v⟫_ℝ * ⟪a • x, w⟫_ℝ) -
+      (heatKernel (a ^ 2) (a • x) *
+        (‖a • x‖ ^ 2 / (8 * (a ^ 2) ^ 3) - 5 / (4 * (a ^ 2) ^ 2))) * ⟪v, w⟫_ℝ =
+    ((a ^ 3)⁻¹ * (a ^ 4)⁻¹) *
+      ((heatKernel 1 x * (‖x‖ ^ 2 / (16 * 1 ^ 4) - 7 / (8 * 1 ^ 3))) *
+        (⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ) -
+      (heatKernel 1 x * (‖x‖ ^ 2 / (8 * 1 ^ 3) - 5 / (4 * 1 ^ 2))) * ⟪v, w⟫_ℝ)
+  rw [heatKernel_sq_smul a ha x, norm_smul_of_nonneg ha.le]
+  simp only [inner_smul_left, conj_trivial, ClosedSmoothModel, finrank_euclideanSpace_fin]
+  field_simp
+
 end Poincare.HeatDuhamelHessianTimeHolder
