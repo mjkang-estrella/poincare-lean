@@ -254,4 +254,29 @@ theorem density_inverseMetric_compatibility
       ring
     _ = _ := density_inverse_contraction_three (a z) hsymm.inv D (w z) j
 
+/-- Global coefficient extensions inherit compatibility wherever they agree locally. -/
+theorem density_inverseMetric_compatibility_of_eventuallyEq
+    (g : ClosedSmoothRiemannianMetric 3 M₃) (p : M₃)
+    (w' : ClosedSmoothModel 3 → ℝ)
+    (a' : ClosedSmoothModel 3 → Fin 3 → Fin 3 → ℝ) :
+    let G := inverseChartPullbackGramMatrixField g p
+    let w := fun z ↦ (rawHausdorffLebesgueScale 3 : ℝ) * VolumeDensity.chartVolumeDensity (G z)
+    let a : ClosedSmoothModel 3 → Matrix (Fin 3) (Fin 3) ℝ := fun z ↦ (G z)⁻¹
+    let Γ := fun z j k l ↦ (1 / 2 : ℝ) * ∑ m, a z j m *
+      (coordinateDirectionalDerivative (fun y ↦ G y l m) k z +
+       coordinateDirectionalDerivative (fun y ↦ G y k m) l z -
+       coordinateDirectionalDerivative (fun y ↦ G y k l) m z)
+    ∀ z ∈ (extChartAt (closedSmoothModelWithCorners 3) p).target,
+      w' =ᶠ[𝓝 z] w → a' =ᶠ[𝓝 z] a → ∀ j : Fin 3,
+      (∑ k, fderiv ℝ (fun y ↦ w' y * a' y k j) z (EuclideanSpace.single k (1 : ℝ))) =
+      w' z * (-(∑ k, ∑ l, a' z k l * Γ z j k l)) := by
+  intro G w a Γ z hz hw ha j
+  have hprod (k : Fin 3) :
+      (fun y ↦ w' y * a' y k j) =ᶠ[𝓝 z] (fun y ↦ w y * a y k j) := by
+    filter_upwards [hw, ha] with y hy hya
+    rw [hy, hya]
+  simp_rw [(hprod _).fderiv_eq]
+  rw [hw.self_of_nhds, ha.self_of_nhds]
+  exact density_inverseMetric_compatibility g p z hz j
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
