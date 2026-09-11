@@ -486,4 +486,23 @@ theorem duhamel_gradient_parabolic_holder :
         (ht.trans (mul_le_mul_of_nonneg_left htp (by positivity)))
     _ = (C+2*J)*(M+K)*parabolicDist p q ^ α := by ring
 
+/-- Positive parabolic Hölder control implies continuity on the cylinder. -/
+theorem continuousOn_of_hasHolderBound {F : Type*} [NormedAddCommGroup F]
+    {α T K : ℝ} (hα : 0 < α) {g : ℝ × E → F}
+    (hg : HasHolderBound α (cylinder T) g K) : ContinuousOn g (cylinder T) := by
+  intro p hp
+  rw [ContinuousWithinAt, tendsto_iff_norm_sub_tendsto_zero]
+  have hc : Continuous (fun q : ℝ × E => K * parabolicDist q p ^ α) := by
+    dsimp [parabolicDist]
+    fun_prop (disch := positivity)
+  have hz : K * parabolicDist p p ^ α = 0 := by
+    simp [parabolicDist, Real.zero_rpow hα.ne']
+  have hlim : Filter.Tendsto (fun q => K * parabolicDist q p ^ α)
+      (nhdsWithin p (cylinder T)) (nhds (K * parabolicDist p p ^ α)) :=
+    hc.continuousAt.continuousWithinAt
+  rw [hz] at hlim
+  apply squeeze_zero' (Filter.Eventually.of_forall (fun q => norm_nonneg (g q - g p))) _ hlim
+  filter_upwards [self_mem_nhdsWithin] with q hq
+  exact hg q hq p hp
+
 end Poincare.DuhamelSolutionOperatorBound
