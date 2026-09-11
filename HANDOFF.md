@@ -475,8 +475,15 @@ with its quartic envelope, weighted integrability and exact moment scaling
 `t^{α/2−2}`; the tail, near and far estimates; and
 `duhamel_hessian_time_holder`, a bound `C·K·|t₁−t₂|^{α/2}` on the Duhamel
 Hessian difference at a fixed point. With the spatial half this gives the
-full parabolic Hölder control of `D²u`; the short combination is dispatched
-as `duhamel-parabolic-holder-seminorm`.
+full parabolic Hölder control of `D²u`, and the combination landed as
+`Global/DuhamelParabolicHolderSeminorm.lean` (gate PASS):
+`duhamel_hessian_parabolic_holder` bounds the Hessian difference between any
+two cylinder points by `C·K·parabolicDist^α`, and
+`hasHolderBound_duhamel_hessian` states it in the landed carrier's predicate.
+So the Hessian half of the constant-coefficient estimate `‖u‖_X ≤ C‖f‖_Y` is
+complete; what is left of L3 is the heat equation itself (blocked only on the
+moving-limit Leibniz rule) and the corresponding bounds for `uₜ`, which follow
+from the equation.
 
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
