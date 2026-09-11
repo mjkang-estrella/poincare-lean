@@ -279,4 +279,28 @@ theorem density_inverseMetric_compatibility_of_eventuallyEq
   rw [hw.self_of_nhds, ha.self_of_nhds]
   exact density_inverseMetric_compatibility g p z hz j
 
+/-- A shrunk finite cover carries simultaneous global smooth coefficient extensions. -/
+theorem exists_shrunk_cover_global_coefficients
+    (g : ClosedSmoothRiemannianMetric n M)
+    (C : FiniteExtendedChartCover (n := n) (M := M)) :
+    ∃ (V : Fin C.chartCount → Set M)
+      (ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ)
+      (w : Fin C.chartCount → E → ℝ)
+      (a : Fin C.chartCount → E → Fin n → Fin n → ℝ),
+      (⋃ i, V i) = univ ∧ (∀ i, IsOpen (V i)) ∧
+      (∀ i, closure (V i) ⊆ (extChartAt I (C.anchor i)).source) ∧
+      (∀ i, IsCompact ((extChartAt I (C.anchor i)) '' closure (V i))) ∧
+      ρ.IsSubordinate V ∧ (∀ i, ContDiff ℝ ∞ (w i)) ∧
+      (∀ i j k, ContDiff ℝ ∞ (fun z ↦ a i z j k)) ∧
+      (∀ i, ∀ z ∈ (extChartAt I (C.anchor i)) '' closure (V i),
+        w i =ᶠ[𝓝 z] (fun y ↦ (rawHausdorffLebesgueScale n : ℝ) *
+          VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g (C.anchor i) y))) ∧
+      (∀ i, ∀ z ∈ (extChartAt I (C.anchor i)) '' closure (V i),
+        a i =ᶠ[𝓝 z] (fun y ↦ ((inverseChartPullbackGramMatrixField g (C.anchor i) y)⁻¹ :
+          Matrix (Fin n) (Fin n) ℝ))) := by
+  obtain ⟨V, hcover, hopen, hclosure, hcompact, htarget, ρ, hρ⟩ := exists_shrunk_chart_cover C
+  choose w a hw ha hwe hae hd using
+    fun i ↦ exists_global_coefficients_on_compact g (C.anchor i) (hcompact i) (htarget i)
+  exact ⟨V, ρ, w, a, hcover, hopen, hclosure, hcompact, hρ, hw, ha, hwe, hae⟩
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
