@@ -157,4 +157,51 @@ theorem laplacian_continuous_of_coordinate_divergence
           (g.mdifferentiableAt_gradient contMDiffAt_const)
       _ = 0 := g.laplacianAt_const 0 y
 
+/-- The coefficient identities supply continuity, so measurability need not
+be a separate input to the Stokes constructor. -/
+theorem localizedLaplacian_continuous_of_coefficients
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) (f : M → ℝ)
+    (hf : tsupport f ⊆ (extChartAt I p).source)
+    (hreg : ContMDiff I 𝓘(ℝ) 2 f)
+    (w : E → ℝ) (a : E → Fin n → Fin n → ℝ)
+    (Γ : E → Fin n → Fin n → Fin n → ℝ)
+    (hw : ContDiff ℝ 1 w) (ha : ∀ i j, ContDiff ℝ 1 (fun z ↦ a z i j))
+    (hweight : ∀ z : (extChartAt I p).target,
+      w z = (rawHausdorffLebesgueScale n : ℝ) * inverseChartPullbackVolumeDensity g p z)
+    (hcompat : ∀ z : (extChartAt I p).target, ∀ j : Fin n,
+      (∑ i : Fin n, fderiv ℝ (fun y ↦ w y * a y i j) z
+        (EuclideanSpace.single i (1 : ℝ))) =
+        w z * (-(∑ i : Fin n, ∑ k : Fin n, a z i k * Γ z j i k)))
+    (hcoord : ∀ z : (extChartAt I p).target,
+      g.laplacianAt f (inverseExtendedChartParametrization (n := n) p z) =
+        christoffelCoordinateLaplacian a Γ (coordinateScalar (n := n) p f) z) :
+    Continuous (fun x ↦ g.laplacianAt f x) := by
+  let u := coordinateScalar (n := n) p f
+  have hu : ContDiff ℝ 2 u := coordinateScalar_contDiff_two p f hf hreg
+  let F := coordinateMetricFluxComponent w a u
+  have hF (i : Fin n) : ContDiff ℝ 1 (F i) :=
+    coordinateMetricFluxComponent_contDiff_one hw ha hu i
+  apply laplacian_continuous_of_coordinate_divergence g p f hf hreg w
+    (euclideanCoordinateDivergence F) hw.continuous
+  · exact continuous_finsetSum _ fun i _ ↦
+      ((hF i).continuous_fderiv one_ne_zero).clm_apply continuous_const
+  · intro z hz
+    rw [hweight ⟨z, hz⟩]
+    have hscale : 0 < (rawHausdorffLebesgueScale n : ℝ) := by
+      exact_mod_cast Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+        (Measure.hausdorffMeasure (Module.finrank ℝ E : ℝ)) (volume : Measure E)
+    exact mul_pos hscale (inverseChartPullbackVolumeDensity_pos g p ⟨z, hz⟩)
+  · intro z
+    have hdiv := euclideanCoordinateDivergence_coordinateMetricFluxComponent_eq
+      (contractedChristoffel := fun y j ↦ -(∑ i : Fin n, ∑ k : Fin n, a y i k * Γ y j i k))
+      (hw.differentiable one_ne_zero z)
+      (fun i j ↦ (ha i j).differentiable one_ne_zero z)
+      (fun j ↦ (coordinateDirectionalDerivative_contDiff_one hu j).differentiable one_ne_zero z)
+      (hcompat z)
+    rw [contractedCoordinateLaplacian_eq_christoffelCoordinateLaplacian
+      a Γ (fun y j ↦ -(∑ i : Fin n, ∑ k : Fin n, a y i k * Γ y j i k)) u z
+      (fun _ ↦ rfl)] at hdiv
+    rw [hcoord z]
+    exact hdiv.symm
+
 end Poincare.ClosedLaplacianStokesProducer
