@@ -168,4 +168,26 @@ theorem duhamel_value_time_estimates :
   intro t ht x
   simpa [u, abs_of_nonneg ht.1, mul_comm] using hi t ht 0 ⟨le_rfl, hT.le⟩ x
 
+/-- Bounded Lipschitz increments give every intermediate Hölder exponent. -/
+theorem holder_of_bounded_lipschitz {F : Type*} [NormedAddCommGroup F]
+    {α A B : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1) (hA : 0 ≤ A) (hB : 0 ≤ B)
+    {g : E → F} (hg : ∀ x, ‖g x‖ ≤ A)
+    (hlip : ∀ x y, ‖g x - g y‖ ≤ B * ‖x-y‖) (x y : E) :
+    ‖g x - g y‖ ≤ (2 * A + B) * ‖x-y‖ ^ α := by
+  by_cases hr : ‖x-y‖ ≤ 1
+  · have hp : ‖x-y‖ ≤ ‖x-y‖ ^ α := by
+      simpa only [Real.rpow_one] using
+        Real.rpow_le_rpow_of_exponent_ge' (norm_nonneg (x-y)) hr hα hα1
+    exact (hlip x y).trans ((mul_le_mul_of_nonneg_left hp hB).trans
+      (mul_le_mul_of_nonneg_right (by linarith : B ≤ 2*A+B)
+        (Real.rpow_nonneg (norm_nonneg _) _)))
+  · have hp : 1 ≤ ‖x-y‖ ^ α := Real.one_le_rpow (le_of_not_ge hr) hα
+    calc
+      ‖g x - g y‖ ≤ ‖g x‖ + ‖g y‖ := norm_sub_le _ _
+      _ ≤ 2*A := by linarith [hg x, hg y]
+      _ ≤ (2*A+B) * ‖x-y‖ ^ α := by
+        calc
+          2*A ≤ 2*A+B := by linarith
+          _ ≤ (2*A+B) * ‖x-y‖ ^ α := le_mul_of_one_le_right (by positivity) hp
+
 end Poincare.DuhamelSolutionOperatorBound
