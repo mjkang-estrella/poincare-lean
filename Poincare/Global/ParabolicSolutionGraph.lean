@@ -257,4 +257,40 @@ theorem closed_time_derivative {f d : ℕ → ℝ → ℝ} {g e : ℝ → ℝ} {
       (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
     _ ≤ ε * ‖y - x‖ := by linarith [hdiff y hys]
 
+/-- All three derivative relations and the initial trace are closed in the jet norm. -/
+theorem isClosed_graphSubmodule :
+    IsClosed (graphSubmodule (E := E) α T : Set (Ambient (E := E) α T)) := by
+  apply isSeqClosed_iff_isClosed.1
+  intro v w hv hw
+  have cu : Continuous (fun z : Ambient (E := E) α T => z.fst.fst) :=
+    (WithLp.continuous_fst ..).comp (WithLp.continuous_fst ..)
+  have ct : Continuous (fun z : Ambient (E := E) α T => z.fst.snd) :=
+    (WithLp.continuous_snd ..).comp (WithLp.continuous_fst ..)
+  have cd : Continuous (fun z : Ambient (E := E) α T => z.snd.fst) :=
+    (WithLp.continuous_fst ..).comp (WithLp.continuous_snd ..)
+  have cdd : Continuous (fun z : Ambient (E := E) α T => z.snd.snd) :=
+    (WithLp.continuous_snd ..).comp (WithLp.continuous_snd ..)
+  have hu := holder_tendstoUniformly ((cu.tendsto w).comp hw)
+  have ht := holder_tendstoUniformly ((ct.tendsto w).comp hw)
+  have hd := holder_tendstoUniformly ((cd.tendsto w).comp hw)
+  have hdd := holder_tendstoUniformly ((cdd.tendsto w).comp hw)
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro x
+    apply tendsto_nhds_unique (hu.tendsto_at (0, x))
+    have heq : (fun n => (v n).fst.fst (0, x)) = fun _ : ℕ => (0 : ℝ) :=
+      funext fun n => (hv n).1 x
+    change Tendsto (fun n => (v n).fst.fst (0, x)) atTop (𝓝 0)
+    rw [heq]
+    exact tendsto_const_nhds
+  · intro t ht' x
+    exact hasFDerivAt_of_tendstoUniformly (hd.comp (fun z : E => (t, z)))
+      (fun n z => (hv n).2.1 t ht' z) (fun z => hu.tendsto_at (t, z)) x
+  · intro t ht' x
+    exact hasFDerivAt_of_tendstoUniformly (hdd.comp (fun z : E => (t, z)))
+      (fun n z => (hv n).2.2.1 t ht' z) (fun z => hd.tendsto_at (t, z)) x
+  · intro t ht' x
+    exact closed_time_derivative (convex_Icc 0 T)
+      (fun n s hs => (hv n).2.2.2 s hs x) (fun s _ => hu.tendsto_at (s, x))
+      (ht.comp (fun s : ℝ => (s, x))).tendstoUniformlyOn ht'
+
 end Poincare.ParabolicSolutionGraph
