@@ -212,4 +212,46 @@ theorem density_inverse_contraction_three
       show a 2 1 = a 1 2 from ha.apply 1 2]
   ring
 
+variable {M₃ : Type u} [TopologicalSpace M₃] [T2Space M₃] [CompactSpace M₃]
+  [ConnectedSpace M₃] [MeasurableSpace M₃] [BorelSpace M₃]
+  [ChartedSpace (ClosedSmoothModel 3) M₃]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ M₃]
+
+/-- The genuine density and inverse metric satisfy the chart divergence identity. -/
+theorem density_inverseMetric_compatibility
+    (g : ClosedSmoothRiemannianMetric 3 M₃) (p : M₃) :
+    let G := inverseChartPullbackGramMatrixField g p
+    let w := fun z ↦ (rawHausdorffLebesgueScale 3 : ℝ) * VolumeDensity.chartVolumeDensity (G z)
+    let a : ClosedSmoothModel 3 → Matrix (Fin 3) (Fin 3) ℝ := fun z ↦ (G z)⁻¹
+    let Γ := fun z j k l ↦ (1 / 2 : ℝ) * ∑ m, a z j m *
+      (coordinateDirectionalDerivative (fun y ↦ G y l m) k z +
+       coordinateDirectionalDerivative (fun y ↦ G y k m) l z -
+       coordinateDirectionalDerivative (fun y ↦ G y k l) m z)
+    ∀ z ∈ (extChartAt (closedSmoothModelWithCorners 3) p).target, ∀ j : Fin 3,
+      (∑ k, fderiv ℝ (fun y ↦ w y * a y k j) z (EuclideanSpace.single k (1 : ℝ))) =
+      w z * (-(∑ k, ∑ l, a z k l * Γ z j k l)) := by
+  intro G w a Γ z hz j
+  have hW : DifferentiableAt ℝ w z :=
+    (((ClosedLaplacianStokesProducer.chartWeight_regular g p).1 z hz).contDiffAt
+      ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have hA (k l : Fin 3) : DifferentiableAt ℝ (fun y ↦ a y k l) z :=
+    (((ClosedLaplacianStokesProducer.chartInverseMetric_contDiffOn g p k l) z hz).contDiffAt
+      ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have hsymm : (G z).IsSymm := by
+    have hp := (inverseChartPullbackGramMatrix_posDef g p ⟨z, hz⟩).isHermitian
+    rw [inverseChartPullbackGramMatrix_eq_field g p ⟨z, hz⟩] at hp
+    exact Matrix.IsSymm.ext (fun k l ↦ by simpa using hp.apply k l)
+  let D := fun k l m ↦ fderiv ℝ (fun y ↦ G y l m) z (EuclideanSpace.single k (1 : ℝ))
+  calc
+    _ = ∑ k, (((1 / 2 : ℝ) * w z * (∑ l, ∑ m, a z l m * D k m l)) * a z k j +
+        w z * (-(∑ l, ∑ m, a z k l * D k l m * a z m j))) := by
+      apply Finset.sum_congr rfl
+      intro k _
+      rw [fderiv_fun_mul hW (hA k j)]
+      simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+      rw [fderiv_chartWeight g p hz, fderiv_chartInverseMetric g p hz]
+      dsimp only [w, a, G, D]
+      ring
+    _ = _ := density_inverse_contraction_three (a z) hsymm.inv D (w z) j
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
