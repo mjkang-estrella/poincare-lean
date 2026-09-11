@@ -84,4 +84,33 @@ theorem chartMetric_transported_gradient
   change mfderiv I 𝓘(ℝ, E) (extChartAt I p) ((extChartAt I p).symm z) (D w) = w at hw
   exact congrArg (fderiv ℝ (f ∘ (extChartAt I p).symm) z) hw
 
+/-- The inverse-chart pullback of the intrinsic gradient is the coordinate gradient. -/
+theorem transported_gradient_eq_coordGradient
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) (f : M → ℝ)
+    {z : E} (hz : z ∈ (extChartAt I p).target)
+    (hf : MDifferentiableAt I 𝓘(ℝ) f ((extChartAt I p).symm z)) :
+    CovariantDerivative.chartTransportedLeviCivitaSection p (g.gradient f) z =
+      RicciFlow.RicciFlow.coordGradient (CovariantDerivative.chartMetric g.inner p)
+        (ClosedLaplacianStokesProducer.coordinateScalar (n := n) p f) z := by
+  let G := CovariantDerivative.chartMetric g.inner p
+  have hpos (v : E) (hv : v ≠ 0) : 0 < G z v v :=
+    CovariantDerivative.chartMetric_posDef g.inner
+      (fun y u hu ↦ g.inner_pos y hu) p
+      (isInvertible_mfderivWithin_extChartAt_symm hz) hv
+  have hnondeg : (RicciFlow.RicciFlow.metricBilin (G z)).Nondegenerate := by
+    constructor
+    · intro v hv
+      by_contra h
+      exact (ne_of_gt (hpos v h)) (hv v)
+    · intro v hv
+      by_contra h
+      exact (ne_of_gt (hpos v h)) (hv v)
+  have hinv : (G z).IsInvertible :=
+    CovariantDerivative.metric_isInvertible G
+      (RicciFlow.RicciFlow.metricBilin (G z)) hnondeg (fun _ _ ↦ rfl)
+  symm
+  apply hinv.inverse_apply_eq.mpr
+  ext w
+  exact (chartMetric_transported_gradient g p f hz hf w).symm
+
 end Poincare.IntrinsicLaplacianCoordinateForm
