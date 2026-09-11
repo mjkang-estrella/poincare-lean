@@ -267,4 +267,28 @@ theorem abs_clipped_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
         abs_of_neg (sub_neg.mpr (hx'.trans hypos))]
       linarith
 
+/-- The singularity of the secant majorant is integrable on either side of its base point. -/
+theorem intervalIntegrable_abs_sub_rpow {β T t : ℝ}
+    (hβ : 0 < β) (ht : t ∈ Icc 0 T) :
+    IntervalIntegrable (fun s : ℝ => |t-s|^(β-1)) volume 0 T := by
+  have hl : IntervalIntegrable (fun s : ℝ => (t-s)^(β-1)) volume 0 t := by
+    simpa only [sub_zero, sub_self] using
+      ((intervalIntegral.intervalIntegrable_rpow' (a := (0 : ℝ)) (b := t)
+        (r := β-1) (by linarith)).comp_sub_left t).symm
+  have hr : IntervalIntegrable (fun s : ℝ => (s-t)^(β-1)) volume t T := by
+    simpa only [zero_add, sub_add_cancel] using
+      (intervalIntegral.intervalIntegrable_rpow' (a := (0 : ℝ)) (b := T-t)
+        (r := β-1) (by linarith)).comp_sub_right t
+  have hl' : IntervalIntegrable (fun s : ℝ => |t-s|^(β-1)) volume 0 t := by
+    apply hl.congr
+    intro s hs
+    rw [uIoc_of_le ht.1] at hs
+    simp only [abs_of_nonneg (sub_nonneg.mpr hs.2)]
+  have hr' : IntervalIntegrable (fun s : ℝ => |t-s|^(β-1)) volume t T := by
+    apply hr.congr
+    intro s hs
+    rw [uIoc_of_le ht.2] at hs
+    simp only [abs_of_nonpos (sub_nonpos.mpr hs.1.le), neg_sub]
+  exact hl'.trans hr'
+
 end Poincare.MovingLimitLeibniz
