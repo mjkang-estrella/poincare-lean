@@ -174,4 +174,27 @@ theorem abs_sub_le_of_deriv_comparison
   have h2 := hp (left_mem_Icc.mpr haz) (right_mem_Icc.mpr haz) haz
   exact abs_le.mpr ⟨by dsimp at h2; linarith, by dsimp at h1; linarith⟩
 
+/-- Integrating a singular power bound requires no derivative at the initial endpoint. -/
+theorem abs_sub_le_rpow_of_deriv_bound
+    {g g' : ℝ → ℝ} {s T u v C β : ℝ} (hβ : 0 < β)
+    (hc : ContinuousOn g (Icc s T))
+    (hd : ∀ r ∈ Ioc s T, HasDerivAt g (g' r) r)
+    (hb : ∀ r ∈ Ioc s T, |g' r| ≤ C * (r-s) ^ (β-1))
+    (hsu : s ≤ u) (huv : u ≤ v) (hvT : v ≤ T) :
+    |g v - g u| ≤ (C / β) * ((v-s)^β - (u-s)^β) := by
+  have hdv (r : ℝ) (hr : r ∈ Ioo u v) :
+      HasDerivAt (fun r : ℝ => (C / β) * (r-s)^β) (C * (r-s)^(β-1)) r := by
+    have hp := (((hasDerivAt_id r).sub_const s).rpow_const (p := β)
+      (Or.inl (ne_of_gt (sub_pos.mpr (hsu.trans_lt hr.1))))).const_mul (C / β)
+    simp only [id_eq] at hp
+    convert hp using 1 <;> field_simp [hβ.ne'] <;> ring
+  have hi := abs_sub_le_of_deriv_comparison huv
+    (hc.mono (Icc_subset_Icc hsu hvT))
+    (continuousOn_const.mul ((continuous_id.sub continuous_const).continuousOn.rpow_const
+      (fun _ _ => Or.inr hβ.le)))
+    (fun r hr => hd r ⟨hsu.trans_lt hr.1, hr.2.le.trans hvT⟩)
+    hdv (fun r hr => hb r ⟨hsu.trans_lt hr.1, hr.2.le.trans hvT⟩)
+  change |g v - g u| ≤ (C / β) * (v-s)^β - (C / β) * (u-s)^β at hi
+  nlinarith [hi]
+
 end Poincare.MovingLimitLeibniz
