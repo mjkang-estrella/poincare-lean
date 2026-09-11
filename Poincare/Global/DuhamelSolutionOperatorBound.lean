@@ -30,4 +30,37 @@ theorem abs_trace_le (A : E →L[ℝ] E →L[ℝ] ℝ) :
         ContinuousLinearMap.le_opNorm₂ A (e i) (e i)
     _ = 3 * ‖A‖ := by simp
 
+/-- The within-interval time derivative has the expected sup estimate. -/
+theorem duhamel_time_derivative_bound :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+    let u : ℝ → E → ℝ := fun t x =>
+      ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+    ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasDerivWithinAt (fun r => u r x) (f (t,x) + (Δ (u t)) x) (Icc 0 T) t ∧
+      |f (t,x) + (Δ (u t)) x| ≤ M + 3 * C * K * t ^ (α / 2) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_hessian_bound α hα hα1
+  refine ⟨C, hC, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  dsimp only
+  intro t ht x
+  have hd := (MovingLimitLeibniz.duhamel_solves_heat_equation
+    α hα hα1 T hT hT1 f M K hM hK hf hfM hfK).2 t ht x
+  rw [← laplacian_eq_hessian_trace] at hd
+  refine ⟨hd, ?_⟩
+  have hb := ((hCb T hT hT1 f M K hM hK hf hfM hfK).2 t ht x).2.2.2
+  rw [laplacian_eq_hessian_trace]
+  calc
+    _ ≤ |f (t,x)| + 3 * ‖fderiv ℝ (fderiv ℝ (fun z : E =>
+        ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) z)) x‖ :=
+      (abs_add_le _ _).trans (add_le_add le_rfl (abs_trace_le _))
+    _ ≤ M + 3 * (C * K * t ^ (α / 2)) :=
+      add_le_add (hfM t ht x) (mul_le_mul_of_nonneg_left hb (by norm_num))
+    _ = M + 3 * C * K * t ^ (α / 2) := by ring
+
 end Poincare.DuhamelSolutionOperatorBound
