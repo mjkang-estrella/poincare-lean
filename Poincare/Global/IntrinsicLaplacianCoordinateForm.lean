@@ -239,4 +239,26 @@ theorem hessianAt_eq_chart_derivatives
   simpa only [RicciFlow.RicciFlow.christoffelClosedOp_apply,
     CovariantDerivative.christoffelFunctional, heq.self_of_nhds, heq.fderiv_eq] using h
 
+/-- Coordinates of a raised covector are its inverse-matrix contraction. -/
+theorem inverse_apply_coord
+    (G : ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)
+    (hG : G.IsInvertible) (hs : ∀ v w, G v w = G w v)
+    (q : ClosedSmoothModel 3 →L[ℝ] ℝ) (k : Fin 3) :
+    (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis.coord k (G.inverse q) =
+      ∑ m, DeTurckPrincipalSecondJet.inverseEntries G k m *
+        q (EuclideanSpace.basisFun (Fin 3) ℝ m) := by
+  let b := (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  let r := G.inverse (LinearMap.toContinuousLinearMap (b.coord k))
+  have hp := DeTurckPrincipalIdentity.inverse_pairing_symm G hG hs
+    (LinearMap.toContinuousLinearMap (b.coord k)) q
+  change b.coord k (G.inverse q) = q r at hp
+  rw [hp]
+  have hr := congrArg q (b.sum_repr r)
+  calc
+    q r = ∑ m, b.repr r m * q (b m) := by
+      simpa only [map_sum, map_smul, smul_eq_mul] using hr.symm
+    _ = _ := by
+      rw [DeTurckPrincipalIdentity.inverseEntries_eq_coordinates G hG]
+      rfl
+
 end Poincare.IntrinsicLaplacianCoordinateForm
