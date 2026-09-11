@@ -70,6 +70,7 @@ theorem openChart_density_integrable (g : ClosedSmoothRiemannianMetric n M) (p :
       (inverseChartPullbackVolumeDensity_pos g p z).le)).mp hfinite
   exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
 
+omit [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
 /-- The compact finite chart cover has a smooth subordinate partition. -/
 theorem exists_subordinate_partition (C : FiniteExtendedChartCover (n := n) (M := M)) :
     ∃ ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ,
@@ -82,6 +83,8 @@ theorem exists_subordinate_partition (C : FiniteExtendedChartCover (n := n) (M :
 def coordinateScalar (p : M) (f : M → ℝ) : E → ℝ :=
   (extChartAt I p).target.indicator (fun z ↦ f ((extChartAt I p).symm z))
 
+omit [T2Space M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+  [IsManifold I ∞ M] in
 /-- A scalar supported inside a chart has a compactly supported coordinate extension. -/
 theorem coordinateScalar_support (p : M) (f : M → ℝ)
     (hf : tsupport f ⊆ (extChartAt I p).source) :
@@ -120,6 +123,7 @@ theorem coordinateScalar_contDiff_two (p : M) (f : M → ℝ)
     exact contDiffAt_const.congr_of_eventuallyEq
       (notMem_tsupport_iff_eventuallyEq.mp hout)
 
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
 /-- A positive continuous density and a continuous coordinate divergence imply
 continuity of the intrinsic Laplacian of a chart-supported C² scalar. -/
 theorem laplacian_continuous_of_coordinate_divergence
