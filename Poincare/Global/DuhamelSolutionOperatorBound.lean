@@ -105,4 +105,33 @@ theorem duhamel_time_derivative_holder :
         (htrace.trans (mul_le_mul_of_nonneg_left hb (by norm_num)))
     _ = (K + 3 * C * K) * parabolicDist p q ^ α := by ring
 
+/-- Integrating the gradient kernel gives the sharp square-root time factor. -/
+theorem duhamel_gradient_bound {T t M : ℝ} (ht : t ∈ Icc 0 T)
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (cylinder T))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s,y)| ≤ M) (x : E) :
+    ‖fderiv ℝ (fun z : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t-s) (fun y => f (s,y)) z) x‖ ≤
+      2 * M * (∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖) * Real.sqrt t := by
+  rw [(hasFDerivAt_duhamel ht hf hM x).fderiv]
+  let A := M * (∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖)
+  have hb : ‖∫ s in (0 : ℝ)..t,
+      fderiv ℝ (heatSolution (t-s) (fun y => f (s,y))) x‖ ≤
+      ∫ s in (0 : ℝ)..t, A * (t-s) ^ (-(1/2 : ℝ)) := by
+    rw [intervalIntegral.integral_of_le ht.1, intervalIntegral.integral_of_le ht.1,
+      ← restrict_Ioo_eq_restrict_Ioc]
+    apply MeasureTheory.norm_integral_le_of_norm_le
+      ((intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mp
+        (intervalIntegrable_gradient_majorant t A))
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+    have hsT : s ∈ Icc 0 T := ⟨hs.1.le, hs.2.le.trans ht.2⟩
+    have hc : Continuous (fun y : E => f (s,y)) :=
+      hf.comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hsT, mem_univ y⟩)
+    exact norm_gradient_heatSolution_le (sub_pos.mpr hs.2) hc.aestronglyMeasurable
+      (by simpa only [Real.norm_eq_abs] using hM s hsT) x
+  have he := HeatDuhamelSpatialHolderHessian.integral_hessian_majorant zero_lt_one t A
+  norm_num only [div_one, show (1 : ℝ) / 2 - 1 = -(1/2 : ℝ) by norm_num] at he
+  rw [he] at hb
+  simpa [A, Real.sqrt_eq_rpow, mul_assoc, mul_left_comm, mul_comm] using hb
+
 end Poincare.DuhamelSolutionOperatorBound
