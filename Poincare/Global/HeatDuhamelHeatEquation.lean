@@ -130,4 +130,28 @@ theorem heatSolution_sq (a : ℝ) (ha : 0 < a) (g : E → ℝ) (x : E) :
     smul_eq_mul, mul_assoc, integral_const_mul] at hc
   exact mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne')) hc.symm
 
+/-- The rescaled integral is jointly continuous in elapsed time and forcing time. -/
+theorem continuousOn_rescaled_heat_integral {T M : ℝ}
+    {f : ℝ × E → ℝ} (hf : ContinuousOn f (Icc 0 T ×ˢ univ))
+    (hM : ∀ s ∈ Icc 0 T, ∀ y : E, |f (s, y)| ≤ M) (x : E) :
+    ContinuousOn (fun p : ℝ × ℝ => ∫ y : E,
+      heatKernel 1 y * f (p.2, x - Real.sqrt p.1 • y)) (univ ×ˢ Icc 0 T) := by
+  apply continuousOn_of_dominated (bound := fun y : E => heatKernel 1 y * M)
+  · intro p hp
+    have hc : Continuous (fun y : E => f (p.2, x - Real.sqrt p.1 • y)) :=
+      hf.comp_continuous
+        (continuous_const.prodMk (continuous_const.sub (continuous_const.smul continuous_id)))
+        (fun y => ⟨hp.2, mem_univ _⟩)
+    exact ((contDiff_heatKernel_spatial («E» := E) 1).continuous.mul hc).aestronglyMeasurable
+  · intro p hp
+    exact Filter.Eventually.of_forall fun y => by
+      rw [norm_mul, Real.norm_of_nonneg (heatKernel_nonneg zero_lt_one y), Real.norm_eq_abs]
+      exact mul_le_mul_of_nonneg_left (hM p.2 hp.2 _) (heatKernel_nonneg zero_lt_one y)
+  · exact (heatKernel_integrable («E» := E) zero_lt_one).mul_const M
+  · refine Filter.Eventually.of_forall fun y => ?_
+    have hc : Continuous (fun p : ℝ × ℝ => (p.2, x - Real.sqrt p.1 • y)) :=
+      continuous_snd.prodMk
+        (continuous_const.sub ((Real.continuous_sqrt.comp continuous_fst).smul continuous_const))
+    exact continuousOn_const.mul (hf.comp hc.continuousOn (fun p hp => ⟨hp.2, mem_univ _⟩))
+
 end Poincare.HeatDuhamelHeatEquation
