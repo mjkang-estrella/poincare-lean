@@ -577,4 +577,115 @@ theorem far_hessian_time_difference_le {α T t₁ t₂ M K : ℝ}
         (mul_nonneg hJ hK0)
     _ = _ := by ring
 
+/-- The time Hölder estimate for the actual Duhamel Hessian, including both endpoints. -/
+theorem duhamel_hessian_time_holder :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  ∀ t₁ ∈ Icc 0 T, ∀ t₂ ∈ Icc 0 T, ∀ x : E,
+    ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖
+      ≤ C * K * |t₁ - t₂| ^ (α / 2) := by
+  intro α hα hα1
+  let B := (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)
+  let F := (∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α) * (2 / (2 - α))
+  have hB : 0 ≤ B := mul_nonneg (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+    (div_nonneg (by norm_num) hα.le)
+  have hF : 0 ≤ F := mul_nonneg (integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+    (div_nonneg (by norm_num) (by linarith))
+  refine ⟨max 1 (3 * B + F), lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro T _ _ f M K _ hK0 hf hM hK
+  let u : ℝ → E → ℝ := fun t x => ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  change ∀ t₁ ∈ Icc 0 T, ∀ t₂ ∈ Icc 0 T, ∀ x : E,
+    ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖ ≤
+      max 1 (3 * B + F) * K * |t₁ - t₂| ^ (α / 2)
+  have ordered (t₁ : ℝ) (ht₁ : t₁ ∈ Icc 0 T) (t₂ : ℝ) (ht₂ : t₂ ∈ Icc 0 T)
+      (h12 : t₁ ≤ t₂) (x : E) :
+      ‖fderiv ℝ (fderiv ℝ (u t₂)) x - fderiv ℝ (fderiv ℝ (u t₁)) x‖ ≤
+        (3 * B + F) * K * (t₂ - t₁) ^ (α / 2) := by
+    by_cases he : t₁ = t₂
+    · subst t₂
+      simp [Real.zero_rpow (show α / 2 ≠ 0 by linarith)]
+    have hlt : t₁ < t₂ := lt_of_le_of_ne h12 he
+    let H := fun r s => ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (r - s) y
+    have hi (r : ℝ) (hr : r ∈ Icc 0 T) (b : ℝ) (hb : 0 ≤ b) (hbr : b ≤ r) :
+        IntervalIntegrable (H r) volume 0 b :=
+      (intervalIntegrable_iff_integrableOn_Ioo_of_le hb).mpr
+        ((integrableOn_cancelled_hessian_time hα hα1 hr hf hK x).mono_set
+          (Ioo_subset_Ioo le_rfl hbr))
+    have hsplit : (∫ s in (0 : ℝ)..t₂, H t₂ s) =
+        (∫ s in (0 : ℝ)..t₁, H t₂ s) + (∫ s in t₁..t₂, H t₂ s) :=
+      (intervalIntegral.integral_add_adjacent_intervals (hi t₂ ht₂ t₁ ht₁.1 h12)
+        ((hi t₂ ht₂ t₁ ht₁.1 h12).symm.trans (hi t₂ ht₂ t₂ ht₂.1 le_rfl))).symm
+    have htail : ‖∫ s in t₁..t₂, H t₂ s‖ ≤ B * K * (t₂ - t₁) ^ (α / 2) := by
+      simpa only [abs_of_nonneg (sub_nonneg.mpr h12)] using hessian_tail_bound hα hα1 ht₁ ht₂ h12 hK x
+    have hoverlap : ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤
+        (2 * B + F) * K * (t₂ - t₁) ^ (α / 2) := by
+      by_cases hsmall : t₁ ≤ t₂ - t₁
+      · have hn := near_hessian_time_difference_le hα hα1 hK0 ht₁.1 h12
+          (by simpa using hsmall)
+          (fun s hs => hK s ⟨hs.1.le, hs.2.le.trans ht₁.2⟩) x
+        have hn' : ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤
+            (2 * B) * K * (t₂ - t₁) ^ (α / 2) := by
+          convert hn using 1 <;> dsimp [B] <;> ring
+        exact hn'.trans (mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (by linarith : 2 * B ≤ 2 * B + F) hK0)
+          (Real.rpow_nonneg (sub_nonneg.mpr h12) _))
+      have hscale : t₂ - t₁ < t₁ := lt_of_not_ge hsmall
+      let a := t₁ - (t₂ - t₁)
+      have ha : 0 < a := sub_pos.mpr hscale
+      have hat : a ≤ t₁ := sub_le_self t₁ (sub_nonneg.mpr h12)
+      have hs (r : ℝ) (hr : r ∈ Icc 0 T) (htr : t₁ ≤ r) :
+          (∫ s in (0 : ℝ)..t₁, H r s) =
+            (∫ s in (0 : ℝ)..a, H r s) + (∫ s in a..t₁, H r s) :=
+        (intervalIntegral.integral_add_adjacent_intervals (hi r hr a ha.le (hat.trans htr))
+          ((hi r hr a ha.le (hat.trans htr)).symm.trans (hi r hr t₁ ht₁.1 htr))).symm
+      have hn : ‖(∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s)‖ ≤
+          (2 * B) * K * (t₂ - t₁) ^ (α / 2) := by
+        have h := near_hessian_time_difference_le hα hα1 hK0 hat h12
+          (by dsimp [a]; linarith)
+          (fun s hs => hK s ⟨ha.le.trans hs.1.le, hs.2.le.trans ht₁.2⟩) x
+        convert h using 1 <;> dsimp [B] <;> ring
+      have hfar : ‖(∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)‖ ≤
+          F * K * (t₂ - t₁) ^ (α / 2) :=
+        far_hessian_time_difference_le hα hα1 ht₁ ht₂ hlt hscale hK0 hf hM hK x
+      rw [hs t₂ ht₂ h12, hs t₁ ht₁ le_rfl]
+      calc
+        _ = ‖((∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)) +
+            ((∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s))‖ := by congr 1; abel
+        _ ≤ ‖(∫ s in (0 : ℝ)..a, H t₂ s) - (∫ s in (0 : ℝ)..a, H t₁ s)‖ +
+            ‖(∫ s in a..t₁, H t₂ s) - (∫ s in a..t₁, H t₁ s)‖ := norm_add_le _ _
+        _ ≤ F * K * (t₂ - t₁) ^ (α / 2) + (2 * B) * K * (t₂ - t₁) ^ (α / 2) :=
+          add_le_add hfar hn
+        _ = _ := by ring
+    rw [hessian_duhamel_eq_integral hα hα1 ht₂ hf hM hK x,
+      hessian_duhamel_eq_integral hα hα1 ht₁ hf hM hK x]
+    change ‖(∫ s in (0 : ℝ)..t₂, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ ≤ _
+    rw [hsplit]
+    calc
+      _ = ‖((∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)) +
+          (∫ s in t₁..t₂, H t₂ s)‖ := by congr 1; abel
+      _ ≤ ‖(∫ s in (0 : ℝ)..t₁, H t₂ s) - (∫ s in (0 : ℝ)..t₁, H t₁ s)‖ +
+          ‖∫ s in t₁..t₂, H t₂ s‖ := norm_add_le _ _
+      _ ≤ (2 * B + F) * K * (t₂ - t₁) ^ (α / 2) + B * K * (t₂ - t₁) ^ (α / 2) :=
+        add_le_add hoverlap htail
+      _ = _ := by ring
+  intro t₁ ht₁ t₂ ht₂ x
+  have hraw : ‖fderiv ℝ (fderiv ℝ (u t₁)) x - fderiv ℝ (fderiv ℝ (u t₂)) x‖ ≤
+      (3 * B + F) * K * |t₁ - t₂| ^ (α / 2) := by
+    rcases le_total t₁ t₂ with h12 | h21
+    · rw [abs_sub_comm t₁ t₂, abs_of_nonneg (sub_nonneg.mpr h12), norm_sub_rev]
+      exact ordered t₁ ht₁ t₂ ht₂ h12 x
+    · rw [abs_of_nonneg (sub_nonneg.mpr h21)]
+      exact ordered t₂ ht₂ t₁ ht₁ h21 x
+  exact hraw.trans (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_right (le_max_right 1 (3 * B + F)) hK0)
+    (Real.rpow_nonneg (abs_nonneg _) _))
+
 end Poincare.HeatDuhamelHessianTimeHolder
