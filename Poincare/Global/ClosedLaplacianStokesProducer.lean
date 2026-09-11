@@ -119,4 +119,42 @@ theorem coordinateScalar_contDiff_two (p : M) (f : M → ℝ)
     exact contDiffAt_const.congr_of_eventuallyEq
       (notMem_tsupport_iff_eventuallyEq.mp hout)
 
+/-- A positive continuous density and a continuous coordinate divergence imply
+continuity of the intrinsic Laplacian of a chart-supported C² scalar. -/
+theorem laplacian_continuous_of_coordinate_divergence
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) (f : M → ℝ)
+    (hf : tsupport f ⊆ (extChartAt I p).source)
+    (hreg : ContMDiff I 𝓘(ℝ) 2 f)
+    (w D : E → ℝ) (hw : Continuous w) (hD : Continuous D)
+    (hwpos : ∀ z ∈ (extChartAt I p).target, 0 < w z)
+    (hcoord : ∀ z : (extChartAt I p).target,
+      w z * g.laplacianAt f (inverseExtendedChartParametrization (n := n) p z) = D z) :
+    Continuous (fun x ↦ g.laplacianAt f x) := by
+  have hformula (x : M) (hx : x ∈ (extChartAt I p).source) :
+      g.laplacianAt f x = D (extChartAt I p x) / w (extChartAt I p x) := by
+    let z : (extChartAt I p).target := ⟨extChartAt I p x, (extChartAt I p).map_source hx⟩
+    have hinv : inverseExtendedChartParametrization (n := n) p z = x :=
+      (extChartAt I p).left_inv hx
+    apply (eq_div_iff (hwpos z z.2).ne').mpr
+    simpa only [hinv, mul_comm] using hcoord z
+  apply continuous_iff_continuousAt.mpr
+  intro x
+  by_cases hx : x ∈ (extChartAt I p).source
+  · have hc := (continuousOn_extChartAt p x hx).continuousAt
+      ((isOpen_extChartAt_source p).mem_nhds hx)
+    have hquot := (hD.continuousAt.div hw.continuousAt
+      (hwpos _ ((extChartAt I p).map_source hx)).ne').comp hc
+    apply hquot.congr_of_eventuallyEq
+    filter_upwards [(isOpen_extChartAt_source p).mem_nhds hx] with y hy
+    exact hformula y hy
+  · have hxt : x ∉ tsupport f := fun h ↦ hx (hf h)
+    apply continuousAt_const.congr_of_eventuallyEq
+    filter_upwards [(isClosed_tsupport f).isOpen_compl.mem_nhds hxt] with y hy
+    calc
+      g.laplacianAt f y = g.laplacianAt (fun _ : M ↦ (0 : ℝ)) y :=
+        g.laplacianAt_congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.mp hy)
+          (g.mdifferentiableAt_gradient hreg.contMDiffAt)
+          (g.mdifferentiableAt_gradient contMDiffAt_const)
+      _ = 0 := g.laplacianAt_const 0 y
+
 end Poincare.ClosedLaplacianStokesProducer
