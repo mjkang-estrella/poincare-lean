@@ -393,6 +393,15 @@ divergence identity `∑ₖ ∂ₖ(w aᵏʲ) = −w aᵏˡ Γʲₖₗ`, and the 
 the intrinsic Laplacian with its coordinate Christoffel form. The follow-up
 `closed-laplacian-stokes-global-coefficients` targets exactly those three.
 
+The spatial half of L3 landed (`Global/HeatDuhamelHessianSpatialHolder.lean`,
+gate PASS, 26 declarations): the third derivative of the Gaussian kernel with
+its cubic envelope, dilation and exact moment scaling; the near estimate on
+the terminal interval of length `ρ²`; the far estimate by translating one
+cancelled integral, integrating the third derivative along the segment and
+applying Fubini; and the assembled
+`duhamel_hessian_spatial_holder`, a bound `C·K·‖x−z‖^α` on the difference of
+the Duhamel Hessians with `C` fixed before the time horizon and the forcing.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
