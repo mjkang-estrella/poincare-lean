@@ -332,4 +332,27 @@ theorem near_hessian_time_difference_le {α K a t₁ t₂ : ℝ}
       add_le_add (mul_le_mul_of_nonneg_left hp hA) (mul_le_mul_of_nonneg_left hp hA)
     _ = _ := by dsimp [A]; ring
 
+/-- Dilation gives joint continuity of the full DtHessian at positive times. -/
+theorem continuous_hessian_time_deriv_pos :
+    Continuous (fun p : Ioi (0 : ℝ) × E => DtHess p.1 p.2) := by
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+    { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+  have hunit : Continuous (DtHess 1) := continuous_hessian_time_deriv zero_lt_one
+  have ha : Continuous (fun p : Ioi (0 : ℝ) × E => Real.sqrt (p.1 : ℝ)) :=
+    Real.continuous_sqrt.comp (continuous_subtype_val.comp continuous_fst)
+  have hapos (p : Ioi (0 : ℝ) × E) : 0 < Real.sqrt (p.1 : ℝ) :=
+    Real.sqrt_pos.2 p.1.property
+  have hc : Continuous (fun p : Ioi (0 : ℝ) × E =>
+      (((Real.sqrt (p.1 : ℝ)) ^ 3)⁻¹ * ((Real.sqrt (p.1 : ℝ)) ^ 4)⁻¹) •
+        DtHess 1 ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)) :=
+    ((ha.pow 3).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')).mul
+      ((ha.pow 4).inv₀ (fun p => pow_ne_zero _ (hapos p).ne')) |>.smul
+      (hunit.comp ((ha.inv₀ (fun p => (hapos p).ne')).smul continuous_snd))
+  apply hc.congr
+  intro p
+  have h := hessian_time_deriv_sq_smul (Real.sqrt (p.1 : ℝ)) (hapos p)
+    ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
+  simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
+
+
 end Poincare.HeatDuhamelHessianTimeHolder
