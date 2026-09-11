@@ -485,4 +485,43 @@ theorem coordinateScalar_tsupport_subset_image [CompactSpace M]
       indicator_of_mem hzt] using hz
   · exact False.elim (hz (indicator_of_notMem hzt _))
 
+/-- A continuous coordinate divergence on a smaller open region suffices
+for continuity of the localized intrinsic Laplacian. -/
+theorem laplacian_continuous_of_restricted_coordinate_divergence
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) (V : Set M)
+    (hV : IsOpen V) (hVs : V ⊆ (extChartAt I p).source)
+    (f : M → ℝ) (hs : tsupport f ⊆ V) (hf : ContMDiff I 𝓘(ℝ) 2 f)
+    (w D : E → ℝ) (hw : Continuous w) (hD : Continuous D)
+    (hpos : ∀ z ∈ (extChartAt I p) '' V, 0 < w z)
+    (hcoord : ∀ z : (extChartAt I p).target, (z : E) ∈ (extChartAt I p) '' V →
+      w z * g.laplacianAt f (inverseExtendedChartParametrization (n := n) p z) = D z) :
+    Continuous (fun x ↦ g.laplacianAt f x) := by
+  have hformula (x : M) (hx : x ∈ V) :
+      g.laplacianAt f x = D (extChartAt I p x) / w (extChartAt I p x) := by
+    let z : (extChartAt I p).target := ⟨extChartAt I p x, (extChartAt I p).map_source (hVs hx)⟩
+    have hinv : inverseExtendedChartParametrization (n := n) p z = x :=
+      (extChartAt I p).left_inv (hVs hx)
+    have hz : (z : E) ∈ (extChartAt I p) '' V := ⟨x, hx, rfl⟩
+    apply (eq_div_iff (hpos z hz).ne').mpr
+    simpa only [hinv, mul_comm] using hcoord z hz
+  apply continuous_iff_continuousAt.mpr
+  intro x
+  by_cases hx : x ∈ V
+  · have hc := (continuousOn_extChartAt p x (hVs hx)).continuousAt
+      ((isOpen_extChartAt_source p).mem_nhds (hVs hx))
+    have hquot := (hD.continuousAt.div hw.continuousAt
+      (hpos _ ⟨x, hx, rfl⟩).ne').comp hc
+    apply hquot.congr_of_eventuallyEq
+    filter_upwards [hV.mem_nhds hx] with y hy
+    exact hformula y hy
+  · have hxt : x ∉ tsupport f := fun h ↦ hx (hs h)
+    apply continuousAt_const.congr_of_eventuallyEq
+    filter_upwards [(isClosed_tsupport f).isOpen_compl.mem_nhds hxt] with y hy
+    calc
+      g.laplacianAt f y = g.laplacianAt (fun _ : M ↦ (0 : ℝ)) y :=
+        g.laplacianAt_congr_of_eventuallyEq (notMem_tsupport_iff_eventuallyEq.mp hy)
+          (g.mdifferentiableAt_gradient hf.contMDiffAt)
+          (g.mdifferentiableAt_gradient contMDiffAt_const)
+      _ = 0 := g.laplacianAt_const 0 y
+
 end Poincare.IntrinsicLaplacianCoordinateForm
