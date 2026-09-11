@@ -84,4 +84,27 @@ theorem exists_global_coefficients_on_compact
     rw [(hone z hz).self_of_nhds, one_mul]
     exact (ClosedLaplacianStokesProducer.chartWeight_regular g p).2 z
 
+/-- A finite chart cover shrinks to open regions with compact coordinate closures. -/
+theorem exists_shrunk_chart_cover
+    (C : FiniteExtendedChartCover (n := n) (M := M)) :
+    ∃ V : Fin C.chartCount → Set M,
+      (⋃ i, V i) = univ ∧ (∀ i, IsOpen (V i)) ∧
+      (∀ i, closure (V i) ⊆ (extChartAt I (C.anchor i)).source) ∧
+      (∀ i, IsCompact ((extChartAt I (C.anchor i)) '' closure (V i))) ∧
+      (∀ i, (extChartAt I (C.anchor i)) '' closure (V i) ⊆
+        (extChartAt I (C.anchor i)).target) ∧
+      ∃ ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ, ρ.IsSubordinate V := by
+  obtain ⟨V, hcover, hopen, hclosure⟩ := exists_iUnion_eq_closure_subset
+    (fun i ↦ isOpen_extChartAt_source (C.anchor i))
+    (fun _ ↦ Set.toFinite _) C.sources_cover
+  refine ⟨V, hcover, hopen, hclosure, ?_, ?_, ?_⟩
+  · intro i
+    exact isClosed_closure.isCompact.image_of_continuousOn
+      ((continuousOn_extChartAt (C.anchor i)).mono (hclosure i))
+  · intro i
+    exact image_subset_iff.mpr (fun x hx ↦ (extChartAt I (C.anchor i)).map_source
+      (hclosure i hx))
+  · apply SmoothPartitionOfUnity.exists_isSubordinate I isClosed_univ V hopen
+    rw [hcover]
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
