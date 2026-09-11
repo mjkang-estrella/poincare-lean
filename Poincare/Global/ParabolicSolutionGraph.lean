@@ -86,4 +86,12 @@ theorem norm_eq (g : Graph (E := E) α T) :
   simp only [WithLp.prod_norm_eq_of_L1]
   exact (add_assoc _ _ _).symm
 
+theorem norm_u_le (g : Graph (E := E) α T) : ‖g.u‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
 end Poincare.ParabolicSolutionGraph
