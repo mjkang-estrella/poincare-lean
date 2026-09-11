@@ -140,4 +140,8 @@ theorem holder_ut_le (g : Graph (E := E) α T) {p q : ℝ × E}
     (mul_le_mul_of_nonneg_right (norm_ut_le g)
       (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
 
+theorem sup_du_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.du p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.du p).trans (norm_du_le g)
+
 end Poincare.ParabolicSolutionGraph
