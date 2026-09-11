@@ -524,4 +524,130 @@ theorem laplacian_continuous_of_restricted_coordinate_divergence
           (g.mdifferentiableAt_gradient contMDiffAt_const)
       _ = 0 := g.laplacianAt_const 0 y
 
+/-- The Stokes geometry can use the coordinate images of a shrunk open cover. -/
+def geometry_of_shrunk_coordinate_coefficients
+    [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) (f : M → ℝ)
+    (hf : ContMDiff I 𝓘(ℝ) 2 f)
+    (C : FiniteExtendedChartCover (n := n) (M := M))
+    (V : Fin C.chartCount → Set M) (hV : ∀ i, IsOpen (V i))
+    (hVs : ∀ i, closure (V i) ⊆ (extChartAt I (C.anchor i)).source)
+    (ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ) (hρ : ρ.IsSubordinate V)
+    (w : Fin C.chartCount → E → ℝ)
+    (a : Fin C.chartCount → E → Fin n → Fin n → ℝ)
+    (Γ : Fin C.chartCount → E → Fin n → Fin n → Fin n → ℝ)
+    (hw : ∀ i, ContDiff ℝ 1 (w i))
+    (ha : ∀ i j k, ContDiff ℝ 1 (fun z ↦ a i z j k))
+    (hweight : ∀ i (z : (extChartAt I (C.anchor i)).target),
+      (z : E) ∈ (extChartAt I (C.anchor i)) '' V i →
+      w i z = (rawHausdorffLebesgueScale n : ℝ) * inverseChartPullbackVolumeDensity g (C.anchor i) z)
+    (hcompat : ∀ i (z : (extChartAt I (C.anchor i)).target),
+      (z : E) ∈ (extChartAt I (C.anchor i)) '' V i → ∀ j,
+      (∑ k, fderiv ℝ (fun y ↦ w i y * a i y k j) z (EuclideanSpace.single k (1 : ℝ))) =
+        w i z * (-(∑ k, ∑ l, a i z k l * Γ i z j k l)))
+    (hcoord : ∀ i (z : (extChartAt I (C.anchor i)).target),
+      (z : E) ∈ (extChartAt I (C.anchor i)) '' V i →
+      g.laplacianAt (fun x ↦ ρ i x * f x)
+        (inverseExtendedChartParametrization (n := n) (C.anchor i) z) =
+      christoffelCoordinateLaplacian (a i) (Γ i)
+        (ClosedLaplacianStokesProducer.coordinateScalar (n := n) (C.anchor i) (fun x ↦ ρ i x * f x)) z) :
+    FiniteSubordinateHausdorffLaplacianGeometry g f := by
+  let U := fun i ↦ (extChartAt I (C.anchor i)) '' V i
+  have hVs' (i) : V i ⊆ (extChartAt I (C.anchor i)).source := subset_closure.trans (hVs i)
+  have hsub (i) : U i ⊆ (extChartAt I (C.anchor i)).target :=
+    image_subset_iff.mpr fun _ hx ↦ (extChartAt I (C.anchor i)).map_source (hVs' i hx)
+  have hU (i) : MeasurableSet (U i) := by
+    have heq : U i = Subtype.val ''
+        (inverseExtendedChartParametrization (n := n) (C.anchor i) ⁻¹' V i) := by
+      ext z
+      constructor
+      · rintro ⟨x, hx, rfl⟩
+        refine ⟨⟨extChartAt I (C.anchor i) x, (extChartAt I (C.anchor i)).map_source (hVs' i hx)⟩, ?_, rfl⟩
+        change (extChartAt I (C.anchor i)).symm (extChartAt I (C.anchor i) x) ∈ V i
+        rwa [(extChartAt I (C.anchor i)).left_inv (hVs' i hx)]
+      · rintro ⟨z, hz, rfl⟩
+        exact ⟨(extChartAt I (C.anchor i)).symm z, hz, (extChartAt I (C.anchor i)).right_inv z.2⟩
+    rw [heq]
+    exact (MeasurableEmbedding.subtype_coe (isOpen_extChartAt_target (C.anchor i)).measurableSet).measurableSet_image.mpr
+      ((inverseExtendedChartParametrization_isEmbedding (n := n) (C.anchor i)).continuous.measurable
+        (hV i).measurableSet)
+  have himage (i) : (extChartAt I (C.anchor i)).symm '' U i = V i := by
+    ext x
+    constructor
+    · rintro ⟨z, ⟨y, hy, rfl⟩, rfl⟩
+      rwa [(extChartAt I (C.anchor i)).left_inv (hVs' i hy)]
+    · intro hx
+      exact ⟨extChartAt I (C.anchor i) x, ⟨x, hx, rfl⟩,
+        (extChartAt I (C.anchor i)).left_inv (hVs' i hx)⟩
+  have hsV (i) : tsupport (fun x ↦ ρ i x * f x) ⊆ V i := tsupport_mul_subset_left.trans (hρ i)
+  have hs (i) : tsupport (fun x ↦ ρ i x * f x) ⊆ (extChartAt I (C.anchor i)).source :=
+    (hsV i).trans (hVs' i)
+  have htwo : (2 : ℕ∞ω) ≤ (∞ : ℕ∞ω) := by
+    change ((2 : ℕ∞) : ℕ∞ω) ≤ ((⊤ : ℕ∞) : ℕ∞ω)
+    exact WithTop.coe_le_coe.mpr le_top
+  have hlocal (i) : ContMDiff I 𝓘(ℝ) 2 (fun x ↦ ρ i x * f x) :=
+    ((ρ i).contMDiff.of_le htwo).mul hf
+  let u := fun i ↦ ClosedLaplacianStokesProducer.coordinateScalar (n := n) (C.anchor i) (fun x ↦ ρ i x * f x)
+  have hu (i) : ContDiff ℝ 2 (u i) :=
+    ClosedLaplacianStokesProducer.coordinateScalar_contDiff_two (C.anchor i) _ (hs i) (hlocal i)
+  have hcontinuous (i) : Continuous (fun x ↦ g.laplacianAt (fun y ↦ ρ i y * f y) x) := by
+    let F := coordinateMetricFluxComponent (w i) (a i) (u i)
+    have hF (k) : ContDiff ℝ 1 (F k) := coordinateMetricFluxComponent_contDiff_one (hw i) (ha i) (hu i) k
+    apply laplacian_continuous_of_restricted_coordinate_divergence g (C.anchor i) (V i)
+      (hV i) (hVs' i) _ (hsV i) (hlocal i) (w i) (euclideanCoordinateDivergence F) (hw i).continuous
+    · exact continuous_finsetSum _ fun k _ ↦ ((hF k).continuous_fderiv one_ne_zero).clm_apply continuous_const
+    · intro z hz
+      rw [hweight i ⟨z, hsub i hz⟩ hz]
+      have hscale : 0 < (rawHausdorffLebesgueScale n : ℝ) := by
+        exact_mod_cast Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+          (Measure.hausdorffMeasure (Module.finrank ℝ E : ℝ)) (volume : Measure E)
+      exact mul_pos hscale (inverseChartPullbackVolumeDensity_pos g (C.anchor i) ⟨z, hsub i hz⟩)
+    · intro z hz
+      have hdiv := euclideanCoordinateDivergence_coordinateMetricFluxComponent_eq
+        (contractedChristoffel := fun y j ↦ -(∑ k, ∑ l, a i y k l * Γ i y j k l))
+        ((hw i).differentiable one_ne_zero z)
+        (fun j k ↦ (ha i j k).differentiable one_ne_zero z)
+        (fun j ↦ (coordinateDirectionalDerivative_contDiff_one (hu i) j).differentiable one_ne_zero z)
+        (hcompat i z hz)
+      rw [contractedCoordinateLaplacian_eq_christoffelCoordinateLaplacian
+        (a i) (Γ i) (fun y j ↦ -(∑ k, ∑ l, a i y k l * Γ i y j k l)) (u i) z (fun _ ↦ rfl)] at hdiv
+      rw [hcoord i z hz]
+      exact hdiv.symm
+  exact {
+    chartCount := C.chartCount
+    coordinateDomain := U
+    coordinateDomain_measurable := hU
+    inverseChart := fun i z ↦ inverseExtendedChartParametrization (n := n) (C.anchor i) (Set.inclusion (hsub i) z)
+    inverseChart_measurable := fun i ↦
+      (inverseExtendedChartParametrization_isEmbedding (n := n) (C.anchor i)).continuous.measurable.comp (measurable_inclusion (hsub i))
+    chartRegion := V
+    chartRegion_isOpen := hV
+    density := fun i z ↦ inverseChartPullbackVolumeDensity g (C.anchor i) (Set.inclusion (hsub i) z)
+    density_nonneg := fun i ↦ Eventually.of_forall fun z ↦ (inverseChartPullbackVolumeDensity_pos g (C.anchor i) (Set.inclusion (hsub i) z)).le
+    density_integrable := fun i ↦ restrictedChart_density_integrable g (C.anchor i) (hU i) (hsub i)
+    chartMeasure := fun i ↦ by
+      have h := restrictedChart_measure g (C.anchor i) (hU i) (hsub i)
+      rwa [himage i] at h
+    partition := ρ
+    partition_subordinate := hρ
+    f_contMDiff_two := hf
+    coordinateRepresentative := u
+    coordinateRepresentative_eq := fun i z ↦ indicator_of_mem (hsub i z.2) _
+    coordinateRepresentative_contDiff_two := hu
+    coordinateRepresentative_hasCompactSupport := fun i ↦
+      (ClosedLaplacianStokesProducer.coordinateScalar_support (C.anchor i) _ (hs i)).1
+    coordinateRepresentative_tsupport_subset_coordinateDomain := fun i ↦
+      (coordinateScalar_tsupport_subset_image (C.anchor i) _ (hs i)).trans (image_mono (hsV i))
+    weight := w
+    weight_contDiff_one := hw
+    weight_eq_density := fun i z ↦ hweight i (Set.inclusion (hsub i) z) z.2
+    inverseMetric := a
+    inverseMetric_contDiff_one := ha
+    christoffel := Γ
+    contractedChristoffel := fun i z j ↦ -(∑ k, ∑ l, a i z k l * Γ i z j k l)
+    contractedChristoffel_eq := fun _ _ _ ↦ rfl
+    density_inverseMetric_compatibility := fun i z ↦ hcompat i (Set.inclusion (hsub i) z) z.2
+    intrinsicCoordinateLaplacian_eq := fun i z ↦ hcoord i (Set.inclusion (hsub i) z) z.2
+    localizedLaplacian_aestronglyMeasurable := fun i ↦ (hcontinuous i).aestronglyMeasurable }
+
 end Poincare.IntrinsicLaplacianCoordinateForm
