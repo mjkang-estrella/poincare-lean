@@ -170,4 +170,39 @@ theorem time_bound (g : Graph (E := E) α T) {t : ℝ} (ht : t ∈ Icc 0 T)
     (show (0 : ℝ) ∈ Icc 0 T from ⟨le_rfl, ht.1.trans ht.2⟩) ht
   simpa [g.zero_trace x, Real.norm_of_nonneg ht.1, mul_comm] using h
 
+/-- Bundle four supported bounded Hölder functions with exactly the derivative relations. -/
+def ofDerivatives
+    (u : ℝ × E → ℝ)
+    (ut : ℝ × E → ℝ)
+    (du : ℝ × E → E →L[ℝ] ℝ)
+    (ddu : ℝ × E → E →L[ℝ] E →L[ℝ] ℝ)
+    (hu_off : ∀ p, p ∉ cylinder T → u p = 0)
+    (hu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖u p‖ ≤ M)
+    (hu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) u K)
+    (hut_off : ∀ p, p ∉ cylinder T → ut p = 0)
+    (hut_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖ut p‖ ≤ M)
+    (hut_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) ut K)
+    (hdu_off : ∀ p, p ∉ cylinder T → du p = 0)
+    (hdu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖du p‖ ≤ M)
+    (hdu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) du K)
+    (hddu_off : ∀ p, p ∉ cylinder T → ddu p = 0)
+    (hddu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖ddu p‖ ≤ M)
+    (hddu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) ddu K)
+    (hzero : ∀ x : E, u (0, x) = 0)
+    (hdu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => u (t, z)) (du (t, x)) x)
+    (hddu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => du (t, z)) (ddu (t, x)) x)
+    (hut : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasDerivWithinAt (fun s : ℝ => u (s, x)) (ut (t, x)) (Icc 0 T) t) :
+    Graph (E := E) α T where
+  u := ofFunction u hu_off hu_bound hu_holder
+  ut := ofFunction ut hut_off hut_bound hut_holder
+  du := ofFunction du hdu_off hdu_bound hdu_holder
+  ddu := ofFunction ddu hddu_off hddu_bound hddu_holder
+  zero_trace := hzero
+  hasFDeriv := hdu
+  hasFDeriv_du := hddu
+  hasDeriv_time := hut
+
 end Poincare.ParabolicSolutionGraph
