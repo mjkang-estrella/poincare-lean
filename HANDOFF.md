@@ -356,6 +356,17 @@ three residual estimates above, which are Hamilton 1982 sections 10 to 17
 content (scalar comparison, variance-energy domination) plus a
 closed-manifold Stokes producer.
 
+K2 completed (`Global/HeatDuhamelHessianDifferentiation.lean`, gate PASS,
+21 declarations): the gradient kernel moments and convolution gradient
+bound, joint continuity of the Duhamel gradient integrand, differentiation
+of the Duhamel time integral in space at first and second order by the
+dominated-derivative theorem, continuity of the resulting Hessian, and the
+frozen `duhamel_hessian_bound`: for bounded, cylinder-continuous forcing
+with spatial Hölder constant `K`, the Duhamel solution is `C²` in space, its
+Hessian equals the cancelled kernel double integral, and it is bounded by
+`C · K · t^{α/2}` with `C` independent of the forcing. The parabolic route's
+first analytic estimate is therefore landed.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
