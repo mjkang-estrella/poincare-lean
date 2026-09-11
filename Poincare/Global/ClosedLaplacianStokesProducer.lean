@@ -69,4 +69,12 @@ theorem openChart_density_integrable (g : ClosedSmoothRiemannianMetric n M) (p :
       (inverseChartPullbackVolumeDensity_pos g p z).le)).mp hfinite
   exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
 
+/-- The compact finite chart cover has a smooth subordinate partition. -/
+theorem exists_subordinate_partition (C : FiniteExtendedChartCover (n := n) (M := M)) :
+    ∃ ρ : SmoothPartitionOfUnity (Fin C.chartCount) I M univ,
+      ρ.IsSubordinate (fun i ↦ (extChartAt I (C.anchor i)).source) := by
+  apply SmoothPartitionOfUnity.exists_isSubordinate I isClosed_univ _
+    (fun i ↦ isOpen_extChartAt_source (C.anchor i))
+  rw [C.sources_cover]
+
 end Poincare.ClosedLaplacianStokesProducer
