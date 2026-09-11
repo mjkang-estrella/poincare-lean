@@ -468,4 +468,21 @@ theorem restrictedChart_density_integrable
       (inverseChartPullbackVolumeDensity_pos g p (Set.inclusion hsub z)).le)).mp hfinite
   exact (integrable_const_mul_iff (isUnit_iff_ne_zero.mpr hscale.ne') _).mp hint
 
+/-- Zero extension does not enlarge the coordinate support beyond the image
+of the manifold support. -/
+theorem coordinateScalar_tsupport_subset_image [CompactSpace M]
+    (p : M) (f : M → ℝ) (hs : tsupport f ⊆ (extChartAt I p).source) :
+    tsupport (ClosedLaplacianStokesProducer.coordinateScalar (n := n) p f) ⊆
+      (extChartAt I p) '' tsupport f := by
+  have hcompact : IsCompact ((extChartAt I p) '' tsupport f) :=
+    (isClosed_tsupport f).isCompact.image_of_continuousOn ((continuousOn_extChartAt p).mono hs)
+  apply closure_minimal _ hcompact.isClosed
+  intro z hz
+  by_cases hzt : z ∈ (extChartAt I p).target
+  · refine ⟨(extChartAt I p).symm z, ?_, (extChartAt I p).right_inv hzt⟩
+    apply subset_tsupport
+    simpa only [Function.mem_support, ClosedLaplacianStokesProducer.coordinateScalar,
+      indicator_of_mem hzt] using hz
+  · exact False.elim (hz (indicator_of_notMem hzt _))
+
 end Poincare.IntrinsicLaplacianCoordinateForm
