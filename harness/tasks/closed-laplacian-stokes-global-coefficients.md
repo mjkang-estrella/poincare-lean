@@ -1,0 +1,29 @@
+# Worker contract (Lean task, class B)
+
+You are a Lean 4 formalization worker on the Poincaré project (toolchain leanprover/lean4:v4.30.0-rc2, Mathlib pinned). Isolated worktree on branch `worker/closed-laplacian-stokes-global-coefficients`, cloned `.lake` cache. Rules: NO sorry/admit/axiom/native_decide/opaque (also avoid these words in comments); do not edit existing Lean files or `Poincare.lean`; exactly one new file as named below; no new analytic premises hidden in definitions; commit each verified lemma on the branch; report actual command output to `harness/reports/closed-laplacian-stokes-global-coefficients_{done|blocked}.md`. Gate: `LEAN_NUM_THREADS=1 lake env lean <file>` exit 0; `rg -n '\b(sorry|admit|axiom|opaque)\b|native_decide' <file>` empty; `#print axioms` of every new declaration exactly `[propext, Classical.choice, Quot.sound]`; `git diff --check`. Verify every name by grep in the repo or `.lake/packages/mathlib`; record every probe with actual output. A blocked report displaying the exact resisting identity with committed partial lemmas is acceptable; never weaken the target silently. Frozen contract files are read-only.
+
+Context: read `HANDOFF.md` top section and `harness/reports/closed-laplacian-stokes-producer_blocked.md` in full (its field table, the two displayed resisting identities, and its suggested continuation) first. Landed: `Poincare/Global/ClosedLaplacianStokesProducer.lean` (namespace `Poincare.ClosedLaplacianStokesProducer`: `openChart_measure`, `openChart_density_integrable`, `exists_subordinate_partition`, `coordinateScalar` with its support and C² lemmas, `laplacian_continuous_of_coordinate_divergence`, `localizedLaplacian_continuous_of_coefficients`, the partial constructor `geometry_of_coordinate_coefficients` with five explicit proof arguments, `contDiffOn_matrix_det`, `chartWeight_regular`, `chartInverseMetric_contDiffOn`). Also landed and named by that report as the intended tools: `CovariantDerivative.exists_blending_cutoff`, `exists_global_chart_metric`, `contDiff_blendedChartMetric_scalar` (grep for their exact signatures).
+
+# Task closed-laplacian-stokes-global-coefficients
+
+Module: `Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean`. Namespace: `Poincare.ClosedLaplacianStokesGlobalCoefficients`. Imports: `Poincare.Global.ClosedLaplacianStokesProducer` (add what you need).
+
+Objective: discharge the five remaining arguments of the landed partial constructor and prove the unconditional theorem
+
+```lean
+theorem closedLaplacianStokes_of_contMDiff_two
+    (g : ClosedSmoothRiemannianMetric 3 M) (f : M → ℝ)
+    (hf : ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 2 f) :
+    ClosedLaplacianStokes g f
+```
+
+(`ClosedLaplacianStokes g f` is `Integrable (fun x => g.laplacianAt f x) (volumeMeasure g) ∧ ∫ x, g.laplacianAt f x ∂(volumeMeasure g) = 0`; print it and match exactly), plus the corollary the Hamilton cores need: for a forward normalized flow with all-time joint C³ entries, `∀ t ∈ Ici 0, ClosedLaplacianStokes (gt t) (fun x => (gt t).scalarAt x)` (each slice's scalar is `C²` by the landed `scalarAt_contMDiffAt_two_of_normalizedRicciFlow`).
+
+Work items, in order (commit each):
+
+1. **Shrunk cover with global coefficient extensions.** The obstruction reported is that the genuine weight and inverse Gram entries are smooth only on the chart target, while the record wants globally `C¹` fields. Fix it by shrinking: choose, for each chart, an open region whose coordinate image is compactly contained in the target (a shrinking lemma for finite open covers of a compact space, or the landed cutoff machinery), then multiply the genuine coefficient fields by a smooth cutoff that is one on the compact image and supported in the target, extending by zero. The extended fields are globally `C¹` and agree with the genuine ones where the partition functions live, which is all the record's identities require. Use `CovariantDerivative.exists_blending_cutoff` and the landed `contDiffOn_matrix_det`, `chartWeight_regular`, `chartInverseMetric_contDiffOn`. Prove the agreement lemmas explicitly.
+2. **The divergence identity** (`density_inverseMetric_compatibility`): with `G` the chart Gram field, `a = G⁻¹`, `w = rawHausdorffLebesgueScale n * sqrt |det G|`, and `Γ` the standard Christoffel array of `G`, prove on the shrunk region the classical identity displayed in the blocked report, `∑ₖ ∂ₖ(w aᵏʲ) = −w ∑ₖ∑ₗ aᵏˡ Γʲₖₗ`. Route: Jacobi's formula `∂ₖ det G = det G · tr(G⁻¹ ∂ₖ G)` (Mathlib: `Matrix.deriv_det`-style lemmas; grep, and if absent derive it from the permutation expansion already used by the landed `contDiffOn_matrix_det`), the derivative of the inverse `∂ₖ(G⁻¹) = −G⁻¹ (∂ₖG) G⁻¹`, and the definition of `Γ` in terms of `a` and the first derivatives of `G`; then a finite-sum symmetry computation.
+3. **The intrinsic Laplacian identity** (`intrinsicCoordinateLaplacian_eq`): on the shrunk region, `g.laplacianAt φ (inverseChart z) = christoffelCoordinateLaplacian (a) (Γ) (coordinateScalar ... φ) z` for `φ` supported in the region and `C²`. Route: unfold the repository's `laplacianAt` (trace of the Hessian of the Levi-Civita connection) and the landed chart Christoffel field, and identify them with `a^{ij}(∂ᵢ∂ⱼ φ̂ − Γᵏᵢⱼ ∂ₖ φ̂)`. The landed `GeodesicTransport.chartChristoffelField` and the connection's chart formulas (used by `Poincare/Global/DeTurckPrincipalIdentity.lean`) are the right bridge; check whether that module's `christoffel_eq_connection` and `koszul_apply` give the Christoffel identification directly.
+4. Assemble: feed the shrunk cover, extended coefficients, agreement, and the two identities to `geometry_of_coordinate_coefficients`, then apply the landed `.closedLaplacianStokes` theorem of the record.
+
+Exact stop condition: the unconditional theorem and the flow corollary pass the gate; or a blocked report that displays exactly which of items 1 to 3 resisted, with the others committed as theorems.

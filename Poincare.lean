@@ -30,6 +30,7 @@ import Poincare.Global.CartanSuppliedTerminalTransport
 import Poincare.Global.CartanSuppliedUniformPatchSwitch
 import Poincare.Global.CartanSuppliedUnitRecognition
 import Poincare.Global.CartanSuppliedWholeCellRealization
+import Poincare.Global.ClosedLaplacianStokesProducer
 import Poincare.Global.ClosedRicciFlowNormalization
 import Poincare.Global.CompactCoefficientEllipticity
 import Poincare.Global.ConnectionInstanceNaturality

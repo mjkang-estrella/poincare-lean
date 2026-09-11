@@ -378,6 +378,21 @@ constructor. Together with `ParametrixNeumannCorrection` (step L7, proved
 directly) the algebraic scaffolding of the linear step is in place; what
 remains there is quantitative (L3 to L6).
 
+`closed-laplacian-stokes-producer` landed as a verified partial
+(`Global/ClosedLaplacianStokesProducer.lean`, gate PASS, 13 declarations):
+the open-chart Hausdorff measure formula and density integrability from
+finite Riemannian volume, a smooth partition subordinate to the genuine
+source cover, the coordinate scalar with compact support and global `C²`
+regularity, continuity of the localized Laplacian, target-wise smoothness of
+the density weight and inverse Gram entries, and a constructor for the
+subordinate-geometry record with five explicit arguments. `ClosedLaplacianStokes g f`
+unfolds to integrability of the Laplacian plus vanishing integral. The
+residual is narrower than expected: globally `C¹` extensions of the
+coefficient fields (they are smooth only on chart targets), the classical
+divergence identity `∑ₖ ∂ₖ(w aᵏʲ) = −w aᵏˡ Γʲₖₗ`, and the identification of
+the intrinsic Laplacian with its coordinate Christoffel form. The follow-up
+`closed-laplacian-stokes-global-coefficients` targets exactly those three.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
