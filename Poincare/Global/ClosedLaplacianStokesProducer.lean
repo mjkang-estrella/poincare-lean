@@ -1,5 +1,6 @@
 import Poincare.Global.NormalizedFlowHausdorffPartitionStokes
 import Poincare.Global.HamiltonChartDensityLocalDomination
+import Mathlib.Analysis.Matrix.PosDef
 
 /-!
 # Open-chart data for closed Laplacian Stokes
@@ -293,5 +294,32 @@ theorem contDiffOn_matrix_det (G : E → Matrix (Fin n) (Fin n) ℝ) (U : Set E)
   apply contDiffOn_prod
   intro i _
   exact hG (σ i) i
+
+/-- The genuine density weight is smooth on the chart target and agrees
+there with the Hausdorff density. No global extension is asserted. -/
+theorem chartWeight_regular (g : ClosedSmoothRiemannianMetric n M) (p : M) :
+    ContDiffOn ℝ ∞
+      (fun z ↦ (rawHausdorffLebesgueScale n : ℝ) *
+        VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p z))
+      (extChartAt I p).target ∧
+    (∀ z : (extChartAt I p).target,
+      (rawHausdorffLebesgueScale n : ℝ) *
+        VolumeDensity.chartVolumeDensity (inverseChartPullbackGramMatrixField g p z) =
+        (rawHausdorffLebesgueScale n : ℝ) * inverseChartPullbackVolumeDensity g p z) := by
+  have hdet := contDiffOn_matrix_det (inverseChartPullbackGramMatrixField g p)
+    (extChartAt I p).target (contDiffOn_inverseChartPullbackGramMatrixField_entry g p)
+  have hpos (z : E) (hz : z ∈ (extChartAt I p).target) :
+      0 < (inverseChartPullbackGramMatrixField g p z).det := by
+    rw [← inverseChartPullbackGramMatrix_eq_field g p ⟨z, hz⟩]
+    exact (inverseChartPullbackGramMatrix_posDef g p ⟨z, hz⟩).det_pos
+  constructor
+  · apply ContDiffOn.mul contDiffOn_const
+    apply (hdet.sqrt (fun z hz ↦ (hpos z hz).ne')).congr
+    intro z hz
+    simp only [VolumeDensity.chartVolumeDensity, VolumeDensity.chartGramDet,
+      abs_of_pos (hpos z hz)]
+  · intro z
+    rw [← inverseChartPullbackGramMatrix_eq_field g p z]
+    rfl
 
 end Poincare.ClosedLaplacianStokesProducer
