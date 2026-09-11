@@ -230,4 +230,72 @@ theorem duhamel_gradient_spatial_holder :
     (by nlinarith [mul_nonneg hJ hK, mul_nonneg hC.le hM] :
       2*(2*M*J)+C*K ≤ (4*J+C)*(M+K)) (Real.rpow_nonneg (norm_nonneg _) _))
 
+/-- Value increments obey a parabolic Hölder bound uniform for times at most one. -/
+theorem duhamel_value_parabolic_holder :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+    HasHolderBound α (cylinder T)
+      (fun p : ℝ × E => ∫ s in (0 : ℝ)..p.1,
+        heatSolution (p.1-s) (fun y => f (s,y)) p.2) (C * (M+K)) := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_value_time_estimates α hα hα1
+  let J := ∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖
+  have hJ : 0 ≤ J := integral_nonneg (fun _ => norm_nonneg _)
+  refine ⟨3+9*C+2*J, by positivity, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  let D := M+3*C*K
+  have hD : 0 ≤ D := by dsimp [D]; positivity
+  have hd : M+3*C*K*T^(α/2) ≤ D := by
+    exact add_le_add le_rfl (mul_le_of_le_one_right (by positivity)
+      (Real.rpow_le_one hT.le hT1 (by linarith)))
+  have hv := hCb T hT hT1 f M K hM hK hf hfM hfK
+  have hu (t : ℝ) (ht : t ∈ Icc 0 T) (x : E) : ‖u t x‖ ≤ D := by
+    exact (hv.1 t ht x).trans ((mul_le_mul_of_nonneg_left hd ht.1).trans
+      (mul_le_of_le_one_left hD (ht.2.trans hT1)))
+  have hg (t : ℝ) (ht : t ∈ Icc 0 T) (x : E) : ‖fderiv ℝ (u t) x‖ ≤ 2*M*J :=
+    (duhamel_gradient_bound ht hf hfM x).trans
+      (mul_le_of_le_one_right (by positivity) (Real.sqrt_le_one.mpr (ht.2.trans hT1)))
+  intro p hp q hq
+  have hs : ‖u p.1 p.2 - u p.1 q.2‖ ≤ (2*D+2*M*J)*‖p.2-q.2‖^α := by
+    apply holder_of_bounded_lipschitz hα.le hα1.le hD (by positivity) (hu p.1 hp.1)
+    intro a b
+    exact Convex.norm_image_sub_le_of_norm_fderiv_le
+      (fun z _ => (hasFDerivAt_duhamel hp.1 hf hfM z).differentiableAt)
+      (fun z _ => hg p.1 hp.1 z) (convex_univ : Convex ℝ (univ : Set E))
+      (mem_univ b) (mem_univ a)
+  have hab : |p.1-q.1| ≤ 1 := abs_le.mpr ⟨by linarith [hp.1.1, hp.1.2, hq.1.1, hq.1.2],
+    by linarith [hp.1.1, hp.1.2, hq.1.1, hq.1.2]⟩
+  have htp : |p.1-q.1| ≤ parabolicDist p q ^ α := by
+    calc
+      |p.1-q.1| ≤ |p.1-q.1|^(α/2) := by
+        simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_ge'
+          (abs_nonneg (p.1-q.1)) hab (by linarith : 0 ≤ α/2) (by linarith : α/2 ≤ 1)
+      _ = (Real.sqrt |p.1-q.1|)^α := by
+        rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (abs_nonneg _)]
+        congr 1
+        ring
+      _ ≤ parabolicDist p q ^ α := Real.rpow_le_rpow (Real.sqrt_nonneg _)
+        (le_add_of_nonneg_left (norm_nonneg _)) hα.le
+  have hsp : ‖p.2-q.2‖^α ≤ parabolicDist p q ^ α :=
+    Real.rpow_le_rpow (norm_nonneg _) (le_add_of_nonneg_right (Real.sqrt_nonneg _)) hα.le
+  have ht : ‖u p.1 q.2 - u q.1 q.2‖ ≤ D * parabolicDist p q ^ α :=
+    (hv.2 p.1 hp.1 q.1 hq.1 q.2).trans
+      ((mul_le_mul_of_nonneg_right hd (abs_nonneg _)).trans (mul_le_mul_of_nonneg_left htp hD))
+  calc
+    ‖u p.1 p.2 - u q.1 q.2‖ ≤ ‖u p.1 p.2 - u p.1 q.2‖ + ‖u p.1 q.2 - u q.1 q.2‖ :=
+      norm_sub_le_norm_sub_add_norm_sub ..
+    _ ≤ (2*D+2*M*J)*parabolicDist p q ^ α + D*parabolicDist p q ^ α :=
+      add_le_add (hs.trans (mul_le_mul_of_nonneg_left hsp (by positivity))) ht
+    _ ≤ (3+9*C+2*J)*(M+K)*parabolicDist p q ^ α := by
+      rw [← add_mul]
+      apply mul_le_mul_of_nonneg_right _ (Real.rpow_nonneg (parabolicDist_nonneg _ _) _)
+      dsimp [D]
+      nlinarith [mul_nonneg hC.le hM, mul_nonneg hJ hK]
+
 end Poincare.DuhamelSolutionOperatorBound
