@@ -332,4 +332,35 @@ theorem duhamel_gradient_reversed {T t M : ℝ} (ht : t ∈ Icc 0 T)
     (a := 0) (b := t) t
   simpa only [sub_sub_cancel, sub_self, sub_zero] using he
 
+/-- The inverse square-root majorant controls an arbitrary nonnegative time interval. -/
+theorem norm_integral_inverse_sqrt_le {F : Type*} [NormedAddCommGroup F]
+    [NormedSpace ℝ F] {a b A : ℝ} (ha : 0 ≤ a) (hab : a ≤ b) (hA : 0 ≤ A)
+    {g : ℝ → F} (hg : ∀ r ∈ Ioo a b, ‖g r‖ ≤ A * r ^ (-(1/2 : ℝ))) :
+    ‖∫ r in a..b, g r‖ ≤ 2*A*Real.sqrt (b-a) := by
+  have hb : 0 ≤ b := ha.trans hab
+  have hi : IntervalIntegrable (fun r : ℝ => A * r ^ (-(1/2 : ℝ))) volume a b :=
+    (intervalIntegral.intervalIntegrable_rpow' (by norm_num : (-1 : ℝ) < -(1/2 : ℝ))).const_mul A
+  have hbound : ‖∫ r in a..b, g r‖ ≤ ∫ r in a..b, A * r ^ (-(1/2 : ℝ)) := by
+    rw [intervalIntegral.integral_of_le hab, intervalIntegral.integral_of_le hab,
+      ← restrict_Ioo_eq_restrict_Ioc]
+    apply MeasureTheory.norm_integral_le_of_norm_le
+      ((intervalIntegrable_iff_integrableOn_Ioo_of_le hab).mp hi)
+    filter_upwards [ae_restrict_mem measurableSet_Ioo] with r hr
+    exact hg r hr
+  rw [intervalIntegral.integral_const_mul, integral_rpow (Or.inl (by norm_num))] at hbound
+  norm_num only [show -(1/2 : ℝ)+1 = 1/2 by norm_num] at hbound
+  rw [← Real.sqrt_eq_rpow, ← Real.sqrt_eq_rpow] at hbound
+  have hs : Real.sqrt b - Real.sqrt a ≤ Real.sqrt (b-a) := by
+    have h1 := Real.sq_sqrt ha
+    have h2 := Real.sq_sqrt hb
+    have h3 := Real.sq_sqrt (sub_nonneg.mpr hab)
+    have h4 := Real.sqrt_nonneg a
+    have h5 := Real.sqrt_nonneg b
+    have h6 := Real.sqrt_nonneg (b-a)
+    nlinarith [mul_nonneg h4 h6]
+  calc
+    _ ≤ A * ((Real.sqrt b - Real.sqrt a) / (1/2)) := hbound
+    _ = 2*A*(Real.sqrt b - Real.sqrt a) := by ring
+    _ ≤ 2*A*Real.sqrt (b-a) := mul_le_mul_of_nonneg_left hs (by positivity)
+
 end Poincare.DuhamelSolutionOperatorBound
