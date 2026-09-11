@@ -340,4 +340,23 @@ theorem hessian_heatSolution_eq_common_cancelled_integral {t M : ℝ} (ht : 0 < 
   have halg (y : E) : z - (x - y) = y + (z - x) := by abel
   simpa only [halg] using hchange.symm
 
+/-- The Hessian increment is the cancelled integral of a kernel translation difference. -/
+theorem hessian_heatSolution_difference_eq_integral {t M : ℝ} (ht : 0 < t)
+    {f : E → ℝ} (hf : AEStronglyMeasurable f volume)
+    (hM : ∀ y, ‖f y‖ ≤ M) (x z : E) :
+    fderiv ℝ (fderiv ℝ (heatSolution t f)) x -
+      fderiv ℝ (fderiv ℝ (heatSolution t f)) z =
+      ∫ y : E, (f (x - y) - f x) • (Hess t y - Hess t (y + (z - x))) := by
+  have hi := integrable_data_smul_hessian_sub ht hf hM z
+  have hc : Integrable (fun y : E => f x • Hess t (z - y)) :=
+    ((integrable_hessian ht).comp_sub_left z).smul (f x)
+  have hij : Integrable (fun y : E => (f (x - y) - f x) • Hess t (y + (z - x))) := by
+    have h := (hi.sub hc).comp_sub_left x
+    have halg (y : E) : z - (x - y) = y + (z - x) := by abel
+    simpa only [Pi.sub_apply, halg, ← sub_smul] using h
+  rw [hessian_heatSolution_eq_cancelled_integral ht hf hM x,
+    hessian_heatSolution_eq_common_cancelled_integral ht hf hM x z]
+  simp_rw [smul_sub]
+  rw [integral_sub (integrable_cancelled_hessian ht hf hM x) hij]
+
 end Poincare.HeatDuhamelHessianSpatialHolder
