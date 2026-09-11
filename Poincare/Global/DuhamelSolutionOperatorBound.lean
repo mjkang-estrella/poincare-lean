@@ -190,4 +190,44 @@ theorem holder_of_bounded_lipschitz {F : Type*} [NormedAddCommGroup F]
           2*A ≤ 2*A+B := by linarith
           _ ≤ (2*A+B) * ‖x-y‖ ^ α := le_mul_of_one_le_right (by positivity) hp
 
+/-- The gradient is spatially Hölder with a constant uniform on short time intervals. -/
+theorem duhamel_gradient_spatial_holder :
+    ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+    ContinuousOn f (cylinder T) →
+    (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+    (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+    let u : ℝ → E → ℝ := fun t x =>
+      ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+    ∀ t ∈ Icc 0 T, ∀ x y : E,
+      ‖fderiv ℝ (u t) x - fderiv ℝ (u t) y‖ ≤ C * (M+K) * ‖x-y‖ ^ α := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := duhamel_hessian_bound α hα hα1
+  let J := ∫ y : E, ‖fderiv ℝ (heatKernel 1) y‖
+  have hJ : 0 ≤ J := integral_nonneg (fun _ => norm_nonneg _)
+  refine ⟨4*J+C, by positivity, ?_⟩
+  intro T hT hT1 f M K hM hK hf hfM hfK
+  dsimp only
+  intro t ht x y
+  let u : E → ℝ := fun z => ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun w => f (s,w)) z
+  have hg (z : E) : ‖fderiv ℝ u z‖ ≤ 2*M*J :=
+    (duhamel_gradient_bound ht hf hfM z).trans
+      (mul_le_of_le_one_right (by positivity) (Real.sqrt_le_one.mpr (ht.2.trans hT1)))
+  have hh (z : E) : ‖fderiv ℝ (fderiv ℝ u) z‖ ≤ C*K :=
+    (((hCb T hT hT1 f M K hM hK hf hfM hfK).2 t ht z).2.2.2).trans
+      (mul_le_of_le_one_right (by positivity)
+        (Real.rpow_le_one ht.1 (ht.2.trans hT1) (by linarith)))
+  have hdiff : Differentiable ℝ (fderiv ℝ u) :=
+    ((contDiff_two_duhamel hα hα1 ht hf hfM hfK).fderiv_right
+      (m := 1) (by norm_num)).differentiable_one
+  have hlip (a b : E) : ‖fderiv ℝ u a - fderiv ℝ u b‖ ≤ C*K*‖a-b‖ :=
+    Convex.norm_image_sub_le_of_norm_fderiv_le (fun z _ => hdiff z)
+      (fun z _ => hh z) (convex_univ : Convex ℝ (univ : Set E)) (mem_univ b) (mem_univ a)
+  have hb := holder_of_bounded_lipschitz hα.le hα1.le
+    (by positivity : 0 ≤ 2*M*J) (by positivity : 0 ≤ C*K) hg hlip x y
+  exact hb.trans (mul_le_mul_of_nonneg_right
+    (by nlinarith [mul_nonneg hJ hK, mul_nonneg hC.le hM] :
+      2*(2*M*J)+C*K ≤ (4*J+C)*(M+K)) (Real.rpow_nonneg (norm_nonneg _) _))
+
 end Poincare.DuhamelSolutionOperatorBound
