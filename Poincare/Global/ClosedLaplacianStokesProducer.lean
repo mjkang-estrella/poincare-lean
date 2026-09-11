@@ -322,4 +322,28 @@ theorem chartWeight_regular (g : ClosedSmoothRiemannianMetric n M) (p : M) :
     rw [← inverseChartPullbackGramMatrix_eq_field g p z]
     rfl
 
+/-- The genuine inverse-metric entries are smooth on the chart target. -/
+theorem chartInverseMetric_contDiffOn (g : ClosedSmoothRiemannianMetric n M) (p : M)
+    (i j : Fin n) :
+    ContDiffOn ℝ ∞ (fun z ↦ (inverseChartPullbackGramMatrixField g p z)⁻¹ i j)
+      (extChartAt I p).target := by
+  classical
+  have hG := contDiffOn_inverseChartPullbackGramMatrixField_entry g p
+  have hdet := contDiffOn_matrix_det (inverseChartPullbackGramMatrixField g p)
+    (extChartAt I p).target hG
+  have hne (z : E) (hz : z ∈ (extChartAt I p).target) :
+      (inverseChartPullbackGramMatrixField g p z).det ≠ 0 := by
+    rw [← inverseChartPullbackGramMatrix_eq_field g p ⟨z, hz⟩]
+    exact (inverseChartPullbackGramMatrix_posDef g p ⟨z, hz⟩).det_pos.ne'
+  simp only [Matrix.inv_def, Ring.inverse_eq_inv, Matrix.smul_apply, smul_eq_mul,
+    Matrix.adjugate_apply]
+  apply (hdet.inv hne).mul
+  apply contDiffOn_matrix_det
+  intro k l
+  by_cases hk : k = j
+  · simpa only [Matrix.updateRow_apply, hk, ite_true] using
+      (contDiffOn_const : ContDiffOn ℝ ∞ (fun _ : E ↦ (Pi.single i (1 : ℝ) : Fin n → ℝ) l)
+        (extChartAt I p).target)
+  · simpa only [Matrix.updateRow_apply, hk, ite_false] using hG k l
+
 end Poincare.ClosedLaplacianStokesProducer
