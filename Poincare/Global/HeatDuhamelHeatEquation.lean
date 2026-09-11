@@ -120,4 +120,14 @@ theorem hasDerivAt_heat_integrand {T t s M : ℝ} (hs : s ∈ Icc 0 T) (hst : s 
     (sub_pos.mpr hst) hc.aestronglyMeasurable hb x] at hp
   simpa only [mul_one] using hp.comp t ((hasDerivAt_id t).sub_const s)
 
+/-- Scaling transfers the heat convolution to the fixed unit-time Gaussian. -/
+theorem heatSolution_sq (a : ℝ) (ha : 0 < a) (g : E → ℝ) (x : E) :
+    heatSolution (a ^ 2) g x = ∫ y : E, heatKernel 1 y * g (x - a • y) := by
+  rw [heatSolution_apply]
+  have hc := MeasureTheory.Measure.integral_comp_smul_of_nonneg volume
+    (fun y : E => heatKernel (a ^ 2) y * g (x - y)) a (hR := ha.le)
+  simp only [heatKernel_sq_smul a ha, ClosedSmoothModel, finrank_euclideanSpace_fin,
+    smul_eq_mul, mul_assoc, integral_const_mul] at hc
+  exact mul_left_cancel₀ (inv_ne_zero (pow_ne_zero 3 ha.ne')) hc.symm
+
 end Poincare.HeatDuhamelHeatEquation
