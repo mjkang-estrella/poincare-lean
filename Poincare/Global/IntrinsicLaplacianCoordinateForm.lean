@@ -55,4 +55,33 @@ theorem laplacianAt_eq_chart_hessian
   rw [laplacianAt_eq_inverseGram_hessian g f _ b, hG]
   simp only [b, ClosedSmoothRiemannianMetric.inverseChartEuclideanTangentBasisAt_apply]
 
+/-- Pairing the transported intrinsic gradient with the chart metric gives the
+ordinary differential of the coordinate scalar. -/
+theorem chartMetric_transported_gradient
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) (f : M → ℝ)
+    {z : E} (hz : z ∈ (extChartAt I p).target)
+    (hf : MDifferentiableAt I 𝓘(ℝ) f ((extChartAt I p).symm z)) (w : E) :
+    CovariantDerivative.chartMetric g.inner p z
+      (CovariantDerivative.chartTransportedLeviCivitaSection p (g.gradient f) z) w =
+      fderiv ℝ (ClosedLaplacianStokesProducer.coordinateScalar (n := n) p f) z w := by
+  let D := mfderivWithin 𝓘(ℝ, E) I (extChartAt I p).symm (range I) z
+  have hD : D.IsInvertible := isInvertible_mfderivWithin_extChartAt_symm hz
+  have heq : ClosedLaplacianStokesProducer.coordinateScalar (n := n) p f =ᶠ[𝓝 z]
+      f ∘ (extChartAt I p).symm := by
+    filter_upwards [(isOpen_extChartAt_target p).mem_nhds hz] with y hy
+    exact indicator_of_mem hy _
+  rw [heq.fderiv_eq, CovariantDerivative.chartMetric_apply,
+    CovariantDerivative.chartTransportedLeviCivitaSection_apply]
+  change g.inner ((extChartAt I p).symm z)
+    (D (D.inverse (g.gradient f ((extChartAt I p).symm z)))) (D w) = _
+  rw [hD.self_apply_inverse]
+  change g.inner ((extChartAt I p).symm z)
+    (g.gradientAt f ((extChartAt I p).symm z)) (D w) = _
+  rw [g.inner_gradientAt, extDerivFun_apply_fixed_chart ((extChartAt I p).map_target hz) hf,
+    (extChartAt I p).right_inv hz]
+  have hc := mfderiv_extChartAt_comp_mfderivWithin_extChartAt_symm (x := p) hz
+  have hw := congrArg (fun L : E →L[ℝ] E ↦ L w) hc
+  change mfderiv I 𝓘(ℝ, E) (extChartAt I p) ((extChartAt I p).symm z) (D w) = w at hw
+  exact congrArg (fderiv ℝ (f ∘ (extChartAt I p).symm) z) hw
+
 end Poincare.IntrinsicLaplacianCoordinateForm
