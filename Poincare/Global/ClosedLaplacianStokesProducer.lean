@@ -77,4 +77,27 @@ theorem exists_subordinate_partition (C : FiniteExtendedChartCover (n := n) (M :
     (fun i ↦ isOpen_extChartAt_source (C.anchor i))
   rw [C.sources_cover]
 
+/-- The coordinate scalar is extended by zero off the genuine target. -/
+def coordinateScalar (p : M) (f : M → ℝ) : E → ℝ :=
+  (extChartAt I p).target.indicator (fun z ↦ f ((extChartAt I p).symm z))
+
+/-- A scalar supported inside a chart has a compactly supported coordinate extension. -/
+theorem coordinateScalar_support (p : M) (f : M → ℝ)
+    (hf : tsupport f ⊆ (extChartAt I p).source) :
+    HasCompactSupport (coordinateScalar (n := n) p f) ∧
+      tsupport (coordinateScalar (n := n) p f) ⊆ (extChartAt I p).target := by
+  have hcompact : IsCompact ((extChartAt I p) '' tsupport f) :=
+    (isClosed_tsupport f).isCompact.image_of_continuousOn
+      ((continuousOn_extChartAt p).mono hf)
+  have hsub : tsupport (coordinateScalar (n := n) p f) ⊆ (extChartAt I p) '' tsupport f := by
+    apply closure_minimal _ hcompact.isClosed
+    intro z hz
+    by_cases hzt : z ∈ (extChartAt I p).target
+    · refine ⟨(extChartAt I p).symm z, ?_, (extChartAt I p).right_inv hzt⟩
+      apply subset_tsupport
+      simpa only [Function.mem_support, coordinateScalar, indicator_of_mem hzt] using hz
+    · exact False.elim (hz (indicator_of_notMem hzt _))
+  exact ⟨hcompact.of_isClosed_subset (isClosed_tsupport _) hsub,
+    hsub.trans (image_subset_iff.mpr fun x hx ↦ (extChartAt I p).map_source (hf hx))⟩
+
 end Poincare.ClosedLaplacianStokesProducer
