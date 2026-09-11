@@ -321,4 +321,31 @@ theorem clipped_secant_le_of_deriv_rpow_bound
   rw [he'] at hp
   exact hi.trans (by simpa only [mul_assoc] using mul_le_mul_of_nonneg_left hp hCβ)
 
+/-- The Leibniz rule on a closed time interval under an integrable diagonal power singularity. -/
+theorem hasDerivWithinAt_integral_moving_limit
+    {F D : ℝ → ℝ → ℝ} {b T t C β : ℝ} (ht : t ∈ Icc 0 T)
+    (hβ : 0 < β) (hβ1 : β ≤ 1) (hC : 0 ≤ C)
+    (hcont : ContinuousOn (fun p : ℝ × ℝ => F p.1 p.2)
+      {p : ℝ × ℝ | p.2 ∈ Icc 0 T ∧ p.1 ∈ Icc 0 T ∧ p.2 ≤ p.1})
+    (hdiag : F t t = b)
+    (hderiv : ∀ s ∈ Icc 0 T, ∀ r ∈ Ioc s T,
+      HasDerivAt (fun ρ => F ρ s) (D r s) r)
+    (hbound : ∀ s ∈ Icc 0 T, ∀ r ∈ Ioc s T, |D r s| ≤ C * (r-s)^(β-1)) :
+    HasDerivWithinAt (fun r : ℝ => ∫ s in (0 : ℝ)..r, F r s)
+      (b + ∫ s in (0 : ℝ)..t, D t s) (Icc 0 T) t := by
+  apply hasDerivWithinAt_integral_moving_limit_of_secants ht hcont hdiag
+    (fun s hs => hderiv s ⟨hs.1.le, hs.2.le.trans ht.2⟩ t ⟨hs.2, ht.2⟩)
+  refine ⟨fun s => (C / β) * |t-s|^(β-1), ?_, ?_⟩
+  · exact ((intervalIntegrable_abs_sub_rpow hβ ht).const_mul (C / β)).1
+  · filter_upwards [self_mem_nhdsWithin] with r hr
+    filter_upwards [ae_restrict_mem measurableSet_Ioc,
+      (volume.restrict (Ioc 0 T)).ae_ne t] with s hs hst
+    have hsT : s ∈ Icc 0 T := ⟨hs.1.le, hs.2⟩
+    have hc : ContinuousOn (fun r => F r s) (Icc s T) :=
+      hcont.comp (continuous_id.prodMk continuous_const).continuousOn
+        (fun z hz => ⟨hsT, ⟨hs.1.le.trans hz.1, hz.2⟩, hz.1⟩)
+    simpa only [Real.norm_eq_abs] using
+      clipped_secant_le_of_deriv_rpow_bound hβ hβ1 hC hs.2 hr.2 ht.2 hst.symm
+        hc (hderiv s hsT) (hbound s hsT)
+
 end Poincare.MovingLimitLeibniz
