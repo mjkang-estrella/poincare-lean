@@ -424,4 +424,36 @@ theorem weighted_third_translation {α t : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 
     integral_add_right_eq_self (fun y : E => ‖Third t y‖ * ‖y‖ ^ α) w,
     integral_add_right_eq_self (fun y : E => ‖Third t y‖) w]
 
+/-- The segment parameter and the weighted spatial third derivative form an integrable product. -/
+theorem integrable_segment_weighted_third {α t : ℝ}
+    (hα : 0 ≤ α) (hα1 : α ≤ 1) (ht : 0 < t) (w : E) :
+    Integrable (fun p : ℝ × E => ‖Third t (p.2 + p.1 • w)‖ * ‖p.2‖ ^ α)
+      ((volume.restrict (Icc (0 : ℝ) 1)).prod volume) := by
+  let G : ℝ × E → ℝ := fun p => ‖Third t (p.2 + p.1 • w)‖ * ‖p.2‖ ^ α
+  have hD : Continuous (Third t) :=
+    ((((contDiff_heatKernel_spatial («E» := E) t).fderiv_right
+      (m := 2) (by norm_num)).fderiv_right (m := 1) (by norm_num)).fderiv_right
+        (m := 0) (by norm_num)).continuous
+  have hg : Continuous G :=
+    (hD.comp (continuous_snd.add (continuous_fst.smul continuous_const))).norm.mul
+      ((Real.continuous_rpow_const hα).comp continuous_snd.norm)
+  let C := (∫ y : E, ‖Third t y‖ * ‖y‖ ^ α) + ‖w‖ ^ α * (∫ y : E, ‖Third t y‖)
+  apply (integrable_prod_iff hg.aestronglyMeasurable).mpr
+  refine ⟨Filter.Eventually.of_forall fun r => (weighted_third_translation hα hα1 ht (r • w)).1, ?_⟩
+  have hm := hg.norm.stronglyMeasurable.integral_prod_right' (ν := volume)
+  refine (integrable_const C).mono' hm.aestronglyMeasurable ?_
+  filter_upwards [ae_restrict_mem measurableSet_Icc] with r hr
+  have he : (∫ y : E, ‖G (r, y)‖) = ∫ y : E, G (r, y) := by
+    apply integral_congr_ae
+    exact Filter.Eventually.of_forall fun y => Real.norm_of_nonneg
+      (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  rw [Real.norm_of_nonneg (integral_nonneg (fun y => norm_nonneg _)), he]
+  have hwp : ‖r • w‖ ^ α ≤ ‖w‖ ^ α := by
+    apply Real.rpow_le_rpow (norm_nonneg _) _ hα
+    rw [norm_smul_of_nonneg hr.1]
+    nlinarith [norm_nonneg w, hr.2]
+  exact (weighted_third_translation hα hα1 ht (r • w)).2.trans
+    (add_le_add le_rfl (mul_le_mul_of_nonneg_right hwp
+      (integral_nonneg (fun y => norm_nonneg _))))
+
 end Poincare.HeatDuhamelHessianSpatialHolder
