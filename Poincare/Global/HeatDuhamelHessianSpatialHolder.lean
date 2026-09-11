@@ -11,6 +11,9 @@ namespace Poincare.HeatDuhamelHessianSpatialHolder
 
 local notation "E" => Poincare.ClosedSmoothModel 3
 local instance : NormedAddCommGroup (E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
+local instance : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+  { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+local instance : NormedAddCommGroup (E →L[ℝ] E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
 local notation "Hess" => fun (t : ℝ) (x : E) =>
   fderiv ℝ (fderiv ℝ (fun z : E => Poincare.heatKernel t z)) x
 local notation "Third" => fun (t : ℝ) (x : E) => fderiv ℝ (Hess t) x
@@ -48,5 +51,41 @@ theorem third_apply {t : ℝ} (ht : t ≠ 0) (x u v w : E) :
   rw [h]
   simp only [heatKernel, real_inner_comm]
   ring
+
+/-- The unit-time third derivative has a cubic Gaussian envelope. -/
+theorem norm_third_one_le (x : E) :
+    ‖Third 1 x‖ ≤ heatKernel 1 x * (‖x‖ ^ 3 / 8 + 3 * ‖x‖ / 4) := by
+  have hk : 0 ≤ heatKernel 1 x := heatKernel_nonneg zero_lt_one x
+  have hB : 0 ≤ heatKernel 1 x * (‖x‖ ^ 3 / 8 + 3 * ‖x‖ / 4) := by positivity
+  apply ContinuousLinearMap.opNorm_le_bound _ hB
+  intro u
+  apply ContinuousLinearMap.opNorm_le_bound _ (mul_nonneg hB (norm_nonneg u))
+  intro v
+  apply ContinuousLinearMap.opNorm_le_bound _ (by positivity)
+  intro w
+  rw [third_apply one_ne_zero]
+  norm_num only [one_pow, mul_one]
+  rw [norm_mul, Real.norm_of_nonneg hk]
+  calc
+    _ ≤ heatKernel 1 x *
+        (‖⟪x, u⟫_ℝ * ⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ‖ / 8 +
+          ((‖⟪u, v⟫_ℝ * ⟪x, w⟫_ℝ‖ + ‖⟪x, v⟫_ℝ * ⟪u, w⟫_ℝ‖) +
+            ‖⟪x, u⟫_ℝ * ⟪v, w⟫_ℝ‖) / 4) := by
+      gcongr
+      calc
+        _ ≤ ‖-(⟪x, u⟫_ℝ * ⟪x, v⟫_ℝ * ⟪x, w⟫_ℝ) / 8‖ +
+            ‖(⟪u, v⟫_ℝ * ⟪x, w⟫_ℝ + ⟪x, v⟫_ℝ * ⟪u, w⟫_ℝ +
+              ⟪x, u⟫_ℝ * ⟪v, w⟫_ℝ) / 4‖ := norm_add_le _ _
+        _ ≤ _ := by
+          simp only [norm_div, norm_neg, Real.norm_ofNat]
+          gcongr
+          exact (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
+    _ ≤ heatKernel 1 x *
+        (((‖x‖ * ‖u‖) * (‖x‖ * ‖v‖) * (‖x‖ * ‖w‖)) / 8 +
+          (((‖u‖ * ‖v‖) * (‖x‖ * ‖w‖) + (‖x‖ * ‖v‖) * (‖u‖ * ‖w‖)) +
+            (‖x‖ * ‖u‖) * (‖v‖ * ‖w‖)) / 4) := by
+      simp only [norm_mul]
+      gcongr <;> apply norm_inner_le_norm
+    _ = _ := by ring
 
 end Poincare.HeatDuhamelHessianSpatialHolder
