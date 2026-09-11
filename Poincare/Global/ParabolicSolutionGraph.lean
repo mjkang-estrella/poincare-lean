@@ -217,4 +217,44 @@ theorem holder_tendstoUniformly {v : ℕ → Y (E := E) α T F} {w : Y (E := E) 
   rw [dist_eq_norm]
   exact hb.trans_lt (by simpa only [dist_eq_norm, norm_sub_rev] using hn)
 
+/-- Uniform convergence of the derivatives closes the derivative relation on a convex set. -/
+theorem closed_time_derivative {f d : ℕ → ℝ → ℝ} {g e : ℝ → ℝ} {s : Set ℝ}
+    (hs : Convex ℝ s) (hf : ∀ n t, t ∈ s → HasDerivWithinAt (f n) (d n t) s t)
+    (hfg : ∀ t ∈ s, Tendsto (fun n => f n t) atTop (𝓝 (g t)))
+    (hde : TendstoUniformlyOn d e atTop s) {x : ℝ} (hx : x ∈ s) :
+    HasDerivWithinAt g (e x) s x := by
+  rw [hasDerivWithinAt_iff_isLittleO, Asymptotics.isLittleO_iff]
+  intro ε hε
+  have hε4 : 0 < ε / 4 := by linarith
+  obtain ⟨N, hN⟩ := eventually_atTop.1 ((Metric.tendstoUniformlyOn_iff.1 hde) _ hε4)
+  have hnear (n : ℕ) (hn : N ≤ n) (y : ℝ) (hy : y ∈ s) :
+      ‖d n y - e y‖ ≤ ε / 4 := by
+    simpa only [dist_eq_norm, norm_sub_rev] using (hN n hn y hy).le
+  have hdiff (y : ℝ) (hy : y ∈ s) :
+      ‖(g y - f N y) - (g x - f N x)‖ ≤ (ε / 2) * ‖y - x‖ := by
+    apply le_of_tendsto (((hfg y hy).sub tendsto_const_nhds).sub
+      ((hfg x hx).sub tendsto_const_nhds)).norm
+    filter_upwards [eventually_ge_atTop N] with n hn
+    apply Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+      (fun z hz => (hf n z hz).sub (hf N z hz)) _ hs hx hy
+    intro z hz
+    calc
+      ‖d n z - d N z‖ ≤ ‖d n z - e z‖ + ‖e z - d N z‖ := norm_sub_le_norm_sub_add_norm_sub ..
+      _ ≤ ε / 2 := by rw [norm_sub_rev (e z)]; linarith [hnear n hn z hz, hnear N le_rfl z hz]
+  filter_upwards [(hf N x hx).isLittleO.bound hε4, self_mem_nhdsWithin] with y hy hys
+  have hlast : ‖(y - x) * (d N x - e x)‖ ≤ (ε / 4) * ‖y - x‖ := by
+    rw [norm_mul, mul_comm]
+    exact mul_le_mul_of_nonneg_right (hnear N le_rfl x hx) (norm_nonneg _)
+  calc
+    ‖g y - g x - (y - x) • e x‖ =
+        ‖((g y - f N y) - (g x - f N x)) +
+          (f N y - f N x - (y - x) • d N x) + (y - x) * (d N x - e x)‖ := by
+      congr 1
+      simp only [smul_eq_mul]
+      ring
+    _ ≤ ‖(g y - f N y) - (g x - f N x)‖ +
+        ‖f N y - f N x - (y - x) • d N x‖ + ‖(y - x) * (d N x - e x)‖ :=
+      (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
+    _ ≤ ε * ‖y - x‖ := by linarith [hdiff y hys]
+
 end Poincare.ParabolicSolutionGraph
