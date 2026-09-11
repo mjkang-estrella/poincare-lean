@@ -174,4 +174,28 @@ theorem deriv_matrix_inv_entry {A : ℝ → Matrix (Fin n) (Fin n) ℝ} {t : ℝ
   rw [Finset.sum_comm] at hentry
   exact hentry
 
+/-- The inverse Gram entries have the usual spatial derivative. -/
+theorem fderiv_chartInverseMetric
+    (g : ClosedSmoothRiemannianMetric n M) (p : M) {z : E}
+    (hz : z ∈ (extChartAt I p).target) (v : E) (i j : Fin n) :
+    fderiv ℝ (fun y ↦ (inverseChartPullbackGramMatrixField g p y)⁻¹ i j) z v =
+      -(∑ k, ∑ l, (inverseChartPullbackGramMatrixField g p z)⁻¹ i k *
+        fderiv ℝ (fun y ↦ inverseChartPullbackGramMatrixField g p y k l) z v *
+        (inverseChartPullbackGramMatrixField g p z)⁻¹ l j) := by
+  let G := inverseChartPullbackGramMatrixField g p
+  have hG (k l : Fin n) : DifferentiableAt ℝ (fun y ↦ G y k l) z :=
+    ((contDiffOn_inverseChartPullbackGramMatrixField_entry g p k l z hz).contDiffAt
+      ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have hdet : (G z).det ≠ 0 := by
+    dsimp [G]
+    rw [← inverseChartPullbackGramMatrix_eq_field g p ⟨z, hz⟩]
+    exact (inverseChartPullbackGramMatrix_posDef g p ⟨z, hz⟩).det_pos.ne'
+  have hInv := (((ClosedLaplacianStokesProducer.chartInverseMetric_contDiffOn g p i j) z hz).contDiffAt ((isOpen_extChartAt_target p).mem_nhds hz)).differentiableAt (by simp)
+  have hd := deriv_matrix_inv_entry (A := fun s : ℝ ↦ G (z + s • v)) (t := 0)
+    (fun k l ↦ ((hG k l).hasFDerivAt.hasLineDerivAt v).differentiableAt)
+    (by simpa only [zero_smul, add_zero] using hdet) i j
+  rw [(hInv.hasFDerivAt.hasLineDerivAt v).deriv] at hd
+  simp only [zero_smul, add_zero] at hd
+  simpa only [((hG _ _).hasFDerivAt.hasLineDerivAt v).deriv] using hd
+
 end Poincare.ClosedLaplacianStokesGlobalCoefficients
