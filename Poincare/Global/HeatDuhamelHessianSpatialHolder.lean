@@ -168,4 +168,14 @@ theorem weighted_third_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
       rw [integral_const_mul]
     _ = (a ^ 3)⁻¹ * (((a ^ 3)⁻¹ * a ^ α) * (∫ x : E, ‖Third 1 x‖ * ‖x‖ ^ α)) := by ring
 
+/-- Weighted Bochner integrability at every positive time. -/
+theorem integrable_weighted_third {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
+    {t : ℝ} (ht : 0 < t) :
+    Integrable (fun x : E => ‖Third t x‖ * ‖x‖ ^ α) := by
+  have ha : 0 < Real.sqrt t := Real.sqrt_pos.2 ht
+  rw [← Real.sq_sqrt ht.le]
+  apply (integrable_comp_smul_iff volume _ ha.ne').1
+  simp_rw [weighted_third_sq_smul (Real.sqrt t) ha]
+  exact (integrable_weighted_third_one hα hα1).const_mul _
+
 end Poincare.HeatDuhamelHessianSpatialHolder
