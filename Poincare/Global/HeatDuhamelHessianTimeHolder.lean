@@ -267,7 +267,8 @@ theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
   have h := norm_integral_cancelled_hessian_near_le hα hα1 h12
     (fun s hs => hK s ⟨ht₁.1.trans hs.1.le, hs.2.le.trans ht₂.2⟩) x
   rw [abs_of_nonneg (sub_nonneg.mpr h12)]
-  convert h using 1 <;> ring
+  convert h using 1
+  ring
 
 /-- An interval ending before the observation time obeys the same short-interval bound. -/
 theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
@@ -354,5 +355,40 @@ theorem continuous_hessian_time_deriv_pos :
     ((Real.sqrt (p.1 : ℝ))⁻¹ • p.2)
   simpa only [Real.sq_sqrt p.1.property.le, smul_inv_smul₀ (hapos p).ne'] using h.symm
 
+
+set_option maxHeartbeats 800000 in
+/-- The weighted time derivative is integrable jointly on every positive time slab. -/
+theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
+    (hα : 0 ≤ α) (hα2 : α ≤ 2) (ha : 0 < a) (b : ℝ) :
+    Integrable (fun p : ℝ × E => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α)
+      ((volume.restrict (Icc a b)).prod volume) := by
+  let G : ℝ × E → ℝ := fun p => ‖DtHess (max a p.1) p.2‖ * ‖p.2‖ ^ α
+  have hpos (p : ℝ × E) : 0 < max a p.1 := ha.trans_le (le_max_left _ _)
+  have hD : Continuous (fun p : ℝ × E => DtHess (max a p.1) p.2) :=
+    continuous_hessian_time_deriv_pos.comp
+      (((continuous_const.max continuous_fst).subtype_mk hpos).prodMk continuous_snd)
+  have hg : Continuous G := hD.norm.mul
+    ((Real.continuous_rpow_const hα).comp continuous_snd.norm)
+  let J := ∫ y : E, ‖DtHess 1 y‖ * ‖y‖ ^ α
+  have hJ : 0 ≤ J := integral_nonneg (fun y =>
+    mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+  apply (integrable_prod_iff hg.aestronglyMeasurable).mpr
+  constructor
+  · refine Filter.Eventually.of_forall ?_
+    intro r
+    change Integrable (fun y : E => ‖DtHess (max a r) y‖ * ‖y‖ ^ α) volume
+    exact integrable_weighted_hessian_time_deriv hα hα2 (ha.trans_le (le_max_left a r))
+  · have hm := hg.norm.stronglyMeasurable.integral_prod_right' (ν := volume)
+    refine (integrable_const (a ^ (α / 2 - 2) * J)).mono' hm.aestronglyMeasurable ?_
+    refine Filter.Eventually.of_forall fun r => ?_
+    have he : (∫ y : E, ‖G (r, y)‖) = ∫ y : E, G (r, y) := by
+      apply integral_congr_ae
+      exact Filter.Eventually.of_forall fun y => Real.norm_of_nonneg
+        (mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))
+    rw [Real.norm_of_nonneg (integral_nonneg (fun y => norm_nonneg _)), he]
+    change (∫ y : E, ‖DtHess (max a r) y‖ * ‖y‖ ^ α) ≤ _
+    rw [weighted_hessian_time_deriv_integral (ha.trans_le (le_max_left _ _))]
+    exact mul_le_mul_of_nonneg_right
+      (Real.rpow_le_rpow_of_nonpos ha (le_max_left _ _) (by linarith)) hJ
 
 end Poincare.HeatDuhamelHessianTimeHolder
