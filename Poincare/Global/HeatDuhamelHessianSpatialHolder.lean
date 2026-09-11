@@ -635,4 +635,82 @@ theorem far_hessian_difference_le {α T t M K : ℝ}
       mul_le_mul_of_nonneg_left (far_time_power_integral_le hα1 hρ hscale.le) (mul_nonneg hJ hK0)
     _ = _ := by ring
 
+/-- The spatial Hölder estimate for the actual Duhamel Hessian. -/
+theorem duhamel_hessian_spatial_holder :
+  ∀ α : ℝ, 0 < α → α < 1 →
+  ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ (f : ℝ × E → ℝ) (M K : ℝ), 0 ≤ M → 0 ≤ K →
+  ContinuousOn f (Icc 0 T ×ˢ univ) →
+  (∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ M) →
+  (∀ t ∈ Icc 0 T, ∀ x y : E, |f (t,x) - f (t,y)| ≤ K * ‖x-y‖ ^ α) →
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, Poincare.heatSolution (t-s) (fun y => f (s,y)) x
+  ∀ t ∈ Icc 0 T, ∀ x z : E,
+    ‖fderiv ℝ (fderiv ℝ (u t)) x - fderiv ℝ (fderiv ℝ (u t)) z‖ ≤ C * K * ‖x - z‖ ^ α := by
+  intro α hα hα1
+  let N := 2 * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)
+  let F := ((∫ y : E, ‖Third 1 y‖ * ‖y‖ ^ α) + (∫ y : E, ‖Third 1 y‖)) * (2 / (1 - α))
+  have hN : 0 ≤ N := mul_nonneg
+    (mul_nonneg (by norm_num) (integral_nonneg (fun y =>
+      mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _))))
+    (div_nonneg (by norm_num) hα.le)
+  have hF : 0 ≤ F := mul_nonneg
+    (add_nonneg (integral_nonneg (fun y =>
+      mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (norm_nonneg _) _)))
+      (integral_nonneg (fun y => norm_nonneg _)))
+    (div_nonneg (by norm_num) (by linarith))
+  refine ⟨max 1 (N + F), lt_of_lt_of_le zero_lt_one (le_max_left _ _), ?_⟩
+  intro T _ _ f M K _ hK0 hf hM hK
+  dsimp only
+  intro t ht x z
+  have hC : N + F ≤ max 1 (N + F) := le_max_right _ _
+  have hpow : 0 ≤ ‖x - z‖ ^ α := Real.rpow_nonneg (norm_nonneg _) _
+  suffices hraw : ‖fderiv ℝ (fderiv ℝ (fun x : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) x)) x -
+      fderiv ℝ (fderiv ℝ (fun x : E => ∫ s in (0 : ℝ)..t,
+      heatSolution (t - s) (fun y => f (s, y)) x)) z‖ ≤ (N + F) * K * ‖x - z‖ ^ α by
+    exact hraw.trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hC hK0) hpow)
+  by_cases he : x = z
+  · subst z
+    simp [Real.zero_rpow hα.ne']
+  have hρ : 0 < ‖x - z‖ := norm_pos_iff.mpr (sub_ne_zero.mpr he)
+  by_cases htime : t ≤ ‖x - z‖ ^ 2
+  · exact (duhamel_hessian_spatial_holder_of_time_le_dist_sq hα hα1 ht hK0 hf hM hK x z htime).trans
+      (mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right (show N ≤ N + F by linarith) hK0) hpow)
+  have hscale : ‖x - z‖ ^ 2 < t := lt_of_not_ge htime
+  let a := t - ‖x - z‖ ^ 2
+  let H := fun (s : ℝ) (p : E) => ∫ y : E, (f (s, p - y) - f (s, p)) • Hess (t - s) y
+  have ha : 0 < a := sub_pos.mpr hscale
+  have hat : a ≤ t := sub_le_self t (sq_nonneg _)
+  have h0t (p : E) : IntervalIntegrable (fun s => H s p) volume 0 t :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ht.1).mpr
+      (integrableOn_cancelled_hessian_time hα hα1 ht hf hK p)
+  have h0a (p : E) : IntervalIntegrable (fun s => H s p) volume 0 a :=
+    (intervalIntegrable_iff_integrableOn_Ioo_of_le ha.le).mpr
+      ((integrableOn_cancelled_hessian_time hα hα1 ht hf hK p).mono_set
+        (Ioo_subset_Ioo le_rfl hat))
+  have hsplit (p : E) : (∫ s in (0 : ℝ)..t, H s p) =
+      (∫ s in (0 : ℝ)..a, H s p) + (∫ s in a..t, H s p) :=
+    (intervalIntegral.integral_add_adjacent_intervals (h0a p) ((h0a p).symm.trans (h0t p))).symm
+  rw [hessian_duhamel_eq_integral hα hα1 ht hf hM hK x,
+    hessian_duhamel_eq_integral hα hα1 ht hf hM hK z]
+  change ‖(∫ s in (0 : ℝ)..t, H s x) - (∫ s in (0 : ℝ)..t, H s z)‖ ≤ _
+  rw [hsplit x, hsplit z]
+  have hnear : ‖(∫ s in a..t, H s x) - (∫ s in a..t, H s z)‖ ≤ N * K * ‖x - z‖ ^ α := by
+    apply near_hessian_difference_le hα hα1 hK0 hat
+    · intro s hs
+      exact hK s ⟨ha.le.trans hs.1.le, hs.2.le.trans ht.2⟩
+    · dsimp only [a]
+      linarith
+  have hfar : ‖(∫ s in (0 : ℝ)..a, H s x) - (∫ s in (0 : ℝ)..a, H s z)‖ ≤ F * K * ‖x - z‖ ^ α :=
+    far_hessian_difference_le hα hα1 ht hK0 hf hM hK x z hρ hscale
+  calc
+    _ = ‖((∫ s in (0 : ℝ)..a, H s x) - (∫ s in (0 : ℝ)..a, H s z)) +
+        ((∫ s in a..t, H s x) - (∫ s in a..t, H s z))‖ := by congr 1; abel
+    _ ≤ ‖(∫ s in (0 : ℝ)..a, H s x) - (∫ s in (0 : ℝ)..a, H s z)‖ +
+        ‖(∫ s in a..t, H s x) - (∫ s in a..t, H s z)‖ := norm_add_le _ _
+    _ ≤ F * K * ‖x - z‖ ^ α + N * K * ‖x - z‖ ^ α := add_le_add hfar hnear
+    _ = (N + F) * K * ‖x - z‖ ^ α := by ring
+
 end Poincare.HeatDuhamelHessianSpatialHolder
