@@ -227,4 +227,40 @@ theorem norm_integral_cancelled_hessian_near_le {α K a t : ℝ}
   rw [he] at hb
   exact hb
 
+set_option maxHeartbeats 800000 in
+/-- The near part of the spatial increment has the required Hölder power. -/
+theorem near_hessian_difference_le {α K a t : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hK0 : 0 ≤ K) (hat : a ≤ t)
+    {f : ℝ × E → ℝ}
+    (hK : ∀ s ∈ Ioo a t, ∀ x y : E,
+      |f (s, x) - f (s, y)| ≤ K * ‖x - y‖ ^ α)
+    (x z : E) (hscale : t - a ≤ ‖x - z‖ ^ 2) :
+    ‖(∫ s in a..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y) -
+      (∫ s in a..t, ∫ y : E, (f (s, z - y) - f (s, z)) • Hess (t - s) y)‖ ≤
+      (2 * (∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α) * (2 / α)) * K * ‖x - z‖ ^ α := by
+  let J := ∫ y : E, ‖Hess 1 y‖ * ‖y‖ ^ α
+  have hJ : 0 ≤ J := integral_nonneg (fun y => by positivity)
+  have hp : (t - a) ^ (α / 2) ≤ ‖x - z‖ ^ α := by
+    calc
+      (t - a) ^ (α / 2) ≤ (‖x - z‖ ^ 2) ^ (α / 2) :=
+        Real.rpow_le_rpow (sub_nonneg.mpr hat) hscale (by linarith)
+      _ = ‖x - z‖ ^ α := by
+        rw [← Real.rpow_natCast_mul (norm_nonneg (x - z))]
+        congr 1
+        norm_num
+        ring
+  calc
+    _ ≤ ‖∫ s in a..t, ∫ y : E, (f (s, x - y) - f (s, x)) • Hess (t - s) y‖ +
+        ‖∫ s in a..t, ∫ y : E, (f (s, z - y) - f (s, z)) • Hess (t - s) y‖ :=
+      norm_sub_le _ _
+    _ ≤ (K * J) * (2 / α) * (t - a) ^ (α / 2) +
+        (K * J) * (2 / α) * (t - a) ^ (α / 2) :=
+      add_le_add (norm_integral_cancelled_hessian_near_le hα hα1 hat hK x)
+        (norm_integral_cancelled_hessian_near_le hα hα1 hat hK z)
+    _ = (2 * J * (2 / α)) * K * (t - a) ^ (α / 2) := by ring
+    _ ≤ (2 * J * (2 / α)) * K * ‖x - z‖ ^ α :=
+      mul_le_mul_of_nonneg_left hp
+        (mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hJ)
+          (div_nonneg (by norm_num) hα.le)) hK0)
+
 end Poincare.HeatDuhamelHessianSpatialHolder
