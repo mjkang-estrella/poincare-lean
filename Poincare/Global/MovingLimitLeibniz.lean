@@ -187,7 +187,8 @@ theorem abs_sub_le_rpow_of_deriv_bound
     have hp := (((hasDerivAt_id r).sub_const s).rpow_const (p := β)
       (Or.inl (ne_of_gt (sub_pos.mpr (hsu.trans_lt hr.1))))).const_mul (C / β)
     simp only [id_eq] at hp
-    convert hp using 1 <;> field_simp [hβ.ne'] <;> ring
+    convert hp using 1
+    field_simp [hβ.ne']
   have hi := abs_sub_le_of_deriv_comparison huv
     (hc.mono (Icc_subset_Icc hsu hvT))
     (continuousOn_const.mul ((continuous_id.sub continuous_const).continuousOn.rpow_const
