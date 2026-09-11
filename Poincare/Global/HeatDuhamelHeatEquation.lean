@@ -222,4 +222,9 @@ theorem duhamel_time_derivative_integral {α T t M K : ℝ}
   rw [laplacian_duhamel_eq_integral hα hα1 ht hf hM hK x]
   exact intervalIntegral.integral_congr_ae_restrict he
 
+/-- The specified Duhamel formula has zero initial value. -/
+theorem duhamel_zero (f : ℝ × E → ℝ) (x : E) :
+    (∫ s in (0 : ℝ)..0, heatSolution (0 - s) (fun y => f (s, y)) x) = 0 := by
+  exact intervalIntegral.integral_same
+
 end Poincare.HeatDuhamelHeatEquation
