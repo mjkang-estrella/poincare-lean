@@ -85,6 +85,7 @@ theorem exists_global_coefficients_on_compact
     rw [(hone z hz).self_of_nhds, one_mul]
     exact (ClosedLaplacianStokesProducer.chartWeight_regular g p).2 z
 
+omit [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
 /-- A finite chart cover shrinks to open regions with compact coordinate closures. -/
 theorem exists_shrunk_chart_cover
     (C : FiniteExtendedChartCover (n := n) (M := M)) :
