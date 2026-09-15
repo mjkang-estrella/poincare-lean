@@ -1,0 +1,21 @@
+# Worker contract (Lean task)
+
+You are a Lean 4 formalization worker on the Poincaré project (toolchain leanprover/lean4:v4.30.0-rc2, Mathlib pinned). Isolated worktree on branch `worker/hamilton-eta-core-reduction`, cloned `.lake` cache. Rules: NO sorry/admit/axiom/native_decide/opaque (also avoid these words in comments); do not edit existing Lean files or `Poincare.lean`; exactly one new file, `Poincare/Global/HamiltonEtaCoreReduction.lean`; no new analytic premises beyond the displayed Eta residual; commit each verified item on the branch; report actual command output to `harness/reports/hamilton-eta-core-reduction_{done|blocked}.md`. Gate: `LEAN_NUM_THREADS=1 lake env lean <file>` exit 0; `rg -n '\b(sorry|admit|axiom|opaque)\b|native_decide' <file>` empty; `#print axioms` of every new declaration exactly `[propext, Classical.choice, Quot.sound]`; `git diff --check`. Verify every name by grep; record every probe with actual output. Frozen contract files are read-only.
+
+Context: read `HANDOFF.md` top section and `harness/reports/hamilton-residual-estimates-survey_done.md` (sections 3.1, 4.8, and Appendix C6 which contains the compiled scratch program with `meanFloorFromEta` and `finalCoreOfEta`) first; reproduce that scratch file under /tmp and confirm it still elaborates. Landed: `Poincare/Global/HamiltonStokesFreeReactionCore.lean` (namespace `Poincare.HamiltonStokesFreeReactionCore`: `HamiltonReactionCore3InitialPinchingNS`, the current pinned core), `HamiltonInitialPinchingReactionCoreReduction.lean` (`HamiltonReactionCore3InitialPinchingEta` and `hamiltonReactionCore3Final_of_initialPinchingEta`; check whether that landed Eta variant already matches item 7 and reuse it if so), `HamiltonReactionCoreFinal.lean`, `NormalizedFlowInitialPinchingPreservation.lean`, `NormalizedFlowForwardPointwiseTracelessEnergyPinchingDomination.lean`.
+
+# Task hamilton-eta-core-reduction
+
+Namespace: `Poincare.HamiltonEtaCoreReduction`. Imports: `Poincare.Global.HamiltonInitialPinchingReactionCoreReduction`, `Poincare.Global.HamiltonStokesFreeReactionCore` (add what you need).
+
+Objective: land the survey's item 7 as repository theorems and define the Eta-only core, which replaces BOTH residual estimates (the scalar-to-mean comparison with gap, and the variance-energy domination) by the single uniform normalization gap.
+
+1. `meanFloorFromEta`: on a positive-scalar slice with `0 < delta ≤ 1`, the Eta inequality `2(2−δ) N(x)/R(x) + η ≤ (4/3) r` at one point gives `r ≥ (3/4) η`; hence along the flow `∀ t ≥ 0, (3/4)η ≤ meanScalar (gt t)` (uses `ricciNormSqAt ≥ 0` and pointwise positive scalar from `scalarAt_pos_of_initial_scalar_pos`).
+
+2. The core. Define `HamiltonReactionCore3Eta M : Prop` exactly as `HamiltonReactionCore3InitialPinchingNS` (print it) with the comparison clause `(∀ t x, R ≤ C r)`, the gap clause, and the energy clause `V ≤ 6E` all removed, the constant `C` removed from the existential, and the single residual added:
+   `∃ eta : ℝ, 0 < eta ∧ ∀ t ∈ Ici (0:ℝ), ∀ x, 2*(2-delta)*(gt t).ricciNormSqAt x / (gt t).scalarAt x + eta ≤ (4/3:ℝ)*meanScalar (gt t)`
+   (keep `K`, topology, compactness, `metric`, `parameter`, continuity, realization, jet profiles, joint C³ entries, forward normalized flow, positive initial scalar, `1/6 < ε ≤ 1/3`, the initial eigenfloor, `0 < δ ≤ 1`, admissibility). If the landed `HamiltonReactionCore3InitialPinchingEta` already has exactly this shape minus the energy/Stokes clauses, define the new core as that one with those clauses deleted and say so.
+
+3. `hamiltonReactionCore3Final_of_eta : HamiltonReactionCore3Eta M → HamiltonReactionCore3Final M` with mean floor `c := (3/4)η` and reaction rate `η` (the landed direct normalization-gap reaction theorem used by `hamiltonReactionCore3Final_of_initialPinchingEta`), then `hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Eta`, `UniversalHamiltonReactionCoreEtaStatement`, and `universalHamiltonConvergence_of_universalHamiltonReactionCoreEta`, mirroring `HamiltonStokesFreeReactionCore.lean`.
+
+Exact stop condition: items 1 to 3 pass the gate with the Eta residual as the only analytic clause beyond initial data and the flow; or a blocked report with the exact resisting step.

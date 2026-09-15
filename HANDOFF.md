@@ -612,6 +612,25 @@ Hölder seminorm at most `Λ`; and the error smallness `‖R f‖ ≤ ½‖f‖`
 `9C_Sε ≤ 1/4`, `9C_SΛT^{α/2} ≤ 1/4`. This is the smallness mechanism for
 the frozen-coefficient correction.
 
+`hamilton-residual-estimates-survey` landed (trimmed; full appendices on
+the retained worker branch), and it agrees with the design review on the
+key point: `V ≤ 6E` is precisely the nonnegative-mean-derivative condition
+in dimension three, not the almost-Schur inequality (whose sharp constant
+under `Ric ≥ 0` is 24), so no producer from pinching should be attempted.
+The scalar comparison R1 on the historical route needs three class-B
+inputs: the scale-effective Bernstein scalar-gradient estimate on the
+unnormalized pinched flow, the blow-up/rescaling transfer, and
+gradient-to-global-oscillation under positive pinching; a tail comparison
+also does not give the all-ray coefficient gap, and the preserved quotient
+constant can leave zero gap at feasible parameters. The strongest reduction
+found: the single uniform normalization gap
+`2(2−δ)N/R + η ≤ (4/3)r` (the `Eta` residual) supplies the mean floor
+`3η/4` by itself and the reaction rate `η` through the landed direct-gap
+theorem, so it closes the unchanged final core alone (compiled in scratch,
+Appendix C6). Dispatched as `hamilton-eta-core-reduction`. Thirteen
+candidate child obligations with exact elaborated expressions are listed in
+its section 4.9 for future registration.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
