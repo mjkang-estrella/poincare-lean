@@ -245,3 +245,24 @@ theorem isCompact_coordSupport (i : Fin A.cover.chartCount) :
     ((continuousOn_extChartAt (A.cover.anchor i)).mono (partition_support_source A i))
 
 end Poincare.FiniteAtlasParabolicTensorSpace
+
+namespace Poincare.FiniteAtlasParabolicTensorSpace
+
+universe u
+variable {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) ∞ M]
+  (A : AtlasData M)
+
+/-- Coordinate changes recover the destination coordinates on their actual source. -/
+theorem change_chart (i j : Fin A.cover.chartCount) (x : M)
+    (hx : x ∈ (chart A i).source) :
+    change A i j (chart A i x) = chart A j x := by
+  exact congrArg (chart A j) ((chart A i).left_inv hx)
+
+/-- Composition through a third chart agrees on the common chart domain. -/
+theorem change_cocycle (i j k : Fin A.cover.chartCount) (x : M)
+    (hi : x ∈ (chart A i).source) (hj : x ∈ (chart A j).source) :
+    change A j k (change A i j (chart A i x)) = change A i k (chart A i x) := by
+  rw [change_chart A i j x hi, change_chart A j k x hj, change_chart A i k x hi]
+
+end Poincare.FiniteAtlasParabolicTensorSpace
