@@ -88,4 +88,9 @@ theorem norm_forcing_pullback_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
 def covectorPullback (S : E →L[ℝ] E) : (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) :=
   (ContinuousLinearMap.compL ℝ E E ℝ).flip S
 
+theorem norm_covectorPullback_le (S : E →L[ℝ] E) : ‖covectorPullback S‖ ≤ ‖S‖ := by
+  apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg S)
+  intro v
+  exact (v.opNorm_comp_le S).trans_eq (mul_comm _ _)
+
 end Poincare.FrozenEllipticHeatOperator
