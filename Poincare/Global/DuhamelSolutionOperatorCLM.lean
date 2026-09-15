@@ -103,4 +103,30 @@ theorem duhamel_integral_smul {α T t : ℝ} (c : ℝ)
   simp_rw [mul_left_comm (heatKernel _ _) c, integral_const_mul,
     intervalIntegral.integral_const_mul]
 
+/-- Integral linearity and graph uniqueness give a linear solution map. -/
+def duhamelLinearMap (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) :
+    Y («E» := E) α T ℝ →ₗ[ℝ] ParabolicSolutionGraph.Graph («E» := E) α T where
+  toFun := duhamelGraph α T hα hα1 hT hT1
+  map_add' f g := by
+    apply ParabolicSolutionGraph.Graph.ext_of_u hT
+    apply ParabolicHolder.ext
+    intro p hp
+    change (duhamelGraph α T hα hα1 hT hT1 (f+g)).u p =
+      (duhamelGraph α T hα hα1 hT hT1 f).u p +
+      (duhamelGraph α T hα hα1 hT hT1 g).u p
+    rw [(duhamelGraph_spec α T hα hα1 hT hT1 (f+g)).1 p hp,
+      (duhamelGraph_spec α T hα hα1 hT hT1 f).1 p hp,
+      (duhamelGraph_spec α T hα hα1 hT hT1 g).1 p hp]
+    exact duhamel_integral_add hα hp.1 f g p.2
+  map_smul' c f := by
+    apply ParabolicSolutionGraph.Graph.ext_of_u hT
+    apply ParabolicHolder.ext
+    intro p hp
+    change (duhamelGraph α T hα hα1 hT hT1 (c • f)).u p =
+      c • (duhamelGraph α T hα hα1 hT hT1 f).u p
+    rw [(duhamelGraph_spec α T hα hα1 hT hT1 (c • f)).1 p hp,
+      (duhamelGraph_spec α T hα hα1 hT hT1 f).1 p hp]
+    exact duhamel_integral_smul c f p.2
+
 end Poincare.DuhamelSolutionOperatorCLM
