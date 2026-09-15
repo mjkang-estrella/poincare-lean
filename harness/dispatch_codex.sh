@@ -10,6 +10,11 @@
 #   The codex model comes from ~/.codex/config.toml (gpt-6-astra).
 #   Output goes to harness/logs/<task_id>.log. Accept with harness/gate.sh.
 set -eu
+# 2026-09-15: the system git is the Xcode shim; point it at the Command Line Tools
+# so workers never hit the license prompt.
+if [ -d /Library/Developer/CommandLineTools ]; then
+  export DEVELOPER_DIR=/Library/Developer/CommandLineTools
+fi
 REPO=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 TASK=$1
 PROMPT=${2:-$REPO/harness/tasks/$TASK.md}

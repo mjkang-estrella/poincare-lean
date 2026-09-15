@@ -21,3 +21,31 @@ Hard rules — violating any of these means your work is rejected automatically:
 
 Style: follow the existing file's conventions. Mathlib naming conventions for
 new lemmas. Keep proofs terse but readable.
+
+## Contract update 2026-09-15 (overrides earlier file-scope rules)
+
+1. **One module per chain, not per task.** A task that continues a landed
+   chain (a follow-up, a partial's completion, the next lemma of the same
+   route) appends to that chain's existing module instead of creating a new
+   one. The task file names the module. Rules when appending: never change,
+   rename, or delete an existing declaration or its statement; add only new
+   declarations after the existing ones; keep the namespace. The gate is
+   module-wide (`harness/gate.sh` scans every declaration of the module) and
+   the orchestrator runs the root build at landing, so extending a module is
+   as safe as adding one. A task opens a new module only when it starts a
+   new chain.
+2. **Full names.** Every declaration named in a report, a mission file, or
+   a task must be its fully qualified name including the namespace, as
+   printed by `#check`. The registry resolves exactly that string.
+3. **Search before surveying.** A declaration catalog lives under
+   `harness/v2/catalog/`. Before grepping for a lemma, run
+   `python3 scripts/theorem_registry.py search harness/v2/catalog/<latest>.json "<query>"`
+   and quote the hit. Rebuild the catalog with `snapshot` after landing a
+   chain; do not re-survey what the catalog already lists.
+4. **Environment.** If `git` reports the Xcode license, export
+   `DEVELOPER_DIR=/Library/Developer/CommandLineTools` for the session; the
+   dispatch script now does this for workers.
+5. **Consolidation.** When a chain is complete, the orchestrator may run a
+   consolidation task that merges its modules into one file, preserving
+   every namespace and statement, updating importers, and re-gating; that is
+   the only task allowed to delete modules.
