@@ -129,4 +129,11 @@ def duhamelLinearMap (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
       (duhamelGraph_spec α T hα hα1 hT hT1 f).1 p hp]
     exact duhamel_integral_smul c f p.2
 
+/-- The bounded constant-coefficient inverse in continuous linear form. -/
+def duhamelOperator (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) :
+    Y («E» := E) α T ℝ →L[ℝ] ParabolicSolutionGraph.Graph («E» := E) α T :=
+  (duhamelLinearMap α T hα hα1 hT hT1).mkContinuous (boundConstant α hα hα1)
+    (fun f => (duhamelGraph_spec α T hα hα1 hT hT1 f).2)
+
 end Poincare.DuhamelSolutionOperatorCLM
