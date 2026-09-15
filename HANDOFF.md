@@ -1006,6 +1006,15 @@ checked against the base commit with identical printed types, and the ten
 old files reduced to one-line import stubs so existing importers are
 untouched. The stubs can be deleted once no worker branch imports them.
 
+`hamilton-bianchi-gradient-bound` landed (appended to
+`Global/HamiltonScalarGradientEstimate.lean`, gate PASS, 14 declarations):
+Hamilton's Lemma 11.6 in dimension three, `|∇R|² ≤ (20/7)|∇Ric|²`, from the
+weighted contracted-Bianchi trace pairing and the orthogonal decomposition,
+plus `tracelessEnergy_evolution_damped`,
+`DU ≤ −(2/21)|∇Ric|² + T_cubic − (4/3)rU` along the normalized flow. This
+removes the damping obstruction of the previous step; the auxiliary
+quantity's inequality is dispatched next.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
