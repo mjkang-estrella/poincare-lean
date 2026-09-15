@@ -431,3 +431,76 @@ theorem exists_inverse_metric_chart_operator
   exact ⟨S, hbound, hsolves⟩
 
 end Poincare.BufferedFrozenParabolicSolver
+
+noncomputable section
+open Set
+open scoped ContDiff
+namespace Poincare.BufferedFrozenParabolicSolver
+open ParabolicHolder ParabolicSolutionGraph
+
+/-- The coefficient extension leaves a transition-region gap. -/
+theorem cutoff_coefficient_gap (ψ a A : ℝ) :
+    a - A - ψ * (a - A) = (1 - ψ) * (a - A) := by ring
+
+/-- Agreement fails in a transition region whenever the coefficient has changed. -/
+theorem cutoff_coefficient_gap_ne_zero {ψ a A : ℝ} (hψ : ψ ≠ 1) (ha : a ≠ A) :
+    a - A - ψ * (a - A) ≠ 0 := by
+  rw [cutoff_coefficient_gap]
+  exact mul_ne_zero (sub_ne_zero.mpr hψ.symm) (sub_ne_zero.mpr ha)
+
+/-- The exact remaining principal residual retains the transition-region term. -/
+theorem nearFrozen_chart_residual {α T : ℝ}
+    (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3)) (ψ : (ClosedSmoothModel 3) → ℝ)
+    (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+    (heq : ∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ψ x * (a x i j - a anchor i j))
+    (hS : ∀ f t, t ∈ Icc 0 T → ∀ x,
+      (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+        (a anchor i j + b i j (t,x)) * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) :
+    ∀ f t, t ∈ Icc 0 T → ∀ x,
+      (S f).ut (t,x) - (∑ i, ∑ j, a x i j * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) - f (t,x) =
+        -(∑ i, ∑ j, (1 - ψ x) * (a x i j - a anchor i j) *
+          (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) := by
+  intro f t ht x
+  rw [hS f t ht x]
+  simp only [heq t ht x, Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]
+  ring
+
+
+
+set_option maxHeartbeats 1600000 in
+/-- The actual cutoff graph has both the principal transition error and the commutator. -/
+theorem exists_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
+    (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3)) {ψ : (ClosedSmoothModel 3) → ℝ}
+    (hψ : ContDiff ℝ ∞ ψ) (hc : HasCompactSupport ψ)
+    (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+    (heq : ∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ψ x * (a x i j - a anchor i j))
+    (hS : ∀ f t, t ∈ Icc 0 T → ∀ x,
+      (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+        (a anchor i j + b i j (t,x)) * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) :
+    ∃ C : Graph («E» := (ClosedSmoothModel 3)) α T →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T,
+      (∀ G p, (C G).u p = ψ p.2 * G.u p) ∧
+      ∀ f : Y («E» := (ClosedSmoothModel 3)) α T ℝ, (∀ p, ψ p.2 * f p = f p) →
+      ∀ t ∈ Icc 0 T, ∀ x,
+        (C (S f)).ut (t,x) -
+          (∑ i, ∑ j, a x i j * (C (S f)).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) - f (t,x) =
+        -ψ x * (∑ i, ∑ j, (1 - ψ x) * (a x i j - a anchor i j) *
+          (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) -
+        (∑ i, ∑ j, a x i j *
+          (fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) i) * (S f).du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) j) +
+            (S f).du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) * fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) j) +
+            (S f).u (t,x) * fderiv ℝ (fderiv ℝ ψ) x ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j))) := by
+  obtain ⟨C, hu, hjets⟩ := ParabolicCutoffCommutator.exists_cutoff_operator hψ hc hα hα1
+  refine ⟨C, hu, ?_⟩
+  intro f hf t ht x
+  obtain ⟨hut, _, hddu⟩ := hjets (S f) t ht x
+  rw [hut, hddu, hS f t ht x]
+  simp only [heq t ht x, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.smulRight_apply, smul_eq_mul,
+    Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]
+  have hf' := hf (t,x)
+  dsimp only at hf'
+  linear_combination hf'
+
+end Poincare.BufferedFrozenParabolicSolver
