@@ -1,5 +1,23 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker near-identity parabolic right inverse proved
+
+Branch `worker/near-identity-parabolic-right-inverse`, base `a77fdab5`,
+verified proof head `4fbea6a4`. The single new
+`Global/NearIdentityParabolicRightInverse.lean` proves multiplier linearity and
+boundedness, the one-half error estimate, the Neumann-corrected inverse, its
+closed-cylinder variable-coefficient equation and uniform `2 C_S` norm bound,
+and existence of a zero-trace solution for every forcing under the quarter bounds.
+
+All 29 declarations, including generated proofs, have exactly the three required
+foundational dependencies. Focused source compilation, expanded-coefficient
+existence type assignment, forbidden-token scan, and whitespace checks pass.
+Full outputs, failed diagnostics, probe sources, and the final proof diff are in
+`harness/reports/near-identity-parabolic-right-inverse_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/NearIdentityParabolicRightInverse.lean`.
+
 ## 2026-09-15 Worker Duhamel continuous linear operator proved
 
 Branch `worker/duhamel-solution-operator-clm`, base `2ca30baa`, proof head
