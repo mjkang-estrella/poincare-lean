@@ -1,10 +1,12 @@
 import Poincare.Global.ScalarGradientEvolution
 import Poincare.Global.IntrinsicLaplacianCoordinateForm
+import Poincare.Global.MetricFlowJointScalarTraceZoneBridge
 
 noncomputable section
 open Bundle FiberBundle Filter Set
 open scoped Manifold ContDiff Topology
 set_option autoImplicit false
+set_option synthInstance.maxHeartbeats 1000000
 universe u
 namespace Poincare.IntrinsicBochnerScalarGradient
 variable {M : Type u} [TopologicalSpace M] [T2Space M]
@@ -625,5 +627,250 @@ theorem laplacianAt_mdifferentiableAt_of_contMDiff_three
       (g.mdifferentiableAt_gradient ((hf.of_le (by norm_num)) y))
   exact (laplacianAt_mdifferentiableAt_of_supported_contMDiff_three g x u hs hu).congr_of_eventuallyEq
     hLap.symm
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Intrinsic scalar curvature and the anchor-chart curvature trace agree as
+joint space-time germs, independently of the regularity order. -/
+theorem scalar_joint_eventuallyEq_anchorTrace
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M) (t : ℝ) (x : M) :
+    (fun p : ℝ × ClosedSmoothModel 3 ↦
+      (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      =ᶠ[𝓝 (t, extChartAt (closedSmoothModelWithCorners 3) x x)]
+      Function.uncurry (anchorChartScalarTraceFlow gt x) := by
+  have ht : ∀ᶠ p : ℝ × ClosedSmoothModel 3 in
+      𝓝 (t, extChartAt (closedSmoothModelWithCorners 3) x x),
+      p.2 ∈ (extChartAt (closedSmoothModelWithCorners 3) x).target :=
+    continuousAt_snd.eventually ((isOpen_extChartAt_target x).mem_nhds (mem_extChartAt_target x))
+  have hone : ∀ᶠ p : ℝ × ClosedSmoothModel 3 in
+      𝓝 (t, extChartAt (closedSmoothModelWithCorners 3) x x),
+      ∀ᶠ z in 𝓝 p.2, GeodesicTransport.cutoff (n := 3) x z = 1 := by
+    have hsnd : ContinuousAt (fun p : ℝ × ClosedSmoothModel 3 ↦ p.2)
+        (t, extChartAt (closedSmoothModelWithCorners 3) x x) := continuousAt_snd
+    have hc : ∀ᶠ y in 𝓝 (extChartAt (closedSmoothModelWithCorners 3) x x),
+        ∀ᶠ z in 𝓝 y, GeodesicTransport.cutoff (n := 3) x z = 1 :=
+      (GeodesicTransport.cutoff_eventuallyEq_one (n := 3) x).eventually_nhds
+    exact hsnd.eventually hc
+  filter_upwards [ht, hone] with p hp hχ
+  exact (anchorChartScalarTraceFlow_eq_scalarAt_zone gt x p.1 hp hχ).symm
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- The landed joint C³ metric-entry producer supplies actual joint C¹ scalar
+curvature through the chart-zone identity. -/
+theorem scalar_jointContDiffAt_one_of_metricEntries_three
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (hJoint : MetricEntriesJointContDiffAt gt t x 3) :
+    ContDiffAt ℝ 1
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) :=
+  (anchorChartScalarTraceFlow_jointContDiffAt_one_of_metricEntries hJoint).congr_of_eventuallyEq
+    (scalar_joint_eventuallyEq_anchorTrace gt t x)
+
+section HigherRegularity
+
+variable {V W : Type*} [NormedAddCommGroup V] [NormedSpace ℝ V]
+  [NormedAddCommGroup W] [NormedSpace ℝ W]
+
+/-- Taking a spatial derivative loses one joint derivative. -/
+theorem spatial_fderiv_jointContDiffAt
+    (F : ℝ → V → W) (t : ℝ) (z : V) (k : ℕ)
+    (hF : ContDiffAt ℝ ((k : ℕ∞ω) + 1) (Function.uncurry F) (t, z)) :
+    ContDiffAt ℝ k (fun p : ℝ × V ↦ fderiv ℝ (F p.1) p.2) (t, z) := by
+  have hd := hF.fderiv_right (m := (k : ℕ∞ω)) (by rfl)
+  have hc := hd.clm_comp
+    (contDiffAt_const (c := ContinuousLinearMap.inr ℝ ℝ V))
+  have hnear : ∀ᶠ p in 𝓝 (t, z), DifferentiableAt ℝ (Function.uncurry F) p :=
+    ((hF.of_le (show (1 : ℕ∞ω) ≤ (k : ℕ∞ω) + 1 by exact le_add_self)).eventually
+      (by norm_num)).mono fun _ hp ↦ hp.differentiableAt one_ne_zero
+  apply hc.congr_of_eventuallyEq
+  filter_upwards [hnear] with p hp
+  rcases p with ⟨s, y⟩
+  have hs : HasFDerivAt (fun z' : V ↦ Function.uncurry F (s, z'))
+      ((fderiv ℝ (Function.uncurry F) (s, y)).comp (ContinuousLinearMap.inr ℝ ℝ V)) y :=
+    hp.hasFDerivAt.comp y (hasFDerivAt_prodMk_right s y)
+  exact hs.fderiv
+
+end HigherRegularity
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Joint metric regularity survives chart blending near the anchor. -/
+theorem blendedMetric_jointContDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    {k : ℕ∞ω} (hJoint : MetricEntriesJointContDiffAt gt t x k) :
+    ContDiffAt ℝ k (Function.uncurry (anchorBlendedMetricFlow gt x))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) :=
+  (anchorChartMetricFlow_jointContDiffAt_of_metricEntries hJoint).congr_of_eventuallyEq
+    (anchorBlendedMetricFlow_eventuallyEq_anchorChartMetricFlow gt t x)
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- The Christoffel field loses one derivative from the joint metric entries. -/
+theorem christoffel_jointContDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (k : ℕ) (hJoint : MetricEntriesJointContDiffAt gt t x ((k : ℕ∞ω) + 1)) :
+    ContDiffAt ℝ k (Function.uncurry (anchorChartChristoffelFieldFlow gt x))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) := by
+  let q := extChartAt (closedSmoothModelWithCorners 3) x x
+  have hg := blendedMetric_jointContDiffAt hJoint
+  have hi : ContDiffAt ℝ k
+      (fun p : ℝ × ClosedSmoothModel 3 ↦ (anchorBlendedMetricFlow gt x p.1 p.2).inverse)
+      (t, q) :=
+    (anchorBlendedMetricFlow_isInvertible gt x t q).contDiffAt_map_inverse.comp
+      (t, q) (hg.of_le (by exact le_self_add))
+  have hd := spatial_fderiv_jointContDiffAt (anchorBlendedMetricFlow gt x) t q k hg
+  apply contDiffAt_clm_path_of_apply
+  intro u
+  apply contDiffAt_clm_path_of_apply
+  intro v
+  have hk : ContDiffAt ℝ k
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        jointChristoffelCovectorAt (anchorBlendedMetricFlow gt x) p.1 p.2 v u) (t, q) := by
+    apply contDiffAt_clm_path_of_apply
+    intro w
+    have h₁ := ((hd.clm_apply (contDiffAt_const (c := v))).clm_apply
+      (contDiffAt_const (c := u))).clm_apply (contDiffAt_const (c := w))
+    have h₂ := ((hd.clm_apply (contDiffAt_const (c := u))).clm_apply
+      (contDiffAt_const (c := v))).clm_apply (contDiffAt_const (c := w))
+    have h₃ := ((hd.clm_apply (contDiffAt_const (c := w))).clm_apply
+      (contDiffAt_const (c := v))).clm_apply (contDiffAt_const (c := u))
+    simpa [jointChristoffelCovectorAt, ContinuousLinearMap.flip_apply,
+      ContinuousLinearMap.smul_apply] using ((h₁.add h₂).sub h₃).const_smul (1 / 2 : ℝ)
+  simpa only [Function.uncurry, anchorChartChristoffelFieldFlow_apply,
+    anchorChartChristoffelFlow_apply_eq_inverse_koszul] using hi.clm_apply hk
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Joint curvature regularity loses two derivatives from metric entries. -/
+theorem curvature_jointContDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (k : ℕ) (hJoint : MetricEntriesJointContDiffAt gt t x ((k : ℕ∞ω) + 2))
+    (u v w : ClosedSmoothModel 3) :
+    ContDiffAt ℝ k
+      (fun p : ℝ × ClosedSmoothModel 3 ↦ anchorChartCurvatureFlow gt x p.1 p.2 u v w)
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) := by
+  let q := extChartAt (closedSmoothModelWithCorners 3) x x
+  let Γ := anchorChartChristoffelFieldFlow gt x
+  have hΓ : ContDiffAt ℝ ((k : ℕ∞ω) + 1) (Function.uncurry Γ) (t, q) := by
+    simpa [Nat.cast_add, Nat.cast_one, add_assoc] using
+      christoffel_jointContDiffAt (k + 1) (by simpa [Nat.cast_add, Nat.cast_one, add_assoc] using hJoint)
+  have hlow := hΓ.of_le (show (k : ℕ∞ω) ≤ (k : ℕ∞ω) + 1 from le_self_add)
+  have hvw := (hΓ.clm_apply (contDiffAt_const (c := v))).clm_apply (contDiffAt_const (c := w))
+  have huw := (hΓ.clm_apply (contDiffAt_const (c := u))).clm_apply (contDiffAt_const (c := w))
+  have hdvw := spatial_fderiv_jointContDiffAt (fun s y ↦ Γ s y v w) t q k hvw
+  have hduw := spatial_fderiv_jointContDiffAt (fun s y ↦ Γ s y u w) t q k huw
+  have hu := hlow.clm_apply (contDiffAt_const (c := u))
+  have hv := hlow.clm_apply (contDiffAt_const (c := v))
+  have hw : ContDiffAt ℝ k (fun _ : ℝ × ClosedSmoothModel 3 ↦ w) (t, q) := contDiffAt_const
+  have hr := (((hdvw.clm_apply (contDiffAt_const (c := u))).sub
+    (hduw.clm_apply (contDiffAt_const (c := v)))).add
+    (hu.clm_apply (hv.clm_apply hw))).sub (hv.clm_apply (hu.clm_apply hw))
+  apply hr.congr_of_eventuallyEq
+  have hnear : ∀ᶠ p in 𝓝 (t, q), DifferentiableAt ℝ (Function.uncurry Γ) p :=
+    ((hΓ.of_le (show (1 : ℕ∞ω) ≤ (k : ℕ∞ω) + 1 from le_add_self)).eventually
+      (by norm_num)).mono fun _ hp ↦ hp.differentiableAt one_ne_zero
+  filter_upwards [hnear] with p hp
+  rcases p with ⟨s, y⟩
+  have hs : DifferentiableAt ℝ (Γ s) y := by
+    have hpath : DifferentiableAt ℝ (fun y' : ClosedSmoothModel 3 ↦ (s, y')) y :=
+      (hasFDerivAt_prodMk_right s y).differentiableAt
+    exact DifferentiableAt.comp (𝕜 := ℝ) (f := fun y' ↦ (s, y'))
+      (g := Function.uncurry Γ) (x := y) hp hpath
+  exact ChartCurvatureBridge.chartCurvatureOf_eq_fderiv_apply hs u v w
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- The inverse-metric curvature trace has the same regularity as curvature. -/
+theorem scalarTrace_jointContDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (k : ℕ) (hJoint : MetricEntriesJointContDiffAt gt t x ((k : ℕ∞ω) + 2)) :
+    ContDiffAt ℝ k (Function.uncurry (anchorChartScalarTraceFlow gt x))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) := by
+  classical
+  let q := extChartAt (closedSmoothModelWithCorners 3) x x
+  let b := Module.finBasis ℝ (ClosedSmoothModel 3)
+  have hi : ContDiffAt ℝ k
+      (fun p : ℝ × ClosedSmoothModel 3 ↦ (anchorBlendedMetricFlow gt x p.1 p.2).inverse)
+      (t, q) :=
+    (anchorBlendedMetricFlow_isInvertible gt x t q).contDiffAt_map_inverse.comp (t, q)
+      ((blendedMetric_jointContDiffAt hJoint).of_le (by exact le_self_add))
+  unfold anchorChartScalarTraceFlow
+  dsimp only
+  apply ContDiffAt.sum
+  intro i _
+  apply ContDiffAt.sum
+  intro j _
+  have hi' := (contDiffAt_const (c := LinearMap.toContinuousLinearMap (b.coord j))).clm_apply
+    (hi.clm_apply (contDiffAt_const (c := LinearMap.toContinuousLinearMap (b.coord i))))
+  apply hi'.mul
+  unfold anchorChartRicciEntryFlow
+  dsimp only
+  apply ContDiffAt.sum
+  intro l _
+  exact (contDiffAt_const (c := LinearMap.toContinuousLinearMap (b.coord l))).clm_apply
+    (curvature_jointContDiffAt k hJoint (b l) (b i) (b j))
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Intrinsic scalar curvature inherits the joint curvature-trace regularity. -/
+theorem scalar_jointContDiffAt
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (k : ℕ) (hJoint : MetricEntriesJointContDiffAt gt t x ((k : ℕ∞ω) + 2)) :
+    ContDiffAt ℝ k
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) :=
+  (scalarTrace_jointContDiffAt k hJoint).congr_of_eventuallyEq
+    (scalar_joint_eventuallyEq_anchorTrace gt t x)
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Restrict joint scalar regularity to a time slice and return to the manifold. -/
+theorem scalar_contMDiffAt_of_metricEntries
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (k : ℕ) (hJoint : MetricEntriesJointContDiffAt gt t x ((k : ℕ∞ω) + 2)) :
+    ContMDiffAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) k
+      (fun y ↦ (gt t).scalarAt y) x := by
+  have hj := scalar_jointContDiffAt k hJoint
+  have hs : ContDiffAt ℝ k
+      (fun z : ClosedSmoothModel 3 ↦
+        (gt t).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm z))
+      (extChartAt (closedSmoothModelWithCorners 3) x x) :=
+    hj.comp _ (contDiffAt_const.prodMk contDiffAt_id)
+  have hc := hs.contMDiffAt.comp x
+    (contMDiffAt_extChartAt : ContMDiffAt (closedSmoothModelWithCorners 3)
+      𝓘(ℝ, ClosedSmoothModel 3) k (extChartAt (closedSmoothModelWithCorners 3) x) x)
+  apply hc.congr_of_eventuallyEq
+  filter_upwards [(isOpen_extChartAt_source (I := closedSmoothModelWithCorners 3) x).mem_nhds
+    (mem_extChartAt_source x)] with y hy
+  simp only [Function.comp_apply, (extChartAt (closedSmoothModelWithCorners 3) x).left_inv hy]
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Fourth-order joint metric entries give joint C² scalar curvature. -/
+theorem scalar_jointContDiffAt_two_of_metricEntries_four
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M}
+    (hJoint4 : ∀ t y, MetricEntriesJointContDiffAt gt t y 4) (t : ℝ) (x : M) :
+    ContDiffAt ℝ 2
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) :=
+  scalar_jointContDiffAt 2 (hJoint4 t x)
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in
+/-- Fifth-order joint metric entries give the spatial C³ scalar required by Bochner. -/
+theorem scalar_contMDiff_three_of_metricEntries_five
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M}
+    (hJoint5 : ∀ t y, MetricEntriesJointContDiffAt gt t y 5) (t : ℝ) :
+    ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 3 (fun y ↦ (gt t).scalarAt y) :=
+  fun x ↦ scalar_contMDiffAt_of_metricEntries 3 (hJoint5 t x)
+
+/-- Fifth-order joint entries supply both extra scalar hypotheses of the time theorem. -/
+theorem scalarRegularity_of_metricEntries_five
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M}
+    (hJoint5 : ∀ t y, MetricEntriesJointContDiffAt gt t y 5) (t : ℝ) (x : M) :
+    ContDiffAt ℝ 2
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x) ∧
+    MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
+      (fun y ↦ (gt t).laplacianAt (fun z ↦ (gt t).scalarAt z) y) x := by
+  exact ⟨scalar_jointContDiffAt_two_of_metricEntries_four
+      (fun s y ↦ (hJoint5 s y).of_le (by norm_num)) t x,
+    laplacianAt_mdifferentiableAt_of_contMDiff_three (gt t) _
+      (scalar_contMDiff_three_of_metricEntries_five hJoint5 t) x⟩
 
 end Poincare.IntrinsicBochnerScalarGradient
