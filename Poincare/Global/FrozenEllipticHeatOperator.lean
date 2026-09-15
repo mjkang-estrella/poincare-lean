@@ -79,4 +79,10 @@ theorem norm_mapHolder_le (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] 
   rw [ParabolicHolder.norm_eq f]
   nlinarith only [hb, hm]
 
+theorem norm_forcing_pullback_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
+    (f : Y («E» := E) α T ℝ) :
+    ‖mapHolder hα S (ContinuousLinearMap.id ℝ ℝ) f‖ ≤ max 1 (‖S‖ ^ α) * ‖f‖ := by
+  simpa only [ContinuousLinearMap.norm_id, one_mul] using
+    norm_mapHolder_le hα S (ContinuousLinearMap.id ℝ ℝ) f
+
 end Poincare.FrozenEllipticHeatOperator
