@@ -16,29 +16,26 @@ variable {n : ℕ} {M : Type u} [TopologicalSpace M] [T2Space M]
   [ChartedSpace (ClosedSmoothModel n) M]
   [IsManifold (closedSmoothModelWithCorners n) ∞ M]
 
-local notation "I" => closedSmoothModelWithCorners n
-local notation "E" => ClosedSmoothModel n
-local notation "TM" => (TangentSpace I : M → Type _)
 
 /-- Differentiate the squared norm of a moving covector with the moving
 inverse metric. The metric variation has a negative sign. -/
 theorem hasDerivAt_covectorNormSq
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     (hgt : TimeDifferentiableAt gt t₀ x)
-    {α : ℝ → TM x →L[ℝ] ℝ} {α' : TM x →L[ℝ] ℝ}
+    {α : ℝ → (TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x →L[ℝ] ℝ} {α' : (TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x →L[ℝ] ℝ}
     (hα : HasDerivAt α α' t₀) :
     HasDerivAt (fun t ↦ α t ((gt t).metricRaiseContinuousAt x (α t)))
       (2 * α' ((gt t₀).metricRaiseContinuousAt x (α t₀)) -
         timeDerivAt gt t₀ x
           ((gt t₀).metricRaiseContinuousAt x (α t₀))
           ((gt t₀).metricRaiseContinuousAt x (α t₀))) t₀ := by
-  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
-  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
+  letI : NormedAddCommGroup ((TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) := inferInstanceAs (NormedAddCommGroup (ClosedSmoothModel n))
+  letI : NormedSpace ℝ ((TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) := inferInstanceAs (NormedSpace ℝ (ClosedSmoothModel n))
   have hd := hα.clm_apply
     ((hasDerivAt_metricRaiseContinuousAt_of_timeDifferentiableAt hgt).clm_apply hα)
   apply hd.congr_deriv
   simp only [map_add]
-  have hswap (v : TM x) :
+  have hswap (v : (TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) :
       α t₀ v = (gt t₀).inner x v
         ((gt t₀).metricRaiseContinuousAt x (α t₀)) := by
     rw [(gt t₀).inner_symm]
@@ -54,7 +51,7 @@ theorem hasDerivAt_gradientNormSq_of_hasDerivAt_extDerivFun
     {gt : ℝ → ClosedSmoothRiemannianMetric n M} {t₀ : ℝ} {x : M}
     (hgt : TimeDifferentiableAt gt t₀ x)
     {f : ℝ → M → ℝ} {f' : M → ℝ}
-    (hdf : HasDerivAt (fun t ↦ (extDerivFun (f t) x : TM x →L[ℝ] ℝ))
+    (hdf : HasDerivAt (fun t ↦ (extDerivFun (f t) x : (TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x →L[ℝ] ℝ))
       (extDerivFun f' x) t₀) :
     HasDerivAt
       (fun t ↦ (gt t).inner x ((gt t).gradientAt (f t) x)
@@ -69,26 +66,26 @@ theorem hasDerivAt_gradientNormSq_of_hasDerivAt_extDerivFun
   simp_rw [heq] at h
   simpa only [ClosedSmoothRiemannianMetric.inner_gradientAt] using h
 
-omit [T2Space M] [IsManifold I ∞ M] in
+omit [T2Space M] [IsManifold (closedSmoothModelWithCorners n) ∞ M] in
 /-- Joint second-order scalar regularity commutes the time derivative and
 the manifold differential in a fixed tangent fiber. -/
 theorem hasDerivAt_extDerivFun_of_joint_contDiffAt_two
     {f : ℝ → M → ℝ} {t₀ : ℝ} {x : M}
-    (hf : ∀ t, MDifferentiableAt I 𝓘(ℝ) (f t) x)
-    (hft : MDifferentiableAt I 𝓘(ℝ) (fun y ↦ deriv (fun t ↦ f t y) t₀) x)
+    (hf : ∀ t, MDifferentiableAt (closedSmoothModelWithCorners n) 𝓘(ℝ) (f t) x)
+    (hft : MDifferentiableAt (closedSmoothModelWithCorners n) 𝓘(ℝ) (fun y ↦ deriv (fun t ↦ f t y) t₀) x)
     (hJoint : ContDiffAt ℝ 2
-      (fun p : ℝ × E ↦ f p.1 ((extChartAt I x).symm p.2))
-      (t₀, extChartAt I x x)) :
-    HasDerivAt (fun t ↦ (extDerivFun (f t) x : TM x →L[ℝ] ℝ))
+      (fun p : ℝ × (ClosedSmoothModel n) ↦ f p.1 ((extChartAt (closedSmoothModelWithCorners n) x).symm p.2))
+      (t₀, extChartAt (closedSmoothModelWithCorners n) x x)) :
+    HasDerivAt (fun t ↦ (extDerivFun (f t) x : (TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x →L[ℝ] ℝ))
       (extDerivFun (fun y ↦ deriv (fun t ↦ f t y) t₀) x) t₀ := by
-  letI : NormedAddCommGroup (TM x) := inferInstanceAs (NormedAddCommGroup E)
-  letI : NormedSpace ℝ (TM x) := inferInstanceAs (NormedSpace ℝ E)
-  letI : FiniteDimensional ℝ (TM x) := inferInstanceAs (FiniteDimensional ℝ E)
+  letI : NormedAddCommGroup ((TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) := inferInstanceAs (NormedAddCommGroup (ClosedSmoothModel n))
+  letI : NormedSpace ℝ ((TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) := inferInstanceAs (NormedSpace ℝ (ClosedSmoothModel n))
+  letI : FiniteDimensional ℝ ((TangentSpace (closedSmoothModelWithCorners n) : M → Type _) x) := inferInstanceAs (FiniteDimensional ℝ (ClosedSmoothModel n))
   apply RicciFlow.RicciFlow.hasDerivAt_clm_of_forall_apply'
   intro v
   simp_rw [extDerivFun_apply_chart (hf _), extDerivFun_apply_chart hft]
   exact hasDerivAt_spatial_fderiv_of_joint_contDiffAt_two
-    (fun t z ↦ f t ((extChartAt I x).symm z)) t₀ (extChartAt I x x) v hJoint
+    (fun t z ↦ f t ((extChartAt (closedSmoothModelWithCorners n) x).symm z)) t₀ (extChartAt (closedSmoothModelWithCorners n) x x) v hJoint
 
 section Normalized
 
@@ -98,8 +95,6 @@ variable {N : Type u} [TopologicalSpace N] [T2Space N]
   [ChartedSpace (ClosedSmoothModel 3) N]
   [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
 
-local notation "I₃" => closedSmoothModelWithCorners 3
-local notation "E₃" => ClosedSmoothModel 3
 
 /-- Pointwise time variation of the scalar-gradient norm along normalized
 flow. The joint scalar and Laplacian hypotheses are explicit regularity
@@ -109,9 +104,9 @@ theorem hasDerivAt_scalarGradNormSq_normalizedFlow
     (hJoint : ∀ t y, MetricEntriesJointContDiffAt gt t y 3)
     (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t₀ y)
     (hScalarJoint : ContDiffAt ℝ 2
-      (fun p : ℝ × E₃ ↦ (gt p.1).scalarAt ((extChartAt I₃ x).symm p.2))
-      (t₀, extChartAt I₃ x x))
-    (hLap : MDifferentiableAt I₃ 𝓘(ℝ)
+      (fun p : ℝ × (ClosedSmoothModel 3) ↦ (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t₀, extChartAt (closedSmoothModelWithCorners 3) x x))
+    (hLap : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
       (fun y ↦ (gt t₀).laplacianAt (fun z ↦ (gt t₀).scalarAt z) y) x) :
     HasDerivAt (fun t ↦ (gt t).scalarGradNormSqAt x)
       (2 * (gt t₀).inner x ((gt t₀).gradientAt (fun y ↦ (gt t₀).scalarAt y) x)
@@ -128,9 +123,9 @@ theorem hasDerivAt_scalarGradNormSq_normalizedFlow
   let A : N → ℝ := fun y ↦ g.ricciNormSqAt y
   let L : N → ℝ := fun y ↦ g.laplacianAt R y
   let c : ℝ := -(2 / 3 : ℝ) * meanScalar g
-  have hR : MDifferentiableAt I₃ 𝓘(ℝ) R x := scalarAt_mdifferentiableAt g x
-  have hA : MDifferentiableAt I₃ 𝓘(ℝ) A x := ricciNormSqAt_mdifferentiableAt g x
-  have hL : MDifferentiableAt I₃ 𝓘(ℝ) L x := hLap
+  have hR : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) R x := scalarAt_mdifferentiableAt g x
+  have hA : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) A x := ricciNormSqAt_mdifferentiableAt g x
+  have hL : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) L x := hLap
   have heq : (fun y ↦ deriv (fun t ↦ (gt t).scalarAt y) t₀) =
       L + (2 : ℝ) • A + c • R := by
     funext y
@@ -140,11 +135,11 @@ theorem hasDerivAt_scalarGradNormSq_normalizedFlow
     rw [hs.deriv]
     simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, L, A, R, c, g]
     ring
-  have h2A : MDifferentiableAt I₃ 𝓘(ℝ) ((2 : ℝ) • A) x := by
+  have h2A : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) ((2 : ℝ) • A) x := by
     exact mdifferentiableAt_const.smul hA
-  have hcR : MDifferentiableAt I₃ 𝓘(ℝ) (c • R) x := by
+  have hcR : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) (c • R) x := by
     exact mdifferentiableAt_const.smul hR
-  have hft : MDifferentiableAt I₃ 𝓘(ℝ)
+  have hft : MDifferentiableAt (closedSmoothModelWithCorners 3) 𝓘(ℝ)
       (fun y ↦ deriv (fun t ↦ (gt t).scalarAt y) t₀) x := by
     rw [heq]
     exact (hL.add h2A).add hcR
@@ -172,16 +167,16 @@ omit [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
 /-- The Ricci term in the coordinate Bochner formula is the intrinsic Ricci
 tensor at the chart anchor, with the same curvature sign. -/
 theorem coordRicci_anchorBlendedMetric
-    (g : ClosedSmoothRiemannianMetric 3 N) (x : N) (v w : E₃) :
+    (g : ClosedSmoothRiemannianMetric 3 N) (x : N) (v w : (ClosedSmoothModel 3)) :
     RicciFlow.RicciFlow.coordRicci (anchorBlendedMetricFlow (fun _ ↦ g) x 0)
-      (extChartAt I₃ x x) v w = g.ricciAt x v w := by
+      (extChartAt (closedSmoothModelWithCorners 3) x x) v w = g.ricciAt x v w := by
   let G := anchorBlendedMetricFlow (fun _ ↦ g) x 0
   let Γ := GeodesicTransport.chartChristoffelField g x
-  let q := extChartAt I₃ x x
+  let q := extChartAt (closedSmoothModelWithCorners 3) x x
   have hΓ : DifferentiableAt ℝ Γ q :=
     (GeodesicTransport.chartChristoffelField_contDiff_top g x).differentiable
       (by simp) q
-  have heq (z a b : E₃) :
+  have heq (z a b : (ClosedSmoothModel 3)) :
       RicciFlow.RicciFlow.christoffelClosedOp G z a b = Γ z a b := by
     rw [show Γ z a b = Γ z b a from chartChristoffelField_symm g x z a b]
     exact RicciFlow.RicciFlow.christoffelClosedOp_eq_christoffelAt G _
@@ -192,12 +187,12 @@ theorem coordRicci_anchorBlendedMetric
         (GeodesicTransport.cutoff_nonneg x) (GeodesicTransport.cutoff_le_one x)
         (GeodesicTransport.cutoff_support_invertible x) z)
       (fun _ _ ↦ rfl) a b
-  have heqCLM (z a : E₃) :
+  have heqCLM (z a : (ClosedSmoothModel 3)) :
       RicciFlow.RicciFlow.christoffelClosedOp G z a = Γ z a := by
     apply ContinuousLinearMap.ext
     intro b
     exact heq z a b
-  have hcurv (a b c : E₃) :
+  have hcurv (a b c : (ClosedSmoothModel 3)) :
       RicciFlow.RicciFlow.coordCurvatureOp G q a b c =
         chartCurvatureOf Γ q a b c := by
     unfold RicciFlow.RicciFlow.coordCurvatureOp chartCurvatureOf
@@ -210,8 +205,8 @@ theorem coordRicci_anchorBlendedMetric
   unfold RicciFlow.RicciFlow.coordRicci anchorChartRicciEntryFlow
   apply Finset.sum_congr rfl
   intro i _
-  exact congrArg ((Module.finBasis ℝ E₃).coord i)
-    (hcurv ((Module.finBasis ℝ E₃) i) v w)
+  exact congrArg ((Module.finBasis ℝ (ClosedSmoothModel 3)).coord i)
+    (hcurv ((Module.finBasis ℝ (ClosedSmoothModel 3)) i) v w)
 
 omit [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
   [MeasurableSpace N] [BorelSpace N] in
@@ -219,7 +214,7 @@ omit [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
 term identified with the intrinsic Ricci tensor at the anchor. -/
 theorem bochner_anchorBlendedMetric
     (g : ClosedSmoothRiemannianMetric 3 N) (x : N)
-    (f : E₃ → ℝ) (hf : ContDiff ℝ 3 f) :
+    (f : (ClosedSmoothModel 3) → ℝ) (hf : ContDiff ℝ 3 f) :
     let G := anchorBlendedMetricFlow (fun _ ↦ g) x 0
     let hsymm := CovariantDerivative.blendedChartMetric_symm
       (GeodesicTransport.cutoff (n := 3) x) GeodesicTransport.backgroundMetric
@@ -229,13 +224,13 @@ theorem bochner_anchorBlendedMetric
       (anchorBlendedMetricFlow_isInvertible (fun _ ↦ g) x 0 z)
     let Δ := CovariantDerivative.curvedLaplacian G
       (fun z ↦ RicciFlow.RicciFlow.metricBilin (G z)) hb
-    let q := extChartAt I₃ x x
+    let q := extChartAt (closedSmoothModelWithCorners 3) x x
     Δ (RicciFlow.RicciFlow.coordGradNormSq G f) q =
       2 * RicciFlow.RicciFlow.coordCovariantHessNormSq G f q +
-      2 * G q (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q)
-        (RicciFlow.RicciFlow.coordGradient («E» := E₃) G (Δ f) q) +
-      2 * g.ricciAt x (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q)
-        (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q) := by
+      2 * G q (RicciFlow.RicciFlow.coordGradient («E» := (ClosedSmoothModel 3)) G f q)
+        (RicciFlow.RicciFlow.coordGradient («E» := (ClosedSmoothModel 3)) G (Δ f) q) +
+      2 * g.ricciAt x (RicciFlow.RicciFlow.coordGradient («E» := (ClosedSmoothModel 3)) G f q)
+        (RicciFlow.RicciFlow.coordGradient («E» := (ClosedSmoothModel 3)) G f q) := by
   intro G hsymm hb Δ q
   have hGtop : ContDiff ℝ ∞ G :=
     CovariantDerivative.contDiff_blendedChartMetric
@@ -256,23 +251,23 @@ omit [SecondCountableTopology N] in
 anchor. This version uses a scalar supported inside that chart. -/
 theorem laplacianAt_eq_anchor_derivatives
     (g : ClosedSmoothRiemannianMetric 3 N) (x : N) (f : N → ℝ)
-    (hs : tsupport f ⊆ (extChartAt I₃ x).source)
-    (hf : ContMDiff I₃ 𝓘(ℝ) 2 f) :
+    (hs : tsupport f ⊆ (extChartAt (closedSmoothModelWithCorners 3) x).source)
+    (hf : ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 2 f) :
     let u := ClosedLaplacianStokesProducer.coordinateScalar (n := 3) x f
-    let q := extChartAt I₃ x x
-    let b := Module.finBasis ℝ E₃
+    let q := extChartAt (closedSmoothModelWithCorners 3) x x
+    let b := Module.finBasis ℝ (ClosedSmoothModel 3)
     g.laplacianAt f x = ∑ i,
       (fderiv ℝ (fderiv ℝ u) q (metricDualVectorAt g x (b.coord i)) (b i) -
       fderiv ℝ u q (RicciFlow.RicciFlow.christoffelClosedOp
         (CovariantDerivative.chartMetric g.inner x) q
         (metricDualVectorAt g x (b.coord i)) (b i))) := by
   intro u q b
-  letI : FiniteDimensional ℝ (TangentSpace I₃ x) :=
-    inferInstanceAs (FiniteDimensional ℝ E₃)
-  have hD : mfderivWithin 𝓘(ℝ, E₃) I₃ (extChartAt I₃ x).symm (range I₃) q =
-      ContinuousLinearMap.id ℝ E₃ := by
+  letI : FiniteDimensional ℝ (TangentSpace (closedSmoothModelWithCorners 3) x) :=
+    inferInstanceAs (FiniteDimensional ℝ (ClosedSmoothModel 3))
+  have hD : mfderivWithin 𝓘(ℝ, (ClosedSmoothModel 3)) (closedSmoothModelWithCorners 3) (extChartAt (closedSmoothModelWithCorners 3) x).symm (range (closedSmoothModelWithCorners 3)) q =
+      ContinuousLinearMap.id ℝ (ClosedSmoothModel 3) := by
     have h := mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
-      (mem_extChartAt_source («I» := I₃) x)
+      (mem_extChartAt_source («I» := (closedSmoothModelWithCorners 3)) x)
     rw [mfderiv_extChartAt_self] at h
     simpa [q] using h
   rw [laplacianAt_eq_sum_hessianAt g f x]
@@ -285,10 +280,10 @@ theorem laplacianAt_eq_anchor_derivatives
   dsimp only at h
   dsimp only [q] at hD
   rw [hD] at h
-  change g.hessianAt f ((extChartAt I₃ x).symm (extChartAt I₃ x x))
+  change g.hessianAt f ((extChartAt (closedSmoothModelWithCorners 3) x).symm (extChartAt (closedSmoothModelWithCorners 3) x x))
     (metricDualVectorAt g x (b.coord i)) (b i) = _ at h
-  have hp : (extChartAt I₃ x).symm (extChartAt I₃ x x) = x :=
-    (extChartAt I₃ x).left_inv (mem_extChartAt_source x)
+  have hp : (extChartAt (closedSmoothModelWithCorners 3) x).symm (extChartAt (closedSmoothModelWithCorners 3) x x) = x :=
+    (extChartAt (closedSmoothModelWithCorners 3) x).left_inv (mem_extChartAt_source x)
   have he := congrArg (fun y : N ↦ g.hessianAt f y
     (metricDualVectorAt g x (b.coord i)) (b i)) hp
   exact he.symm.trans h
