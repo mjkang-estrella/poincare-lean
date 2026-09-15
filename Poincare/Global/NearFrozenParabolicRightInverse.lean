@@ -215,4 +215,63 @@ theorem frozen_error_small
     exact ParabolicHolderMultiplier.norm_error_le b P hα hT hb hbα hP f
   constructor <;> nlinarith only [hn, hε, hΛ]
 
+/-- The perturbed inverse is linear in forcing, with constants chosen before the coefficients. -/
+theorem exists_nearFrozen_operator :
+    ∀ α : ℝ, 0 < α → α < 1 → ∀ «λ» Λ : ℝ, 0 < «λ» → «λ» ≤ Λ →
+    ∃ C ε₀ τ₀ : ℝ, 0 < C ∧ 0 < ε₀ ∧ 0 < τ₀ ∧
+    ∀ (A₀ : Bilin), (∀ v w, A₀ v w = A₀ w v) →
+      (∀ v, «λ» * ‖v‖ ^ 2 ≤ A₀ v v) → (∀ v, A₀ v v ≤ Λ * ‖v‖ ^ 2) →
+    ∀ (T : ℝ), 0 < T → T ≤ τ₀ →
+    ∀ (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ) (Λb : ℝ),
+      (∀ i j, supNorm (cylinder T) (b i j) ≤ ε₀) →
+      (∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λb) →
+      Λb * T ^ (α / 2) ≤ ε₀ →
+      ∃ S : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T,
+        (∀ f, ∀ t ∈ Icc 0 T, ∀ x : E,
+          (S f).ut (t, x) = f (t, x) +
+            ∑ i, ∑ j, (A₀ (e i) (e j) + b i j (t, x)) *
+              (S f).ddu (t, x) (e i) (e j)) ∧ ‖S‖ ≤ C := by
+  intro α hα hα1 μ Λ hμ hμΛ
+  obtain ⟨D, hD, hInv⟩ := exists_frozen_operator_bound α hα hα1 μ Λ hμ hμΛ
+  refine ⟨2 * D, 1 / (36 * D), 1, by positivity, by positivity, by norm_num, ?_⟩
+  intro A hSym hlo hhi T hT hT1 b Λb hb hbα hΛ
+  obtain ⟨P, hP, hPN⟩ := hInv A hSym hlo hhi T hT hT1
+  have hε : 9 * D * (1 / (36 * D)) ≤ 1 / 4 := by
+    apply le_of_eq
+    field_simp
+    ring
+  have hΛ' : 9 * D * Λb * T ^ (α / 2) ≤ 1 / 4 := by
+    calc
+      _ = 9 * D * (Λb * T ^ (α / 2)) := by ring
+      _ ≤ 9 * D * (1 / (36 * D)) := mul_le_mul_of_nonneg_left hΛ (by positivity)
+      _ ≤ _ := hε
+  obtain ⟨hhalf, hR⟩ := frozen_error_small P b hα hT hPN hb hbα hε hΛ'
+  exact ⟨nearFrozenInverse P b hR, nearFrozenInverse_solves A P hP b hR,
+    nearFrozenInverse_norm_le P b hR hhalf hPN⟩
+
+/-- Every forcing has a zero-trace solution under the uniform perturbation bounds. -/
+theorem exists_nearFrozen_solution :
+  ∀ α : ℝ, 0 < α → α < 1 → ∀ «λ» Λ : ℝ, 0 < «λ» → «λ» ≤ Λ →
+  ∃ C ε₀ τ₀ : ℝ, 0 < C ∧ 0 < ε₀ ∧ 0 < τ₀ ∧
+  ∀ (A₀ : Bilin), (∀ v w, A₀ v w = A₀ w v) →
+    (∀ v, «λ» * ‖v‖^2 ≤ A₀ v v) → (∀ v, A₀ v v ≤ Λ * ‖v‖^2) →
+  ∀ (T : ℝ), 0 < T → T ≤ τ₀ →
+  ∀ (b : Fin 3 → Fin 3 → ParabolicHolder.Y («E» := E) α T ℝ) (Λb : ℝ),
+    (∀ i j, ParabolicHolder.supNorm (ParabolicHolder.cylinder («E» := E) T) (b i j) ≤ ε₀) →
+    (∀ i j, ParabolicHolder.holderSeminorm α (ParabolicHolder.cylinder («E» := E) T) (b i j) ≤ Λb) →
+    Λb * T ^ (α/2) ≤ ε₀ →
+  ∀ f : ParabolicHolder.Y («E» := E) α T ℝ,
+    ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
+      (∀ t ∈ Icc 0 T, ∀ x : E, G.ut (t, x) = f (t, x) +
+        ∑ i, ∑ j, (A₀ (e i) (e j) + b i j (t, x)) * G.ddu (t, x) (e i) (e j)) ∧
+      ‖G‖ ≤ C * ‖f‖ := by
+  intro α hα hα1 μ Λ hμ hμΛ
+  obtain ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, hInv⟩ :=
+    exists_nearFrozen_operator α hα hα1 μ Λ hμ hμΛ
+  refine ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, ?_⟩
+  intro A hSym hlo hhi T hT hTτ b Λb hb hbα hΛ f
+  obtain ⟨S, hS, hSN⟩ := hInv A hSym hlo hhi T hT hTτ b Λb hb hbα hΛ
+  exact ⟨S f, hS f, (S.le_opNorm f).trans
+    (mul_le_mul_of_nonneg_right hSN (norm_nonneg f))⟩
+
 end Poincare.NearFrozenParabolicRightInverse
