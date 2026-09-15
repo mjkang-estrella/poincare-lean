@@ -962,6 +962,19 @@ no strictly negative `|∇Ric|²` coefficient in the `U` evolution, so the
 sharper contracted-Bianchi bound behind Hamilton's `2/21` is the exact
 missing estimate (see the report's section 2).
 
+`buffered-frozen-nested-cutoff` landed, the first task under the
+append-to-chain contract (`Global/BufferedFrozenParabolicSolver.lean` grew
+from 506 to 1039 lines with the original lines unchanged; gate PASS, 66
+declarations): nested cutoffs (inner `ψ = 1` near the coordinate support,
+outer `ξ = 1` on the inner support), exact coefficient agreement
+`A₀ + b = a` on the inner support, the residual identity
+`L_chart(ψ·Sf) − f = [L_chart, ψ](Sf)`, the genuine commutator carriers with
+a uniform cutoff bound, and the single-chart estimate
+`‖L_chart(ψ·Sf) − f‖_Y ≤ C_ψ·(T^{(1−α)/2} + T^{1−α/2})·‖f‖_Y` plus solver
+existence. With nested cutoffs the oscillation `ω(ρ)` no longer appears in
+the error; it only enters the existence condition of the near-frozen solver.
+The single-chart local solver of the finite-atlas parametrix is complete.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

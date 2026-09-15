@@ -164,6 +164,50 @@ Poincare.Global.BoundedUniformContinuousHeat	def	Poincare.HeatKernelFirstMomentT
 Poincare.Global.BoundedUniformContinuousHeat	theorem	Poincare.heatKernelFirstMoment_tendsto_zero	theorem heatKernelFirstMoment_tendsto_zero :
 Poincare.Global.BoundedUniformContinuousHeat	theorem	Poincare.tendsto_norm_vectorHeatSemigroup_sub_of_lipschitz	theorem tendsto_norm_vectorHeatSemigroup_sub_of_lipschitz
 Poincare.Global.BoundedUniformContinuousHeat	theorem	Poincare.heatSemigroupStrongContinuityAtZeroOn_of_lipschitz	theorem heatSemigroupStrongContinuityAtZeroOn_of_lipschitz
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_spatial_carrier_split	theorem exists_spatial_carrier_split {v : (ClosedSmoothModel 3) → ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoff_entry_bound	theorem cutoff_entry_bound {ξ a : (ClosedSmoothModel 3) → ℝ} {A ε : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.oscillation_extension_entries	theorem oscillation_extension_entries {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.oscillationExtensionGoal	theorem oscillationExtensionGoal :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_buffered_cutoff	theorem exists_buffered_cutoff {K U : Set (ClosedSmoothModel 3)} (hK : IsCompact K)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_oscillation_radius	theorem exists_oscillation_radius (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3))
+Poincare.Global.BufferedFrozenParabolicSolver	def	Poincare.BufferedFrozenParabolicSolver.patchOscillation	def patchOscillation (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3)) (ξ : (ClosedSmoothModel 3) → ℝ) : ℝ :=
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.patchOscillation_bounds	theorem patchOscillation_bounds (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3))
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.patchOscillation_le	theorem patchOscillation_le (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3))
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.oscillation_extension_supremum	theorem oscillation_extension_supremum {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.inverse_metric_oscillation_extension	theorem inverse_metric_oscillation_extension
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.inverse_metric_oscillation_radius	theorem inverse_metric_oscillation_radius
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_atlas_cutoff	theorem exists_atlas_cutoff (A : FiniteAtlasParabolicTensorSpace.AtlasData M)
+Poincare.Global.BufferedFrozenParabolicSolver	def	Poincare.BufferedFrozenParabolicSolver.matrixBilin	def matrixBilin (A : Matrix (Fin 3) (Fin 3) ℝ) : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ) :=
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.matrixBilin_pairing	theorem matrixBilin_pairing (A : Matrix (Fin 3) (Fin 3) ℝ) (v w : (ClosedSmoothModel 3)) :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.matrixBilin_entry	theorem matrixBilin_entry (A : Matrix (Fin 3) (Fin 3) ℝ) (i j : Fin 3) :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.matrixBilin_symm	theorem matrixBilin_symm {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.IsHermitian)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.matrixBilin_pos	theorem matrixBilin_pos {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.PosDef)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.matrixBilin_ellipticity	theorem matrixBilin_ellipticity {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.PosDef) :
+Poincare.Global.BufferedFrozenParabolicSolver	structure	Poincare.BufferedFrozenParabolicSolver.FrozenSolver	structure FrozenSolver (α T C_S : ℝ) (A0 : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)) where
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.frozenCLMGoal	theorem frozenCLMGoal :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.frozenErrorGoal	theorem frozenErrorGoal {α T C_S ε Λ : ℝ} {A0 : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_chart_operator	theorem exists_chart_operator :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.inverse_metric_ellipticity	theorem inverse_metric_ellipticity (g : ClosedSmoothRiemannianMetric 3 M)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_inverse_metric_chart_operator	theorem exists_inverse_metric_chart_operator
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoff_coefficient_gap	theorem cutoff_coefficient_gap (ψ a A : ℝ) :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoff_coefficient_gap_ne_zero	theorem cutoff_coefficient_gap_ne_zero {ψ a A : ℝ} (hψ : ψ ≠ 1) (ha : a ≠ A) :
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.nearFrozen_chart_residual	theorem nearFrozen_chart_residual {α T : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_cutoff_chart_residual	theorem exists_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_nested_cutoffs	theorem exists_nested_cutoffs {K U : Set (ClosedSmoothModel 3)} (hK : IsCompact K)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.nested_coefficient_agreement	theorem nested_coefficient_agreement {α T : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoff_forcing_eq	theorem cutoff_forcing_eq {α T : ℝ} {K : Set (ClosedSmoothModel 3)}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_nested_cutoff_chart_residual	theorem exists_nested_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	def	Poincare.BufferedFrozenParabolicSolver.cutoffDrift	def cutoffDrift (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ)
+Poincare.Global.BufferedFrozenParabolicSolver	def	Poincare.BufferedFrozenParabolicSolver.cutoffPotential	def cutoffPotential (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoff_firstOrder_value	theorem cutoff_firstOrder_value {α T : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_commutator_carriers	theorem exists_commutator_carriers {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.cutoffGraph_norm_le	theorem cutoffGraph_norm_le {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_uniform_cutoff_bound	theorem exists_uniform_cutoff_bound {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+Poincare.Global.BufferedFrozenParabolicSolver	def	Poincare.BufferedFrozenParabolicSolver.chartValue	def chartValue {α T : ℝ} (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.commutator_solver_bound	theorem commutator_solver_bound {α T C_S B : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.single_chart_error	theorem single_chart_error {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_small_time_interval	theorem exists_small_time_interval {α ε Λ τ : ℝ}
+Poincare.Global.BufferedFrozenParabolicSolver	theorem	Poincare.BufferedFrozenParabolicSolver.exists_single_chart_parametrix	theorem exists_single_chart_parametrix {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
 Poincare.Global.BumpExtend	theorem	Poincare.ricciTraceAt_congr_of_eventuallyEq	theorem ricciTraceAt_congr_of_eventuallyEq
 Poincare.Global.BumpExtend	abbrev	Poincare.tangentExtend	private abbrev tangentExtend (x : M) (v : TM x) : (y : M) → TM y :=
 Poincare.Global.BumpExtend	theorem	Poincare.exists_bumpExtendCutoff	private theorem exists_bumpExtendCutoff (x : M) (v : TM x) :
@@ -3961,6 +4005,15 @@ Poincare.Global.HamiltonReactionEndpoint	theorem	Poincare.hamiltonConvergencePin
 Poincare.Global.HamiltonReactionEndpoint	theorem	Poincare.scalarAt_contMDiff_two_of_reactionDecayAnalyticData3	theorem scalarAt_contMDiff_two_of_reactionDecayAnalyticData3
 Poincare.Global.HamiltonReactionEndpoint	def	Poincare.UniversalHamiltonReactionExistenceStatement	def UniversalHamiltonReactionExistenceStatement : Prop :=
 Poincare.Global.HamiltonReactionEndpoint	theorem	Poincare.universalHamiltonConvergence_of_universalHamiltonReactionExistence	theorem universalHamiltonConvergence_of_universalHamiltonReactionExistence
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.laplacian_div	theorem laplacian_div
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.heatOperator_div	theorem heatOperator_div
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.gradient_div_pairing	theorem gradient_div_pairing
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded	theorem heatOperator_div_expanded
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.scalarGradientQuotient_evolution	theorem scalarGradientQuotient_evolution
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.scalarGradientQuotient_evolution_of_normalizedFlow	theorem scalarGradientQuotient_evolution_of_normalizedFlow
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.tracelessEnergy_evolution_le_cubic	theorem tracelessEnergy_evolution_le_cubic
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.factorThree_damping_iff	theorem factorThree_damping_iff (c : ℝ) :
+Poincare.Global.HamiltonScalarGradientEstimate	theorem	Poincare.HamiltonScalarGradientEstimate.factorTwentySevenths_damping	theorem factorTwentySevenths_damping {A S : ℝ}
 Poincare.Global.HamiltonScalarInteriorNegativeBarrier	theorem	Poincare.closed_parabolic_min_principle_strict_var_Ioc	theorem closed_parabolic_min_principle_strict_var_Ioc
 Poincare.Global.HamiltonScalarInteriorNegativeBarrier	theorem	Poincare.closed_parabolic_min_principle_var_Ioc	theorem closed_parabolic_min_principle_var_Ioc
 Poincare.Global.HamiltonScalarInteriorNegativeBarrier	theorem	Poincare.hamilton_scalar_negative_lower_bound_Ioc_continuousOn	theorem hamilton_scalar_negative_lower_bound_Ioc_continuousOn
@@ -4673,6 +4726,43 @@ Poincare.Global.InducedAlignment	def	Poincare.InducedAlignment.CompatibleStep.Ri
 Poincare.Global.IntervalAlign	theorem	Poincare.IntervalAlign.baseCurvePackage_restrict_interval	theorem baseCurvePackage_restrict_interval
 Poincare.Global.IntervalAlign	theorem	Poincare.IntervalAlign.linearizedFamilyPackage_restrict_interval	theorem linearizedFamilyPackage_restrict_interval
 Poincare.Global.IntervalAlign	theorem	Poincare.IntervalAlign.exists_linearized_family_on_aligned_interval_of_uniform_flow	theorem exists_linearized_family_on_aligned_interval_of_uniform_flow
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.anchor_metric_apply	theorem anchor_metric_apply
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.transported_gradient_eventuallyEq	theorem transported_gradient_eventuallyEq
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.coordGradient_anchor	theorem coordGradient_anchor
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacianAt_eq_anchor_curvedLaplacian	theorem laplacianAt_eq_anchor_curvedLaplacian
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.hessianAt_eq_anchor_covariantHessianForm	theorem hessianAt_eq_anchor_covariantHessianForm
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.covariantDeriv_coordGradient_anchor	theorem covariantDeriv_coordGradient_anchor
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.coordCovariantHessNormSq_anchor	theorem coordCovariantHessNormSq_anchor
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.curvedLaplacian_eq_inverseEntries_hessianForm	theorem curvedLaplacian_eq_inverseEntries_hessianForm
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacianAt_eq_curvedLaplacian_of_cutoff_one	theorem laplacianAt_eq_curvedLaplacian_of_cutoff_one
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacian_eventuallyEq_curvedLaplacian	theorem laplacian_eventuallyEq_curvedLaplacian
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.coordGradient_curvedLaplacian_anchor	theorem coordGradient_curvedLaplacian_anchor
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.gradientNormSq_eventuallyEq_coordGradNormSq	theorem gradientNormSq_eventuallyEq_coordGradNormSq
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.gradientNormSq_contMDiffAt_two	theorem gradientNormSq_contMDiffAt_two
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.gradientNormSq_tsupport_subset	theorem gradientNormSq_tsupport_subset
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacian_gradientNormSq_eq_anchor_curvedLaplacian	theorem laplacian_gradientNormSq_eq_anchor_curvedLaplacian
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.coordinateScalar_contDiff_three	theorem coordinateScalar_contDiff_three
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.curvedLaplacian_contDiffAt_one	theorem curvedLaplacian_contDiffAt_one
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacianAt_mdifferentiableAt_of_supported_contMDiff_three	theorem laplacianAt_mdifferentiableAt_of_supported_contMDiff_three
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.bochner_of_chart_supported	theorem bochner_of_chart_supported
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.exists_chart_supported_scalar_germ	theorem exists_chart_supported_scalar_germ
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.bochner	theorem bochner
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.laplacianAt_mdifferentiableAt_of_contMDiff_three	theorem laplacianAt_mdifferentiableAt_of_contMDiff_three
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.scalar_joint_eventuallyEq_anchorTrace	theorem scalar_joint_eventuallyEq_anchorTrace
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.scalar_jointContDiffAt_one_of_metricEntries_three	theorem scalar_jointContDiffAt_one_of_metricEntries_three
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	Poincare.IntrinsicBochnerScalarGradient.spatial_fderiv_jointContDiffAt	theorem spatial_fderiv_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	blendedMetric_jointContDiffAt	theorem blendedMetric_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	christoffel_jointContDiffAt	theorem christoffel_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	curvature_jointContDiffAt	theorem curvature_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalarTrace_jointContDiffAt	theorem scalarTrace_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalar_jointContDiffAt	theorem scalar_jointContDiffAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalar_contMDiffAt_of_metricEntries	theorem scalar_contMDiffAt_of_metricEntries
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalar_jointContDiffAt_two_of_metricEntries_four	theorem scalar_jointContDiffAt_two_of_metricEntries_four
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalar_contMDiff_three_of_metricEntries_five	theorem scalar_contMDiff_three_of_metricEntries_five
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	scalarRegularity_of_metricEntries_five	theorem scalarRegularity_of_metricEntries_five
+Poincare.Global.IntrinsicBochnerScalarGradient	def	SatisfiesScalarGradientEvolutionAt	def SatisfiesScalarGradientEvolutionAt
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	satisfiesScalarGradientEvolutionAt_of_normalizedFlow_of_scalarRegularity	theorem satisfiesScalarGradientEvolutionAt_of_normalizedFlow_of_scalarRegularity
+Poincare.Global.IntrinsicBochnerScalarGradient	theorem	satisfiesScalarGradientEvolutionAt_of_normalizedFlow	theorem satisfiesScalarGradientEvolutionAt_of_normalizedFlow
 Poincare.Global.IntrinsicLaplacianCoordinateForm	theorem	Poincare.IntrinsicLaplacianCoordinateForm.laplacianAt_eq_inverseGram_hessian	theorem laplacianAt_eq_inverseGram_hessian
 Poincare.Global.IntrinsicLaplacianCoordinateForm	theorem	Poincare.IntrinsicLaplacianCoordinateForm.laplacianAt_eq_chart_hessian	theorem laplacianAt_eq_chart_hessian
 Poincare.Global.IntrinsicLaplacianCoordinateForm	theorem	Poincare.IntrinsicLaplacianCoordinateForm.chartMetric_transported_gradient	theorem chartMetric_transported_gradient
