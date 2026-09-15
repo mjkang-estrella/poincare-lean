@@ -51,4 +51,15 @@ theorem holderBound_comp (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] F
         (mul_le_mul_of_nonneg_left hd (holderSeminorm_nonneg f)) (norm_nonneg Q)
     _ = _ := by ring
 
+/-- Simultaneous spatial substitution and a bounded linear map on the values. -/
+def mapHolder (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] F')
+    (f : Y («E» := E) α T F) : Y («E» := E) α T F' :=
+  ofFunction (fun p => Q (f (p.1, S p.2)))
+    (fun p hp => by
+      dsimp only
+      rw [zero_off f (p := (p.1, S p.2)) (fun h => hp ⟨h.1, mem_univ _⟩), map_zero])
+    ⟨‖Q‖ * supNorm (cylinder T) f, fun p _ =>
+      (Q.le_opNorm _).trans (mul_le_mul_of_nonneg_left (le_supNorm f _) (norm_nonneg Q))⟩
+    ⟨_, holderBound_comp hα S Q f⟩
+
 end Poincare.FrozenEllipticHeatOperator
