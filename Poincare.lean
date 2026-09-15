@@ -57,6 +57,7 @@ import Poincare.Global.FixedChartUniformJacobiComparison
 import Poincare.Global.FixedChartUniformNormalRadius
 import Poincare.Global.FixedChartUniformPreferredGermAgreement
 import Poincare.Global.FixedChartUniformSourceNormal
+import Poincare.Global.FrozenEllipticHeatOperator
 import Poincare.Global.GenericJointRegularityCounterexample
 import Poincare.Global.GeodesicFlowJointDerivative
 import Poincare.Global.HamiltonChartDensityLocalDomination

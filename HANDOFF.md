@@ -662,6 +662,19 @@ identity on a short cylinder. With L4 (in flight) the same holds near any
 fixed positive-definite matrix; the finite-atlas parametrix is the
 remaining linear step.
 
+Step L4 landed (`Global/FrozenEllipticHeatOperator.lean`, gate PASS, 28
+declarations): transport of Hölder elements and solution graphs through a
+linear change of variables with explicit norm factors, the trace identity
+under the change, recovery of the heat equation from the Duhamel value
+formula, the symmetric positive square root of a positive-definite
+coefficient form (Mathlib's `CFC.sqrt` on `Matrix (Fin 3) (Fin 3) ℝ`,
+transported to a continuous linear equivalence) with `‖S‖ ≤ √Λ`,
+`‖S⁻¹‖ ≤ 1/√λ`, and `exists_frozen_solution_graph_bound`: for any symmetric
+`A` with `λ‖v‖² ≤ A v v ≤ Λ‖v‖²`, every forcing has a solution graph of
+`∂ₜu = f + Σᵢⱼ A(eᵢ,eⱼ)∂ᵢ∂ⱼu` with `‖G‖ ≤ C(α,λ,Λ)‖f‖`, uniformly in
+`T ≤ 1`. Combined with the near-identity correction this gives solvability
+near any fixed elliptic coefficient matrix.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
