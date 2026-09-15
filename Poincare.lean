@@ -91,6 +91,7 @@ import Poincare.Global.NearFrozenParabolicRightInverse
 import Poincare.Global.NearIdentityParabolicRightInverse
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
+import Poincare.Global.ParabolicConstantCoefficient
 import Poincare.Global.ParabolicCutoffCommutator
 import Poincare.Global.ParabolicHolderMultiplier
 import Poincare.Global.ParabolicHolderSpace

@@ -975,6 +975,14 @@ existence. With nested cutoffs the oscillation `ω(ρ)` no longer appears in
 the error; it only enters the existence condition of the near-frozen solver.
 The single-chart local solver of the finite-atlas parametrix is complete.
 
+Consolidation (user-approved contract rule 5) landed: the ten
+constant-coefficient Duhamel modules are merged into
+`Global/ParabolicConstantCoefficient.lean` (3,960 lines, gate PASS, 151
+declarations) with every body byte-identical, all 142 public declarations
+checked against the base commit with identical printed types, and the ten
+old files reduced to one-line import stubs so existing importers are
+untouched. The stubs can be deleted once no worker branch imports them.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

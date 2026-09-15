@@ -3229,35 +3229,6 @@ Poincare.Global.DuhamelLocalContraction	def	Poincare.constantDuhamelPathGeneric	
 Poincare.Global.DuhamelLocalContraction	theorem	Poincare.constantDuhamelPathGeneric_apply	theorem constantDuhamelPathGeneric_apply
 Poincare.Global.DuhamelLocalContraction	theorem	Poincare.eval_mem_closedBall_of_path_mem_closedBall	theorem eval_mem_closedBall_of_path_mem_closedBall
 Poincare.Global.DuhamelLocalContraction	theorem	Poincare.norm_projectedDuhamelDifference_le_of_lipschitzOn_closedBall	theorem norm_projectedDuhamelDifference_le_of_lipschitzOn_closedBall
-Poincare.Global.DuhamelParabolicHolderSeminorm	theorem	Poincare.DuhamelParabolicHolderSeminorm.duhamel_hessian_parabolic_holder	theorem duhamel_hessian_parabolic_holder :
-Poincare.Global.DuhamelParabolicHolderSeminorm	theorem	Poincare.DuhamelParabolicHolderSeminorm.hasHolderBound_duhamel_hessian	theorem hasHolderBound_duhamel_hessian :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.abs_trace_le	theorem abs_trace_le (A : E →L[ℝ] E →L[ℝ] ℝ) :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_time_derivative_bound	theorem duhamel_time_derivative_bound :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_time_derivative_holder	theorem duhamel_time_derivative_holder :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_bound	theorem duhamel_gradient_bound {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_value_time_estimates	theorem duhamel_value_time_estimates :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.holder_of_bounded_lipschitz	theorem holder_of_bounded_lipschitz {F : Type*} [NormedAddCommGroup F]
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_spatial_holder	theorem duhamel_gradient_spatial_holder :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_value_parabolic_holder	theorem duhamel_value_parabolic_holder :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.gradient_heatSolution_sub_bound	theorem gradient_heatSolution_sub_bound {t M N L : ℝ} (ht : 0 < t)
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_reversed	theorem duhamel_gradient_reversed {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.norm_integral_inverse_sqrt_le	theorem norm_integral_inverse_sqrt_le {F : Type*} [NormedAddCommGroup F]
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_time_holder_of_le	theorem duhamel_gradient_time_holder_of_le {α T s t M K : ℝ}
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_parabolic_holder	theorem duhamel_gradient_parabolic_holder :
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.continuousOn_of_hasHolderBound	theorem continuousOn_of_hasHolderBound {F : Type*} [NormedAddCommGroup F]
-Poincare.Global.DuhamelSolutionOperatorBound	theorem	Poincare.DuhamelSolutionOperatorBound.exists_solution_graph_bound	theorem exists_solution_graph_bound :
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.ParabolicSolutionGraph.Graph.ext_of_u	theorem Graph.ext_of_u {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-Poincare.Global.DuhamelSolutionOperatorCLM	def	Poincare.DuhamelSolutionOperatorCLM.boundConstant	def boundConstant (α : ℝ) (hα : 0 < α) (hα1 : α < 1) : ℝ :=
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.boundConstant_spec	theorem boundConstant_spec (α : ℝ) (hα : 0 < α) (hα1 : α < 1) :
-Poincare.Global.DuhamelSolutionOperatorCLM	def	Poincare.DuhamelSolutionOperatorCLM.duhamelGraph	def duhamelGraph (α T : ℝ) (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelGraph_spec	theorem duhamelGraph_spec (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamel_integral_add	theorem duhamel_integral_add {α T t : ℝ} (hα : 0 < α) (ht : t ∈ Icc 0 T)
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamel_integral_smul	theorem duhamel_integral_smul {α T t : ℝ} (c : ℝ)
-Poincare.Global.DuhamelSolutionOperatorCLM	def	Poincare.DuhamelSolutionOperatorCLM.duhamelLinearMap	def duhamelLinearMap (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
-Poincare.Global.DuhamelSolutionOperatorCLM	def	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator	def duhamelOperator (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_u	theorem duhamelOperator_u (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_norm_le	theorem duhamelOperator_norm_le :
-Poincare.Global.DuhamelSolutionOperatorCLM	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_solves	theorem duhamelOperator_solves (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
 Poincare.Global.EinsteinInterface	def	Poincare.PositiveEinsteinMetric3	def PositiveEinsteinMetric3 (M : Type u)
 Poincare.Global.EinsteinInterface	theorem	Poincare.positiveEinsteinMetric3_eq	theorem positiveEinsteinMetric3_eq :
 Poincare.Global.EinsteinInterface	theorem	Poincare.hamiltonConvergencePinchedLimit3_of_positiveEinsteinMetric3	theorem hamiltonConvergencePinchedLimit3_of_positiveEinsteinMetric3
@@ -4391,83 +4362,6 @@ Poincare.Global.HeatDuhamelBUCPicard	theorem	Poincare.exists_unique_heatDuhamelB
 Poincare.Global.HeatDuhamelBUCPicard	theorem	Poincare.dist_heatDuhamelBUCPicard_constantDuhamelPath_le	theorem dist_heatDuhamelBUCPicard_constantDuhamelPath_le
 Poincare.Global.HeatDuhamelBUCPicard	theorem	Poincare.heatDuhamelBUCPicard_mapsTo_closedBall	theorem heatDuhamelBUCPicard_mapsTo_closedBall
 Poincare.Global.HeatDuhamelBUCPicard	theorem	Poincare.exists_heatDuhamelBUCPicard_fixedPoint_mem_closedBall	theorem exists_heatDuhamelBUCPicard_fixedPoint_mem_closedBall
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.laplacian_eq_hessian_trace	theorem laplacian_eq_hessian_trace (g : E → ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.intervalIntegrable_heat_hessian	theorem intervalIntegrable_heat_hessian {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.intervalIntegrable_heat_laplacian	theorem intervalIntegrable_heat_laplacian {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.laplacian_duhamel_eq_integral	theorem laplacian_duhamel_eq_integral {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.hasDerivAt_heat_integrand	theorem hasDerivAt_heat_integrand {T t s M : ℝ} (hs : s ∈ Icc 0 T) (hst : s < t)
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.heatSolution_sq	theorem heatSolution_sq (a : ℝ) (ha : 0 < a) (g : E → ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.continuousOn_rescaled_heat_integral	theorem continuousOn_rescaled_heat_integral {T M : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.continuousOn_heat_integrand_extension	theorem continuousOn_heat_integrand_extension {T M : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.tendsto_heat_integrand_diagonal	theorem tendsto_heat_integrand_diagonal {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.duhamel_time_derivative_integral	theorem duhamel_time_derivative_integral {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHeatEquation	theorem	Poincare.HeatDuhamelHeatEquation.duhamel_zero	theorem duhamel_zero (f : ℝ × E → ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_eq	theorem gradient_eq {t : ℝ} (ht : t ≠ 0) (x : E) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_sq_smul	theorem gradient_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.integrable_gradient	theorem integrable_gradient {t : ℝ} (ht : 0 < t) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_integral_sq	theorem gradient_integral_sq (a : ℝ) (ha : 0 < a) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_integral	theorem gradient_integral {t : ℝ} (ht : 0 < t) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_heatSolution_eq_integral	theorem gradient_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.norm_gradient_heatSolution_le	theorem norm_gradient_heatSolution_le {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_gradient_pos	theorem continuous_gradient_pos :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_convolution_sq	theorem gradient_convolution_sq (a : ℝ) (ha : 0 < a) (f : E → ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_gradient_heatSolution_time	theorem continuous_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_gradient_majorant	theorem intervalIntegrable_gradient_majorant (t A : ℝ) :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_gradient_heatSolution_time	theorem intervalIntegrable_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_kernel_pos	theorem continuous_kernel_pos :
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_heatSolution_time	theorem intervalIntegrable_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.hasFDerivAt_duhamel	theorem hasFDerivAt_duhamel {T t M : ℝ} (ht : t ∈ Icc 0 T)
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.hasFDerivAt_duhamel_gradient	theorem hasFDerivAt_duhamel_gradient {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_duhamel_hessian	theorem continuous_duhamel_hessian {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.hessian_duhamel_eq_integral	theorem hessian_duhamel_eq_integral {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.contDiff_two_duhamel	theorem contDiff_two_duhamel {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianDifferentiation	theorem	Poincare.HeatDuhamelHessianDifferentiation.duhamel_hessian_bound	theorem duhamel_hessian_bound :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_apply	theorem third_apply {t : ℝ} (ht : t ≠ 0) (x u v w : E) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_third_one_le	theorem norm_third_one_le (x : E) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_weighted_third_one	theorem integrable_weighted_third_one {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_sq_smul	theorem third_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_sq_smul	theorem weighted_third_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_integral_sq	theorem weighted_third_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_weighted_third	theorem integrable_weighted_third {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_integral	theorem weighted_third_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_moment_bound	theorem third_moment_bound :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_integral_cancelled_hessian_near_le	theorem norm_integral_cancelled_hessian_near_le {α K a t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.near_hessian_difference_le	theorem near_hessian_difference_le {α K a t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.duhamel_hessian_spatial_holder_of_time_le_dist_sq	theorem duhamel_hessian_spatial_holder_of_time_le_dist_sq {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.far_time_power_integral_le	theorem far_time_power_integral_le {α ρ t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.hessian_heatSolution_eq_common_cancelled_integral	theorem hessian_heatSolution_eq_common_cancelled_integral {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.hessian_heatSolution_difference_eq_integral	theorem hessian_heatSolution_difference_eq_integral {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_hessian_translation_le	theorem norm_hessian_translation_le (t : ℝ) (y w : E) :
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_translation	theorem weighted_third_translation {α t : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_segment_weighted_third	theorem integrable_segment_weighted_third {α t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_hessian_translation	theorem weighted_hessian_translation {α t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_hessian_translation_far	theorem weighted_hessian_translation_far {α t : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_heat_hessian_difference_far_le	theorem norm_heat_hessian_difference_far_le {α t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.far_hessian_difference_le	theorem far_hessian_difference_le {α T t M K : ℝ}
-Poincare.Global.HeatDuhamelHessianSpatialHolder	theorem	Poincare.HeatDuhamelHessianSpatialHolder.duhamel_hessian_spatial_holder	theorem duhamel_hessian_spatial_holder :
-Poincare.Global.HeatDuhamelHessianTimeHolder	def	Poincare.HeatDuhamelHessianTimeHolder.euclideanForm	def euclideanForm : E →L[ℝ] E →L[ℝ] ℝ := innerSL ℝ
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_eq_tensor	theorem hessian_eq_tensor {t : ℝ} (ht : t ≠ 0) (x : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.hasDerivAt_hessian_time	theorem hasDerivAt_hessian_time {t : ℝ} (ht : 0 < t) (x : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_hessian_time_deriv_one_le	theorem norm_hessian_time_deriv_one_le (x : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.continuous_hessian_time_deriv	theorem continuous_hessian_time_deriv {t : ℝ} (ht : 0 < t) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_weighted_hessian_time_deriv_one	theorem integrable_weighted_hessian_time_deriv_one {α : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_time_deriv_sq_smul	theorem hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_sq_smul	theorem weighted_hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_integral_sq	theorem weighted_hessian_time_deriv_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_weighted_hessian_time_deriv	theorem integrable_weighted_hessian_time_deriv {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_integral	theorem weighted_hessian_time_deriv_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_time_deriv_moment_bound	theorem hessian_time_deriv_moment_bound :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_tail_bound	theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_integral_cancelled_hessian_before_le	theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.near_hessian_time_difference_le	theorem near_hessian_time_difference_le {α K a t₁ t₂ : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.continuous_hessian_time_deriv_pos	theorem continuous_hessian_time_deriv_pos :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_time_weighted_hessian_deriv	theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_hessian_time_difference_le	theorem norm_hessian_time_difference_le {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) (y : E) :
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_difference	theorem weighted_hessian_time_difference {α a b : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.far_time_deriv_power_integral_le	theorem far_time_deriv_power_integral_le {α τ t : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_cancelled_hessian_time_difference_le	theorem norm_cancelled_hessian_time_difference_le {α a b M K : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.far_hessian_time_difference_le	theorem far_hessian_time_difference_le {α T t₁ t₂ M K : ℝ}
-Poincare.Global.HeatDuhamelHessianTimeHolder	theorem	Poincare.HeatDuhamelHessianTimeHolder.duhamel_hessian_time_holder	theorem duhamel_hessian_time_holder :
 Poincare.Global.HeatDuhamelPicard	def	Poincare.vectorHeatSemigroupNonnegative	def vectorHeatSemigroupNonnegative (r : ℝ) :
 Poincare.Global.HeatDuhamelPicard	theorem	Poincare.vectorHeatSemigroupNonnegative_of_pos	theorem vectorHeatSemigroupNonnegative_of_pos {r : ℝ} (hr : 0 < r) :
 Poincare.Global.HeatDuhamelPicard	theorem	Poincare.vectorHeatSemigroupNonnegative_of_nonpos	theorem vectorHeatSemigroupNonnegative_of_nonpos {r : ℝ} (hr : ¬ 0 < r) :
@@ -4485,20 +4379,6 @@ Poincare.Global.HeatDuhamelPicard	theorem	Poincare.exists_unique_heatDuhamel_mil
 Poincare.Global.HeatDuhamelPicard	theorem	Poincare.dist_heatDuhamelPicard_constantDuhamelPath_le	theorem dist_heatDuhamelPicard_constantDuhamelPath_le
 Poincare.Global.HeatDuhamelPicard	theorem	Poincare.heatDuhamelPicard_mapsTo_closedBall	theorem heatDuhamelPicard_mapsTo_closedBall
 Poincare.Global.HeatDuhamelPicard	theorem	Poincare.exists_heatDuhamelPicard_fixedPoint_mem_closedBall	theorem exists_heatDuhamelPicard_fixedPoint_mem_closedBall
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_data_smul_hessian_sub	theorem integrable_data_smul_hessian_sub {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_integral	theorem hessian_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_integral_sub	theorem hessian_heatSolution_eq_integral_sub {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_data_sub_smul_hessian	theorem integrable_data_sub_smul_hessian {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_cancelled_integral	theorem hessian_heatSolution_eq_cancelled_integral {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_cancelled_hessian	theorem integrable_cancelled_hessian {t M : ℝ} (ht : 0 < t)
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_cancelled_hessian_integrand_le	theorem norm_cancelled_hessian_integrand_le {α K : ℝ} {f : E → ℝ}
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_cancelled_hessian_integral_le	theorem norm_cancelled_hessian_integral_le {α K t : ℝ}
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.exists_heat_hessian_holder_bound	theorem exists_heat_hessian_holder_bound {α : ℝ} (hα : 0 < α) (hα1 : α < 1) :
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.intervalIntegrable_hessian_majorant	theorem intervalIntegrable_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integral_hessian_majorant	theorem integral_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.continuous_hessian_pos	theorem continuous_hessian_pos :
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrableOn_cancelled_hessian_time	theorem integrableOn_cancelled_hessian_time {α K T t : ℝ}
-Poincare.Global.HeatDuhamelSpatialHolderHessian	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_integral_cancelled_hessian_time_le	theorem norm_integral_cancelled_hessian_time_le {α K t : ℝ}
 Poincare.Global.HeatEnvelopes	theorem	Poincare.integrable_exp_neg_mul_norm_sq	theorem integrable_exp_neg_mul_norm_sq {a : ℝ} (ha : 0 < a) :
 Poincare.Global.HeatEnvelopes	theorem	Poincare.integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq	theorem integrable_one_add_norm_sq_mul_exp_neg_mul_norm_sq {a : ℝ} (ha : 0 < a) :
 Poincare.Global.HeatEnvelopes	theorem	Poincare.integrable_one_add_norm_sq_sub_left_mul_exp_neg_mul_norm_sq	theorem integrable_one_add_norm_sq_sub_left_mul_exp_neg_mul_norm_sq {a : ℝ} (ha : 0 < a)
@@ -4537,16 +4417,6 @@ Poincare.Global.HeatKernel	theorem	Poincare.heatKernel_pos	theorem heatKernel_po
 Poincare.Global.HeatKernel	theorem	Poincare.heatKernel_nonneg	theorem heatKernel_nonneg [FiniteDimensional ℝ E] {t : ℝ} (ht : 0 < t) (x : E) :
 Poincare.Global.HeatKernel	theorem	Poincare.contDiff_heatKernel_spatial	theorem contDiff_heatKernel_spatial [FiniteDimensional ℝ E] (t : ℝ) :
 Poincare.Global.HeatKernel	theorem	Poincare.contDiffAt_heatKernel_spatial	theorem contDiffAt_heatKernel_spatial [FiniteDimensional ℝ E] (t : ℝ) (x : E) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.hessian_sq_smul	theorem hessian_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.rpow_mul_gaussian_le_eight	theorem rpow_mul_gaussian_le_eight {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.integrable_weighted_hessian_one	theorem integrable_weighted_hessian_one {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_sq_smul	theorem weighted_hessian_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_integral_sq	theorem weighted_hessian_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.integrable_weighted_hessian	theorem integrable_weighted_hessian {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_integral	theorem weighted_hessian_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.integrable_hessian	theorem integrable_hessian {t : ℝ} (ht : 0 < t) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.integral_hessian_eq_zero	theorem integral_hessian_eq_zero {t : ℝ} (ht : 0 < t) :
-Poincare.Global.HeatKernelHessianMoments	theorem	Poincare.HeatKernelHessianMoments.hessian_moments	theorem hessian_moments :
 Poincare.Global.HeatKernelIntegral	lemma	Poincare.integrable_exp_neg_one_div_four_mul_norm_sq	private lemma integrable_exp_neg_one_div_four_mul_norm_sq {t : ℝ} (ht : 0 < t) :
 Poincare.Global.HeatKernelIntegral	theorem	Poincare.heatKernel_integrable	theorem heatKernel_integrable {t : ℝ} (ht : 0 < t) :
 Poincare.Global.HeatKernelIntegral	theorem	Poincare.integral_heatKernel_eq_one	theorem integral_heatKernel_eq_one {t : ℝ} (ht : 0 < t) :
@@ -5373,18 +5243,6 @@ Poincare.Global.MetricVariation	theorem	Poincare.closedRicciFlowExtensionRegular
 Poincare.Global.MetricVariation	theorem	Poincare.eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciFlat	theorem eventually_isClosedRicciFlowSolutionAt_const_and_extensionRegularAt_of_ricciFlat
 Poincare.Global.MetricVariation	theorem	Poincare.isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt	theorem isClosedRicciFlowSolutionAt_timeDerivAt_eq_neg_two_ricciAt
 Poincare.Global.MovingBUCEvaluation	theorem	Poincare.hasDerivWithinAt_buc_apply_moving	theorem hasDerivWithinAt_buc_apply_moving
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_of_dominated_secants	theorem hasDerivWithinAt_integral_of_dominated_secants
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_Icc	theorem hasDerivWithinAt_integral_Icc {g : ℝ → ℝ} {T t : ℝ}
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_moving_limit_of_secants	theorem hasDerivWithinAt_integral_moving_limit_of_secants
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.abs_sub_le_of_deriv_comparison	theorem abs_sub_le_of_deriv_comparison
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.abs_sub_le_rpow_of_deriv_bound	theorem abs_sub_le_rpow_of_deriv_bound
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.abs_rpow_sub_le	theorem abs_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.abs_clipped_rpow_sub_le	theorem abs_clipped_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.intervalIntegrable_abs_sub_rpow	theorem intervalIntegrable_abs_sub_rpow {β T t : ℝ}
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.clipped_secant_le_of_deriv_rpow_bound	theorem clipped_secant_le_of_deriv_rpow_bound
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_moving_limit	theorem hasDerivWithinAt_integral_moving_limit
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.exists_heat_integrand_deriv_bound	theorem exists_heat_integrand_deriv_bound {α T M K : ℝ}
-Poincare.Global.MovingLimitLeibniz	theorem	Poincare.MovingLimitLeibniz.duhamel_solves_heat_equation	theorem duhamel_solves_heat_equation :
 Poincare.Global.NaturalityCascade	theorem	Poincare.NaturalityCascade.source_target_shifted_geodesicGermAt_eventuallyEq_reanchored_unconditional	theorem source_target_shifted_geodesicGermAt_eventuallyEq_reanchored_unconditional
 Poincare.Global.NearFrozenParabolicRightInverse	def	Poincare.NearFrozenParabolicRightInverse.holderPullback	def holderPullback (hα : 0 ≤ α) (S : (ClosedSmoothModel 3) →L[ℝ] (ClosedSmoothModel 3)) :
 Poincare.Global.NearFrozenParabolicRightInverse	def	Poincare.NearFrozenParabolicRightInverse.graphPullback	def graphPullback (hα : 0 ≤ α) (hT : 0 < T) (S : (ClosedSmoothModel 3) →L[ℝ] (ClosedSmoothModel 3)) :
@@ -6291,6 +6149,148 @@ Poincare.Global.PairingUpgrade	theorem	Poincare.PairingUpgrade.exists_continuous
 Poincare.Global.PairingUpgrade	theorem	Poincare.PairingUpgrade.exists_continuousLinearEquiv_of_source_linearizedEndpointCLM_pullback	theorem exists_continuousLinearEquiv_of_source_linearizedEndpointCLM_pullback
 Poincare.Global.PairingUpgrade	theorem	Poincare.PairingUpgrade.exists_continuousLinearEquiv_of_target_linearizedEndpointCLM_pullback	theorem exists_continuousLinearEquiv_of_target_linearizedEndpointCLM_pullback
 Poincare.Global.PairingUpgrade	theorem	Poincare.PairingUpgrade.exists_equiv_and_cartanMap_isLocalIsometry_on_normalBall_of_hosted_anchor_pullbacks	theorem exists_equiv_and_cartanMap_isLocalIsometry_on_normalBall_of_hosted_anchor_pullbacks
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.hessian_sq_smul	theorem hessian_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.rpow_mul_gaussian_le_eight	theorem rpow_mul_gaussian_le_eight {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.integrable_weighted_hessian_one	theorem integrable_weighted_hessian_one {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_sq_smul	theorem weighted_hessian_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_integral_sq	theorem weighted_hessian_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.integrable_weighted_hessian	theorem integrable_weighted_hessian {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.weighted_hessian_integral	theorem weighted_hessian_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.integrable_hessian	theorem integrable_hessian {t : ℝ} (ht : 0 < t) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.integral_hessian_eq_zero	theorem integral_hessian_eq_zero {t : ℝ} (ht : 0 < t) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatKernelHessianMoments.hessian_moments	theorem hessian_moments :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_data_smul_hessian_sub	theorem integrable_data_smul_hessian_sub {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_integral	theorem hessian_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_integral_sub	theorem hessian_heatSolution_eq_integral_sub {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_data_sub_smul_hessian	theorem integrable_data_sub_smul_hessian {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.hessian_heatSolution_eq_cancelled_integral	theorem hessian_heatSolution_eq_cancelled_integral {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrable_cancelled_hessian	theorem integrable_cancelled_hessian {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_cancelled_hessian_integrand_le	theorem norm_cancelled_hessian_integrand_le {α K : ℝ} {f : E → ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_cancelled_hessian_integral_le	theorem norm_cancelled_hessian_integral_le {α K t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.exists_heat_hessian_holder_bound	theorem exists_heat_hessian_holder_bound {α : ℝ} (hα : 0 < α) (hα1 : α < 1) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.intervalIntegrable_hessian_majorant	theorem intervalIntegrable_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integral_hessian_majorant	theorem integral_hessian_majorant {α : ℝ} (hα : 0 < α) (t A : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.continuous_hessian_pos	theorem continuous_hessian_pos :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.integrableOn_cancelled_hessian_time	theorem integrableOn_cancelled_hessian_time {α K T t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelSpatialHolderHessian.norm_integral_cancelled_hessian_time_le	theorem norm_integral_cancelled_hessian_time_le {α K t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_eq	theorem gradient_eq {t : ℝ} (ht : t ≠ 0) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_sq_smul	theorem gradient_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.integrable_gradient	theorem integrable_gradient {t : ℝ} (ht : 0 < t) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_integral_sq	theorem gradient_integral_sq (a : ℝ) (ha : 0 < a) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_integral	theorem gradient_integral {t : ℝ} (ht : 0 < t) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_heatSolution_eq_integral	theorem gradient_heatSolution_eq_integral {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.norm_gradient_heatSolution_le	theorem norm_gradient_heatSolution_le {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_gradient_pos	theorem continuous_gradient_pos :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.gradient_convolution_sq	theorem gradient_convolution_sq (a : ℝ) (ha : 0 < a) (f : E → ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_gradient_heatSolution_time	theorem continuous_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_gradient_majorant	theorem intervalIntegrable_gradient_majorant (t A : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_gradient_heatSolution_time	theorem intervalIntegrable_gradient_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_kernel_pos	theorem continuous_kernel_pos :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.intervalIntegrable_heatSolution_time	theorem intervalIntegrable_heatSolution_time {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.hasFDerivAt_duhamel	theorem hasFDerivAt_duhamel {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.hasFDerivAt_duhamel_gradient	theorem hasFDerivAt_duhamel_gradient {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.continuous_duhamel_hessian	theorem continuous_duhamel_hessian {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.hessian_duhamel_eq_integral	theorem hessian_duhamel_eq_integral {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.contDiff_two_duhamel	theorem contDiff_two_duhamel {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianDifferentiation.duhamel_hessian_bound	theorem duhamel_hessian_bound :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_apply	theorem third_apply {t : ℝ} (ht : t ≠ 0) (x u v w : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_third_one_le	theorem norm_third_one_le (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_weighted_third_one	theorem integrable_weighted_third_one {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_sq_smul	theorem third_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_sq_smul	theorem weighted_third_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_integral_sq	theorem weighted_third_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_weighted_third	theorem integrable_weighted_third {α : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_integral	theorem weighted_third_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.third_moment_bound	theorem third_moment_bound :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_integral_cancelled_hessian_near_le	theorem norm_integral_cancelled_hessian_near_le {α K a t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.near_hessian_difference_le	theorem near_hessian_difference_le {α K a t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.duhamel_hessian_spatial_holder_of_time_le_dist_sq	theorem duhamel_hessian_spatial_holder_of_time_le_dist_sq {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.far_time_power_integral_le	theorem far_time_power_integral_le {α ρ t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.hessian_heatSolution_eq_common_cancelled_integral	theorem hessian_heatSolution_eq_common_cancelled_integral {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.hessian_heatSolution_difference_eq_integral	theorem hessian_heatSolution_difference_eq_integral {t M : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_hessian_translation_le	theorem norm_hessian_translation_le (t : ℝ) (y w : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_third_translation	theorem weighted_third_translation {α t : ℝ} (hα : 0 ≤ α) (hα1 : α ≤ 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.integrable_segment_weighted_third	theorem integrable_segment_weighted_third {α t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_hessian_translation	theorem weighted_hessian_translation {α t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.weighted_hessian_translation_far	theorem weighted_hessian_translation_far {α t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.norm_heat_hessian_difference_far_le	theorem norm_heat_hessian_difference_far_le {α t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.far_hessian_difference_le	theorem far_hessian_difference_le {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianSpatialHolder.duhamel_hessian_spatial_holder	theorem duhamel_hessian_spatial_holder :
+Poincare.Global.ParabolicConstantCoefficient	def	Poincare.HeatDuhamelHessianTimeHolder.euclideanForm	def euclideanForm : E →L[ℝ] E →L[ℝ] ℝ := innerSL ℝ
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_eq_tensor	theorem hessian_eq_tensor {t : ℝ} (ht : t ≠ 0) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.hasDerivAt_hessian_time	theorem hasDerivAt_hessian_time {t : ℝ} (ht : 0 < t) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_hessian_time_deriv_one_le	theorem norm_hessian_time_deriv_one_le (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.continuous_hessian_time_deriv	theorem continuous_hessian_time_deriv {t : ℝ} (ht : 0 < t) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_weighted_hessian_time_deriv_one	theorem integrable_weighted_hessian_time_deriv_one {α : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_time_deriv_sq_smul	theorem hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_sq_smul	theorem weighted_hessian_time_deriv_sq_smul (a : ℝ) (ha : 0 < a) (α : ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_integral_sq	theorem weighted_hessian_time_deriv_integral_sq (a : ℝ) (ha : 0 < a) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_weighted_hessian_time_deriv	theorem integrable_weighted_hessian_time_deriv {α : ℝ} (hα : 0 ≤ α) (hα2 : α ≤ 2)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_deriv_integral	theorem weighted_hessian_time_deriv_integral {t : ℝ} (ht : 0 < t) (α : ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_time_deriv_moment_bound	theorem hessian_time_deriv_moment_bound :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.hessian_tail_bound	theorem hessian_tail_bound {α K T t₁ t₂ : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_integral_cancelled_hessian_before_le	theorem norm_integral_cancelled_hessian_before_le {α K a b t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.near_hessian_time_difference_le	theorem near_hessian_time_difference_le {α K a t₁ t₂ : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.continuous_hessian_time_deriv_pos	theorem continuous_hessian_time_deriv_pos :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.integrable_time_weighted_hessian_deriv	theorem integrable_time_weighted_hessian_deriv {α a : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_hessian_time_difference_le	theorem norm_hessian_time_difference_le {a b : ℝ} (ha : 0 < a) (hab : a ≤ b) (y : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.weighted_hessian_time_difference	theorem weighted_hessian_time_difference {α a b : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.far_time_deriv_power_integral_le	theorem far_time_deriv_power_integral_le {α τ t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.norm_cancelled_hessian_time_difference_le	theorem norm_cancelled_hessian_time_difference_le {α a b M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.far_hessian_time_difference_le	theorem far_hessian_time_difference_le {α T t₁ t₂ M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHessianTimeHolder.duhamel_hessian_time_holder	theorem duhamel_hessian_time_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelParabolicHolderSeminorm.duhamel_hessian_parabolic_holder	theorem duhamel_hessian_parabolic_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelParabolicHolderSeminorm.hasHolderBound_duhamel_hessian	theorem hasHolderBound_duhamel_hessian :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.laplacian_eq_hessian_trace	theorem laplacian_eq_hessian_trace (g : E → ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.intervalIntegrable_heat_hessian	theorem intervalIntegrable_heat_hessian {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.intervalIntegrable_heat_laplacian	theorem intervalIntegrable_heat_laplacian {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.laplacian_duhamel_eq_integral	theorem laplacian_duhamel_eq_integral {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.hasDerivAt_heat_integrand	theorem hasDerivAt_heat_integrand {T t s M : ℝ} (hs : s ∈ Icc 0 T) (hst : s < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.heatSolution_sq	theorem heatSolution_sq (a : ℝ) (ha : 0 < a) (g : E → ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.continuousOn_rescaled_heat_integral	theorem continuousOn_rescaled_heat_integral {T M : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.continuousOn_heat_integrand_extension	theorem continuousOn_heat_integrand_extension {T M : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.tendsto_heat_integrand_diagonal	theorem tendsto_heat_integrand_diagonal {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.duhamel_time_derivative_integral	theorem duhamel_time_derivative_integral {α T t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.HeatDuhamelHeatEquation.duhamel_zero	theorem duhamel_zero (f : ℝ × E → ℝ) (x : E) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_of_dominated_secants	theorem hasDerivWithinAt_integral_of_dominated_secants
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_Icc	theorem hasDerivWithinAt_integral_Icc {g : ℝ → ℝ} {T t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_moving_limit_of_secants	theorem hasDerivWithinAt_integral_moving_limit_of_secants
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.abs_sub_le_of_deriv_comparison	theorem abs_sub_le_of_deriv_comparison
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.abs_sub_le_rpow_of_deriv_bound	theorem abs_sub_le_rpow_of_deriv_bound
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.abs_rpow_sub_le	theorem abs_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.abs_clipped_rpow_sub_le	theorem abs_clipped_rpow_sub_le {β x y : ℝ} (hβ : 0 < β) (hβ1 : β ≤ 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.intervalIntegrable_abs_sub_rpow	theorem intervalIntegrable_abs_sub_rpow {β T t : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.clipped_secant_le_of_deriv_rpow_bound	theorem clipped_secant_le_of_deriv_rpow_bound
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.hasDerivWithinAt_integral_moving_limit	theorem hasDerivWithinAt_integral_moving_limit
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.exists_heat_integrand_deriv_bound	theorem exists_heat_integrand_deriv_bound {α T M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.MovingLimitLeibniz.duhamel_solves_heat_equation	theorem duhamel_solves_heat_equation :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.abs_trace_le	theorem abs_trace_le (A : E →L[ℝ] E →L[ℝ] ℝ) :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_time_derivative_bound	theorem duhamel_time_derivative_bound :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_time_derivative_holder	theorem duhamel_time_derivative_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_bound	theorem duhamel_gradient_bound {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_value_time_estimates	theorem duhamel_value_time_estimates :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.holder_of_bounded_lipschitz	theorem holder_of_bounded_lipschitz {F : Type*} [NormedAddCommGroup F]
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_spatial_holder	theorem duhamel_gradient_spatial_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_value_parabolic_holder	theorem duhamel_value_parabolic_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.gradient_heatSolution_sub_bound	theorem gradient_heatSolution_sub_bound {t M N L : ℝ} (ht : 0 < t)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_reversed	theorem duhamel_gradient_reversed {T t M : ℝ} (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.norm_integral_inverse_sqrt_le	theorem norm_integral_inverse_sqrt_le {F : Type*} [NormedAddCommGroup F]
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_time_holder_of_le	theorem duhamel_gradient_time_holder_of_le {α T s t M K : ℝ}
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.duhamel_gradient_parabolic_holder	theorem duhamel_gradient_parabolic_holder :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.continuousOn_of_hasHolderBound	theorem continuousOn_of_hasHolderBound {F : Type*} [NormedAddCommGroup F]
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorBound.exists_solution_graph_bound	theorem exists_solution_graph_bound :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.ParabolicSolutionGraph.Graph.ext_of_u	theorem Graph.ext_of_u {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+Poincare.Global.ParabolicConstantCoefficient	def	Poincare.DuhamelSolutionOperatorCLM.boundConstant	def boundConstant (α : ℝ) (hα : 0 < α) (hα1 : α < 1) : ℝ :=
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.boundConstant_spec	theorem boundConstant_spec (α : ℝ) (hα : 0 < α) (hα1 : α < 1) :
+Poincare.Global.ParabolicConstantCoefficient	def	Poincare.DuhamelSolutionOperatorCLM.duhamelGraph	def duhamelGraph (α T : ℝ) (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelGraph_spec	theorem duhamelGraph_spec (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamel_integral_add	theorem duhamel_integral_add {α T t : ℝ} (hα : 0 < α) (ht : t ∈ Icc 0 T)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamel_integral_smul	theorem duhamel_integral_smul {α T t : ℝ} (c : ℝ)
+Poincare.Global.ParabolicConstantCoefficient	def	Poincare.DuhamelSolutionOperatorCLM.duhamelLinearMap	def duhamelLinearMap (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.ParabolicConstantCoefficient	def	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator	def duhamelOperator (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_u	theorem duhamelOperator_u (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_norm_le	theorem duhamelOperator_norm_le :
+Poincare.Global.ParabolicConstantCoefficient	theorem	Poincare.DuhamelSolutionOperatorCLM.duhamelOperator_solves	theorem duhamelOperator_solves (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
 Poincare.Global.ParabolicCutoffCommutator	theorem	Poincare.ParabolicCutoffCommutator.quadratic_remainder	theorem quadratic_remainder
 Poincare.Global.ParabolicCutoffCommutator	theorem	Poincare.ParabolicCutoffCommutator.finite_difference_derivative	theorem finite_difference_derivative
 Poincare.Global.ParabolicCutoffCommutator	theorem	Poincare.ParabolicCutoffCommutator.derivative_norm_le_sqrt	theorem derivative_norm_le_sqrt
