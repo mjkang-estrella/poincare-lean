@@ -3,6 +3,11 @@ import Poincare.Global.CompactCoefficientEllipticity
 
 noncomputable section
 
+set_option synthInstance.maxHeartbeats 200000
+set_option maxHeartbeats 800000
+set_option maxRecDepth 2000
+set_option backward.isDefEq.respectTransparency false
+
 namespace Poincare.FrozenEllipticHeatOperator
 
 open Set ParabolicHolder
@@ -85,6 +90,15 @@ theorem norm_forcing_pullback_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
   simpa only [ContinuousLinearMap.norm_id, one_mul] using
     norm_mapHolder_le hα S (ContinuousLinearMap.id ℝ ℝ) f
 
+local instance instCovectorNormedGroup : NormedAddCommGroup (E →L[ℝ] ℝ) := inferInstance
+
+local instance instCovectorNormedSpace : NormedSpace ℝ (E →L[ℝ] ℝ) := inferInstance
+
+local instance instBilinNormedGroup : NormedAddCommGroup Bilin := inferInstance
+
+local instance instBilinNormedSpace : NormedSpace ℝ Bilin :=
+  { norm_smul_le := norm_real_smul_continuousLinearMap_two_le }
+
 def covectorPullback (S : E →L[ℝ] E) : (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) :=
   (ContinuousLinearMap.compL ℝ E E ℝ).flip S
 
@@ -96,5 +110,20 @@ theorem norm_covectorPullback_le (S : E →L[ℝ] E) : ‖covectorPullback S‖ 
 def bilinearPullback (S : E →L[ℝ] E) : Bilin →L[ℝ] Bilin :=
   ((ContinuousLinearMap.compL ℝ E E (E →L[ℝ] ℝ)).flip S).comp
     ((ContinuousLinearMap.compL ℝ E (E →L[ℝ] ℝ) (E →L[ℝ] ℝ)) (covectorPullback S))
+
+theorem norm_bilinearPullback_le (S : E →L[ℝ] E) :
+    ‖bilinearPullback S‖ ≤ ‖S‖ ^ 2 := by
+  apply ContinuousLinearMap.opNorm_le_bound _ (sq_nonneg ‖S‖)
+  intro B
+  change ‖((covectorPullback S).comp B).comp S‖ ≤ _
+  calc
+    ‖((covectorPullback S).comp B).comp S‖ ≤ ‖(covectorPullback S).comp B‖ * ‖S‖ :=
+      ContinuousLinearMap.opNorm_comp_le _ _
+    _ ≤ (‖covectorPullback S‖ * ‖B‖) * ‖S‖ :=
+      mul_le_mul_of_nonneg_right (ContinuousLinearMap.opNorm_comp_le _ _) (norm_nonneg S)
+    _ ≤ (‖S‖ * ‖B‖) * ‖S‖ :=
+      mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right (norm_covectorPullback_le S) (norm_nonneg B)) (norm_nonneg S)
+    _ = _ := by ring
 
 end Poincare.FrozenEllipticHeatOperator
