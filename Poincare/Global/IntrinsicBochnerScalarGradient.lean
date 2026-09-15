@@ -873,4 +873,55 @@ theorem scalarRegularity_of_metricEntries_five
     laplacianAt_mdifferentiableAt_of_contMDiff_three (gt t) _
       (scalar_contMDiff_three_of_metricEntries_five hJoint5 t) x⟩
 
+/-- The scalar-gradient evolution equation after the Ricci terms cancel. -/
+def SatisfiesScalarGradientEvolutionAt
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M) (t : ℝ) (x : M) : Prop :=
+    let g := gt t
+    let R : M → ℝ := fun y ↦ g.scalarAt y
+    HasDerivAt (fun s ↦ (gt s).scalarGradNormSqAt x)
+      (g.laplacianAt (fun y ↦ g.scalarGradNormSqAt y) x -
+        ((2 : ℕ) : ℝ) * (∑ i, g.inner x
+          (g.leviCivita (g.gradient R) x ((Module.finBasis ℝ (ClosedSmoothModel 3)) i))
+          (g.leviCivita (g.gradient R) x
+            (metricDualVectorAt g x ((Module.finBasis ℝ (ClosedSmoothModel 3)).coord i)))) +
+        ((4 : ℕ) : ℝ) * g.inner x (g.gradientAt R x) (g.gradientAt (fun y ↦ g.ricciNormSqAt y) x) -
+        ((2 : ℕ) : ℝ) * meanScalar g * g.scalarGradNormSqAt x) t
+
+variable [SecondCountableTopology M]
+
+/-- Assemble the evolution equation from intrinsic Bochner and the time
+variation theorem. The remaining scalar regularity requirements are explicit. -/
+theorem satisfiesScalarGradientEvolutionAt_of_normalizedFlow_of_scalarRegularity
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (hJoint : ∀ s y, MetricEntriesJointContDiffAt gt s y 3)
+    (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t y)
+    (hScalarJoint : ContDiffAt ℝ 2
+      (fun p : ℝ × ClosedSmoothModel 3 ↦
+        (gt p.1).scalarAt ((extChartAt (closedSmoothModelWithCorners 3) x).symm p.2))
+      (t, extChartAt (closedSmoothModelWithCorners 3) x x))
+    (hScalarThree : ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 3
+      (fun y ↦ (gt t).scalarAt y)) :
+    SatisfiesScalarGradientEvolutionAt gt t x := by
+  have hd := ScalarGradientEvolution.hasDerivAt_scalarGradNormSq_normalizedFlow
+    hJoint hFlow hScalarJoint
+    (laplacianAt_mdifferentiableAt_of_contMDiff_three (gt t) _ hScalarThree x)
+  have hb := bochner (gt t) (fun y ↦ (gt t).scalarAt y) hScalarThree x
+  change (gt t).laplacianAt (fun y ↦ (gt t).scalarGradNormSqAt y) x = _ at hb
+  apply hd.congr_deriv
+  dsimp only [SatisfiesScalarGradientEvolutionAt]
+  rw [hb]
+  ring
+
+/-- Normalized flow and fifth-order joint metric entries give the intrinsic
+scalar-gradient evolution equation, with no extra scalar hypotheses. -/
+theorem satisfiesScalarGradientEvolutionAt_of_normalizedFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+    (hJoint5 : ∀ s y, MetricEntriesJointContDiffAt gt s y 5)
+    (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t y) :
+    SatisfiesScalarGradientEvolutionAt gt t x :=
+  satisfiesScalarGradientEvolutionAt_of_normalizedFlow_of_scalarRegularity
+    (fun s y ↦ (hJoint5 s y).of_le (by norm_num)) hFlow
+    (scalarRegularity_of_metricEntries_five hJoint5 t x).1
+    (scalar_contMDiff_three_of_metricEntries_five hJoint5 t)
+
 end Poincare.IntrinsicBochnerScalarGradient
