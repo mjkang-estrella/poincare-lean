@@ -38,3 +38,24 @@ theorem Graph.ext_of_u {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   rfl
 
 end Poincare.ParabolicSolutionGraph
+
+namespace Poincare.DuhamelSolutionOperatorCLM
+
+local notation "E" => ClosedSmoothModel 3
+
+open ParabolicHolder DuhamelSolutionOperatorBound
+
+/-- A short-time bound depending only on the exponent. -/
+def boundConstant (α : ℝ) (hα : 0 < α) (hα1 : α < 1) : ℝ :=
+  Classical.choose (exists_solution_graph_bound α hα hα1)
+
+/-- The chosen constant retains the complete landed existence estimate. -/
+theorem boundConstant_spec (α : ℝ) (hα : 0 < α) (hα1 : α < 1) :
+    0 < boundConstant α hα hα1 ∧ ∀ T : ℝ, ∀ hT : 0 < T, ∀ hT1 : T ≤ 1,
+    ∀ f : Y («E» := E) α T ℝ, ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
+      (∀ p ∈ cylinder T, G.u p =
+        ∫ s in (0 : ℝ)..p.1, heatSolution (p.1-s) (fun y => f (s,y)) p.2) ∧
+      ‖G‖ ≤ boundConstant α hα hα1 * ‖f‖ :=
+  Classical.choose_spec (exists_solution_graph_bound α hα hα1)
+
+end Poincare.DuhamelSolutionOperatorCLM
