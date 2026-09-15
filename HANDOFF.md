@@ -1,5 +1,29 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker buffered frozen parabolic solver: extension and chart solver proved
+
+Branch `worker/buffered-frozen-parabolic-solver`, base `555d8724`, verified proof
+head `118bd164`. The new `Global/BufferedFrozenParabolicSolver.lean` proves
+compactly supported oscillation extensions with time-uniform Hölder bounds,
+small-radius control for genuine inverse metric entries, compact atlas cutoffs,
+and bounded frozen and near-frozen chart solvers with the genuine equation on
+the cutoff one-locus. Items 1 and 2 are committed as `4cde61a0` and `890859f6`.
+
+Item 3 remains blocked. With b=ψ(a−A₀), the required cancellation on supp ψ is
+false: a−A₀−b=(1−ψ)(a−A₀). Commit `118bd164` proves the actual cutoff-product
+identity including this transition error. The requested norm estimate remains
+unproved; the frozen contract was not changed. The survey's separate coefficient
+cutoff ξ=1 on supp ψ is the proposed next contract correction.
+
+Focused compilation, module build, literal survey target adapters, empty token
+scan, and whitespace checks pass. All 64 emitted declarations have exactly the
+three required foundational dependencies. Actual outputs, failed probes, and the
+proof diff are in `harness/reports/buffered-frozen-parabolic-solver_blocked.md`.
+This worker result awaits independent review and has not been merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/BufferedFrozenParabolicSolver.lean`.
+Then review the two-cutoff contract before attempting the single-chart norm bound.
+
 ## 2026-09-15 Worker finite-atlas parabolic tensor carriers proved
 
 Branch `worker/finite-atlas-parabolic-tensor-space`, base `e65eaa7b`,
