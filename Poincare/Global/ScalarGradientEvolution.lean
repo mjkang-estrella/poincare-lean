@@ -213,6 +213,43 @@ theorem coordRicci_anchorBlendedMetric
   exact congrArg ((Module.finBasis ℝ E₃).coord i)
     (hcurv ((Module.finBasis ℝ E₃) i) v w)
 
+omit [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
+  [MeasurableSpace N] [BorelSpace N] in
+/-- Bochner's formula for the actual blended metric, with its curvature
+term identified with the intrinsic Ricci tensor at the anchor. -/
+theorem bochner_anchorBlendedMetric
+    (g : ClosedSmoothRiemannianMetric 3 N) (x : N)
+    (f : E₃ → ℝ) (hf : ContDiff ℝ 3 f) :
+    let G := anchorBlendedMetricFlow (fun _ ↦ g) x 0
+    let hsymm := CovariantDerivative.blendedChartMetric_symm
+      (GeodesicTransport.cutoff (n := 3) x) GeodesicTransport.backgroundMetric
+      GeodesicTransport.backgroundMetric_symm g.inner
+      (fun y a b ↦ g.inner_symm y a b) x
+    let hb := fun z ↦ RicciFlow.RicciFlow.metricBilin_nondeg (hsymm z)
+      (anchorBlendedMetricFlow_isInvertible (fun _ ↦ g) x 0 z)
+    let Δ := CovariantDerivative.curvedLaplacian G
+      (fun z ↦ RicciFlow.RicciFlow.metricBilin (G z)) hb
+    let q := extChartAt I₃ x x
+    Δ (RicciFlow.RicciFlow.coordGradNormSq G f) q =
+      2 * RicciFlow.RicciFlow.coordCovariantHessNormSq G f q +
+      2 * G q (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q)
+        (RicciFlow.RicciFlow.coordGradient («E» := E₃) G (Δ f) q) +
+      2 * g.ricciAt x (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q)
+        (RicciFlow.RicciFlow.coordGradient («E» := E₃) G f q) := by
+  intro G hsymm hb Δ q
+  have hGtop : ContDiff ℝ ∞ G :=
+    CovariantDerivative.contDiff_blendedChartMetric
+      (GeodesicTransport.cutoff (n := 3) x) GeodesicTransport.backgroundMetric
+      g.inner x (by simp) (GeodesicTransport.cutoff_contDiff x)
+      (GeodesicTransport.cutoff_tsupport x) g.contMDiff_inner
+  have hG : ContDiff ℝ 3 G := hGtop.of_le (WithTop.coe_le_coe.mpr le_top)
+  have h := RicciFlow.RicciFlow.curvedLaplacian_coordGradNormSq_bochner_gradient_unconditional
+    G (x := q) hG hsymm (anchorBlendedMetricFlow_isInvertible (fun _ ↦ g) x 0) hf
+  rw [coordRicci_anchorBlendedMetric g x] at h
+  change Δ (RicciFlow.RicciFlow.coordGradNormSq G f) q = _ at h
+  rw [h]
+  ring
+
 end Normalized
 
 end Poincare.ScalarGradientEvolution
