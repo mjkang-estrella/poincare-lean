@@ -1,5 +1,30 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker buffered frozen nested cutoffs proved
+
+Branch `worker/buffered-frozen-nested-cutoff`, base `330ec679`, verified proof
+head `de7bbe43`. The existing `Global/BufferedFrozenParabolicSolver.lean` now
+contains the nested cutoff construction, exact principal-error cancellation,
+time-uniform commutator carriers and cutoff graph bounds, and the uniform
+single-chart estimate. All 506 original lines are unchanged.
+
+`Poincare.BufferedFrozenParabolicSolver.single_chart_error` identifies the
+Hölder residual with the genuine chart operator and proves both requested
+norm bounds. `Poincare.BufferedFrozenParabolicSolver.exists_single_chart_parametrix`
+constructs the near-frozen inverse and a positive time interval from the actual
+coefficient-extension smallness conditions. Oscillation is only an existence
+condition; the single-chart error contains the two commutator time powers.
+The finite-atlas assembly estimates remain separate work.
+
+Focused compilation, the module build, empty token scan, and whitespace checks
+pass. All 101 emitted declarations, including the 37 new ones, have exactly
+the three required foundational dependencies. Actual diagnostics, final gate
+outputs, the complete module audit program, and the appended proof diff are in
+`harness/reports/buffered-frozen-nested-cutoff_done.md`.
+This worker result awaits independent review and has not been merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/BufferedFrozenParabolicSolver.lean`.
+
 ## 2026-09-15 Worker intrinsic Bochner and scalar-gradient evolution proved
 
 Branch `worker/intrinsic-bochner-scalar-gradient`, task base `cdcf6956`,
