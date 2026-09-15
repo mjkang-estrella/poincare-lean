@@ -71,4 +71,27 @@ theorem duhamelGraph_spec (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
     ‖duhamelGraph α T hα hα1 hT hT1 f‖ ≤ boundConstant α hα hα1 * ‖f‖ :=
   Classical.choose_spec ((boundConstant_spec α hα hα1).2 T hT hT1 f)
 
+/-- The Duhamel integral is additive for parabolic Hölder data. -/
+theorem duhamel_integral_add {α T t : ℝ} (hα : 0 < α) (ht : t ∈ Icc 0 T)
+    (f g : Y («E» := E) α T ℝ) (x : E) :
+    (∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => (f+g) (s,y)) x) =
+      (∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x) +
+      ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => g (s,y)) x := by
+  have hc (v : Y («E» := E) α T ℝ) : ContinuousOn v (cylinder T) :=
+    continuousOn_of_hasHolderBound hα (hasHolderBound v)
+  have hi (v : Y («E» := E) α T ℝ) :=
+    HeatDuhamelHessianDifferentiation.intervalIntegrable_heatSolution_time ht (hc v)
+      (fun s _ y => ParabolicHolder.norm_le v (s,y)) x
+  rw [← intervalIntegral.integral_add (hi f) (hi g)]
+  apply intervalIntegral.integral_congr_ae_restrict
+  rw [uIoc_of_le ht.1, ← restrict_Ioo_eq_restrict_Ioc]
+  filter_upwards [ae_restrict_mem measurableSet_Ioo] with s hs
+  have hsT : s ∈ Icc 0 T := ⟨hs.1.le, hs.2.le.trans ht.2⟩
+  have he (v : Y («E» := E) α T ℝ) :=
+    heatKernel_convolutionExistsAt_of_bounded_continuous (sub_pos.mpr hs.2)
+      ((hc v).comp_continuous (continuous_const.prodMk continuous_id)
+        (fun y => ⟨hsT, mem_univ y⟩))
+      (fun y => ParabolicHolder.norm_le v (s,y)) x
+  exact (he f).distrib_add (he g)
+
 end Poincare.DuhamelSolutionOperatorCLM
