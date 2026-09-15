@@ -157,4 +157,195 @@ theorem value_space_increment (G : Graph (E := E) α T) (hT : 0 < T)
     (fun z _ => (G.hasFDeriv t ht z).hasFDerivWithinAt)
     (fun z _ => gradient_bound G hT ht z) convex_univ (mem_univ y) (mem_univ x)
 
+/-- Split a power at a larger positive scale. -/
+theorem power_scale_bound {r R a b : ℝ} (hr : 0 ≤ r) (_hR : 0 < R)
+    (hrR : r ≤ R) (_ha : 0 ≤ a) (hab : a ≤ b) (hb : 0 < b) :
+    r ^ b ≤ R ^ (b - a) * r ^ a := by
+  have he : r ^ b = r ^ (b - a) * r ^ a := by
+    rw [← Real.rpow_add' hr (by linarith : b - a + a ≠ 0)]
+    congr 1
+    ring
+  rw [he]
+  exact mul_le_mul_of_nonneg_right
+    (Real.rpow_le_rpow hr hrR (sub_nonneg.mpr hab)) (Real.rpow_nonneg hr a)
+
+/-- Interpolate a Lipschitz bound and a bound at scale R. -/
+theorem scale_interpolation {a L r R α : ℝ}
+    (hL : 0 ≤ L) (hr : 0 ≤ r) (hR : 0 < R) (hα : 0 ≤ α) (hα1 : α ≤ 1)
+    (hl : a ≤ L * r) (hb : a ≤ L * R) :
+    a ≤ L * R ^ (1 - α) * r ^ α := by
+  by_cases h : r ≤ R
+  · have hp := power_scale_bound hr hR h hα hα1 zero_lt_one
+    rw [Real.rpow_one] at hp
+    exact hl.trans (by nlinarith [mul_le_mul_of_nonneg_left hp hL])
+  · have he : R ^ (1 - α) * R ^ α = R := by
+      rw [← Real.rpow_add hR]
+      convert Real.rpow_one R using 2
+      ring
+    calc
+      a ≤ L * R := hb
+      _ = L * R ^ (1 - α) * R ^ α := by rw [mul_assoc, he]
+      _ ≤ L * R ^ (1 - α) * r ^ α := mul_le_mul_of_nonneg_left
+        (Real.rpow_le_rpow hR.le (le_of_not_ge h) hα) (by positivity)
+
+/-- The parabolic spatial scale is the square root of the time scale. -/
+theorem sqrt_rpow (hT : 0 ≤ T) (p : ℝ) :
+    (Real.sqrt T) ^ p = T ^ (p / 2) := by
+  rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hT]
+  congr 1
+  ring
+
+/-- Spatial Hölder gradient increments carry the desired positive time power. -/
+theorem gradient_space_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x y : E) :
+    ‖G.du (t, x) - G.du (t, y)‖ ≤
+      6 * T ^ ((1 - α) / 2) * ‖G‖ * ‖x - y‖ ^ α := by
+  have h := scale_interpolation (a := ‖G.du (t, x) - G.du (t, y)‖)
+    (L := 6 * ‖G‖) (by positivity)
+    (norm_nonneg (x - y)) (Real.sqrt_pos.mpr hT) hα.le hα1.le
+    ((gradient_space_increment G ht x y).trans (by nlinarith [norm_nonneg G, norm_nonneg (x-y)]))
+    ((norm_sub_le (G.du (t,x)) (G.du (t,y))).trans
+      (by linarith [gradient_bound G hT ht x, gradient_bound G hT ht y]))
+  rw [sqrt_rpow hT.le] at h
+  nlinarith [h]
+
+/-- Spatial Hölder value increments gain one additional half power of time. -/
+theorem value_space_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x y : E) :
+    |G.u (t, x) - G.u (t, y)| ≤
+      3 * T ^ (1 - α / 2) * ‖G‖ * ‖x - y‖ ^ α := by
+  have hu (z : E) : |G.u (t, z)| ≤ T * ‖G‖ :=
+    (time_bound G ht z).trans (mul_le_mul ht.2 (norm_ut_le G) (norm_nonneg _) hT.le)
+  have h := scale_interpolation (a := |G.u (t, x) - G.u (t, y)|)
+    (L := 3 * Real.sqrt T * ‖G‖) (by positivity)
+    (norm_nonneg (x-y)) (Real.sqrt_pos.mpr hT) hα.le hα1.le
+    (value_space_increment G hT ht x y)
+    ((abs_sub _ _).trans (by
+      have hs := congrArg (fun z : ℝ => z * ‖G‖) (Real.sq_sqrt hT.le)
+      nlinarith [hu x, hu y, mul_nonneg hT.le (norm_nonneg G)]))
+  have he : Real.sqrt T * (Real.sqrt T) ^ (1 - α) = T ^ (1 - α / 2) := by
+    nth_rw 1 [← Real.rpow_one (Real.sqrt T)]
+    rw [← Real.rpow_add (Real.sqrt_pos.mpr hT)]
+    rw [sqrt_rpow hT.le]
+    congr 1
+    ring
+  calc
+    |G.u (t,x) - G.u (t,y)| ≤ _ := h
+    _ = _ := by rw [show 3 * Real.sqrt T * ‖G‖ * (Real.sqrt T) ^ (1 - α) =
+        3 * (Real.sqrt T * (Real.sqrt T) ^ (1 - α)) * ‖G‖ by ring, he]
+
+/-- The temporal Hölder gradient bound follows from the square-root increment. -/
+theorem gradient_time_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T)
+    {s t : ℝ} (hs : s ∈ Icc 0 T) (ht : t ∈ Icc 0 T) (x : E) :
+    ‖G.du (t, x) - G.du (s, x)‖ ≤
+      3 * T ^ ((1 - α) / 2) * ‖G‖ * |t - s| ^ (α / 2) := by
+  have hδ : |t-s| ≤ T := abs_le.mpr ⟨by linarith [hs.2, ht.1], by linarith [ht.2, hs.1]⟩
+  have hp := power_scale_bound (abs_nonneg (t-s)) hT hδ
+    (show 0 ≤ α / 2 by linarith) (show α / 2 ≤ 1 / 2 by linarith)
+    (show (0 : ℝ) < 1 / 2 by norm_num)
+  rw [show (1 / 2 : ℝ) - α / 2 = (1 - α) / 2 by ring] at hp
+  have hi := gradient_time_increment G hs ht x
+  rw [Real.sqrt_eq_rpow] at hi
+  nlinarith [mul_le_mul_of_nonneg_left hp (show 0 ≤ 3 * ‖G‖ by positivity)]
+
+/-- Time-Lipschitz values have the stronger temporal Hölder gain. -/
+theorem value_time_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T)
+    {s t : ℝ} (hs : s ∈ Icc 0 T) (ht : t ∈ Icc 0 T) (x : E) :
+    |G.u (t, x) - G.u (s, x)| ≤
+      T ^ (1 - α / 2) * ‖G‖ * |t - s| ^ (α / 2) := by
+  have hδ : |t-s| ≤ T := abs_le.mpr ⟨by linarith [hs.2, ht.1], by linarith [ht.2, hs.1]⟩
+  have hp := power_scale_bound (abs_nonneg (t-s)) hT hδ
+    (show 0 ≤ α / 2 by linarith) (show α / 2 ≤ 1 by linarith) zero_lt_one
+  rw [Real.rpow_one] at hp
+  exact (value_time_increment G hs ht x).trans (by
+    nlinarith [mul_le_mul_of_nonneg_right hp (norm_nonneg G)])
+
+omit [NormedSpace ℝ E] in
+/-- Split a mixed increment through the point with the first time and second position. -/
+theorem holder_of_increments {F : Type*} [NormedAddCommGroup F]
+    {f : ℝ × E → F} {Kx Kt : ℝ} (hα : 0 ≤ α) (hx : 0 ≤ Kx) (ht : 0 ≤ Kt)
+    (hspace : ∀ t ∈ Icc 0 T, ∀ x y,
+      ‖f (t,x) - f (t,y)‖ ≤ Kx * ‖x-y‖ ^ α)
+    (htime : ∀ s ∈ Icc 0 T, ∀ t ∈ Icc 0 T, ∀ x,
+      ‖f (t,x) - f (s,x)‖ ≤ Kt * |t-s| ^ (α/2)) :
+    HasHolderBound α (cylinder T) f (Kx + Kt) := by
+  intro p hp q hq
+  have hxpow : ‖p.2-q.2‖ ^ α ≤ parabolicDist p q ^ α :=
+    Real.rpow_le_rpow (norm_nonneg _) (by
+      dsimp [parabolicDist]; linarith [Real.sqrt_nonneg |p.1-q.1|]) hα
+  have htpow : |p.1-q.1| ^ (α/2) ≤ parabolicDist p q ^ α := by
+    rw [← sqrt_rpow (abs_nonneg (p.1-q.1)) α]
+    exact Real.rpow_le_rpow (Real.sqrt_nonneg _) (by
+      dsimp [parabolicDist]; linarith [norm_nonneg (p.2-q.2)]) hα
+  calc
+    ‖f p - f q‖ ≤ ‖f p - f (p.1,q.2)‖ + ‖f (p.1,q.2) - f q‖ :=
+      norm_sub_le_norm_sub_add_norm_sub _ _ _
+    _ ≤ Kx * ‖p.2-q.2‖ ^ α + Kt * |p.1-q.1| ^ (α/2) :=
+      add_le_add (hspace p.1 hp.1 p.2 q.2) (htime q.1 hq.1 p.1 hp.1 q.2)
+    _ ≤ (Kx + Kt) * parabolicDist p q ^ α := by
+      nlinarith [mul_le_mul_of_nonneg_left hxpow hx, mul_le_mul_of_nonneg_left htpow ht]
+
+/-- Full gradient Hölder control, including mixed increments. -/
+theorem gradient_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) :
+    HasHolderBound α (cylinder T) G.du (9 * T ^ ((1 - α) / 2) * ‖G‖) := by
+  have h := holder_of_increments hα.le
+    (show 0 ≤ 6 * T ^ ((1-α)/2) * ‖G‖ by positivity)
+    (show 0 ≤ 3 * T ^ ((1-α)/2) * ‖G‖ by positivity)
+    (fun t ht => gradient_space_holder G hα hα1 hT ht)
+    (fun s hs t ht => gradient_time_holder G hα hα1 hT hs ht)
+  convert h using 1
+  ring
+
+/-- Full value Hölder control with its stronger time power. -/
+theorem value_holder (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) :
+    HasHolderBound α (cylinder T) G.u (4 * T ^ (1 - α / 2) * ‖G‖) := by
+  have h := holder_of_increments (f := G.u) hα.le
+    (show 0 ≤ 3 * T ^ (1-α/2) * ‖G‖ by positivity)
+    (show 0 ≤ T ^ (1-α/2) * ‖G‖ by positivity)
+    (fun t ht x y => by simpa only [Real.norm_eq_abs] using value_space_holder G hα hα1 hT ht x y)
+    (fun s hs t ht x => by simpa only [Real.norm_eq_abs] using value_time_holder G hα hα1 hT hs ht x)
+  convert h using 1
+  ring
+
+/-- The complete lower-derivative norms gain positive powers on short cylinders. -/
+theorem interpolation_bounds (G : Graph (E := E) α T)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) :
+    ‖G.u‖ ≤ 12 * T ^ (1 - α / 2) * ‖G‖ ∧
+    ‖G.du‖ ≤ 12 * T ^ ((1 - α) / 2) * ‖G‖ := by
+  constructor
+  · have h := ParabolicHolder.norm_le_of_bounds G.u
+      (show 0 ≤ T * ‖G‖ by positivity)
+      (show 0 ≤ 4 * T ^ (1-α/2) * ‖G‖ by positivity)
+      (fun p hp => (time_bound G hp.1 p.2).trans
+        (mul_le_mul hp.1.2 (norm_ut_le G) (norm_nonneg _) hT.le))
+      (value_holder G hα hα1 hT)
+    have hp : T ≤ T ^ (1-α/2) := by
+      convert Real.rpow_le_rpow_of_exponent_ge hT hT1 (show 1-α/2 ≤ 1 by linarith) using 1
+      exact (Real.rpow_one T).symm
+    nlinarith [mul_le_mul_of_nonneg_right hp (norm_nonneg G),
+      mul_nonneg (Real.rpow_nonneg hT.le (1-α/2)) (norm_nonneg G)]
+  · have h := ParabolicHolder.norm_le_of_bounds G.du
+      (show 0 ≤ 3 * Real.sqrt T * ‖G‖ by positivity)
+      (show 0 ≤ 9 * T ^ ((1-α)/2) * ‖G‖ by positivity)
+      (fun p hp => gradient_bound G hT hp.1 p.2)
+      (gradient_holder G hα hα1 hT)
+    have hp : Real.sqrt T ≤ T ^ ((1-α)/2) := by
+      rw [Real.sqrt_eq_rpow]
+      exact Real.rpow_le_rpow_of_exponent_ge hT hT1 (by linarith)
+    nlinarith [mul_le_mul_of_nonneg_right hp (norm_nonneg G)]
+
+/-- A universal constant satisfies the frozen interpolation target. -/
+theorem interpolation : ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 → ∀ G : Graph (E := E) α T,
+      ‖G.u‖ ≤ C * T ^ (1 - α / 2) * ‖G‖ ∧
+      ‖G.du‖ ≤ C * T ^ ((1 - α) / 2) * ‖G‖ := by
+  intro α hα hα1
+  exact ⟨12, by norm_num, fun T hT hT1 G => interpolation_bounds G hα hα1 hT hT1⟩
+
 end Poincare.ParabolicCutoffCommutator
