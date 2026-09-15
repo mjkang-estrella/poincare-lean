@@ -308,4 +308,35 @@ theorem exists_posDef_matrix_sqrt (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.PosDe
         ((CFC.isUnit_sqrt_iff M hM.posSemidef.nonneg).mpr hM.isUnit)
     · simpa only [pow_two] using CFC.sq_sqrt M hM.posSemidef.nonneg
 
+theorem factor_norm_bounds (A : Bilin) (S : E ≃L[ℝ] E) {«λ» Λ : ℝ}
+    (hLowerPos : 0 < «λ») (hLowerUpper : «λ» ≤ Λ)
+    (hA : ∀ v : E, A v v = inner ℝ (S v) (S v))
+    (hlo : ∀ v : E, «λ» * ‖v‖ ^ 2 ≤ A v v)
+    (hhi : ∀ v : E, A v v ≤ Λ * ‖v‖ ^ 2) :
+    ‖(S : E →L[ℝ] E)‖ ≤ Real.sqrt Λ ∧
+      ‖(S.symm : E →L[ℝ] E)‖ ≤ 1 / Real.sqrt «λ» := by
+  constructor
+  · apply ContinuousLinearMap.opNorm_le_bound _ (Real.sqrt_nonneg Λ)
+    intro v
+    have hv := hhi v
+    rw [hA, real_inner_self_eq_norm_sq] at hv
+    have heq : (Real.sqrt Λ * ‖v‖) ^ 2 = Λ * ‖v‖ ^ 2 := by
+      rw [mul_pow, Real.sq_sqrt (hLowerPos.le.trans hLowerUpper)]
+    have hnonneg := mul_nonneg (Real.sqrt_nonneg Λ) (norm_nonneg v)
+    change ‖S v‖ ≤ _
+    nlinarith only [hv, heq, hnonneg, norm_nonneg (S v)]
+  · apply ContinuousLinearMap.opNorm_le_bound _ (by positivity)
+    intro v
+    have hv := hlo (S.symm v)
+    rw [hA, S.apply_symm_apply, real_inner_self_eq_norm_sq] at hv
+    have heq : (Real.sqrt «λ» * ‖S.symm v‖) ^ 2 = «λ» * ‖S.symm v‖ ^ 2 := by
+      rw [mul_pow, Real.sq_sqrt hLowerPos.le]
+    have hs : Real.sqrt «λ» * ‖S.symm v‖ ≤ ‖v‖ := by
+      nlinarith only [hv, heq, norm_nonneg v]
+    change ‖S.symm v‖ ≤ _
+    calc
+      ‖S.symm v‖ ≤ ‖v‖ / Real.sqrt «λ» :=
+        (le_div_iff₀ (Real.sqrt_pos.mpr hLowerPos)).mpr (by nlinarith only [hs])
+      _ = _ := by ring
+
 end Poincare.FrozenEllipticHeatOperator
