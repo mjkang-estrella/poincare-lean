@@ -250,3 +250,184 @@ theorem exists_atlas_cutoff (A : FiniteAtlasParabolicTensorSpace.AtlasData M)
     (FiniteAtlasParabolicTensorSpace.coordSupport_subset_target A i)
 
 end Poincare.BufferedFrozenParabolicSolver
+
+noncomputable section
+open Set
+open scoped Manifold ContDiff Topology
+namespace Poincare.BufferedFrozenParabolicSolver
+open ParabolicHolder ParabolicSolutionGraph
+
+/-- The matrix coefficients act in the actual Euclidean host frame. -/
+def matrixBilin (A : Matrix (Fin 3) (Fin 3) ℝ) : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ) :=
+  ((innerSL ℝ).comp (Matrix.toEuclideanLin A).toContinuousLinearMap).flip
+
+theorem matrixBilin_pairing (A : Matrix (Fin 3) (Fin 3) ℝ) (v w : (ClosedSmoothModel 3)) :
+    matrixBilin A v w = star (WithLp.ofLp v) ⬝ᵥ A.mulVec (WithLp.ofLp w) := by
+  change inner ℝ (Matrix.toEuclideanLin A w) v = _
+  rw [real_inner_comm]
+  simp [PiLp.inner_apply, Matrix.toLpLin_apply, dotProduct, RCLike.inner_apply, mul_comm]
+
+theorem matrixBilin_entry (A : Matrix (Fin 3) (Fin 3) ℝ) (i j : Fin 3) :
+    matrixBilin A ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j) = A i j := by
+  rw [matrixBilin_pairing]
+  simp [EuclideanSpace.basisFun_apply, Matrix.mulVec, dotProduct, Pi.single_apply]
+
+theorem matrixBilin_symm {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.IsHermitian)
+    (v w : (ClosedSmoothModel 3)) : matrixBilin A v w = matrixBilin A w v := by
+  rw [FrozenEllipticHeatOperator.bilinear_expansion (matrixBilin A) v w,
+    FrozenEllipticHeatOperator.bilinear_expansion (matrixBilin A) w v]
+  simp_rw [matrixBilin_entry]
+  rw [Finset.sum_comm]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro j _
+  have hij : A j i = A i j := by simpa using congrFun (congrFun hA i) j
+  rw [hij]
+  ring
+
+theorem matrixBilin_pos {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.PosDef)
+    (v : (ClosedSmoothModel 3)) (hv : v ≠ 0) : 0 < matrixBilin A v v := by
+  rw [matrixBilin_pairing]
+  apply hA.dotProduct_mulVec_pos
+  intro h
+  apply hv
+  exact WithLp.ofLp_injective 2 h
+
+theorem matrixBilin_ellipticity {A : Matrix (Fin 3) (Fin 3) ℝ} (hA : A.PosDef) :
+    ∃ lam Λ : ℝ, 0 < lam ∧ lam ≤ Λ ∧
+      (∀ v, lam * ‖v‖^2 ≤ matrixBilin A v v) ∧
+      (∀ v, matrixBilin A v v ≤ Λ * ‖v‖^2) := by
+  obtain ⟨lam, hlam, hlo⟩ := CompactCoefficientEllipticity.exists_uniform_coercivity
+    (fun _ : Unit => matrixBilin A) continuous_const (fun _ => matrixBilin_pos hA)
+  refine ⟨lam, max lam ‖matrixBilin A‖, hlam, le_max_left _ _, hlo (), ?_⟩
+  intro v
+  calc
+    _ ≤ ‖matrixBilin A v v‖ := le_abs_self _
+    _ ≤ ‖matrixBilin A‖ * ‖v‖ * ‖v‖ := (matrixBilin A).le_opNorm₂ v v
+    _ ≤ max lam ‖matrixBilin A‖ * ‖v‖^2 := by
+      nlinarith [mul_le_mul_of_nonneg_right (le_max_right lam ‖matrixBilin A‖) (sq_nonneg ‖v‖)]
+
+
+
+/-- A bounded frozen inverse with its equation on the closed cylinder. -/
+structure FrozenSolver (α T C_S : ℝ) (A0 : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)) where
+  S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T
+  bound : ‖S‖ ≤ C_S
+  solves : ∀ f t, t ∈ Icc 0 T → ∀ x,
+    (S f).ut (t,x) = f (t,x) + ∑ i : Fin 3, ∑ j : Fin 3,
+      A0 ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j) * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)
+
+/-- The landed conjugated heat inverse supplies the survey's frozen interface. -/
+theorem frozenCLMGoal :
+    ∀ α : ℝ, 0 < α → α < 1 → ∀ lam Λ : ℝ, 0 < lam → lam ≤ Λ →
+    ∃ C_S : ℝ, 0 < C_S ∧ ∀ A0 : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ), (∀ v w, A0 v w = A0 w v) →
+    (∀ v, lam * ‖v‖^2 ≤ A0 v v) → (∀ v, A0 v v ≤ Λ * ‖v‖^2) →
+    ∀ T : ℝ, 0 < T → T ≤ 1 → Nonempty (FrozenSolver α T C_S A0) := by
+  intro α hα hα1 lam Λ hlam hlamΛ
+  obtain ⟨D, hD, hP⟩ := NearFrozenParabolicRightInverse.exists_frozen_operator_bound
+    α hα hα1 lam Λ hlam hlamΛ
+  refine ⟨D, hD, ?_⟩
+  intro A0 hsym hlo hhi T hT hT1
+  obtain ⟨P, hsolves, hbound⟩ := hP A0 hsym hlo hhi T hT hT1
+  exact ⟨⟨P, hbound, hsolves⟩⟩
+
+/-- The frozen solver and the constructed entry bounds give the exact multiplier estimate. -/
+theorem frozenErrorGoal {α T C_S ε Λ : ℝ} {A0 : (ClosedSmoothModel 3 →L[ℝ] ClosedSmoothModel 3 →L[ℝ] ℝ)}
+    (S : FrozenSolver α T C_S A0) (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (hα : 0 < α) (hT : 0 < T)
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ) :
+    ∀ f, ‖ParabolicHolderMultiplier.forcing b (S.S f)‖ ≤
+      9 * C_S * (ε + Λ * T ^ (α / 2)) * ‖f‖ := by
+  exact ParabolicHolderMultiplier.norm_error_le b S.S hα hT hb hbα S.bound
+
+/-- Near-frozen inversion yields the genuine coordinate equation on the cutoff one-locus. -/
+theorem exists_chart_operator :
+    ∀ α : ℝ, 0 < α → α < 1 → ∀ lam Λell : ℝ, 0 < lam → lam ≤ Λell →
+    ∃ C ε₀ τ₀ : ℝ, 0 < C ∧ 0 < ε₀ ∧ 0 < τ₀ ∧
+    ∀ (a : (ClosedSmoothModel 3) → Matrix (Fin 3) (Fin 3) ℝ) (anchor : (ClosedSmoothModel 3)) (ξ : (ClosedSmoothModel 3) → ℝ),
+      (a anchor).IsHermitian →
+      (∀ v, lam * ‖v‖^2 ≤ matrixBilin (a anchor) v v) →
+      (∀ v, matrixBilin (a anchor) v v ≤ Λell * ‖v‖^2) →
+    ∀ T : ℝ, 0 < T → T ≤ τ₀ →
+    ∀ (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ) (Λb : ℝ),
+      (∀ i j, supNorm (cylinder T) (b i j) ≤ ε₀) →
+      (∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λb) →
+      Λb * T ^ (α / 2) ≤ ε₀ →
+      (∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ξ x * (a x i j - a anchor i j)) →
+      ∃ S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T,
+        ‖S‖ ≤ C ∧
+        (∀ f t, t ∈ Icc 0 T → ∀ x,
+          (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+            (a anchor i j + b i j (t,x)) * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) ∧
+        (∀ f t, t ∈ Icc 0 T → ∀ x, ξ x = 1 →
+          (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+            a x i j * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) := by
+  intro α hα hα1 lam Λell hlam hlamΛ
+  obtain ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, hS⟩ :=
+    NearFrozenParabolicRightInverse.exists_nearFrozen_operator α hα hα1 lam Λell hlam hlamΛ
+  refine ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, ?_⟩
+  intro a anchor ξ hsym hlo hhi T hT hTτ b Λb hb hbα hΛb heq
+  obtain ⟨S, hsolves, hbound⟩ := hS (matrixBilin (a anchor))
+    (matrixBilin_symm hsym) hlo hhi T hT hTτ b Λb hb hbα hΛb
+  simp_rw [matrixBilin_entry] at hsolves
+  refine ⟨S, hbound, hsolves, ?_⟩
+  intro f t ht x hx
+  simpa only [heq t ht x, hx, one_mul, add_sub_cancel] using hsolves f t ht x
+
+universe u
+variable {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M]
+  [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+  [ChartedSpace (ClosedSmoothModel 3) M] [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+
+/-- Positivity of the genuine inverse matrix supplies the frozen ellipticity parameters. -/
+theorem inverse_metric_ellipticity (g : ClosedSmoothRiemannianMetric 3 M)
+    (p : M) (anchor : (ClosedSmoothModel 3))
+    (hanchor : anchor ∈ (extChartAt (closedSmoothModelWithCorners 3) p).target) :
+    let A := (inverseChartPullbackGramMatrixField g p anchor)⁻¹
+    A.IsHermitian ∧ ∃ lam Λ : ℝ, 0 < lam ∧ lam ≤ Λ ∧
+      (∀ v, lam * ‖v‖^2 ≤ matrixBilin A v v) ∧
+      (∀ v, matrixBilin A v v ≤ Λ * ‖v‖^2) := by
+  have hpos := inverseChartPullbackGramMatrix_posDef g p ⟨anchor, hanchor⟩
+  rw [inverseChartPullbackGramMatrix_eq_field] at hpos
+  exact ⟨hpos.inv.isHermitian, matrixBilin_ellipticity hpos.inv⟩
+
+
+
+/-- Smooth genuine inverse entries and the frozen solver assemble on a buffered chart. -/
+theorem exists_inverse_metric_chart_operator
+    (g : ClosedSmoothRiemannianMetric 3 M) (p : M) (anchor : (ClosedSmoothModel 3))
+    (hanchor : anchor ∈ (extChartAt (closedSmoothModelWithCorners 3) p).target)
+    {α : ℝ} (hα : 0 < α) (hα1 : α < 1) :
+    ∃ C ε₀ τ₀ : ℝ, 0 < C ∧ 0 < ε₀ ∧ 0 < τ₀ ∧
+    ∀ ξ : (ClosedSmoothModel 3) → ℝ, ContDiff ℝ ∞ ξ → HasCompactSupport ξ →
+      tsupport ξ ⊆ (extChartAt (closedSmoothModelWithCorners 3) p).target →
+      (∀ x, ξ x ∈ Icc 0 1) →
+      (∀ x ∈ tsupport ξ, ∀ i j,
+        |(inverseChartPullbackGramMatrixField g p x)⁻¹ i j -
+          (inverseChartPullbackGramMatrixField g p anchor)⁻¹ i j| ≤ ε₀) →
+      ∃ Λb : ℝ, 0 ≤ Λb ∧ ∀ T : ℝ, 0 < T → T ≤ 1 → T ≤ τ₀ →
+        Λb * T ^ (α / 2) ≤ ε₀ →
+        ∃ S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T,
+          ‖S‖ ≤ C ∧ ∀ f t, t ∈ Icc 0 T → ∀ x, ξ x = 1 →
+            (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+              (inverseChartPullbackGramMatrixField g p x)⁻¹ i j *
+                (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j) := by
+  obtain ⟨hsym, lam, Λell, hlam, hlamΛ, hlo, hhi⟩ :=
+    inverse_metric_ellipticity g p anchor hanchor
+  obtain ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, hS⟩ :=
+    exists_chart_operator α hα hα1 lam Λell hlam hlamΛ
+  refine ⟨C, ε₀, τ₀, hC, hε₀, hτ₀, ?_⟩
+  intro ξ hξ hc hξU hξ01 hosc
+  obtain ⟨Λb, hΛb, hb⟩ := inverse_metric_oscillation_extension g p hα hα1
+    anchor hξ hc hξU hξ01 hε₀.le hosc
+  refine ⟨Λb, hΛb, ?_⟩
+  intro T hT _ hTτ hsmall
+  obtain ⟨b, heq, hsup, hholder⟩ := hb T
+  obtain ⟨S, hbound, _, hsolves⟩ := hS
+    (fun x => (inverseChartPullbackGramMatrixField g p x)⁻¹) anchor ξ
+    hsym hlo hhi T hT hTτ b Λb hsup hholder hsmall heq
+  exact ⟨S, hbound, hsolves⟩
+
+end Poincare.BufferedFrozenParabolicSolver
