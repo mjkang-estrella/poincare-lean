@@ -142,4 +142,82 @@ theorem norm_mul_split (b h : Y («E» := E) α T ℝ) :
   rw [ParabolicHolder.norm_eq h]
   nlinarith only [hn]
 
+/-- Evaluation commutes with finite sums in the Hölder carrier. -/
+theorem sum_apply {ι : Type*} (s : Finset ι) (f : ι → Y («E» := E) α T ℝ)
+    (p : ℝ × E) : (∑ i ∈ s, f i) p = ∑ i ∈ s, f i p := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp only [Finset.sum_empty]; rfl
+  | @insert a s ha ih => simp only [Finset.sum_insert ha, add_apply, ih]
+
+/-- The nine coefficient-Hessian products, constructed as a supported Hölder function. -/
+def forcing (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ) (G : Graph («E» := E) α T) :
+    Y («E» := E) α T ℝ := by
+  let y : Y («E» := E) α T ℝ := ∑ i, ∑ j,
+    b i j * entry G.ddu (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)
+  have he (p : ℝ × E) : y p = ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j) := by
+    simp only [y, sum_apply, mul_apply, entry_apply]
+  exact ofFunction (fun p => ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j))
+    (fun p hp => by dsimp only; rw [← he p]; exact zero_off y hp)
+    ⟨‖y‖, fun p _ => by dsimp only; rw [← he p]; exact ParabolicHolder.norm_le y p⟩
+    ⟨‖y‖, fun p hp q hq => by
+      dsimp only
+      rw [← he p, ← he q]
+      exact ParabolicHolder.holder_le y hp hq⟩
+
+@[simp] theorem forcing_apply (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) (p : ℝ × E) :
+    forcing b G p = ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j) := rfl
+
+/-- The function construction agrees with the finite sum in the Hölder space. -/
+theorem forcing_eq_sum (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) :
+    forcing b G = ∑ i, ∑ j,
+      b i j * entry G.ddu (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j) := by
+  apply ParabolicHolder.ext
+  intro p _
+  simp only [forcing_apply, sum_apply, mul_apply, entry_apply]
+
+/-- A coefficient times one Hessian entry has the split short-cylinder bound. -/
+theorem norm_mul_ddu_entry_le (b : Y («E» := E) α T ℝ) (G : Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ : ℝ}
+    (hb : supNorm (cylinder T) b ≤ ε)
+    (hbα : holderSeminorm α (cylinder T) b ≤ Λ)
+    (v w : E) (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    ‖b * entry G.ddu v w hv hw‖ ≤ ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖ := by
+  have hε : 0 ≤ ε := (supNorm_nonneg b).trans hb
+  have hΛ : 0 ≤ Λ := (holderSeminorm_nonneg b).trans hbα
+  have hn := (norm_entry_le G.ddu v w hv hw).trans (norm_ddu_le G)
+  have hs := (supNorm_entry_le G.ddu v w hv hw).trans (supNorm_ddu_le G hα hT)
+  calc
+    ‖b * entry G.ddu v w hv hw‖ ≤
+        supNorm (cylinder T) b * ‖entry G.ddu v w hv hw‖ +
+          holderSeminorm α (cylinder T) b * supNorm (cylinder T) (entry G.ddu v w hv hw) :=
+      norm_mul_split b _
+    _ ≤ ε * ‖G‖ + Λ * (T ^ (α / 2) * ‖G‖) :=
+      add_le_add (mul_le_mul hb hn (norm_nonneg _) hε)
+        (mul_le_mul hbα hs (supNorm_nonneg _) hΛ)
+    _ = _ := by ring
+
+/-- Summing the nine entries gives the frozen-coefficient multiplier estimate. -/
+theorem norm_forcing_le (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) (hα : 0 < α) (hT : 0 < T) {ε Λ : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ) :
+    ‖forcing b G‖ ≤ 9 * (ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖) := by
+  rw [forcing_eq_sum]
+  calc
+    _ ≤ ∑ i, ‖∑ j, b i j * entry G.ddu (e i) (e j)
+        (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)‖ := norm_sum_le _ _
+    _ ≤ ∑ i : Fin 3, ∑ j : Fin 3,
+        (ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖) := by
+      apply Finset.sum_le_sum
+      intro i _
+      apply (norm_sum_le _ _).trans
+      apply Finset.sum_le_sum
+      intro j _
+      exact norm_mul_ddu_entry_le (b i j) G hα hT (hb i j) (hbα i j)
+        (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)
+    _ = _ := by simp; ring
+
 end Poincare.ParabolicHolderMultiplier
