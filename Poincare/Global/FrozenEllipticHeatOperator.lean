@@ -339,4 +339,22 @@ theorem factor_norm_bounds (A : Bilin) (S : E ≃L[ℝ] E) {«λ» Λ : ℝ}
         (le_div_iff₀ (Real.sqrt_pos.mpr hLowerPos)).mpr (by nlinarith only [hs])
       _ = _ := by ring
 
+theorem bilinear_expansion (A : Bilin) (v w : E) :
+    A v w = ∑ i : Fin 3, ∑ j : Fin 3, v i * w j * A (e i) (e j) := by
+  have hv : (∑ i : Fin 3, v i • e i) = v :=
+    (EuclideanSpace.basisFun (Fin 3) ℝ).sum_repr v
+  have hw : (∑ j : Fin 3, w j • e j) = w :=
+    (EuclideanSpace.basisFun (Fin 3) ℝ).sum_repr w
+  calc
+    A v w = A (∑ i : Fin 3, v i • e i) (∑ j : Fin 3, w j • e j) := by rw [hv, hw]
+    _ = _ := by
+      simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]
+      conv_lhs => rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      ring
+
 end Poincare.FrozenEllipticHeatOperator
