@@ -355,3 +355,33 @@ theorem reweighted_transport_ne_entry (f : ↥(tensorSubmodule A ev))
   exact (ne_of_lt (sum_partition_sq_lt_one A x j hpos hlt)) hsum
 
 end Poincare.FiniteAtlasParabolicTensorSpace
+
+namespace Poincare.FiniteAtlasParabolicTensorSpace
+
+universe u
+variable {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) ∞ M]
+  (A : AtlasData M)
+  {H : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]
+  (ev : ℝ × Poincare.ClosedSmoothModel 3 → H →L[ℝ] ℝ)
+
+/-- An ordinary unweighted transition is incompatible with unequal partition weights at a nonzero entry. -/
+theorem unweighted_transport_not_mem (f : LocalProduct A H)
+    (i j : Fin A.cover.chartCount) (a b : Fin 3) (t : ℝ) (x : M)
+    (hx : x ∈ (chart A i).source ∩ (chart A j).source)
+    (hraw : ev (t, chart A i x) (f (i, a, b)) =
+      ∑ c : Fin 3, ∑ d : Fin 3, (jac A i j x c a * jac A i j x d b) *
+        ev (t, chart A j x) (f (j, c, d)))
+    (hweight : A.partition i x ≠ A.partition j x)
+    (hne : ev (t, chart A i x) (f (i, a, b)) ≠ 0) :
+    f ∉ tensorSubmodule A ev := by
+  intro hf
+  have hw := weighted_transition A ev ⟨f, hf⟩ i j a b t x hx
+  change A.partition j x * ev (t, chart A i x) (f (i, a, b)) =
+    A.partition i x * (∑ c : Fin 3, ∑ d : Fin 3,
+      (jac A i j x c a * jac A i j x d b) *
+        ev (t, chart A j x) (f (j, c, d))) at hw
+  rw [← hraw] at hw
+  exact hweight (mul_right_cancel₀ hne hw).symm
+
+end Poincare.FiniteAtlasParabolicTensorSpace
