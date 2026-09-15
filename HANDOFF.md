@@ -573,6 +573,13 @@ first lemma is the normalized `|∇R|²` evolution identity. The mission node
 should not be treated as a discharge target; the residual survey in flight
 decides the restructuring.
 
+`duhamel-solution-operator-clm` landed (`Global/DuhamelSolutionOperatorCLM.lean`,
+gate PASS, 12 declarations): graphs are determined by their value component
+(`Graph.ext_of_u`, by uniqueness of the Fréchet and interval derivatives),
+the Duhamel construction is linear, and `duhamelOperator : Y α T ℝ →L[ℝ] Graph α T`
+carries the uniform norm bound and satisfies the heat equation on the
+cylinder. This is the exact shape `ParametrixNeumannCorrection` consumes.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
