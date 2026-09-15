@@ -798,6 +798,20 @@ landed scalar carriers, hence complete normed spaces with the inherited
 norm; the record/submodule equivalence, entry bounds, the expanded
 transition equation, and compactness of the coordinate supports.
 
+`scalar-gradient-evolution-identity` landed as a verified partial
+(`Global/ScalarGradientEvolution.lean`, gate PASS, 7 theorems): the moving
+covector and gradient norm variation with the inverse metric, the manifold
+mixed-partial interchange, and the time derivative of `S = |∇R|²` along the
+normalized flow with explicit extra scalar regularity,
+`∂ₜS = 2⟨∇R,∇ΔR⟩ + 4⟨∇R,∇N⟩ + 2Ric(∇R,∇R) − 2rS` (the design review's
+displayed form omitted the Ricci term; this is the verified one), plus the
+Bochner identity for the blended chart metric with intrinsic Ricci at the
+anchor and the intrinsic Laplacian expansion for chart-supported `C²`
+scalars. Two residuals remain: transporting Bochner from the blended chart
+metric to the intrinsic one (to turn `2⟨∇R,∇ΔR⟩ + 2Ric(∇R,∇R)` into
+`ΔS − 2|∇²R|²`), and a joint `C⁴` regularity producer for the third
+spatial derivative of `R` along the flow.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

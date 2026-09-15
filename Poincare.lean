@@ -94,6 +94,7 @@ import Poincare.Global.ParabolicSolutionGraph
 import Poincare.Global.ParametrixNeumannCorrection
 import Poincare.Global.RiemannianMetricInstanceTransport
 import Poincare.Global.RiemannianMetricInstanceTransportGeometric
+import Poincare.Global.ScalarGradientEvolution
 import Poincare.Global.SelectedFiniteNerveSmoothingStatements
 import Poincare.Global.Statement
 import Poincare.Global.Alignment
