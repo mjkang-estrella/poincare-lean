@@ -357,4 +357,16 @@ theorem bilinear_expansion (A : Bilin) (v w : E) :
       intro j _
       ring
 
+theorem coefficient_matrix_pairing (A : Bilin) (v w : E) :
+    inner ℝ v (Matrix.toEuclideanLin (fun i j : Fin 3 => A (e i) (e j)) w) = A v w := by
+  rw [bilinear_expansion]
+  simp only [PiLp.inner_apply, RCLike.inner_apply, Matrix.toEuclideanLin_apply,
+    Matrix.mulVec, dotProduct, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro i _
+  apply Finset.sum_congr rfl
+  intro j _
+  simp only [RCLike.conj_to_real]
+  ring
+
 end Poincare.FrozenEllipticHeatOperator
