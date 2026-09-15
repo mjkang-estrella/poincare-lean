@@ -1,0 +1,3 @@
+import Poincare.Global.HamiltonScalarGradientEstimate
+#print Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_2
+#print Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_1

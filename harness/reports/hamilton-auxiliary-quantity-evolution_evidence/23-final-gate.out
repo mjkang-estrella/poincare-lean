@@ -1,0 +1,11 @@
+=== GATE: forbidden tokens in Poincare/Global/HamiltonScalarGradientEstimate.lean ===
+=== GATE: git diff --check ===
+=== GATE: lake build Poincare.Global.HamiltonScalarGradientEstimate ===
+  omit [T2Space M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+✔ [3871/3871] Built Poincare.Global.HamiltonScalarGradientEstimate (3.4s)
+Build completed successfully (3871 jobs).
+=== GATE: module-wide axiom scan ===
+GATE_SCAN declarations=9 nonstandard=[]
+=== GATE: PASS ===

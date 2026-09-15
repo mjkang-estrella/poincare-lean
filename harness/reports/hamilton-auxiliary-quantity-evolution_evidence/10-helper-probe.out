@@ -1,0 +1,6 @@
+theorem Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_2.{u_2} : ∀ {α : Type u_2} [inst : Zero α]
+  [inst_1 : OfNat α 3] [NeZero 3], (3 = 0) = False :=
+fun {α} [Zero α] [OfNat α 3] [NeZero 3] => eq_false three_ne_zero
+theorem Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_1.{u_2} : ∀ {α : Type u_2} [inst : Zero α]
+  [inst_1 : OfNat α 2] [NeZero 2], (2 = 0) = False :=
+fun {α} [Zero α] [OfNat α 2] [NeZero 2] => eq_false two_ne_zero

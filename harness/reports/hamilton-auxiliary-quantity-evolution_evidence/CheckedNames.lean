@@ -1,0 +1,6 @@
+import Poincare.Global.HamiltonScalarGradientEstimate
+#check Poincare.hamilton_pinching_preserved
+#check Poincare.ClosedSmoothRiemannianMetric.pinchingTracelessRicciReactionTrace3At
+#check Poincare.ClosedSmoothRiemannianMetric.pinchingRicciNormReactionMotionTraceCubicAt
+#check Poincare.HamiltonScalarGradientEstimate.factorThree_damping_iff
+#check Poincare.HamiltonScalarGradientEstimate.factorTwentySevenths_damping

@@ -1,0 +1,112 @@
+Poincare.IntrinsicBochnerScalarGradient.SatisfiesScalarGradientEvolutionAt.{u} {M : Type u} [TopologicalSpace M]
+  [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M]
+  [BorelSpace M] (gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M) (t : ℝ) (x : M) : Prop
+def Poincare.IntrinsicBochnerScalarGradient.SatisfiesScalarGradientEvolutionAt.{u} : {M : Type u} →
+  [inst : TopologicalSpace M] →
+    [T2Space M] →
+      [inst_2 : ChartedSpace (Poincare.ClosedSmoothModel 3) M] →
+        [inst_3 : IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] →
+          [CompactSpace M] →
+            [ConnectedSpace M] →
+              [inst_6 : MeasurableSpace M] →
+                [BorelSpace M] → (ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M) → ℝ → M → Prop :=
+fun {M} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+    [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] [CompactSpace M] [ConnectedSpace M]
+    [MeasurableSpace M] [BorelSpace M] gt t x =>
+  let g := gt t;
+  have R := fun y => g.scalarAt y;
+  HasDerivAt (fun s => (gt s).scalarGradNormSqAt x)
+    (g.laplacianAt (fun y => g.scalarGradNormSqAt y) x -
+          ↑2 *
+            ∑ i,
+              ((g.inner x) ((↑g.leviCivita (g.gradient R) x) ((Module.finBasis ℝ (Poincare.ClosedSmoothModel 3)) i)))
+                ((↑g.leviCivita (g.gradient R) x)
+                  (Poincare.metricDualVectorAt g x ((Module.finBasis ℝ (Poincare.ClosedSmoothModel 3)).coord i))) +
+        ↑4 * ((g.inner x) (g.gradientAt R x)) (g.gradientAt (fun y => g.ricciNormSqAt y) x) -
+      ↑2 * Poincare.meanScalar g * g.scalarGradNormSqAt x)
+    t
+Poincare.IntrinsicBochnerScalarGradient.satisfiesScalarGradientEvolutionAt_of_normalizedFlow.{u} {M : Type u}
+  [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M]
+  [BorelSpace M] [SecondCountableTopology M] {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t : ℝ} {x : M}
+  (hJoint5 : ∀ (s : ℝ) (y : M), Poincare.MetricEntriesJointContDiffAt gt s y 5)
+  (hFlow : ∀ (y : M), Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) :
+  Poincare.IntrinsicBochnerScalarGradient.SatisfiesScalarGradientEvolutionAt gt t x
+Poincare.IntrinsicBochnerScalarGradient.gradientNormSq_contMDiffAt_two.{u} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M]
+  (g : Poincare.ClosedSmoothRiemannianMetric 3 M) (f : M → ℝ)
+  (hf : ContMDiff (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ) 3 f) (x : M) :
+  ContMDiffAt (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ) 2
+    (fun y => ((g.inner y) (g.gradientAt f y)) (g.gradientAt f y)) x
+Poincare.SatisfiesNormalizedHamiltonScalarEvolutionAt.{u} {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M]
+  [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] (gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M)
+  (t : ℝ) (x : M) [∀ (s : ℝ), (gt s).leviCivita.ContMDiffCovariantDerivative 1] : Prop
+def Poincare.SatisfiesNormalizedHamiltonScalarEvolutionAt.{u} : {M : Type u} →
+  [inst : TopologicalSpace M] →
+    [inst_1 : T2Space M] →
+      [CompactSpace M] →
+        [ConnectedSpace M] →
+          [inst_4 : MeasurableSpace M] →
+            [BorelSpace M] →
+              [inst_6 : ChartedSpace (Poincare.ClosedSmoothModel 3) M] →
+                [inst_7 : IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] →
+                  (gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M) →
+                    ℝ → M → [∀ (s : ℝ), (gt s).leviCivita.ContMDiffCovariantDerivative 1] → Prop :=
+fun {M} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] gt t x
+    [∀ (s : ℝ), (gt s).leviCivita.ContMDiffCovariantDerivative 1] =>
+  HasDerivAt (fun s => (gt s).scalarAt x)
+    ((gt t).laplacianAt (fun y => (gt t).scalarAt y) x + 2 * (gt t).ricciNormSqAt x -
+      2 / 3 * Poincare.meanScalar (gt t) * (gt t).scalarAt x)
+    t
+Poincare.hasDerivAt_tracelessRicciNormSqAt_eq_laplacianAt_add_actualNormalizedReaction_of_global_jointMetricEntries.{u}
+  {M : Type u} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M] [CompactSpace M] [ConnectedSpace M]
+  [MeasurableSpace M] [BorelSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] [Nonempty M]
+  {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t₀ : ℝ} {x : M}
+  [∀ (t : ℝ), (gt t).leviCivita.ContMDiffCovariantDerivative 1]
+  (hFlow : ∀ (y : M), Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t₀ y)
+  (hJoint : ∀ (t : ℝ) (y : M), Poincare.MetricEntriesJointContDiffAt gt t y 3) :
+  HasDerivAt (fun t => (gt t).tracelessRicciNormSqAt x)
+    ((gt t₀).laplacianAt (fun y => (gt t₀).tracelessRicciNormSqAt y) x +
+      Poincare.normalizedTracelessRicciEvolutionReactionAt (gt t₀) x)
+    t₀
+def Poincare.normalizedTracelessRicciEvolutionReactionAt.{u} : {M : Type u} →
+  [inst : TopologicalSpace M] →
+    [T2Space M] →
+      [CompactSpace M] →
+        [ConnectedSpace M] →
+          [inst_4 : MeasurableSpace M] →
+            [BorelSpace M] →
+              [inst_6 : ChartedSpace (Poincare.ClosedSmoothModel 3) M] →
+                [inst_7 : IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] →
+                  Poincare.ClosedSmoothRiemannianMetric 3 M → M → ℝ :=
+fun {M} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] g x =>
+  -2 * Poincare.covRicciNormSqAt g x + 2 / 3 * g.scalarGradNormSqAt x +
+      g.pinchingTracelessRicciReactionTrace3At x (g.pinchingRicciNormReactionMotionTraceCubicAt x) -
+    4 / 3 * Poincare.meanScalar g * g.tracelessRicciNormSqAt x
+Poincare.ClosedSmoothRiemannianMetric.scalarGradNormSqAt_le_three_covRicciNormSqAt.{u} {n : ℕ} {M : Type u}
+  [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel n) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M] (g : Poincare.ClosedSmoothRiemannianMetric n M)
+  [g.leviCivita.ContMDiffCovariantDerivative 1] (hn : n = 3) (x : M) :
+  g.scalarGradNormSqAt x ≤ 3 * Poincare.covRicciNormSqAt g x
+ContMDiffAt.div.{u_1, u_2, u_3, u_4, u_5, u_6, u_7} {𝕜 : Type u_1} [NontriviallyNormedField 𝕜] {H : Type u_2}
+  [TopologicalSpace H] {E : Type u_3} [NormedAddCommGroup E] [NormedSpace 𝕜 E] {I : ModelWithCorners 𝕜 E H}
+  {n : WithTop ℕ∞} {G : Type u_4} [TopologicalSpace G] [ChartedSpace H G] [Group G] {E' : Type u_5}
+  [NormedAddCommGroup E'] [NormedSpace 𝕜 E'] {H' : Type u_6} [TopologicalSpace H'] {I' : ModelWithCorners 𝕜 E' H'}
+  {M : Type u_7} [TopologicalSpace M] [ChartedSpace H' M] [LieGroup I n G] {f g : M → G} {x₀ : M}
+  (hf : ContMDiffAt I' I n f x₀) (hg : ContMDiffAt I' I n g x₀) : ContMDiffAt I' I n (fun x => f x / g x) x₀
+Poincare.ClosedSmoothRiemannianMetric.laplacianAt_mul'.{u} {n : ℕ} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (Poincare.ClosedSmoothModel n) M] [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M]
+  (g : Poincare.ClosedSmoothRiemannianMetric n M) {f h : M → ℝ} {x : M}
+  (hf : ∀ (y : M), ContMDiffAt (Poincare.closedSmoothModelWithCorners n) (modelWithCornersSelf ℝ ℝ) 2 f y)
+  (hh : ∀ (y : M), ContMDiffAt (Poincare.closedSmoothModelWithCorners n) (modelWithCornersSelf ℝ ℝ) 2 h y) :
+  g.laplacianAt (f * h) x =
+    f x * g.laplacianAt h x + h x * g.laplacianAt f x + 2 * ((g.inner x) (g.gradientAt f x)) (g.gradientAt h x)
+Poincare.eventually_closedContractedBianchiOneFormAt_canonical.{u} {n : ℕ} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (Poincare.ClosedSmoothModel n) M] [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M]
+  (g : Poincare.ClosedSmoothRiemannianMetric n M) [g.leviCivita.ContMDiffCovariantDerivative 1] (x : M) :
+  ∀ᶠ (y : M) in nhds x, Poincare.ClosedContractedBianchiOneFormAt g y

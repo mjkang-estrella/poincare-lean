@@ -1,0 +1,54 @@
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_2: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_2' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_3: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_3' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_2: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_2' depends on axioms: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_6' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_1: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_1' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_7: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_7' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_4: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_4' depends on axioms: [propext]
+'Poincare.HamiltonScalarGradientEstimate.gradient_div_pairing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_5: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_5' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_4: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_4' depends on axioms: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_6' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_6' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_4: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_4' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_7: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_7' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_1: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_1' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_2: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_2' depends on axioms: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div' depends on axioms: [propext, Classical.choice, Quot.sound]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_3: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_3' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_7: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_7' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_1: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded._simp_1_1' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_5: [propext]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div._simp_1_5' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_3: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_3' depends on axioms: [propext]
+/tmp/hamilton-audit-diagnostic.lean:3:0: warning: Unexpected dependencies: Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_5: [propext]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div._simp_1_5' depends on axioms: [propext]
+EXACT_DEPENDENCIES_PASS declarations=25
