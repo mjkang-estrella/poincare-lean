@@ -266,3 +266,92 @@ theorem change_cocycle (i j k : Fin A.cover.chartCount) (x : M)
   rw [change_chart A i j x hi, change_chart A j k x hj, change_chart A i k x hi]
 
 end Poincare.FiniteAtlasParabolicTensorSpace
+
+namespace Poincare.FiniteAtlasParabolicTensorSpace
+
+universe u
+variable {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners 3) ∞ M]
+  (A : AtlasData M)
+
+/-- A partition member vanishes away from its chart source. -/
+theorem partition_zero_of_not_source (i : Fin A.cover.chartCount) (x : M)
+    (hx : x ∉ (chart A i).source) : A.partition i x = 0 :=
+  image_eq_zero_of_notMem_tsupport (fun h => hx (partition_support_source A i h))
+
+/-- The finite partition has total weight one at every manifold point. -/
+theorem sum_partition (x : M) : ∑ i, A.partition i x = 1 := by
+  simpa only [finsum_eq_sum_of_fintype] using A.partition.sum_eq_one (Set.mem_univ x)
+
+variable {H : Type*} [NormedAddCommGroup H] [NormedSpace ℝ H]
+  (ev : ℝ × Poincare.ClosedSmoothModel 3 → H →L[ℝ] ℝ)
+
+attribute [local instance] Classical.propDecidable
+
+/-- One localized transport equals the source partition weight times the destination entry. -/
+theorem localized_transport_eq (f : ↥(tensorSubmodule A ev))
+    (i j : Fin A.cover.chartCount) (a b : Fin 3) (t : ℝ) (x : M)
+    (hi : x ∈ (chart A i).source) :
+    A.partition i x * (if x ∈ (chart A j).source then
+      ∑ c : Fin 3, ∑ d : Fin 3, (jac A i j x c a * jac A i j x d b) *
+        ev (t, chart A j x) (f.val (j, c, d)) else 0) =
+      A.partition j x * ev (t, chart A i x) (f.val (i, a, b)) := by
+  classical
+  by_cases hj : x ∈ (chart A j).source
+  · simpa only [if_pos hj] using (weighted_transition A ev f i j a b t x ⟨hi, hj⟩).symm
+  · simp only [if_neg hj, mul_zero, partition_zero_of_not_source A j x hj, zero_mul]
+
+/-- Summing the transported stored entries reconstructs each localized value. -/
+theorem sum_localized_transport (f : ↥(tensorSubmodule A ev))
+    (i : Fin A.cover.chartCount) (a b : Fin 3) (t : ℝ) (x : M)
+    (hi : x ∈ (chart A i).source) :
+    (∑ j, A.partition i x * (if x ∈ (chart A j).source then
+      ∑ c : Fin 3, ∑ d : Fin 3, (jac A i j x c a * jac A i j x d b) *
+        ev (t, chart A j x) (f.val (j, c, d)) else 0)) =
+      ev (t, chart A i x) (f.val (i, a, b)) := by
+  classical
+  simp_rw [localized_transport_eq A ev f i _ a b t x hi]
+  rw [← Finset.sum_mul, sum_partition A x, one_mul]
+
+/-- Multiplying the stored entries by their partition weights a second time squares the weights. -/
+theorem sum_reweighted_localized_transport (f : ↥(tensorSubmodule A ev))
+    (i : Fin A.cover.chartCount) (a b : Fin 3) (t : ℝ) (x : M)
+    (hi : x ∈ (chart A i).source) :
+    (∑ j, A.partition j x * (A.partition i x * (if x ∈ (chart A j).source then
+      ∑ c : Fin 3, ∑ d : Fin 3, (jac A i j x c a * jac A i j x d b) *
+        ev (t, chart A j x) (f.val (j, c, d)) else 0))) =
+      (∑ j, (A.partition j x) ^ 2) * ev (t, chart A i x) (f.val (i, a, b)) := by
+  classical
+  simp_rw [localized_transport_eq A ev f i _ a b t x hi, ← mul_assoc, ← pow_two]
+  exact (Finset.sum_mul ..).symm
+
+/-- A genuinely overlapping partition has squared weights with total strictly below one. -/
+theorem sum_partition_sq_lt_one (x : M) (j : Fin A.cover.chartCount)
+    (hpos : 0 < A.partition j x) (hlt : A.partition j x < 1) :
+    ∑ i, (A.partition i x) ^ 2 < 1 := by
+  rw [← sum_partition A x]
+  apply Finset.sum_lt_sum
+  · intro i _
+    have hn := A.partition.nonneg i x
+    have hl := A.partition.le_one i x
+    nlinarith
+  · exact ⟨j, Finset.mem_univ j, by nlinarith⟩
+
+/-- Extra source weights cannot reconstruct a nonzero entry on a genuine partition overlap. -/
+theorem reweighted_transport_ne_entry (f : ↥(tensorSubmodule A ev))
+    (i j : Fin A.cover.chartCount) (a b : Fin 3) (t : ℝ) (x : M)
+    (hi : x ∈ (chart A i).source)
+    (hpos : 0 < A.partition j x) (hlt : A.partition j x < 1)
+    (hne : ev (t, chart A i x) (f.val (i, a, b)) ≠ 0) :
+    (∑ k, A.partition k x * (A.partition i x * (if x ∈ (chart A k).source then
+      ∑ c : Fin 3, ∑ d : Fin 3, (jac A i k x c a * jac A i k x d b) *
+        ev (t, chart A k x) (f.val (k, c, d)) else 0))) ≠
+      ev (t, chart A i x) (f.val (i, a, b)) := by
+  classical
+  rw [sum_reweighted_localized_transport A ev f i a b t x hi]
+  intro heq
+  have hsum : (∑ k, (A.partition k x) ^ 2) = 1 :=
+    mul_right_cancel₀ hne (heq.trans (one_mul _).symm)
+  exact (ne_of_lt (sum_partition_sq_lt_one A x j hpos hlt)) hsum
+
+end Poincare.FiniteAtlasParabolicTensorSpace
