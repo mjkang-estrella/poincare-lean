@@ -62,4 +62,21 @@ def mapHolder (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] F')
       (Q.le_opNorm _).trans (mul_le_mul_of_nonneg_left (le_supNorm f _) (norm_nonneg Q))⟩
     ⟨_, holderBound_comp hα S Q f⟩
 
+theorem norm_mapHolder_le (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] F')
+    (f : Y («E» := E) α T F) :
+    ‖mapHolder hα S Q f‖ ≤ ‖Q‖ * max 1 (‖S‖ ^ α) * ‖f‖ := by
+  have hb := norm_le_of_bounds (mapHolder hα S Q f)
+    (mul_nonneg (norm_nonneg Q) (supNorm_nonneg f))
+    (mul_nonneg (mul_nonneg (norm_nonneg Q) (by positivity)) (holderSeminorm_nonneg f))
+    (fun p _ => (Q.le_opNorm _).trans
+      (mul_le_mul_of_nonneg_left (le_supNorm f (p.1, S p.2)) (norm_nonneg Q)))
+    (holderBound_comp hα S Q f)
+  have hm : ‖Q‖ * supNorm (cylinder T) f ≤
+      ‖Q‖ * max 1 (‖S‖ ^ α) * supNorm (cylinder T) f := by
+    have := mul_le_mul_of_nonneg_right (le_max_left 1 (‖S‖ ^ α))
+      (mul_nonneg (norm_nonneg Q) (supNorm_nonneg f))
+    nlinarith only [this]
+  rw [ParabolicHolder.norm_eq f]
+  nlinarith only [hb, hm]
+
 end Poincare.FrozenEllipticHeatOperator
