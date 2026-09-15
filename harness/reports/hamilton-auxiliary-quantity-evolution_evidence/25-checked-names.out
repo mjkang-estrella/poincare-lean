@@ -1,0 +1,28 @@
+Poincare.hamilton_pinching_preserved.{u} {n : ℕ} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (Poincare.ClosedSmoothModel n) M] [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M]
+  [CompactSpace M] [Nonempty M] {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric n M} {t₀ T : ℝ}
+  [∀ (t : ℝ), (gt t).leviCivita.ContMDiffCovariantDerivative 1] (hn : n = 3) (hT0 : 0 ≤ T)
+  (hQ_cont : Continuous ↿fun τ x => (gt (t₀ + τ)).pinchingQuotientAt x)
+  (hQ₂ :
+    ∀ τ ∈ Set.Icc 0 T,
+      ∀ (x : M),
+        ContMDiffAt (Poincare.closedSmoothModelWithCorners n) (modelWithCornersSelf ℝ ℝ) 2
+          (fun y => (gt (t₀ + τ)).pinchingQuotientAt y) x)
+  (hEvol :
+    ∀ τ ∈ Set.Icc 0 T,
+      ∀ (x : M),
+        Poincare.ClosedSmoothRiemannianMetric.SatisfiesPinchingQuotientEvolutionAt gt (t₀ + τ) x
+          ((gt (t₀ + τ)).pinchingRicciNormReactionMotionTraceCubicAt x))
+  (τ : ℝ) : τ ∈ Set.Icc 0 T → Poincare.pinchingMaximumTrack gt t₀ τ ≤ Poincare.pinchingMaximumTrack gt t₀ 0
+Poincare.ClosedSmoothRiemannianMetric.pinchingTracelessRicciReactionTrace3At.{u} {n : ℕ} {M : Type u}
+  [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel n) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M] (g : Poincare.ClosedSmoothRiemannianMetric n M)
+  [g.leviCivita.ContMDiffCovariantDerivative 1] (x : M) (ricciNormReactionMotionTrace : ℝ) : ℝ
+Poincare.ClosedSmoothRiemannianMetric.pinchingRicciNormReactionMotionTraceCubicAt.{u} {n : ℕ} {M : Type u}
+  [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel n) M]
+  [IsManifold (Poincare.closedSmoothModelWithCorners n) (↑⊤) M] (g : Poincare.ClosedSmoothRiemannianMetric n M)
+  [g.leviCivita.ContMDiffCovariantDerivative 1] (x : M) : ℝ
+Poincare.HamiltonScalarGradientEstimate.factorThree_damping_iff (c : ℝ) :
+  (∀ (A S : ℝ), 0 ≤ A → S ≤ 3 * A → -2 * A + 2 / 3 * S ≤ -c * A) ↔ c ≤ 0
+Poincare.HamiltonScalarGradientEstimate.factorTwentySevenths_damping {A S : ℝ} (hS : S ≤ 20 / 7 * A) :
+  -2 * A + 2 / 3 * S ≤ -(2 / 21) * A

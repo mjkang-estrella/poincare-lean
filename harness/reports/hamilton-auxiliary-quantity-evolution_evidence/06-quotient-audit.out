@@ -1,0 +1,1 @@
+harness/reports/hamilton-auxiliary-quantity-evolution_evidence/Audit.lean:3:0: error: Unexpected dependencies: _private.Poincare.Global.HamiltonScalarGradientEstimate.0.Poincare.HamiltonScalarGradientEstimate._aux_Poincare_Global_HamiltonScalarGradientEstimate___unexpand_Poincare_closedSmoothModelWithCorners_1: []

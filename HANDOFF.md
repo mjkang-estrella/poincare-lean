@@ -1,5 +1,28 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker Hamilton auxiliary quotient evolution: verified partial
+
+Branch `worker/hamilton-auxiliary-quantity-evolution`, base `330ec679`, proof
+head `56b75aeb`. The new `Global/HamiltonScalarGradientEstimate.lean` proves
+the intrinsic heat-operator quotient rules and normalized scalar-gradient
+quotient evolution from joint C⁵ metric entries. The quotient normalization
+term is `−(4/3)rQ`. The factor-three scalar trace estimate gives only `c₂=0`;
+the exact numerical damping obstruction and the `20/7` to `2/21` calibration
+are also proved. No positive cancellation constant or full Hamilton auxiliary
+inequality is claimed.
+
+All nine emitted declarations have exactly the three required foundational
+dependencies. Focused compilation, module build, worker gate, token scan,
+and whitespace checks pass. Three proof items are committed separately.
+The blocked report and actual compiler evidence are in
+`harness/reports/hamilton-auxiliary-quantity-evolution_blocked.md`.
+This worker result awaits independent review and is not accepted or integrated.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/HamiltonScalarGradientEstimate.lean`.
+Then derive the sharper geometric trace-gradient bound from contracted Bianchi
+and append it to this chain. The quotient Hessian/mixed-gradient estimate
+also remains open. The existing maximum-comparison engine can be reused.
+
 ## 2026-09-15 Worker intrinsic Bochner and scalar-gradient evolution proved
 
 Branch `worker/intrinsic-bochner-scalar-gradient`, task base `cdcf6956`,

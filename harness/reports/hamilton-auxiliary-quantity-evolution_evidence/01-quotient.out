@@ -1,0 +1,86 @@
+Poincare/Global/HamiltonScalarGradientEstimate.lean:28:12: error: Function expected at
+  ContMDiffAt.div (hf y) (hh y)
+but this term has type
+  ContMDiffAt I 𝓘(ℝ, ℝ) 2 (fun x => f x / h x) y
+
+Note: Expected a function because this term is being applied to the argument
+  (hne y)
+Poincare/Global/HamiltonScalarGradientEstimate.lean:34:2: error: Tactic `apply` failed: could not unify the conclusion of `(eq_div_iff (hne x)).mpr`
+  ?m.288 = ?m.286 / h x
+with the goal
+  g.laplacianAt (fun y => f y / h y) x =
+    g.laplacianAt f x / h x - f x * g.laplacianAt h x / h x ^ 2 -
+      2 * ((g.inner x) (g.gradientAt (fun y => f y / h y) x)) (g.gradientAt h x) / h x
+
+Note: The full type of `(eq_div_iff (hne x)).mpr` is
+  ?m.288 * h x = ?m.286 → ?m.288 = ?m.286 / h x
+
+M : Type u
+inst✝³ : TopologicalSpace M
+inst✝² : T2Space M
+inst✝¹ : ChartedSpace (ClosedSmoothModel 3) M
+inst✝ : IsManifold I ∞ M
+g : ClosedSmoothRiemannianMetric 3 M
+f h : M → ℝ
+x : M
+hf : ∀ (y : M), ContMDiffAt I 𝓘(ℝ, ℝ) 2 f y
+hh : ∀ (y : M), ContMDiffAt I 𝓘(ℝ, ℝ) 2 h y
+hne : ∀ (y : M), h y ≠ 0
+hq : ∀ (y : M), ContMDiffAt I 𝓘(ℝ, ℝ) 2 (fun z => f z / h z) y
+heq : (fun y => f y / h y) * h = f
+hp :
+  g.laplacianAt f x =
+    f x / h x * g.laplacianAt h x + h x * g.laplacianAt (fun z => f z / h z) x +
+      2 * ((g.inner x) (g.gradientAt (fun z => f z / h z) x)) (g.gradientAt h x)
+⊢ g.laplacianAt (fun y => f y / h y) x =
+    g.laplacianAt f x / h x - f x * g.laplacianAt h x / h x ^ 2 -
+      2 * ((g.inner x) (g.gradientAt (fun y => f y / h y) x)) (g.gradientAt h x) / h x
+Poincare/Global/HamiltonScalarGradientEstimate.lean:53:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  deriv ((fun s => f s x) / fun s => h s x) t
+in the target expression
+  deriv (fun s => f s x / h s x) t - g.laplacianAt (fun y => f t y / h t y) x =
+    (f' - g.laplacianAt (f t) x) / h t x - f t x * (h' - g.laplacianAt (h t) x) / h t x ^ 2 +
+      2 * ((g.inner x) (g.gradientAt (fun y => f t y / h t y) x)) (g.gradientAt (h t) x) / h t x
+
+M : Type u
+inst✝³ : TopologicalSpace M
+inst✝² : T2Space M
+inst✝¹ : ChartedSpace (ClosedSmoothModel 3) M
+inst✝ : IsManifold I ∞ M
+g : ClosedSmoothRiemannianMetric 3 M
+f h : ℝ → M → ℝ
+t f' h' : ℝ
+x : M
+hft : HasDerivAt (fun s => f s x) f' t
+hht : HasDerivAt (fun s => h s x) h' t
+hf : ∀ (y : M), ContMDiffAt I 𝓘(ℝ, ℝ) 2 (f t) y
+hh : ∀ (y : M), ContMDiffAt I 𝓘(ℝ, ℝ) 2 (h t) y
+hne : ∀ (y : M), h t y ≠ 0
+⊢ deriv (fun s => f s x / h s x) t - g.laplacianAt (fun y => f t y / h t y) x =
+    (f' - g.laplacianAt (f t) x) / h t x - f t x * (h' - g.laplacianAt (h t) x) / h t x ^ 2 +
+      2 * ((g.inner x) (g.gradientAt (fun y => f t y / h t y) x)) (g.gradientAt (h t) x) / h t x
+Poincare/Global/HamiltonScalarGradientEstimate.lean:71:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  g.gradientAt ((fun y => f y / h y) * h) x
+in the target expression
+  g.gradientAt (f / h * h) x = (f / h) x • g.gradientAt h x + h x • g.gradientAt (f / h) x
+
+M : Type u
+inst✝³ : TopologicalSpace M
+inst✝² : T2Space M
+inst✝¹ : ChartedSpace (ClosedSmoothModel 3) M
+inst✝ : IsManifold I ∞ M
+g : ClosedSmoothRiemannianMetric 3 M
+f h : M → ℝ
+x : M
+hf : MDiffAt f x
+hh : MDiffAt h x
+hne : h x ≠ 0
+hq : MDiffAt (f / h) x
+heq : (fun y => f y / h y) * h =ᶠ[𝓝 x] f
+hp : g.gradientAt (f / h * h) x = (f / h) x • g.gradientAt h x + h x • g.gradientAt (f / h) x
+⊢ ((g.inner x) (g.gradientAt (fun y => f y / h y) x)) (g.gradientAt h x) =
+    ((g.inner x) (g.gradientAt f x)) (g.gradientAt h x) / h x -
+      f x * ((g.inner x) (g.gradientAt h x)) (g.gradientAt h x) / h x ^ 2
+Poincare/Global/HamiltonScalarGradientEstimate.lean:98:2: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`

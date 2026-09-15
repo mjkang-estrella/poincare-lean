@@ -1,0 +1,41 @@
+Poincare.closedRiemannian_parabolic_exp_decay_continuousOn.{u} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M]
+  [CompactSpace M] [Nonempty M] (gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M)
+  [∀ (t : ℝ), (gt t).leviCivita.ContMDiffCovariantDerivative 1] (Q Q' : ℝ → M → ℝ) {T rate C : ℝ} (hT0 : 0 ≤ T)
+  (hQ_cont : ContinuousOn (Function.uncurry Q) (Set.Icc 0 T ×ˢ Set.univ))
+  (hQd : ∀ (x : M), ∀ t ∈ Set.Icc 0 T, HasDerivAt (fun s => Q s x) (Q' t x) t)
+  (hQ₂ :
+    ∀ t ∈ Set.Icc 0 T,
+      ∀ (x : M), ContMDiffAt (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ) 2 (Q t) x)
+  (hQevol : ∀ t ∈ Set.Icc 0 T, ∀ (x : M), Q' t x ≤ (gt t).laplacianAt (Q t) x - rate * Q t x)
+  (hQ0 : ∀ (x : M), Q 0 x ≤ C) (t : ℝ) : t ∈ Set.Icc 0 T → ∀ (x : M), Q t x ≤ C * Real.exp (-rate * t)
+Poincare.closed_parabolic_min_principle_var.{u} {M : Type u} [TopologicalSpace M] [CompactSpace M] [Nonempty M]
+  {lap : ℝ → (M → ℝ) → M → ℝ} {u u' c : ℝ → M → ℝ} {T M₀ : ℝ} (hcM : ∀ t ∈ Set.Icc 0 T, ∀ (x : M), c t x ≤ M₀)
+  (hu_cont : Continuous ↿u) (hud : ∀ (x : M), ∀ t ∈ Set.Icc 0 T, HasDerivAt (fun s => u s x) (u' t x) t)
+  (hlap_add_const : ∀ t ∈ Set.Icc 0 T, ∀ (k : ℝ) (x : M), lap t (fun y => u t y + k) x = lap t (u t) x)
+  (hsuper : ∀ t ∈ Set.Icc 0 T, ∀ (x : M), lap t (u t) x + c t x * u t x ≤ u' t x)
+  (hmin_lap : ∀ t ∈ Set.Icc 0 T, ∀ (x : M), IsMinOn (u t) Set.univ x → 0 ≤ lap t (u t) x) (h0 : ∀ (x : M), 0 ≤ u 0 x)
+  (t : ℝ) : t ∈ Set.Icc 0 T → ∀ (x : M), 0 ≤ u t x
+Poincare.NormalizedFlowInitialPinchingPreservation.initial_pinching_improvement.{u} {M : Type u} [TopologicalSpace M]
+  [T2Space M] [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M]
+  [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M]
+  [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] (gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M)
+  (ε₀ δ : ℝ) (hjoint : ∀ (t : ℝ) (x : M), Poincare.MetricEntriesJointContDiffAt gt t x 3)
+  (hflow : ∀ t ∈ Set.Ici 0, ∀ (x : M), Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t x)
+  (hinit : ∀ (x : M), 0 < (gt 0).scalarAt x) (hεpos : 1 / 6 < ε₀) (hεle : ε₀ ≤ 1 / 3)
+  (hfloor : Poincare.GlobalRicciEigenvalueFloor3 (gt 0) ε₀) (hδpos : 0 < δ) (hδle : δ ≤ 1)
+  (hδadm : δ ≤ Poincare.PinchingAlgebra.pinchedTracelessAdmissibleDelta3 (2 * ε₀ - 1 / 3)) (t : ℝ) :
+  t ∈ Set.Ici 0 → Poincare.tracelessPinchingMaximumTrack gt 0 δ t ≤ Poincare.tracelessPinchingMaximumTrack gt 0 δ 0
+harness/reports/hamilton-auxiliary-quantity-evolution_evidence/Residual.lean:15:2: error: linarith failed to find a contradiction
+case h
+M : Type
+inst✝³ : TopologicalSpace M
+inst✝² : T2Space M
+inst✝¹ : ChartedSpace (Poincare.ClosedSmoothModel 3) M
+inst✝ : IsManifold (Poincare.closedSmoothModelWithCorners 3) ∞ M
+g : Poincare.ClosedSmoothRiemannianMetric 3 M
+x : M
+htrace : g.scalarGradNormSqAt x ≤ 3 * Poincare.covRicciNormSqAt g x
+a✝ : -(2 / 21) * Poincare.covRicciNormSqAt g x < -2 * Poincare.covRicciNormSqAt g x + 2 / 3 * g.scalarGradNormSqAt x
+⊢ False
+failed

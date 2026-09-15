@@ -1,0 +1,33 @@
+Poincare/Global/HamiltonScalarGradientEstimate.lean:78:2: error: linarith failed to find a contradiction
+case h1.h
+M : Type u
+inst✝³ : TopologicalSpace M
+inst✝² : T2Space M
+inst✝¹ : ChartedSpace (ClosedSmoothModel 3) M
+inst✝ : IsManifold I ∞ M
+g : ClosedSmoothRiemannianMetric 3 M
+f h : M → ℝ
+x : M
+hf : MDiffAt f x
+hh : MDiffAt h x
+hne : h x ≠ 0
+hq : MDiffAt (f / h) x
+heq : (fun y => f y / h y) * h =ᶠ[𝓝 x] f
+hp : g.gradientAt f x = (fun y => f y / h y) x • g.gradientAt h x + h x • g.gradientAt (fun y => f y / h y) x
+hp' :
+  ((g.inner x) (g.gradientAt f x)) (g.gradientAt h x) =
+    ((f x / h x) • (g.inner x) (g.gradientAt h x) + h x • (g.inner x) (g.gradientAt (fun y => f y / h y) x))
+      (g.gradientAt h x)
+a✝ :
+  h x ^ 2 * ((g.inner x) (g.gradientAt (fun y => f y / h y) x)) (g.gradientAt h x) <
+    ((g.inner x) (g.gradientAt f x)) (g.gradientAt h x) * h x -
+      f x * ((g.inner x) (g.gradientAt h x)) (g.gradientAt h x)
+⊢ False
+failed
+Poincare/Global/HamiltonScalarGradientEstimate.lean:76:32: warning: This simp argument is unused:
+  smul_eq_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [map_add, map_smul,̵ ̵s̵m̵u̵l̵_̵e̵q̵_̵m̵u̵l̵] at hp'
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

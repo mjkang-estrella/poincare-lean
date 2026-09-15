@@ -1,0 +1,24 @@
+'Poincare.HamiltonScalarGradientEstimate.scalarGradientQuotient_evolution_of_normalizedFlow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.heatOperator_div_expanded' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.factorThree_damping_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.scalarGradientQuotient_evolution' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.tracelessEnergy_evolution_le_cubic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.gradient_div_pairing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.laplacian_div' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Poincare.HamiltonScalarGradientEstimate.factorTwentySevenths_damping' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+EXACT_DEPENDENCIES_PASS declarations=9

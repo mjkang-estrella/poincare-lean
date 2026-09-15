@@ -1,0 +1,7 @@
+# Byte-exact compressed copies are tracked; retain the original local logs.
+/05-quotient-build.out
+/07-quotient-build.out
+/11-quotient-build.out
+/14-evolution.out
+/16-evolution-build.out
+/20-damping-build.out
