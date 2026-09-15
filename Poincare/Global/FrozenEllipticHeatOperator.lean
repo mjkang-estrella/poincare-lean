@@ -93,4 +93,8 @@ theorem norm_covectorPullback_le (S : E →L[ℝ] E) : ‖covectorPullback S‖ 
   intro v
   exact (v.opNorm_comp_le S).trans_eq (mul_comm _ _)
 
+def bilinearPullback (S : E →L[ℝ] E) : Bilin →L[ℝ] Bilin :=
+  ((ContinuousLinearMap.compL ℝ E E (E →L[ℝ] ℝ)).flip S).comp
+    ((ContinuousLinearMap.compL ℝ E (E →L[ℝ] ℝ) (E →L[ℝ] ℝ)) (covectorPullback S))
+
 end Poincare.FrozenEllipticHeatOperator
