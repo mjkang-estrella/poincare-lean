@@ -17,6 +17,20 @@ Full outputs, failed diagnostics, probe sources, and the final proof diff are in
 This worker result awaits independent review and is not merged or accepted.
 
 First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/NearIdentityParabolicRightInverse.lean`.
+## 2026-09-15 Worker Hamilton Eta-only core reduction proved
+
+Branch `worker/hamilton-eta-core-reduction`, base `8721fff7`, proof head
+`7890e2d2`. The one new `Global/HamiltonEtaCoreReduction.lean` supplies the
+mean floor `(3/4) eta` from the uniform normalization gap and reconstructs the
+final reaction core with rate `eta`. The new core removes scalar comparison,
+its coefficient gap, and variance-energy domination from the pinned NS core.
+All six declarations compile with exactly the required foundational dependencies;
+token and whitespace gates pass. Actual outputs and the proof diff are in
+`harness/reports/hamilton-eta-core-reduction_done.md`.
+The Eta producer remains open. This worker result awaits independent review
+and has not been merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/HamiltonEtaCoreReduction.lean`.
 
 ## 2026-09-15 Worker Duhamel continuous linear operator proved
 
