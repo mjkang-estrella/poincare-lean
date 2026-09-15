@@ -176,4 +176,47 @@ theorem norm_mapGraph_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
     ‖mapHolder hα S (bilinearPullback S) H.ddu‖ ≤ M * K * _
   nlinarith only [hu, ht, hd, hdd]
 
+theorem trace_pullback (S : E ≃L[ℝ] E)
+    (hS : ∀ v w : E, inner ℝ (S v) w = inner ℝ v (S w)) (H : Bilin) :
+    (∑ i : Fin 3, ∑ j : Fin 3,
+      inner ℝ (S (e i)) (S (e j)) * H (S.symm (e i)) (S.symm (e j))) =
+      ∑ k : Fin 3, H (e k) (e k) := by
+  have hb (k : Fin 3) :
+      ∑ i : Fin 3, inner ℝ (e i) (S (e k)) • S.symm (e i) = e k := by
+    simpa only [map_sum, map_smul, S.symm_apply_apply] using
+      congrArg S.symm ((EuclideanSpace.basisFun (Fin 3) ℝ).sum_repr' (S (e k)))
+  have hc (i j : Fin 3) : inner ℝ (S (e i)) (S (e j)) =
+      ∑ k : Fin 3, inner ℝ (e i) (S (e k)) * inner ℝ (e j) (S (e k)) := by
+    rw [← (EuclideanSpace.basisFun (Fin 3) ℝ).sum_inner_mul_inner (S (e i)) (S (e j))]
+    apply Finset.sum_congr rfl
+    intro k _
+    rw [hS, ← hS (e k) (e j), real_inner_comm (S (e k)) (e j)]
+  calc
+    _ = ∑ i : Fin 3, ∑ j : Fin 3, ∑ k : Fin 3,
+        (inner ℝ (e i) (S (e k)) * inner ℝ (e j) (S (e k))) *
+          H (S.symm (e i)) (S.symm (e j)) := by simp_rw [hc, Finset.sum_mul]
+    _ = ∑ i : Fin 3, ∑ k : Fin 3, ∑ j : Fin 3,
+        (inner ℝ (e i) (S (e k)) * inner ℝ (e j) (S (e k))) *
+          H (S.symm (e i)) (S.symm (e j)) := by
+      apply Finset.sum_congr rfl
+      intro i _
+      exact Finset.sum_comm
+    _ = ∑ k : Fin 3, ∑ i : Fin 3, ∑ j : Fin 3,
+        (inner ℝ (e i) (S (e k)) * inner ℝ (e j) (S (e k))) *
+          H (S.symm (e i)) (S.symm (e j)) := Finset.sum_comm
+    _ = ∑ k : Fin 3,
+        H (∑ i : Fin 3, inner ℝ (e i) (S (e k)) • S.symm (e i))
+          (∑ j : Fin 3, inner ℝ (e j) (S (e k)) • S.symm (e j)) := by
+      apply Finset.sum_congr rfl
+      intro k _
+      simp only [map_sum, map_smul, ContinuousLinearMap.sum_apply,
+        ContinuousLinearMap.smul_apply, smul_eq_mul, Finset.mul_sum]
+      conv_rhs => rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro i _
+      apply Finset.sum_congr rfl
+      intro j _
+      ring
+    _ = _ := by simp only [hb]
+
 end Poincare.FrozenEllipticHeatOperator
