@@ -423,4 +423,26 @@ theorem scalarGradNormSq_le_twentySevenths_covRicciNormSq
   exact Poincare.HamiltonScalarGradientEstimate.weighted_bianchi_gradient_bound
     hcard d D C hd ht hv hs
 
+/-- Contracted Bianchi supplies strict derivative-energy damping along normalized flow. -/
+theorem tracelessEnergy_evolution_damped
+    {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M)
+    (hJoint : ∀ s y, Poincare.MetricEntriesJointContDiffAt gt s y 3)
+    (hFlow : ∀ y, Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) :
+    deriv (fun s ↦ (gt s).tracelessRicciNormSqAt x) t -
+        (gt t).laplacianAt (fun y ↦ (gt t).tracelessRicciNormSqAt y) x ≤
+      -(2 / 21 : ℝ) * Poincare.covRicciNormSqAt (gt t) x +
+      (gt t).pinchingTracelessRicciReactionTrace3At x
+        ((gt t).pinchingRicciNormReactionMotionTraceCubicAt x) -
+        (4 / 3 : ℝ) * Poincare.meanScalar (gt t) * (gt t).tracelessRicciNormSqAt x := by
+  letI : Nonempty M := ⟨x⟩
+  have hd :=
+    Poincare.hasDerivAt_tracelessRicciNormSqAt_eq_laplacianAt_add_actualNormalizedReaction_of_global_jointMetricEntries
+      (x := x) hFlow hJoint
+  rw [hd.deriv]
+  dsimp only [Poincare.normalizedTracelessRicciEvolutionReactionAt]
+  have hb := Poincare.HamiltonScalarGradientEstimate.factorTwentySevenths_damping
+    (Poincare.HamiltonScalarGradientEstimate.scalarGradNormSq_le_twentySevenths_covRicciNormSq
+      (gt t) x)
+  linarith
+
 end Poincare.HamiltonScalarGradientEstimate
