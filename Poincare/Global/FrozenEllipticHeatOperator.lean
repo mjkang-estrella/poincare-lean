@@ -1,5 +1,6 @@
 import Poincare.Global.DuhamelSolutionOperatorBound
 import Poincare.Global.CompactCoefficientEllipticity
+import Mathlib.Analysis.Matrix.Order
 
 noncomputable section
 
@@ -298,5 +299,13 @@ theorem exists_solution_graph_bound_of_factorization :
             (C * (max 1 (‖(S : E →L[ℝ] E)‖ ^ α) * ‖f‖)) :=
           mul_le_mul_of_nonneg_left hHN' (by positivity)
         _ = _ := by ring)
+
+theorem exists_posDef_matrix_sqrt (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.PosDef) :
+    ∃ N : Matrix (Fin 3) (Fin 3) ℝ, N.PosDef ∧ N * N = M := by
+  open scoped MatrixOrder in
+    refine ⟨CFC.sqrt M, ?_, ?_⟩
+    · exact (Matrix.nonneg_iff_posSemidef.mp (CFC.sqrt_nonneg M)).posDef_iff_isUnit.mpr
+        ((CFC.isUnit_sqrt_iff M hM.posSemidef.nonneg).mpr hM.isUnit)
+    · simpa only [pow_two] using CFC.sq_sqrt M hM.posSemidef.nonneg
 
 end Poincare.FrozenEllipticHeatOperator
