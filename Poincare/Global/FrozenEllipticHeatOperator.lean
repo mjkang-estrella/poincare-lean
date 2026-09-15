@@ -425,4 +425,34 @@ theorem exists_symmetric_factor (A : Bilin) {«λ» : ℝ} (hLowerPos : 0 < «λ
         rw [hS, hS]
         exact (hNS v (Matrix.toEuclideanLin N w)).symm
 
+theorem exists_frozen_solution_graph_bound :
+  ∀ α : ℝ, 0 < α → α < 1 → ∀ «λ» Λ : ℝ, 0 < «λ» → «λ» ≤ Λ →
+  ∃ C : ℝ, 0 < C ∧ ∀ (A : Bilin), (∀ v w, A v w = A w v) →
+    (∀ v, «λ» * ‖v‖^2 ≤ A v v) → (∀ v, A v v ≤ Λ * ‖v‖^2) →
+  ∀ (T : ℝ), 0 < T → T ≤ 1 →
+  ∀ f : ParabolicHolder.Y («E» := E) α T ℝ,
+    ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
+      (∀ t ∈ Icc 0 T, ∀ x : E, G.ut (t, x) = f (t, x) +
+        ∑ i : Fin 3, ∑ j : Fin 3, A (e i) (e j) * G.ddu (t, x) (e i) (e j)) ∧
+      ‖G‖ ≤ C * ‖f‖ := by
+  intro α hα hα1 μ Λ hμ hμΛ
+  obtain ⟨C, hC, hCb⟩ := exists_solution_graph_bound_of_factorization α hα hα1
+  let q := 1 / Real.sqrt μ
+  let D := (max 1 (q ^ 2) * max 1 (q ^ α)) * C * max 1 ((Real.sqrt Λ) ^ α)
+  refine ⟨D, by dsimp only [D]; positivity, ?_⟩
+  intro A hSym hlo hhi T hT hT1 f
+  obtain ⟨S, hS, hA⟩ := exists_symmetric_factor A hμ hSym hlo
+  obtain ⟨G, hG, hGN⟩ := hCb A S hS hA T hT hT1 f
+  refine ⟨G, hG, hGN.trans ?_⟩
+  obtain ⟨hSn, hSin⟩ := factor_norm_bounds A S hμ hμΛ (fun v => hA v v) hlo hhi
+  have hI2 : max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ 2) ≤ max 1 (q ^ 2) :=
+    max_le_max le_rfl (pow_le_pow_left₀ (norm_nonneg _) hSin 2)
+  have hIa : max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ α) ≤ max 1 (q ^ α) :=
+    max_le_max le_rfl (Real.rpow_le_rpow (norm_nonneg _) hSin hα.le)
+  have hSa : max 1 (‖(S : E →L[ℝ] E)‖ ^ α) ≤ max 1 ((Real.sqrt Λ) ^ α) :=
+    max_le_max le_rfl (Real.rpow_le_rpow (norm_nonneg _) hSn hα.le)
+  apply mul_le_mul_of_nonneg_right _ (norm_nonneg f)
+  apply mul_le_mul _ hSa (by positivity) (by positivity)
+  exact mul_le_mul_of_nonneg_right (mul_le_mul hI2 hIa (by positivity) (by positivity)) hC.le
+
 end Poincare.FrozenEllipticHeatOperator
