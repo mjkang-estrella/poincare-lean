@@ -504,3 +504,95 @@ theorem exists_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
   linear_combination hf'
 
 end Poincare.BufferedFrozenParabolicSolver
+
+
+noncomputable section
+open Set
+open scoped ContDiff Topology
+namespace Poincare.BufferedFrozenParabolicSolver
+open ParabolicHolder ParabolicSolutionGraph
+
+/-- Two compact buffers separate the coefficient extension from the solution cutoff. -/
+theorem exists_nested_cutoffs {K U : Set (ClosedSmoothModel 3)} (hK : IsCompact K)
+    (hU : IsOpen U) (hKU : K ⊆ U) :
+    ∃ (U₁ : Set (ClosedSmoothModel 3)) (ψ ξ : (ClosedSmoothModel 3) → ℝ),
+      IsOpen U₁ ∧ IsCompact (closure U₁) ∧ closure U₁ ⊆ U ∧
+      ContDiff ℝ ∞ ψ ∧ HasCompactSupport ψ ∧ tsupport ψ ⊆ U₁ ∧
+      (∀ x ∈ K, ∀ᶠ y in 𝓝 x, ψ y = 1) ∧ (∀ x, ψ x ∈ Icc 0 1) ∧
+      ContDiff ℝ ∞ ξ ∧ HasCompactSupport ξ ∧ tsupport ξ ⊆ U ∧
+      (∀ x ∈ closure U₁, ξ x = 1) ∧ (∀ x, ξ x ∈ Icc 0 1) ∧
+      (∀ x ∈ tsupport ψ, ξ x = 1) := by
+  obtain ⟨V, hV, hKV, hVU, hcV⟩ :=
+    exists_open_between_and_isCompact_closure hK hU hKU
+  obtain ⟨ψ, hψ, hcψ, hψV, hψK, hψ01⟩ := exists_buffered_cutoff hK hV hKV
+  obtain ⟨ξ, hξ, hcξ, hξU, hξV, hξ01⟩ := exists_buffered_cutoff hcV hU hVU
+  have hone : ∀ x ∈ closure V, ξ x = 1 := fun x hx => Filter.EventuallyEq.eq_of_nhds (hξV x hx)
+  exact ⟨V, ψ, ξ, hV, hcV, hVU, hψ, hcψ, hψV, hψK, hψ01,
+    hξ, hcξ, hξU, hone, hξ01, fun x hx => hone x (subset_closure (hψV hx))⟩
+
+/-- The outer extension agrees with the original entries on the inner support. -/
+theorem nested_coefficient_agreement {α T : ℝ}
+    (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3))
+    (ψ ξ : (ClosedSmoothModel 3) → ℝ)
+    (hnest : ∀ x ∈ tsupport ψ, ξ x = 1)
+    (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (heq : ∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ξ x * (a x i j - a anchor i j)) :
+    ∀ t ∈ Icc 0 T, ∀ x ∈ tsupport ψ, ∀ i j,
+      a anchor i j + b i j (t,x) = a x i j := by
+  intro t ht x hx i j
+  rw [heq t ht x i j, hnest x hx, one_mul, add_sub_cancel]
+
+/-- Support in the cutoff one-set makes multiplication preserve the forcing. -/
+theorem cutoff_forcing_eq {α T : ℝ} {K : Set (ClosedSmoothModel 3)}
+    (ψ : (ClosedSmoothModel 3) → ℝ) (hone : ∀ x ∈ K, ψ x = 1)
+    (f : Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (hf : ∀ p, p.2 ∉ K → f p = 0) : ∀ p, ψ p.2 * f p = f p := by
+  intro p
+  by_cases hp : p.2 ∈ K
+  · rw [hone p.2 hp, one_mul]
+  · rw [hf p hp, mul_zero]
+
+set_option maxHeartbeats 1600000 in
+/-- Nested cutoffs remove the principal mismatch exactly. Oscillation is needed only
+for existence of the near-frozen solver; it contributes no single-chart error term. -/
+theorem exists_nested_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
+    (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3)) {ψ : (ClosedSmoothModel 3) → ℝ}
+    (ξ : (ClosedSmoothModel 3) → ℝ)
+    (hnest : ∀ x ∈ tsupport ψ, ξ x = 1)
+    (hψ : ContDiff ℝ ∞ ψ) (hc : HasCompactSupport ψ)
+    (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+    (heq : ∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ξ x * (a x i j - a anchor i j))
+    (hS : ∀ f t, t ∈ Icc 0 T → ∀ x,
+      (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+        (a anchor i j + b i j (t,x)) * (S f).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) :
+    ∃ C : Graph («E» := (ClosedSmoothModel 3)) α T →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T,
+      (∀ G p, (C G).u p = ψ p.2 * G.u p) ∧
+      ∀ f : Y («E» := (ClosedSmoothModel 3)) α T ℝ, (∀ p, ψ p.2 * f p = f p) →
+      ∀ t ∈ Icc 0 T, ∀ x,
+        (C (S f)).ut (t,x) -
+          (∑ i, ∑ j, a x i j * (C (S f)).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) - f (t,x) =
+        -(∑ i, ∑ j, a x i j *
+          (fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) i) * (S f).du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) j) +
+            (S f).du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) * fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) j) +
+            (S f).u (t,x) * fderiv ℝ (fderiv ℝ ψ) x ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j))) := by
+  obtain ⟨C, hu, hjets⟩ := ParabolicCutoffCommutator.exists_cutoff_operator hψ hc hα hα1
+  refine ⟨C, hu, ?_⟩
+  intro f hf t ht x
+  obtain ⟨hut, _, hddu⟩ := hjets (S f) t ht x
+  have hweighted (i j : Fin 3) :
+      ψ x * (a anchor i j + b i j (t,x)) = ψ x * a x i j := by
+    by_cases hx : x ∈ tsupport ψ
+    · rw [nested_coefficient_agreement a anchor ψ ξ hnest b heq t ht x hx i j]
+    · rw [image_eq_zero_of_notMem_tsupport hx, zero_mul, zero_mul]
+  rw [hut, hddu, hS f t ht x]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.smulRight_apply, smul_eq_mul]
+  have hmul (r s v : ℝ) : r * (s * v) = r * s * v := by ring
+  simp only [mul_add, Finset.mul_sum, hmul, hweighted]
+  have hf' := hf (t,x)
+  dsimp only at hf'
+  simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero] at *
+  linear_combination hf'
+
+end Poincare.BufferedFrozenParabolicSolver
