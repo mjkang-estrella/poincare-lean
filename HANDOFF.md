@@ -18,6 +18,26 @@ First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/DuhamelSolutionO
 Snapshot date: 2026-09-08 (UTC)
 
 
+## 2026-09-15 Worker parabolic Hölder multiplier estimate proved
+
+Branch `worker/parabolic-holder-multiplier-estimate`, base `2ca30baa`, proof
+head `430f5bfb`. The single new `Global/ParabolicHolderMultiplier.lean`
+proves all four task items in separate commits: zero-trace Hessian
+interpolation, bounded coordinate entries and the split product norm bound,
+the nine-entry multiplier estimate, and elementwise one-half error smallness
+after a supplied bounded solution map. The forcing is built with `ofFunction`
+and agrees with the requested coefficient-Hessian sum.
+
+Focused compilation, the empty forbidden-token scan, and whitespace checks
+pass. All 46 explicit and generated declarations have exactly
+`[propext, Classical.choice, Quot.sound]`. Full probe output, failed
+diagnostics, statement checks, and the proof diff are preserved in
+`harness/reports/parabolic-holder-multiplier-estimate_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+The continuous-linear-map packaging of the error remains separately scoped.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/ParabolicHolderMultiplier.lean`.
+
 ## 2026-09-11 Worker Duhamel parabolic Hölder bound proved
 
 Branch `worker/duhamel-parabolic-holder-seminorm`, base `ae66c744`, proof head
