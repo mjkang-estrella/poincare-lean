@@ -187,4 +187,24 @@ theorem nearIdentityInverse_norm_le (b : Fin 3 → Fin 3 → Y₀)
         (boundConstant_spec α hα hα1).1.le
     _ = _ := mul_comm _ _
 
+/-- Small Hölder perturbations have a zero-trace solution with a uniform graph bound. -/
+theorem exists_nearIdentity_solution (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) {ε Λ : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hε : 9 * boundConstant α hα hα1 * ε ≤ 1 / 4)
+    (hΛ : 9 * boundConstant α hα hα1 * Λ * T ^ (α / 2) ≤ 1 / 4)
+    (f : Y₀) :
+    ∃ G : X₀,
+      (∀ t ∈ Icc 0 T, ∀ x : E,
+        G.ut (t, x) = f (t, x) +
+          ∑ i, ∑ j, coeff b i j (t, x) * G.ddu (t, x) (e i) (e j)) ∧
+      ‖G‖ ≤ 2 * boundConstant α hα hα1 * ‖f‖ := by
+  obtain ⟨hhalf, hR⟩ := errorOp_small b hα hα1 hT hT1 hb hbα hε hΛ
+  refine ⟨nearIdentityInverse b hα hα1 hT hT1 hR f,
+    nearIdentityInverse_solves b hα hα1 hT hT1 hR f, ?_⟩
+  exact ((nearIdentityInverse b hα hα1 hT hT1 hR).le_opNorm f).trans
+    (mul_le_mul_of_nonneg_right
+      (nearIdentityInverse_norm_le b hα hα1 hT hT1 hR hhalf) (norm_nonneg f))
+
 end Poincare.NearIdentityParabolicRightInverse
