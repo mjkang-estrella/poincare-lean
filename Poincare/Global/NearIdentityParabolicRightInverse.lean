@@ -77,4 +77,41 @@ theorem multiplier_norm_le (b : Fin 3 → Fin 3 → Y₀)
   simpa only [multiplier_apply, mul_add, add_mul, mul_assoc] using
     norm_forcing_le b G hα hT hb hbα
 
+/-- The landed choice gives a specific uniform solution-operator constant. -/
+theorem duhamel_norm_le_boundConstant (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) :
+    ‖duhamelOperator α T hα hα1 hT hT1‖ ≤ boundConstant α hα hα1 :=
+  LinearMap.mkContinuous_norm_le _ (boundConstant_spec α hα hα1).1.le _
+
+/-- The coefficient perturbation following the constant-coefficient inverse. -/
+def errorOp (b : Fin 3 → Fin 3 → Y₀) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) : Y₀ →L[ℝ] Y₀ :=
+  (multiplier b).comp (duhamelOperator α T hα hα1 hT hT1)
+
+/-- The operator error retains the short-time factor. -/
+theorem errorOp_norm_le (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) {ε Λ : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ) :
+    ‖errorOp b hα hα1 hT hT1‖ ≤
+      9 * boundConstant α hα hα1 * (ε + Λ * T ^ (α / 2)) := by
+  have hε := (supNorm_nonneg (b 0 0)).trans (hb 0 0)
+  have hΛ := (holderSeminorm_nonneg (b 0 0)).trans (hbα 0 0)
+  have hC := (boundConstant_spec α hα hα1).1
+  apply ContinuousLinearMap.opNorm_le_bound _ (by positivity)
+  intro f
+  exact norm_error_le b _ hα hT hb hbα
+    (duhamel_norm_le_boundConstant hα hα1 hT hT1) f
+
+/-- Two quarter-size contributions bound the error by one half. -/
+theorem errorOp_small (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) {ε Λ : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hε : 9 * boundConstant α hα hα1 * ε ≤ 1 / 4)
+    (hΛ : 9 * boundConstant α hα hα1 * Λ * T ^ (α / 2) ≤ 1 / 4) :
+    ‖errorOp b hα hα1 hT hT1‖ ≤ 1 / 2 ∧ ‖errorOp b hα hα1 hT hT1‖ < 1 := by
+  have h := errorOp_norm_le b hα hα1 hT hT1 hb hbα
+  constructor <;> nlinarith only [h, hε, hΛ]
+
 end Poincare.NearIdentityParabolicRightInverse
