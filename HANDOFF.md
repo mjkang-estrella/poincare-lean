@@ -1,5 +1,23 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker finite-atlas parabolic tensor carriers proved
+
+Branch `worker/finite-atlas-parabolic-tensor-space`, base `e65eaa7b`,
+verified proof head `143cb944`. The single new
+`Global/FiniteAtlasParabolicTensorSpace.lean` proves the survey's exact
+closedness, completeness, and record-equivalence targets for the weighted
+compatible tensor carriers. It also proves support/symmetry/overlap membership,
+bounded entry evaluation, and compact coordinate supports. Both carriers
+inherit their finite-product submodule norms and real vector-space instances.
+
+Focused compilation, imported target and instance checks, the empty token scan,
+and whitespace checks pass. All 120 emitted declarations have exactly the
+three required foundational dependencies. Probe sources, failures, final outputs,
+and proof diff are in `harness/reports/finite-atlas-parabolic-tensor-space_done.md`.
+This worker result awaits independent review and has not been merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FiniteAtlasParabolicTensorSpace.lean`.
+
 ## 2026-09-15 Worker near-frozen parabolic right inverse proved
 
 Branch `worker/near-frozen-parabolic-right-inverse`, base `57144244`,
