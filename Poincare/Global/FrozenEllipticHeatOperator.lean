@@ -369,4 +369,28 @@ theorem coefficient_matrix_pairing (A : Bilin) (v w : E) :
   simp only [RCLike.conj_to_real]
   ring
 
+theorem coefficient_matrix_posDef (A : Bilin) {«λ» : ℝ} (hLowerPos : 0 < «λ»)
+    (hSym : ∀ v w : E, A v w = A w v)
+    (hlo : ∀ v : E, «λ» * ‖v‖ ^ 2 ≤ A v v) :
+    Matrix.PosDef (fun i j : Fin 3 => A (e i) (e j)) := by
+  apply Matrix.posDef_iff_dotProduct_mulVec.mpr
+  refine ⟨Matrix.IsHermitian.ext (fun i j => by simpa using hSym (e j) (e i)), ?_⟩
+  intro x hx
+  have hv : (WithLp.toLp 2 x : E) ≠ 0 := by
+    intro h
+    apply hx
+    exact congrArg WithLp.ofLp h
+  have hquad : star x ⬝ᵥ Matrix.mulVec (fun i j : Fin 3 => A (e i) (e j)) x =
+      A (WithLp.toLp 2 x) (WithLp.toLp 2 x) := by
+    rw [bilinear_expansion]
+    simp only [dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, star_trivial]
+    apply Finset.sum_congr rfl
+    intro i _
+    apply Finset.sum_congr rfl
+    intro j _
+    change x i * (A (e i) (e j) * x j) = x i * x j * A (e i) (e j)
+    ring
+  rw [hquad]
+  exact (mul_pos hLowerPos (sq_pos_of_pos (norm_pos_iff.mpr hv))).trans_le (hlo _)
+
 end Poincare.FrozenEllipticHeatOperator
