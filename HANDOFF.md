@@ -1,5 +1,28 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker Hamilton Bianchi gradient bound: proved
+
+Branch `worker/hamilton-bianchi-gradient-bound`, base `8883a941`, proof head
+`248bed81`. Commit `07d5b690` appends the weighted Bianchi square completion and
+`Poincare.HamiltonScalarGradientEstimate.scalarGradNormSq_le_twentySevenths_covRicciNormSq`
+to the existing chain. Commit `248bed81` appends
+`Poincare.HamiltonScalarGradientEstimate.tracelessEnergy_evolution_damped`,
+with strict coefficient `2/21` and the actual cubic and normalization terms.
+The damping step does not require scalar positivity. Existing declarations
+are preserved; no other existing Lean file or frozen contract was changed.
+
+Focused compilation, module build, literal target assignments, token scan,
+whitespace check, and worker gate pass. The exact dependency audit checks all
+16 emitted declarations, including internal proofs, and each has exactly the
+three required foundational dependencies. Actual compiler evidence and the
+base-relative proof diff are in
+`harness/reports/hamilton-bianchi-gradient-bound_done.md` and its evidence folder.
+This worker result awaits independent review and is not accepted or integrated.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/HamiltonScalarGradientEstimate.lean`.
+Then review the base-relative diff and rerun the exact dependency audit.
+The quotient mixed-gradient/Hessian estimate remains open.
+
 ## 2026-09-15 Worker Hamilton auxiliary quotient evolution: verified partial
 
 Branch `worker/hamilton-auxiliary-quantity-evolution`, base `330ec679`, proof
