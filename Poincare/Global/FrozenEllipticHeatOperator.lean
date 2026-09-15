@@ -360,7 +360,7 @@ theorem bilinear_expansion (A : Bilin) (v w : E) :
 theorem coefficient_matrix_pairing (A : Bilin) (v w : E) :
     inner ℝ v (Matrix.toEuclideanLin (fun i j : Fin 3 => A (e i) (e j)) w) = A v w := by
   rw [bilinear_expansion]
-  simp only [PiLp.inner_apply, RCLike.inner_apply, Matrix.toEuclideanLin_apply,
+  simp only [PiLp.inner_apply, RCLike.inner_apply, Matrix.toLpLin_apply,
     Matrix.mulVec, dotProduct, Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro i _
@@ -392,5 +392,37 @@ theorem coefficient_matrix_posDef (A : Bilin) {«λ» : ℝ} (hLowerPos : 0 < «
     ring
   rw [hquad]
   exact (mul_pos hLowerPos (sq_pos_of_pos (norm_pos_iff.mpr hv))).trans_le (hlo _)
+
+theorem exists_symmetric_factor (A : Bilin) {«λ» : ℝ} (hLowerPos : 0 < «λ»)
+    (hSym : ∀ v w : E, A v w = A w v)
+    (hlo : ∀ v : E, «λ» * ‖v‖ ^ 2 ≤ A v v) :
+    ∃ S : E ≃L[ℝ] E,
+      (∀ v w : E, inner ℝ (S v) w = inner ℝ v (S w)) ∧
+      (∀ v w : E, A v w = inner ℝ (S v) (S w)) := by
+  let M : Matrix (Fin 3) (Fin 3) ℝ := fun i j => A (e i) (e j)
+  obtain ⟨N, hN, hNN⟩ := exists_posDef_matrix_sqrt M (coefficient_matrix_posDef A hLowerPos hSym hlo)
+  obtain ⟨U, hU⟩ := hN.isUnit
+  have hright : N * (↑U⁻¹ : Matrix (Fin 3) (Fin 3) ℝ) = 1 := by
+    rw [← hU]
+    exact U.val_inv
+  have hleft : (↑U⁻¹ : Matrix (Fin 3) (Fin 3) ℝ) * N = 1 := by
+    rw [← hU]
+    exact U.inv_val
+  let b := (EuclideanSpace.basisFun (Fin 3) ℝ).toBasis
+  let S := (Matrix.toLinOfInv b b hright hleft).toContinuousLinearEquiv
+  have hS (v : E) : S v = Matrix.toEuclideanLin N v := rfl
+  have hNS := Matrix.isSymmetric_toEuclideanLin_iff.mpr hN.isHermitian
+  refine ⟨S, ?_, ?_⟩
+  · intro v w
+    simp only [hS]
+    exact hNS v w
+  · intro v w
+    calc
+      A v w = inner ℝ v (Matrix.toEuclideanLin M w) := (coefficient_matrix_pairing A v w).symm
+      _ = inner ℝ v (Matrix.toEuclideanLin N (Matrix.toEuclideanLin N w)) := by
+        rw [← hNN, Matrix.toEuclideanLin_eq_toLin_orthonormal, Matrix.toLin_mul_apply b b b]
+      _ = inner ℝ (S v) (S w) := by
+        rw [hS, hS]
+        exact (hNS v (Matrix.toEuclideanLin N w)).symm
 
 end Poincare.FrozenEllipticHeatOperator
