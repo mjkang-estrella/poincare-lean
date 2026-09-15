@@ -1,12 +1,17 @@
 import Poincare.Global.ParabolicHolderMultiplier
 import Poincare.Global.DuhamelSolutionOperatorBound
 import Mathlib.Analysis.Calculus.MeanValue
+import Mathlib.Analysis.Calculus.ContDiff.RCLike
 
 noncomputable section
+
+set_option maxHeartbeats 800000
+set_option synthInstance.maxHeartbeats 200000
 
 namespace Poincare.ParabolicCutoffCommutator
 
 open Set ParabolicHolder ParabolicSolutionGraph
+open scoped ContDiff
 
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
 
@@ -70,7 +75,10 @@ theorem finite_difference_derivative
   rw [abs_mul, abs_of_pos hη] at ht
   apply (mul_le_mul_iff_right₀ hη).mp
   have he : η * (2 * A / η + η / 2 * B) = 2 * A + B * η ^ 2 / 2 := by
-    field_simp
+    have hc := div_mul_cancel₀ (2 * A) (ne_of_gt hη)
+    calc
+      η * (2 * A / η + η / 2 * B) = (2 * A / η) * η + B * η ^ 2 / 2 := by ring
+      _ = _ := by rw [hc]
   rw [he]
   nlinarith
 
@@ -90,8 +98,11 @@ theorem derivative_norm_le_sqrt
       3 * Real.sqrt δ * M := by
     have hs := Real.sq_sqrt hδ.le
     have hp := Real.sqrt_pos.mpr hδ
-    field_simp
-    nlinarith [congrArg (fun z : ℝ => z * M) hs]
+    have hc : δ / Real.sqrt δ = Real.sqrt δ := by
+      apply (div_eq_iff (ne_of_gt hp)).2
+      nlinarith
+    rw [show 2 * (δ * M) / Real.sqrt δ = 2 * M * (δ / Real.sqrt δ) by ring, hc]
+    ring
   exact h.trans_eq he
 
 variable {α T : ℝ}
@@ -347,5 +358,382 @@ theorem interpolation : ∀ α : ℝ, 0 < α → α < 1 →
       ‖G.du‖ ≤ C * T ^ ((1 - α) / 2) * ‖G‖ := by
   intro α hα hα1
   exact ⟨12, by norm_num, fun T hT hT1 G => interpolation_bounds G hα hα1 hT hT1⟩
+
+/-- Smooth supported spatial data have uniformly bounded cylinder carriers. -/
+theorem exists_cutoff_carrier {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {ψ : E → F} (hψ : ContDiff ℝ ∞ ψ) (hc : HasCompactSupport ψ)
+    (hα : 0 < α) (hα1 : α < 1) :
+    ∃ K : ℝ, 0 ≤ K ∧ ∀ T : ℝ, ∃ f : Y (E := E) α T F,
+      (∀ p ∈ cylinder T, f p = ψ p.2) ∧ ‖f‖ ≤ K := by
+  classical
+  obtain ⟨A, hA⟩ := hc.exists_bound_of_continuous hψ.continuous
+  have hA0 : 0 ≤ A := (norm_nonneg (ψ 0)).trans (hA 0)
+  obtain ⟨B, hB⟩ := ContDiff.lipschitzWith_of_hasCompactSupport hc hψ (by simp)
+  have hh (x y : E) : ‖ψ x - ψ y‖ ≤ (2 * A + B) * ‖x-y‖ ^ α := by
+    have h := scale_interpolation (L := 2*A+B) (R := 1)
+      (by positivity) (norm_nonneg (x-y)) zero_lt_one hα.le hα1.le
+      ((hB.norm_sub_le x y).trans (by nlinarith [norm_nonneg (x-y), B.coe_nonneg]))
+      ((norm_sub_le (ψ x) (ψ y)).trans (by linarith [hA x, hA y, B.coe_nonneg]))
+    simpa using h
+  refine ⟨A + (2*A+B), by positivity, ?_⟩
+  intro T
+  let f : ℝ × E → F := fun p => if p ∈ cylinder T then ψ p.2 else 0
+  have hoff : ∀ p, p ∉ cylinder T → f p = 0 := by
+    intro p hp; simp [f, hp]
+  have hb : ∀ p ∈ cylinder T, ‖f p‖ ≤ A := by
+    intro p hp; simpa [f, hp] using hA p.2
+  have hholder : HasHolderBound α (cylinder T) f (2*A+B) := by
+    intro p hp q hq
+    simp only [f, if_pos hp, if_pos hq]
+    exact (hh p.2 q.2).trans (mul_le_mul_of_nonneg_left
+      (Real.rpow_le_rpow (norm_nonneg _) (by
+        dsimp [parabolicDist]; linarith [Real.sqrt_nonneg |p.1-q.1|]) hα.le) (by positivity))
+  let fY := ofFunction f hoff ⟨A, hb⟩ ⟨2*A+B, hholder⟩
+  refine ⟨fY, ?_, ?_⟩
+  · intro p hp
+    change f p = ψ p.2
+    simp [f, hp]
+  · exact ParabolicHolder.norm_le_of_bounds fY hA0 (by positivity) hb hholder
+
+/-- The cutoff value, gradient, and Hessian all have genuine Hölder carriers. -/
+theorem exists_cutoff_jet_carriers {ψ : E → ℝ}
+    (hψ : ContDiff ℝ ∞ ψ) (hc : HasCompactSupport ψ)
+    (hα : 0 < α) (hα1 : α < 1) :
+    ∃ K : ℝ, 0 ≤ K ∧ ∀ T : ℝ,
+      ∃ (f : Y (E := E) α T ℝ)
+        (df : Y (E := E) α T (E →L[ℝ] ℝ))
+        (ddf : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ)),
+      (∀ p ∈ cylinder T, f p = ψ p.2 ∧ df p = fderiv ℝ ψ p.2 ∧
+        ddf p = fderiv ℝ (fderiv ℝ ψ) p.2) ∧
+      ‖f‖ + ‖df‖ + ‖ddf‖ ≤ K := by
+  have hdψ : ContDiff ℝ ∞ (fderiv ℝ ψ) := hψ.fderiv_right (by simp)
+  have hddψ : ContDiff ℝ ∞ (fderiv ℝ (fderiv ℝ ψ)) := hdψ.fderiv_right (by simp)
+  obtain ⟨K0, hK0, h0⟩ := exists_cutoff_carrier hψ hc hα hα1
+  obtain ⟨K1, hK1, h1⟩ := exists_cutoff_carrier hdψ (hc.fderiv ℝ) hα hα1
+  obtain ⟨K2, hK2, h2⟩ := exists_cutoff_carrier hddψ ((hc.fderiv ℝ).fderiv ℝ) hα hα1
+  refine ⟨K0+K1+K2, by positivity, ?_⟩
+  intro T
+  obtain ⟨f, hf, hfb⟩ := h0 T
+  obtain ⟨df, hdf, hdfb⟩ := h1 T
+  obtain ⟨ddf, hddf, hddfb⟩ := h2 T
+  exact ⟨f, df, ddf, fun p hp => ⟨hf p hp, hdf p hp, hddf p hp⟩, by linarith⟩
+
+/-- The first spatial product rule uses the cutoff derivative and the solution value. -/
+theorem cutoff_hasFDeriv {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (G : Graph (E := E) α T) {t : ℝ} (ht : t ∈ Icc 0 T) (x : E) :
+    HasFDerivAt (fun z => ψ z * G.u (t,z))
+      (ψ x • G.du (t,x) + G.u (t,x) • fderiv ℝ ψ x) x :=
+  (hψ.differentiable (by simp) x).hasFDerivAt.mul (G.hasFDeriv t ht x)
+
+/-- The second spatial product rule includes both mixed Hessian terms. -/
+theorem cutoff_hasFDeriv_du {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (G : Graph (E := E) α T) {t : ℝ} (ht : t ∈ Icc 0 T) (x : E) :
+    HasFDerivAt (fun z => ψ z • G.du (t,z) + G.u (t,z) • fderiv ℝ ψ z)
+      ((ψ x • G.ddu (t,x) + (fderiv ℝ ψ x).smulRight (G.du (t,x))) +
+        (G.u (t,x) • fderiv ℝ (fderiv ℝ ψ) x +
+          (G.du (t,x)).smulRight (fderiv ℝ ψ x))) x := by
+  have hdψ : ContDiff ℝ ∞ (fderiv ℝ ψ) := hψ.fderiv_right (by simp)
+  exact ((hψ.differentiable (by simp) x).hasFDerivAt.smul (G.hasFDeriv_du t ht x)).add
+    ((G.hasFDeriv t ht x).smul (hdψ.differentiable (by simp) x).hasFDerivAt)
+
+/-- A spatial cutoff is constant in the within-time product rule. -/
+theorem cutoff_hasDeriv_time (ψ : E → ℝ) (G : Graph (E := E) α T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x : E) :
+    HasDerivWithinAt (fun s => ψ x * G.u (s,x)) (ψ x * G.ut (t,x)) (Icc 0 T) t :=
+  (G.hasDeriv_time t ht x).const_mul (ψ x)
+
+section Bilinear
+variable {F H J : Type*}
+  [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [NormedAddCommGroup H] [NormedSpace ℝ H]
+  [NormedAddCommGroup J] [NormedSpace ℝ J]
+
+omit [NormedSpace ℝ E] in
+/-- Continuous bilinear operations preserve the cylinder Hölder bound. -/
+theorem bilinear_holder (B : F →L[ℝ] H →L[ℝ] J)
+    (f : Y (E := E) α T F) (g : Y (E := E) α T H) :
+    HasHolderBound α (cylinder T) (fun p => B (f p) (g p)) (2 * ‖B‖ * ‖f‖ * ‖g‖) := by
+  intro p hp q hq
+  have hf := ParabolicHolder.holder_le f hp hq
+  have hg := ParabolicHolder.holder_le g hp hq
+  have hf0 := ParabolicHolder.norm_le f p
+  have hg0 := ParabolicHolder.norm_le g q
+  have hp0 := Real.rpow_nonneg (parabolicDist_nonneg p q) α
+  calc
+    ‖B (f p) (g p) - B (f q) (g q)‖ =
+        ‖B (f p) (g p - g q) + B (f p - f q) (g q)‖ := by
+      congr 1
+      simp only [map_sub, ContinuousLinearMap.sub_apply]
+      abel
+    _ ≤ ‖B (f p) (g p - g q)‖ + ‖B (f p - f q) (g q)‖ := norm_add_le _ _
+    _ ≤ ‖B‖ * ‖f p‖ * ‖g p - g q‖ + ‖B‖ * ‖f p - f q‖ * ‖g q‖ :=
+      add_le_add (B.le_opNorm₂ _ _) (B.le_opNorm₂ _ _)
+    _ ≤ ‖B‖ * ‖f‖ * (‖g‖ * parabolicDist p q ^ α) +
+        ‖B‖ * (‖f‖ * parabolicDist p q ^ α) * ‖g‖ := by
+      apply add_le_add
+      · exact mul_le_mul (mul_le_mul_of_nonneg_left hf0 (norm_nonneg B)) hg
+          (norm_nonneg _) (by positivity)
+      · exact mul_le_mul (mul_le_mul_of_nonneg_left hf (norm_nonneg B)) hg0
+          (norm_nonneg _) (by positivity)
+    _ = _ := by ring
+
+/-- Pointwise application of a continuous bilinear map to two Hölder carriers. -/
+def bilinearY (B : F →L[ℝ] H →L[ℝ] J)
+    (f : Y (E := E) α T F) (g : Y (E := E) α T H) : Y (E := E) α T J :=
+  ofFunction (fun p => B (f p) (g p))
+    (fun p hp => by simp [zero_off f hp])
+    ⟨‖B‖ * ‖f‖ * ‖g‖, fun p _ => (B.le_opNorm₂ _ _).trans
+      (mul_le_mul (mul_le_mul_of_nonneg_left (ParabolicHolder.norm_le f p) (norm_nonneg B))
+        (ParabolicHolder.norm_le g p) (norm_nonneg _) (by positivity))⟩
+    ⟨2 * ‖B‖ * ‖f‖ * ‖g‖, bilinear_holder B f g⟩
+
+omit [NormedSpace ℝ E] in
+/-- The bilinear carrier norm has an explicit product bound. -/
+theorem norm_bilinearY_le (B : F →L[ℝ] H →L[ℝ] J)
+    (f : Y (E := E) α T F) (g : Y (E := E) α T H) :
+    ‖bilinearY B f g‖ ≤ 3 * ‖B‖ * ‖f‖ * ‖g‖ := by
+  have h := ParabolicHolder.norm_le_of_bounds (bilinearY B f g)
+    (show 0 ≤ ‖B‖ * ‖f‖ * ‖g‖ by positivity)
+    (show 0 ≤ 2 * ‖B‖ * ‖f‖ * ‖g‖ by positivity)
+    (fun p _ => (B.le_opNorm₂ _ _).trans
+      (mul_le_mul (mul_le_mul_of_nonneg_left (ParabolicHolder.norm_le f p) (norm_nonneg B))
+        (ParabolicHolder.norm_le g p) (norm_nonneg _) (by positivity)))
+    (bilinear_holder B f g)
+  nlinarith [h]
+
+end Bilinear
+
+local instance hessianBoundedSMul : IsBoundedSMul ℝ (E →L[ℝ] E →L[ℝ] ℝ) :=
+  .of_norm_smul_le (fun c A => ContinuousLinearMap.opNorm_smul_le c A)
+
+/-- Assemble the cutoff graph from its three spatial carriers. -/
+def cutoffGraphOfCarriers {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (f : Y (E := E) α T ℝ) (df : Y (E := E) α T (E →L[ℝ] ℝ))
+    (ddf : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ))
+    (hf : ∀ p ∈ cylinder T, f p = ψ p.2)
+    (hdf : ∀ p ∈ cylinder T, df p = fderiv ℝ ψ p.2)
+    (hddf : ∀ p ∈ cylinder T, ddf p = fderiv ℝ (fderiv ℝ ψ) p.2)
+    (G : Graph (E := E) α T) : Graph (E := E) α T where
+  u := f * G.u
+  ut := f * G.ut
+  du := bilinearY (ContinuousLinearMap.lsmul ℝ ℝ) f G.du +
+    bilinearY (ContinuousLinearMap.lsmul ℝ ℝ) G.u df
+  ddu := (bilinearY (ContinuousLinearMap.lsmul ℝ ℝ (E := E →L[ℝ] E →L[ℝ] ℝ)) f G.ddu +
+    bilinearY (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) df G.du) +
+    (bilinearY (ContinuousLinearMap.lsmul ℝ ℝ (E := E →L[ℝ] E →L[ℝ] ℝ)) G.u ddf +
+    bilinearY (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) G.du df)
+  zero_trace := by intro x; simp [mul_apply, G.zero_trace]
+  hasFDeriv := by
+    intro t ht x
+    have hmem (z : E) : (t,z) ∈ cylinder T := ⟨ht, mem_univ z⟩
+    convert cutoff_hasFDeriv hψ G ht x using 1
+    · funext z
+      simp only [mul_apply, hf (t,z) (hmem z)]
+    · simp only [add_apply, bilinearY, ofFunction_apply, ContinuousLinearMap.lsmul_apply,
+        hf (t,x) (hmem x), hdf (t,x) (hmem x)]
+  hasFDeriv_du := by
+    intro t ht x
+    have hmem (z : E) : (t,z) ∈ cylinder T := ⟨ht, mem_univ z⟩
+    convert cutoff_hasFDeriv_du hψ G ht x using 1
+    · funext z
+      simp only [add_apply, bilinearY, ofFunction_apply, ContinuousLinearMap.lsmul_apply,
+        hf (t,z) (hmem z), hdf (t,z) (hmem z)]
+    · simp only [add_apply, bilinearY, ofFunction_apply, ContinuousLinearMap.lsmul_apply,
+        hf (t,x) (hmem x), hdf (t,x) (hmem x), hddf (t,x) (hmem x)]
+      rfl
+  hasDeriv_time := by
+    intro t ht x
+    have he (s : ℝ) : (f * G.u) (s,x) = ψ x * G.u (s,x) := by
+      by_cases hs : (s,x) ∈ cylinder T
+      · simp [mul_apply, hf (s,x) hs]
+      · simp [mul_apply, zero_off G.u hs]
+    convert cutoff_hasDeriv_time ψ G ht x using 1
+    · funext s; exact he s
+    · simp [mul_apply, hf (t,x) ⟨ht, mem_univ x⟩]
+
+/-- Equality of the four stored carriers determines a derivative graph. -/
+theorem graph_ext_components {G H : Graph (E := E) α T}
+    (hu : G.u = H.u) (hut : G.ut = H.ut) (hdu : G.du = H.du) (hddu : G.ddu = H.ddu) :
+    G = H := by
+  cases G
+  cases H
+  simp_all
+
+/-- Multiplication by the fixed cutoff carriers is linear on derivative graphs. -/
+def cutoffLinearMapOfCarriers {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (f : Y (E := E) α T ℝ) (df : Y (E := E) α T (E →L[ℝ] ℝ))
+    (ddf : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ))
+    (hf : ∀ p ∈ cylinder T, f p = ψ p.2)
+    (hdf : ∀ p ∈ cylinder T, df p = fderiv ℝ ψ p.2)
+    (hddf : ∀ p ∈ cylinder T, ddf p = fderiv ℝ (fderiv ℝ ψ) p.2) :
+    Graph (E := E) α T →ₗ[ℝ] Graph (E := E) α T where
+  toFun := cutoffGraphOfCarriers hψ f df ddf hf hdf hddf
+  map_add' G H := by
+    apply graph_ext_components
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p * (G.u p + H.u p) = (f p * (G.u p)) + (f p * (H.u p))
+      ring
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p * (G.ut p + H.ut p) = (f p * (G.ut p)) + (f p * (H.ut p))
+      ring
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p • (G.du p + H.du p) + (G.u p + H.u p) • df p = (f p • (G.du p) + (G.u p) • df p) + (f p • (H.du p) + (H.u p) • df p)
+      module
+    · apply ParabolicHolder.ext
+      intro p hp
+      change (f p • (G.ddu p + H.ddu p) + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (df p) (G.du p + H.du p)) + ((G.u p + H.u p) • ddf p + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (G.du p + H.du p) (df p)) = ((f p • (G.ddu p) + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (df p) (G.du p)) + ((G.u p) • ddf p + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (G.du p) (df p))) + ((f p • (H.ddu p) + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (df p) (H.du p)) + ((H.u p) • ddf p + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (H.du p) (df p)))
+      simp only [map_add, ContinuousLinearMap.add_apply]
+      module
+  map_smul' c G := by
+    apply graph_ext_components
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p * (c • G.u p) = c • (f p * (G.u p))
+      ring
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p * (c • G.ut p) = c • (f p * (G.ut p))
+      ring
+    · apply ParabolicHolder.ext
+      intro p hp
+      change f p • (c • G.du p) + (c • G.u p) • df p = c • (f p • (G.du p) + (G.u p) • df p)
+      module
+    · apply ParabolicHolder.ext
+      intro p hp
+      change (f p • (c • G.ddu p) + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (df p) (c • G.du p)) + ((c • G.u p) • ddf p + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (c • G.du p) (df p)) = c • ((f p • (G.ddu p) + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (df p) (G.du p)) + ((G.u p) • ddf p + (ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)) (G.du p) (df p)))
+      simp only [map_smul, ContinuousLinearMap.smul_apply]
+      module
+
+
+set_option maxHeartbeats 4000000 in
+/-- The cutoff graph map is bounded in the original four-component norm. -/
+theorem exists_cutoffGraph_bound {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (f : Y (E := E) α T ℝ) (df : Y (E := E) α T (E →L[ℝ] ℝ))
+    (ddf : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ))
+    (hf : ∀ p ∈ cylinder T, f p = ψ p.2)
+    (hdf : ∀ p ∈ cylinder T, df p = fderiv ℝ ψ p.2)
+    (hddf : ∀ p ∈ cylinder T, ddf p = fderiv ℝ (fderiv ℝ ψ) p.2) :
+    ∃ C : ℝ, ∀ G : Graph (E := E) α T,
+      ‖cutoffGraphOfCarriers hψ f df ddf hf hdf hddf G‖ ≤ C * ‖G‖ := by
+  letI : NormedAddCommGroup (E →L[ℝ] ℝ) := inferInstance
+  letI : NormedSpace ℝ (E →L[ℝ] ℝ) := inferInstance
+  letI : NormedAddCommGroup (E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
+  letI : NormedSpace ℝ (E →L[ℝ] E →L[ℝ] ℝ) := inferInstance
+  let L1 : ℝ →L[ℝ] (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) := ContinuousLinearMap.lsmul ℝ ℝ
+  let L2 : ℝ →L[ℝ] (E →L[ℝ] E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] E →L[ℝ] ℝ) :=
+    ContinuousLinearMap.lsmul ℝ ℝ (E := E →L[ℝ] E →L[ℝ] ℝ)
+  let Q : (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] E →L[ℝ] ℝ) :=
+    ContinuousLinearMap.smulRightL ℝ E (E →L[ℝ] ℝ)
+  let A := ‖f‖ + ‖df‖ + ‖ddf‖
+  let B : ℝ := 1 + ‖L1‖ + ‖L2‖ + ‖Q‖
+  have hA : 0 ≤ A := by dsimp [A]; positivity
+  have hB : 0 ≤ B := by dsimp [B]; positivity
+  have hfA : ‖f‖ ≤ A := by change ‖f‖ ≤ ‖f‖ + ‖df‖ + ‖ddf‖; linarith [norm_nonneg df, norm_nonneg ddf]
+  have hdfA : ‖df‖ ≤ A := by change _ ≤ ‖f‖ + ‖df‖ + ‖ddf‖; linarith [norm_nonneg f, norm_nonneg ddf]
+  have hddfA : ‖ddf‖ ≤ A := by change _ ≤ ‖f‖ + ‖df‖ + ‖ddf‖; linarith [norm_nonneg f, norm_nonneg df]
+  have hL1 : ‖L1‖ ≤ B := by dsimp [B]; linarith [norm_nonneg L2, norm_nonneg Q]
+  have hL2 : ‖L2‖ ≤ B := by dsimp [B]; linarith [norm_nonneg L1, norm_nonneg Q]
+  have hQ : ‖Q‖ ≤ B := by dsimp [B]; linarith [norm_nonneg L1, norm_nonneg L2]
+  have hB1 : 1 ≤ B := by dsimp [B]; linarith [norm_nonneg L1, norm_nonneg L2, norm_nonneg Q]
+  refine ⟨20 * B * A, ?_⟩
+  intro G
+  have hGu := norm_u_le G
+  have hGut := norm_ut_le G
+  have hGdu := norm_du_le G
+  have hGddu := norm_ddu_le G
+  have hu : ‖f * G.u‖ ≤ B * A * ‖G‖ := by
+    calc
+      ‖f * G.u‖ ≤ ‖f‖ * ‖G.u‖ := ParabolicHolder.norm_mul_le _ _
+      _ ≤ B * A * ‖G‖ := by
+        calc
+          ‖f‖ * ‖G.u‖ ≤ A * ‖G‖ := mul_le_mul hfA hGu (norm_nonneg _) hA
+          _ ≤ B * A * ‖G‖ := by nlinarith [mul_le_mul_of_nonneg_right hB1 (mul_nonneg hA (norm_nonneg G))]
+  have hut : ‖f * G.ut‖ ≤ B * A * ‖G‖ := by
+    calc
+      ‖f * G.ut‖ ≤ ‖f‖ * ‖G.ut‖ := ParabolicHolder.norm_mul_le _ _
+      _ ≤ B * A * ‖G‖ := by
+        calc
+          ‖f‖ * ‖G.ut‖ ≤ A * ‖G‖ := mul_le_mul hfA hGut (norm_nonneg _) hA
+          _ ≤ B * A * ‖G‖ := by nlinarith [mul_le_mul_of_nonneg_right hB1 (mul_nonneg hA (norm_nonneg G))]
+  have ha : ‖bilinearY L1 f G.du‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY L1 f G.du‖ ≤ 3 * ‖L1‖ * ‖f‖ * ‖G.du‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * A * ‖G‖ := by gcongr
+  have hb : ‖bilinearY L1 G.u df‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY L1 G.u df‖ ≤ 3 * ‖L1‖ * ‖G.u‖ * ‖df‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * ‖G‖ * A := by gcongr
+      _ = _ := by ring
+  have hc : ‖bilinearY L2 f G.ddu‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY L2 f G.ddu‖ ≤ 3 * ‖L2‖ * ‖f‖ * ‖G.ddu‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * A * ‖G‖ := by gcongr
+  have hd : ‖bilinearY Q df G.du‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY Q df G.du‖ ≤ 3 * ‖Q‖ * ‖df‖ * ‖G.du‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * A * ‖G‖ := by gcongr
+  have he : ‖bilinearY L2 G.u ddf‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY L2 G.u ddf‖ ≤ 3 * ‖L2‖ * ‖G.u‖ * ‖ddf‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * ‖G‖ * A := by gcongr
+      _ = _ := by ring
+  have hk : ‖bilinearY Q G.du df‖ ≤ 3 * B * A * ‖G‖ := by
+    calc
+      ‖bilinearY Q G.du df‖ ≤ 3 * ‖Q‖ * ‖G.du‖ * ‖df‖ := norm_bilinearY_le _ _ _
+      _ ≤ 3 * B * ‖G‖ * A := by gcongr
+      _ = _ := by ring
+  rw [ParabolicSolutionGraph.norm_eq]
+  change ‖f * G.u‖ + ‖f * G.ut‖ +
+    ‖bilinearY L1 f G.du + bilinearY L1 G.u df‖ +
+    ‖(bilinearY L2 f G.ddu + bilinearY Q df G.du) +
+      (bilinearY L2 G.u ddf + bilinearY Q G.du df)‖ ≤ _
+  have hdu := norm_add_le (bilinearY L1 f G.du) (bilinearY L1 G.u df)
+  have hddu := norm_add_le (bilinearY L2 f G.ddu + bilinearY Q df G.du)
+    (bilinearY L2 G.u ddf + bilinearY Q G.du df)
+  have hdd0 := norm_add_le (bilinearY L2 f G.ddu) (bilinearY Q df G.du)
+  have hdd1 := norm_add_le (bilinearY L2 G.u ddf) (bilinearY Q G.du df)
+  nlinarith
+
+/-- Smooth compact cutoffs act by bounded linear maps with the actual product jets. -/
+theorem exists_cutoff_operator {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (hc : HasCompactSupport ψ) (hα : 0 < α) (hα1 : α < 1) :
+    ∃ C : Graph (E := E) α T →L[ℝ] Graph (E := E) α T,
+      (∀ G p, (C G).u p = ψ p.2 * G.u p) ∧
+      (∀ G t, t ∈ Icc 0 T → ∀ x,
+        (C G).ut (t,x) = ψ x * G.ut (t,x) ∧
+        (C G).du (t,x) = ψ x • G.du (t,x) + G.u (t,x) • fderiv ℝ ψ x ∧
+        (C G).ddu (t,x) =
+          (ψ x • G.ddu (t,x) + (fderiv ℝ ψ x).smulRight (G.du (t,x))) +
+          (G.u (t,x) • fderiv ℝ (fderiv ℝ ψ) x +
+            (G.du (t,x)).smulRight (fderiv ℝ ψ x))) := by
+  obtain ⟨K, hK, hcarriers⟩ := exists_cutoff_jet_carriers hψ hc hα hα1
+  obtain ⟨f, df, ddf, heq, hnorm⟩ := hcarriers T
+  have hf := fun p hp => (heq p hp).1
+  have hdf := fun p hp => (heq p hp).2.1
+  have hddf := fun p hp => (heq p hp).2.2
+  obtain ⟨B, hB⟩ := exists_cutoffGraph_bound hψ f df ddf hf hdf hddf
+  let L := cutoffLinearMapOfCarriers hψ f df ddf hf hdf hddf
+  let C := L.mkContinuous B hB
+  refine ⟨C, ?_, ?_⟩
+  · intro G p
+    change f p * G.u p = ψ p.2 * G.u p
+    by_cases hp : p ∈ cylinder T
+    · rw [hf p hp]
+    · simp [zero_off G.u hp]
+  · intro G t ht x
+    have hp : (t,x) ∈ cylinder T := ⟨ht, mem_univ x⟩
+    change f (t,x) * G.ut (t,x) = _ ∧
+      (bilinearY (ContinuousLinearMap.lsmul ℝ ℝ) f G.du +
+        bilinearY (ContinuousLinearMap.lsmul ℝ ℝ) G.u df) (t,x) = _ ∧ _
+    refine ⟨by rw [hf (t,x) hp], ?_, ?_⟩
+    · simp only [add_apply, bilinearY, ofFunction_apply, ContinuousLinearMap.lsmul_apply,
+        hf (t,x) hp, hdf (t,x) hp]
+    · change (cutoffGraphOfCarriers hψ f df ddf hf hdf hddf G).ddu (t,x) = _
+      simp only [cutoffGraphOfCarriers, add_apply, bilinearY, ofFunction_apply, ContinuousLinearMap.lsmul_apply,
+        hf (t,x) hp, hdf (t,x) hp, hddf (t,x) hp]
+      rfl
 
 end Poincare.ParabolicCutoffCommutator
