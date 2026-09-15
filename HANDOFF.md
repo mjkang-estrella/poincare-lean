@@ -17,6 +17,30 @@ and proof diff are in `harness/reports/finite-atlas-parabolic-tensor-space_done.
 This worker result awaits independent review and has not been merged or accepted.
 
 First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/FiniteAtlasParabolicTensorSpace.lean`.
+## 2026-09-15 Worker scalar-gradient evolution: partial calculus proved
+
+Branch `worker/scalar-gradient-evolution-identity`, base `9f0374b6`, verified
+proof head `d72764f9`. The single new `Global/ScalarGradientEvolution.lean`
+proves seven named results: moving covector/gradient norm differentiation,
+manifold mixed-partial differentiation, the normalized scalar-gradient time
+derivative under explicit extra scalar regularity, the coordinate/intrinsic
+Ricci bridge, anchor-coordinate Bochner, and the intrinsic Laplacian expansion
+for a chart-supported scalar. The complete emitted module has 45 declarations,
+each with exactly the three required foundational dependencies. Focused
+compilation, token search, and whitespace checks pass.
+
+The full intrinsic scalar-gradient Bochner identity and the assembled evolution
+predicate remain unproved. Joint C⁴ metric entries have not yet been shown to
+supply the additional joint C² scalar and differentiable scalar-Laplacian
+hypotheses of the time theorem. The exact resisting identity, all probe outputs,
+source snapshots, and final diff are in
+`harness/reports/scalar-gradient-evolution-identity_blocked.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/ScalarGradientEvolution.lean`.
+Then reproduce report probe 27 and prove the coordinate/intrinsic Laplacian
+germ equality needed for localized Bochner assembly.
+
 
 ## 2026-09-15 Worker near-frozen parabolic right inverse proved
 
