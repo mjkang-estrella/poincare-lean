@@ -250,6 +250,49 @@ theorem bochner_anchorBlendedMetric
   rw [h]
   ring
 
+set_option backward.isDefEq.respectTransparency false in
+omit [SecondCountableTopology N] in
+/-- Contract the intrinsic Hessian into ordinary chart derivatives at the
+anchor. This version uses a scalar supported inside that chart. -/
+theorem laplacianAt_eq_anchor_derivatives
+    (g : ClosedSmoothRiemannianMetric 3 N) (x : N) (f : N → ℝ)
+    (hs : tsupport f ⊆ (extChartAt I₃ x).source)
+    (hf : ContMDiff I₃ 𝓘(ℝ) 2 f) :
+    let u := ClosedLaplacianStokesProducer.coordinateScalar (n := 3) x f
+    let q := extChartAt I₃ x x
+    let b := Module.finBasis ℝ E₃
+    g.laplacianAt f x = ∑ i,
+      (fderiv ℝ (fderiv ℝ u) q (metricDualVectorAt g x (b.coord i)) (b i) -
+      fderiv ℝ u q (RicciFlow.RicciFlow.christoffelClosedOp
+        (CovariantDerivative.chartMetric g.inner x) q
+        (metricDualVectorAt g x (b.coord i)) (b i))) := by
+  intro u q b
+  letI : FiniteDimensional ℝ (TangentSpace I₃ x) :=
+    inferInstanceAs (FiniteDimensional ℝ E₃)
+  have hD : mfderivWithin 𝓘(ℝ, E₃) I₃ (extChartAt I₃ x).symm (range I₃) q =
+      ContinuousLinearMap.id ℝ E₃ := by
+    have h := mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
+      (mem_extChartAt_source («I» := I₃) x)
+    rw [mfderiv_extChartAt_self] at h
+    simpa [q] using h
+  rw [laplacianAt_eq_sum_hessianAt g f x]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [g.hessianAt_symm' hf.contMDiffAt]
+  have h := IntrinsicLaplacianCoordinateForm.hessianAt_eq_chart_derivatives
+    g x f hs hf (mem_extChartAt_target x)
+    (metricDualVectorAt g x (b.coord i)) (b i)
+  dsimp only at h
+  dsimp only [q] at hD
+  rw [hD] at h
+  change g.hessianAt f ((extChartAt I₃ x).symm (extChartAt I₃ x x))
+    (metricDualVectorAt g x (b.coord i)) (b i) = _ at h
+  have hp : (extChartAt I₃ x).symm (extChartAt I₃ x x) = x :=
+    (extChartAt I₃ x).left_inv (mem_extChartAt_source x)
+  have he := congrArg (fun y : N ↦ g.hessianAt f y
+    (metricDualVectorAt g x (b.coord i)) (b i)) hp
+  exact he.symm.trans h
+
 end Normalized
 
 end Poincare.ScalarGradientEvolution
