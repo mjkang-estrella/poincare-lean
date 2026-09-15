@@ -74,4 +74,87 @@ theorem finite_difference_derivative
   rw [he]
   nlinarith
 
+/-- Optimizing the step gives a square-root bound on the full derivative. -/
+theorem derivative_norm_le_sqrt
+    {h : E → ℝ} {dh : E → E →L[ℝ] ℝ}
+    {ddh : E → E →L[ℝ] E →L[ℝ] ℝ} {δ M : ℝ}
+    (hd : ∀ x, HasFDerivAt h (dh x) x)
+    (hdd : ∀ x, HasFDerivAt dh (ddh x) x)
+    (hδ : 0 < δ) (hM : 0 ≤ M)
+    (ha : ∀ x, |h x| ≤ δ * M) (hb : ∀ x, ‖ddh x‖ ≤ 2 * M)
+    (x : E) : ‖dh x‖ ≤ 3 * Real.sqrt δ * M := by
+  apply ContinuousLinearMap.opNorm_le_of_unit_norm (by positivity)
+  intro v hv
+  have h := finite_difference_derivative hd hdd ha hb (Real.sqrt_pos.mpr hδ) x v hv
+  have he : 2 * (δ * M) / Real.sqrt δ + Real.sqrt δ / 2 * (2 * M) =
+      3 * Real.sqrt δ * M := by
+    have hs := Real.sq_sqrt hδ.le
+    have hp := Real.sqrt_pos.mpr hδ
+    field_simp
+    nlinarith [congrArg (fun z : ℝ => z * M) hs]
+  exact h.trans_eq he
+
+variable {α T : ℝ}
+
+/-- Time increments of the value are controlled by the stored time derivative. -/
+theorem value_time_increment (G : Graph (E := E) α T)
+    {s t : ℝ} (hs : s ∈ Icc 0 T) (ht : t ∈ Icc 0 T) (x : E) :
+    |G.u (t, x) - G.u (s, x)| ≤ |t - s| * ‖G‖ := by
+  have h := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (fun r hr => G.hasDeriv_time r hr x)
+    (fun r _ => sup_ut_le G (r, x)) (convex_Icc (0 : ℝ) T) hs ht
+  simpa only [Real.norm_eq_abs, mul_comm] using h
+
+/-- The gradient of any derivative graph is uniformly small at short times. -/
+theorem gradient_bound (G : Graph (E := E) α T) (hT : 0 < T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x : E) :
+    ‖G.du (t, x)‖ ≤ 3 * Real.sqrt T * ‖G‖ := by
+  apply derivative_norm_le_sqrt (G.hasFDeriv t ht) (G.hasFDeriv_du t ht) hT
+    (norm_nonneg G) ?_ ?_ x
+  · intro y
+    calc
+      |G.u (t, y)| ≤ t * ‖G.ut‖ := time_bound G ht y
+      _ ≤ T * ‖G‖ := mul_le_mul ht.2 (norm_ut_le G) (norm_nonneg _) hT.le
+  · intro y
+    exact (sup_ddu_le G (t, y)).trans (by linarith [norm_nonneg G])
+
+/-- The supremum of the gradient has the same square-root gain. -/
+theorem supNorm_gradient_le (G : Graph (E := E) α T) (hT : 0 < T) :
+    supNorm (cylinder T) G.du ≤ 3 * Real.sqrt T * ‖G‖ := by
+  apply csSup_le (insert_nonempty _ _)
+  rintro r (rfl | ⟨p, rfl⟩)
+  · positivity
+  · exact gradient_bound G hT p.property.1 p.val.2
+
+/-- Time differences of the gradient require no mixed time-space derivative. -/
+theorem gradient_time_increment (G : Graph (E := E) α T)
+    {s t : ℝ} (hs : s ∈ Icc 0 T) (ht : t ∈ Icc 0 T) (x : E) :
+    ‖G.du (t, x) - G.du (s, x)‖ ≤ 3 * Real.sqrt |t - s| * ‖G‖ := by
+  by_cases hst : t = s
+  · simp [hst]
+  · apply derivative_norm_le_sqrt
+      (fun y => (G.hasFDeriv t ht y).sub (G.hasFDeriv s hs y))
+      (fun y => (G.hasFDeriv_du t ht y).sub (G.hasFDeriv_du s hs y))
+      (abs_pos.mpr (sub_ne_zero.mpr hst)) (norm_nonneg G)
+      (value_time_increment G hs ht) ?_ x
+    intro y
+    exact (norm_sub_le (G.ddu (t, y)) (G.ddu (s, y))).trans
+      (by linarith [sup_ddu_le G (t, y), sup_ddu_le G (s, y)])
+
+/-- Spatial gradient increments are Lipschitz with the Hessian bound. -/
+theorem gradient_space_increment (G : Graph (E := E) α T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x y : E) :
+    ‖G.du (t, x) - G.du (t, y)‖ ≤ ‖G‖ * ‖x - y‖ :=
+  Convex.norm_image_sub_le_of_norm_hasFDerivWithin_le
+    (fun z _ => (G.hasFDeriv_du t ht z).hasFDerivWithinAt)
+    (fun z _ => sup_ddu_le G (t, z)) convex_univ (mem_univ y) (mem_univ x)
+
+/-- Spatial value increments inherit the improved gradient bound. -/
+theorem value_space_increment (G : Graph (E := E) α T) (hT : 0 < T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x y : E) :
+    |G.u (t, x) - G.u (t, y)| ≤ (3 * Real.sqrt T * ‖G‖) * ‖x - y‖ :=
+  Convex.norm_image_sub_le_of_norm_hasFDerivWithin_le
+    (fun z _ => (G.hasFDeriv t ht z).hasFDerivWithinAt)
+    (fun z _ => gradient_bound G hT ht z) convex_univ (mem_univ y) (mem_univ x)
+
 end Poincare.ParabolicCutoffCommutator
