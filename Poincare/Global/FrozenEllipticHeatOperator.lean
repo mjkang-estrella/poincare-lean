@@ -219,4 +219,44 @@ theorem trace_pullback (S : E ≃L[ℝ] E)
       ring
     _ = _ := by simp only [hb]
 
+theorem graph_heat_equation_of_duhamel (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) (f : Y («E» := E) α T ℝ)
+    (H : ParabolicSolutionGraph.Graph («E» := E) α T)
+    (hH : ∀ p ∈ cylinder T, H.u p =
+      ∫ s in (0 : ℝ)..p.1, heatSolution (p.1 - s) (fun y => f (s, y)) p.2) :
+    ∀ t ∈ Icc 0 T, ∀ x : E,
+      H.ut (t, x) = f (t, x) + ∑ i : Fin 3, H.ddu (t, x) (e i) (e i) := by
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t - s) (fun y => f (s, y)) x
+  have hu (t : ℝ) (ht : t ∈ Icc 0 T) : (fun x => H.u (t, x)) = u t :=
+    funext fun x => hH (t, x) ⟨ht, mem_univ x⟩
+  have hd (t : ℝ) (ht : t ∈ Icc 0 T) :
+      (fun x => H.du (t, x)) = fderiv ℝ (u t) := by
+    funext x
+    rw [← hu t ht]
+    exact (H.hasFDeriv t ht x).fderiv.symm
+  have hdd (t : ℝ) (ht : t ∈ Icc 0 T) (x : E) :
+      H.ddu (t, x) = fderiv ℝ (fderiv ℝ (u t)) x := by
+    rw [← hd t ht]
+    exact (H.hasFDeriv_du t ht x).fderiv.symm
+  have hf := DuhamelSolutionOperatorBound.continuousOn_of_hasHolderBound hα
+    (ParabolicHolder.hasHolderBound f)
+  have hspace : ∀ t ∈ Icc 0 T, ∀ x y : E,
+      |f (t, x) - f (t, y)| ≤ ‖f‖ * ‖x - y‖ ^ α := by
+    intro t ht x y
+    simpa only [parabolicDist, sub_self, abs_zero, Real.sqrt_zero, add_zero,
+      Real.norm_eq_abs] using ParabolicHolder.holder_le f
+        (show (t, x) ∈ cylinder T from ⟨ht, mem_univ x⟩)
+        (show (t, y) ∈ cylinder T from ⟨ht, mem_univ y⟩)
+  have heq := (MovingLimitLeibniz.duhamel_solves_heat_equation α hα hα1 T hT hT1
+    f ‖f‖ ‖f‖ (norm_nonneg f) (norm_nonneg f) hf
+    (fun t _ x => ParabolicHolder.norm_le f (t, x)) hspace).2
+  intro t ht x
+  have htime := (heq t ht x).congr_of_mem
+    (fun s hs => congrFun (hu s hs) x) ht
+  have huniq := uniqueDiffOn_Icc hT t ht
+  have hval := ((H.hasDeriv_time t ht x).derivWithin huniq).symm.trans
+    (htime.derivWithin huniq)
+  simpa only [hdd t ht x] using hval
+
 end Poincare.FrozenEllipticHeatOperator
