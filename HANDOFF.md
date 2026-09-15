@@ -1,5 +1,25 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker intrinsic Bochner and scalar-gradient evolution proved
+
+Branch `worker/intrinsic-bochner-scalar-gradient`, task base `cdcf6956`,
+verified proof head `abf4efa5`. The single new
+`Global/IntrinsicBochnerScalarGradient.lean` proves intrinsic Bochner for C³
+scalars by chart localization, higher-order joint scalar regularity, and the
+normalized scalar-gradient evolution equation. Joint C⁴ metric entries give
+joint C² scalar curvature. The final producer uses the authorized C⁵ entries
+to supply spatial C³ scalar curvature and all extra scalar hypotheses.
+The Ricci terms cancel, leaving the normalization term `-2 r S`.
+
+Focused compilation, an expanded literal-target assignment, the empty token
+scan, and whitespace checks pass. All 68 emitted declarations have exactly
+the three required foundational dependencies. Actual failed and final probe
+outputs, audit programs, and the proof diff are in
+`harness/reports/intrinsic-bochner-scalar-gradient_done.md`.
+This worker result awaits independent review and has not been merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/IntrinsicBochnerScalarGradient.lean`.
+
 ## 2026-09-15 Worker finite-atlas parabolic tensor carriers proved
 
 Branch `worker/finite-atlas-parabolic-tensor-space`, base `e65eaa7b`,
