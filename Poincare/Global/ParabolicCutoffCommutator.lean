@@ -737,3 +737,157 @@ theorem exists_cutoff_operator {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
       rfl
 
 end Poincare.ParabolicCutoffCommutator
+
+noncomputable section
+set_option maxHeartbeats 800000
+namespace Poincare.ParabolicCutoffCommutator
+open Set ParabolicHolder ParabolicSolutionGraph
+open scoped ContDiff
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {α T : ℝ}
+
+/-- Evaluate a first derivative carrier on a unit direction. -/
+def derivativeEntry (H : Y (E := E) α T (E →L[ℝ] ℝ)) (v : E) (hv : ‖v‖ = 1) :
+    Y (E := E) α T ℝ :=
+  ofFunction (fun p => H p v)
+    (fun p hp => by simp [zero_off H hp])
+    ⟨‖H‖, fun p _ => by
+      simpa [hv] using ((H p).le_opNorm v).trans
+        (mul_le_mul_of_nonneg_right (ParabolicHolder.norm_le H p) (norm_nonneg v))⟩
+    ⟨‖H‖, fun p hp q hq => by
+      have h := (H p - H q).le_opNorm v
+      simpa [hv] using h.trans
+        (mul_le_mul_of_nonneg_right (ParabolicHolder.holder_le H hp hq) (norm_nonneg v))⟩
+
+/-- Evaluation is bounded in the full Hölder norm. -/
+theorem norm_derivativeEntry_le (H : Y (E := E) α T (E →L[ℝ] ℝ)) (v : E) (hv : ‖v‖ = 1) :
+    ‖derivativeEntry H v hv‖ ≤ 2 * ‖H‖ := by
+  have h := ParabolicHolder.norm_le_of_bounds (derivativeEntry H v hv)
+    (norm_nonneg H) (norm_nonneg H)
+    (fun p _ => by
+      simpa [hv] using ((H p).le_opNorm v).trans
+        (mul_le_mul_of_nonneg_right (ParabolicHolder.norm_le H p) (norm_nonneg v)))
+    (fun p hp q hq => by
+      have h := (H p - H q).le_opNorm v
+      simpa [hv] using h.trans
+        (mul_le_mul_of_nonneg_right (ParabolicHolder.holder_le H hp hq) (norm_nonneg v)))
+  linarith
+
+
+/-- The first-order forcing associated to the explicit commutator coefficients. -/
+def firstOrderForcing (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (G : Graph (E := (ClosedSmoothModel 3)) α T) : Y (E := (ClosedSmoothModel 3)) α T ℝ :=
+  (∑ i : Fin 3, b i * derivativeEntry G.du ((EuclideanSpace.basisFun (Fin 3) ℝ) i) (OrthonormalBasis.norm_eq_one (EuclideanSpace.basisFun (Fin 3) ℝ) i)) + c * G.u
+
+/-- The carrier evaluates to the first-order coefficient formula. -/
+theorem firstOrderForcing_apply (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (G : Graph (E := (ClosedSmoothModel 3)) α T) (p : ℝ × (ClosedSmoothModel 3)) :
+    firstOrderForcing b c G p = (∑ i : Fin 3, b i p * G.du p ((EuclideanSpace.basisFun (Fin 3) ℝ) i)) + c p * G.u p := by
+  simp only [firstOrderForcing, add_apply, ParabolicHolderMultiplier.sum_apply, mul_apply,
+    derivativeEntry, ofFunction_apply]
+
+/-- The commutator uses only the value and gradient norms. -/
+theorem norm_firstOrderForcing_le (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (G : Graph (E := (ClosedSmoothModel 3)) α T) :
+    ‖firstOrderForcing b c G‖ ≤ 2 * (∑ i : Fin 3, ‖b i‖) * ‖G.du‖ + ‖c‖ * ‖G.u‖ := by
+  calc
+    ‖firstOrderForcing b c G‖ ≤
+        ‖∑ i : Fin 3, b i * derivativeEntry G.du ((EuclideanSpace.basisFun (Fin 3) ℝ) i) (OrthonormalBasis.norm_eq_one (EuclideanSpace.basisFun (Fin 3) ℝ) i)‖ + ‖c * G.u‖ := norm_add_le _ _
+    _ ≤ (∑ i : Fin 3, ‖b i * derivativeEntry G.du ((EuclideanSpace.basisFun (Fin 3) ℝ) i) (OrthonormalBasis.norm_eq_one (EuclideanSpace.basisFun (Fin 3) ℝ) i)‖) + ‖c‖ * ‖G.u‖ :=
+      add_le_add (norm_sum_le _ _) (ParabolicHolder.norm_mul_le _ _)
+    _ ≤ (∑ i : Fin 3, ‖b i‖ * (2 * ‖G.du‖)) + ‖c‖ * ‖G.u‖ := by
+      apply add_le_add_left
+      apply Finset.sum_le_sum
+      intro i hi
+      exact (ParabolicHolder.norm_mul_le _ _).trans
+        (mul_le_mul_of_nonneg_left (norm_derivativeEntry_le G.du _ _) (norm_nonneg _))
+    _ = _ := by rw [← Finset.sum_mul]; ring
+
+/-- The commutator has separate positive time powers for its two coefficient families. -/
+theorem firstOrder_time_bound (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (G : Graph (E := (ClosedSmoothModel 3)) α T) (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) :
+    ‖firstOrderForcing b c G‖ ≤
+      24 * ((∑ i : Fin 3, ‖b i‖) * T ^ ((1-α)/2) + ‖c‖ * T ^ (1-α/2)) * ‖G‖ := by
+  obtain ⟨hu, hdu⟩ := interpolation_bounds G hα hα1 hT hT1
+  have hb : 0 ≤ ∑ i : Fin 3, ‖b i‖ := Finset.sum_nonneg (fun i _ => norm_nonneg (b i))
+  have h1 := mul_le_mul_of_nonneg_left hdu (show 0 ≤ 2 * ∑ i : Fin 3, ‖b i‖ by positivity)
+  have h2 := mul_le_mul_of_nonneg_left hu (norm_nonneg c)
+  have h3 := norm_firstOrderForcing_le b c G
+  nlinarith [mul_nonneg (norm_nonneg c) (mul_nonneg (Real.rpow_nonneg hT.le (1-α/2)) (norm_nonneg G))]
+
+/-- The common weaker time exponent controls both first-order terms. -/
+theorem firstOrder_common_time_bound (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (G : Graph (E := (ClosedSmoothModel 3)) α T) (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1) :
+    ‖firstOrderForcing b c G‖ ≤
+      (24 * ((∑ i : Fin 3, ‖b i‖) + ‖c‖) * T ^ ((1-α)/2)) * ‖G‖ := by
+  have hp : T ^ (1-α/2) ≤ T ^ ((1-α)/2) :=
+    Real.rpow_le_rpow_of_exponent_ge hT hT1 (by linarith)
+  have h := firstOrder_time_bound b c G hα hα1 hT hT1
+  nlinarith [mul_le_mul_of_nonneg_left hp (mul_nonneg (norm_nonneg c) (norm_nonneg G))]
+
+/-- First-order coefficient multiplication is a linear map of derivative graphs. -/
+def firstOrderLinearMap (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ) :
+    Graph (E := (ClosedSmoothModel 3)) α T →ₗ[ℝ] Y (E := (ClosedSmoothModel 3)) α T ℝ where
+  toFun := firstOrderForcing b c
+  map_add' G H := by
+    apply ParabolicHolder.ext
+    intro p hp
+    simp only [add_apply, firstOrderForcing_apply]
+    change (∑ i : Fin 3, b i p * (G.du p ((EuclideanSpace.basisFun (Fin 3) ℝ) i) + H.du p ((EuclideanSpace.basisFun (Fin 3) ℝ) i))) + c p * (G.u p + H.u p) = _
+    simp only [mul_add, Finset.sum_add_distrib]
+    ring
+  map_smul' r G := by
+    apply ParabolicHolder.ext
+    intro p hp
+    simp only [smul_apply, firstOrderForcing_apply]
+    change (∑ i : Fin 3, b i p * (r * G.du p ((EuclideanSpace.basisFun (Fin 3) ℝ) i))) + c p * (r * G.u p) = _
+    simp only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, smul_eq_mul, RingHom.id_apply]
+    ring
+
+/-- The frozen commutator operator target, with a universal constant. -/
+theorem commutator : ∀ α : ℝ, 0 < α → α < 1 →
+    ∃ C : ℝ, 0 < C ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
+    ∀ (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ),
+    ∃ K : Graph (E := (ClosedSmoothModel 3)) α T →L[ℝ] Y (E := (ClosedSmoothModel 3)) α T ℝ,
+      (∀ G p, K G p = (∑ i : Fin 3, b i p * G.du p ((EuclideanSpace.basisFun (Fin 3) ℝ) i)) + c p * G.u p) ∧
+      ‖K‖ ≤ C * ((∑ i : Fin 3, ‖b i‖) + ‖c‖) * T ^ ((1-α)/2) := by
+  intro α hα hα1
+  refine ⟨24, by norm_num, ?_⟩
+  intro T hT hT1 b c
+  let B := 24 * ((∑ i : Fin 3, ‖b i‖) + ‖c‖) * T ^ ((1-α)/2)
+  let K := (firstOrderLinearMap b c).mkContinuous B
+    (fun G => firstOrder_common_time_bound b c G hα hα1 hT hT1)
+  refine ⟨K, firstOrderForcing_apply b c, ?_⟩
+  exact ContinuousLinearMap.opNorm_le_bound _ (by dsimp [B]; positivity)
+    (fun G => firstOrder_common_time_bound b c G hα hα1 hT hT1)
+
+set_option maxHeartbeats 4000000 in
+/-- The nonsymmetric principal coefficients give both mixed cutoff terms. -/
+theorem cutoff_commutator_identity {ψ : (ClosedSmoothModel 3) → ℝ} (hψ : ContDiff ℝ ∞ ψ)
+    (hcompact : HasCompactSupport ψ) (hα : 0 < α) (hα1 : α < 1)
+    (a : Fin 3 → Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (drift : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (potential : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (b : Fin 3 → Y (E := (ClosedSmoothModel 3)) α T ℝ) (c : Y (E := (ClosedSmoothModel 3)) α T ℝ)
+    (hb : ∀ t ∈ Icc 0 T, ∀ x k,
+      b k (t,x) = -(∑ j : Fin 3, (a j k (t,x) + a k j (t,x)) * fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) j)))
+    (hc : ∀ t ∈ Icc 0 T, ∀ x,
+      c (t,x) = -(∑ j : Fin 3, ∑ k : Fin 3, a j k (t,x) * fderiv ℝ (fderiv ℝ ψ) x ((EuclideanSpace.basisFun (Fin 3) ℝ) j) ((EuclideanSpace.basisFun (Fin 3) ℝ) k)) -
+        ∑ j : Fin 3, drift j (t,x) * fderiv ℝ ψ x ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) :
+    ∃ C : Graph (E := (ClosedSmoothModel 3)) α T →L[ℝ] Graph (E := (ClosedSmoothModel 3)) α T,
+      (∀ G p, (C G).u p = ψ p.2 * G.u p) ∧
+      (∀ G t, t ∈ Icc 0 T → ∀ x,
+        ((C G).ut (t,x) - (∑ i : Fin 3, ∑ j : Fin 3, a i j (t,x) * (C G).ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) -
+          (∑ i : Fin 3, drift i (t,x) * (C G).du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i)) - potential (t,x) * (C G).u (t,x)) -
+        ψ x * (G.ut (t,x) - (∑ i : Fin 3, ∑ j : Fin 3, a i j (t,x) * G.ddu (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) -
+          (∑ i : Fin 3, drift i (t,x) * G.du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i)) - potential (t,x) * G.u (t,x)) =
+        (∑ i : Fin 3, b i (t,x) * G.du (t,x) ((EuclideanSpace.basisFun (Fin 3) ℝ) i)) + c (t,x) * G.u (t,x)) := by
+  obtain ⟨C, hu, hjets⟩ := exists_cutoff_operator hψ hcompact hα hα1
+  refine ⟨C, hu, ?_⟩
+  intro G t ht x
+  obtain ⟨hut, hdu, hddu⟩ := hjets G t ht x
+  rw [hut, hdu, hddu, hu G (t,x)]
+  simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+    ContinuousLinearMap.smulRight_apply, smul_eq_mul, hb t ht x, hc t ht x,
+    Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero]
+  ring
+
+end Poincare.ParabolicCutoffCommutator
