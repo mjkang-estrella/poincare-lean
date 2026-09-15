@@ -542,6 +542,22 @@ solution is a solution graph `G` with `‖G‖ ≤ C‖f‖`. The constant-coeff
 inverse of the parabolic route is therefore bounded from `Y α T` into
 `Graph α T` with a constant uniform in `T ≤ 1`.
 
+2026-09-15 design review (GPT Astra, conversational; full record in
+`harness/reports/astra-design-review-2026-09-15.md`): (1) build the
+parametrix on the finite atlas of `M` as finite products of the landed
+scalar carriers, dropping the whole-space step L6; (2) the nonlinear step
+needs the reference family `g₀ + t Q(g₀)` with a quantitative bound on the
+residual's time derivative, and the zero-trace interpolation controls only
+the product term; (3) **correction**: the clause `V ≤ 6E` carried by the
+energy and initial-pinching cores is not implied by pinching (the
+almost-Schur constant is 24 in dimension three, and near-round metrics reach
+ratio about 15), so the S9 mean-floor route is a dead end as parametrized;
+the mean floor must come from Hamilton's scalar oscillation control, whose
+first lemma is the normalized `|∇R|²` evolution identity. The mission node
+`hamilton-reaction-core-energy` remains a valid conditional reduction but
+should not be treated as a discharge target; the residual survey in flight
+decides the restructuring.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
