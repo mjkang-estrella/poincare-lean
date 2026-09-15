@@ -765,6 +765,15 @@ carriers on the finite atlas, the interpolation plus cutoff commutator, and
 the buffered frozen solver with the oscillation extension. The first two are
 dispatched.
 
+Finite-atlas task 1 landed (`Global/FiniteAtlasParabolicTensorSpace.lean`,
+gate PASS, 84 declarations): the compatible forcing and zero-trace solution
+carriers `Y_M`, `X_M` for symmetric 2-tensor fields on the finite shrunk
+atlas, as closed submodules (support, symmetry and the weighted overlap law
+are intersections of continuous linear kernels) of finite products of the
+landed scalar carriers, hence complete normed spaces with the inherited
+norm; the record/submodule equivalence, entry bounds, the expanded
+transition equation, and compactness of the coordinate supports.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

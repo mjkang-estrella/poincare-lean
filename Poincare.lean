@@ -42,6 +42,7 @@ import Poincare.Global.DeTurckPrincipalSecondJet
 import Poincare.Global.DuhamelParabolicHolderSeminorm
 import Poincare.Global.DuhamelSolutionOperatorBound
 import Poincare.Global.DuhamelSolutionOperatorCLM
+import Poincare.Global.FiniteAtlasParabolicTensorSpace
 import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity
 import Poincare.Global.FixedChartEndpointSlices
