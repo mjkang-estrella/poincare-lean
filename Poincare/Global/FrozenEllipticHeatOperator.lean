@@ -259,4 +259,44 @@ theorem graph_heat_equation_of_duhamel (hα : 0 < α) (hα1 : α < 1)
     (htime.derivWithin huniq)
   simpa only [hdd t ht x] using hval
 
+theorem exists_solution_graph_bound_of_factorization :
+    ∀ α : ℝ, 0 < α → α < 1 → ∃ C : ℝ, 0 < C ∧
+    ∀ (A : Bilin) (S : E ≃L[ℝ] E),
+      (∀ v w : E, inner ℝ (S v) w = inner ℝ v (S w)) →
+      (∀ v w : E, A v w = inner ℝ (S v) (S w)) →
+    ∀ T : ℝ, 0 < T → T ≤ 1 → ∀ f : Y («E» := E) α T ℝ,
+      ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
+        (∀ t ∈ Icc 0 T, ∀ x : E, G.ut (t, x) = f (t, x) +
+          ∑ i : Fin 3, ∑ j : Fin 3, A (e i) (e j) * G.ddu (t, x) (e i) (e j)) ∧
+        ‖G‖ ≤ (max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ 2) *
+          max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ α)) *
+          C * max 1 (‖(S : E →L[ℝ] E)‖ ^ α) * ‖f‖ := by
+  intro α hα hα1
+  obtain ⟨C, hC, hCb⟩ := DuhamelSolutionOperatorBound.exists_solution_graph_bound α hα hα1
+  refine ⟨C, hC, ?_⟩
+  intro A S hS hA T hT hT1 f
+  let g := mapHolder hα.le (S : E →L[ℝ] E) (ContinuousLinearMap.id ℝ ℝ) f
+  obtain ⟨H, hH, hHN⟩ := hCb T hT hT1 g
+  let G := mapGraph hα.le (S.symm : E →L[ℝ] E) H
+  refine ⟨G, ?_, ?_⟩
+  · intro t ht x
+    have heq := graph_heat_equation_of_duhamel hα hα1 hT hT1 g H hH t ht (S.symm x)
+    change H.ut (t, S.symm x) = f (t, x) +
+      ∑ i : Fin 3, ∑ j : Fin 3, A (e i) (e j) *
+        H.ddu (t, S.symm x) (S.symm (e i)) (S.symm (e j))
+    simp_rw [hA]
+    rw [trace_pullback S hS]
+    simpa only [g, mapHolder, ofFunction_apply, ContinuousLinearMap.id_apply,
+      ContinuousLinearEquiv.coe_coe, S.apply_symm_apply] using heq
+  · have hg := norm_forcing_pullback_le hα.le (S : E →L[ℝ] E) f
+    have hb := norm_mapGraph_le hα.le (S.symm : E →L[ℝ] E) H
+    have hHN' := hHN.trans (mul_le_mul_of_nonneg_left hg hC.le)
+    exact hb.trans (by
+      calc
+        _ ≤ (max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ 2) *
+            max 1 (‖(S.symm : E →L[ℝ] E)‖ ^ α)) *
+            (C * (max 1 (‖(S : E →L[ℝ] E)‖ ^ α) * ‖f‖)) :=
+          mul_le_mul_of_nonneg_left hHN' (by positivity)
+        _ = _ := by ring)
+
 end Poincare.FrozenEllipticHeatOperator
