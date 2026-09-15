@@ -322,8 +322,11 @@ theorem sum_reweighted_localized_transport (f : ↥(tensorSubmodule A ev))
         ev (t, chart A j x) (f.val (j, c, d)) else 0))) =
       (∑ j, (A.partition j x) ^ 2) * ev (t, chart A i x) (f.val (i, a, b)) := by
   classical
-  simp_rw [localized_transport_eq A ev f i _ a b t x hi, ← mul_assoc, ← pow_two]
-  exact (Finset.sum_mul ..).symm
+  rw [Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro j _
+  rw [localized_transport_eq A ev f i j a b t x hi]
+  ring
 
 /-- A genuinely overlapping partition has squared weights with total strictly below one. -/
 theorem sum_partition_sq_lt_one (x : M) (j : Fin A.cover.chartCount)
