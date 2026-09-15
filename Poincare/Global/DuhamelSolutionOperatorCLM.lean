@@ -51,7 +51,7 @@ def boundConstant (α : ℝ) (hα : 0 < α) (hα1 : α < 1) : ℝ :=
 
 /-- The chosen constant retains the complete landed existence estimate. -/
 theorem boundConstant_spec (α : ℝ) (hα : 0 < α) (hα1 : α < 1) :
-    0 < boundConstant α hα hα1 ∧ ∀ T : ℝ, ∀ hT : 0 < T, ∀ hT1 : T ≤ 1,
+    0 < boundConstant α hα hα1 ∧ ∀ T : ℝ, 0 < T → T ≤ 1 →
     ∀ f : Y («E» := E) α T ℝ, ∃ G : ParabolicSolutionGraph.Graph («E» := E) α T,
       (∀ p ∈ cylinder T, G.u p =
         ∫ s in (0 : ℝ)..p.1, heatSolution (p.1-s) (fun y => f (s,y)) p.2) ∧
@@ -152,5 +152,46 @@ theorem duhamelOperator_norm_le :
   refine ⟨boundConstant α hα hα1, (boundConstant_spec α hα hα1).1, ?_⟩
   intro T hT hT1
   exact LinearMap.mkContinuous_norm_le _ (boundConstant_spec α hα hα1).1.le _
+
+/-- The graph satisfies the inhomogeneous heat equation, including both endpoints. -/
+theorem duhamelOperator_solves (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) (f : Y («E» := E) α T ℝ) :
+    ∀ t ∈ Icc 0 T, ∀ x : E,
+      (duhamelOperator α T hα hα1 hT hT1 f).ut (t,x) = f (t,x) +
+        ∑ i : Fin 3, (duhamelOperator α T hα hα1 hT hT1 f).ddu (t,x)
+          (EuclideanSpace.basisFun (Fin 3) ℝ i) (EuclideanSpace.basisFun (Fin 3) ℝ i) := by
+  let G := duhamelOperator α T hα hα1 hT hT1 f
+  let u : ℝ → E → ℝ := fun t x =>
+    ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x
+  have hu (t : ℝ) (ht : t ∈ Icc 0 T) : (fun z : E => G.u (t,z)) = u t := by
+    funext z
+    exact duhamelOperator_u α T hα hα1 hT hT1 f (t,z) ⟨ht, mem_univ z⟩
+  have hd (t : ℝ) (ht : t ∈ Icc 0 T) : (fun z : E => G.du (t,z)) = fderiv ℝ (u t) := by
+    funext z
+    have h := (G.hasFDeriv t ht z).fderiv
+    rw [hu t ht] at h
+    exact h.symm
+  have hdd (t : ℝ) (ht : t ∈ Icc 0 T) (x : E) :
+      G.ddu (t,x) = fderiv ℝ (fderiv ℝ (u t)) x := by
+    have h := (G.hasFDeriv_du t ht x).fderiv
+    rw [hd t ht] at h
+    exact h.symm
+  have hf : ContinuousOn f (cylinder T) :=
+    continuousOn_of_hasHolderBound hα (hasHolderBound f)
+  have hfM : ∀ t ∈ Icc 0 T, ∀ x : E, |f (t,x)| ≤ ‖f‖ :=
+    fun t _ x => ParabolicHolder.norm_le f (t,x)
+  have hfK : ∀ t ∈ Icc 0 T, ∀ x y : E,
+      |f (t,x)-f (t,y)| ≤ ‖f‖ * ‖x-y‖^α := by
+    intro t ht x y
+    simpa [parabolicDist, Real.norm_eq_abs] using
+      hasHolderBound f (t,x) ⟨ht, mem_univ x⟩ (t,y) ⟨ht, mem_univ y⟩
+  intro t ht x
+  change G.ut (t,x) = f (t,x) + ∑ i : Fin 3, G.ddu (t,x) _ _
+  rw [hdd t ht x]
+  have htime := (MovingLimitLeibniz.duhamel_solves_heat_equation α hα hα1 T hT hT1
+    f ‖f‖ ‖f‖ (norm_nonneg f) (norm_nonneg f) hf hfM hfK).2 t ht x
+  have htimeG := htime.congr_of_mem (fun s hs => congrFun (hu s hs) x) ht
+  exact ((G.hasDeriv_time t ht x).derivWithin (uniqueDiffOn_Icc hT t ht)).symm.trans
+    (htimeG.derivWithin (uniqueDiffOn_Icc hT t ht))
 
 end Poincare.DuhamelSolutionOperatorCLM
