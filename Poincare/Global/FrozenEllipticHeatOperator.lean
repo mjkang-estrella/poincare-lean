@@ -85,4 +85,7 @@ theorem norm_forcing_pullback_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
   simpa only [ContinuousLinearMap.norm_id, one_mul] using
     norm_mapHolder_le hα S (ContinuousLinearMap.id ℝ ℝ) f
 
+def covectorPullback (S : E →L[ℝ] E) : (E →L[ℝ] ℝ) →L[ℝ] (E →L[ℝ] ℝ) :=
+  (ContinuousLinearMap.compL ℝ E E ℝ).flip S
+
 end Poincare.FrozenEllipticHeatOperator
