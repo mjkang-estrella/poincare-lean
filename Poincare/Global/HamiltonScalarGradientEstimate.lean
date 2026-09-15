@@ -207,4 +207,220 @@ theorem factorTwentySevenths_damping {A S : ℝ}
     -2 * A + (2 / 3 : ℝ) * S ≤ -(2 / 21 : ℝ) * A := by
   linarith
 
+/-- The two traces determine the pairing with Hamilton's trace tensor. -/
+theorem weighted_bianchi_trace_pairing
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (d D : ι → ℝ) (C : ι → ι → ι → ℝ)
+    (hd : ∀ i, d i ≠ 0)
+    (htrace : ∀ a, ∑ i, C a i i / d i = D a)
+    (hdiv : ∀ j, ∑ a, C a a j / d a = D j / 2)
+    (hsymm : ∀ a i j, C a i j = C a j i) :
+    (∑ a, ∑ i, ∑ j, C a i j *
+      ((if i = j then (3 / 10 : ℝ) * d i * D a else 0) +
+       (if a = i then (1 / 20 : ℝ) * d a * D j else 0) +
+       (if a = j then (1 / 20 : ℝ) * d a * D i else 0)) /
+        (d a * d i * d j)) = (7 / 20 : ℝ) * ∑ a, D a ^ 2 / d a := by
+  classical
+  have hterm (a i j : ι) : C a i j *
+      ((if i = j then (3 / 10 : ℝ) * d i * D a else 0) +
+       (if a = i then (1 / 20 : ℝ) * d a * D j else 0) +
+       (if a = j then (1 / 20 : ℝ) * d a * D i else 0)) /
+        (d a * d i * d j) =
+      (if i = j then (3 / 10 : ℝ) * (D a / d a) * (C a i i / d i) else 0) +
+      (if a = i then (1 / 20 : ℝ) * (D j / d j) * (C a a j / d a) else 0) +
+      (if a = j then (1 / 20 : ℝ) * (D i / d i) * (C a a i / d a) else 0) := by
+    have hs := hsymm a i a
+    split_ifs <;> subst_vars <;> simp_all only <;>
+      field_simp (discharger := exact hd _) <;> ring
+  simp_rw [hterm, Finset.sum_add_distrib]
+  simp only [Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq]
+  simp [-one_div]
+  have hfirst : (∑ a, ∑ i, (3 / 10 : ℝ) * (D a / d a) * (C a i i / d i)) =
+      (3 / 10 : ℝ) * ∑ a, D a ^ 2 / d a := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro a _
+    rw [← Finset.mul_sum, htrace]
+    ring
+  have hother : (∑ a, ∑ j, (1 / 20 : ℝ) * (D j / d j) * (C a a j / d a)) =
+      (1 / 40 : ℝ) * ∑ a, D a ^ 2 / d a := by
+    rw [Finset.sum_comm]
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro a _
+    rw [← Finset.mul_sum, hdiv]
+    ring
+  rw [hfirst, hother]
+  linarith
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+  [SecondCountableTopology M] in
+/-- Contracted Bianchi in the same orthogonal frame used by the Ricci derivative norm. -/
+theorem contractedBianchi_orthogonal_trace
+    (g : Poincare.ClosedSmoothRiemannianMetric 3 M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (w : TangentSpace (Poincare.closedSmoothModelWithCorners 3) x) :
+    (let b := Poincare.metricOrthogonalBasisAt g x
+     ∑ i, Poincare.covTensor2DerivAt g (Poincare.ricciVariationField g) x
+       (b i) (b i) w / g.metricBilinAt x (b i) (b i)) =
+      extDerivFun (fun y ↦ g.scalarAt y) x w / 2 := by
+  classical
+  letI : FiniteDimensional ℝ (TangentSpace (Poincare.closedSmoothModelWithCorners 3) x) :=
+    inferInstanceAs (FiniteDimensional ℝ (Poincare.ClosedSmoothModel 3))
+  let B : LinearMap.BilinForm ℝ (TangentSpace (Poincare.closedSmoothModelWithCorners 3) x) :=
+    LinearMap.mk₂ ℝ
+      (fun p v ↦ Poincare.covTensor2DerivAt g (Poincare.ricciVariationField g) x v p w)
+      (fun p p' v ↦ Poincare.covTensor2DerivAt_add_left
+        (Poincare.covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+        (Poincare.tensor2AddLeft_ricciVariationField g) v p p' w)
+      (fun c p v ↦ Poincare.covTensor2DerivAt_smul_left
+        (Poincare.covTensor2ExtDifferentiableAt_ricciVariationField_canonical g x)
+        (Poincare.tensor2SMulLeft_ricciVariationField g) c v p w)
+      (fun p v v' ↦ Poincare.covTensor2DerivAt_add_deriv
+        (Poincare.tensor2AddLeft_ricciVariationField g)
+        (Poincare.tensor2AddRight_ricciVariationField g) v v' p w)
+      (fun c p v ↦ Poincare.covTensor2DerivAt_smul_deriv
+        (Poincare.tensor2SMulLeft_ricciVariationField g)
+        (Poincare.tensor2SMulRight_ricciVariationField g) c v p w)
+  let b := Poincare.metricOrthogonalBasisAt g x
+  have hOrtho : (g.metricBilinAt x).IsOrthoᵢ b := by
+    exact Classical.choose_spec
+      (LinearMap.BilinForm.exists_orthogonal_basis
+        (B := g.metricBilinAt x) (g.metricBilinAt_isSymm x))
+  have hchange := Poincare.metricTraceInBasisAt_eq_metricTraceInBasisAt g x B
+    (Module.finBasis ℝ (TangentSpace (Poincare.closedSmoothModelWithCorners 3) x)) b
+  have hdiv : Poincare.tensorDivergenceOneFormAt g (Poincare.ricciVariationField g) x w =
+      ∑ i, Poincare.covTensor2DerivAt g (Poincare.ricciVariationField g) x
+        (b i) (b i) w / g.metricBilinAt x (b i) (b i) := by
+    change Poincare.metricTraceInBasisAt g x B _ = _
+    rw [hchange]
+    unfold Poincare.metricTraceInBasisAt
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [Poincare.metricDualVectorAt_orthogonalBasis_coord_eq g x b hOrtho i]
+    simp only [B, LinearMap.mk₂_apply,
+      Poincare.covTensor2DerivAt_smul_deriv
+        (Poincare.tensor2SMulLeft_ricciVariationField g)
+        (Poincare.tensor2SMulRight_ricciVariationField g), smul_eq_mul]
+    ring
+  rw [← hdiv]
+  have h := (Poincare.eventually_closedContractedBianchiOneFormAt_canonical g x).self_of_nhds w
+  exact h.trans (by ring)
+
+/-- The weighted square completion for a symmetric three-tensor with Bianchi traces. -/
+theorem weighted_bianchi_gradient_bound
+    {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (hcard : Fintype.card ι = 3)
+    (d D : ι → ℝ) (C : ι → ι → ι → ℝ)
+    (hd : ∀ i, 0 < d i)
+    (htrace : ∀ a, ∑ i, C a i i / d i = D a)
+    (hdiv : ∀ j, ∑ a, C a a j / d a = D j / 2)
+    (hsymm : ∀ a i j, C a i j = C a j i) :
+    (∑ a, D a ^ 2 / d a) ≤ (20 / 7 : ℝ) *
+      ∑ a, ∑ i, ∑ j, C a i j ^ 2 / (d a * d i * d j) := by
+  classical
+  let B : ι → ι → ι → ℝ := fun a i j ↦
+      (if i = j then (3 / 10 : ℝ) * d i * D a else 0) +
+      (if a = i then (1 / 20 : ℝ) * d a * D j else 0) +
+      (if a = j then (1 / 20 : ℝ) * d a * D i else 0)
+  have hdne : ∀ i, d i ≠ 0 := fun i ↦ ne_of_gt (hd i)
+  have hBt (a : ι) : ∑ i, B a i i / d i = D a := by
+    have he (i : ι) : B a i i / d i = (3 / 10 : ℝ) * D a +
+        (if a = i then (1 / 10 : ℝ) * D a else 0) := by
+      by_cases h : a = i
+      · subst i
+        dsimp [B]
+        simp only [ite_true]
+        field_simp (discharger := exact hdne _)
+        ring
+      · simp [B, h]
+        field_simp (discharger := exact hdne _)
+    simp_rw [he, Finset.sum_add_distrib]
+    simp [hcard]
+    ring
+  have hBd (j : ι) : ∑ a, B a a j / d a = D j / 2 := by
+    have he (a : ι) : B a a j / d a = (1 / 20 : ℝ) * D j +
+        (if a = j then (7 / 20 : ℝ) * D j else 0) := by
+      by_cases h : a = j
+      · subst a
+        dsimp [B]
+        simp only [ite_true]
+        field_simp (discharger := exact hdne _)
+        ring
+      · simp [B, h]
+        field_simp (discharger := exact hdne _)
+    simp_rw [he, Finset.sum_add_distrib]
+    simp [hcard]
+    ring
+  have hBs (a i j : ι) : B a i j = B a j i := by
+    dsimp [B]
+    by_cases h : i = j
+    · subst j
+      rfl
+    · simp [h, Ne.symm h]
+      ring
+  have hp := Poincare.HamiltonScalarGradientEstimate.weighted_bianchi_trace_pairing
+    d D C hdne htrace hdiv hsymm
+  have hn := Poincare.HamiltonScalarGradientEstimate.weighted_bianchi_trace_pairing
+    d D B hdne hBt hBd hBs
+  change (∑ a, ∑ i, ∑ j, C a i j * B a i j / (d a * d i * d j)) = _ at hp
+  change (∑ a, ∑ i, ∑ j, B a i j * B a i j / (d a * d i * d j)) = _ at hn
+  have hnonneg : 0 ≤ ∑ a, ∑ i, ∑ j,
+      (C a i j - B a i j) ^ 2 / (d a * d i * d j) := by
+    exact Finset.sum_nonneg fun a _ ↦ Finset.sum_nonneg fun i _ ↦
+      Finset.sum_nonneg fun j _ ↦ div_nonneg (sq_nonneg _)
+        (le_of_lt (mul_pos (mul_pos (hd a) (hd i)) (hd j)))
+  have hexpand : (∑ a, ∑ i, ∑ j,
+      (C a i j - B a i j) ^ 2 / (d a * d i * d j)) =
+      (∑ a, ∑ i, ∑ j, C a i j ^ 2 / (d a * d i * d j)) -
+      2 * (∑ a, ∑ i, ∑ j, C a i j * B a i j / (d a * d i * d j)) +
+      (∑ a, ∑ i, ∑ j, B a i j * B a i j / (d a * d i * d j)) := by
+    simp only [Finset.mul_sum]
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro a _
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
+    apply Finset.sum_congr rfl
+    intro j _
+    ring
+  rw [hexpand, hp, hn] at hnonneg
+  linarith
+
+omit [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+  [SecondCountableTopology M] in
+/-- Hamilton's contracted-Bianchi improvement of the scalar trace-gradient bound. -/
+theorem scalarGradNormSq_le_twentySevenths_covRicciNormSq
+    (g : Poincare.ClosedSmoothRiemannianMetric 3 M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) :
+    Poincare.ClosedSmoothRiemannianMetric.scalarGradNormSqAt g x ≤
+      (20 / 7 : ℝ) * Poincare.covRicciNormSqAt g x := by
+  classical
+  letI : FiniteDimensional ℝ (TangentSpace (Poincare.closedSmoothModelWithCorners 3) x) :=
+    inferInstanceAs (FiniteDimensional ℝ (Poincare.ClosedSmoothModel 3))
+  let b := Poincare.metricOrthogonalBasisAt g x
+  let d := fun i ↦ g.metricBilinAt x (b i) (b i)
+  let D := fun a ↦ extDerivFun (fun y ↦ g.scalarAt y) x (b a)
+  let C := fun a i j ↦
+    Poincare.covTensor2DerivAt g (Poincare.ricciVariationField g) x (b a) (b i) (b j)
+  have hcard : Fintype.card (Fin (Module.finrank ℝ
+      (TangentSpace (Poincare.closedSmoothModelWithCorners 3) x))) = 3 := by
+    simp [Poincare.ClosedSmoothRiemannianMetric.finrank_tangentSpace_eq (n := 3) (M := M) x]
+  have hd : ∀ i, 0 < d i := fun i ↦ g.metricBilinAt_pos x (b.ne_zero i)
+  have ht : ∀ a, ∑ i, C a i i / d i = D a := by
+    intro a
+    exact (g.extDerivFun_scalarAt_eq_metricOrthogonalBasis_covRicci_trace x (b a)).symm
+  have hv : ∀ j, ∑ a, C a a j / d a = D j / 2 := by
+    intro j
+    exact Poincare.HamiltonScalarGradientEstimate.contractedBianchi_orthogonal_trace g x (b j)
+  have hs : ∀ a i j, C a i j = C a j i := fun a i j ↦
+    Poincare.covTensor2DerivAt_ricciVariationField_symm g x (b a) (b i) (b j)
+  rw [g.scalarGradNormSqAt_eq_metricOrthogonalBasis_sum x,
+    Poincare.covRicciNormSqAt_eq_metricOrthogonalBasis_sum g x]
+  exact Poincare.HamiltonScalarGradientEstimate.weighted_bianchi_gradient_bound
+    hcard d D C hd ht hv hs
+
 end Poincare.HamiltonScalarGradientEstimate
