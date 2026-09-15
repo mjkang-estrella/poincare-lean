@@ -94,4 +94,13 @@ theorem duhamel_integral_add {α T t : ℝ} (hα : 0 < α) (ht : t ∈ Icc 0 T)
       (fun y => ParabolicHolder.norm_le v (s,y)) x
   exact (he f).distrib_add (he g)
 
+/-- Scalar multiplication commutes with the Duhamel integral. -/
+theorem duhamel_integral_smul {α T t : ℝ} (c : ℝ)
+    (f : Y («E» := E) α T ℝ) (x : E) :
+    (∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => (c • f) (s,y)) x) =
+      c • ∫ s in (0 : ℝ)..t, heatSolution (t-s) (fun y => f (s,y)) x := by
+  simp only [ParabolicHolder.smul_apply, heatSolution_apply, smul_eq_mul]
+  simp_rw [mul_left_comm (heatKernel _ _) c, integral_const_mul,
+    intervalIntegral.integral_const_mul]
+
 end Poincare.DuhamelSolutionOperatorCLM
