@@ -925,6 +925,19 @@ batch timed out on heartbeats, another produced a 4.9 GB file); replaced by
 the grep index `harness/v2/catalog/declarations-global.tsv`, regenerated at
 each landing, and the contract's search rule now points there.
 
+`hamilton-auxiliary-quantity-evolution` landed as a verified partial
+(`Global/HamiltonScalarGradientEstimate.lean`, gate PASS, 9 declarations,
+the new Hamilton gradient-estimate chain module): the intrinsic quotient
+rules for the heat operator `D = ∂ₜ − Δ`, the normalized evolution of the
+quotient `Q = |∇R|²/R`
+(`DQ = −2|∇²R|²/R + 4⟨∇R,∇N⟩/R − 2SN/R² − (4/3)rQ + 2⟨∇R,∇S⟩/R² − 2S²/R³`),
+and the traceless-energy evolution bounded by its cubic reaction. Blocked
+on strict derivative-energy damping: the landed `|∇R|² ≤ 3|∇Ric|²` yields
+no strictly negative `|∇Ric|²` coefficient in the `U` evolution, so the
+`|∇Ric|²` terms of Hamilton's combination cannot yet be cancelled; the
+sharper contracted-Bianchi bound behind Hamilton's `2/21` is the exact
+missing estimate (see the report's section 2).
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

@@ -76,6 +76,7 @@ import Poincare.Global.HamiltonReactionCoreFinal
 import Poincare.Global.HamiltonReactionCoreReduced
 import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HamiltonReactionEndpoint
+import Poincare.Global.HamiltonScalarGradientEstimate
 import Poincare.Global.HamiltonStokesFreeReactionCore
 import Poincare.Global.HeatDuhamelHeatEquation
 import Poincare.Global.HeatDuhamelHessianDifferentiation
