@@ -100,4 +100,74 @@ theorem heatOperator_div_expanded
   field_simp (discharger := exact hne x)
   ring
 
+variable [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M]
+
+/-- The exact scalar-gradient quotient evolution, including the normalized scaling term. -/
+theorem scalarGradientQuotient_evolution
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M)
+    (hS : IntrinsicBochnerScalarGradient.SatisfiesScalarGradientEvolutionAt gt t x)
+    (hR : SatisfiesNormalizedHamiltonScalarEvolutionAt gt t x)
+    (hRthree : ContMDiff (closedSmoothModelWithCorners 3) 𝓘(ℝ) 3 (fun y ↦ (gt t).scalarAt y))
+    (hRpos : ∀ y, 0 < (gt t).scalarAt y) :
+    let g := gt t
+    let R := fun y ↦ g.scalarAt y
+    let S := fun y ↦ g.scalarGradNormSqAt y
+    let H := ∑ i, g.inner x
+      (g.leviCivita (g.gradient R) x ((Module.finBasis ℝ (ClosedSmoothModel 3)) i))
+      (g.leviCivita (g.gradient R) x
+        (metricDualVectorAt g x ((Module.finBasis ℝ (ClosedSmoothModel 3)).coord i)))
+    deriv (fun s ↦ (gt s).scalarGradNormSqAt x / (gt s).scalarAt x) t -
+        g.laplacianAt (fun y ↦ S y / R y) x =
+      -2 * H / R x +
+        4 * g.inner x (g.gradientAt R x) (g.gradientAt (fun y ↦ g.ricciNormSqAt y) x) / R x -
+        2 * S x * g.ricciNormSqAt x / R x ^ 2 -
+        (4 / 3 : ℝ) * meanScalar g * (S x / R x) +
+        2 * g.inner x (g.gradientAt R x) (g.gradientAt S x) / R x ^ 2 -
+        2 * S x ^ 2 / R x ^ 3 := by
+  have hS₂ : ∀ y, ContMDiffAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) 2
+      (fun z ↦ (gt t).scalarGradNormSqAt z) y :=
+    IntrinsicBochnerScalarGradient.gradientNormSq_contMDiffAt_two (gt t) _ hRthree
+  have hR₂ : ∀ y, ContMDiffAt (closedSmoothModelWithCorners 3) 𝓘(ℝ) 2 (fun z ↦ (gt t).scalarAt z) y :=
+    fun y ↦ hRthree.contMDiffAt.of_le (by norm_num)
+  have he := heatOperator_div_expanded (gt t) x hS hR hS₂ hR₂
+    (fun y ↦ (hRpos y).ne')
+  dsimp only
+  rw [he]
+  unfold ClosedSmoothRiemannianMetric.scalarGradNormSqAt
+  field_simp (discharger := first | exact (hRpos x).ne' | norm_num)
+  ring
+
+variable [SecondCountableTopology M]
+
+/-- Joint fifth-order metric entries supply all scalar regularity for the quotient identity. -/
+theorem scalarGradientQuotient_evolution_of_normalizedFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M)
+    (hJoint5 : ∀ s y, MetricEntriesJointContDiffAt gt s y 5)
+    (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t y)
+    (hRpos : ∀ y, 0 < (gt t).scalarAt y) :
+    let g := gt t
+    let R := fun y ↦ g.scalarAt y
+    let S := fun y ↦ g.scalarGradNormSqAt y
+    let H := ∑ i, g.inner x
+      (g.leviCivita (g.gradient R) x ((Module.finBasis ℝ (ClosedSmoothModel 3)) i))
+      (g.leviCivita (g.gradient R) x
+        (metricDualVectorAt g x ((Module.finBasis ℝ (ClosedSmoothModel 3)).coord i)))
+    deriv (fun s ↦ (gt s).scalarGradNormSqAt x / (gt s).scalarAt x) t -
+        g.laplacianAt (fun y ↦ S y / R y) x =
+      -2 * H / R x +
+        4 * g.inner x (g.gradientAt R x) (g.gradientAt (fun y ↦ g.ricciNormSqAt y) x) / R x -
+        2 * S x * g.ricciNormSqAt x / R x ^ 2 -
+        (4 / 3 : ℝ) * meanScalar g * (S x / R x) +
+        2 * g.inner x (g.gradientAt R x) (g.gradientAt S x) / R x ^ 2 -
+        2 * S x ^ 2 / R x ^ 3 := by
+  letI : Nonempty M := ⟨x⟩
+  exact scalarGradientQuotient_evolution x
+    (IntrinsicBochnerScalarGradient.satisfiesScalarGradientEvolutionAt_of_normalizedFlow
+      hJoint5 hFlow)
+    (satisfiesNormalizedHamiltonScalarEvolutionAt_of_normalizedFlow_of_globalLichnerowicz
+      hFlow (globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree
+        (fun s y ↦ (hJoint5 s y).of_le (by norm_num))))
+    (IntrinsicBochnerScalarGradient.scalar_contMDiff_three_of_metricEntries_five hJoint5 t)
+    hRpos
+
 end Poincare.HamiltonScalarGradientEstimate
