@@ -170,4 +170,41 @@ theorem scalarGradientQuotient_evolution_of_normalizedFlow
     (IntrinsicBochnerScalarGradient.scalar_contMDiff_three_of_metricEntries_five hJoint5 t)
     hRpos
 
+/-- The factor-three trace estimate removes the derivative term, with no strict damping. -/
+theorem tracelessEnergy_evolution_le_cubic
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M)
+    (hJoint : ∀ s y, MetricEntriesJointContDiffAt gt s y 3)
+    (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t y) :
+    deriv (fun s ↦ (gt s).tracelessRicciNormSqAt x) t -
+        (gt t).laplacianAt (fun y ↦ (gt t).tracelessRicciNormSqAt y) x ≤
+      (gt t).pinchingTracelessRicciReactionTrace3At x
+        ((gt t).pinchingRicciNormReactionMotionTraceCubicAt x) -
+        (4 / 3 : ℝ) * meanScalar (gt t) * (gt t).tracelessRicciNormSqAt x := by
+  letI : Nonempty M := ⟨x⟩
+  have hd :=
+    hasDerivAt_tracelessRicciNormSqAt_eq_laplacianAt_add_actualNormalizedReaction_of_global_jointMetricEntries
+      (x := x) hFlow hJoint
+  rw [hd.deriv]
+  dsimp only [normalizedTracelessRicciEvolutionReactionAt]
+  have hb := (gt t).scalarGradNormSqAt_le_three_covRicciNormSqAt rfl x
+  linarith
+
+/-- Exactly which damping coefficients follow from the factor-three scalar trace bound. -/
+theorem factorThree_damping_iff (c : ℝ) :
+    (∀ A S : ℝ, 0 ≤ A → S ≤ 3 * A →
+      -2 * A + (2 / 3 : ℝ) * S ≤ -c * A) ↔ c ≤ 0 := by
+  constructor
+  · intro h
+    have htest := h 1 3 (by norm_num) (by norm_num)
+    linarith
+  · intro hc A S hA hS
+    have hcA := mul_nonpos_of_nonpos_of_nonneg hc hA
+    linarith
+
+/-- The sharper scalar trace bound would supply Hamilton's strict damping coefficient. -/
+theorem factorTwentySevenths_damping {A S : ℝ}
+    (hS : S ≤ (20 / 7 : ℝ) * A) :
+    -2 * A + (2 / 3 : ℝ) * S ≤ -(2 / 21 : ℝ) * A := by
+  linarith
+
 end Poincare.HamiltonScalarGradientEstimate
