@@ -723,6 +723,30 @@ existence of the forward normalized flow with joint C³ entries and a
 compact jet-continuous realization, initial pinching data, and one uniform
 analytic estimate, the normalization gap `2(2−δ)N/R + η ≤ (4/3)r`.**
 
+`near-frozen-parabolic-right-inverse` landed
+(`Global/NearFrozenParabolicRightInverse.lean`, gate PASS, 13 declarations):
+the frozen elliptic inverse as a continuous linear operator with a bound by
+ellipticity, its Neumann correction for small Hölder perturbations, and
+`exists_nearFrozen_solution` / `exists_nearFrozen_operator`: with constants
+`C, ε₀, τ₀` chosen before the coefficient form, the time horizon, the
+perturbation, and the forcing, every `∂ₜu = f + Σ(A₀ + b)ᵢⱼ∂ᵢ∂ⱼu` with
+`sup|b| ≤ ε₀` and `[b]_α T^{α/2} ≤ ε₀` on `T ≤ τ₀` has a solution graph with
+`‖G‖ ≤ C‖f‖`. This is the chart-level local solver of the finite-atlas
+parametrix.
+
+`finite-atlas-parametrix-survey` landed (trimmed): the finite-atlas route
+closes in the landed unweighted graph norm PROVIDED one new analytic lemma,
+full lower-derivative Hölder interpolation
+`‖u‖_Y ≤ C_I T^{1−α/2}‖G‖`, `‖Du‖_Y ≤ C_I T^{(1−α)/2}‖G‖`, with an
+elementary route through a finite-difference derivative estimate; the
+commutator terms then carry the factor `T^{(1−α)/2}`, the error estimate is
+`‖R‖ ≤ C₀C_Sω(ρ) + C_ρC_S(Λ_ρT^{α/2} + T^{(1−α)/2})`, and a geometric gate
+remains (controlled refinement with bounded neighbour count so `C₀` stays
+controlled while `ρ → 0`). Its three gated tasks: the compatible tensor
+carriers on the finite atlas, the interpolation plus cutoff commutator, and
+the buffered frozen solver with the oscillation extension. The first two are
+dispatched.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
