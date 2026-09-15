@@ -1,0 +1,4 @@
+Base: 8883a941cc3039b585c3e02facd6999555a0a5ec
+Proof head: 248bed8108857dc48ff4597285b3bd9c47d44832
+Original module content preceding its final namespace end is byte-for-byte preserved.
+Only new declarations were inserted before that namespace end.

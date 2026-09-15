@@ -1,0 +1,4 @@
+import Poincare.Global.HamiltonScalarGradientEstimate
+#print Poincare.ClosedSmoothRiemannianMetric.scalarGradNormSqAt_le_three_covRicciNormSqAt
+#check Poincare.eventually_closedContractedBianchiOneFormAt_canonical
+#check Poincare.closedContractedBianchiAt_canonical
