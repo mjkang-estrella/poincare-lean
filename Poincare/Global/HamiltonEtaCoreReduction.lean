@@ -74,4 +74,50 @@ def HamiltonReactionCore3Eta (M : Type u)
         2 * (2-delta) * (gt t).ricciNormSqAt x / (gt t).scalarAt x + eta ≤
           (4/3 : ℝ) * meanScalar (gt t))
 
+/-- Eta supplies the final core with mean floor `3 * eta / 4` and rate `eta`. -/
+theorem hamiltonReactionCore3Final_of_eta
+    (h : HamiltonReactionCore3Eta.{u, v} M) :
+    HamiltonReactionCore3Final.{u, v} M := by
+  rcases h with ⟨K, topK, compactK, metric, gt, parameter, epsilon, delta,
+    hparam, hreal, hjet, hjoint, hflow, hinit, hepos, hele, hpin,
+    hdpos, hdle, hadm, eta, heta, hgap⟩
+  letI : TopologicalSpace K := topK
+  haveI : CompactSpace K := compactK
+  have hpos := NormalizedFlowInitialPinchingPreservation.scalarAt_pos_of_initial_scalar_pos
+    gt hjoint hflow hinit
+  obtain ⟨hc, hmean⟩ := meanFloorFromEta gt delta eta (by linarith) heta hpos hgap
+  have hpres := NormalizedFlowInitialPinchingPreservation.initial_pinching_preserved
+    gt epsilon hjoint hflow hinit hele hpin
+  refine ⟨K, topK, compactK, gt, metric, parameter, (3/4 : ℝ) * eta, eta,
+    hparam, hreal, hc, hmean, hflow, hjoint, heta, ?_, hjet⟩
+  intro t ht x
+  exact normalizedTracelessRicciEvolutionReactionAt_le_neg_rate_mul_of_eigenvalue_pinching_of_normalization_gap
+    (gt t) x (by linarith) (by linarith) hdpos.le hadm (hpos t ht x)
+    ((hpres t ht).1 x) (hgap t ht x)
+
+/-- The Eta-only core reaches the Hamilton pinched-limit endpoint. -/
+theorem hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Eta
+    (h : HamiltonReactionCore3Eta.{u, v} M) : HamiltonConvergencePinchedLimit3 M :=
+  hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Final
+    (hamiltonReactionCore3Final_of_eta h)
+
+/-- Open existence obligation for Eta-only cores on closed simply connected
+smooth three-manifolds with compatible Borel structures. -/
+def UniversalHamiltonReactionCoreEtaStatement : Prop :=
+  ∀ (N : Type u) [TopologicalSpace N] [T2Space N] [SecondCountableTopology N]
+    [MeasurableSpace N] [BorelSpace N]
+    [ChartedSpace (ClosedSmoothModel 3) N]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+    [CompactSpace N] [ConnectedSpace N] [SimplyConnectedSpace N],
+      HamiltonReactionCore3Eta.{u, v} N
+
+/-- Universal Eta-only cores imply universal Hamilton convergence. -/
+theorem universalHamiltonConvergence_of_universalHamiltonReactionCoreEta
+    (h : UniversalHamiltonReactionCoreEtaStatement.{u, v}) :
+    UniversalHamiltonConvergenceStatement.{u} := by
+  intro N _ _ _ _ _ _ _ _
+  letI : MeasurableSpace N := borel N
+  letI : BorelSpace N := ⟨rfl⟩
+  exact hamiltonConvergencePinchedLimit3_of_hamiltonReactionCore3Eta (h N)
+
 end Poincare.HamiltonEtaCoreReduction
