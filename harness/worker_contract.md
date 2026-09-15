@@ -37,11 +37,12 @@ new lemmas. Keep proofs terse but readable.
 2. **Full names.** Every declaration named in a report, a mission file, or
    a task must be its fully qualified name including the namespace, as
    printed by `#check`. The registry resolves exactly that string.
-3. **Search before surveying.** A declaration catalog lives under
-   `harness/v2/catalog/`. Before grepping for a lemma, run
-   `python3 scripts/theorem_registry.py search harness/v2/catalog/<latest>.json "<query>"`
-   and quote the hit. Rebuild the catalog with `snapshot` after landing a
-   chain; do not re-survey what the catalog already lists.
+3. **Search before surveying.** A declaration index lives at
+   `harness/v2/catalog/declarations-global.tsv` (module, kind, qualified
+   name, first line of every declaration under `Poincare/Global/`). Before
+   grepping source for a lemma, `grep -i "<keyword>" harness/v2/catalog/declarations-global.tsv`
+   and confirm the hit with `#check`. The orchestrator regenerates the index
+   at each landing; do not re-survey what it already lists.
 4. **Environment.** If `git` reports the Xcode license, export
    `DEVELOPER_DIR=/Library/Developer/CommandLineTools` for the session; the
    dispatch script now does this for workers.

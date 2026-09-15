@@ -15,6 +15,7 @@ import Poincare.MaximumPrinciple
 import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
+import Poincare.Global.BufferedFrozenParabolicSolver
 import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer
@@ -82,6 +83,7 @@ import Poincare.Global.HeatDuhamelHessianSpatialHolder
 import Poincare.Global.HeatDuhamelHessianTimeHolder
 import Poincare.Global.HeatDuhamelSpatialHolderHessian
 import Poincare.Global.HeatKernelHessianMoments
+import Poincare.Global.IntrinsicBochnerScalarGradient
 import Poincare.Global.IntrinsicLaplacianCoordinateForm
 import Poincare.Global.MovingLimitLeibniz
 import Poincare.Global.NearFrozenParabolicRightInverse

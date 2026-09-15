@@ -874,6 +874,34 @@ consolidation tasks are allowed once a chain completes. Queued: consolidate
 the constant-coefficient Duhamel chain at the next window with no parabolic
 worker in flight.
 
+`intrinsic-bochner-scalar-gradient` landed (`Global/IntrinsicBochnerScalarGradient.lean`,
+gate PASS, 38 declarations; the first attempt died on a provider capacity
+error after committing the Bochner identity, the second finished): the
+intrinsic Bochner formula `Δ|∇f|² = 2|∇²f|² + 2⟨∇f,∇Δf⟩ + 2Ric(∇f,∇f)`
+for `C³` scalars by chart localization; the joint regularity ladder (joint
+`C^{k+1}` entries give `C^k` Christoffel fields, `C^{k+2}` entries give
+`C^k` curvature and scalar curvature); and
+`SatisfiesScalarGradientEvolutionAt` proved along the normalized flow from
+joint `C⁵` metric entries. Step one of Hamilton's gradient route is
+complete; the next is the evolution inequality for Hamilton's auxiliary
+quantity `F = |∇R|²/R − ηR² + 168(N − R²/3)`.
+
+`buffered-frozen-parabolic-solver` landed as a verified partial
+(`Global/BufferedFrozenParabolicSolver.lean`, gate PASS, 43 declarations):
+the coefficient extension by a smooth cutoff with sup bound `ω(ρ)` and a
+single Hölder constant for all short times, `ω(ρ) → 0`, ellipticity of the
+inverse metric, and the chart frozen operator. Item 3 is blocked by a genuine
+finding: with ONE cutoff serving both the coefficient extension and the
+solution product, the required cancellation is false on the annulus where
+the cutoff is strictly between 0 and 1. The fix is the survey's buffered
+design with nested cutoffs (outer `ξ = 1` on the support of the inner `ψ`),
+dispatched as a follow-up that appends to the same module.
+
+Catalog: the registry `snapshot` export is unusable at this scale (one
+batch timed out on heartbeats, another produced a 4.9 GB file); replaced by
+the grep index `harness/v2/catalog/declarations-global.tsv`, regenerated at
+each landing, and the contract's search rule now points there.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
