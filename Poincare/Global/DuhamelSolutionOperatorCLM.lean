@@ -136,4 +136,11 @@ def duhamelOperator (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
   (duhamelLinearMap α T hα hα1 hT hT1).mkContinuous (boundConstant α hα hα1)
     (fun f => (duhamelGraph_spec α T hα hα1 hT hT1 f).2)
 
+/-- The operator's value component is the Duhamel integral on the cylinder. -/
+theorem duhamelOperator_u (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) (f : Y («E» := E) α T ℝ) :
+    ∀ p ∈ cylinder T, (duhamelOperator α T hα hα1 hT hT1 f).u p =
+      ∫ s in (0 : ℝ)..p.1, heatSolution (p.1-s) (fun y => f (s,y)) p.2 :=
+  (duhamelGraph_spec α T hα hα1 hT hT1 f).1
+
 end Poincare.DuhamelSolutionOperatorCLM
