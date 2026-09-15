@@ -1,5 +1,20 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker Duhamel continuous linear operator proved
+
+Branch `worker/duhamel-solution-operator-clm`, base `2ca30baa`, proof head
+`baa43865`. The single new `Global/DuhamelSolutionOperatorCLM.lean` proves
+graph uniqueness from values on positive time intervals and constructs the
+continuous linear Duhamel operator with its integral formula, uniform short-time
+norm bound, and heat equation on the closed interval. All 12 declarations have
+exactly the required foundational dependencies. The focused module, explicit
+four-target type assignments, forbidden-token scan, and whitespace checks pass.
+Actual outputs and the proof diff are in
+`harness/reports/duhamel-solution-operator-clm_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `LEAN_NUM_THREADS=1 lake env lean Poincare/Global/DuhamelSolutionOperatorCLM.lean`.
+
 Snapshot date: 2026-09-08 (UTC)
 
 
