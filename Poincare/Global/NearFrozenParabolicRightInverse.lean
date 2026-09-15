@@ -140,4 +140,79 @@ theorem exists_frozen_operator_bound :
   exact mul_le_mul_of_nonneg_right
     (mul_le_mul hI2 hIa (by positivity) (by positivity)) hC.le
 
+/-- Correct a frozen inverse using the original coefficient multiplier. -/
+def nearFrozenInverse
+    (P : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (hR : ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ < 1) :
+    Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T :=
+  ParametrixNeumannCorrection.correctedInverse P
+    ((NearIdentityParabolicRightInverse.multiplier b).comp P) hR
+
+/-- The correction adds the perturbation to the frozen coefficients exactly. -/
+theorem nearFrozenInverse_solves (A : Bilin)
+    (P : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (hP : ∀ f, ∀ t ∈ Icc 0 T, ∀ x : E,
+      (P f).ut (t, x) = f (t, x) +
+        ∑ i, ∑ j, A (e i) (e j) * (P f).ddu (t, x) (e i) (e j))
+    (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (hR : ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ < 1)
+    (f : Y («E» := E) α T ℝ) :
+    ∀ t ∈ Icc 0 T, ∀ x : E,
+      (nearFrozenInverse P b hR f).ut (t, x) = f (t, x) +
+        ∑ i, ∑ j, (A (e i) (e j) + b i j (t, x)) *
+          (nearFrozenInverse P b hR f).ddu (t, x) (e i) (e j) := by
+  let R := (NearIdentityParabolicRightInverse.multiplier b).comp P
+  let g := (↑((Units.oneSub R hR)⁻¹) :
+    Y («E» := E) α T ℝ →L[ℝ] Y («E» := E) α T ℝ) f
+  intro t ht x
+  have hg := congrArg (fun v : Y («E» := E) α T ℝ => v (t, x))
+    (NearIdentityParabolicRightInverse.neumann_data_eq R hR f)
+  change g (t, x) = f (t, x) +
+    ParabolicHolderMultiplier.forcing b (P g) (t, x) at hg
+  change (P g).ut (t, x) = f (t, x) +
+    ∑ i, ∑ j, (A (e i) (e j) + b i j (t, x)) *
+      (P g).ddu (t, x) (e i) (e j)
+  rw [hP g t ht x, hg]
+  simp only [ParabolicHolderMultiplier.forcing_apply, add_mul, Finset.sum_add_distrib]
+  ring
+
+/-- A half-size multiplier error increases the frozen bound by at most two. -/
+theorem nearFrozenInverse_norm_le
+    (P : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (hR : ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ < 1)
+    (hhalf : ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ ≤ 1 / 2)
+    {D : ℝ} (hP : ‖P‖ ≤ D) :
+    ‖nearFrozenInverse P b hR‖ ≤ 2 * D := by
+  have hD : 0 ≤ D := (norm_nonneg P).trans hP
+  apply (ContinuousLinearMap.opNorm_comp_le _ _).trans
+  calc
+    _ ≤ D * 2 := mul_le_mul hP
+      (NearIdentityParabolicRightInverse.neumann_norm_le_two _ hR hhalf)
+      (norm_nonneg _) hD
+    _ = _ := mul_comm _ _
+
+/-- The original split Hölder bound controls the frozen error uniformly. -/
+theorem frozen_error_small
+    (P : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (hα : 0 < α) (hT : 0 < T) {D ε Λb : ℝ}
+    (hP : ‖P‖ ≤ D)
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λb)
+    (hε : 9 * D * ε ≤ 1 / 4)
+    (hΛ : 9 * D * Λb * T ^ (α / 2) ≤ 1 / 4) :
+    ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ ≤ 1 / 2 ∧
+      ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ < 1 := by
+  have hD := (norm_nonneg P).trans hP
+  have hε0 := (supNorm_nonneg (b 0 0)).trans (hb 0 0)
+  have hΛ0 := (holderSeminorm_nonneg (b 0 0)).trans (hbα 0 0)
+  have hn : ‖(NearIdentityParabolicRightInverse.multiplier b).comp P‖ ≤
+      9 * D * (ε + Λb * T ^ (α / 2)) := by
+    apply ContinuousLinearMap.opNorm_le_bound _ (by positivity)
+    intro f
+    exact ParabolicHolderMultiplier.norm_error_le b P hα hT hb hbα hP f
+  constructor <;> nlinarith only [hn, hε, hΛ]
+
 end Poincare.NearFrozenParabolicRightInverse
