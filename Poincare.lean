@@ -81,6 +81,7 @@ import Poincare.Global.HeatDuhamelSpatialHolderHessian
 import Poincare.Global.HeatKernelHessianMoments
 import Poincare.Global.IntrinsicLaplacianCoordinateForm
 import Poincare.Global.MovingLimitLeibniz
+import Poincare.Global.NearIdentityParabolicRightInverse
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
 import Poincare.Global.ParabolicHolderMultiplier

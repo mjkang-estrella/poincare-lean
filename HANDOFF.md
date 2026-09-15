@@ -649,6 +649,19 @@ Appendix C6). Dispatched as `hamilton-eta-core-reduction`. Thirteen
 candidate child obligations with exact elaborated expressions are listed in
 its section 4.9 for future registration.
 
+`near-identity-parabolic-right-inverse` landed
+(`Global/NearIdentityParabolicRightInverse.lean`, gate PASS, 21
+declarations): the nine-entry forcing is linear in the graph, giving the
+multiplier `Graph →L Y` with bound `9(ε + ΛT^{α/2})`; the error operator
+`R = multiplier ∘ duhamelOperator` has `‖R‖ ≤ 1/2` under the quarter-size
+conditions; and `nearIdentityInverse = duhamelOperator ∘ (1 − R)⁻¹` solves
+`∂ₜu = f + Σᵢⱼ (δᵢⱼ + bᵢⱼ) ∂ᵢ∂ⱼu` on the closed cylinder with
+`‖G‖ ≤ 2C_S‖f‖`. This is the first variable-coefficient parabolic
+solvability theorem in the repository: Hölder coefficients close to the
+identity on a short cylinder. With L4 (in flight) the same holds near any
+fixed positive-definite matrix; the finite-atlas parametrix is the
+remaining linear step.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
