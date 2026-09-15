@@ -220,4 +220,39 @@ theorem norm_forcing_le (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
         (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)
     _ = _ := by simp; ring
 
+/-- Composing the multiplier with a bounded solution map gives an elementwise error bound. -/
+theorem norm_error_le (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (S : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ C_S : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hS : ‖S‖ ≤ C_S) (f : Y («E» := E) α T ℝ) :
+    ‖forcing b (S f)‖ ≤ 9 * C_S * (ε + Λ * T ^ (α / 2)) * ‖f‖ := by
+  have hε : 0 ≤ ε := (supNorm_nonneg (b 0 0)).trans (hb 0 0)
+  have hΛ : 0 ≤ Λ := (holderSeminorm_nonneg (b 0 0)).trans (hbα 0 0)
+  have hpow : 0 ≤ T ^ (α / 2) := Real.rpow_nonneg hT.le _
+  have hSf : ‖S f‖ ≤ C_S * ‖f‖ :=
+    (S.le_opNorm f).trans (mul_le_mul_of_nonneg_right hS (norm_nonneg f))
+  calc
+    ‖forcing b (S f)‖ ≤ 9 * (ε * ‖S f‖ + Λ * T ^ (α / 2) * ‖S f‖) :=
+      norm_forcing_le b (S f) hα hT hb hbα
+    _ = 9 * (ε + Λ * T ^ (α / 2)) * ‖S f‖ := by ring
+    _ ≤ 9 * (ε + Λ * T ^ (α / 2)) * (C_S * ‖f‖) :=
+      mul_le_mul_of_nonneg_left hSf (by positivity)
+    _ = _ := by ring
+
+/-- Two quarter-size contributions give the required one-half error bound. -/
+theorem error_small (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (S : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ C_S : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hS : ‖S‖ ≤ C_S) (hε : 9 * C_S * ε ≤ 1 / 4)
+    (hΛ : 9 * C_S * Λ * T ^ (α / 2) ≤ 1 / 4)
+    (f : Y («E» := E) α T ℝ) :
+    ‖forcing b (S f)‖ ≤ (1 / 2) * ‖f‖ := by
+  apply (norm_error_le b S hα hT hb hbα hS f).trans
+  apply mul_le_mul_of_nonneg_right _ (norm_nonneg f)
+  nlinarith only [hε, hΛ]
+
 end Poincare.ParabolicHolderMultiplier
