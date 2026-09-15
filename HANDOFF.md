@@ -812,6 +812,25 @@ metric to the intrinsic one (to turn `2⟨∇R,∇ΔR⟩ + 2Ric(∇R,∇R)` into
 `ΔS − 2|∇²R|²`), and a joint `C⁴` regularity producer for the third
 spatial derivative of `R` along the flow.
 
+Finite-atlas task 2 landed (`Global/ParabolicCutoffCommutator.lean`, gate
+PASS, 52 declarations): the quadratic remainder and finite-difference
+derivative estimate `|Dh·v| ≤ 2A/η + (η/2)B`; the full lower-derivative
+interpolation for solution graphs, `‖u‖_Y ≤ 12·T^{1−α/2}‖G‖` and
+`‖Du‖_Y ≤ 12·T^{(1−α)/2}‖G‖` (the key new analytic lemma of the finite-atlas
+route); the cutoff product graph and its bounded linear operator; and the
+commutator identity with the first-order forcing bound
+`‖[L,ψ]G‖ ≤ 24·(Σ‖bᵢ‖·T^{(1−α)/2} + ‖c‖·T^{1−α/2})‖G‖`. The commutator
+terms of the parametrix now carry positive time powers as required.
+
+Contract change (2026-09-15, user-approved; `harness/worker_contract.md`
+section "Contract update"): one module per chain (follow-ups append, never
+alter existing declarations), fully qualified names only, catalog search
+before surveying (`harness/v2/catalog/campaign-2026-09-15.json`), the
+dispatch script exports `DEVELOPER_DIR` for the Xcode git shim, and
+consolidation tasks are allowed once a chain completes. Queued: consolidate
+the constant-coefficient Duhamel chain at the next window with no parabolic
+worker in flight.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
