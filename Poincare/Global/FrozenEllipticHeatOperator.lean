@@ -144,4 +144,36 @@ def mapGraph (hα : 0 ≤ α) (S : E →L[ℝ] E)
       ((H.hasFDeriv_du t ht (S x)).comp x S.hasFDerivAt)
   hasDeriv_time := fun t ht x => H.hasDeriv_time t ht (S x)
 
+theorem norm_mapGraph_le (hα : 0 ≤ α) (S : E →L[ℝ] E)
+    (H : ParabolicSolutionGraph.Graph («E» := E) α T) :
+    ‖mapGraph hα S H‖ ≤ max 1 (‖S‖ ^ 2) * max 1 (‖S‖ ^ α) * ‖H‖ := by
+  let M := max 1 (‖S‖ ^ 2)
+  let K := max 1 (‖S‖ ^ α)
+  have hn : ‖S‖ ≤ M := by
+    by_cases h : ‖S‖ ≤ 1
+    · exact h.trans (le_max_left _ _)
+    · have := le_max_right 1 (‖S‖ ^ 2)
+      dsimp only [M]
+      nlinarith
+  have hb {V W : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
+      [NormedAddCommGroup W] [NormedSpace ℝ W]
+      (Q : V →L[ℝ] W) (hQ : ‖Q‖ ≤ M) (f : Y («E» := E) α T V) :
+      ‖mapHolder hα S Q f‖ ≤ M * K * ‖f‖ :=
+    (norm_mapHolder_le hα S Q f).trans
+      (mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_right hQ (by positivity : 0 ≤ K)) (norm_nonneg f))
+  have hu := hb (ContinuousLinearMap.id ℝ ℝ)
+    (ContinuousLinearMap.norm_id_le.trans (le_max_left _ _)) H.u
+  have ht := hb (ContinuousLinearMap.id ℝ ℝ)
+    (ContinuousLinearMap.norm_id_le.trans (le_max_left _ _)) H.ut
+  have hd := hb (covectorPullback S) ((norm_covectorPullback_le S).trans hn) H.du
+  have hdd := hb (bilinearPullback S)
+    ((norm_bilinearPullback_le S).trans (le_max_right _ _)) H.ddu
+  rw [ParabolicSolutionGraph.norm_eq, ParabolicSolutionGraph.norm_eq H]
+  change ‖mapHolder hα S (ContinuousLinearMap.id ℝ ℝ) H.u‖ +
+    ‖mapHolder hα S (ContinuousLinearMap.id ℝ ℝ) H.ut‖ +
+    ‖mapHolder hα S (covectorPullback S) H.du‖ +
+    ‖mapHolder hα S (bilinearPullback S) H.ddu‖ ≤ M * K * _
+  nlinarith only [hu, ht, hd, hdd]
+
 end Poincare.FrozenEllipticHeatOperator
