@@ -167,6 +167,52 @@ theorem hasDerivAt_scalarGradNormSq_normalizedFlow
     (gt t₀).inner_symm x ((gt t₀).gradientAt (fun y ↦ (gt t₀).ricciNormSqAt y) x)]
   ring
 
+omit [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
+  [MeasurableSpace N] [BorelSpace N] in
+/-- The Ricci term in the coordinate Bochner formula is the intrinsic Ricci
+tensor at the chart anchor, with the same curvature sign. -/
+theorem coordRicci_anchorBlendedMetric
+    (g : ClosedSmoothRiemannianMetric 3 N) (x : N) (v w : E₃) :
+    RicciFlow.RicciFlow.coordRicci (anchorBlendedMetricFlow (fun _ ↦ g) x 0)
+      (extChartAt I₃ x x) v w = g.ricciAt x v w := by
+  let G := anchorBlendedMetricFlow (fun _ ↦ g) x 0
+  let Γ := GeodesicTransport.chartChristoffelField g x
+  let q := extChartAt I₃ x x
+  have hΓ : DifferentiableAt ℝ Γ q :=
+    (GeodesicTransport.chartChristoffelField_contDiff_top g x).differentiable
+      (by simp) q
+  have heq (z a b : E₃) :
+      RicciFlow.RicciFlow.christoffelClosedOp G z a b = Γ z a b := by
+    rw [show Γ z a b = Γ z b a from chartChristoffelField_symm g x z a b]
+    exact RicciFlow.RicciFlow.christoffelClosedOp_eq_christoffelAt G _
+      (CovariantDerivative.chartBilin_nondegenerate
+        (GeodesicTransport.cutoff (n := 3) x) GeodesicTransport.backgroundMetric
+        GeodesicTransport.backgroundMetric_pos g.inner
+        (fun y u hu ↦ g.inner_pos y hu) x
+        (GeodesicTransport.cutoff_nonneg x) (GeodesicTransport.cutoff_le_one x)
+        (GeodesicTransport.cutoff_support_invertible x) z)
+      (fun _ _ ↦ rfl) a b
+  have heqCLM (z a : E₃) :
+      RicciFlow.RicciFlow.christoffelClosedOp G z a = Γ z a := by
+    apply ContinuousLinearMap.ext
+    intro b
+    exact heq z a b
+  have hcurv (a b c : E₃) :
+      RicciFlow.RicciFlow.coordCurvatureOp G q a b c =
+        chartCurvatureOf Γ q a b c := by
+    unfold RicciFlow.RicciFlow.coordCurvatureOp chartCurvatureOf
+    simp_rw [heqCLM]
+    simp only [ContinuousLinearMap.sub_apply, ContinuousLinearMap.add_apply,
+      ContinuousLinearMap.comp_apply]
+    rw [ChartCurvatureBridge.fderiv_clm_family_apply hΓ a b,
+      ChartCurvatureBridge.fderiv_clm_family_apply hΓ b a]
+  rw [← anchorChartRicciEntryFlow_eq_ricciAt_anchor (fun _ ↦ g) x 0 v w]
+  unfold RicciFlow.RicciFlow.coordRicci anchorChartRicciEntryFlow
+  apply Finset.sum_congr rfl
+  intro i _
+  exact congrArg ((Module.finBasis ℝ E₃).coord i)
+    (hcurv ((Module.finBasis ℝ E₃) i) v w)
+
 end Normalized
 
 end Poincare.ScalarGradientEvolution
