@@ -689,6 +689,19 @@ transported to a continuous linear equivalence) with `‖S‖ ≤ √Λ`,
 `T ≤ 1`. Combined with the near-identity correction this gives solvability
 near any fixed elliptic coefficient matrix.
 
+`hamilton-eta-core-reduction` landed (`Global/HamiltonEtaCoreReduction.lean`,
+gate PASS, 6 declarations): `meanFloorFromEta` (the Eta gap at one point of
+a positive-scalar slice gives `r ≥ 3η/4`), the core `HamiltonReactionCore3Eta`
+(the pinned Stokes-free core with the scalar-to-mean comparison, its
+coefficient gap, and the variance-energy clause all deleted and the single
+existential Eta gap added), and its reductions to the final core (witnesses
+`c = 3η/4`, `rate = η`), the endpoint, and universal Hamilton convergence.
+Pinned as `hamilton-reaction-core-eta`; the energy and Stokes-free nodes are
+annotated as superseded discharge targets. **The Hamilton boundary is now:
+existence of the forward normalized flow with joint C³ entries and a
+compact jet-continuous realization, initial pinching data, and one uniform
+analytic estimate, the normalization gap `2(2−δ)N/R + η ≤ (4/3)r`.**
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

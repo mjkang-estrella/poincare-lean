@@ -63,6 +63,7 @@ import Poincare.Global.GeodesicFlowJointDerivative
 import Poincare.Global.HamiltonChartDensityLocalDomination
 import Poincare.Global.HamiltonCompactFamilyInvariantContinuity
 import Poincare.Global.HamiltonEndpointEquivalences
+import Poincare.Global.HamiltonEtaCoreReduction
 import Poincare.Global.HamiltonFamilyVolumeMeasureContinuity
 import Poincare.Global.HamiltonFiniteEnergyFlowInterface
 import Poincare.Global.HamiltonInitialPinchingReactionCoreReduction

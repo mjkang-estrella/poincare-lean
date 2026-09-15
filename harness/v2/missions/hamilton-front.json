@@ -14,7 +14,8 @@
     "Poincare.Global.HamiltonMeanFloorFromEnergyDomination",
     "Poincare.Global.HamiltonInitialPinchingReactionCoreReduction",
     "Poincare.Global.IntrinsicLaplacianCoordinateForm",
-    "Poincare.Global.HamiltonStokesFreeReactionCore"
+    "Poincare.Global.HamiltonStokesFreeReactionCore",
+    "Poincare.Global.HamiltonEtaCoreReduction"
   ],
   "endpoint": {
     "name": "Poincare.universal_hamilton_convergence",
@@ -52,6 +53,14 @@
     {
       "url": "harness/reports/intrinsic-laplacian-coordinate-form_done.md",
       "role": "Unconditional closed Laplacian Stokes for every C2 scalar on a closed smooth 3-manifold, so the Stokes premise of the reaction cores is discharged."
+    },
+    {
+      "url": "harness/reports/hamilton-residual-estimates-survey_done.md",
+      "role": "V<=6E is the nonnegative-mean-derivative condition, not almost-Schur (constant 24); the single Eta normalization gap supplies both the mean floor and the reaction rate."
+    },
+    {
+      "url": "harness/reports/astra-design-review-2026-09-15.md",
+      "role": "Independent design review reaching the same conclusion on V<=6E."
     }
   ],
   "nodes": [
@@ -74,10 +83,28 @@
       ]
     },
     {
+      "id": "hamilton-reaction-core-eta",
+      "kind": "obligation",
+      "declaration": "Poincare.universal_hamilton_reaction_core_eta",
+      "description": "Universal existence of the Eta reaction core: forward normalized Ricci flow with joint C3 entries and compact jet-continuous realization, positive initial scalar, initial eigenvalue floor in (1/6,1/3], admissible delta, and the single uniform normalization gap 2(2-delta)N/R + eta <= (4/3) r on the forward ray. This one estimate supplies the mean floor 3eta/4 and the reaction rate eta; the scalar-to-mean comparison and the variance-energy clause are no longer required. Open: this is the remaining Hamilton-analysis input besides flow existence.",
+      "depends_on": [],
+      "expected_type_symbol": "Poincare.HamiltonEtaCoreReduction.UniversalHamiltonReactionCoreEtaStatement",
+      "expected_statement_sha256": "90bdd98f9058b2ed75d31482f1035f8cfae702aef11cba3b81b7deca35a9fc33"
+    },
+    {
+      "id": "eta-core-reduction",
+      "kind": "checked",
+      "declaration": "Poincare.HamiltonEtaCoreReduction.universalHamiltonConvergence_of_universalHamiltonReactionCoreEta",
+      "description": "Checked: the Eta gap gives the positive mean floor and, through pinching preservation and the direct normalization-gap reaction theorem, the final core and the endpoint.",
+      "depends_on": [
+        "hamilton-reaction-core-eta"
+      ]
+    },
+    {
       "id": "hamilton-reaction-core-stokes-free",
       "kind": "obligation",
       "declaration": "Poincare.universal_hamilton_reaction_core_stokes_free",
-      "description": "Universal existence of the Stokes-free initial-pinching reaction core: forward normalized Ricci flow with joint C3 entries and compact jet-continuous realization, positive initial scalar, initial eigenvalue floor in (1/6,1/3], admissible delta, scalar-to-mean comparison with coefficient gap, and variance-energy domination V <= 6E. The Stokes premise is now a theorem and has been removed. Open.",
+      "description": "Universal existence of the Stokes-free initial-pinching reaction core: forward normalized Ricci flow with joint C3 entries and compact jet-continuous realization, positive initial scalar, initial eigenvalue floor in (1/6,1/3], admissible delta, scalar-to-mean comparison with coefficient gap, and variance-energy domination V <= 6E. The Stokes premise is now a theorem and has been removed. Open. NOTE 2026-09-15: superseded as discharge target by hamilton-reaction-core-eta, which drops the comparison/gap and energy clauses.",
       "depends_on": [],
       "expected_type_symbol": "Poincare.HamiltonStokesFreeReactionCore.UniversalHamiltonReactionCoreInitialPinchingNSStatement",
       "expected_statement_sha256": "c0b3c5a52b5b91488d438d1ad084abcab247fcddb9e43948d0e36b84914b44c3"
@@ -120,7 +147,7 @@
       "id": "hamilton-reaction-core-energy",
       "kind": "obligation",
       "declaration": "Poincare.universal_hamilton_reaction_core_energy",
-      "description": "Universal existence of the energy-form reaction core: the final core with the existential mean floor replaced by positive initial mean scalar, forward variance-energy domination (V <= 6E), and closed Laplacian Stokes for the scalar on forward slices. Open.",
+      "description": "Universal existence of the energy-form reaction core: the final core with the existential mean floor replaced by positive initial mean scalar, forward variance-energy domination (V <= 6E), and closed Laplacian Stokes for the scalar on forward slices. Open. NOTE 2026-09-15: the V<=6E clause is not implied by pinching (almost-Schur constant is 24); keep as a conditional reduction only, not a discharge target.",
       "depends_on": [],
       "expected_type_symbol": "Poincare.HamiltonMeanFloorFromEnergyDomination.UniversalHamiltonReactionCoreEnergyStatement",
       "expected_statement_sha256": "462dd7bd80384c2cb04e02c5901e77afb09f6c8b14609f5102a803e73472840c"
@@ -245,7 +272,8 @@
         "reaction-core-final-reduction",
         "reaction-core-energy-reduction",
         "reaction-core-initial-pinching-reduction",
-        "stokes-free-reduction"
+        "stokes-free-reduction",
+        "eta-core-reduction"
       ],
       "expected_type_symbol": "Poincare.UniversalHamiltonConvergenceStatement",
       "expected_statement_sha256": "90dba5085f3a9bcc6bd6ef1746b920308ce135ef4ddaf8ddc2f196dd3cf0c700"
