@@ -143,4 +143,14 @@ theorem duhamelOperator_u (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
       ∫ s in (0 : ℝ)..p.1, heatSolution (p.1-s) (fun y => f (s,y)) p.2 :=
   (duhamelGraph_spec α T hα hα1 hT hT1 f).1
 
+/-- The operator norms are uniformly bounded for all short positive intervals. -/
+theorem duhamelOperator_norm_le :
+    ∀ (α : ℝ) (hα : 0 < α) (hα1 : α < 1), ∃ C : ℝ, 0 < C ∧
+      ∀ (T : ℝ) (hT : 0 < T) (hT1 : T ≤ 1),
+        ‖duhamelOperator α T hα hα1 hT hT1‖ ≤ C := by
+  intro α hα hα1
+  refine ⟨boundConstant α hα hα1, (boundConstant_spec α hα hα1).1, ?_⟩
+  intro T hT hT1
+  exact LinearMap.mkContinuous_norm_le _ (boundConstant_spec α hα hα1).1.le _
+
 end Poincare.DuhamelSolutionOperatorCLM
