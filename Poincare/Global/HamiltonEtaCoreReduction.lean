@@ -46,4 +46,32 @@ theorem meanFloorFromEta
     have h := hgap t.1 t.2 x
     linarith
 
+/-- The initial-pinching Eta core with the Stokes and variance-energy clauses
+removed. The uniform normalization gap is the sole residual estimate. -/
+def HamiltonReactionCore3Eta (M : Type u)
+    [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+    [MeasurableSpace M] [BorelSpace M]
+    [ChartedSpace (ClosedSmoothModel 3) M]
+    [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+    [CompactSpace M] [ConnectedSpace M] [SimplyConnectedSpace M] : Prop :=
+  ∃ (K : Type v) (topK : TopologicalSpace K) (_ : @CompactSpace K topK)
+    (metric : K → ClosedSmoothRiemannianMetric 3 M)
+    (gt : ℝ → ClosedSmoothRiemannianMetric 3 M)
+    (parameter : Ici (0 : ℝ) → K) (epsilon delta : ℝ),
+      Continuous parameter ∧
+      (∀ t : Ici (0 : ℝ), metric (parameter t) = gt t.1) ∧
+      (∀ slot : MetricEntryThirdJetSlot 3 M,
+        Continuous (fun p : K × ClosedSmoothModel 3 ↦
+          metricEntryThirdJetProfile (metric p.1) slot p.2)) ∧
+      (∀ t x, MetricEntriesJointContDiffAt gt t x 3) ∧
+      (∀ t ∈ Ici (0 : ℝ), ∀ x, IsClosedNormalizedRicciFlowSolutionAt gt t x) ∧
+      (∀ x, 0 < (gt 0).scalarAt x) ∧
+      1/6 < epsilon ∧ epsilon ≤ 1/3 ∧
+      GlobalRicciEigenvalueFloor3 (gt 0) epsilon ∧
+      0 < delta ∧ delta ≤ 1 ∧
+      delta ≤ PinchingAlgebra.pinchedTracelessAdmissibleDelta3 (2 * epsilon - 1/3) ∧
+      (∃ eta : ℝ, 0 < eta ∧ ∀ t ∈ Ici (0 : ℝ), ∀ x,
+        2 * (2-delta) * (gt t).ricciNormSqAt x / (gt t).scalarAt x + eta ≤
+          (4/3 : ℝ) * meanScalar (gt t))
+
 end Poincare.HamiltonEtaCoreReduction
