@@ -627,12 +627,3 @@ theorem laplacianAt_mdifferentiableAt_of_contMDiff_three
     hLap.symm
 
 end Poincare.IntrinsicBochnerScalarGradient
-
-
-
-
-
-
-
-
-
