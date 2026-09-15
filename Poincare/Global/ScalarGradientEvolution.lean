@@ -90,4 +90,83 @@ theorem hasDerivAt_extDerivFun_of_joint_contDiffAt_two
   exact hasDerivAt_spatial_fderiv_of_joint_contDiffAt_two
     (fun t z ↦ f t ((extChartAt I x).symm z)) t₀ (extChartAt I x x) v hJoint
 
+section Normalized
+
+variable {N : Type u} [TopologicalSpace N] [T2Space N]
+  [SecondCountableTopology N] [CompactSpace N] [ConnectedSpace N]
+  [MeasurableSpace N] [BorelSpace N]
+  [ChartedSpace (ClosedSmoothModel 3) N]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ N]
+
+local notation "I₃" => closedSmoothModelWithCorners 3
+local notation "E₃" => ClosedSmoothModel 3
+
+/-- Pointwise time variation of the scalar-gradient norm along normalized
+flow. The joint scalar and Laplacian hypotheses are explicit regularity
+requirements beyond the supplied joint metric entries. -/
+theorem hasDerivAt_scalarGradNormSq_normalizedFlow
+    {gt : ℝ → ClosedSmoothRiemannianMetric 3 N} {t₀ : ℝ} {x : N}
+    (hJoint : ∀ t y, MetricEntriesJointContDiffAt gt t y 3)
+    (hFlow : ∀ y, IsClosedNormalizedRicciFlowSolutionAt gt t₀ y)
+    (hScalarJoint : ContDiffAt ℝ 2
+      (fun p : ℝ × E₃ ↦ (gt p.1).scalarAt ((extChartAt I₃ x).symm p.2))
+      (t₀, extChartAt I₃ x x))
+    (hLap : MDifferentiableAt I₃ 𝓘(ℝ)
+      (fun y ↦ (gt t₀).laplacianAt (fun z ↦ (gt t₀).scalarAt z) y) x) :
+    HasDerivAt (fun t ↦ (gt t).scalarGradNormSqAt x)
+      (2 * (gt t₀).inner x ((gt t₀).gradientAt (fun y ↦ (gt t₀).scalarAt y) x)
+          ((gt t₀).gradientAt
+            (fun y ↦ (gt t₀).laplacianAt (fun z ↦ (gt t₀).scalarAt z) y) x) +
+        4 * (gt t₀).inner x ((gt t₀).gradientAt (fun y ↦ (gt t₀).scalarAt y) x)
+          ((gt t₀).gradientAt (fun y ↦ (gt t₀).ricciNormSqAt y) x) +
+        2 * (gt t₀).ricciAt x ((gt t₀).gradientAt (fun y ↦ (gt t₀).scalarAt y) x)
+          ((gt t₀).gradientAt (fun y ↦ (gt t₀).scalarAt y) x) -
+        2 * meanScalar (gt t₀) * (gt t₀).scalarGradNormSqAt x) t₀ := by
+  letI : Nonempty N := ⟨x⟩
+  let g := gt t₀
+  let R : N → ℝ := fun y ↦ g.scalarAt y
+  let A : N → ℝ := fun y ↦ g.ricciNormSqAt y
+  let L : N → ℝ := fun y ↦ g.laplacianAt R y
+  let c : ℝ := -(2 / 3 : ℝ) * meanScalar g
+  have hR : MDifferentiableAt I₃ 𝓘(ℝ) R x := scalarAt_mdifferentiableAt g x
+  have hA : MDifferentiableAt I₃ 𝓘(ℝ) A x := ricciNormSqAt_mdifferentiableAt g x
+  have hL : MDifferentiableAt I₃ 𝓘(ℝ) L x := hLap
+  have heq : (fun y ↦ deriv (fun t ↦ (gt t).scalarAt y) t₀) =
+      L + (2 : ℝ) • A + c • R := by
+    funext y
+    have hs : SatisfiesNormalizedHamiltonScalarEvolutionAt gt t₀ y :=
+      satisfiesNormalizedHamiltonScalarEvolutionAt_of_normalizedFlow_of_globalLichnerowicz
+        hFlow (globalLichnerowiczAssemblyRegularity_of_jointMetricEntriesThree hJoint)
+    rw [hs.deriv]
+    simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, L, A, R, c, g]
+    ring
+  have h2A : MDifferentiableAt I₃ 𝓘(ℝ) ((2 : ℝ) • A) x := by
+    exact mdifferentiableAt_const.smul hA
+  have hcR : MDifferentiableAt I₃ 𝓘(ℝ) (c • R) x := by
+    exact mdifferentiableAt_const.smul hR
+  have hft : MDifferentiableAt I₃ 𝓘(ℝ)
+      (fun y ↦ deriv (fun t ↦ (gt t).scalarAt y) t₀) x := by
+    rw [heq]
+    exact (hL.add h2A).add hcR
+  have hd := hasDerivAt_gradientNormSq_of_hasDerivAt_extDerivFun
+    (timeDifferentiableAt_of_metricEntriesJointContDiffAt_one
+      ((hJoint t₀ x).of_le (by norm_num)))
+    (hasDerivAt_extDerivFun_of_joint_contDiffAt_two
+      (fun t ↦ scalarAt_mdifferentiableAt (gt t) x) hft hScalarJoint)
+  rw [heq, g.gradientAt_add (hL.add h2A) hcR,
+    g.gradientAt_add hL h2A,
+    g.gradientAt_const_smul 2 hA, g.gradientAt_const_smul c hR] at hd
+  apply hd.congr_deriv
+  rw [isClosedNormalizedRicciFlowSolutionAt_timeDerivAt_eq_normalizedRicciFlowRHSAt
+    (hFlow x)]
+  simp only [normalizedRicciFlowRHSAt, map_add, map_smul,
+    ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]
+  simp only [ClosedSmoothRiemannianMetric.scalarGradNormSqAt, R, A, L, c, g]
+  rw [(gt t₀).inner_symm x ((gt t₀).gradientAt
+    (fun y ↦ (gt t₀).laplacianAt (fun z ↦ (gt t₀).scalarAt z) y) x),
+    (gt t₀).inner_symm x ((gt t₀).gradientAt (fun y ↦ (gt t₀).ricciNormSqAt y) x)]
+  ring
+
+end Normalized
+
 end Poincare.ScalarGradientEvolution
