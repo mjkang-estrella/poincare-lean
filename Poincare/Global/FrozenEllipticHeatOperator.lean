@@ -22,4 +22,33 @@ theorem parabolicDist_comp_le (S : E →L[ℝ] E) (p q : ℝ × E) :
       (Real.sqrt_nonneg |p.1 - q.1|)
   simpa only [parabolicDist, map_sub, mul_add] using add_le_add hs ht
 
+variable {F F' : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+  [NormedAddCommGroup F'] [NormedSpace ℝ F'] {α T : ℝ}
+
+theorem holderBound_comp (hα : 0 ≤ α) (S : E →L[ℝ] E) (Q : F →L[ℝ] F')
+    (f : Y («E» := E) α T F) :
+    HasHolderBound α (cylinder T) (fun p => Q (f (p.1, S p.2)))
+      (‖Q‖ * max 1 (‖S‖ ^ α) * holderSeminorm α (cylinder T) f) := by
+  intro p hp q hq
+  have hp' : (p.1, S p.2) ∈ cylinder T := ⟨hp.1, mem_univ _⟩
+  have hq' : (q.1, S q.2) ∈ cylinder T := ⟨hq.1, mem_univ _⟩
+  have hd : parabolicDist (p.1, S p.2) (q.1, S q.2) ^ α ≤
+      max 1 (‖S‖ ^ α) * parabolicDist p q ^ α := by
+    have h := Real.rpow_le_rpow (parabolicDist_nonneg _ _) (parabolicDist_comp_le S p q) hα
+    simpa only [Real.mul_rpow (by positivity : 0 ≤ max 1 ‖S‖)
+      (parabolicDist_nonneg p q), Real.rpow_max zero_le_one (norm_nonneg S) hα,
+      Real.one_rpow] using h
+  calc
+    ‖Q (f (p.1, S p.2)) - Q (f (q.1, S q.2))‖ =
+        ‖Q (f (p.1, S p.2) - f (q.1, S q.2))‖ := by rw [map_sub]
+    _ ≤ ‖Q‖ * ‖f (p.1, S p.2) - f (q.1, S q.2)‖ := Q.le_opNorm _
+    _ ≤ ‖Q‖ * (holderSeminorm α (cylinder T) f *
+        parabolicDist (p.1, S p.2) (q.1, S q.2) ^ α) :=
+      mul_le_mul_of_nonneg_left (hasHolderBound_seminorm f _ hp' _ hq') (norm_nonneg Q)
+    _ ≤ ‖Q‖ * (holderSeminorm α (cylinder T) f *
+        (max 1 (‖S‖ ^ α) * parabolicDist p q ^ α)) :=
+      mul_le_mul_of_nonneg_left
+        (mul_le_mul_of_nonneg_left hd (holderSeminorm_nonneg f)) (norm_nonneg Q)
+    _ = _ := by ring
+
 end Poincare.FrozenEllipticHeatOperator
