@@ -58,4 +58,17 @@ theorem boundConstant_spec (α : ℝ) (hα : 0 < α) (hα1 : α < 1) :
       ‖G‖ ≤ boundConstant α hα hα1 * ‖f‖ :=
   Classical.choose_spec (exists_solution_graph_bound α hα hα1)
 
+/-- The unique graph selected by the landed existence theorem. -/
+def duhamelGraph (α T : ℝ) (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+    (f : Y («E» := E) α T ℝ) : ParabolicSolutionGraph.Graph («E» := E) α T :=
+  Classical.choose ((boundConstant_spec α hα hα1).2 T hT hT1 f)
+
+/-- The selected graph has the integral values and the uniform norm estimate. -/
+theorem duhamelGraph_spec (α T : ℝ) (hα : 0 < α) (hα1 : α < 1)
+    (hT : 0 < T) (hT1 : T ≤ 1) (f : Y («E» := E) α T ℝ) :
+    (∀ p ∈ cylinder T, (duhamelGraph α T hα hα1 hT hT1 f).u p =
+      ∫ s in (0 : ℝ)..p.1, heatSolution (p.1-s) (fun y => f (s,y)) p.2) ∧
+    ‖duhamelGraph α T hα hα1 hT hT1 f‖ ≤ boundConstant α hα hα1 * ‖f‖ :=
+  Classical.choose_spec ((boundConstant_spec α hα hα1).2 T hT hT1 f)
+
 end Poincare.DuhamelSolutionOperatorCLM
