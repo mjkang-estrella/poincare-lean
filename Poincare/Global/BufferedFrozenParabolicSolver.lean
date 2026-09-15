@@ -853,3 +853,187 @@ theorem exists_uniform_cutoff_bound {ψ : E → ℝ} (hψ : ContDiff ℝ ∞ ψ)
     (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left hnorm hB) (norm_nonneg G))
 
 end Poincare.BufferedFrozenParabolicSolver
+
+noncomputable section
+open Set
+open scoped ContDiff
+namespace Poincare.BufferedFrozenParabolicSolver
+open ParabolicHolder ParabolicSolutionGraph ParabolicCutoffCommutator
+
+/-- The actual variable-coefficient principal operator, evaluated in the host frame. -/
+def chartValue {α T : ℝ} (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ)
+    (G : Graph («E» := (ClosedSmoothModel 3)) α T) (p : ℝ × (ClosedSmoothModel 3)) : ℝ :=
+  G.ut p - ∑ i : Fin 3, ∑ j : Fin 3,
+    a p.2 i j * G.ddu p ((EuclideanSpace.basisFun (Fin 3) ℝ) i)
+      ((EuclideanSpace.basisFun (Fin 3) ℝ) j)
+
+/-- The residual carrier has the explicit coefficient estimate with constant 24. -/
+theorem commutator_solver_bound {α T C_S B : ℝ}
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+    (b : Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (c : Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+    (hB : (∑ i : Fin 3, ‖b i‖) + ‖c‖ ≤ B)
+    (S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+    (hS : ‖S‖ ≤ C_S) (f : Y («E» := (ClosedSmoothModel 3)) α T ℝ) :
+    ‖firstOrderForcing b c (S f)‖ ≤
+      24 * ((∑ i : Fin 3, ‖b i‖) * T ^ ((1-α)/2) + ‖c‖ * T ^ (1-α/2)) * ‖S f‖ ∧
+    ‖firstOrderForcing b c (S f)‖ ≤
+      (24 * B * C_S) * (T ^ ((1-α)/2) + T ^ (1-α/2)) * ‖f‖ := by
+  have hfirst := firstOrder_time_bound b c (S f) hα hα1 hT hT1
+  refine ⟨hfirst, ?_⟩
+  have hb0 : 0 ≤ ∑ i : Fin 3, ‖b i‖ := Finset.sum_nonneg (fun i _ => norm_nonneg _)
+  have hB0 : 0 ≤ B := (add_nonneg hb0 (norm_nonneg c)).trans hB
+  have hbB : (∑ i : Fin 3, ‖b i‖) ≤ B := by linarith [norm_nonneg c]
+  have hcB : ‖c‖ ≤ B := by linarith
+  have hSf : ‖S f‖ ≤ C_S * ‖f‖ :=
+    (S.le_opNorm f).trans (mul_le_mul_of_nonneg_right hS (norm_nonneg f))
+  calc
+    _ ≤ 24 * ((∑ i : Fin 3, ‖b i‖) * T ^ ((1-α)/2) + ‖c‖ * T ^ (1-α/2)) * ‖S f‖ := hfirst
+    _ ≤ 24 * (B * T ^ ((1-α)/2) + B * T ^ (1-α/2)) * (C_S * ‖f‖) := by
+      apply mul_le_mul _ hSf (norm_nonneg _) (by positivity)
+      gcongr
+    _ = _ := by ring
+
+set_option maxHeartbeats 1600000 in
+/-- Uniform single-chart error for the actual near-frozen equation and nested cutoffs.
+The returned Hölder carrier evaluates to the genuine chart residual everywhere.
+Oscillation enters only the smallness conditions ensuring existence of the supplied
+near-frozen solver. There is no oscillation term in this error estimate. -/
+theorem single_chart_error {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+    {U K : Set (ClosedSmoothModel 3)} (hU : IsOpen U)
+    (a : (ClosedSmoothModel 3) → Fin 3 → Fin 3 → ℝ) (anchor : (ClosedSmoothModel 3))
+    (ha : ∀ i j, ContDiffOn ℝ ∞ (fun x => a x i j) U)
+    {ψ ξ : (ClosedSmoothModel 3) → ℝ}
+    (hψ : ContDiff ℝ ∞ ψ) (hcψ : HasCompactSupport ψ)
+    (hξ : ContDiff ℝ ∞ ξ) (hcξ : HasCompactSupport ξ) (hξU : tsupport ξ ⊆ U)
+    (hnest : ∀ x ∈ tsupport ψ, ξ x = 1) (hone : ∀ x ∈ K, ψ x = 1)
+    {C_S τ₀ : ℝ} (hCS : 0 ≤ C_S) (hτ₀ : τ₀ ≤ 1) :
+    ∃ C_ψ C' : ℝ, 0 ≤ C_ψ ∧ 0 ≤ C' ∧
+    ∀ T ∈ Ioc 0 τ₀,
+    ∀ (b : Fin 3 → Fin 3 → Y («E» := (ClosedSmoothModel 3)) α T ℝ)
+      (S : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T),
+      ‖S‖ ≤ C_S →
+      (∀ t ∈ Icc 0 T, ∀ x i j, b i j (t,x) = ξ x * (a x i j - a anchor i j)) →
+      (∀ f t, t ∈ Icc 0 T → ∀ x,
+        (S f).ut (t,x) = f (t,x) + ∑ i, ∑ j,
+          (a anchor i j + b i j (t,x)) * (S f).ddu (t,x)
+            ((EuclideanSpace.basisFun (Fin 3) ℝ) i) ((EuclideanSpace.basisFun (Fin 3) ℝ) j)) →
+      ∃ (C : Graph («E» := (ClosedSmoothModel 3)) α T →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+        (R : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Y («E» := (ClosedSmoothModel 3)) α T ℝ),
+        (∀ G p, (C G).u p = ψ p.2 * G.u p) ∧
+        ∀ f : Y («E» := (ClosedSmoothModel 3)) α T ℝ,
+          (∀ p, p.2 ∉ K → f p = 0) →
+          (∀ p, R f p = chartValue a (C (S f)) p - f p) ∧
+          ‖R f‖ ≤ C_ψ * (T ^ ((1-α)/2) + T ^ (1-α/2)) * ‖f‖ ∧
+          ‖C (S f)‖ ≤ C' * ‖f‖ := by
+  obtain ⟨B, hB, hcarriers⟩ := exists_commutator_carriers hα hα1 hU a ha hψ hξ hcξ hξU hnest
+  obtain ⟨D, hD, hcutoff⟩ := exists_uniform_cutoff_bound hψ hcψ hα hα1
+  refine ⟨24 * B * C_S, D * C_S, by positivity, by positivity, ?_⟩
+  intro T hT b S hS heq hsolves
+  obtain ⟨C, hC, hres⟩ := exists_nested_cutoff_chart_residual hα hα1 a anchor ξ
+    hnest hψ hcψ b S heq hsolves
+  obtain ⟨β, c, hβ, hc, hbc⟩ := hcarriers T
+  let q := 24 * ((∑ i : Fin 3, ‖β i‖) + ‖c‖) * T ^ ((1-α)/2)
+  let F := (firstOrderLinearMap β c).mkContinuous q
+    (fun G => firstOrder_common_time_bound β c G hα hα1 hT.1 (hT.2.trans hτ₀))
+  let R := F.comp S
+  have hR (f : Y («E» := (ClosedSmoothModel 3)) α T ℝ) :
+      R f = firstOrderForcing β c (S f) := rfl
+  refine ⟨C, R, hC, ?_⟩
+  intro f hf
+  refine ⟨?_, ?_, ?_⟩
+  · intro p
+    by_cases hp : p ∈ cylinder T
+    · rw [hR, cutoff_firstOrder_value a ψ β c hβ hc (S f) p hp]
+      exact (hres f (cutoff_forcing_eq ψ hone f hf) p.1 hp.1 p.2).symm
+    · have hut := zero_off (C (S f)).ut hp
+      have hddu := zero_off (C (S f)).ddu hp
+      simp [chartValue, zero_off (R f) hp, zero_off f hp, hut, hddu]
+  · rw [hR]
+    exact (commutator_solver_bound hα hα1 hT.1 (hT.2.trans hτ₀) β c hbc S hS f).2
+  · calc
+      ‖C (S f)‖ ≤ ‖C‖ * ‖S f‖ := C.le_opNorm _
+      _ ≤ D * (C_S * ‖f‖) := mul_le_mul (hcutoff T hT.1 C hC)
+        ((S.le_opNorm f).trans (mul_le_mul_of_nonneg_right hS (norm_nonneg f)))
+        (norm_nonneg _) hD
+      _ = _ := by ring
+
+end Poincare.BufferedFrozenParabolicSolver
+
+noncomputable section
+open Set
+open scoped ContDiff Topology
+namespace Poincare.BufferedFrozenParabolicSolver
+open ParabolicHolder ParabolicSolutionGraph
+
+/-- A positive Hölder power satisfies the solver smallness condition on a whole short interval. -/
+theorem exists_small_time_interval {α ε Λ τ : ℝ}
+    (hα : 0 < α) (hε : 0 < ε) (hτ : 0 < τ) :
+    ∃ δ : ℝ, 0 < δ ∧ δ ≤ 1 ∧ δ ≤ τ ∧
+      ∀ T ∈ Ioc 0 δ, Λ * T ^ (α / 2) ≤ ε := by
+  have hc : ContinuousAt (fun t : ℝ => Λ * t ^ (α / 2)) 0 :=
+    continuousAt_const.mul (Real.continuousAt_rpow_const 0 (α / 2) (Or.inr (by linarith)))
+  have hz : Λ * (0 : ℝ) ^ (α / 2) < ε := by
+    simpa [Real.zero_rpow (show α / 2 ≠ 0 by linarith)] using hε
+  have hev := hc.eventually (gt_mem_nhds hz)
+  obtain ⟨r, hr, hball⟩ := Metric.mem_nhds_iff.mp hev
+  refine ⟨min 1 (min τ (r / 2)), lt_min zero_lt_one (lt_min hτ (by linarith)),
+    min_le_left _ _, (min_le_right _ _).trans (min_le_left _ _), ?_⟩
+  intro T hT
+  apply le_of_lt
+  apply hball
+  rw [Metric.mem_ball, Real.dist_eq, sub_zero, abs_of_pos hT.1]
+  have := hT.2.trans ((min_le_right _ _).trans (min_le_right _ _))
+  linarith
+
+set_option maxHeartbeats 1600000 in
+/-- Construct a single-chart parametrix from smooth entries and a positive frozen matrix.
+The patch oscillation is only an existence condition. After choosing the nested cutoffs,
+the residual has only the two positive commutator time powers, with constants fixed
+before time. The maps take values in the original unweighted derivative graph and
+Hölder spaces, and the residual is identified with the actual chart operator. -/
+theorem exists_single_chart_parametrix {α : ℝ} (hα : 0 < α) (hα1 : α < 1)
+    {U : Set (ClosedSmoothModel 3)} (hU : IsOpen U)
+    (a : (ClosedSmoothModel 3) → Matrix (Fin 3) (Fin 3) ℝ) (anchor : (ClosedSmoothModel 3))
+    (ha : ∀ i j, ContDiffOn ℝ ∞ (fun x => a x i j) U) (hpos : (a anchor).PosDef) :
+    ∃ ε₀ : ℝ, 0 < ε₀ ∧
+    ∀ (K : Set (ClosedSmoothModel 3)) (ψ ξ : (ClosedSmoothModel 3) → ℝ),
+      ContDiff ℝ ∞ ψ → HasCompactSupport ψ →
+      ContDiff ℝ ∞ ξ → HasCompactSupport ξ → tsupport ξ ⊆ U →
+      (∀ x, ξ x ∈ Icc 0 1) →
+      (∀ x ∈ tsupport ψ, ξ x = 1) → (∀ x ∈ K, ψ x = 1) →
+      (∀ x ∈ tsupport ξ, ∀ i j, |a x i j - a anchor i j| ≤ ε₀) →
+      ∃ C_ψ C' τ₀ : ℝ, 0 ≤ C_ψ ∧ 0 ≤ C' ∧ 0 < τ₀ ∧
+      ∀ T ∈ Ioc 0 τ₀,
+        ∃ (P : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Graph («E» := (ClosedSmoothModel 3)) α T)
+          (R : Y («E» := (ClosedSmoothModel 3)) α T ℝ →L[ℝ] Y («E» := (ClosedSmoothModel 3)) α T ℝ),
+          (∀ f p, p.2 ∉ tsupport ψ → (P f).u p = 0) ∧
+          ∀ f : Y («E» := (ClosedSmoothModel 3)) α T ℝ,
+            (∀ p, p.2 ∉ K → f p = 0) →
+            (∀ p, R f p = chartValue a (P f) p - f p) ∧
+            ‖R f‖ ≤ C_ψ * (T ^ ((1-α)/2) + T ^ (1-α/2)) * ‖f‖ ∧
+            ‖P f‖ ≤ C' * ‖f‖ := by
+  obtain ⟨lam, Λell, hlam, hlamΛ, hlo, hhi⟩ := matrixBilin_ellipticity hpos
+  obtain ⟨C_S, ε₀, τ, hCS, hε₀, hτ, hsolver⟩ :=
+    exists_chart_operator α hα hα1 lam Λell hlam hlamΛ
+  refine ⟨ε₀, hε₀, ?_⟩
+  intro K ψ ξ hψ hcψ hξ hcξ hξU hξ01 hnest hone hosc
+  obtain ⟨Λb, _, hext⟩ := oscillation_extension_entries hα hα1 hU a ha anchor
+    hξ hcξ hξU hξ01 hε₀.le hosc
+  obtain ⟨δ, hδ, hδ1, hδτ, hsmall⟩ :=
+    exists_small_time_interval (Λ := Λb) hα hε₀ hτ
+  obtain ⟨C_ψ, C', hCψ, hC', herror⟩ := single_chart_error hα hα1 hU a anchor ha
+    hψ hcψ hξ hcξ hξU hnest hone hCS.le (τ₀ := 1) le_rfl
+  refine ⟨C_ψ, C', δ, hCψ, hC', hδ, ?_⟩
+  intro T hT
+  obtain ⟨b, heq, hb, hbα⟩ := hext T
+  obtain ⟨S, hS, hsolves, _⟩ := hsolver a anchor ξ hpos.isHermitian hlo hhi T
+    hT.1 (hT.2.trans hδτ) b Λb hb hbα (hsmall T hT) heq
+  obtain ⟨C, R, hC, hR⟩ := herror T ⟨hT.1, hT.2.trans hδ1⟩ b S hS heq hsolves
+  refine ⟨C.comp S, R, ?_, ?_⟩
+  · intro f p hp
+    change (C (S f)).u p = 0
+    rw [hC, image_eq_zero_of_notMem_tsupport hp, zero_mul]
+  · exact hR
+
+end Poincare.BufferedFrozenParabolicSolver
