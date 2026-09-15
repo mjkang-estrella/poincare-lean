@@ -40,6 +40,7 @@ import Poincare.Global.CurvatureInstanceTransport
 import Poincare.Global.DeTurckPrincipalIdentity
 import Poincare.Global.DeTurckPrincipalSecondJet
 import Poincare.Global.DuhamelParabolicHolderSeminorm
+import Poincare.Global.DuhamelSolutionOperatorBound
 import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity
 import Poincare.Global.FixedChartEndpointSlices

@@ -531,6 +531,17 @@ Pinned as `hamilton-reaction-core-stokes-free`. **Two residual estimates now
 remain in front of the Hamilton endpoint**: the scalar-to-mean comparison
 with its coefficient gap, and the variance-energy domination `V ≤ 6E`.
 
+Step L3 completed (`Global/DuhamelSolutionOperatorBound.lean`, gate PASS,
+15 theorems): sup and parabolic Hölder bounds for the time derivative
+(through the equation and the Hessian bounds), the gradient (sup bound
+`2MC₁√t`, spatial Hölder by bounded-Lipschitz interpolation, time Hölder by
+reversing the Duhamel time integral), and the value; then
+`exists_solution_graph_bound`: for `0 < α < 1` there is `C` such that for
+every `0 < T ≤ 1` and every forcing `f` in the Hölder carrier, the Duhamel
+solution is a solution graph `G` with `‖G‖ ≤ C‖f‖`. The constant-coefficient
+inverse of the parabolic route is therefore bounded from `Y α T` into
+`Graph α T` with a constant uniform in `T ≤ 1`.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17
