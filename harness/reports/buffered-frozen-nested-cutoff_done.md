@@ -675,10 +675,7 @@ diff --git a/Poincare/Global/BufferedFrozenParabolicSolver.lean b/Poincare/Globa
 index 314a94ca..b0863a97 100644
 --- a/Poincare/Global/BufferedFrozenParabolicSolver.lean
 +++ b/Poincare/Global/BufferedFrozenParabolicSolver.lean
-@@ -504,3 +504,536 @@ theorem exists_cutoff_chart_residual {α T : ℝ} (hα : 0 < α) (hα1 : α < 1)
-   linear_combination hf'
- 
- end Poincare.BufferedFrozenParabolicSolver
+@@ -506,0 +507,533 @@ end Poincare.BufferedFrozenParabolicSolver
 +
 +
 +noncomputable section
