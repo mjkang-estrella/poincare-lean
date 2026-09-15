@@ -114,4 +114,77 @@ theorem errorOp_small (b : Fin 3 → Fin 3 → Y₀)
   have h := errorOp_norm_le b hα hα1 hT hT1 hb hbα
   constructor <;> nlinarith only [h, hε, hΛ]
 
+/-- Identity plus the Hölder coefficient perturbation. -/
+def coeff (b : Fin 3 → Fin 3 → Y₀) (i j : Fin 3) (p : ℝ × E) : ℝ :=
+  (if i = j then 1 else 0) + b i j p
+
+/-- Splitting the coefficient sum gives the Laplacian and perturbation forcing. -/
+theorem coeff_sum (b : Fin 3 → Fin 3 → Y₀) (G : X₀) (p : ℝ × E) :
+    (∑ i, ∑ j, coeff b i j p * G.ddu p (e i) (e j)) =
+      (∑ i, G.ddu p (e i) (e i)) + forcing b G p := by
+  classical
+  simp [coeff, add_mul, Finset.sum_add_distrib, ite_mul, forcing_apply]
+
+/-- The inverse of one minus the error solves the corrected forcing equation. -/
+theorem neumann_data_eq (R : Y₀ →L[ℝ] Y₀) (hR : ‖R‖ < 1) (f : Y₀) :
+    (↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀) f =
+      f + R ((↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀) f) := by
+  have he := congrArg (fun A : Y₀ →L[ℝ] Y₀ => A f) (Units.oneSub R hR).val_inv
+  change (↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀) f -
+    R ((↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀) f) = f at he
+  exact sub_eq_iff_eq_add.mp he
+
+/-- The geometric-series estimate gives a factor of two for half-size errors. -/
+theorem neumann_norm_le_two (R : Y₀ →L[ℝ] Y₀) (hR : ‖R‖ < 1)
+    (hhalf : ‖R‖ ≤ 1 / 2) :
+    ‖(↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀)‖ ≤ 2 := by
+  change ‖∑' n : ℕ, R ^ n‖ ≤ 2
+  have hs := tsum_geometric_le_of_norm_lt_one R hR
+  have h1 : ‖(1 : Y₀ →L[ℝ] Y₀)‖ ≤ 1 := ContinuousLinearMap.norm_id_le
+  have hi : (1 - ‖R‖)⁻¹ ≤ (2 : ℝ) :=
+    (inv_le_comm₀ (by linarith) (by norm_num)).2 (by norm_num; linarith)
+  linarith
+
+/-- Correct the constant-coefficient inverse by the convergent Neumann series. -/
+def nearIdentityInverse (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+    (hR : ‖errorOp b hα hα1 hT hT1‖ < 1) : Y₀ →L[ℝ] X₀ :=
+  ParametrixNeumannCorrection.correctedInverse
+    (duhamelOperator α T hα hα1 hT hT1) (errorOp b hα hα1 hT hT1) hR
+
+/-- The corrected graph solves the variable-coefficient equation at both endpoints too. -/
+theorem nearIdentityInverse_solves (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+    (hR : ‖errorOp b hα hα1 hT hT1‖ < 1) (f : Y₀) :
+    ∀ t ∈ Icc 0 T, ∀ x : E,
+      (nearIdentityInverse b hα hα1 hT hT1 hR f).ut (t, x) =
+        f (t, x) + ∑ i, ∑ j, coeff b i j (t, x) *
+          (nearIdentityInverse b hα hα1 hT hT1 hR f).ddu (t, x) (e i) (e j) := by
+  let R := errorOp b hα hα1 hT hT1
+  let g := (↑((Units.oneSub R hR)⁻¹) : Y₀ →L[ℝ] Y₀) f
+  intro t ht x
+  have hg := congrArg (fun v : Y₀ => v (t, x)) (neumann_data_eq R hR f)
+  change g (t, x) = f (t, x) +
+    forcing b (duhamelOperator α T hα hα1 hT hT1 g) (t, x) at hg
+  change (duhamelOperator α T hα hα1 hT hT1 g).ut (t, x) =
+    f (t, x) + ∑ i, ∑ j, coeff b i j (t, x) *
+      (duhamelOperator α T hα hα1 hT hT1 g).ddu (t, x) (e i) (e j)
+  rw [duhamelOperator_solves α T hα hα1 hT hT1 g t ht x, coeff_sum, hg]
+  ring
+
+/-- The corrected solution operator has uniform norm at most twice the heat constant. -/
+theorem nearIdentityInverse_norm_le (b : Fin 3 → Fin 3 → Y₀)
+    (hα : 0 < α) (hα1 : α < 1) (hT : 0 < T) (hT1 : T ≤ 1)
+    (hR : ‖errorOp b hα hα1 hT hT1‖ < 1)
+    (hhalf : ‖errorOp b hα hα1 hT hT1‖ ≤ 1 / 2) :
+    ‖nearIdentityInverse b hα hα1 hT hT1 hR‖ ≤ 2 * boundConstant α hα hα1 := by
+  apply (ContinuousLinearMap.opNorm_comp_le _ _).trans
+  calc
+    _ ≤ boundConstant α hα hα1 * 2 :=
+      mul_le_mul (duhamel_norm_le_boundConstant hα hα1 hT hT1)
+        (neumann_norm_le_two _ hR hhalf)
+        (norm_nonneg (↑((Units.oneSub (errorOp b hα hα1 hT hT1) hR)⁻¹) : Y₀ →L[ℝ] Y₀))
+        (boundConstant_spec α hα hα1).1.le
+    _ = _ := mul_comm _ _
+
 end Poincare.NearIdentityParabolicRightInverse
