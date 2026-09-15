@@ -126,4 +126,22 @@ theorem norm_bilinearPullback_le (S : E →L[ℝ] E) :
         (mul_le_mul_of_nonneg_right (norm_covectorPullback_le S) (norm_nonneg B)) (norm_nonneg S)
     _ = _ := by ring
 
+/-- Pull back all four graph components and their genuine derivative relations. -/
+def mapGraph (hα : 0 ≤ α) (S : E →L[ℝ] E)
+    (H : ParabolicSolutionGraph.Graph («E» := E) α T) :
+    ParabolicSolutionGraph.Graph («E» := E) α T where
+  u := mapHolder hα S (ContinuousLinearMap.id ℝ ℝ) H.u
+  ut := mapHolder hα S (ContinuousLinearMap.id ℝ ℝ) H.ut
+  du := mapHolder hα S (covectorPullback S) H.du
+  ddu := mapHolder hα S (bilinearPullback S) H.ddu
+  zero_trace := fun x => H.zero_trace (S x)
+  hasFDeriv := by
+    intro t ht x
+    exact (H.hasFDeriv t ht (S x)).comp x S.hasFDerivAt
+  hasFDeriv_du := by
+    intro t ht x
+    exact (covectorPullback S).hasFDerivAt.comp x
+      ((H.hasFDeriv_du t ht (S x)).comp x S.hasFDerivAt)
+  hasDeriv_time := fun t ht x => H.hasDeriv_time t ht (S x)
+
 end Poincare.FrozenEllipticHeatOperator
