@@ -1,5 +1,26 @@
 # Handoff Snapshot
 
+## 2026-09-15 Worker near-frozen parabolic right inverse proved
+
+Branch `worker/near-frozen-parabolic-right-inverse`, base `57144244`,
+verified proof head `5c1f77a4`. The single new
+`Global/NearFrozenParabolicRightInverse.lean` proves the exact
+`exists_nearFrozen_solution` and a uniform bounded linear operator form.
+The proof packages the symmetric-factor change of variables as a frozen
+linear inverse and corrects it using the original-coefficient multiplier.
+Its choices are `C = 2 D`, `ε₀ = 1 / (36 D)`, and `τ₀ = 1`, where `D`
+depends only on the exponent and ellipticity bounds.
+
+Focused source compilation, imported literal-target assignment, empty token
+scan, and whitespace checks pass. The full emitted-module audit checks all
+26 declarations, including generated declarations outside the task namespace;
+each has exactly the three required foundational dependencies. Actual outputs,
+failed probes, probe sources, and the proof diff are preserved in
+`harness/reports/near-frozen-parabolic-right-inverse_done.md`.
+This worker result awaits independent review and is not merged or accepted.
+
+First action: `DEVELOPER_DIR=/Library/Developer/CommandLineTools LEAN_NUM_THREADS=1 lake env lean Poincare/Global/NearFrozenParabolicRightInverse.lean`.
+
 ## 2026-09-15 Worker near-identity parabolic right inverse proved
 
 Branch `worker/near-identity-parabolic-right-inverse`, base `a77fdab5`,
