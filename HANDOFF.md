@@ -600,6 +600,18 @@ the Duhamel construction is linear, and `duhamelOperator : Y α T ℝ →L[ℝ] 
 carries the uniform norm bound and satisfies the heat equation on the
 cylinder. This is the exact shape `ParametrixNeumannCorrection` consumes.
 
+The L5 multiplier estimate landed (`Global/ParabolicHolderMultiplier.lean`,
+gate PASS, 20 declarations): a solution graph has vanishing gradient and
+Hessian at time zero, hence the zero-trace interpolation
+`supNorm ddu ≤ T^{α/2}‖G‖`; coordinate entries of a `Bilin`-valued carrier
+element are carrier elements with the split product bound
+`‖b·h‖ ≤ sup b·‖h‖ + [b]_α·sup h`; the nine-entry forcing
+`Σᵢⱼ bᵢⱼ·∂ᵢ∂ⱼu` is a carrier element with
+`‖F‖ ≤ 9(ε + Λ T^{α/2})‖G‖` when the coefficients have sup at most `ε` and
+Hölder seminorm at most `Λ`; and the error smallness `‖R f‖ ≤ ½‖f‖` under
+`9C_Sε ≤ 1/4`, `9C_SΛT^{α/2} ≤ 1/4`. This is the smallness mechanism for
+the frozen-coefficient correction.
+
 Worker policy used for tasks 13 to 19: codex `gpt-6-astra`, reasoning effort
 chosen by difficulty (all seven ran at `high`), `harness/dispatch_codex.sh
 <task> <taskfile> <effort>`; tasks 16 and 17 ran in parallel because 17

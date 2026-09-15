@@ -83,6 +83,7 @@ import Poincare.Global.IntrinsicLaplacianCoordinateForm
 import Poincare.Global.MovingLimitLeibniz
 import Poincare.Global.NormalizedFlowInitialPinchingPreservation
 import Poincare.Global.NormalizedFlowPinchingEvolutionAutomatic
+import Poincare.Global.ParabolicHolderMultiplier
 import Poincare.Global.ParabolicHolderSpace
 import Poincare.Global.ParabolicSolutionGraph
 import Poincare.Global.ParametrixNeumannCorrection
