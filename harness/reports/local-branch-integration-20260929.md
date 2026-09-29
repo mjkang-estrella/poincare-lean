@@ -83,3 +83,20 @@ Next exact proof work is the auxiliary quantity inequality with the corrected
 coefficient `K = 84 + 60 * eta` and retained normalization term. The larger open
 boundary remains universal Hamilton convergence and existence-shaped
 smoothability; no source producer is inferred from these local estimates.
+
+## Final combined checkpoint
+
+At source HEAD `0c17aa47`, the full build passed 4,208 dependency/artifact jobs
+in 4.432 seconds using the already prepared cache. Interface, Mathlib-gap,
+shape, theorem-contract, semantic, root-import, and axiom audits all passed.
+The full completion audit failed only for the missing reserved declaration.
+The current generated status is dated `2026-09-29T20:51:08Z`.
+
+The next auxiliary Task has now passed independent statement read-back and
+expected-type elaboration and is running in the isolated
+`codex/proof-hamilton-auxiliary-a01` worktree. Its durable Task, context, and
+append-only evidence remain there; it is not accepted or included in this
+combined checkpoint. Its exact first review action is to inspect
+`harness/v2/state/auxiliary-next-20260929/attempt-a01` in that worktree and rerun
+the frozen gate if the worker returns a sealed proof. This chat remains the
+main local coordinator.
