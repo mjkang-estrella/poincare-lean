@@ -2,6 +2,14 @@
 
 ## 2026-09-29 Local continuation and branch recovery
 
+The corrected Hamilton auxiliary estimate is also accepted. It derives the
+actual time derivative and Laplacian of
+`F = S/R - eta * R^2 + (84 + 60 * eta) * U`, retains
+`+(4/3) * meanScalar * F` on the left, and proves the cubic upper bound from
+the checked quotient-eight, contracted-Bianchi damping and cubic reaction
+estimates. Its exact flow/regularity/scalar-positivity/pinching hypotheses are
+unchanged. Fresh independent source and frozen type/axiom checks passed.
+
 The user resumed proof work locally and selected this chat as the main
 coordinator. The main checkout was fast-forwarded to the four-proof checkpoint
 `2da86427`; the conflicting cloud patch was preserved in recovery evidence and
@@ -30,9 +38,10 @@ flow existence or convergence is inferred. The accepted local Codex helper
 attempts are not registered Pi/Leanstral runtime Jobs. No service or remote harness
 was changed. No complete Poincare proof is claimed.
 
-First action: freeze the actual auxiliary quantity estimate with
-`K = 84 + 60 * eta`, retaining `+(4/3) * meanScalar * F` on its left-hand
-side; use the accepted quotient-eight, Bianchi damping and cubic bounds. See
+First action: freeze a maximum-comparison consumer of the accepted auxiliary
+inequality that retains its variable mean-scalar coefficient. Identify the
+actual extra curvature-ratio or source bound needed; do not infer a uniform
+Bernstein bound or convergence from this pointwise estimate alone. See
 `harness/reports/local-branch-integration-20260929.md` for branch provenance and
 `harness/v2/tasks/local-resume-20260929-quotient-hessian.json` for the exact
 Hessian target.

@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientAuxiliaryEstimate"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientAuxiliaryEstimate.auxiliary_evolution_le_cubic_of_normalizedFlow",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M) (eta : ℝ), 0 ≤ eta → (∀ s y, Poincare.MetricEntriesJointContDiffAt gt s y 5) → (∀ y, Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) → (∀ y, 0 < (gt t).scalarAt y) → (gt t).pinchingQuotientAt x ≤ 1 → let F : ℝ → M → ℝ := fun s y ↦ (gt s).scalarGradNormSqAt y / (gt s).scalarAt y - eta * (gt s).scalarAt y ^ 2 + (84 + 60 * eta) * (gt s).tracelessRicciNormSqAt y; deriv (fun s ↦ F s x) t - (gt t).laplacianAt (fun y ↦ F t y) x + (4 / 3 : ℝ) * Poincare.meanScalar (gt t) * F t x ≤ -(4 / 3 : ℝ) * eta * (gt t).scalarAt x ^ 3 + 4 * (84 + 60 * eta) * (gt t).scalarAt x * (gt t).tracelessRicciNormSqAt x",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      },
+      {
+        "path": "Poincare/Global/ScalarVariation.lean",
+        "sha256": "4917794230b1aa45f34a0d242c45d6f00af5d5f67022ba275ef460490dbca082"
+      },
+      {
+        "path": "Poincare/Global/RicciNorm.lean",
+        "sha256": "1e9cb562fd98e5d228bd9f87ea4da6a81a2f746ca997b8c95a397214eab0952f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "e26a1cbe3b390745c801267cea1c49e06a45864cc52bfa03e3b63bdd7424a5c9",
+      "report_path": "harness/v2/contracts/auxiliary-next-20260929/auxiliary.readback.json",
+      "report_sha256": "7aeb8b2281ecb625ab702f6f7f71aa2f5ccecc780bd516facc8eb65919012c4d",
+      "verdict": "approved"
+    }
+  }
+}

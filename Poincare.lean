@@ -78,6 +78,7 @@ import Poincare.Global.HamiltonReactionCoreReduced
 import Poincare.Global.HamiltonReactionCoreReduction
 import Poincare.Global.HamiltonReactionEndpoint
 import Poincare.Global.HamiltonScalarGradientEstimate
+import Poincare.Global.HamiltonScalarGradientAuxiliaryEstimate
 import Poincare.Global.HamiltonScalarGradientMixedBound
 import Poincare.Global.HamiltonScalarGradientHessianBound
 import Poincare.Global.HamiltonScalarGradientQuotientBound

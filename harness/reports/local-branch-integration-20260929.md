@@ -100,3 +100,19 @@ combined checkpoint. Its exact first review action is to inspect
 `harness/v2/state/auxiliary-next-20260929/attempt-a01` in that worktree and rerun
 the frozen gate if the worker returns a sealed proof. This chat remains the
 main local coordinator.
+
+## Accepted auxiliary continuation
+
+The follow-up helper proved the complete reviewed auxiliary inequality on its
+first compiler attempt; the sealed worker source is `67635cce`. Root
+independently reran fresh compilation, token/whitespace checks and the exact
+frozen type/axiom gate against the recorded base `3fbec21a`. Both emitted
+declarations use exactly the three foundational axioms. The proof derives
+actual time differentiability and spatial C2 regularity, proves genuine
+Laplacian linearity, and performs the corrected coefficient cancellation.
+The Task is now accepted; the earlier note about its active state describes
+the preceding 4,208-job checkpoint.
+
+The next real interface is a maximum-comparison consumer with explicit
+additional source control. Neither a uniform bound nor long-time convergence
+is a consequence of the auxiliary inequality without that control.
