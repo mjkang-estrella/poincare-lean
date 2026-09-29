@@ -649,6 +649,7 @@ class TrustBoundaryTest(unittest.TestCase):
             "harness/v2/__init__.py",
             "harness/v2/SPEC.md",
             "harness/v2/RUNBOOK.md",
+            "scripts/verification_receipts.py",
         ):
             path = repo / relative
             path.parent.mkdir(parents=True, exist_ok=True)

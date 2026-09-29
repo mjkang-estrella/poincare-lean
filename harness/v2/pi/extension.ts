@@ -1129,9 +1129,9 @@ function installHarnessPiExtension(pi: ExtensionAPI) {
 	pi.registerTool({
 		name: "lean_check",
 		label: "Run allowlisted Lean check",
-		description: "Run one zero-based Task acceptance entry, only when it is an explicitly supported Lean/lake argv.",
+		description: "Check one zero-based Task Lean entry. Development checks reuse a scoped Lean session; fresh=true forces the full compiler. Final acceptance is independently checked.",
 		parameters: Type.Object(
-			{ command_index: Type.Integer({ minimum: 0 }) },
+			{ command_index: Type.Integer({ minimum: 0 }), fresh: Type.Optional(Type.Boolean()) },
 			{ additionalProperties: false },
 		),
 		executionMode: "sequential",

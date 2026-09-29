@@ -23,6 +23,12 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Callable, Mapping, Sequence
 
 from .install import PI_MINIMUM_NODE_VERSION
+from .cache_integrity import (
+    CacheProtectionError,
+    ProtectedCacheAttestation,
+    attest_protected_cache,
+    revalidate_protected_cache,
+)
 
 
 class SecurityError(RuntimeError):
@@ -2735,6 +2741,8 @@ def audit_sparse_lean_bubblewrap(
     tasks_max: int,
     cpu_quota_percent: int | float,
     process_limits: ProcessResourceLimits | dict[str, int],
+    cache_attestation: ProtectedCacheAttestation | None = None,
+    timings: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     """Attest an exact sparse source/cache/toolchain closure for Lean."""
 
@@ -2781,10 +2789,10 @@ def audit_sparse_lean_bubblewrap(
     overrides_sha = _validate_package_overrides(cache, snapshot_root)
     if overrides_sha != cache_manifest["package_overrides_sha256"]:
         raise SecurityError("immutable Lake package override digest mismatch")
-    cache_tree_sha, _ = _cache_entries(cache, include_content=True)
-    if cache_tree_sha != cache_manifest["cache_tree_sha256"]:
-        raise SecurityError("immutable Lake cache content digest mismatch")
+    cache_tree_sha = cache_manifest["cache_tree_sha256"]
+    compiler_started = time.monotonic()
     toolchain, toolchain_elf = _sparse_toolchain_record(extra_toolchain_roots)
+    _record_phase_time(timings, "toolchain_validation_seconds", compiler_started)
     runtime_mounts, runtime_symlinks = _runtime_library_mounts(toolchain_elf)
     if runtime_symlinks:
         raise SecurityError("Lean runtime closure must not require host symlinks")
@@ -2833,10 +2841,14 @@ def audit_sparse_lean_bubblewrap(
         "resources": resources,
         "forbidden_host_paths": forbidden,
     }
-    return _validate_sparse_lean_bwrap_spec(spec)
+    sandbox = _validate_sparse_lean_bwrap_spec(spec)
+    _validate_sparse_cache(sandbox, cache_attestation=cache_attestation, timings=timings)
+    return sandbox
 
 
-def _sparse_lean_bwrap_inner(spec: dict[str, Any], target: str) -> tuple[str, ...]:
+def _sparse_lean_bwrap_inner(
+    spec: dict[str, Any], target: str, *, server: bool = False
+) -> tuple[str, ...]:
     destinations = [
         SANDBOX_TOOLCHAIN_ROOT / "bin",
         SANDBOX_TOOLCHAIN_ROOT / "lib" / "lean",
@@ -2924,7 +2936,9 @@ def _sparse_lean_bwrap_inner(spec: dict[str, Any], target: str) -> tuple[str, ..
             f"--packages={SANDBOX_SPARSE_SOURCE_ROOT / '.lake' / PACKAGE_OVERRIDES_NAME}",
             "env",
             toolchain["lean"]["destination"],
-            str(SANDBOX_SPARSE_SOURCE_ROOT / Path(*PurePosixPath(target).parts)),
+            "--server" if server else str(
+                SANDBOX_SPARSE_SOURCE_ROOT / Path(*PurePosixPath(target).parts)
+            ),
         )
     )
     return tuple(argv)
@@ -2935,15 +2949,86 @@ def sparse_lean_process_limits(spec: Any) -> ProcessResourceLimits:
     return ProcessResourceLimits.from_mapping(sandbox["resources"]["rlimits"])
 
 
-def bubblewrap_sparse_lean_argv(
-    *, spec: Any, command: Sequence[str]
-) -> tuple[str, ...]:
-    """Rehash the full sparse closure and return systemd-run plus bubblewrap argv."""
+def _record_phase_time(
+    timings: dict[str, float] | None, phase: str, started: float
+) -> None:
+    if timings is not None:
+        timings[phase] = timings.get(phase, 0.0) + time.monotonic() - started
 
+
+def _sparse_cache_binding(sandbox: dict[str, Any]) -> dict[str, Any]:
+    return {"cache": sandbox["lake_cache"], "compiler": sandbox["toolchain"]}
+
+
+def _validate_sparse_cache(
+    sandbox: dict[str, Any], *,
+    cache_attestation: ProtectedCacheAttestation | None,
+    timings: dict[str, float] | None,
+) -> Path:
+    started = time.monotonic()
+    cache_record = sandbox["lake_cache"]
+    cache = _safe_absolute_directory(cache_record["source"], "immutable Lake cache")
+    for name, expected, label in (
+        (CACHE_MANIFEST_NAME, cache_record["manifest_sha256"], "manifest"),
+        (PACKAGE_OVERRIDES_NAME, cache_record["package_overrides_sha256"], "package overrides"),
+    ):
+        path = cache / name
+        if (path.is_symlink() or not path.is_file() or
+                path.stat(follow_symlinks=False).st_mode & 0o222 or
+                _sha256_file(path) != expected):
+            raise SecurityError(f"immutable Lake cache {label} changed after attestation")
+    if cache_attestation is None:
+        # Chmod/read-only namespace binds are not evidence of host immutability.
+        cache_digest, _ = _cache_entries(cache, include_content=True)
+        if cache_digest != cache_record["tree_sha256"]:
+            raise SecurityError("immutable Lake cache content changed after attestation")
+    else:
+        try:
+            revalidate_protected_cache(
+                attestation=cache_attestation, root=cache,
+                binding=_sparse_cache_binding(sandbox),
+                tree_sha256=cache_record["tree_sha256"],
+            )
+        except CacheProtectionError as exc:
+            raise SecurityError(str(exc)) from exc
+    _record_phase_time(timings, "cache_integrity_seconds", started)
+    return cache
+
+
+def attest_protected_sparse_cache(
+    *, spec: Any, timings: dict[str, float] | None = None
+) -> ProtectedCacheAttestation:
+    """Opt in to a reusable cache hash, or raise if OS protection is unproved.
+
+    Call once per broker session after sparse attestation.  A caller may retain
+    the default full-hash path when this initial probe is unavailable.  Once a
+    token is used, invalidation must abort/restart, never silently fall back.
+    This function neither mounts nor changes ownership of any host path.
+    """
     sandbox = _validate_sparse_lean_bwrap_spec(spec)
-    target = lean_acceptance_argv(command)[3]
-    if target not in sandbox["snapshot"]["targets"]:
-        raise SecurityError("Lean command target is absent from the recorded sparse snapshot")
+    record = sandbox["lake_cache"]
+    cache = _safe_absolute_directory(record["source"], "immutable Lake cache")
+    started = time.monotonic()
+    try:
+        result = attest_protected_cache(
+            root=cache, binding=_sparse_cache_binding(sandbox),
+            tree_sha256=record["tree_sha256"],
+            hash_content=lambda: _cache_entries(cache, include_content=True)[0],
+        )
+    except CacheProtectionError as exc:
+        raise SecurityError(str(exc)) from exc
+    finally:
+        _record_phase_time(timings, "protected_cache_attestation_seconds", started)
+    return result
+
+
+def validate_sparse_lean_session(
+    *, spec: Any, cache_attestation: ProtectedCacheAttestation | None = None,
+    timings: dict[str, float] | None = None,
+) -> dict[str, Any]:
+    """Revalidate the exact sparse closure before each bounded session revision."""
+    sandbox = _validate_sparse_lean_bwrap_spec(spec)
+    identities_started = time.monotonic()
     for name in ("bwrap", "systemd_run"):
         record = sandbox[name]
         path = Path(record["source"])
@@ -2955,26 +3040,14 @@ def bubblewrap_sparse_lean_argv(
         )
         if not current["elf"] or current["sha256"] != record["sha256"]:
             raise SecurityError(f"{name} changed after Lean attestation")
+    _record_phase_time(timings, "sandbox_identity_validation_seconds", identities_started)
+    snapshot_started = time.monotonic()
     _, snapshot_root = _revalidate_sparse_snapshot(sandbox["snapshot"])
-    cache_record = sandbox["lake_cache"]
-    cache = _safe_absolute_directory(cache_record["source"], "immutable Lake cache")
-    manifest_path = cache / CACHE_MANIFEST_NAME
-    if (
-        manifest_path.is_symlink()
-        or not manifest_path.is_file()
-        or _sha256_file(manifest_path) != cache_record["manifest_sha256"]
-    ):
-        raise SecurityError("immutable Lake cache manifest changed after attestation")
-    overrides_path = cache / PACKAGE_OVERRIDES_NAME
-    if (
-        overrides_path.is_symlink()
-        or not overrides_path.is_file()
-        or _sha256_file(overrides_path) != cache_record["package_overrides_sha256"]
-    ):
-        raise SecurityError("immutable Lake package overrides changed after attestation")
-    cache_digest, _ = _cache_entries(cache, include_content=True)
-    if cache_digest != cache_record["tree_sha256"]:
-        raise SecurityError("immutable Lake cache content changed after attestation")
+    _record_phase_time(timings, "sparse_snapshot_validation_seconds", snapshot_started)
+    cache = _validate_sparse_cache(
+        sandbox, cache_attestation=cache_attestation, timings=timings,
+    )
+    compiler_started = time.monotonic()
     toolchain = sandbox["toolchain"]
     toolchain_elf: list[Path] = []
     for name in ("lake", "lean"):
@@ -3009,6 +3082,7 @@ def bubblewrap_sparse_lean_argv(
     for item in current_mounts:
         if _sha256_file(Path(item["source"])) != item["sha256"]:
             raise SecurityError("Lean runtime library changed after attestation")
+    _record_phase_time(timings, "toolchain_validation_seconds", compiler_started)
     forbidden = [Path(item).resolve(strict=True) for item in sandbox["forbidden_host_paths"]]
     _assert_mount_separation(
         [
@@ -3020,6 +3094,12 @@ def bubblewrap_sparse_lean_argv(
         ],
         forbidden,
     )
+    return sandbox
+
+
+def _sparse_lean_launch_argv(
+    sandbox: dict[str, Any], target: str, *, server: bool,
+) -> tuple[str, ...]:
     resources = _validate_resource_settings(sandbox["resources"])
     quota = resources["cpu_quota_percent"]
     quota_text = str(int(quota)) if float(quota).is_integer() else str(quota)
@@ -3035,7 +3115,39 @@ def bubblewrap_sparse_lean_argv(
         f"--property=CPUQuota={quota_text}%",
         "--",
     )
-    return (*systemd_prefix, *_sparse_lean_bwrap_inner(sandbox, target))
+    return (*systemd_prefix, *_sparse_lean_bwrap_inner(sandbox, target, server=server))
+
+
+def bubblewrap_sparse_lean_argv(
+    *, spec: Any, command: Sequence[str],
+    cache_attestation: ProtectedCacheAttestation | None = None,
+    timings: dict[str, float] | None = None,
+) -> tuple[str, ...]:
+    """Rehash the closure by default, then return the fixed sandbox invocation."""
+    sandbox = _validate_sparse_lean_bwrap_spec(spec)
+    target = lean_acceptance_argv(command)[3]
+    if target not in sandbox["snapshot"]["targets"]:
+        raise SecurityError("Lean command target is absent from the recorded sparse snapshot")
+    validate_sparse_lean_session(
+        spec=sandbox, cache_attestation=cache_attestation, timings=timings,
+    )
+    return _sparse_lean_launch_argv(sandbox, target, server=False)
+
+
+def bubblewrap_sparse_lean_server_argv(
+    *, spec: Any, command: Sequence[str],
+    cache_attestation: ProtectedCacheAttestation | None = None,
+    timings: dict[str, float] | None = None,
+) -> tuple[str, ...]:
+    """The same capability as focused Lean, changing only its fixed --server arg."""
+    sandbox = _validate_sparse_lean_bwrap_spec(spec)
+    target = lean_acceptance_argv(command)[3]
+    if target not in sandbox["snapshot"]["targets"]:
+        raise SecurityError("Lean command target is absent from the recorded sparse snapshot")
+    validate_sparse_lean_session(
+        spec=sandbox, cache_attestation=cache_attestation, timings=timings,
+    )
+    return _sparse_lean_launch_argv(sandbox, target, server=True)
 
 
 @dataclass(frozen=True)

@@ -1,5 +1,43 @@
 # Handoff Snapshot
 
+## 2026-09-29 Incremental verification implementation
+
+Work is isolated on `codex/incremental-verification`, from base `6c28d8ea`.
+The accepted import-only change removes the Stokes producer's dependency on
+Hamilton endpoint machinery and the tensor carrier's dependency on the full
+Stokes producer. Solver imports now name the coefficient facts they use.
+All non-import source bytes are preserved. Independent focused compilation
+passed for the three files, and 258 emitted declaration type fingerprints and
+their allowed axiom footprints match the base. Local dependency counts are
+Stokes 626 to 147, tensor carrier 630 to 110, buffered solver 641 to 196,
+and Hamilton gradient 635 to 363. Warm whole-file compilation remained about
+the same; these graph counts are not a measured speedup.
+
+The harness now supports job-owned incremental Lean diagnostics, fresh scoped
+worker checks before successful sealing, independent fresh review, combined
+declaration/axiom probes, phase timings, and source-bound status receipts.
+Negative exact-declaration reuse is restricted to unchanged verified source,
+toolchain, configuration and actual compiled imports; positive completion is
+always freshly checked. Protected-cache reuse requires OS protection rather
+than chmod. Default integrity scans remain active for ordinary caches.
+
+The regression fixtures exercise actual Lean type/axiom rejection and actual
+Lean snapshot reuse. Linux protected mounts, Bubblewrap and cgroup session
+deployment have not been exercised on this Mac. No live model service or
+deployment was changed. See `docs/INCREMENTAL_VERIFICATION.md` for the execution
+boundaries and the generated `CURRENT_STATUS.md` for checkpoint results;
+the receipt reader explicitly reports whether that evidence matches checkout.
+
+The actual buffered solver's local LSP check took 61.047 seconds initially,
+0.721 seconds after appending a check of the existing parametrix theorem, and
+0.000101 seconds for identical input. Fresh whole-file compilation took 59.31
+seconds. These timings concern a retained proof prefix on this Mac; they are
+not a prediction for arbitrary edits or the untested Linux deployment.
+
+First action: `sh scripts/read_status_summary.sh` from the integration worktree.
+If the receipt is stale, inspect its reasons before scheduling one explicit
+integration checkpoint. Do not interpret cached status as proof completion.
+
 ## 2026-09-15 Worker Hamilton Bianchi gradient bound: proved
 
 Branch `worker/hamilton-bianchi-gradient-bound`, base `8883a941`, proof head

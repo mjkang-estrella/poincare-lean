@@ -10,59 +10,32 @@ source "$SCRIPT_DIR/common.sh"
 # does not claim project completion; codex-cycle.sh additionally requires the
 # full completion audit and one clean, stable integration HEAD.
 
+fresh=0
+if [[ "${1:-}" == --fresh ]]; then
+  fresh=1
+  shift
+fi
+
 if (( $# > 1 )); then
-  printf 'Usage: %s [environment-file]\n' "${0##*/}" >&2
+  printf 'Usage: %s [--fresh] [environment-file]\n' "${0##*/}" >&2
   exit 64
 fi
 
 load_config "${1:-$SCRIPT_DIR/.env}"
+# The pinned executable and its libraries, rather than ambient Lake/Lean
+# overrides, define both the probe and its reusable input identity.
+unset LAKE_OVERRIDE_LEAN LAKE_OVERRIDE_LAKE LEAN_SYSROOT LEAN
 
-probe_source=$(cat <<'LEAN'
-import Poincare
-
-#check (Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement)
-#print axioms Poincare.poincare_conjecture
-LEAN
+# Only an exact, compiler-confirmed absence can be reused. Positive results,
+# all acceptance checks, and explicitly requested --fresh checks execute Lean.
+probe_argv=(
+  "$HARNESS_PI_PYTHON" -S -P -B "$SCRIPT_DIR/negative_probe_cache.py"
+  --root "$POINCARE_REPO_ROOT"
+  --toolchain-root "$POINCARE_PI_TOOLCHAIN_ROOT"
+  --config "$POINCARE_CONFIG_FILE"
+  --config-fingerprint "$POINCARE_CONFIG_FINGERPRINT"
 )
-
-set +e
-probe_output=$(
-  cd "$POINCARE_REPO_ROOT" &&
-    printf '%s\n' "$probe_source" |
-      LEAN_NUM_THREADS=1 "$POINCARE_PI_TOOLCHAIN_ROOT/bin/lake" env \
-        "$POINCARE_PI_TOOLCHAIN_ROOT/bin/lean" --stdin 2>&1
-)
-probe_status=$?
-set -e
-
-if (( probe_status != 0 )); then
-  if [[ "$probe_output" == *"Unknown identifier"* || "$probe_output" == *"Unknown constant"* ]]; then
-    printf 'EXACT_DECLARATION_PROBE=absent\n'
-    exit 3
-  fi
-  printf 'EXACT_DECLARATION_PROBE=invalid\n'
-  printf '%s\n' "$probe_output" >&2
-  exit 4
+if (( fresh )); then
+  probe_argv+=(--fresh)
 fi
-
-if ! printf '%s\n' "$probe_output" | "$HARNESS_PI_PYTHON" -S -P -B -c '
-import re
-import sys
-
-text = sys.stdin.read()
-if "does not depend on any axioms" in text:
-    raise SystemExit(0)
-match = re.search(r"depends on axioms:\s*\[(.*?)\]", text, re.S)
-if match is None:
-    raise SystemExit(2)
-axioms = {part.strip() for part in match.group(1).replace("\n", " ").split(",") if part.strip()}
-allowed = {"propext", "Classical.choice", "Quot.sound"}
-raise SystemExit(0 if axioms <= allowed else 1)
-'; then
-  printf 'EXACT_DECLARATION_PROBE=nonstandard_axioms\n'
-  printf '%s\n' "$probe_output" >&2
-  exit 5
-fi
-
-printf 'EXACT_DECLARATION_PROBE=verified\n'
-printf '%s\n' "$probe_output" >&2
+exec "${probe_argv[@]}"

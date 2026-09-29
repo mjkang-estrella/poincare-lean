@@ -1896,6 +1896,7 @@ fixed_files = {
     "harness/v2/__init__.py",
     "harness/v2/SPEC.md",
     "harness/v2/RUNBOOK.md",
+    "scripts/verification_receipts.py",
 }
 included_roots = (
     "harness/v2/runtime",

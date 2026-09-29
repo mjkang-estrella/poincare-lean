@@ -32,6 +32,11 @@ Read these files in order:
 theorem registry, open topology obligations, strict frozen contracts, and the
 independent mathematical read-back used for new proof Tasks.
 
+[Incremental verification](docs/INCREMENTAL_VERIFICATION.md) describes scoped
+proof sessions, independent fresh acceptance, batched probes, and source-bound
+status receipts. Use `sh scripts/read_status_summary.sh` to inspect existing
+checkpoint evidence without running a build; stale evidence is labeled explicitly.
+
 `RESEARCHER_VERIFICATION.md` and the other long reports are evidence archives,
 not the fastest entry point.
 

@@ -214,6 +214,14 @@ Every Task gate includes:
 6. orchestrator review of whether hypotheses are used and content is
    non-vacuous.
 
+Development `lean_check` calls may use one job-owned, bounded Lean language-server
+session. Versioned diagnostics are fenced by Lean's waitForDiagnostics request;
+imports, helper sources, cache/toolchain identity, or policy changes invalidate
+reuse. Explicit IO/metaprogramming and `fresh: true` use the fresh compiler path.
+A successful broker close runs fresh scoped compiler checks before worker
+evidence is sealed. The independent reviewer never accepts LSP diagnostics or
+worker-generated outputs in place of its own fresh compilation.
+
 Root elaboration and broader audits run after serial integration. The expensive
 full build and generated status run at deliberate checkpoints. Baseline
 failures must be recorded separately from regressions introduced by the Job.
@@ -227,6 +235,14 @@ canonical `import Poincare` declaration probe. None of those outputs enter the
 Job worktree or shared cache. Passed Jobs then form a bounded integration
 backlog; Codex integrates at most four compatible disjoint Jobs and pays for
 one root checkpoint for the batch.
+
+Required declaration and axiom probes are combined into one Lean invocation,
+retaining the exact contract and per-symbol evidence alongside the full shared
+transcript. Phase timings remain append-only even when a gate fails. Source-bound
+status receipts are historical evidence, never completion certificates. The
+observer may reuse an exact negative completion probe only when all recorded
+source, toolchain, configuration and compiled import identities still match;
+positive completion probes and the full completion audit remain fresh.
 
 ## Runtime State
 

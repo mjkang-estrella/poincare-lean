@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
 import json
 import os
@@ -8,11 +9,12 @@ import re
 import shutil
 import subprocess
 import tempfile
+import time
 from pathlib import Path, PurePosixPath
-from typing import Any, Sequence
+from typing import Any, Iterator, Sequence
 
 from harness.v2.runtime.store import HarnessStore
-from harness.v2.runtime.validation import statement_contract_probe_source
+from harness.v2.runtime.validation import axiom_probe_source, statement_contract_probe_source
 
 
 HEX40 = re.compile(r"[0-9a-f]{40}")
@@ -265,7 +267,139 @@ def _declaration_source(task: dict[str, Any], index: int, symbol: str) -> str:
     return "\n".join(lines) + "\n"
 
 
-def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict[str, str]:
+def _batched_declaration_source(task: dict[str, Any], symbols: list[str]) -> str:
+    """Execute the canonical checks together, importing the root only once."""
+    if not symbols:
+        raise FocusedReviewError("declaration batch must not be empty")
+    if task.get("schema_version") == "2.1":
+        source = statement_contract_probe_source(task["statement_contract"], symbols)
+        if "import Poincare" not in source.splitlines():
+            source = "import Poincare\n" + source
+        return source
+    # Historical contracts freeze only the first declaration's type. Keep that
+    # contract intact, and check every named declaration's permitted axioms.
+    source = axiom_probe_source(symbols, ["Poincare"])
+    for index, symbol in enumerate(symbols):
+        standalone = _declaration_source(task, index, symbol)
+        source += standalone.removeprefix("import Poincare\n")
+    return source
+
+
+@contextmanager
+def _timed_phase(
+    review_dir: Path, phase: str, timings: list[dict[str, Any]], **fields: Any
+) -> Iterator[dict[str, Any]]:
+    """Publish each finished phase separately so failed reviews keep timings."""
+    started = time.perf_counter()
+    record = {"phase": phase, **fields}
+    try:
+        yield record
+        record["status"] = "passed"
+    except BaseException:
+        record["status"] = "failed"
+        raise
+    finally:
+        record["elapsed_seconds"] = time.perf_counter() - started
+        _write_once(
+            review_dir / "timings" / f"{len(timings):03d}-{phase}.json",
+            (json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n").encode(),
+        )
+        timings.append(record)
+
+
+def _run_declaration_batch(
+    task: dict[str, Any],
+    *,
+    lean: Path,
+    cwd: Path,
+    environment: dict[str, str],
+    timeout_seconds: int,
+    review_dir: Path,
+    timings: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    symbols = task["acceptance"].get("required_declarations", [])
+    source = _batched_declaration_source(task, symbols)
+    source_relative = "declaration-probes/batch.lean"
+    _write_once(review_dir / source_relative, source.encode())
+    with _timed_phase(review_dir, "declaration_batch", timings, symbols=symbols) as timing:
+        try:
+            probe = subprocess.run(
+                [str(lean), "--stdin"],
+                cwd=cwd,
+                env=environment,
+                check=False,
+                input=source.encode(),
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                timeout=timeout_seconds,
+            )
+            exit_code, stdout, stderr = probe.returncode, probe.stdout, probe.stderr
+        except subprocess.TimeoutExpired as error:
+            exit_code = 124
+            stdout = error.stdout if isinstance(error.stdout, bytes) else b""
+            stderr = (error.stderr if isinstance(error.stderr, bytes) else b"") + (
+                b"\nfocused declaration probe timed out\n"
+            )
+        timing["exit_code"] = exit_code
+        stdout_path, stderr_path = _record_streams(
+            review_dir, "declaration-probes/batch", stdout, stderr
+        )
+        if exit_code != 0:
+            raise FocusedReviewError(
+                f"declaration batch failed with exit {exit_code}; "
+                f"evidence: {review_dir.name}/{stdout_path}, {review_dir.name}/{stderr_path}"
+            )
+        try:
+            output_lines = stdout.decode("utf-8").splitlines()
+        except UnicodeDecodeError as error:
+            raise FocusedReviewError("declaration batch output is not UTF-8") from error
+        for symbol in symbols:
+            markers = [f"AXIOM_CONTRACT_OK: {symbol}"]
+            if task.get("schema_version") == "2.1":
+                markers.append(f"FROZEN_CONTRACT_OK: {symbol}")
+            if any(marker not in output_lines for marker in markers):
+                raise FocusedReviewError(
+                    f"declaration batch lacks executable success marker for {symbol}; "
+                    f"evidence: {review_dir.name}/{stdout_path}"
+                )
+
+    # The gate schema keeps one canonical standalone source per symbol. Its
+    # output evidence references the complete unmodified batch transcript;
+    # focused-review.json records the actual executable source and mapping.
+    declarations = []
+    for index, symbol in enumerate(symbols):
+        canonical_source = _declaration_source(task, index, symbol)
+        declarations.append(
+            {
+                "symbol": symbol,
+                "source": canonical_source,
+                "source_sha256": _sha256_bytes(canonical_source.encode()),
+                "argv": DECLARATION_PROBE_ARGV,
+                "status": "passed",
+                "exit_code": 0,
+                "stdout_path": f"{review_dir.name}/{stdout_path}",
+                "stdout_sha256": _sha256_bytes(stdout),
+                "stderr_path": f"{review_dir.name}/{stderr_path}",
+                "stderr_sha256": _sha256_bytes(stderr),
+            }
+        )
+    batch = {
+        "symbols": symbols,
+        "source_path": f"{review_dir.name}/{source_relative}",
+        "source_sha256": _sha256_bytes(source.encode()),
+        "executed_argv": [str(lean), "--stdin"],
+        "exit_code": exit_code,
+        "elapsed_seconds": timing["elapsed_seconds"],
+        "stdout_path": f"{review_dir.name}/{stdout_path}",
+        "stdout_sha256": _sha256_bytes(stdout),
+        "stderr_path": f"{review_dir.name}/{stderr_path}",
+        "stderr_sha256": _sha256_bytes(stderr),
+        "canonical_fragment_sha256": [entry["source_sha256"] for entry in declarations],
+    }
+    return declarations, batch
+
+
+def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict[str, Any]:
     state = Path(os.environ["POINCARE_STATE_DIR"])
     integration = Path(os.environ["POINCARE_REPO_ROOT"])
     worktree_root = Path(os.environ["POINCARE_WORKTREE_ROOT"])
@@ -333,7 +467,6 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
         )
 
     cache = cache_root / base_commit
-    package_document = _cache_metadata(cache, base_commit, base_tree)
     lake = toolchain / "bin/lake"
     lean = toolchain / "bin/lean"
     if not lake.is_file() or lake.is_symlink() or not lean.is_file() or lean.is_symlink():
@@ -353,30 +486,33 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
     os.chmod(review_dir, 0o700)
     review_name = review_dir.name
     scratch = Path(tempfile.mkdtemp(prefix=f"poincare-{job_id}-focused-"))
+    timings: list[dict[str, Any]] = []
     try:
-        overrides = scratch / "package-overrides.json"
-        _materialize_package_overrides(package_document, cache, overrides)
-        os.symlink(cache, lake_link)
-        environment = _command_environment()
-        path_result = subprocess.run(
-            [str(lake), f"--packages={overrides}", "env", "printenv", "LEAN_PATH"],
-            cwd=worktree,
-            env=environment,
-            check=False,
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            timeout=60,
-        )
-        if path_result.returncode != 0 or not path_result.stdout.strip():
-            raise FocusedReviewError(
-                f"could not derive cache-backed LEAN_PATH: {path_result.stderr[:512].strip()}"
+        with _timed_phase(review_dir, "cache_setup", timings):
+            package_document = _cache_metadata(cache, base_commit, base_tree)
+            overrides = scratch / "package-overrides.json"
+            _materialize_package_overrides(package_document, cache, overrides)
+            os.symlink(cache, lake_link)
+            environment = _command_environment()
+            path_result = subprocess.run(
+                [str(lake), f"--packages={overrides}", "env", "printenv", "LEAN_PATH"],
+                cwd=worktree,
+                env=environment,
+                check=False,
+                stdin=subprocess.DEVNULL,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                timeout=60,
             )
-        base_lean_path = path_result.stdout.strip()
-        overlay = scratch / "overlay"
-        _symlink_projection(cache / "build/lib/lean/Poincare", overlay / "Poincare")
-        projected_lean_path = f"{overlay}:{base_lean_path}"
+            if path_result.returncode != 0 or not path_result.stdout.strip():
+                raise FocusedReviewError(
+                    f"could not derive cache-backed LEAN_PATH: {path_result.stderr[:512].strip()}"
+                )
+            base_lean_path = path_result.stdout.strip()
+            overlay = scratch / "overlay"
+            _symlink_projection(cache / "build/lib/lean/Poincare", overlay / "Poincare")
+            projected_lean_path = f"{overlay}:{base_lean_path}"
         command_results: list[dict[str, Any]] = []
         actual_commands: list[dict[str, Any]] = []
         for index, (command, (kind, target)) in enumerate(zip(commands, classified, strict=True)):
@@ -391,20 +527,31 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
             else:
                 actual_argv = list(command)
                 actual_environment = environment
-            if kind == "rg":
-                exit_code, stdout, stderr = _run_forbidden_token_scan(
-                    command, cwd=worktree
+            phase = "module_compile" if kind == "lean" else "acceptance_command"
+            with _timed_phase(
+                review_dir, phase, timings, command_index=index,
+                target=target.as_posix() if target else None,
+            ) as timing:
+                if kind == "rg":
+                    exit_code, stdout, stderr = _run_forbidden_token_scan(
+                        command, cwd=worktree
+                    )
+                else:
+                    exit_code, stdout, stderr = _run(
+                        actual_argv,
+                        cwd=worktree,
+                        environment=actual_environment,
+                        timeout_seconds=timeout_seconds,
+                    )
+                timing["exit_code"] = exit_code
+                stdout_path, stderr_path = _record_streams(
+                    review_dir, f"acceptance-commands/{index}", stdout, stderr
                 )
-            else:
-                exit_code, stdout, stderr = _run(
-                    actual_argv,
-                    cwd=worktree,
-                    environment=actual_environment,
-                    timeout_seconds=timeout_seconds,
-                )
-            stdout_path, stderr_path = _record_streams(
-                review_dir, f"acceptance-commands/{index}", stdout, stderr
-            )
+                if exit_code != 0:
+                    raise FocusedReviewError(
+                        f"focused acceptance command {index} failed with exit {exit_code}; "
+                        f"evidence: {review_name}/{stdout_path}, {review_name}/{stderr_path}"
+                    )
             command_results.append(
                 {
                     "argv": command,
@@ -422,15 +569,11 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
                         for item in actual_argv
                     ],
                     "exit_code": exit_code,
+                    "elapsed_seconds": timing["elapsed_seconds"],
                     "stdout_path": f"{review_name}/{stdout_path}",
                     "stderr_path": f"{review_name}/{stderr_path}",
                 }
             )
-            if exit_code != 0:
-                raise FocusedReviewError(
-                    f"focused acceptance command {index} failed with exit {exit_code}; "
-                    f"evidence: {review_name}/{stderr_path}"
-                )
             if kind == "lean":
                 assert target is not None
                 projected_olean = overlay / target.with_suffix(".olean")
@@ -442,71 +585,43 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
         required_declarations = task["acceptance"].get("required_declarations", [])
         root_overlay: dict[str, Any] | None = None
         if required_declarations:
-            root_olean = scratch / "Poincare.olean"
-            root_exit, root_stdout, root_stderr = _run(
-                [str(lean), "Poincare.lean", "-o", str(root_olean)],
-                cwd=worktree,
-                environment={**environment, "LEAN_PATH": projected_lean_path},
-                timeout_seconds=timeout_seconds,
-            )
-            root_stdout_path, root_stderr_path = _record_streams(
-                review_dir, "root-overlay/root", root_stdout, root_stderr
-            )
-            if root_exit != 0:
-                raise FocusedReviewError(
-                    f"focused root overlay failed with exit {root_exit}; "
-                    f"evidence: {review_name}/{root_stderr_path}"
+            with _timed_phase(review_dir, "root_overlay", timings) as timing:
+                root_olean = scratch / "Poincare.olean"
+                root_exit, root_stdout, root_stderr = _run(
+                    [str(lean), "Poincare.lean", "-o", str(root_olean)],
+                    cwd=worktree,
+                    environment={**environment, "LEAN_PATH": projected_lean_path},
+                    timeout_seconds=timeout_seconds,
                 )
+                timing["exit_code"] = root_exit
+                root_stdout_path, root_stderr_path = _record_streams(
+                    review_dir, "root-overlay/root", root_stdout, root_stderr
+                )
+                if root_exit != 0:
+                    raise FocusedReviewError(
+                        f"focused root overlay failed with exit {root_exit}; "
+                        f"evidence: {review_name}/{root_stdout_path}, {review_name}/{root_stderr_path}"
+                    )
             os.replace(root_olean, overlay / "Poincare.olean")
             root_overlay = {
                 "argv": [str(lean), "Poincare.lean", "-o", "<ephemeral-overlay>"],
                 "exit_code": root_exit,
+                "elapsed_seconds": timing["elapsed_seconds"],
                 "stdout_path": f"{review_name}/{root_stdout_path}",
                 "stderr_path": f"{review_name}/{root_stderr_path}",
             }
 
         declarations: list[dict[str, Any]] = []
-        for index, symbol in enumerate(required_declarations):
-            source = _declaration_source(task, index, symbol)
-            try:
-                probe = subprocess.run(
-                    [str(lean), "--stdin"],
-                    cwd=worktree,
-                    env={**environment, "LEAN_PATH": projected_lean_path},
-                    check=False,
-                    input=source.encode(),
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    timeout=timeout_seconds,
-                )
-                exit_code, stdout, stderr = probe.returncode, probe.stdout, probe.stderr
-            except subprocess.TimeoutExpired as error:
-                exit_code = 124
-                stdout = error.stdout if isinstance(error.stdout, bytes) else b""
-                stderr = (error.stderr if isinstance(error.stderr, bytes) else b"") + (
-                    b"\nfocused declaration probe timed out\n"
-                )
-            stdout_path, stderr_path = _record_streams(
-                review_dir, f"declaration-probes/{index}", stdout, stderr
-            )
-            if exit_code != 0:
-                raise FocusedReviewError(
-                    f"declaration probe {index} failed with exit {exit_code}; "
-                    f"evidence: {review_name}/{stderr_path}"
-                )
-            declarations.append(
-                {
-                    "symbol": symbol,
-                    "source": source,
-                    "source_sha256": _sha256_bytes(source.encode()),
-                    "argv": DECLARATION_PROBE_ARGV,
-                    "status": "passed",
-                    "exit_code": 0,
-                    "stdout_path": f"{review_name}/{stdout_path}",
-                    "stdout_sha256": _sha256_bytes(stdout),
-                    "stderr_path": f"{review_name}/{stderr_path}",
-                    "stderr_sha256": _sha256_bytes(stderr),
-                }
+        declaration_batch: dict[str, Any] | None = None
+        if required_declarations:
+            declarations, declaration_batch = _run_declaration_batch(
+                task,
+                lean=lean,
+                cwd=worktree,
+                environment={**environment, "LEAN_PATH": projected_lean_path},
+                timeout_seconds=timeout_seconds,
+                review_dir=review_dir,
+                timings=timings,
             )
 
         manifest = {
@@ -520,6 +635,8 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
             "lean_targets": [target.as_posix() for target in lean_targets],
             "commands": actual_commands,
             "root_overlay": root_overlay,
+            "declaration_batch": declaration_batch,
+            "phase_timings": timings,
         }
         _write_once(
             review_dir / "focused-review.json",
@@ -544,6 +661,7 @@ def run_focused_review(job_id: str, reviewer: str, timeout_seconds: int) -> dict
             "review_manifest": (review_dir / "focused-review.json")
             .relative_to(artifact_dir)
             .as_posix(),
+            "phase_timings": timings,
         }
     finally:
         if lake_link.is_symlink():

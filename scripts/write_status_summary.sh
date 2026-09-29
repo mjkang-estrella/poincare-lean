@@ -23,18 +23,22 @@ cleanup() {
 
 trap cleanup EXIT
 
+# Lake otherwise honors override variables that can select another installation
+# even with a pinned PATH. Normalize them before both capture and execution.
+unset LAKE_OVERRIDE_LEAN LAKE_OVERRIDE_LAKE LEAN_SYSROOT LEAN LEAN_PATH LEAN_SRC_PATH
+python3 scripts/verification_receipts.py snapshot --out "$tmp_dir/source-before.json"
+# Every fresh gate and its children execute the binaries bound by the receipt.
+# This avoids an ambient PATH wrapper selecting a different Lean/Lake install.
+toolchain_bin=$(python3 scripts/verification_receipts.py toolchain-path \
+  --snapshot "$tmp_dir/source-before.json")
+PATH="$toolchain_bin:$PATH"
+export PATH
+
 run_capture() {
   label=$1
   shift
-  output_file="$tmp_dir/${label}.out"
-  status_file="$tmp_dir/${label}.status"
-
-  set +e
-  "$@" > "$output_file" 2>&1
-  status=$?
-  set -e
-
-  printf '%s\n' "$status" > "$status_file"
+  python3 scripts/verification_receipts.py run-phase \
+    --label "$label" --phase-dir "$tmp_dir" -- "$@"
 }
 
 run_capture build lake build
@@ -145,6 +149,23 @@ write_section "Root Import Audit" "$tmp_dir/root_import.out" "$tmp_dir/root_impo
 write_section "Axiom Footprint Audit" "$tmp_dir/axiom.out" "$tmp_dir/axiom.status"
 write_section "Completion Audit" "$tmp_dir/completion.out" "$tmp_dir/completion.status"
 
-mv "$tmp" "$out"
-tmp=""
-echo "Wrote $out"
+cat >> "$tmp" <<EOF
+
+## Phase Durations
+
+These elapsed times cover each fresh command, including its subprocesses.
+EOF
+python3 - "$tmp_dir" >> "$tmp" <<'PYTIMINGS'
+import json
+from pathlib import Path
+import sys
+for path in sorted(Path(sys.argv[1]).glob('*.timing.json')):
+    phase = json.loads(path.read_text())
+    print(f"- {phase['label']}: {phase['duration_seconds']:.3f} seconds")
+PYTIMINGS
+
+# Publication compares the complete source/package/toolchain identity with the
+# pre-gate snapshot. A concurrent source change preserves logs but rejects the
+# receipt. Full outputs and timings are retained append-only, beyond this summary.
+python3 scripts/verification_receipts.py publish \
+  --before "$tmp_dir/source-before.json" --status "$tmp" --phase-dir "$tmp_dir"

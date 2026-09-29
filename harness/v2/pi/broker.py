@@ -7,6 +7,7 @@ import json
 import os
 import re
 import stat
+import sys
 import tempfile
 import threading
 import time
@@ -20,12 +21,16 @@ from harness.v2.worker.artifacts import canonical_json_bytes
 from . import TOOL_NAMES
 from .integrity import IntegrityError, verify_trusted_code
 from .journal import PatchJournal, PatchJournalError
+from .lean_session import LeanProofSession, LeanSessionUnavailable, header_fingerprint
 from .quota import PiQuotaError, QuotaWrite, SharedArtifactQuota
 from .rpc import RPC_PROTOCOL
 from .security import (
+    SecurityError,
     acquire_build_job_lock,
+    attest_protected_sparse_cache,
     audit_sparse_lean_bubblewrap,
     bubblewrap_sparse_lean_argv,
+    bubblewrap_sparse_lean_server_argv,
     build_sparse_lean_snapshot,
     lean_acceptance_argv,
     normalize_relative,
@@ -36,6 +41,7 @@ from .security import (
     run_limited,
     sparse_lean_process_limits,
     validate_patch,
+    validate_sparse_lean_session,
 )
 
 
@@ -847,8 +853,16 @@ def _tool_lean_check(
     quota: SharedArtifactQuota,
     call_id: str,
     value: Any,
+    lean_session: _BrokerLeanSession | None = None,
 ) -> dict[str, Any]:
-    params = _exact_object(value, required={"command_index"}, label="lean_check input")
+    params = _exact_object(value, required={"command_index"}, optional={"fresh"}, label="lean_check input")
+    fresh = params.get("fresh", False)
+    if not isinstance(fresh, bool):
+        raise BrokerError("lean_check fresh must be a boolean")
+    if lean_session is not None:
+        lean_session.last_fresh_reason = "caller_requested_fresh" if fresh else None
+        if fresh:
+            lean_session.close()
     commands = capability["acceptance_commands"]
     index = _bounded_integer(params["command_index"], "command_index", 0, len(commands) - 1)
     argv = lean_acceptance_argv(commands[index])
@@ -871,12 +885,22 @@ def _tool_lean_check(
     if any(_paths_overlap(scratch, path.resolve(strict=True)) for path in forbidden_paths):
         raise BrokerError("Lean check scratch root overlaps a forbidden host path")
 
+    if not fresh and lean_session is not None and sys.platform == "linux" and not lean_session.unavailable_reason:
+        incremental = lean_session.check(
+            capability=capability, root=root, quota=quota, call_id=call_id,
+            argv=argv, index=index, scratch=scratch, config=config,
+            forbidden_paths=forbidden_paths,
+        )
+        if incremental is not None:
+            return incremental
+
     result: Any | None = None
     sandbox: dict[str, Any] | None = None
     snapshot: dict[str, Any] | None = None
     stdout_artifact: QuotaWrite | None = None
     stderr_artifact: QuotaWrite | None = None
     manifest_artifact: QuotaWrite | None = None
+    phases: dict[str, float] = {}
     remaining = float(capability["deadline_epoch"]) - time.time()
     if remaining <= 0:
         raise BrokerError("Job wall-clock capability expired before Lean check")
@@ -888,13 +912,16 @@ def _tool_lean_check(
         try:
             if check_dir.parent != scratch or check_dir.is_symlink():
                 raise BrokerError("Lean check scratch child escaped its private root")
+            phase_started = time.monotonic()
             snapshot = build_sparse_lean_snapshot(
                 worktree=root,
                 acceptance_commands=[argv],
                 output_dir=check_dir / "source",
                 git_path=config["git_path"],
             )
+            phases["source_snapshot"] = time.monotonic() - phase_started
             _validate_live(capability)
+            phase_started = time.monotonic()
             sandbox = audit_sparse_lean_bubblewrap(
                 configured_path=config["bwrap_path"],
                 systemd_run_path=config["systemd_run_path"],
@@ -908,10 +935,14 @@ def _tool_lean_check(
                 tasks_max=config["tasks_max"],
                 cpu_quota_percent=config["cpu_quota_percent"],
                 process_limits=config["process_limits"],
+                timings=phases,
             )
+            phases["sandbox_attestation"] = time.monotonic() - phase_started
+            phase_started = time.monotonic()
             sandbox_argv = bubblewrap_sparse_lean_argv(
-                spec=sandbox, command=argv
+                spec=sandbox, command=argv, timings=phases,
             )
+            phases["sandbox_argv_validation"] = time.monotonic() - phase_started
             manifest_artifact = _quota_write_once(
                 quota,
                 f"pi-tools/{token}.lean-sandbox.json",
@@ -950,6 +981,7 @@ def _tool_lean_check(
             stderr_artifact = _quota_write_once(
                 quota, f"pi-tools/{token}.stderr", result.stderr
             )
+            phases["fresh_import_load_and_elaboration"] = result.duration_seconds
         finally:
             if snapshot is not None:
                 remove_sparse_lean_snapshot(
@@ -993,6 +1025,9 @@ def _tool_lean_check(
             "timed_out": result.timed_out,
             "output_limited": result.output_limited,
             "duration_seconds": result.duration_seconds,
+            "verification_mode": "fresh_compiler",
+            "phase_seconds": phases,
+            "session_fallback_reason": (lean_session.last_fresh_reason or lean_session.unavailable_reason) if lean_session else None,
             "sandbox_profile": sandbox.get("profile_version"),
             "sparse_snapshot_sha256": snapshot["tree_sha256"],
             "sandbox_manifest_artifact": manifest_artifact.relative_path,
@@ -1000,6 +1035,181 @@ def _tool_lean_check(
             "stderr_artifact": stderr_artifact.relative_path,
         },
     }
+
+
+class _BrokerLeanSession:
+    """One sparse snapshot and isolated LSP server retained by its Job broker."""
+
+    def __init__(self) -> None:
+        self.process: LeanProofSession | None = None
+        self.snapshot: dict[str, Any] | None = None
+        self.sandbox: dict[str, Any] | None = None
+        self.check_dir: Path | None = None
+        self.scratch: Path | None = None
+        self.target: str | None = None
+        self.environment_key: str | None = None
+        self.cache_attestation: Any = None
+        self.unavailable_reason: str | None = None
+        self.last_fresh_reason: str | None = None
+
+    def close(self) -> None:
+        # Terminate before removing any mounted source. Cleanup failures must
+        # remain visible and prevent successful broker sealing.
+        if self.process is not None:
+            self.process.close()
+            self.process = None
+        if self.snapshot is not None:
+            remove_sparse_lean_snapshot(sparse_snapshot=self.snapshot, checks_root=self.scratch)
+            self.snapshot = None
+        if self.check_dir is not None:
+            os.rmdir(self.check_dir)
+            self.check_dir = None
+        self.sandbox = None
+        self.environment_key = None
+        self.target = None
+
+    def invalidate_on_patch(self, touched: list[str]) -> None:
+        if self.process is not None and any(path != self.target for path in touched):
+            self.close()
+
+    def check(
+        self, *, capability: dict[str, Any], root: Path, quota: SharedArtifactQuota,
+        call_id: str, argv: tuple[str, ...], index: int, scratch: Path,
+        config: dict[str, Any], forbidden_paths: list[Path],
+    ) -> dict[str, Any] | None:
+        token = _artifact_token(call_id)
+        phases: dict[str, float] = {}
+        remaining = float(capability["deadline_epoch"]) - time.time()
+        if remaining <= 0:
+            self.close()
+            raise BrokerError("Job wall-clock capability expired before Lean check")
+        started = time.monotonic()
+        with acquire_build_job_lock(capability["state_dir"], timeout_seconds=min(5.0, remaining)):
+            candidate_dir = Path(tempfile.mkdtemp(prefix=f"{token}-", dir=scratch))
+            candidate: dict[str, Any] | None = None
+            retained = False
+            try:
+                snapshot_started = time.monotonic()
+                candidate = build_sparse_lean_snapshot(worktree=root, acceptance_commands=[argv],
+                    output_dir=candidate_dir / "source", git_path=config["git_path"])
+                source_bytes = (Path(candidate["root"]) / argv[3]).read_bytes()
+                text = source_bytes.decode("utf-8")
+                if re.search(r"\b(?:run_cmd|run_tac|IO|unsafe|include_str|include_bytes)\b|#(?:eval|reduce)\b", text):
+                    # LSP's virtual text differs from the retained read-only
+                    # disk snapshot. Explicit IO/metaprogramming receives a
+                    # fresh snapshot instead of reusing that process state.
+                    self.last_fresh_reason = "explicit_io_or_metaprogramming"
+                    self.close()
+                    return None
+                helpers = {path for path in capability["readable_paths"] if path.endswith(".lean") and path != argv[3]}
+                for command in capability["acceptance_commands"]:
+                    try:
+                        helper = lean_acceptance_argv(command)[3]
+                    except SecurityError:
+                        continue
+                    if helper != argv[3]:
+                        helpers.add(helper)
+                configuration = {record["path"]: record["sha256"] for record in candidate["files"]
+                                 if record["path"] != argv[3]}
+                environment_key = _sha256(canonical_json_bytes({
+                    "target": argv[3], "config": config, "configuration": configuration,
+                    "helper_inputs": _scoped_sha256(root, tuple(sorted(helpers))),
+                    "header": header_fingerprint(text), "policy": "poincare-lean-session-v1",
+                    "trusted_code": capability["trusted_code"],
+                }))
+                phases["source_snapshot_and_inputs"] = time.monotonic() - snapshot_started
+                _validate_live(capability)
+                restart = self.process is None or not self.process.alive or self.environment_key != environment_key
+                if not restart:
+                    validate_sparse_lean_session(spec=self.sandbox, cache_attestation=self.cache_attestation, timings=phases)
+                else:
+                    self.close()
+                    audit_started = time.monotonic()
+                    sandbox = audit_sparse_lean_bubblewrap(
+                        configured_path=config["bwrap_path"], systemd_run_path=config["systemd_run_path"],
+                        sparse_snapshot=candidate, immutable_lake_cache=config["immutable_lake_cache"],
+                        extra_toolchain_roots=config["toolchain_roots"], forbidden_paths=forbidden_paths,
+                        base_commit=config["base_commit"], base_tree=config["base_tree"],
+                        memory_max_bytes=config["memory_max_bytes"], tasks_max=config["tasks_max"],
+                        cpu_quota_percent=config["cpu_quota_percent"], process_limits=config["process_limits"],
+                        cache_attestation=self.cache_attestation, timings=phases)
+                    phases["sandbox_attestation"] = time.monotonic() - audit_started
+                    # Missing protection retains full hashing. Attestation
+                    # failures after a token was issued propagate and close.
+                    if self.cache_attestation is None:
+                        try:
+                            self.cache_attestation = attest_protected_sparse_cache(spec=sandbox, timings=phases)
+                        except SecurityError:
+                            phases["protected_cache_unavailable"] = 0.0
+                    server_argv = bubblewrap_sparse_lean_server_argv(spec=sandbox, command=argv,
+                        cache_attestation=self.cache_attestation, timings=phases)
+                    _validate_live(capability)
+                    launch_started = time.monotonic()
+                    self.process = LeanProofSession(server_argv, cwd=candidate_dir,
+                        env=_systemd_user_environment(), uri=(Path("/work") / argv[3]).as_uri(),
+                        guard=lambda: _live_guard(capability), output_limit_bytes=MAX_LEAN_OUTPUT_BYTES,
+                        resource_limits=sparse_lean_process_limits(sandbox), supervise_parent=True)
+                    self.snapshot, self.sandbox, self.check_dir, self.scratch = candidate, sandbox, candidate_dir, scratch
+                    self.target, self.environment_key = argv[3], environment_key
+                    retained = True
+                    phases["server_launch"] = time.monotonic() - launch_started
+                sandbox = self.sandbox
+                assert self.process is not None and sandbox is not None and self.snapshot is not None
+                input_key = _sha256(canonical_json_bytes({
+                    "environment": environment_key, "source_sha256": _sha256(source_bytes),
+                    "cache_generation": sandbox.get("lake_cache"), "toolchain": sandbox.get("toolchain"),
+                    "runtime_mounts": sandbox.get("runtime_mounts"), "profile": sandbox["profile_version"],
+                }))
+                manifest = _quota_write_once(quota, f"pi-tools/{token}.lean-session-sandbox.json", canonical_json_bytes({
+                    "schema_version": "poincare.pi-lean-check.v2", "job_id": capability["job_id"],
+                    "session_id": capability["session_id"], "tool_call_id": call_id,
+                    "command_index": index, "requested_acceptance_argv": list(argv),
+                    "executed_server_argv": list(self.process.argv), "verification_mode": "incremental_lsp",
+                    "current_snapshot": candidate, "mounted_snapshot": self.snapshot, "sandbox": sandbox,
+                    "environment_key": environment_key, "input_key": input_key, "restarted": restart}))
+                remaining = float(capability["deadline_epoch"]) - time.time()
+                if remaining <= 0:
+                    raise BrokerError("Job wall-clock capability expired before Lean session operation")
+                try:
+                    result = self.process.check(text, input_key=input_key,
+                        timeout_seconds=min(float(capability["lean_timeout_seconds"]), remaining))
+                except LeanSessionUnavailable as exc:
+                    self.unavailable_reason = str(exc)
+                    self.close()
+                    _quota_write_once(quota, f"pi-tools/{token}.lean-session-unavailable.json",
+                        canonical_json_bytes({"reason": str(exc), "verification_mode": "fresh_compiler_fallback"}))
+                    return None
+                phases.update(result.phase_seconds)
+                stdout = _quota_write_once(quota, f"pi-tools/{token}.stdout", result.stdout)
+                stderr = _quota_write_once(quota, f"pi-tools/{token}.stderr", result.stderr)
+                if result.returncode < 0:
+                    self.close()
+                _validate_live(capability)
+                if result.guard_cancelled:
+                    raise BrokerError("Lean session was terminated because the live Job capability was revoked")
+                passed = result.returncode == 0 and not result.timed_out and not result.output_limited
+                display = (result.stdout + result.stderr)[:128 * 1024].decode("utf-8", "replace")
+                return {"text": f"Lean incremental diagnostics {'passed' if passed else 'failed'}; "
+                    f"target={argv[3]}; version={result.document_version}; timeout={result.timed_out}; "
+                    f"output_limit={result.output_limited}\n{display}", "details": {
+                    "command_index": index, "argv": list(argv), "returncode": result.returncode,
+                    "timed_out": result.timed_out, "output_limited": result.output_limited,
+                    "duration_seconds": time.monotonic() - started, "phase_seconds": phases,
+                    "transport": getattr(result, "transport", {}),
+                    "verification_mode": "incremental_lsp", "document_version": result.document_version,
+                    "session_id": capability["session_id"], "restarted": restart,
+                    "reused_success": result.reused_success, "input_key": input_key,
+                    "sandbox_profile": sandbox["profile_version"], "sparse_snapshot_sha256": candidate["tree_sha256"],
+                    "sandbox_manifest_artifact": manifest.relative_path,
+                    "stdout_artifact": stdout.relative_path, "stderr_artifact": stderr.relative_path}}
+            except Exception:
+                self.close()
+                raise
+            finally:
+                if candidate is not None and not retained:
+                    remove_sparse_lean_snapshot(sparse_snapshot=candidate, checks_root=scratch)
+                if not retained:
+                    os.rmdir(candidate_dir)
 
 
 def _tool_git_diff(
@@ -1084,6 +1294,7 @@ def _execute_bound_tool(
     call_id: str,
     value: Any,
     sequence: int | None = None,
+    lean_session: _BrokerLeanSession | None = None,
 ) -> dict[str, Any]:
     if tool_name not in TOOL_NAMES:
         raise BrokerError("tool is not in the exact Harness allowlist")
@@ -1100,7 +1311,7 @@ def _execute_bound_tool(
             capability, root, journal, call_id, value
         ),
         "lean_check": lambda: _tool_lean_check(
-            capability, root, quota, call_id, value
+            capability, root, quota, call_id, value, lean_session
         ),
         "git_diff": lambda: _tool_git_diff(capability, root, value),
         "report_blocked": lambda: _tool_report_blocked(quota, value),
@@ -1111,8 +1322,15 @@ def _execute_bound_tool(
         if live_root != root or live_artifact_dir != artifact_dir:
             raise BrokerError("live broker roots changed after session creation")
         result = handlers[tool_name]()
+        if lean_session is not None:
+            if tool_name == "apply_patch_scoped":
+                lean_session.invalidate_on_patch(result.get("details", {}).get("touched", []))
+            elif tool_name == "report_blocked":
+                lean_session.close()
         _validate_live(capability)
     except Exception as exc:
+        if lean_session is not None:
+            lean_session.close()
         event = {
                 "at": _utc_now(),
                 "event": "pi_tool_error",
@@ -1215,6 +1433,8 @@ class BrokerSession:
         self._next_sequence = 1
         self._closed = False
         self._disposed = False
+        self._lean_session = _BrokerLeanSession()
+        self._incremental_command_indices: set[int] = set()
 
     @property
     def job_id(self) -> str:
@@ -1257,7 +1477,7 @@ class BrokerSession:
             # the worktree or committed evidence.
             self._seen_call_ids.add(call_id)
             self._next_sequence += 1
-            return _execute_bound_tool(
+            result = _execute_bound_tool(
                 capability=self._capability,
                 root=self._root,
                 artifact_dir=self._artifact_dir,
@@ -1267,7 +1487,11 @@ class BrokerSession:
                 call_id=call_id,
                 value=value,
                 sequence=checked_sequence,
+                lean_session=self._lean_session,
             )
+            if result.get("details", {}).get("verification_mode") == "incremental_lsp":
+                self._incremental_command_indices.add(result["details"]["command_index"])
+            return result
         finally:
             self._lock.release()
 
@@ -1314,6 +1538,20 @@ class BrokerSession:
                 return
             self._closed = True
             try:
+                self._lean_session.close()
+                blocked = self._artifact_dir / "pi-blocked-report.json"
+                if self._incremental_command_indices and not (blocked.exists() or blocked.is_symlink()) and _live_guard(self._capability):
+                    # A Job ends with one fresh execution for each iterated
+                    # target. These remain worker evidence; the orchestrator
+                    # independently reruns its frozen acceptance contract.
+                    for index in sorted(self._incremental_command_indices):
+                        result = _tool_lean_check(self._capability, self._root, self._quota,
+                            f"broker-final-lean-{index}", {"command_index": index})
+                        _append_event(self._quota, {"at": _utc_now(), "event": "pi_final_fresh_lean_check",
+                            "job_id": self.job_id, "session_id": self.session_id,
+                            "details": result["details"]})
+                        if result["details"]["returncode"] != 0 or result["details"]["timed_out"] or result["details"]["output_limited"]:
+                            raise BrokerError("final fresh Lean execution rejected incremental Job source")
                 if any(self._lean_scratch.iterdir()):
                     raise BrokerError("Lean check scratch root was not fully cleaned")
                 self._journal.close()
@@ -1328,8 +1566,11 @@ class BrokerSession:
             if self._disposed:
                 return
             self._closed = True
-            self._journal.dispose()
-            self._disposed = True
+            try:
+                self._lean_session.close()
+            finally:
+                self._journal.dispose()
+                self._disposed = True
 
     def __enter__(self) -> "BrokerSession":
         return self
