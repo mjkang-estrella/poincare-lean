@@ -44,6 +44,7 @@ import Poincare.Global.DuhamelParabolicHolderSeminorm
 import Poincare.Global.DuhamelSolutionOperatorBound
 import Poincare.Global.DuhamelSolutionOperatorCLM
 import Poincare.Global.FiniteAtlasParabolicTensorSpace
+import Poincare.Global.FiniteAtlasJacobianCocycle
 import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity
 import Poincare.Global.FixedChartEndpointSlices
@@ -714,6 +715,7 @@ import Poincare.Global.SmoothabilitySimultaneousLocalConjugacy
 import Poincare.Global.SmoothabilityPLCompatibleAffineConjugacy
 import Poincare.Global.SmoothabilityRawAffineNerveIdentityConjugacy
 import Poincare.Global.SmoothabilityAffineGermInvertibilityReduction
+import Poincare.Global.SmoothabilitySmoothGermInvertibilityReduction
 import Poincare.Global.SmoothabilityFiniteTetrahedralStarReduction
 import Poincare.Global.ConstantCurvatureEinstein
 import Poincare.Global.ShortTimeInterface
@@ -880,6 +882,7 @@ import Poincare.Global.CoordinateRicciFlowHamiltonScalarBridge
 import Poincare.Global.ConformalChristoffel
 import Poincare.Global.MetricRescale
 import Poincare.Global.MetricRescaleCurvature
+import Poincare.Global.MetricRescaleScalarGradient
 import Poincare.Global.MetricRescaleFiniteAtlasIntegrals
 import Poincare.Global.MetricRescaleFiniteAtlasForwardFlow
 import Poincare.Global.FiniteExtinctionIntegratingFactor

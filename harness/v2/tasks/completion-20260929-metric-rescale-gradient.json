@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "completion-20260929-metric-rescale-gradient",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "25fa4718fb9ff2c93c02106209d2fa72bd29bf47",
   "objective": {
     "title": "metric-rescale-gradient",
@@ -118,5 +118,6 @@
       "report_sha256": "6ed8a2acf8aa280704aacded4ce79d963196fc3aeaa846030c451ce1fd70106a",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "62dd5fc90b9fbf1e959502a90781518f7436932f"
 }
