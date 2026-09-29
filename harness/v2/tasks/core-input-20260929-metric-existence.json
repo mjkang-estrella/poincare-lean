@@ -1,0 +1,131 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260929-metric-existence",
+  "revision": 1,
+  "status": "active",
+  "base_commit": "d1691e7037f70a153a4e7b5c3bb1e2d267efc6c6",
+  "objective": {
+    "title": "metric-existence for actual initial metric existence",
+    "statement": "Core assumption addressed: universal Hamilton input existence. Construct an actual smooth Riemannian metric on every compact smooth3M, with no metric/curvature/recognition premise. Subsequent proof: general ClosedRicciFlowNormalization.regularRicciFlowGoal / RicciDeTurckShortTimeExistence3 uses this witness as g0. Global positive-Einstein production remains open.",
+    "deliverables": [
+      "Poincare.SmoothInitialMetricExistence.exists_initial_metric"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/SmoothInitialMetricExistence.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "harness/v2/contracts/core-input-existence-20260929/metric-existence.readback.json",
+      "harness/v2/contracts/core-input-existence-20260929/construction-context.md"
+    ],
+    "symbols": [
+      "Poincare.SmoothInitialMetricExistence.exists_initial_metric"
+    ],
+    "depends_on": [
+      "core-input-20260929-positive-cone",
+      "core-input-20260929-local-pullback"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/SmoothInitialMetricExistence.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/SmoothInitialMetricExistence.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-input-existence-20260929/metric-existence.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.SmoothInitialMetricExistence.exists_initial_metric"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Pass only with the exact frozen targets and all scoped checks.",
+    "If blocked preserve failed output, exact resisting Lean type and strongest compiled partial; no unfinished committed proof.",
+    "No target weakening, supplied metrics/recognition or extra assumptions, root editing, full build, acceptance/merge or service changes."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.SmoothInitialMetricExistence"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.SmoothInitialMetricExistence.exists_initial_metric",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ [T2Space M] [CompactSpace M], Nonempty (Poincare.ClosedSmoothRiemannianMetric 3 M)"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "d4c0fb3194a06f41317823594bf417de0b9c1d2afa4771987d63917464f28bd1",
+      "report_path": "harness/v2/contracts/core-input-existence-20260929/metric-existence.readback.json",
+      "report_sha256": "749dfebc406d6c96705327c16f29b10ea7d4cf51e8c0155fe34491c7af685140",
+      "verdict": "approved"
+    }
+  }
+}
