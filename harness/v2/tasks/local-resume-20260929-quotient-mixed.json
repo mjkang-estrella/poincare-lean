@@ -1,0 +1,130 @@
+{
+  "schema_version": "2.1",
+  "id": "local-resume-20260929-quotient-mixed",
+  "revision": 1,
+  "status": "active",
+  "base_commit": "f9f59cd2659b9cb2c9c89924970b7eb9211c0b61",
+  "objective": {
+    "title": "Derive the doubled Ricci gradient square estimate from actual intrinsic tensor entries",
+    "statement": "Derive the doubled Ricci gradient square estimate from actual intrinsic tensor entries. Preserve the exact reviewed statement and existing source; no flow, pinching, compactness or geometric square hypotheses may be silently added.",
+    "deliverables": [
+      "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/HamiltonScalarGradientMixedBound.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/local-resume-20260929/quotient-mixed.explicit.readback.json",
+      "harness/v2/contracts/local-resume-20260929/quotient-mixed.context.md"
+    ],
+    "symbols": [
+      "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HamiltonScalarGradientMixedBound.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/HamiltonScalarGradientMixedBound.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/local-resume-20260929/quotient-mixed.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when the exact named theorem and all scoped checks pass.",
+    "If blocked, retain exact resisting Lean types and failed compiler output; no unfinished proof source or weaker replacement target.",
+    "No full build, root import edit, service changes, acceptance, merge, branch deletion or main edit."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientMixedBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M], ∀ (g : Poincare.ClosedSmoothRiemannianMetric 3 M) [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] (x : M), 2 * g.scalarAt x * g.inner x (g.gradientAt (fun y ↦ g.scalarAt y) x) (g.gradientAt (fun y ↦ g.ricciNormSqAt y) x) ≤ 4 * g.scalarAt x ^ 2 * Poincare.covRicciNormSqAt g x + g.scalarGradNormSqAt x * g.ricciNormSqAt x",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      },
+      {
+        "path": "Poincare/Global/ScalarVariation.lean",
+        "sha256": "4917794230b1aa45f34a0d242c45d6f00af5d5f67022ba275ef460490dbca082"
+      },
+      {
+        "path": "Poincare/Global/ScalarEvolution.lean",
+        "sha256": "cd8aec7795a29ad7282f3976d5edc0f365180cca04ffaf2c115f534d913bd276"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "d08cde59f4a5ee04055b8f31145abebab073e9c071e44406e19c6daf42f9ae06",
+      "report_path": "harness/v2/contracts/local-resume-20260929/quotient-mixed.explicit.readback.json",
+      "report_sha256": "31b402a39737e96a7dea5f150516abc16da857ac8279024b4e85bc5950cc6d34",
+      "verdict": "approved"
+    }
+  }
+}

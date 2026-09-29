@@ -1,0 +1,126 @@
+{
+  "schema_version": "2.1",
+  "id": "local-resume-20260929-quotient-hessian",
+  "revision": 1,
+  "status": "active",
+  "base_commit": "f9f59cd2659b9cb2c9c89924970b7eb9211c0b61",
+  "objective": {
+    "title": "Derive the gradient Hessian square estimate from actual metric and covariant derivatives",
+    "statement": "Derive the gradient Hessian square estimate from actual metric and covariant derivatives. Preserve the exact reviewed statement and existing source; no flow, pinching, compactness or geometric square hypotheses may be silently added.",
+    "deliverables": [
+      "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/HamiltonScalarGradientHessianBound.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/local-resume-20260929/quotient-hessian.explicit.readback.json",
+      "harness/v2/contracts/local-resume-20260929/quotient-hessian.context.md"
+    ],
+    "symbols": [
+      "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HamiltonScalarGradientHessianBound.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/HamiltonScalarGradientHessianBound.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/local-resume-20260929/quotient-hessian.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when the exact named theorem and all scoped checks pass.",
+    "If blocked, retain exact resisting Lean types and failed compiler output; no unfinished proof source or weaker replacement target.",
+    "No full build, root import edit, service changes, acceptance, merge, branch deletion or main edit."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientHessianBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M], ∀ (g : Poincare.ClosedSmoothRiemannianMetric 3 M) {f : M → ℝ} (x : M), ContMDiffAt (Poincare.closedSmoothModelWithCorners 3) (modelWithCornersSelf ℝ ℝ) 2 f x → ∀ a : ℝ, let S := fun y ↦ g.inner y (g.gradientAt f y) (g.gradientAt f y); let H := ∑ i, g.inner x (g.leviCivita (g.gradient f) x ((Module.finBasis ℝ (Poincare.ClosedSmoothModel 3)) i)) (g.leviCivita (g.gradient f) x (Poincare.metricDualVectorAt g x ((Module.finBasis ℝ (Poincare.ClosedSmoothModel 3)).coord i))); 0 ≤ a ^ 2 * H - a * g.inner x (g.gradientAt f x) (g.gradientAt S x) + (S x) ^ 2",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      },
+      {
+        "path": "Poincare/Global/ScalarVariation.lean",
+        "sha256": "4917794230b1aa45f34a0d242c45d6f00af5d5f67022ba275ef460490dbca082"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "200d3d47d87d9be12546bb7fce9b7d8541c9a7e71ee73ddf9f0c2808bcf7717a",
+      "report_path": "harness/v2/contracts/local-resume-20260929/quotient-hessian.explicit.readback.json",
+      "report_sha256": "574bb3d43c3250dc86da81aa758085af6ea11a715b4d734d372f1b258589af35",
+      "verdict": "approved"
+    }
+  }
+}
