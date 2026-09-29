@@ -113,4 +113,37 @@ theorem jac_left_inverse
       if c = a then 1 else 0 := by
   rw [← jac_cocycle A i j i x hi hj hi c a, jac_self A i x hi c a]
 
+/-- Applying the self-chart Jacobian to both covariant tensor indices leaves
+every coefficient unchanged. -/
+theorem covariant_twoTensor_self
+    (i : Fin A.cover.chartCount) (x : M)
+    (hi : x ∈ (chart A i).source) (U : Fin 3 → Fin 3 → ℝ) (a b : Fin 3) :
+    (∑ c : Fin 3, ∑ d : Fin 3,
+      (jac A i i x c a * jac A i i x d b) * U c d) = U a b := by
+  simp [jac_self A i x hi]
+
+/-- The two Jacobian factors in the existing covariant tensor overlap law
+compose through an intermediate chart on the genuine triple overlap. -/
+theorem covariant_twoTensor_cocycle
+    (i j k : Fin A.cover.chartCount) (x : M)
+    (hi : x ∈ (chart A i).source) (hj : x ∈ (chart A j).source)
+    (hk : x ∈ (chart A k).source) (U : Fin 3 → Fin 3 → ℝ) (a b : Fin 3) :
+    (∑ c : Fin 3, ∑ d : Fin 3,
+      (jac A i k x c a * jac A i k x d b) * U c d) =
+      ∑ p : Fin 3, ∑ q : Fin 3,
+        (jac A i j x p a * jac A i j x q b) *
+          (∑ c : Fin 3, ∑ d : Fin 3,
+            (jac A j k x c p * jac A j k x d q) * U c d) := by
+  simp only [jac_cocycle A i j k x hi hj hk, Finset.sum_mul, Finset.mul_sum]
+  rw [Finset.sum_comm_cycle]
+  conv_lhs =>
+    enter [2, q]
+    rw [Finset.sum_comm_cycle]
+  rw [Finset.sum_comm]
+  refine Finset.sum_congr rfl fun p _ => ?_
+  refine Finset.sum_congr rfl fun q _ => ?_
+  refine Finset.sum_congr rfl fun c _ => ?_
+  refine Finset.sum_congr rfl fun d _ => ?_
+  ring
+
 end Poincare.FiniteAtlasParabolicTensorSpace
