@@ -119,3 +119,40 @@ base with independently accepted helper proofs. No unproved helper was used.
 Earlier auxiliary drafts remain in ignored evidence and were not dispatched
 after the user's strategy change. No branch, dirty worktree, model service or
 remote harness was removed or changed.
+
+## Concrete next input from the constructed metric
+
+The next producer will take actual g0 and the positive anchor-dependent
+solver tolerances already returned by
+`BufferedFrozenParabolicSolver.exists_inverse_metric_chart_operator`. It must
+construct `FiniteAtlasParabolicTensorSpace.AtlasData M`, a subordinate smooth
+partition, and nested compactly supported coordinate cutoffs psi_i,xi_i. The
+outer supports must lie in the actual chart target, the fixed-anchor cutoff-one
+germ locus, and the coefficient-oscillation neighborhoods. The genuine inverse
+Gram coefficients there must differ from their freezing values by at most the
+selected solver tolerance. No AtlasData or error operator may be supplied as an
+additional existence premise.
+
+`exists_single_chart_parametrix` then consumes these constructed local inputs.
+The finite common lifespan and bounds must be chosen from the finitely many
+positive local values. Its local residual has sign `chartValue(P_i f)-f`;
+the global Neumann consumer requires `L.comp P = id-R`, so that sign must be
+proved in the actual global operator assembly.
+
+The initial-time obstruction is already formal:
+`DeTurckBUCInverseGaugeEvolution.not_differentiableAt_reconstructedCoordinateMetricPath_zero_of_rate_ne_zero`
+proves the canonical zero-extended reconstruction fails ordinary
+differentiability when its forward rate is nonzero. The future constructor
+must build a compatible initial-jet extension and regularity bootstrap, not
+pass that path into the stronger regular flow target.
+
+The plain-BUC route is not a shortcut: its locally Lipschitz remainder package
+is supplied, while the actual DeTurck remainder contains spatial derivatives
+which are not bounded by the BUC supremum norm. The future actual nonlinear
+producer must use a genuine parabolic graph/jet norm and prove its estimates.
+
+The root integration checkpoint at source `9c01b8a0` passed every non-completion
+gate, including fresh root import elaboration and allowed-axiom checks. Its
+completion audit failed only for the absent reserved theorem. This validates
+the constructed initial metric input; it does not mark either universal core
+obligation as proved.
