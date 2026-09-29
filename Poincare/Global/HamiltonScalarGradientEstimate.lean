@@ -446,3 +446,54 @@ theorem tracelessEnergy_evolution_damped
   linarith
 
 end Poincare.HamiltonScalarGradientEstimate
+
+namespace Poincare.HamiltonScalarGradientEstimate
+
+variable {M : Type u} [TopologicalSpace M] [T2Space M]
+  [ChartedSpace (ClosedSmoothModel 3) M]
+  [IsManifold (closedSmoothModelWithCorners 3) ∞ M]
+
+/-- Positive scalar curvature and a Ricci quotient at most one bound the actual
+three-dimensional cubic reaction by `4 R |Ric°|²`. -/
+theorem cubic_reaction_le_four_scalar_mul_traceless
+    (g : ClosedSmoothRiemannianMetric 3 M)
+    [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1]
+    (x : M) (hR : 0 < g.scalarAt x) (hq : g.pinchingQuotientAt x ≤ 1) :
+    g.pinchingTracelessRicciReactionTrace3At x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤
+      4 * g.scalarAt x * g.tracelessRicciNormSqAt x := by
+  have hrem := g.pinchingReactionRemainderAt_nonpos_of_scalar_pos rfl hR
+  have hC : g.scalarAt x * g.pinchingRicciNormReactionMotionTraceCubicAt x ≤
+      4 * g.ricciNormSqAt x ^ 2 := by
+    have hfactor : g.scalarAt x / 2 *
+        (g.scalarAt x * g.pinchingRicciNormReactionMotionTraceCubicAt x -
+          4 * g.ricciNormSqAt x ^ 2) ≤ 0 := by
+      convert hrem using 1
+      simp only [ClosedSmoothRiemannianMetric.pinchingReactionRemainderAt,
+        ClosedSmoothRiemannianMetric.pinchingScalarReactionAt]
+      ring
+    have hnonpos :=
+      nonpos_of_mul_nonpos_right hfactor (div_pos hR (by norm_num : (0 : ℝ) < 2))
+    linarith
+  have hN : g.ricciNormSqAt x ≤ g.scalarAt x ^ 2 := by
+    have hq' : g.ricciNormSqAt x / g.scalarAt x ^ 2 ≤ 1 := hq
+    simpa only [one_mul] using (div_le_iff₀ (sq_pos_of_pos hR)).mp hq'
+  have hU := g.tracelessRicciNormSqAt_nonneg x (by norm_num)
+  have hNU := mul_le_mul_of_nonneg_right hN hU
+  have hT : g.scalarAt x *
+      g.pinchingTracelessRicciReactionTrace3At x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤
+      4 * g.ricciNormSqAt x * g.tracelessRicciNormSqAt x := by
+    simp only [ClosedSmoothRiemannianMetric.pinchingTracelessRicciReactionTrace3At,
+      ClosedSmoothRiemannianMetric.pinchingScalarReactionAt,
+      ClosedSmoothRiemannianMetric.tracelessRicciNormSqAt]
+    nlinarith [hC]
+  apply le_of_mul_le_mul_left ?_ hR
+  calc
+    g.scalarAt x * g.pinchingTracelessRicciReactionTrace3At x
+        (g.pinchingRicciNormReactionMotionTraceCubicAt x) ≤
+        4 * g.ricciNormSqAt x * g.tracelessRicciNormSqAt x := hT
+    _ ≤ 4 * g.scalarAt x ^ 2 * g.tracelessRicciNormSqAt x := by nlinarith [hNU]
+    _ = g.scalarAt x * (4 * g.scalarAt x * g.tracelessRicciNormSqAt x) := by ring
+
+end Poincare.HamiltonScalarGradientEstimate
