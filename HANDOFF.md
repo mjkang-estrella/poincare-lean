@@ -1,5 +1,39 @@
 # Handoff Snapshot
 
+## 2026-09-29 Local continuation and branch recovery
+
+The user resumed proof work locally and selected this chat as the main
+coordinator. The main checkout was fast-forwarded to the four-proof checkpoint
+`2da86427`; the conflicting cloud patch was preserved in recovery evidence and
+Git stash `39bb0f398675237ee9b4f8c483d667e6d29cb12c` before that update.
+
+The branch audit found all infrastructure and four recent proof branches
+already integrated by ancestry or patch equivalence. Six survey branches keep
+bulk historical evidence whose useful sections are already in curated reports.
+Those branches and all worktrees are preserved.
+
+The older atlas branch supplied ten genuinely unmerged prerequisite and
+obstruction lemmas. Their 143-line append-only diff passed independent fresh
+source compilation, targeted build, and an internal-inclusive scan of all 130
+emitted declarations with exactly the three foundational axioms. They prove
+actual-source coordinate composition and correctly weighted value
+reconstruction. Bounded nonlinear graph/tensor transport remains open; the
+historical task remains blocked in its literal formulation.
+
+The recovered cloud arithmetic lemma now passes fresh local compilation and
+its reviewed exact type/axiom gate. It retains both square-completion premises
+and the variable normalized-flow term. The two intrinsic geometric inequalities
+have separate reviewed active Tasks and disjoint local Codex helper worktrees.
+These are not registered Pi/Leanstral runtime Jobs. No service or remote harness
+was changed. No complete Poincare proof is claimed.
+
+First action: inspect the two `local-resume-20260929-quotient-*` geometric Task
+reports, then independently rerun the exact frozen acceptance command for any
+returned proof before integrating it. See
+`harness/reports/local-branch-integration-20260929.md` for branch provenance and
+`harness/v2/tasks/local-resume-20260929-quotient-hessian.json` for the exact
+Hessian target.
+
 ## 2026-09-29 Proof checkpoint for cloud continuation
 
 At the user's request, local proof work is paused for commit/push and cloud
