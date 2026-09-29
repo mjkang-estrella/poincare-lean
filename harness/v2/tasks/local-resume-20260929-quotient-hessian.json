@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "local-resume-20260929-quotient-hessian",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "f9f59cd2659b9cb2c9c89924970b7eb9211c0b61",
   "objective": {
     "title": "Derive the gradient Hessian square estimate from actual metric and covariant derivatives",
@@ -122,5 +122,6 @@
       "report_sha256": "574bb3d43c3250dc86da81aa758085af6ea11a715b4d734d372f1b258589af35",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "ac49e303dcd9c61fa20eb66e1df8b88facff8c39"
 }

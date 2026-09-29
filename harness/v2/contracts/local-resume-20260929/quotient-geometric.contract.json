@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientQuotientBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M), (∀ s y, Poincare.MetricEntriesJointContDiffAt gt s y 5) → (∀ y, Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) → (∀ y, 0 < (gt t).scalarAt y) → deriv (fun s ↦ (gt s).scalarGradNormSqAt x / (gt s).scalarAt x) t - (gt t).laplacianAt (fun y ↦ (gt t).scalarGradNormSqAt y / (gt t).scalarAt y) x ≤ 8 * Poincare.covRicciNormSqAt (gt t) x - (4/3 : ℝ) * Poincare.meanScalar (gt t) * ((gt t).scalarGradNormSqAt x / (gt t).scalarAt x)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/HamiltonScalarGradientEstimate.lean",
+        "sha256": "6c26f84dc687f18cfdef14d7b29a4a53dcbc31cb240dc9ac35abebea83192de4"
+      },
+      {
+        "path": "Poincare/Global/ScalarEvolution.lean",
+        "sha256": "cd8aec7795a29ad7282f3976d5edc0f365180cca04ffaf2c115f534d913bd276"
+      },
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "75fb4c9255aa77347bb73cb18c43cce435a4baf3f61e191c94e6630a25241edb",
+      "report_path": "harness/v2/contracts/local-resume-20260929/quotient-geometric.readback.json",
+      "report_sha256": "de92f08515b54cfbf918e1e2e1fb2df7ea38251d099680487c2ec1085a274591",
+      "verdict": "approved"
+    }
+  }
+}

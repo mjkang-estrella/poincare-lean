@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "local-resume-20260929-quotient-mixed",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "f9f59cd2659b9cb2c9c89924970b7eb9211c0b61",
   "objective": {
     "title": "Derive the doubled Ricci gradient square estimate from actual intrinsic tensor entries",
@@ -126,5 +126,6 @@
       "report_sha256": "31b402a39737e96a7dea5f150516abc16da857ac8279024b4e85bc5950cc6d34",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "ac49e303dcd9c61fa20eb66e1df8b88facff8c39"
 }

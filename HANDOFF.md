@@ -22,14 +22,17 @@ historical task remains blocked in its literal formulation.
 
 The recovered cloud arithmetic lemma now passes fresh local compilation and
 its reviewed exact type/axiom gate. It retains both square-completion premises
-and the variable normalized-flow term. The two intrinsic geometric inequalities
-have separate reviewed active Tasks and disjoint local Codex helper worktrees.
-These are not registered Pi/Leanstral runtime Jobs. No service or remote harness
+and the variable normalized-flow term. The mixed tensor and Hessian inequalities now have exact proofs, and
+`quotient_evolution_le_eight_covRicci` combines them with the actual quotient
+evolution identity. All three passed independent fresh source and frozen
+type/axiom gates. They require the supplied flow and positive-scalar slice; no
+flow existence or convergence is inferred. The accepted local Codex helper
+attempts are not registered Pi/Leanstral runtime Jobs. No service or remote harness
 was changed. No complete Poincare proof is claimed.
 
-First action: inspect the two `local-resume-20260929-quotient-*` geometric Task
-reports, then independently rerun the exact frozen acceptance command for any
-returned proof before integrating it. See
+First action: freeze the actual auxiliary quantity estimate with
+`K = 84 + 60 * eta`, retaining `+(4/3) * meanScalar * F` on its left-hand
+side; use the accepted quotient-eight, Bianchi damping and cubic bounds. See
 `harness/reports/local-branch-integration-20260929.md` for branch provenance and
 `harness/v2/tasks/local-resume-20260929-quotient-hessian.json` for the exact
 Hessian target.

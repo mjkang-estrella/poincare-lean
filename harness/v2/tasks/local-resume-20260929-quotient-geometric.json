@@ -1,0 +1,133 @@
+{
+  "schema_version": "2.1",
+  "id": "local-resume-20260929-quotient-geometric",
+  "revision": 1,
+  "status": "accepted",
+  "base_commit": "a15406bb6f40d291a1dc9003b9181ed93a8f9353",
+  "objective": {
+    "title": "Derive the normalized-flow quotient-eight estimate",
+    "statement": "Use the actual mixed tensor and Hessian square bounds to prove the exact pointwise quotient heat-operator bound while retaining the variable normalization term. Preserve the existing arithmetic lemma byte-for-byte.",
+    "deliverables": [
+      "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/HamiltonScalarGradientQuotientBound.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "Poincare/Global/HamiltonScalarGradientQuotientBound.lean",
+      "Poincare/Global/HamiltonScalarGradientMixedBound.lean",
+      "Poincare/Global/HamiltonScalarGradientHessianBound.lean",
+      "harness/v2/contracts/local-resume-20260929/quotient-geometric.readback.json"
+    ],
+    "symbols": [
+      "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HamiltonScalarGradientQuotientBound.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/HamiltonScalarGradientQuotientBound.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/local-resume-20260929/quotient-geometric.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when the exact named theorem and all scoped checks pass.",
+    "If blocked, retain exact resisting Lean types and failed compiler output; no unfinished proof source or weaker replacement target.",
+    "No full build, root import edit, service changes, acceptance, merge, branch deletion or main edit."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientQuotientBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] {gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M} {t : ℝ} (x : M), (∀ s y, Poincare.MetricEntriesJointContDiffAt gt s y 5) → (∀ y, Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) → (∀ y, 0 < (gt t).scalarAt y) → deriv (fun s ↦ (gt s).scalarGradNormSqAt x / (gt s).scalarAt x) t - (gt t).laplacianAt (fun y ↦ (gt t).scalarGradNormSqAt y / (gt t).scalarAt y) x ≤ 8 * Poincare.covRicciNormSqAt (gt t) x - (4/3 : ℝ) * Poincare.meanScalar (gt t) * ((gt t).scalarGradNormSqAt x / (gt t).scalarAt x)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/HamiltonScalarGradientEstimate.lean",
+        "sha256": "6c26f84dc687f18cfdef14d7b29a4a53dcbc31cb240dc9ac35abebea83192de4"
+      },
+      {
+        "path": "Poincare/Global/ScalarEvolution.lean",
+        "sha256": "cd8aec7795a29ad7282f3976d5edc0f365180cca04ffaf2c115f534d913bd276"
+      },
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "75fb4c9255aa77347bb73cb18c43cce435a4baf3f61e191c94e6630a25241edb",
+      "report_path": "harness/v2/contracts/local-resume-20260929/quotient-geometric.readback.json",
+      "report_sha256": "de92f08515b54cfbf918e1e2e1fb2df7ea38251d099680487c2ec1085a274591",
+      "verdict": "approved"
+    }
+  },
+  "accepted_commit": "ac49e303dcd9c61fa20eb66e1df8b88facff8c39"
+}
