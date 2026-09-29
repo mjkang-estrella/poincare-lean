@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260929-local-pullback",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "d1691e7037f70a153a4e7b5c3bb1e2d267efc6c6",
   "objective": {
     "title": "local-pullback for actual initial metric existence",
@@ -144,5 +144,6 @@
       "report_sha256": "c615869715557dfb718ea758be23bea330b241057dd128bf5460381809c89ca4",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "acdd969f1ce554c0f750d08e5ba2c554838c40d2"
 }
