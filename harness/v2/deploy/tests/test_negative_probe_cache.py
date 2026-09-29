@@ -19,6 +19,10 @@ EXACT_ERROR = (
     "<stdin>:11:8: error: Unknown identifier `Poincare.poincare_conjecture`\n"
     "<stdin>:12:14: error: Unknown constant `Poincare.poincare_conjecture`\n"
 )
+TAGGED_EXACT_ERROR = (
+    "<stdin>:3:8: error(lean.unknownIdentifier): Unknown identifier `Poincare.poincare_conjecture`\n"
+    "<stdin>:4:14: error(lean.unknownIdentifier): Unknown constant `Poincare.poincare_conjecture`\n"
+)
 
 
 class ProbeWrapperTest(unittest.TestCase):
@@ -39,14 +43,18 @@ class ProbeWrapperTest(unittest.TestCase):
             (directory / "negative_probe_cache.py").write_text(
                 "import json,os,sys\n"
                 "print(json.dumps({'argv':sys.argv[1:],'override':os.environ.get('LEAN_SYSROOT')}))\n")
-            for arguments in ([], ["--fresh", str(directory / "config with spaces.env")]):
+            cases = (([], True), (["--fresh", str(directory / "config with spaces.env")], True),
+                     (["--reuse-negative", str(directory / "config with spaces.env")], False),
+                     ([str(directory / "config with spaces.env")], True))
+            for arguments, expected_fresh in cases:
                 with self.subTest(arguments=arguments):
                     result = subprocess.run(["/bin/bash", str(wrapper), *arguments],
                                             env=dict(os.environ, LEAN_SYSROOT="/untrusted/override"),
                                             text=True, capture_output=True)
                     self.assertEqual(result.returncode, 0, result.stderr)
                     recorded = json.loads(result.stdout)
-                    self.assertEqual("--fresh" in recorded["argv"], bool(arguments))
+                    self.assertEqual("--fresh" in recorded["argv"], expected_fresh)
+                    self.assertNotIn("--reuse-negative", recorded["argv"])
                     self.assertIsNone(recorded["override"])
                     self.assertIn("--root", recorded["argv"])
                     self.assertEqual(recorded["argv"][recorded["argv"].index("--config") + 1],
@@ -84,6 +92,27 @@ class ProbeClassificationTest(unittest.TestCase):
                 self.assertEqual(probe.classify_probe(1, output), ("invalid", 4))
         for status in (-9, 2, 124):
             self.assertEqual(probe.classify_probe(status, EXACT_ERROR), ("invalid", 4))
+
+    def test_actual_lean_tagged_unknown_identifier_output_is_absence(self) -> None:
+        self.assertEqual(probe.classify_probe(1, TAGGED_EXACT_ERROR), ("absent", 3))
+        for output in (
+            TAGGED_EXACT_ERROR + "<stdin>:6:2: error(lean.parserError): unexpected token\n",
+            TAGGED_EXACT_ERROR.replace("Poincare.poincare_conjecture", "Poincare.unrelated"),
+            TAGGED_EXACT_ERROR + "error: object file missing\n",
+            EXACT_ERROR + "error(lean.unknownIdentifier): Unknown identifier `Poincare.other`\n",
+        ):
+            self.assertEqual(probe.classify_probe(1, output), ("invalid", 4))
+
+    @unittest.skipUnless(os.environ.get("POINCARE_TEST_EXACT_PROBE_ROOT") and os.environ.get("POINCARE_TEST_LEAN_TOOLCHAIN"),
+                         "real exact probe requires an explicitly selected serialized project and toolchain")
+    def test_real_minimal_exact_probe_classifies_compiler_result(self) -> None:
+        root = Path(os.environ["POINCARE_TEST_EXACT_PROBE_ROOT"]).resolve(strict=True)
+        toolchain = Path(os.environ["POINCARE_TEST_LEAN_TOOLCHAIN"]).resolve(strict=True)
+        command = [str(toolchain / "bin/lake"), "env", str(toolchain / "bin/lean"), "--stdin"]
+        returncode, transcript = probe._run_lean(root, command, source=probe.MINIMAL_PROBE_SOURCE)
+        self.assertNotIn("POINCARE_NEGATIVE_PROBE_IMPORTS", transcript)
+        expected = os.environ.get("POINCARE_TEST_EXPECT_EXACT_STATUS", "absent")
+        self.assertEqual(probe.classify_probe(returncode, transcript)[0], expected, transcript)
 
     def test_positive_and_nonstandard_results_are_distinct(self) -> None:
         self.assertEqual(probe.classify_probe(0, "depends on axioms: [propext, Classical.choice, Quot.sound]"), ("verified", 0))
@@ -180,6 +209,27 @@ class NegativeProbeCacheTest(unittest.TestCase):
                                         capture=self.capture, search_paths=lambda root, toolchain: self.paths,
                                         runner=self.runner, **kwargs)
 
+    @contextlib.contextmanager
+    def stub_actual_lean_process(self):
+        """Exercise the real source-selection path without starting Lean."""
+        self.cache.runner = probe._run_lean
+        actual_run = subprocess.run
+        inputs = []
+
+        def run(command, *args, **kwargs):
+            if command != self.cache.command:
+                return actual_run(command, *args, **kwargs)
+            self.calls += 1
+            source = kwargs["input"]
+            inputs.append(source)
+            output = self.output
+            if source == probe.PROBE_SOURCE:
+                output = "POINCARE_NEGATIVE_PROBE_IMPORTS=" + json.dumps(self.manifest()) + "\n" + output
+            return subprocess.CompletedProcess(command, self.status, stdout=output)
+
+        with patch.object(probe.subprocess, "run", side_effect=run):
+            yield inputs
+
     def prime(self) -> probe.ProbeResult:
         result = self.cache.run()
         self.assertEqual(result.exit_code, 3)
@@ -223,6 +273,45 @@ class NegativeProbeCacheTest(unittest.TestCase):
         self.assertEqual((result.exit_code, result.execution, self.calls), (3, "fresh", 1))
         self.assertIsNone(result.identity)
         self.assertFalse(self.cache.state.exists())
+
+    def test_fresh_real_runner_uses_minimal_source_and_no_manifest_transcript(self) -> None:
+        with self.stub_actual_lean_process() as inputs:
+            result = self.cache.run(fresh=True)
+        self.assertEqual(inputs, [probe.MINIMAL_PROBE_SOURCE])
+        self.assertNotIn("POINCARE_NEGATIVE_PROBE_IMPORTS", result.transcript)
+        self.assertEqual(result.probe_source_sha256, probe._sha256(probe.MINIMAL_PROBE_SOURCE.encode()))
+        self.assertEqual(result.command, self.cache.command)
+        output = io.StringIO()
+        errors = io.StringIO()
+        with contextlib.redirect_stdout(output), contextlib.redirect_stderr(errors):
+            result.emit()
+        metadata = json.loads(output.getvalue().splitlines()[1].split("=", 1)[1])
+        self.assertEqual(metadata["command"], self.cache.command)
+        self.assertIsNone(metadata["original_probe_command"])
+        self.assertNotIn("POINCARE_NEGATIVE_PROBE_IMPORTS", errors.getvalue())
+
+    def test_dirty_uncachable_real_runner_falls_back_to_minimal_source(self) -> None:
+        self.source.write_text("import Poincare.Test\n-- in-progress edit\n")
+        with self.stub_actual_lean_process() as inputs:
+            result = self.cache.run()
+        self.assertEqual(inputs, [probe.MINIMAL_PROBE_SOURCE])
+        self.assertNotIn("POINCARE_NEGATIVE_PROBE_IMPORTS", result.transcript)
+        self.assertIsNone(result.evidence_path)
+
+    def test_unattested_artifacts_use_minimal_source_without_manifest(self) -> None:
+        with self.stub_actual_lean_process() as inputs, \
+                patch.object(self.cache, "search_paths", side_effect=probe.CacheUnavailable("unattested artifacts")):
+            result = self.cache.run()
+        self.assertEqual(inputs, [probe.MINIMAL_PROBE_SOURCE])
+        self.assertNotIn("POINCARE_NEGATIVE_PROBE_IMPORTS", result.transcript)
+        self.assertIsNone(result.evidence_path)
+
+    def test_actual_runner_only_cacheable_prime_uses_manifest_source(self) -> None:
+        with self.stub_actual_lean_process() as inputs:
+            result = self.prime()
+        self.assertEqual(inputs, [probe.PROBE_SOURCE])
+        self.assertIn("POINCARE_NEGATIVE_PROBE_IMPORTS=", result.transcript)
+        self.assertEqual(result.probe_source_sha256, probe._sha256(probe.PROBE_SOURCE.encode()))
 
     def test_dirty_source_and_untracked_file_never_reuse_or_publish(self) -> None:
         self.prime()

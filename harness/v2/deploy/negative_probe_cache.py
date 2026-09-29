@@ -29,6 +29,11 @@ import uuid
 
 
 RESERVED = "Poincare.poincare_conjecture"
+MINIMAL_PROBE_SOURCE = (
+    "import Poincare\n\n"
+    "#check (Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement)\n"
+    "#print axioms Poincare.poincare_conjecture\n"
+)
 PROBE_SOURCE = (
     "import Poincare\n\n"
     "run_cmd do\n"
@@ -110,11 +115,12 @@ def _capture_identity(root: Path, toolchain_root: Path) -> dict:
 def classify_probe(returncode: int, output: str) -> tuple[str, int]:
     """Unrelated import/parser errors are invalid, never a cached absence."""
     if returncode != 0:
+        severity = r"(?:^|\s)error(?:\([^)\r\n]+\))?:"
         exact = re.compile(
-            r"(?:^|\s)error:\s*Unknown (?:identifier|constant)\s+[`'\"]"
+            severity + r"\s*Unknown (?:identifier|constant)\s+[`'\"]"
             + re.escape(RESERVED) + r"[`'\"]\s*$"
         )
-        errors = [line.strip() for line in output.splitlines() if "error:" in line]
+        errors = [line.strip() for line in output.splitlines() if re.search(severity, line)]
         if returncode == 1 and errors and all(exact.search(line) for line in errors):
             return "absent", 3
         return "invalid", 4
@@ -128,9 +134,9 @@ def classify_probe(returncode: int, output: str) -> tuple[str, int]:
     return "nonstandard_axioms", 5
 
 
-def _run_lean(root: Path, command: list[str]) -> tuple[int, str]:
+def _run_lean(root: Path, command: list[str], *, source: str = MINIMAL_PROBE_SOURCE) -> tuple[int, str]:
     env = _probe_environment()
-    result = subprocess.run(command, cwd=root, input=PROBE_SOURCE, text=True,
+    result = subprocess.run(command, cwd=root, input=source, text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
     return result.returncode, result.stdout
 
@@ -154,6 +160,8 @@ class ProbeResult:
     cache_note: str | None = None
     timings: dict | None = None
     artifact_snapshot: dict | None = None
+    command: list[str] | None = None
+    probe_source_sha256: str | None = None
 
     def emit(self) -> None:
         print(f"EXACT_DECLARATION_PROBE={self.classification}")
@@ -166,6 +174,9 @@ class ProbeResult:
             "evidence_path": self.evidence_path,
             "cache_note": self.cache_note,
             "timings_seconds": self.timings,
+            "command": self.command if self.execution == "fresh" else None,
+            "original_probe_command": self.command if self.execution == "reused_negative" else None,
+            "probe_source_sha256": self.probe_source_sha256,
         }
         if self.execution == "reused_negative":
             print("Reused negative result: exact reserved declaration absent; "
@@ -300,7 +311,8 @@ class NegativeProbeCache:
         if _manifest_from_output(transcript.decode(), self.root) != artifacts["manifest"]:
             raise CacheUnavailable("transcript import provenance does not match receipt")
         return ProbeResult("absent", 3, "reused_negative", "", identity,
-                           evidence["timestamp"], relative, artifact_snapshot=snapshot)
+                           evidence["timestamp"], relative, artifact_snapshot=snapshot,
+                           command=self.command, probe_source_sha256=evidence["probe_source_sha256"])
 
     def _write_sealed(self, path: Path, content: bytes) -> None:
         fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0), 0o600)
@@ -357,13 +369,14 @@ class NegativeProbeCache:
             # Independent final verification pays only for Lean. The caller's
             # existing append-only cycle evidence preserves this fresh result;
             # it neither reads nor updates a reusable negative observation.
-            returncode, transcript = self.runner(self.root, self.command)
+            returncode, transcript = self._execute(MINIMAL_PROBE_SOURCE)
             classification, status = classify_probe(returncode, transcript)
             return ProbeResult(classification, status, "fresh", transcript,
                                evidence_time=datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
                                cache_note="fresh requested; negative cache bypassed",
                                timings={"identity": 0.0, "cache_validation": 0.0,
-                                        "lean_probe": time.monotonic() - started})
+                                        "lean_probe": time.monotonic() - started}, command=self.command,
+                               probe_source_sha256=_sha256(MINIMAL_PROBE_SOURCE.encode()))
         identity = None
         note = None
         try:
@@ -393,11 +406,13 @@ class NegativeProbeCache:
             except (OSError, ValueError, subprocess.SubprocessError) as exc:
                 note = f"artifact provenance unavailable: {type(exc).__name__}"
         before_lean = time.monotonic()
-        returncode, transcript = self.runner(self.root, self.command)
+        source = PROBE_SOURCE if identity is not None and inventory is not None and paths is not None else MINIMAL_PROBE_SOURCE
+        returncode, transcript = self._execute(source)
         classification, status = classify_probe(returncode, transcript)
         result = ProbeResult(classification, status, "fresh", transcript, identity,
                              datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), cache_note=note,
-                             timings={"identity": identity_seconds, "lean_probe": time.monotonic() - before_lean})
+                             timings={"identity": identity_seconds, "lean_probe": time.monotonic() - before_lean},
+                             command=self.command, probe_source_sha256=_sha256(source.encode()))
         if status == 3 and identity is not None and inventory is not None and paths is not None:
             try:
                 with self._lock():
@@ -412,6 +427,13 @@ class NegativeProbeCache:
             except (OSError, ValueError, ImportError, subprocess.SubprocessError) as exc:
                 result.cache_note = f"negative result not cached: {type(exc).__name__}"
         return result
+
+    def _execute(self, source: str) -> tuple[int, str]:
+        if self.runner is _run_lean:
+            return self.runner(self.root, self.command, source=source)
+        # Retain the scoped two-argument injection contract used by the harness
+        # tests and callers. Only the real Lean runner receives compiler source.
+        return self.runner(self.root, self.command)
 
 
 def _search_paths(root: Path, toolchain_root: Path) -> list[Path]:

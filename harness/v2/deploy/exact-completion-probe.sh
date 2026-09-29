@@ -10,14 +10,16 @@ source "$SCRIPT_DIR/common.sh"
 # does not claim project completion; codex-cycle.sh additionally requires the
 # full completion audit and one clean, stable integration HEAD.
 
-fresh=0
-if [[ "${1:-}" == --fresh ]]; then
-  fresh=1
+fresh=1
+if [[ "${1:-}" == --reuse-negative ]]; then
+  fresh=0
+  shift
+elif [[ "${1:-}" == --fresh ]]; then
   shift
 fi
 
-if (( $# > 1 )); then
-  printf 'Usage: %s [--fresh] [environment-file]\n' "${0##*/}" >&2
+if (( $# > 1 )) || [[ "${1:-}" == --* ]]; then
+  printf 'Usage: %s [--fresh|--reuse-negative] [environment-file]\n' "${0##*/}" >&2
   exit 64
 fi
 
@@ -26,8 +28,8 @@ load_config "${1:-$SCRIPT_DIR/.env}"
 # overrides, define both the probe and its reusable input identity.
 unset LAKE_OVERRIDE_LEAN LAKE_OVERRIDE_LAKE LEAN_SYSROOT LEAN
 
-# Only an exact, compiler-confirmed absence can be reused. Positive results,
-# all acceptance checks, and explicitly requested --fresh checks execute Lean.
+# Ordinary and final probes run fresh. Negative reuse is explicitly opt-in:
+# hashing mutable import artifacts can cost more than loading them with Lean.
 probe_argv=(
   "$HARNESS_PI_PYTHON" -S -P -B "$SCRIPT_DIR/negative_probe_cache.py"
   --root "$POINCARE_REPO_ROOT"

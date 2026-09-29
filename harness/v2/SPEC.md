@@ -240,9 +240,11 @@ Required declaration and axiom probes are combined into one Lean invocation,
 retaining the exact contract and per-symbol evidence alongside the full shared
 transcript. Phase timings remain append-only even when a gate fails. Source-bound
 status receipts are historical evidence, never completion certificates. The
-observer may reuse an exact negative completion probe only when all recorded
+observer may opt into an exact negative completion probe reuse only when all recorded
 source, toolchain, configuration and compiled import identities still match;
-positive completion probes and the full completion audit remain fresh.
+positive completion probes and the full completion audit remain fresh. Ordinary
+exact probes default to fresh execution; `--reuse-negative` enables the source-
+and artifact-bound negative cache when that is useful for the deployment.
 
 ## Runtime State
 

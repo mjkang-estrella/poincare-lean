@@ -51,11 +51,13 @@ Changing source, dependencies, toolchain, verification code, gate policy, or
 the saved status artifact invalidates reuse. A receipt does not upgrade an
 incomplete or failed checkpoint into successful verification.
 
-The deployment's exact declaration probe may reuse only a compiler-confirmed
+With `--reuse-negative`, the deployment's exact declaration probe may reuse only a compiler-confirmed
 absence with unchanged source, toolchain, configuration, and actual compiled
 import closure. Its output identifies the original negative evidence. Positive,
 invalid, or nonstandard-axiom results are never reused. Pass `--fresh` to
-`harness/v2/deploy/exact-completion-probe.sh` to force a new probe.
+`harness/v2/deploy/exact-completion-probe.sh` to force a new probe. Fresh probing
+is the default, since validating a mutable cache can cost more than loading
+the compiled environment. Explicit fresh checks omit import-manifest output.
 
 ## Integrity of reusable caches
 
@@ -84,3 +86,7 @@ the ignored `harness/v2/state/incremental-verification/session-benchmark-transpo
 The import-only reduction changed solver predecessors from 641 to 196 and
 tensor-carrier predecessors from 630 to 110. Warm full-file checks stayed
 about the same, so no compilation speedup is attributed to those counts.
+
+The integration build reported 4,202 dependency/artifact jobs, but its log had
+only seven freshly built targets. It completed in 38.547 seconds. Job count is
+not a measure of how many proofs were re-elaborated.

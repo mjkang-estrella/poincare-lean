@@ -161,6 +161,7 @@ class CacheProvenanceRecorderFixture(unittest.TestCase):
             "harness/v2/runtime/validation.py",
             "harness/v2/pi/__init__.py",
             "harness/v2/pi/install.py",
+            "harness/v2/pi/cache_integrity.py",
             "harness/v2/pi/security.py",
             "harness/v2/deploy/common.sh",
             "harness/v2/deploy/publish-lean-cache.sh",
@@ -489,6 +490,19 @@ class CacheProvenanceRecorderTest(CacheProvenanceRecorderFixture):
         dirty = self.run_recorder()
         self.assertNotEqual(dirty.returncode, 0)
         self.assertIn("requires a clean exact-base source", dirty.stderr)
+        self.assertEqual(self.bundles(), [])
+
+    def test_rejects_dirty_cache_integrity_helper_before_compilation(self) -> None:
+        helper = self.repo / "harness/v2/pi/cache_integrity.py"
+        with helper.open("a", encoding="utf-8") as stream:
+            stream.write("\n# Uncommitted cache verifier change.\n")
+        result = self.run_recorder()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "deployment cache control input bytes differ from committed HEAD: "
+            "harness/v2/pi/cache_integrity.py", result.stderr,
+        )
+        self.assertFalse(self.lake_log.exists())
         self.assertEqual(self.bundles(), [])
 
     def test_shared_build_job_lock_is_nonblocking_and_failure_is_retained(self) -> None:

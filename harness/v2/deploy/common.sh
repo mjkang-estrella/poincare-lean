@@ -786,6 +786,8 @@ assert_committed_deploy_paths() {
 assert_deploy_code_committed() {
   local required=(
     harness/v2/pi/__init__.py
+    harness/v2/pi/cache_integrity.py
+    harness/v2/pi/install.py
     harness/v2/pi/security.py
     harness/v2/deploy/common.sh
     harness/v2/deploy/record-lean-cache-provenance.sh

@@ -231,6 +231,7 @@ class LeanCacheHardeningFixture(unittest.TestCase):
             "harness/v2/__init__.py",
             "harness/v2/pi/__init__.py",
             "harness/v2/pi/install.py",
+            "harness/v2/pi/cache_integrity.py",
             "harness/v2/pi/security.py",
             "harness/v2/deploy/common.sh",
             "harness/v2/deploy/record-lean-cache-provenance.sh",
@@ -477,6 +478,20 @@ class LeanCacheHardeningTest(LeanCacheHardeningFixture):
         self.assertIn("dependency package is dirty: dep", result.stderr)
         self.assertFalse((self.cache_root / self.base_commit).exists())
         self.assertEqual(len(list(self.cache_root.glob(f".staging.{self.base_commit}.*"))), 1)
+
+    def test_publish_rejects_dirty_cache_integrity_helper_before_staging(self) -> None:
+        provenance = self.make_provenance(self.source_projection())
+        helper = self.repo / "harness/v2/pi/cache_integrity.py"
+        with helper.open("a", encoding="utf-8") as stream:
+            stream.write("\n# Uncommitted cache verifier change.\n")
+        result = self.publish(provenance)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn(
+            "deployment cache control input bytes differ from committed HEAD: "
+            "harness/v2/pi/cache_integrity.py", result.stderr,
+        )
+        self.assertFalse(any(self.cache_root.glob(".staging.*")))
+        self.assertFalse((self.cache_root / self.base_commit).exists())
 
     def test_mutable_provenance_is_rejected_before_staging(self) -> None:
         provenance = self.make_provenance(self.source_projection())

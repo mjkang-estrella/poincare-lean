@@ -18,7 +18,8 @@ worker checks before successful sealing, independent fresh review, combined
 declaration/axiom probes, phase timings, and source-bound status receipts.
 Negative exact-declaration reuse is restricted to unchanged verified source,
 toolchain, configuration and actual compiled imports; positive completion is
-always freshly checked. Protected-cache reuse requires OS protection rather
+always freshly checked. Exact probes default to fresh execution; negative reuse
+is an explicit option. Protected-cache reuse requires OS protection rather
 than chmod. Default integrity scans remain active for ordinary caches.
 
 The regression fixtures exercise actual Lean type/axiom rejection and actual
@@ -33,6 +34,12 @@ The actual buffered solver's local LSP check took 61.047 seconds initially,
 0.000101 seconds for identical input. Fresh whole-file compilation took 59.31
 seconds. These timings concern a retained proof prefix on this Mac; they are
 not a prediction for arbitrary edits or the untested Linux deployment.
+
+The first full integration checkpoint built 4,202 dependency/artifact jobs in
+38.547 seconds, with seven fresh build log entries. Build, interface, mathlib,
+shape, theorem-contract, semantic, root-import and axiom gates passed. Completion
+failed only because the reserved final theorem is absent. Its full evidence is
+sealed under the ignored `harness/v2/state/verification/checkpoints` directory.
 
 First action: `sh scripts/read_status_summary.sh` from the integration worktree.
 If the receipt is stale, inspect its reasons before scheduling one explicit
