@@ -1,0 +1,26 @@
+{
+  "imports": [
+    "Poincare.Global.FiniteAtlasJacobianCocycle"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.FiniteAtlasParabolicTensorSpace.jac_cocycle",
+      "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) \u221e M], \u2200 (A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (i j k : Fin A.cover.chartCount) (x : M), x \u2208 (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source \u2192 x \u2208 (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source \u2192 x \u2208 (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).source \u2192 \u2200 (c a : Fin 3), Poincare.FiniteAtlasParabolicTensorSpace.jac A i k x c a = \u2211 b : Fin 3, Poincare.FiniteAtlasParabolicTensorSpace.jac A j k x c b * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x b a",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/HausdorffFiniteAtlasChartFrameReduction.lean",
+      "sha256": "b819b8868a672409d44e983d44e3b2fcb484daacbcfbca9eed4cb9b235f81efd"
+    },
+    {
+      "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "sha256": "3ca4c3bee560869834d0425df53f825c3438902dd74beb9dfbabb6b96e75012d"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "03223976e5ed609760c60df498a0affca0c8e8fa52500dda3a893a9a9116326c"
+}

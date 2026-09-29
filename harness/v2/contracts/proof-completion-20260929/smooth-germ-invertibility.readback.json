@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "blind-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "f5d9dfac37e70337d9bea9cbd08d16225eb3d693b20e2116cfb4f051a98676d8",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable",
+      "mathematical_statement": "Let M be a compact Hausdorff space charted over Euclidean three-space, and fix the supplied finite precompact preferred-chart atlas data and its actual transition nerve. Fix one Euclidean open partial homeomorphism h_i per atlas vertex, with source containing the compact coordinate image of that vertex. Assume that for every ordered overlap pair (i,j) and every v in its compact transition domain, h_j composed with the actual transition T_ij, expressed in h_i coordinates, agrees on that compact domain near h_i(v) with some smooth map on an open Euclidean neighborhood. Then for every such pair and point there is an open partial homeomorphism e with both e and e inverse smooth, whose source contains h_i(v) and whose values agree with h_j(T_ij(w)) whenever w lies in the compact transition domain and h_i(w) lies in e source. Agreement is relative to the compact transition domain, including its boundary; it is not asserted on every point of the original full chart transition source. The premise ranges over all ordered pairs, hence includes reverse transitions, and the transition domains are closures of genuine open overlaps; those facts supply two-sided smooth information and distinguish this claim from the false assertion that an arbitrary smooth injective map automatically has smooth inverse. The theorem keeps the supplied corrections fixed and upgrades their local models; it does not produce corrections or an unconditional smoothing of an arbitrary atlas."
+    }
+  ],
+  "findings": []
+}

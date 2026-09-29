@@ -1,0 +1,30 @@
+{
+  "imports": [
+    "Poincare.Global.SmoothabilitySmoothGermInvertibilityReduction"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable",
+      "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (EuclideanSpace \u211d (Fin 3)) M], \u2200 {data : Poincare.SmoothabilityFinitePrecompactTopologicalAtlasReduction.FinitePrecompactTopologicalChartAtAtlas3 M} {nerve : Poincare.SmoothabilityFiniteAtlasNerveReduction.FiniteAtlasNerveTransitionPackage3 data} (correction : data.Index \u2192 OpenPartialHomeomorph (EuclideanSpace \u211d (Fin 3)) (EuclideanSpace \u211d (Fin 3))), (\u2200 i, data.compactCoordinateImage i \u2286 (correction i).source) \u2192 Poincare.SmoothabilityLocalSmoothTransitionGerms.CorrectedTransitionsLocallySmoothlyExtendableOnCompact3 data nerve correction \u2192 Poincare.SmoothabilitySimultaneousLocalConjugacy.CorrectedTransitionsLocallySmoothlyConjugateOnCompact3 data nerve correction",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/SmoothabilityLocalSmoothTransitionGerms.lean",
+      "sha256": "04ac29d23032d3684588c01a6e916fd346f644dcb89c78ad46294093076d7d65"
+    },
+    {
+      "path": "Poincare/Global/SmoothabilitySimultaneousLocalConjugacy.lean",
+      "sha256": "997b4d12506f9d26fcf877d81f8128d6e4344dc7a0b778bd8d4089237d37e790"
+    },
+    {
+      "path": "Poincare/Global/SmoothabilityAffineGermInvertibilityReduction.lean",
+      "sha256": "710c340869618bc8b127398608fc34faea3459c3f209f08926708fbccf5285af"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "f5d9dfac37e70337d9bea9cbd08d16225eb3d693b20e2116cfb4f051a98676d8"
+}

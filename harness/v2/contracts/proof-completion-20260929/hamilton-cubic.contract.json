@@ -1,0 +1,33 @@
+{
+  "imports": [
+    "Poincare.Global.HamiltonScalarGradientEstimate"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.HamiltonScalarGradientEstimate.cubic_reaction_le_four_scalar_mul_traceless",
+      "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) \u221e M], \u2200 (g : Poincare.ClosedSmoothRiemannianMetric 3 M) [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] (x : M), 0 < g.scalarAt x \u2192 g.pinchingQuotientAt x \u2264 1 \u2192 g.pinchingTracelessRicciReactionTrace3At x (g.pinchingRicciNormReactionMotionTraceCubicAt x) \u2264 4 * g.scalarAt x * g.tracelessRicciNormSqAt x",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/Laplacian.lean",
+      "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+    },
+    {
+      "path": "Poincare/Global/ScalarVariation.lean",
+      "sha256": "4917794230b1aa45f34a0d242c45d6f00af5d5f67022ba275ef460490dbca082"
+    }
+  ],
+  "author": "root-orchestrator",
+  "review": {
+    "reviewer": "blind-contract-readback",
+    "method": "blind-readback",
+    "snapshot_sha256": "f4eb70fb67aa9202f269c35dd7a14b7a65e2c9fc967965f15feffcff928cdac6",
+    "report_path": "harness/v2/contracts/proof-completion-20260929/hamilton-cubic.readback.json",
+    "report_sha256": "1f37214d2a46622aeb03a6f6656058c099d974aafa839347d0ec21c87570176b",
+    "verdict": "approved"
+  }
+}

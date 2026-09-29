@@ -1,0 +1,26 @@
+{
+  "imports": [
+    "Poincare.Global.MetricRescaleScalarGradient"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt",
+      "lean_type": "\u2200 {n : \u2115} {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel n) M] [IsManifold (Poincare.closedSmoothModelWithCorners n) \u221e M], \u2200 (g : Poincare.ClosedSmoothRiemannianMetric n M) (c : \u211d) (hc : 0 < c) [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] [CovariantDerivative.ContMDiffCovariantDerivative (g.constSMul c hc).leviCivita 1] (x : M), (g.constSMul c hc).scalarGradNormSqAt x = (c\u207b\u00b9)^3 * g.scalarGradNormSqAt x",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/MetricRescaleCurvature.lean",
+      "sha256": "90433d4b59e2f692dbacbe722fec3d7c8c68430191bab380b3532b1af2ad7aaf"
+    },
+    {
+      "path": "Poincare/Global/Laplacian.lean",
+      "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "72ae2e5b72c5c2b1cdbe76d8d286a067ce44e19e48ab1f1e0f0a568aab7f4130"
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "blind-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "03223976e5ed609760c60df498a0affca0c8e8fa52500dda3a893a9a9116326c",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.FiniteAtlasParabolicTensorSpace.jac_cocycle",
+      "mathematical_statement": "On a smooth boundaryless three-dimensional charted space M, fix the supplied finite extended-chart atlas data A, including its open covering regions, compact coordinate closures, and subordinate smooth partition of unity. Write phi_i for the actual extended chart at the i-th selected anchor, and J_ij(x) for the matrix of the Frechet derivative of phi_j composed with phi_i inverse, evaluated at phi_i(x), in the standard Euclidean basis. For any three atlas indices i,j,k and any point x lying in all three chart sources, J_ik(x) = J_jk(x) J_ij(x), entrywise: J_ik(x)[c,a] is the sum over b of J_jk(x)[c,b] J_ij(x)[b,a]. The theorem assumes the atlas data and smooth manifold structure; it does not construct that data, assert a global coordinate change, or apply outside the stated triple overlap. Compactness, Hausdorffness, connectedness, and nonemptiness of M are not separate hypotheses in this exact type."
+    }
+  ],
+  "findings": []
+}

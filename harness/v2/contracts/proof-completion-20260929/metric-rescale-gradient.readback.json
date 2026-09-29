@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "blind-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "72ae2e5b72c5c2b1cdbe76d8d286a067ce44e19e48ab1f1e0f0a568aab7f4130",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt",
+      "mathematical_statement": "For any natural dimension n and any Hausdorff smooth boundaryless n-dimensional charted space M carrying the supplied smooth Riemannian metric g, let c be a fixed positive real number and let cg be the metric with fiber inner product c times that of g. Assuming the recorded C1 regularity instances for both canonical Levi-Civita connections, at every x in M the squared cg-norm of the cg-gradient of the scalar curvature of cg equals c^(-3) times the squared g-norm of the g-gradient of the scalar curvature of g. Here gradient is specifically the inverse metric applied to the repository exterior derivative of the scalar-curvature function, and the norm square is its pairing with the metric. This is constant positive rescaling; it does not concern a spatially varying conformal factor or a time-dependent flow. The name of the metric type imposes smoothness and positive definiteness, but this exact theorem has no compactness or connectedness hypothesis."
+    }
+  ],
+  "findings": []
+}

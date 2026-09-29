@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "blind-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "f4eb70fb67aa9202f269c35dd7a14b7a65e2c9fc967965f15feffcff928cdac6",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.HamiltonScalarGradientEstimate.cubic_reaction_le_four_scalar_mul_traceless",
+      "mathematical_statement": "For a Hausdorff smooth boundaryless three-dimensional charted space M with smooth Riemannian metric g and the recorded C1 regularity instance for its canonical Levi-Civita connection, fix x and write A for the Ricci endomorphism at x, R = tr(A), N = tr(A squared), and C = tr(A cubed). If R > 0 and N / R squared <= 1, then (10 R N - 2 R cubed - 8 C) - (4/3) R N <= 4 R (N - R squared/3). Equivalently, (26/3) R N - 2 R cubed - 8 C <= 4 R times the squared norm of traceless Ricci. Both sides are the repository pointwise invariant algebraic expressions; no Ricci-flow solution or parabolic evolution identity is assumed or concluded. The pinching assumption is the stated quotient bound, not a requirement that every Ricci eigenvalue be positive. No compactness or connectedness hypothesis appears in the exact type."
+    }
+  ],
+  "findings": []
+}
