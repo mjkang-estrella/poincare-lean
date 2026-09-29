@@ -1,0 +1,24 @@
+{
+  "imports": [
+    "Poincare.Global.HamiltonScalarGradientQuotientBound"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.HamiltonScalarGradientQuotientBound.quotient_reaction_le_eight_of_square_completions",
+      "lean_type": "∀ {R S H P N A G r Q : ℝ}, 0 < R → 2 * R * P ≤ 4 * R ^ 2 * A + S * N → 0 ≤ R ^ 2 * H - R * G + S ^ 2 → -2 * H / R + 4 * P / R - 2 * S * N / R ^ 2 + 2 * G / R ^ 2 - 2 * S ^ 2 / R ^ 3 - (4 / 3 : ℝ) * r * Q ≤ 8 * A - (4 / 3 : ℝ) * r * Q",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "5174fba488a92a74ebf92abb3382ca4c7226fcd0873649cfbe6ba145e848b40a"
+}

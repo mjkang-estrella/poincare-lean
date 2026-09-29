@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "5174fba488a92a74ebf92abb3382ca4c7226fcd0873649cfbe6ba145e848b40a",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.HamiltonScalarGradientQuotientBound.quotient_reaction_le_eight_of_square_completions",
+      "mathematical_statement": "For arbitrary real R, S, H, P, N, A, G, r, and Q, assume exactly R > 0, 2 R P <= 4 R squared A + S N, and R squared H - R G + S squared >= 0. Then -2 H/R + 4 P/R - 2 S N/R squared + 2 G/R squared - 2 S squared/R cubed - (4/3) r Q <= 8 A - (4/3) r Q. No signs or geometric meanings are assumed for the other variables. The common normalized term cancels for arbitrary r and Q. Dividing the first inequality by R squared and multiplying by 2 bounds the mixed contribution by 8 A; dividing the second by R cubed shows that the Hessian contribution is nonpositive. This is a correct real arithmetic implication, with the two inequalities supplied as hypotheses; it does not construct intrinsic tensor estimates or a Ricci-flow solution."
+    }
+  ],
+  "findings": []
+}
