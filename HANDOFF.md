@@ -1,5 +1,29 @@
 # Handoff Snapshot
 
+## 2026-09-29 Proof checkpoint for cloud continuation
+
+At the user's request, local proof work is paused for commit/push and cloud
+continuation. The branch is `codex/poincare-completion`; see
+`docs/CLOUD_HANDOFF_2026-09-29.md` for the exact next actions and open boundary.
+
+Four reviewed Tasks are accepted: the positive-scalar cubic reaction bound,
+constant-metric scalar-gradient rescaling, genuine atlas Jacobian/tensor
+cocycles, and automatic smooth-germ invertibility. Independent fresh source,
+rigid-universe exact types and allowed-axiom checks passed. Root integration
+`lake build Poincare` passed all 4,205 jobs. Proofs and portable compiler
+evidence are committed; no live model service or remote harness was modified.
+Wrap-up root, interface, semantic, theorem-contract, root-import and axiom
+checks passed. The reserved final declaration remains absent. The remote
+MIT-license change was preserved in the continuation branch.
+
+The quotient-eight statement draft only elaborates as a type; it has not been
+proved or accepted. Universal flow/convergence and the Moise-type simultaneous
+correction producer remain open. No complete Poincare proof is claimed.
+
+First action: check out the pushed `codex/poincare-completion` branch and read
+`docs/CLOUD_HANDOFF_2026-09-29.md`, then bootstrap the pinned Linux Lean cache
+once before selecting the next exact theorem-shaped Task.
+
 ## 2026-09-29 Incremental verification implementation
 
 Work is isolated on `codex/incremental-verification`, from base `6c28d8ea`.

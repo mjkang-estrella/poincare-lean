@@ -1,0 +1,30 @@
+{
+  "imports": [
+    "Poincare.Global.HamiltonScalarGradientQuotientBound"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.HamiltonScalarGradientQuotientBound.quotient_evolution_le_eight_covRicci",
+      "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) \u221e M] [CompactSpace M] [ConnectedSpace M] [MeasurableSpace M] [BorelSpace M] [SecondCountableTopology M] {gt : \u211d \u2192 Poincare.ClosedSmoothRiemannianMetric 3 M} {t : \u211d} (x : M), (\u2200 s y, Poincare.MetricEntriesJointContDiffAt gt s y 5) \u2192 (\u2200 y, Poincare.IsClosedNormalizedRicciFlowSolutionAt gt t y) \u2192 (\u2200 y, 0 < (gt t).scalarAt y) \u2192 deriv (fun s \u21a6 (gt s).scalarGradNormSqAt x / (gt s).scalarAt x) t - (gt t).laplacianAt (fun y \u21a6 (gt t).scalarGradNormSqAt y / (gt t).scalarAt y) x \u2264 8 * Poincare.covRicciNormSqAt (gt t) x - (4/3 : \u211d) * Poincare.meanScalar (gt t) * ((gt t).scalarGradNormSqAt x / (gt t).scalarAt x)",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/HamiltonScalarGradientEstimate.lean",
+      "sha256": "6c26f84dc687f18cfdef14d7b29a4a53dcbc31cb240dc9ac35abebea83192de4"
+    },
+    {
+      "path": "Poincare/Global/ScalarEvolution.lean",
+      "sha256": "cd8aec7795a29ad7282f3976d5edc0f365180cca04ffaf2c115f534d913bd276"
+    },
+    {
+      "path": "Poincare/Global/Laplacian.lean",
+      "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "a2eced1ce60755f3818a8d79436821993409cea07d1715eb42eff372d011dbfa"
+}

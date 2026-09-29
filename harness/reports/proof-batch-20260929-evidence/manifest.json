@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "source_base_commit": "25fa4718fb9ff2c93c02106209d2fa72bd29bf47",
+  "orchestrator": "root",
+  "entries": [
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/focused.stdout.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/focused.stderr.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/module-build.log.gz",
+      "uncompressed_sha256": "afb9b7a49853da332996074734c562cdbe8a2a0b7b2460fe06722bb31389f74c",
+      "uncompressed_bytes": 709829
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/contract.log.gz",
+      "uncompressed_sha256": "d0b3671325379a5143bcfd3b19ee1149a22cf3c5677d197e5fd628352bb4b3a6",
+      "uncompressed_bytes": 207
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/ExactContract.lean.gz",
+      "uncompressed_sha256": "39ca4d1132a75decc4e2dfae5b85db5604f16e52c654c4f5d439510f3ad57ed0",
+      "uncompressed_bytes": 3047
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/gate.json.gz",
+      "uncompressed_sha256": "23c6f7a2b16665b3a212f7d21f91e0501d95372dff9f1e641bd3d671d481b2e5",
+      "uncompressed_bytes": 268
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/proof.diff.gz",
+      "uncompressed_sha256": "075ca0d00455e80d14fd05ca5812fdcb6d81b038a1c892e506c07e35e22ae545",
+      "uncompressed_bytes": 3000
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/result.md.gz",
+      "uncompressed_sha256": "bb288577be0b38316b24acc4da7135955989288ed1259215f9db26c6f2b7ce1e",
+      "uncompressed_bytes": 2987
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/hamilton-cubic/final-proof.diff.gz",
+      "uncompressed_sha256": "151f50d1a4fe7d8aeba07af7df6fc71a8052b2df198299b9a876c7509bfa3668",
+      "uncompressed_bytes": 2995
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/focused.stdout.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/focused.stderr.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/module-build.log.gz",
+      "uncompressed_sha256": "9ceb03e868be18b7dbf8a3747654fcd8fe15fef11fede36fef219c2948427b5a",
+      "uncompressed_bytes": 590599
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/contract.log.gz",
+      "uncompressed_sha256": "5b5b0a55f6edb58bbe7fbe02cfab4666451bb42d627392a2e13022e57db7e1ac",
+      "uncompressed_bytes": 171
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/ExactContract.lean.gz",
+      "uncompressed_sha256": "a6851506b047d178f097b2877b2d7e522a8ca3f4a1aca682664a5ea7fbf7d87c",
+      "uncompressed_bytes": 2969
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/gate.json.gz",
+      "uncompressed_sha256": "81ed01e5374dbd5de38d0eb90528d2cff88af5a21e25aa7b5824b71b974f3a9c",
+      "uncompressed_bytes": 277
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/report.md.gz",
+      "uncompressed_sha256": "304f147286f60209eb5f46cc80a79e6f199ab630ffacf1a1d8c4e171d576c2f8",
+      "uncompressed_bytes": 2266
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/metric-rescale-gradient/final.patch.gz",
+      "uncompressed_sha256": "fcde58ac23d6355ce8a79e85adeafc9c39d441f626531d0a9abfa0b1a1543ba0",
+      "uncompressed_bytes": 4550
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/focused.stdout.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/focused.stderr.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/module-build.log.gz",
+      "uncompressed_sha256": "ce42131595e06fa0f4976caaad6cb217fb37d7d1d30466a91db6886435510df2",
+      "uncompressed_bytes": 631550
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/contract.log.gz",
+      "uncompressed_sha256": "7d9105379cad8cb627fc8674dc236b28d4f83d2db6c95211804ad704f2c70e40",
+      "uncompressed_bytes": 145
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/ExactContract.lean.gz",
+      "uncompressed_sha256": "054b7c69f7d8da10089ccf88d9f35b907b886370ea5e81b0311b39885b4b75d2",
+      "uncompressed_bytes": 3107
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/gate.json.gz",
+      "uncompressed_sha256": "b8c812960478c9b949022dde0a3acc08371d0e213027953d3bfeeed227fa9f79",
+      "uncompressed_bytes": 268
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/diff-01.patch.gz",
+      "uncompressed_sha256": "47cdf29b90d4502df386aafae9d5a7b9eff857cedb5a759c5e9a52bbd525527d",
+      "uncompressed_bytes": 5147
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/worker-report.md.gz",
+      "uncompressed_sha256": "d85e37978f147336c97c6e953d8356cf0d9944a41e5f0d34d83ab6efb52574e0",
+      "uncompressed_bytes": 1756
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/diff-02.patch.gz",
+      "uncompressed_sha256": "af59b242b7ecb5da4d09b00a229bfd4a5eb29abfa98fd7dcdc6bff34ea0b7130",
+      "uncompressed_bytes": 1903
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/atlas-jacobian/final-diff.patch.gz",
+      "uncompressed_sha256": "c32bdd1165716f6780bab287e72cf979286fd30e318377f3c9e6104bc6c428dd",
+      "uncompressed_bytes": 6599
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/focused.stdout.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/focused.stderr.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/module-build.log.gz",
+      "uncompressed_sha256": "61642e912086d6289d5472338519413503009040b285df638e63be6444f607d9",
+      "uncompressed_bytes": 622423
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/contract.log.gz",
+      "uncompressed_sha256": "b18cacce03c487e0506c53345ef5b3b80470eb4bcf1d3e80ad1a4418c65df68c",
+      "uncompressed_bytes": 257
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/ExactContract.lean.gz",
+      "uncompressed_sha256": "39d1905b37841b8056872faa9ee399b0a8886a5ed4e347e75f9ac668ebe05fff",
+      "uncompressed_bytes": 3447
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/gate.json.gz",
+      "uncompressed_sha256": "83c971609c4e05162f4f0fe79b44e5bdb3d169ab375ad13df1cd72cce423e88f",
+      "uncompressed_bytes": 279
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/proof.diff.gz",
+      "uncompressed_sha256": "6faf2f6456236e4e1b920a021b2262ada5fa2f7208a299239cfd33f5cc1bdc3b",
+      "uncompressed_bytes": 15100
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/smooth-germ-invertibility/worker-report.md.gz",
+      "uncompressed_sha256": "aa325441286a5c29ae5097b50b6dec87fd6db74b9ff2b714f32b119ff784cc99",
+      "uncompressed_bytes": 2529
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/axiom.log.gz",
+      "uncompressed_sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "uncompressed_bytes": 13558
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/root_import.log.gz",
+      "uncompressed_sha256": "71f959d8c4036a912b5a9427c158ca05aba13e6b2d6c837743f0a5dee0c463e5",
+      "uncompressed_bytes": 89341
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/root.log.gz",
+      "uncompressed_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "uncompressed_bytes": 0
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/interface.log.gz",
+      "uncompressed_sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "uncompressed_bytes": 25984
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/semantic.log.gz",
+      "uncompressed_sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "uncompressed_bytes": 14744
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/theorem.log.gz",
+      "uncompressed_sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "uncompressed_bytes": 5523
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/results.json.gz",
+      "uncompressed_sha256": "2e1780a77ecdf3e9c6ba12419c74da9c293b8f82ce4a9119e2ed5056aea51b15",
+      "uncompressed_bytes": 951
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/batch-one-root-build.log.gz",
+      "uncompressed_sha256": "ed40c6fbf865c8204fb84ae3bb91bdb201d1de91a1d3b883400dadc0645f2f81",
+      "uncompressed_bytes": 828818
+    },
+    {
+      "path": "harness/reports/proof-batch-20260929-evidence/wrapup-reserved-probe.log.gz",
+      "uncompressed_sha256": "975ae312c5bc1bb62b10cc3045a6eb36476d1c8cd8fecfce67dbac2fabd3f835",
+      "uncompressed_bytes": 187
+    }
+  ]
+}
