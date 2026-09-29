@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "33a3e834f287ef64da603b323e8ccf00a67dae1596b20823ad9143098797e8b3",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+      "mathematical_statement": "For every smooth charted space M modeled on real Euclidean three-space, every anchor p and every x in M, and every two tangent vectors v,w at x, localEuclideanInner p x v w equals localEuclideanInner p x w v. The actual definition is the Euclidean real inner product of A_x v and A_x w, where A_x is the continuous linear fiber map supplied by the tangent-bundle trivialization at p. That map is defined for every x, so symmetry holds globally without requiring x in the trivialization base set or any Hausdorff, compactness, connectedness, or measurable-space assumption. This asserts symmetry only; it does not assert positive definiteness or smoothness outside the local domain."
+    },
+    {
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+      "mathematical_statement": "For every smooth charted space M modeled on real Euclidean three-space, every anchor p and every x in the base set of the tangent-bundle trivialization at p, and every nonzero tangent vector v at x, localEuclideanInner p x v v>0. On that base set A_x is a continuous linear equivalence and hence maps nonzero v to a nonzero Euclidean vector, giving strict positivity of its pulled-back Euclidean inner product. The base-set hypothesis is explicit and must be retained. There is no Hausdorff, compactness, curvature, or preexisting Riemannian-metric hypothesis. The globally defined bilinear field is not asserted to be a positive metric away from the base set."
+    },
+    {
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn",
+      "mathematical_statement": "For every smooth charted space M modeled on real Euclidean three-space and every anchor p, the dependent bilinear-form section x maps to Bundle.TotalSpace.mk of x and localEuclideanInner p x is smooth on the base set of the tangent-bundle trivialization at p. Both source and target use the explicit real identity model with corners, and the differentiability exponent is smooth infinity, the coercion of top in ENat into WithTop ENat, rather than the analytic top exponent. The target is the total space of the bundle of continuous real bilinear forms on tangent fibers, with model fiber the continuous bilinear forms on Euclidean three-space. Thus this is smoothness of the genuine bundle section, not just smoothness of a fixed matrix in unrelated coordinates. The same local domain is required throughout, and smooth tangent-bundle coordinate transitions provide smoothness there. No smoothness outside that domain, support restriction, global metric, or curvature bound is concluded."
+    }
+  ],
+  "findings": []
+}

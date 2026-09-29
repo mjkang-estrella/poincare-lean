@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.SmoothInitialMetricLocalPullback"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (p x : M) (v w : TangentSpace (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) x), Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x v w = Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x w v"
+      },
+      {
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (p x : M), x ∈ (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3))) p).baseSet → ∀ (v : TangentSpace (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) x), v ≠ 0 → 0 < Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x v v"
+      },
+      {
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (p : M), ContMDiffOn (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)).prod (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ))) ((⊤ : ENat) : WithTop ENat) (fun x : M ↦ Bundle.TotalSpace.mk' (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ) x (Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x)) (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3))) p).baseSet"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "33a3e834f287ef64da603b323e8ccf00a67dae1596b20823ad9143098797e8b3",
+      "report_path": "harness/v2/contracts/core-input-existence-20260929/local-pullback.readback.json",
+      "report_sha256": "c615869715557dfb718ea758be23bea330b241057dd128bf5460381809c89ca4",
+      "verdict": "approved"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "imports": [
+    "Poincare.Global.SmoothInitialMetricExistence"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.SmoothInitialMetricExistence.exists_initial_metric",
+      "universes": [
+        "u"
+      ],
+      "lean_type": "∀ {M : Type u} [TopologicalSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ [T2Space M] [CompactSpace M], Nonempty (Poincare.ClosedSmoothRiemannianMetric 3 M)"
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "d4c0fb3194a06f41317823594bf417de0b9c1d2afa4771987d63917464f28bd1"
+}

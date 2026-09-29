@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "d4c0fb3194a06f41317823594bf417de0b9c1d2afa4771987d63917464f28bd1",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothInitialMetricExistence.exists_initial_metric",
+      "mathematical_statement": "For every type M equipped with a Hausdorff topology, charts modeled on real Euclidean three-space, a smooth boundaryless manifold structure for the real identity model with corners, and compactness, the type ClosedSmoothRiemannianMetric 3 M is nonempty. This means that an actual smooth Riemannian metric g on the tangent bundle exists. By its definition the witness includes continuous real bilinear inner products on each tangent fiber, symmetry, strict positivity on every nonzero tangent vector, von Neumann boundedness of each quadratic unit ball so that the induced inner-product topology matches the existing fiber topology, and smoothness of the bilinear-form bundle section. The smoothness exponent is smooth infinity rather than analyticity. No preexisting background metric, sphere recognition, orientability, simply-connectedness, connectedness, Nonempty M, second-countability, measurable structure, positive scalar curvature, positive Ricci curvature, Einstein condition, or Ricci-flow solution is assumed. The empty-manifold case is allowed. Compact Hausdorff smooth manifolds admit a smooth partition of unity over a finite cover of tangent trivializations, and convex combinations of their positive local Euclidean pullbacks give such a witness, so the assertion is mathematically correct without curvature assumptions. This supplies a genuine generic initial metric to subsequent statements such as regularRicciFlowGoal or RicciDeTurckShortTimeExistence3 when their additional context and existence hypotheses have separately been established. It does not itself establish short-time evolution, long-time global flow, nondegenerate limit realization, positive-Einstein metric existence, or the Poincare conjecture. Positive definiteness here concerns the metric tensor and does not imply any positivity of its curvature. Approval concerns the literal mathematical assertion, not an implementation or compiler acceptance."
+    }
+  ],
+  "findings": []
+}

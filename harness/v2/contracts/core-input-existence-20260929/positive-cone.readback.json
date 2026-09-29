@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "c03b8fe58724cbb83dbf55c01605a1bcfa403c0743748776282c049bd5220a1a",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothInitialMetricPositiveCone.convex_positiveSymmetricBilinearForms",
+      "mathematical_statement": "For every real normed vector space V, with no finite-dimensionality or completeness hypothesis, the set of continuous real bilinear forms q on V that are symmetric and strictly positive on every nonzero diagonal vector is convex over the real field. Explicitly, if q and r have those properties, a,b are nonnegative real weights with a+b=1, then a q+b r is symmetric and strictly positive on every nonzero vector. At least one weight is positive, so strict positivity is preserved. The defined set imposes no uniform coercivity constant or norm-topology compatibility field, and the theorem does not assert that this cone is nonempty on an arbitrary infinite-dimensional normed space or that it is closed. It is the convexity property needed to glue actual locally positive symmetric metric sections; it is not a manifold, curvature, or flow-existence result."
+    },
+    {
+      "name": "Poincare.SmoothInitialMetricPositiveCone.isVonNBounded_bilinear_unitBall",
+      "mathematical_statement": "For every finite-dimensional real normed vector space V and every continuous real bilinear form q such that q(v,v)>0 whenever v is nonzero, the strict quadratic unit ball {v : q(v,v)<1} is von Neumann bounded over the real field. By the actual definition, every neighborhood of zero absorbs this set; in a real normed vector space this is norm boundedness. No symmetry, prescribed dimension, completeness, or explicit quantitative lower bound on q is assumed in the exact type. Only the symmetric part affects q(v,v); continuous strict positivity and compactness of the finite-dimensional unit sphere provide a positive minimum and hence the required bound. The zero-dimensional case is included. Finite dimensionality is essential to this general implication. This supplies the unit-ball boundedness field required by a genuine Riemannian metric record once a positive form has been constructed, without assuming any curvature or flow property."
+    }
+  ],
+  "findings": []
+}
