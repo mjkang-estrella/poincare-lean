@@ -1,5 +1,36 @@
 # Handoff Snapshot
 
+## 2026-09-29 Core input existence strategy
+
+The user retained the complete Poincare goal and changed execution priority to
+constructing its core inputs. Exact source audits still leave
+`ExistsSmoothabilitySmoothManifoldStatement` and
+`UniversalHamiltonConvergenceStatement` unproved. The latter is equivalent to
+universal positive-Einstein existence; pointwise estimates do not supply it.
+
+The selected central objective is Hamilton input existence through actual
+general Ricci-flow construction. The first prerequisite is now produced:
+`SmoothInitialMetricExistence.exists_initial_metric` constructs a genuine
+smooth positive-definite Riemannian metric on every compact Hausdorff smooth
+three-manifold, without metric, curvature or recognition inputs. Independent
+local bundle-section and positive-cone/boundedness proofs feed the actual
+global gluing constructor. Fresh root source and exact frozen type/axiom gates
+passed. Neither entire universal core assumption is claimed discharged.
+
+The next consumer is the unproved generic
+`ClosedRicciFlowNormalization.regularRicciFlowGoal g0`, followed by the already
+proved normalization. Global continuation/surgery, favorable-metric production
+and actual smooth limit/topology reconstruction remain open. Smoothability
+still needs simultaneous coordinate corrections from bare topological data;
+legacy sphere-recognition and exact-affine routes cannot be substituted.
+
+First action: construct the finite buffered atlas adapted to the actual g0's
+inverse coefficients and identify its exact global-parametrix operator
+consumer. Preserve ordinary joint C3 at time zero: graph within-time
+derivatives/zero extension do not supply it. Read
+`harness/reports/core-input-existence-20260929.md` for exact remaining types,
+route limitations, task dependencies and preserved failed-attempt evidence.
+
 ## 2026-09-29 Local continuation and branch recovery
 
 The corrected Hamilton auxiliary estimate is also accepted. It derives the

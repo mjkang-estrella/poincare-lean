@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260929-metric-existence",
   "revision": 2,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "acdd969f1ce554c0f750d08e5ba2c554838c40d2",
   "objective": {
     "title": "metric-existence for actual initial metric existence",
@@ -129,5 +129,6 @@
       "report_sha256": "749dfebc406d6c96705327c16f29b10ea7d4cf51e8c0155fe34491c7af685140",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "5d1447506dbe25d27298b1343442ba6ddd2d3bcf"
 }
