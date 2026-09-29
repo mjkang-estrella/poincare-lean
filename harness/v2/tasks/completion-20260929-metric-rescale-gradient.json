@@ -1,0 +1,122 @@
+{
+  "schema_version": "2.1",
+  "id": "completion-20260929-metric-rescale-gradient",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "25fa4718fb9ff2c93c02106209d2fa72bd29bf47",
+  "objective": {
+    "title": "metric-rescale-gradient",
+    "statement": "Prove the c^-3 scalar-gradient squared norm scaling under positive constant metric rescaling; prove the raised gradient identity and any needed differentiation lemmas first.",
+    "deliverables": [
+      "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/MetricRescaleScalarGradient.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "HANDOFF.md",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "Poincare/Global/MetricRescale.lean",
+      "Poincare/Global/MetricRescaleCurvature.lean",
+      "Poincare/Global/Laplacian.lean",
+      "harness/v2/contracts/proof-completion-20260929/metric-rescale-gradient.readback.json"
+    ],
+    "symbols": [
+      "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/MetricRescaleScalarGradient.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/MetricRescaleScalarGradient.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when the exact named theorem and all scoped checks pass.",
+    "If blocked, retain actual compiler errors and the exact resisting Lean type; commit no unfinished proof source.",
+    "No target weakening, proof placeholders, full build, root-import editing, merge, acceptance, service or model-server operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricRescaleScalarGradient"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricRescaleScalarGradient.constSMul_scalarGradNormSqAt",
+        "lean_type": "\u2200 {n : \u2115} {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel n) M] [IsManifold (Poincare.closedSmoothModelWithCorners n) \u221e M], \u2200 (g : Poincare.ClosedSmoothRiemannianMetric n M) (c : \u211d) (hc : 0 < c) [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] [CovariantDerivative.ContMDiffCovariantDerivative (g.constSMul c hc).leviCivita 1] (x : M), (g.constSMul c hc).scalarGradNormSqAt x = (c\u207b\u00b9)^3 * g.scalarGradNormSqAt x",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/MetricRescaleCurvature.lean",
+        "sha256": "90433d4b59e2f692dbacbe722fec3d7c8c68430191bab380b3532b1af2ad7aaf"
+      },
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "blind-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "72ae2e5b72c5c2b1cdbe76d8d286a067ce44e19e48ab1f1e0f0a568aab7f4130",
+      "report_path": "harness/v2/contracts/proof-completion-20260929/metric-rescale-gradient.readback.json",
+      "report_sha256": "6ed8a2acf8aa280704aacded4ce79d963196fc3aeaa846030c451ce1fd70106a",
+      "verdict": "approved"
+    }
+  }
+}

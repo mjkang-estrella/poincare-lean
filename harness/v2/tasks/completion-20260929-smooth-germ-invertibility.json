@@ -1,0 +1,127 @@
+{
+  "schema_version": "2.1",
+  "id": "completion-20260929-smooth-germ-invertibility",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "25fa4718fb9ff2c93c02106209d2fa72bd29bf47",
+  "objective": {
+    "title": "smooth-germ-invertibility",
+    "statement": "Prove the frozen smooth-germ automatic invertibility statement from symmetric ordered transitions and the existing compact-overlap density. No simultaneous correction existence is claimed.",
+    "deliverables": [
+      "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/SmoothabilitySmoothGermInvertibilityReduction.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "HANDOFF.md",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "Poincare/Global/SmoothabilityAffineGermInvertibilityReduction.lean",
+      "Poincare/Global/SmoothabilityLocalSmoothTransitionGerms.lean",
+      "Poincare/Global/SmoothabilitySimultaneousLocalConjugacy.lean",
+      "harness/reports/smoothability-bridge-survey_done.md",
+      "harness/v2/contracts/proof-completion-20260929/smooth-germ-invertibility.readback.json"
+    ],
+    "symbols": [
+      "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/SmoothabilitySmoothGermInvertibilityReduction.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/SmoothabilitySmoothGermInvertibilityReduction.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when the exact named theorem and all scoped checks pass.",
+    "If blocked, retain actual compiler errors and the exact resisting Lean type; commit no unfinished proof source.",
+    "No target weakening, proof placeholders, full build, root-import editing, merge, acceptance, service or model-server operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 90,
+    "max_output_tokens": 24000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.SmoothabilitySmoothGermInvertibilityReduction"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.SmoothabilitySmoothGermInvertibilityReduction.locallySmoothlyConjugate_of_locallySmoothlyExtendable",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (EuclideanSpace \u211d (Fin 3)) M], \u2200 {data : Poincare.SmoothabilityFinitePrecompactTopologicalAtlasReduction.FinitePrecompactTopologicalChartAtAtlas3 M} {nerve : Poincare.SmoothabilityFiniteAtlasNerveReduction.FiniteAtlasNerveTransitionPackage3 data} (correction : data.Index \u2192 OpenPartialHomeomorph (EuclideanSpace \u211d (Fin 3)) (EuclideanSpace \u211d (Fin 3))), (\u2200 i, data.compactCoordinateImage i \u2286 (correction i).source) \u2192 Poincare.SmoothabilityLocalSmoothTransitionGerms.CorrectedTransitionsLocallySmoothlyExtendableOnCompact3 data nerve correction \u2192 Poincare.SmoothabilitySimultaneousLocalConjugacy.CorrectedTransitionsLocallySmoothlyConjugateOnCompact3 data nerve correction",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/SmoothabilityLocalSmoothTransitionGerms.lean",
+        "sha256": "04ac29d23032d3684588c01a6e916fd346f644dcb89c78ad46294093076d7d65"
+      },
+      {
+        "path": "Poincare/Global/SmoothabilitySimultaneousLocalConjugacy.lean",
+        "sha256": "997b4d12506f9d26fcf877d81f8128d6e4344dc7a0b778bd8d4089237d37e790"
+      },
+      {
+        "path": "Poincare/Global/SmoothabilityAffineGermInvertibilityReduction.lean",
+        "sha256": "710c340869618bc8b127398608fc34faea3459c3f209f08926708fbccf5285af"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "blind-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "f5d9dfac37e70337d9bea9cbd08d16225eb3d693b20e2116cfb4f051a98676d8",
+      "report_path": "harness/v2/contracts/proof-completion-20260929/smooth-germ-invertibility.readback.json",
+      "report_sha256": "cec5899b5f678f84ba548e93db05e1af9e92d294d254a53a0ae337c164c1c8cc",
+      "verdict": "approved"
+    }
+  }
+}
