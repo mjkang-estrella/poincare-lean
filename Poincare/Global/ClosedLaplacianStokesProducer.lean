@@ -1,5 +1,7 @@
 import Poincare.Global.NormalizedFlowHausdorffPartitionStokes
-import Poincare.Global.HamiltonChartDensityLocalDomination
+import Poincare.Global.HausdorffInverseChartAreaFormula
+import Poincare.Global.HausdorffInverseChartGramContinuity
+import Poincare.Global.HausdorffFiniteAtlasChartFrameReduction
 import Mathlib.Analysis.Matrix.PosDef
 
 /-!

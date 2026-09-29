@@ -1,6 +1,7 @@
 import Poincare.Global.NearFrozenParabolicRightInverse
 import Poincare.Global.ParabolicCutoffCommutator
 import Poincare.Global.FiniteAtlasParabolicTensorSpace
+import Poincare.Global.ClosedLaplacianStokesGlobalCoefficients
 
 noncomputable section
 set_option autoImplicit false

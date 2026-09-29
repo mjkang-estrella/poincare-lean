@@ -1,5 +1,6 @@
 import Poincare.Global.ParabolicSolutionGraph
-import Poincare.Global.ClosedLaplacianStokesGlobalCoefficients
+import Poincare.Global.HausdorffFiniteAtlasChartFrameReduction
+import Mathlib.Geometry.Manifold.PartitionOfUnity
 
 set_option autoImplicit false
 noncomputable section
