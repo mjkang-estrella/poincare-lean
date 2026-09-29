@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "fb17dde5945690e598c5467dca49787e48d87cd47ccfdae2e3645118e3b793e1",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion",
+      "mathematical_statement": "For every Hausdorff smooth charted space M modeled on real Euclidean three-space, every smooth Riemannian metric g, every real-valued function f, and every x in M at which f is C2 in the manifold sense, the following holds for every real a with no sign restriction. Define S(y) = the g-inner product of grad f(y) with itself. Let b be the specified module finite basis of the tangent space at x and let sharp(b.coord i) be its dual covector raised by g. Define H = sum over i of the g-inner product of covariant derivative of grad f in direction b_i with covariant derivative of grad f in direction sharp(b.coord i), both at x. Then a squared H - a times the g-inner product of grad f(x) with grad S(x) + S(x) squared >= 0. H is the intrinsic squared Hilbert-Schmidt norm of the covariant derivative of grad f. Local C2 regularity and metric compatibility give the mixed inner product as 2 g(covariant derivative of grad f in the grad f direction, grad f). Thus the expression is the squared norm of a times covariant derivative of grad f minus the rank-one map v maps to df(v) grad f. No relation a = f(x), positivity of a, scalar-curvature identification of f, compactness, or flow hypothesis is imposed. The assertion and its mixed coefficient are correct."
+    }
+  ],
+  "findings": []
+}

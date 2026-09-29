@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.HamiltonScalarGradientHessianBound.hessian_gradient_square_completion",
+      "mathematical_statement": "For every Hausdorff smooth charted space M modeled on real Euclidean three-space, every smooth Riemannian metric g, every real-valued function f, and every x in M at which f is C2 in the manifold sense, the following holds for every real a with no sign restriction. Define S(y) = the g-inner product of grad f(y) with itself. Let b be the specified module finite basis of the tangent space at x and let sharp(b.coord i) be its dual covector raised by g. Define H = sum over i of the g-inner product of covariant derivative of grad f in direction b_i with covariant derivative of grad f in direction sharp(b.coord i), both at x. Then a squared H - a times the g-inner product of grad f(x) with grad S(x) + S(x) squared >= 0. H is the intrinsic squared Hilbert-Schmidt norm of the covariant derivative of grad f. Local C2 regularity and metric compatibility give the mixed inner product as 2 g(covariant derivative of grad f in the grad f direction, grad f). Thus the expression is the squared norm of a times covariant derivative of grad f minus the rank-one map v maps to df(v) grad f. No relation a = f(x), positivity of a, scalar-curvature identification of f, compactness, or flow hypothesis is imposed. The assertion and its mixed coefficient are correct. The explicit smoothness exponent is the coercion of top in the extended natural numbers into WithTop of the extended natural numbers, which is exactly the smooth exponent previously written with scoped infinity notation, rather than the analytic top exponent. The scalar target model is explicitly modelWithCornersSelf over the real field on the real vector space, exactly the identity real model previously written with scoped manifold notation."
+    }
+  ],
+  "findings": [],
+  "snapshot_sha256": "8c1f38783a2416ef2819958c26b0592e7228ee91aaa1d40635622a36d0b69046"
+}

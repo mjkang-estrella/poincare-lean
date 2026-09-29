@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "quotient-contract-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "5aa21d6f10200194e8b12f24ca3fb47d5dd879ac98fe323338753fdabc61375a",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion",
+      "mathematical_statement": "For every Hausdorff smooth charted space M modeled on real Euclidean three-space, every smooth Riemannian metric g, an instance stating that the canonical Levi-Civita covariant derivative is C1, and every x in M, write R = scalar curvature at x, N = squared Ricci norm at x, S = squared scalar-gradient norm at x, and A = squared norm of the covariant Ricci derivative at x as defined by the triple metric-orthogonal weighted contraction. Then 2 R times the g-inner product of grad R and grad N at x <= 4 R squared A + S N. Scalar curvature and the Ricci tensor need not be positive, and no compactness, connectedness, measurable structure, flow equation, or pinching hypothesis appears. Metric compatibility identifies the mixed inner product as twice the covariant Ricci/Ricci pairing in the grad R direction. Expanding the nonnegative tensor square of 2 R times covariant derivative of Ricci minus dR tensor Ricci therefore gives exactly the asserted inequality. The factors 2 and 4 are correct for the literal inner product in the type."
+    }
+  ],
+  "findings": []
+}

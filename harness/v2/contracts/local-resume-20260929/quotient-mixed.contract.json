@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HamiltonScalarGradientMixedBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.HamiltonScalarGradientMixedBound.mixed_gradient_square_completion",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M] [IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M], ∀ (g : Poincare.ClosedSmoothRiemannianMetric 3 M) [CovariantDerivative.ContMDiffCovariantDerivative g.leviCivita 1] (x : M), 2 * g.scalarAt x * g.inner x (g.gradientAt (fun y ↦ g.scalarAt y) x) (g.gradientAt (fun y ↦ g.ricciNormSqAt y) x) ≤ 4 * g.scalarAt x ^ 2 * Poincare.covRicciNormSqAt g x + g.scalarGradNormSqAt x * g.ricciNormSqAt x",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/Laplacian.lean",
+        "sha256": "e875a6655404b60fc3a41d90b239d3d93f1b2895d2ae0c6bf92737163a1b7094"
+      },
+      {
+        "path": "Poincare/Global/ScalarVariation.lean",
+        "sha256": "4917794230b1aa45f34a0d242c45d6f00af5d5f67022ba275ef460490dbca082"
+      },
+      {
+        "path": "Poincare/Global/ScalarEvolution.lean",
+        "sha256": "cd8aec7795a29ad7282f3976d5edc0f365180cca04ffaf2c115f534d913bd276"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "quotient-contract-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "d08cde59f4a5ee04055b8f31145abebab073e9c071e44406e19c6daf42f9ae06",
+      "report_path": "harness/v2/contracts/local-resume-20260929/quotient-mixed.explicit.readback.json",
+      "report_sha256": "31b402a39737e96a7dea5f150516abc16da857ac8279024b4e85bc5950cc6d34",
+      "verdict": "approved"
+    }
+  }
+}
