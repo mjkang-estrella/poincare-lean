@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-localization-product",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "e02105a51bd8ada40a512d66c4fceb0f4caf0feb",
   "objective": {
     "title": "Discharge actual localization/covariance input: product",
@@ -175,5 +175,6 @@
       "report_path": "harness/v2/contracts/core-deturck-localization-20260930/product.readback.json",
       "report_sha256": "a0aab1c0d307ed3abf57529d5f8f001dbe36682dcdefe8a317d4516f9a1fd896"
     }
-  }
+  },
+  "accepted_commit": "7974e6b8def5aee96ddc8e8a103f2def70a5846a"
 }
