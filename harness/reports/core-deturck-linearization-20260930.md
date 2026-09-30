@@ -165,3 +165,10 @@ gates. Focused private-inclusive dependency scans avoid expanded registry
 metadata. Local Codex helpers are local attempts, not registered Pi/Leanstral
 runtime Jobs. Gzip manifests pin original and compressed bytes. No existing
 dirty branch/worktree or failed evidence was deleted.
+
+The source-bound checkpoint at `17313b321b4362c623c8aab5b1fd47b6a383956a` passed fresh root
+source and the full build, interface, mathlib-gap, shape, theorem-contract,
+semantic, root-import and axiom audits. Completion exited 1 only because
+the reserved final declaration is absent. Completion is not certified; both
+universal cores and the full proof goal remain open.
+Evidence: `harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866`.

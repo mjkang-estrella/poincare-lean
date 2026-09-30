@@ -1,0 +1,2422 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "17313b321b4362c623c8aab5b1fd47b6a383956a",
+  "backend": "local Codex helpers; not registered Pi/Leanstral Jobs",
+  "entries": [
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/actual-evolution-differential.lean",
+      "archive": "attempts/actual-evolution-differential.lean.gz",
+      "sha256": "5dc04701722d2c645146f2f503d30c07f357d6bdab0bf574eb154134ef971714",
+      "gzip_sha256": "3c772a23a207e2dfc7273895fc8abb00c88f2e63e62c3fcef74c574d2026dbb3",
+      "bytes": 3651
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/actual-evolution-differential.log",
+      "archive": "attempts/actual-evolution-differential.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/actual-evolution-identity.lean",
+      "archive": "attempts/actual-evolution-identity.lean.gz",
+      "sha256": "6eab1dfb25128ac40ac043321073af3b1dc7a640be548e7c0b68df445dd955be",
+      "gzip_sha256": "0f11631ed4126bb779675367622a58c65843d432e6afdc8852dd973e7dfbb607",
+      "bytes": 2453
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/actual-evolution-identity.log",
+      "archive": "attempts/actual-evolution-identity.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/archive_evidence.py",
+      "archive": "attempts/archive_evidence.py.gz",
+      "sha256": "ab20906fd2384092ca18118e367a40fbd22ec851ffebaef3f6e0adde52539c13",
+      "gzip_sha256": "c2a277ea7029be5a3e319bf5eb659fb14b16ac8151c9f3fb3814179000a07f8a",
+      "bytes": 1832
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/continuation-state.md",
+      "archive": "attempts/continuation-state.md.gz",
+      "sha256": "f6b6751759093ee66da3c6cde95af6cb732fec82e99deb4d551187c304114e53",
+      "gzip_sha256": "182b29851144bd549129da737a288a05033061ee265bd21234ec136ff07f9a48",
+      "bytes": 2136
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/core-boundary.lean",
+      "archive": "attempts/core-boundary.lean.gz",
+      "sha256": "1b9137cf120d3e2c09af0ad3aecbe7111ff4290b8be2e87586325beebbcd3ae6",
+      "gzip_sha256": "4961a977c101cc347f41e2ff80156f0a5722dd604e714a7a5385a060ab7a6f1f",
+      "bytes": 658
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/core-boundary.log",
+      "archive": "attempts/core-boundary.log.gz",
+      "sha256": "e39d431ea55c393db465c1d9f0c20c2b4a932f3041ce119a1bb3e0fd2a3fd1b4",
+      "gzip_sha256": "8239cd9d93ea56f5c5146bf775d877d0ce6c945640bd34abfc3cabb0b195af7a",
+      "bytes": 1541
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092803Z-attempt01/lean.log",
+      "archive": "attempts/full-a01/20260930T092803Z-attempt01/lean.log.gz",
+      "sha256": "9f1553037fcfef2e0fb579dded4be9b73e9b000bb39b458dc6d0937dd01f6103",
+      "gzip_sha256": "8f38313e82e5ea13707856906fa2342bd084ea9c2ae793e5ac0446b641a7b878",
+      "bytes": 106
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092803Z-attempt01/result.json",
+      "archive": "attempts/full-a01/20260930T092803Z-attempt01/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092803Z-attempt01/source.lean",
+      "archive": "attempts/full-a01/20260930T092803Z-attempt01/source.lean.gz",
+      "sha256": "40dda2c911bb1b388f938c184a77d8873bf9a1b9c01a72f039421381e3ad0d6b",
+      "gzip_sha256": "895888693d4a2ed97db0ab93127ae5aed630e1954d8409c7ca3a130ba7eb5caf",
+      "bytes": 7227
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092832Z-attempt02/lean.log",
+      "archive": "attempts/full-a01/20260930T092832Z-attempt02/lean.log.gz",
+      "sha256": "7e54caabf65bc63330e296470f1d8b76d2bd7b515d2362fee5c3ae6bb23fe53e",
+      "gzip_sha256": "efc0b37520d8c19488c28f97c694dac19aff074c75c639a9852d6026f2a06850",
+      "bytes": 2630
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092832Z-attempt02/result.json",
+      "archive": "attempts/full-a01/20260930T092832Z-attempt02/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092832Z-attempt02/source.lean",
+      "archive": "attempts/full-a01/20260930T092832Z-attempt02/source.lean.gz",
+      "sha256": "8c400e4c2d1b4f615d377f00ba6ebc25555675fbc94de45a1f9d0a35ec276e8a",
+      "gzip_sha256": "1ca918e2642d8b41eaedfa722bd68aa3202f273deb6d3952fc1427a7a2d0fb47",
+      "bytes": 7347
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092937Z-attempt03/lean.log",
+      "archive": "attempts/full-a01/20260930T092937Z-attempt03/lean.log.gz",
+      "sha256": "5116eeb50337c2a7b93bf73cd62fcfe426de79f42502299e033b626d32b50c45",
+      "gzip_sha256": "3d53a1d809f930374d97f3292ff09bd6003845d80a74d513f60f2fc391195959",
+      "bytes": 433
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092937Z-attempt03/result.json",
+      "archive": "attempts/full-a01/20260930T092937Z-attempt03/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T092937Z-attempt03/source.lean",
+      "archive": "attempts/full-a01/20260930T092937Z-attempt03/source.lean.gz",
+      "sha256": "86306e2a93d0a2dd59cad9b117b4f832d44f0d049b60c5984e849ac3ef0affcf",
+      "gzip_sha256": "d8a10879e9ac79d9743a54a72924b457d23c85c2f36c4cbb6c5f8a1bb8df3d4a",
+      "bytes": 11590
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093029Z-attempt04/lean.log",
+      "archive": "attempts/full-a01/20260930T093029Z-attempt04/lean.log.gz",
+      "sha256": "b1389d9b7921177367b18de7de36a081623f7ff39764153b5c88cc5f54eec503",
+      "gzip_sha256": "0473c64e237a2aada031034da923d90fc9e086a9ad5984f4976e6fd6edd22f94",
+      "bytes": 1219
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093029Z-attempt04/result.json",
+      "archive": "attempts/full-a01/20260930T093029Z-attempt04/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093029Z-attempt04/source.lean",
+      "archive": "attempts/full-a01/20260930T093029Z-attempt04/source.lean.gz",
+      "sha256": "e9fdbd58e64793112c852d49ddbf928e06b5e6932c7a000f94c87099e3573f19",
+      "gzip_sha256": "d44a3c01472695122b983a2e9425b8be5cefddcd35045c9a252343f7c7953206",
+      "bytes": 12357
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093113Z-hidden-instance-probe/lean.log",
+      "archive": "attempts/full-a01/20260930T093113Z-hidden-instance-probe/lean.log.gz",
+      "sha256": "87b6d12fb329664f3fa46825cb797f434d90356f9d551d40ec9d8311ec310baf",
+      "gzip_sha256": "663799741477a4c9505483edd436336a97667943d6929120f9edd61f4db1eb97",
+      "bytes": 683707
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093113Z-hidden-instance-probe/probe.lean",
+      "archive": "attempts/full-a01/20260930T093113Z-hidden-instance-probe/probe.lean.gz",
+      "sha256": "63a505b411b8f78125c499d7e8113843629e634405f183a62006f9c48bf05b0e",
+      "gzip_sha256": "faa691216f071ff728ae73185f9ad887f80e9e24bf859548b3dfec6de4eb0851",
+      "bytes": 12380
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093113Z-hidden-instance-probe/result.json",
+      "archive": "attempts/full-a01/20260930T093113Z-hidden-instance-probe/result.json.gz",
+      "sha256": "befa41056ad2904f9b2aa3bd2b447f1bfb15ca2b6dbc8abb07444fda55e195dc",
+      "gzip_sha256": "eecfd90a1b2d5943638f8cc1d308e03bdda769efb1d62d2d94d7e71c235fbfb8",
+      "bytes": 261
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093202Z-attempt05/lean.log",
+      "archive": "attempts/full-a01/20260930T093202Z-attempt05/lean.log.gz",
+      "sha256": "3afedbf19ecd18c8ce33e9dee1c389604d5ad36f10f25d6cd974e0415f1fd9f0",
+      "gzip_sha256": "7145e442dc6df005c03846d21e49ac1ae3ef9e876273ff2f5e050c35792c1099",
+      "bytes": 973
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093202Z-attempt05/result.json",
+      "archive": "attempts/full-a01/20260930T093202Z-attempt05/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093202Z-attempt05/source.lean",
+      "archive": "attempts/full-a01/20260930T093202Z-attempt05/source.lean.gz",
+      "sha256": "3ddfcddb98ed8d2ec31568818c5b78c2f86b1308c790fbdb484007b5842bfffc",
+      "gzip_sha256": "26ead4405945cd9953dcb2a15f2f17ac861597f5bb0c8bb8a1ec03bc0ae8975d",
+      "bytes": 12607
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093306Z-attempt06/lean.log",
+      "archive": "attempts/full-a01/20260930T093306Z-attempt06/lean.log.gz",
+      "sha256": "3687b5ea69f80c7f8286ee68d71135576eb93eeed31a7796860ea3946a372229",
+      "gzip_sha256": "5391f909c6c3d48363203994fc4f25d0ea9eeb56c61f212cea1753fc11198183",
+      "bytes": 973
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093306Z-attempt06/result.json",
+      "archive": "attempts/full-a01/20260930T093306Z-attempt06/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093306Z-attempt06/source.lean",
+      "archive": "attempts/full-a01/20260930T093306Z-attempt06/source.lean.gz",
+      "sha256": "43ffb60986b6403f1627cc626398ec2e45728df99065939bf4738f1a2f6d0478",
+      "gzip_sha256": "845147a1799e79e21e4964e77aa15ab2d7ecf7287f461a242ff401904b1980ae",
+      "bytes": 12967
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093612Z-attempt07/lean.log",
+      "archive": "attempts/full-a01/20260930T093612Z-attempt07/lean.log.gz",
+      "sha256": "2dbd218e2b151987d54f3f9bf6593e5b3a0bd8a990105040bb089ee2756db37a",
+      "gzip_sha256": "7bb6a57a66574a6114bb8e47bde8bef899374f4b5ab1d3a4a49c829d4a9744d2",
+      "bytes": 976
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093612Z-attempt07/result.json",
+      "archive": "attempts/full-a01/20260930T093612Z-attempt07/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093612Z-attempt07/source.lean",
+      "archive": "attempts/full-a01/20260930T093612Z-attempt07/source.lean.gz",
+      "sha256": "e3715f62a29cb90035c260e3843357d9c50d02b3eacedb64b74b708dc32d5719",
+      "gzip_sha256": "3568b6f02c846a20304299960d05a3fa1eddb2bad87f98bc3ada14d94d856314",
+      "bytes": 13707
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093918Z-attempt08-fun-smul/lean.log",
+      "archive": "attempts/full-a01/20260930T093918Z-attempt08-fun-smul/lean.log.gz",
+      "sha256": "2dbd218e2b151987d54f3f9bf6593e5b3a0bd8a990105040bb089ee2756db37a",
+      "gzip_sha256": "7bb6a57a66574a6114bb8e47bde8bef899374f4b5ab1d3a4a49c829d4a9744d2",
+      "bytes": 976
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093918Z-attempt08-fun-smul/result.json",
+      "archive": "attempts/full-a01/20260930T093918Z-attempt08-fun-smul/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T093918Z-attempt08-fun-smul/source.lean",
+      "archive": "attempts/full-a01/20260930T093918Z-attempt08-fun-smul/source.lean.gz",
+      "sha256": "c8a8bd9df9852dd75086ad21cd05c4015ae9133f5aa3e057aade812e4847a6f7",
+      "gzip_sha256": "ca40c814765ba3f7e3035c11132757dc10b8b47fe452eb8f8c9e2be95a22ec40",
+      "bytes": 13711
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/lean.log",
+      "archive": "attempts/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/lean.log.gz",
+      "sha256": "99c9edbfb3830ee16c6f1ef4fc9aa8982632220c3cb8a71ee6f202a456414483",
+      "gzip_sha256": "9c79b819cad846ad2acdd4cafc34e1f4ced800b6880222c3144d1524bb25a953",
+      "bytes": 5572
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/result.json",
+      "archive": "attempts/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/source.lean",
+      "archive": "attempts/full-a01/20260930T094056Z-attempt09-scalar-reconstruction/source.lean.gz",
+      "sha256": "f827b27b6065f25b39a4b2b3ef38df494d2bf7e675ae06c0e08a7d67776a2e03",
+      "gzip_sha256": "31bcf00ea26dbb610ab22625fa2378ce61074d10bbab181497935aa0de9e4e12",
+      "bytes": 14989
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094148Z-attempt10-scalar-conversion/lean.log",
+      "archive": "attempts/full-a01/20260930T094148Z-attempt10-scalar-conversion/lean.log.gz",
+      "sha256": "45d365539e0885a7fcac656a5b6a3f3dc37ff136fb82f7e220a033cd76c94e7f",
+      "gzip_sha256": "73ca7d7bc4a14771e16d37df8aa68027c0f267c7dda2d72f378b5701a01edc85",
+      "bytes": 10079
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094148Z-attempt10-scalar-conversion/result.json",
+      "archive": "attempts/full-a01/20260930T094148Z-attempt10-scalar-conversion/result.json.gz",
+      "sha256": "c702f3fb7f7a054c2e7b448e4f5ec3bf6674fe4d82b5e0bbe1611c927bb272f1",
+      "gzip_sha256": "74a9e3c9c91008e7336b322747db4f47e41e4fa0cad9716628dc00a458e11b29",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094148Z-attempt10-scalar-conversion/source.lean",
+      "archive": "attempts/full-a01/20260930T094148Z-attempt10-scalar-conversion/source.lean.gz",
+      "sha256": "01da78ea15a15b2243354cef6b5e7ea4abfe7ef46550f6713cca0da9d73b43f7",
+      "gzip_sha256": "39193215edb4aa7a9cf6f7716e65133f6e161b002ff400b86ea89f1cf28c121d",
+      "bytes": 14945
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094237Z-attempt11-direct-ext/lean.log",
+      "archive": "attempts/full-a01/20260930T094237Z-attempt11-direct-ext/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094237Z-attempt11-direct-ext/result.json",
+      "archive": "attempts/full-a01/20260930T094237Z-attempt11-direct-ext/result.json.gz",
+      "sha256": "dc0b0cf01f39dd4bddaa202129d5b55e0beb2a22ae0a834326afac424a95f165",
+      "gzip_sha256": "975e9787fd020fc2fded4699b393ddff97a9c0f655f05c7cffa42969188d377a",
+      "bytes": 129
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094237Z-attempt11-direct-ext/source.lean",
+      "archive": "attempts/full-a01/20260930T094237Z-attempt11-direct-ext/source.lean.gz",
+      "sha256": "ae1dae1bfd59df673154be164f63d7ff036fc33600751bbbd03f16e513a5ae97",
+      "gzip_sha256": "1d312a72c2095f0e74d84832618e725978fe730a3f6c23e1cda8802abba8c8a0",
+      "bytes": 15107
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/axioms.lean",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/axioms.lean.gz",
+      "sha256": "761052da595cd8a6cd2f60aa503f7848a41ba1e18a13ebbaf5a0fbd5d545dbae",
+      "gzip_sha256": "1568817f7c5ad699fb74b6da0c691bb4e68470fb5419f99e84fb768acafc055f",
+      "bytes": 116
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/axioms.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/axioms.log.gz",
+      "sha256": "32d5e2fa58ca9fc65ff4dc72130e6984f5e0d161e95297e7a5460205865bca1d",
+      "gzip_sha256": "c5f4204b32b92efedbdc43731aa17396cd299f14e3f3dbaee75abe28095689c9",
+      "bytes": 116
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/commit-message.txt",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/commit-message.txt.gz",
+      "sha256": "bdb9670d363c548da4ee5d580caa01a3cba907baab2de40ee6f5e53f498abbbf",
+      "gzip_sha256": "33339ee5dcef639d8801d01d9440afa3451554657fa375c3b6c246e3a0834051",
+      "bytes": 700
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/committed.diff",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/committed.diff.gz",
+      "sha256": "430aeeb691d4dc00b08d24604e3cf3d8544265e0833adb205c2f637ec96ac5a2",
+      "gzip_sha256": "a911d052e6838136c243e93ef53754ff189895111a72c546db901329c8d3d6da",
+      "bytes": 15318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/final.diff",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/final.diff.gz",
+      "sha256": "430aeeb691d4dc00b08d24604e3cf3d8544265e0833adb205c2f637ec96ac5a2",
+      "gzip_sha256": "a911d052e6838136c243e93ef53754ff189895111a72c546db901329c8d3d6da",
+      "bytes": 15318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/gate1.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/gate1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/gate2.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/gate2.log.gz",
+      "sha256": "eff339b4a7416b09d93dc4a794fd742f187bd0ade596bbbd96c26e4479782c75",
+      "gzip_sha256": "59e49c6676c793adaf1e9f45cd0df2d5d23278cc395b9be83fc67d196e40187f",
+      "bytes": 45
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/gate3.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/gate3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/gate4.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/gate4.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/gate5.log",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/gate5.log.gz",
+      "sha256": "1522b013ed8ecd050e540d7e3fe28b3b55587bb87a00376a9aed766292f47adf",
+      "gzip_sha256": "7a720ba2ebe69c4573fde895f05eec91535fb1d6df16f70ba0cec4626d5d034a",
+      "bytes": 677564
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/results.json",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/results.json.gz",
+      "sha256": "30daa8c41c87c52e2d07f240c80d085f9d40a69f21d1866b89146f1ba67edc72",
+      "gzip_sha256": "4d027d99cff151f8e87e0e0c2c8d874c124b7397dd6bf71330f995bdd32a66b4",
+      "bytes": 826
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/source.lean",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/source.lean.gz",
+      "sha256": "6bbeef18e719de7e5d61c3a41a35f5368720f508c840483ec04901c1ef7da566",
+      "gzip_sha256": "c8429102b05453a499937f98a35d15d4e363d5dd23a1d0fdd90ee685c7df660e",
+      "bytes": 14887
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/20260930T094346Z-worker-gates/worker-result.json",
+      "archive": "attempts/full-a01/20260930T094346Z-worker-gates/worker-result.json.gz",
+      "sha256": "e1a99b176de9ebaa19043e1fa87750b7bbb3107f8b18a137bfc54593f042bdb2",
+      "gzip_sha256": "6d976191ee7f7fbc7c322747dc8e6259bfa835966ed6d866cf5f361a918b42fe",
+      "bytes": 1945
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/context-manifest.json",
+      "archive": "attempts/full-a01/context-manifest.json.gz",
+      "sha256": "e299188aeb90e486732ef7bcd1f515a60486d37030d8ca727a4fc44fd038e872",
+      "gzip_sha256": "1b0d989b5b8373547b5317ac34ad98da42c93355a7691c5a15cda273a97f9087",
+      "bytes": 1767
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/algebra-v2.lean",
+      "archive": "attempts/full-a01/formula-scout/algebra-v2.lean.gz",
+      "sha256": "2a5112e536e3e5e3341995392ccf85a7458b993c42bbf99372cb3b187aba58cc",
+      "gzip_sha256": "267971db8954a7d571267cd03f4e991fa5cac34beacf60212c43bf21ebdd6ceb",
+      "bytes": 4898
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/algebra-v2.log",
+      "archive": "attempts/full-a01/formula-scout/algebra-v2.log.gz",
+      "sha256": "bd711c008982d92798225139a9339a0f32e0f53baec12bbd0ccef0d1134b60b8",
+      "gzip_sha256": "699ad517206bf84a2e50bd74ce717d931bb9a44f8d377fd92deb91a96a57d5ec",
+      "bytes": 322
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/algebra.lean",
+      "archive": "attempts/full-a01/formula-scout/algebra.lean.gz",
+      "sha256": "24af9230490989c172e5787c8b346ca28d21cf3467ac4a599dffae2febab569b",
+      "gzip_sha256": "84ca01d5d70845194b595669dab301437e33e9e8fb37c3e7f91e5a241365e70a",
+      "bytes": 4896
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/algebra.log",
+      "archive": "attempts/full-a01/formula-scout/algebra.log.gz",
+      "sha256": "f39b396eca9cdaa7c2e02a1f7211f4be62460e684aaca3d135b3c076674fddea",
+      "gzip_sha256": "80c2ffd3c1726fc64301ee0781a354ebcec3cb7712a271f9fd65923c1f2f903c",
+      "bytes": 319
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/formula-v2.lean",
+      "archive": "attempts/full-a01/formula-scout/formula-v2.lean.gz",
+      "sha256": "4705d277f29579994de76e860d1ce5f5848f05a6ca46d22d03a20792ac7278b2",
+      "gzip_sha256": "1979d69840813e31bfbbde13f8ddd944cbb9a532956d25fac13e85c1a8f80aab",
+      "bytes": 5853
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/formula-v2.log",
+      "archive": "attempts/full-a01/formula-scout/formula-v2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/formula.lean",
+      "archive": "attempts/full-a01/formula-scout/formula.lean.gz",
+      "sha256": "6df67365d10acae872c78ccb04964da6f0011181d19f85f8bbd922f41e5a5a84",
+      "gzip_sha256": "8ce10ccc34daafdb2e0b4453f0359a69eb8b315753577f4fe087df2109ba9e96",
+      "bytes": 5877
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/formula.log",
+      "archive": "attempts/full-a01/formula-scout/formula.log.gz",
+      "sha256": "b6a356dc72c2dca77b88fe7e4a0a9ea11518f7ead3fa0080bfe1f76c66115531",
+      "gzip_sha256": "3c8080bbf6ae6088e6c5989b0127ff9c3d1ea68d301610bec37989cdc717471d",
+      "bytes": 228
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/scalar-algebra-v2.lean",
+      "archive": "attempts/full-a01/formula-scout/scalar-algebra-v2.lean.gz",
+      "sha256": "6fa6aee2af72903455fbf378641b50242e040841f508ba7555bd27804bc5c972",
+      "gzip_sha256": "50343592198d8525c8af954f98de6fdfdea1219dc8e1a7820c750b3ba0b45aa6",
+      "bytes": 537
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/scalar-algebra-v2.log",
+      "archive": "attempts/full-a01/formula-scout/scalar-algebra-v2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/scalar-algebra.lean",
+      "archive": "attempts/full-a01/formula-scout/scalar-algebra.lean.gz",
+      "sha256": "369de22967cb40a302284a1f1d0d4faa4cb1fa8b7fb45dbb4aebf4f8c1935b64",
+      "gzip_sha256": "8b9ea64000e4703f3766cbe5ea856659f0d5e619a435eaa0659036470a30db08",
+      "bytes": 535
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/formula-scout/scalar-algebra.log",
+      "archive": "attempts/full-a01/formula-scout/scalar-algebra.log.gz",
+      "sha256": "89df5e5e5d9b295e835c430665c0bf7f5d338266fb42e6f1e7ec1b009b515f3d",
+      "gzip_sha256": "634d9b108a9b22447be6e2ec169e2b1ad9baa0f1e65090d406e824f93d84494d",
+      "bytes": 1048
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/lease.json",
+      "archive": "attempts/full-a01/lease.json.gz",
+      "sha256": "c8ccd704c66398aa91f5b58e877584dba7427a10b89059f240d10f6382b247be",
+      "gzip_sha256": "ae08c8e72ed0b71c2f1ec21d4446115554cb9743c144b2997ccef144bd6dbf6c",
+      "bytes": 394
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/lease.terminal.json",
+      "archive": "attempts/full-a01/lease.terminal.json.gz",
+      "sha256": "4be360c234e7d510f9361a1687f837ec6aa29b1dbffd05a3442c4e3c0cd5f639",
+      "gzip_sha256": "084c9b885a59b4f4f9804704f1b59c3935148ed79a42109a91f049f8e0771134",
+      "bytes": 395
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-a01/task.snapshot.json",
+      "archive": "attempts/full-a01/task.snapshot.json.gz",
+      "sha256": "c4a3562b699274c7b90cba1a461833ad94b6721f4732f86d5b85cef38023f5b6",
+      "gzip_sha256": "dc3f9e25c1bdbcae9c5a12506517129cf2997260b0a65788588f16a4864c0291",
+      "bytes": 10550
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-checkpoint.log",
+      "archive": "attempts/full-checkpoint.log.gz",
+      "sha256": "ec3bb6eca19b8fb56136425a8eddc5b3143393683a1cf9fe6e5a426288002a90",
+      "gzip_sha256": "d52e51351a340101581898e0f7159b71ecf31e7e92eb6fca97c9812d4ed7a0ad",
+      "bytes": 137
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-addmonoid-rfl.lean",
+      "archive": "attempts/full-instance-diagnostics/child-addmonoid-rfl.lean.gz",
+      "sha256": "8527438ba467f1aac479eb37856f05d96f70584ba7e775c619145a2bcb105fd1",
+      "gzip_sha256": "429be6a37c8ce2249588f6cfd404d63b6a00f1b0def722df9096da48f4dbc0cf",
+      "bytes": 915
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-addmonoid-rfl.log",
+      "archive": "attempts/full-instance-diagnostics/child-addmonoid-rfl.log.gz",
+      "sha256": "47c8283a798ef321680569bda6f6022e94436686b97fba70f973a02dacd190c6",
+      "gzip_sha256": "863344e299b760546affc925f64df9061e5d8a9eccf95cd49f90fd73ba8235e9",
+      "bytes": 347
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-canonical-addmonoid.lean",
+      "archive": "attempts/full-instance-diagnostics/child-canonical-addmonoid.lean.gz",
+      "sha256": "e7e242af86a74e66dde6b3c6ce02148b6d94dec99595008978efa901655ed225",
+      "gzip_sha256": "91458345a083e4226bfae626ce4fb2d32d304f2f1f3c10a7d66557eae0ef37df",
+      "bytes": 4612
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-canonical-addmonoid.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/child-canonical-addmonoid.literal.txt.gz",
+      "sha256": "93161543ebf5491246582532bfa162d958973aa64b02c344c301d98dabbccd61",
+      "gzip_sha256": "7038b1358def89e02599c6a96c2eeff06b9c07848c9f8a8e449099c288a719b3",
+      "bytes": 4091
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-canonical-addmonoid.log",
+      "archive": "attempts/full-instance-diagnostics/child-canonical-addmonoid.log.gz",
+      "sha256": "b2e20efda5da76a69034baf01ec81d2d7ff225a9290b9c7fdc67f0145580e866",
+      "gzip_sha256": "8a5bc94156c0a9a99a3c4e4db59c6b2b65be64bf2d77295ac9fb8b70d0d519e9",
+      "bytes": 21
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-clm-application.lean",
+      "archive": "attempts/full-instance-diagnostics/child-clm-application.lean.gz",
+      "sha256": "6261791b32eae6c5a07bc29dea66815111590af644fee8deeb2075342fb7a7f7",
+      "gzip_sha256": "ecb659638b2596f186afb26cf6ecaf1003a2b4b5954cc1e19903f046ceed025a",
+      "bytes": 1253
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-clm-application.log",
+      "archive": "attempts/full-instance-diagnostics/child-clm-application.log.gz",
+      "sha256": "6d528f25b7754a534185d91ac1bc34bd5828dc4bd5ee2d5081fbc4522a31db6e",
+      "gzip_sha256": "363797b1c79a0e3fa47e02d70b0f4d5df9c4ed20439f4068bcefeedd27cd3bcc",
+      "bytes": 1571
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-full-canonical-addmonoid.lean",
+      "archive": "attempts/full-instance-diagnostics/child-full-canonical-addmonoid.lean.gz",
+      "sha256": "476311b1115c5499b9c0173f16e2f8cf94723449dd6a8867e0b068a523b44c6d",
+      "gzip_sha256": "863e563e17c77a010deee4acc1cccc203237b872d1484b7726c771f5fa7301e5",
+      "bytes": 5456
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-full-canonical-addmonoid.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/child-full-canonical-addmonoid.literal.txt.gz",
+      "sha256": "dc7eff2bbe8a25fca705b45ca08a7752cbda0f8361ffb987a0702cde3d207fc0",
+      "gzip_sha256": "6be1b970956a9fe4c3b14ac8f838e64970b9d8599830fb408aee78c38b373d2b",
+      "bytes": 4924
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-full-canonical-addmonoid.log",
+      "archive": "attempts/full-instance-diagnostics/child-full-canonical-addmonoid.log.gz",
+      "sha256": "598968b0c8f0495c2a08f355972483b1adb58f1271bd08991ad6f7a16c62784b",
+      "gzip_sha256": "ff257265a4b7d1f9f60d2835ef44f6e447a03c0934e7bba58e8d8a5344fb6ed8",
+      "bytes": 26
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-full-lower-tofun.lean",
+      "archive": "attempts/full-instance-diagnostics/child-full-lower-tofun.lean.gz",
+      "sha256": "91ecd80a30ddf4022e31c2cfd0f0a921203ff3251da1d66dc02464c6b3de270c",
+      "gzip_sha256": "a8fec1621ad850c396b2a6220b3bbf61b7e0f2643a39b315a1c973b615d5b503",
+      "bytes": 4880
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-full-lower-tofun.log",
+      "archive": "attempts/full-instance-diagnostics/child-full-lower-tofun.log.gz",
+      "sha256": "49c2257d90f7aca5951e3465d0c13290789e4ee072189eb98714a67065c43483",
+      "gzip_sha256": "40306733e23ca113da4daa5c09f56ca4499561b0861278a7077791424ee02d64",
+      "bytes": 167
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-stored-clm-heads.lean",
+      "archive": "attempts/full-instance-diagnostics/child-stored-clm-heads.lean.gz",
+      "sha256": "50c23f9e47d2991545862415a16d717967dd369340b590cae1732a631584c201",
+      "gzip_sha256": "26177f36e21f2f3d28c2219d01c48d29cf72cf32ca9435d5a3e606125bfa8fdc",
+      "bytes": 927
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/child-stored-clm-heads.log",
+      "archive": "attempts/full-instance-diagnostics/child-stored-clm-heads.log.gz",
+      "sha256": "1c58135732fa8529c5fffd3d9096589344a21bb5a57b0b1d3b15099dace84e48",
+      "gzip_sha256": "ad3d4709ab788092e5579ee5c52ad052e6df8540cb35855d09432a489dfda060",
+      "bytes": 7170
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-certificate.lean",
+      "archive": "attempts/full-instance-diagnostics/root-certificate.lean.gz",
+      "sha256": "ff8579e00852b6a6c3889419c6fbbec80dbd54a315ca02751c020d3d57591702",
+      "gzip_sha256": "b339cf5d449f50e65af63602030f04fceb52d7af3d216a476abb324d0cd781be",
+      "bytes": 4482
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-certificate.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-certificate.literal.txt.gz",
+      "sha256": "2c2ce113d42c8ba1935292dbd57ae5395e7fcdbe84f6e8982f73a1af0110980d",
+      "gzip_sha256": "0fba3c247b11d1facf476478c09712e2472525dbf7a269ac735944a3ba6437df",
+      "bytes": 3957
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-certificate.log",
+      "archive": "attempts/full-instance-diagnostics/root-certificate.log.gz",
+      "sha256": "3dbb38afa569bc71a6d8e05ef5653878f0e6733b7b6269315469cc69309ea11e",
+      "gzip_sha256": "e0d9e2c82da365e758673f5dbbc1927d01bf7fa5b943b939799aa3b6d1b3971e",
+      "bytes": 649
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-certificate.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-certificate.meta.json.gz",
+      "sha256": "8f1b3fe9bdd70f4d06e1962bd2277002ddceb289b038ae4cde13aa4f00d71f02",
+      "gzip_sha256": "e614fc32c338f16820f7641d1a55f2b56b05c86d88d09533920cec7ae7b391c4",
+      "bytes": 236
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-explicit-lower-toFun.lean",
+      "archive": "attempts/full-instance-diagnostics/root-explicit-lower-toFun.lean.gz",
+      "sha256": "d54810bbbba0661f803caf32fc1548c5e4f851c834cd647967457fa434b8d7e8",
+      "gzip_sha256": "c503871bf8119893b4aeec8be785809a7cb514e1338b7606e0d80a34e8753486",
+      "bytes": 5350
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-explicit-lower-toFun.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-explicit-lower-toFun.literal.txt.gz",
+      "sha256": "ce4ff7bc964e9cb19c5781b4b262b905bcb45f94d1149d1fb2315c5926eab7a6",
+      "gzip_sha256": "428ce7fcf94d95c052cc70e3595773a8777ccf99c2037d4b274bdd72145531a1",
+      "bytes": 4810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-explicit-lower-toFun.log",
+      "archive": "attempts/full-instance-diagnostics/root-explicit-lower-toFun.log.gz",
+      "sha256": "0c9a6edcc8aaa36542e97664322ea1da2dec18a48c331e59bda05fe73c8dc552",
+      "gzip_sha256": "9ff06970b135df246912b975783759500a7941dc8d40e7056b8efb1ea4a1b018",
+      "bytes": 667
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-explicit-lower-toFun.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-explicit-lower-toFun.meta.json.gz",
+      "sha256": "59dcc6315a0f4edf240682b03d2131b7519c896b57b9f5679413741364d248dc",
+      "gzip_sha256": "1ab950b3ee78b490f5b75449c3e0bab3f312a4931f237fe0d0d5bf4b5ae6d3cb",
+      "bytes": 245
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-formula.lean",
+      "archive": "attempts/full-instance-diagnostics/root-formula.lean.gz",
+      "sha256": "e3afa33c069444da69d69492b743e8ea705bd4eb6fe68ff780e079a2ab038e83",
+      "gzip_sha256": "7345fb427d03172c8c7ab7e802286034d3dc5f34fb557ebeefea4e1c7edf45e2",
+      "bytes": 5175
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-formula.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-formula.literal.txt.gz",
+      "sha256": "9d91e48e263060374f08986346b653f2fe35c1f193e4c052c56b5e84f5215b2e",
+      "gzip_sha256": "552b494d71bb548663b537350524313be1b8eafefaac9a332c9ac7cc504bf12b",
+      "bytes": 4649
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-formula.log",
+      "archive": "attempts/full-instance-diagnostics/root-formula.log.gz",
+      "sha256": "7f232213434a158db9737360bb907c0da76158892a31f7b8a8ae6c394155f680",
+      "gzip_sha256": "fdd52027a28f58321ee3d13ef4ff6dd0fc9f654b7b27bf047758f12bf85e5129",
+      "bytes": 22
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-formula.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-formula.meta.json.gz",
+      "sha256": "bb489082406e3628f2ada9565131bfeedcde6415e5a534ef3e063bc26da99772",
+      "gzip_sha256": "1bbaf084f0858e52c731dae2a37a23df048635961e298a72dc819b080306c3d2",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-full-canonical-monoid.lean",
+      "archive": "attempts/full-instance-diagnostics/root-full-canonical-monoid.lean.gz",
+      "sha256": "0ac9bdd86cdb655c1afaa8bf50ad85af928594c867872524c70eee89cc3d5b95",
+      "gzip_sha256": "7bc1063a1972c6c879c89b9c21a6b9ff0e25d4ca020c4c9d6a9a440c9af2a560",
+      "bytes": 5567
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-full-canonical-monoid.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-full-canonical-monoid.literal.txt.gz",
+      "sha256": "dc7eff2bbe8a25fca705b45ca08a7752cbda0f8361ffb987a0702cde3d207fc0",
+      "gzip_sha256": "6be1b970956a9fe4c3b14ac8f838e64970b9d8599830fb408aee78c38b373d2b",
+      "bytes": 4924
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-full-canonical-monoid.log",
+      "archive": "attempts/full-instance-diagnostics/root-full-canonical-monoid.log.gz",
+      "sha256": "ab118508c221bea1aaf8a6c89b5a4666deb17bade0fbfc2ad748d4f4e8e432a1",
+      "gzip_sha256": "7981e8d67d1132b532910d5304654d6a42a6cb9d7f0c7cae9952f244aa60274e",
+      "bytes": 64
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-full-canonical-monoid.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-full-canonical-monoid.meta.json.gz",
+      "sha256": "6c640d2d7a3fc2badebb3c6ef3d762b6b1edd988d425e444635a2f5897349c10",
+      "gzip_sha256": "57584b4b055178e023911a3c271ed821694723b3993d08a153eab6716a64f352",
+      "bytes": 340
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-cast.lean",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-cast.lean.gz",
+      "sha256": "e87bcaadd4a62ef7e4f8fad0687ecdce7daad93353002f46c0256fc8b913ce16",
+      "gzip_sha256": "89c8f569034d88d132e7c7afb5921a9c0265b4ecb0476a4db18dd36b9bfe0cc1",
+      "bytes": 5532
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-cast.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-cast.literal.txt.gz",
+      "sha256": "b1cf0eb8ab2e1025ff1f00eea91cd868bb4af19af31adef3ac39f1019d47bad9",
+      "gzip_sha256": "4d677e55330c7545a5efb73c5769d9cfd4965c7b40c6e955c9f83b63f291b2e7",
+      "bytes": 4998
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-cast.log",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-cast.log.gz",
+      "sha256": "31a26c4365d2961a477f1e44e7ec5781bb547bbb5b81cda67cd4b313f38310c9",
+      "gzip_sha256": "93bc8b4f73f722bc8723d171287846448f20bb66325a9b982cd3f416bf3dad56",
+      "bytes": 655
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-cast.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-cast.meta.json.gz",
+      "sha256": "928187043a4d20cd5e99acb73114c666fa6713ca82cb2ab5ae916a15b0e80a34",
+      "gzip_sha256": "ad72b7ab7f490fb1331e8c4379b78c6b57418722592a37ca414e48f17b1847e7",
+      "bytes": 239
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-explicit.lean",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-explicit.lean.gz",
+      "sha256": "08ff6295f339784c5bf3057cbb92b567031979be4e4b1572b45842fa9fe96c27",
+      "gzip_sha256": "96f855de0648d3755c632adc650242e654711f02ef40707e013387377e64ce3f",
+      "bytes": 5440
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-explicit.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-explicit.literal.txt.gz",
+      "sha256": "17d13686b936f4038468fce100beb0f222197c3becc64058da1849cee246d743",
+      "gzip_sha256": "4514510cf76fd010880894d9304ef07725ce1fda1eee562a25364a95dbab2dea",
+      "bytes": 4902
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-explicit.log",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-explicit.log.gz",
+      "sha256": "22b8e3a211586593b9c9106a248106520638c42aa10b51af4e010c2a8286180f",
+      "gzip_sha256": "be7605968f8824e6ab0ea89025da32a0b5ffc4af29126aa4d9368944bec3010f",
+      "bytes": 663
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-explicit.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-explicit.meta.json.gz",
+      "sha256": "821b910a43e28d3b6f0ba6138673c31046f23026c5eaf52f7fd7457bfdcda352",
+      "gzip_sha256": "b1c24c5c1127a0b94b7f12e1c5b12c2f80514b334dae951abcac6a98c49b18f9",
+      "bytes": 243
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-lambda.lean",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-lambda.lean.gz",
+      "sha256": "4be15b56479e1305ee80adde8aa46021d2a221698d09327b4dbb03d2fa408064",
+      "gzip_sha256": "4af644059ae209c78afd84150dd51e9b567e948ad1e7f7aaa4f0842ab834f9bf",
+      "bytes": 5494
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-lambda.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-lambda.literal.txt.gz",
+      "sha256": "ec0feeda29bab3bd8705af72cb914fbe8bfd766f24b4c1ca0aeda490fb036e3c",
+      "gzip_sha256": "3ded050778ec85bee76d303605f24f0f9894f1c8405e560389054fc90d3d42d8",
+      "bytes": 4958
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-lambda.log",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-lambda.log.gz",
+      "sha256": "d159e7da13a6a635ff52d46d7968d19562410727b692963d268fd4d9ca285289",
+      "gzip_sha256": "193402032eb746dc0f852e78f4878412f502eddf98757682cacc822d854ec5a5",
+      "bytes": 659
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-hasfderiv-lambda.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-hasfderiv-lambda.meta.json.gz",
+      "sha256": "d8d6e592fd96c86d78ba14ef2686bac70842e200deae5a531139d51eced99e2c",
+      "gzip_sha256": "da301f482293244bd29910ffa3a20ffe00f6e7c95bde7379156a23a2501e83f5",
+      "bytes": 241
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-both.lean",
+      "archive": "attempts/full-instance-diagnostics/root-module-both.lean.gz",
+      "sha256": "de53f5e5dcc3e7f62bd06f2f7e34cd43e154382e106c0fcdf6c5195f6cb9b0cf",
+      "gzip_sha256": "fd539fce2eb7c35bf784fade5b797ff50a3ae4b3f6b263d9b94930dd9590840c",
+      "bytes": 5715
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-both.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-module-both.literal.txt.gz",
+      "sha256": "585098b81a9e84b493c7629fd3ab77673c5e4338fed4cb19ec6fa4d6b02605ae",
+      "gzip_sha256": "68bd635f58a4520c32ba80445c2d84dcfd3aede39fca5e0c470941b2c7d64b27",
+      "bytes": 5182
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-both.log",
+      "archive": "attempts/full-instance-diagnostics/root-module-both.log.gz",
+      "sha256": "29b563e89e9a387683206e827bffe38ceb132220932fa5b86e5b309dafdda2c7",
+      "gzip_sha256": "812043bd1801fc1a83d4d339f470edfaaa250b0a4f4cc457ede2eb328471e954",
+      "bytes": 1164
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-both.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-module-both.meta.json.gz",
+      "sha256": "1fb1ec8904979129c73d7882a005f2e8612986266c28d1f5743af2cc4fd6b466",
+      "gzip_sha256": "90b5a1002fcdb58fcde4a2a9802e05ed7cd9496e4e86b86e425effb87639c964",
+      "bytes": 236
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-pair.lean",
+      "archive": "attempts/full-instance-diagnostics/root-module-pair.lean.gz",
+      "sha256": "01fe32f26b143a29d12c0271330cfaab153ccc825f55d3796ddc88dbe61e7cb1",
+      "gzip_sha256": "884bb82e191ebf6bd514768193c8fba2e8e81cd177e15973308e194ed1b9ea8d",
+      "bytes": 5561
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-pair.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-module-pair.literal.txt.gz",
+      "sha256": "90e328218eb1b0874cd54214e2e8b8985bd8bc3aa5afbf939b343a7cfaadf18c",
+      "gzip_sha256": "a7eb1972dcfe194aec5cde4bec382c8e46d57ee71b2b4ead141d6db3538d8403",
+      "bytes": 5029
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-pair.log",
+      "archive": "attempts/full-instance-diagnostics/root-module-pair.log.gz",
+      "sha256": "c090ba85a889355c56c58fecfe5c647986f58a8e7643c297d437f19baa413ba5",
+      "gzip_sha256": "1e962e72de4b4dd6fab525b34ae5f399637b22d83036125da8151fba02a6b646",
+      "bytes": 1087
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-pair.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-module-pair.meta.json.gz",
+      "sha256": "df94d5e7271705355064398447a2a95b2c769d3eed3aadac6ba5fe39287dc694",
+      "gzip_sha256": "6076fd2123006d61c9c11fbeb1a6e17279e52108955315e3d0a245e17bc48f53",
+      "bytes": 236
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-vars.lean",
+      "archive": "attempts/full-instance-diagnostics/root-module-vars.lean.gz",
+      "sha256": "2de3677068a86a3383eea4cef7e73b95410452654709d81b02a00d2d3d01258c",
+      "gzip_sha256": "c72eb32fcb277452fbfaad4deeb2caac2a1166029e8c6f268ca2fcd456528747",
+      "bytes": 5475
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-vars.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-module-vars.literal.txt.gz",
+      "sha256": "f7c8858e9ca8cbb556e987a36ca403be5b123c86bafccaac5e2bc5fddc832936",
+      "gzip_sha256": "869822108cf4d4c0d115dea91c5d3470ea03e07a512782e897e3ada99ec2404b",
+      "bytes": 4943
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-vars.log",
+      "archive": "attempts/full-instance-diagnostics/root-module-vars.log.gz",
+      "sha256": "5fbddb68b65f3897f6fc982808aac4dfa74e5bba1bb537b660925375c28d9d34",
+      "gzip_sha256": "f56d93bfd3f10bc61725ac47758aec3b8079d3962b304d315bcb1725731f4e39",
+      "bytes": 726
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-module-vars.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-module-vars.meta.json.gz",
+      "sha256": "da8b3af14c3d59f1a5152c1600eb5ccf901abbcfbad5f7df5d4419955fb8cec8",
+      "gzip_sha256": "68bbb7a3eba888ea89b41d3ffde9abd1fbee376dd1954462041e45d11c567efb",
+      "bytes": 236
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-pair-monoid.lean",
+      "archive": "attempts/full-instance-diagnostics/root-pair-monoid.lean.gz",
+      "sha256": "fcbd1853cd5cc96c4754e0e25cfdfacfe181ac962c28107509be654c69c2465a",
+      "gzip_sha256": "ab62b2bc070230a8457ae37e99e98e1bd5c9834dbc7d5048bfb4adcbc0846603",
+      "bytes": 5589
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-pair-monoid.literal.txt",
+      "archive": "attempts/full-instance-diagnostics/root-pair-monoid.literal.txt.gz",
+      "sha256": "684f00b95bdafdc389c8c3b7e26110b1e1c967459aa111fccb4b43bf8bb2b689",
+      "gzip_sha256": "22c66d6d4ab4d8c82358103e66adcffb66fc2b57ae03055d58f414456d0cae08",
+      "bytes": 5057
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-pair-monoid.log",
+      "archive": "attempts/full-instance-diagnostics/root-pair-monoid.log.gz",
+      "sha256": "79d66e3155e05af3185f5a61626108ae2ca6e4385f58b7c58dd13517cbada27c",
+      "gzip_sha256": "eb4460afb7f29b05691a8f0ee49d86a944fcc17e56dd1ed4dd04b3f6c58dede7",
+      "bytes": 464
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-instance-diagnostics/root-pair-monoid.meta.json",
+      "archive": "attempts/full-instance-diagnostics/root-pair-monoid.meta.json.gz",
+      "sha256": "11c4e6b89b3a73d68f5751bf780ba10c2af9709fa2cebffd8d69bc75afc93c5e",
+      "gzip_sha256": "fb5d2479c1169886989747b6f22b3f5791243dc7418beb1b4c92f60e92561bcb",
+      "bytes": 236
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-canonical-bilin-module-smul.lean",
+      "archive": "attempts/full-proof-diagnostics/child-canonical-bilin-module-smul.lean.gz",
+      "sha256": "ede0860d0734f6b54c96982c9e321be7e4fb6b1fbaea8da63ad30567f71fd5e5",
+      "gzip_sha256": "6ca1037b3c63e04da93190f6da0608cc2ba10f045f7a73a7a9f1a6dfbd934e53",
+      "bytes": 5458
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-canonical-bilin-module-smul.log",
+      "archive": "attempts/full-proof-diagnostics/child-canonical-bilin-module-smul.log.gz",
+      "sha256": "42637297f1ad0d45ba12b9fd89c3fcc9ab3158743b61e58ac3141874c2a955ee",
+      "gzip_sha256": "c2e980dcf61c4edd00f673d957b19fdcacf4bc9df3adb5d5fd3be890b6b77eb8",
+      "bytes": 1349
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-positional-canonical-bounded-smul.lean",
+      "archive": "attempts/full-proof-diagnostics/child-positional-canonical-bounded-smul.lean.gz",
+      "sha256": "8601ce7e52d7dc936f6eada341116959d8e79ace278f01ae4c3a4c5b03f3f25b",
+      "gzip_sha256": "e25d225caa5fcb0e6bb827d7026e8c6d28085514341aea3936fa4021e5342a35",
+      "bytes": 5646
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-positional-canonical-bounded-smul.log",
+      "archive": "attempts/full-proof-diagnostics/child-positional-canonical-bounded-smul.log.gz",
+      "sha256": "b052a083f1d4ae3370a1850144a3b9906909ed1a4bcd6d898ede3726dd4ba1b3",
+      "gzip_sha256": "38d6b6562a328c076d39759ed11d9258c9042e99bd03decc6adfd8ae2cb04b55",
+      "bytes": 615
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-positional-canonical-module-smul.lean",
+      "archive": "attempts/full-proof-diagnostics/child-positional-canonical-module-smul.lean.gz",
+      "sha256": "0a4891717266fbb7ed797d81a94a0ea3bcb747a5b778a145679a5d79d2277a9e",
+      "gzip_sha256": "9c37d1e2c9a6325a7a9269b30fd8fc8e62b28642fdbd0613352850b2468b178f",
+      "bytes": 5418
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-positional-canonical-module-smul.log",
+      "archive": "attempts/full-proof-diagnostics/child-positional-canonical-module-smul.log.gz",
+      "sha256": "9d38ce65d532193df6fc1c6d3c77059d3bf0b24a4c42222a84e7ce9a8fd9e6eb",
+      "gzip_sha256": "a0c32ed150346e8997c74f6dd458eba3fca5d533318d1f877cd33c534c60d5be",
+      "bytes": 1723
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-stored-module-rfl.lean",
+      "archive": "attempts/full-proof-diagnostics/child-stored-module-rfl.lean.gz",
+      "sha256": "30a946c4f751ab6b040ce5006616b4703b34d2e463dba5c53d7f1fbdf96b61eb",
+      "gzip_sha256": "e05ec663e8dcdc770d4ae98452dd618323739d2621b23622b4c5b2ca69b96f70",
+      "bytes": 4963
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-stored-module-rfl.log",
+      "archive": "attempts/full-proof-diagnostics/child-stored-module-rfl.log.gz",
+      "sha256": "a39c48acdf55158e41a80212bba6e5db65f2945a9ad1f89ffc4aaf40c8dc0799",
+      "gzip_sha256": "f8d86e7ec062c0648946476ffbf74f61250f59ae3317ac8b73774a4f6a15985b",
+      "bytes": 59
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-stored-projection-heads.lean",
+      "archive": "attempts/full-proof-diagnostics/child-stored-projection-heads.lean.gz",
+      "sha256": "0e45c1e8dbdbf7ccfa1fc0918b312e7a4b09ea0607ac7d8ea96d44f7eec69345",
+      "gzip_sha256": "f27df0abccaaa2ea993c4afcabb3bee699d9855bcd11ec1a3c170e8275c909b0",
+      "bytes": 933
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-stored-projection-heads.log",
+      "archive": "attempts/full-proof-diagnostics/child-stored-projection-heads.log.gz",
+      "sha256": "4e6b1b27bfb766d5cf4d3a11a8525b943fef7944fce849b1e17aabc5340be013",
+      "gzip_sha256": "bdb0f510cdd9ce6c3c2c11a17b0499dd18c4099d8a1b26b04a76c67abe83c7e4",
+      "bytes": 7051
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-typed-projection.lean",
+      "archive": "attempts/full-proof-diagnostics/child-typed-projection.lean.gz",
+      "sha256": "fc456d850d44d60eefd0bb9b05eb2bbc972bba6b8dca3cd0082ba1ddb08e2e61",
+      "gzip_sha256": "a0294caa8e53d37a31de2c1aecf1f188f47abf52f0f1e689111486502419926d",
+      "bytes": 5125
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-typed-projection.log",
+      "archive": "attempts/full-proof-diagnostics/child-typed-projection.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-typed-scalar-product.lean",
+      "archive": "attempts/full-proof-diagnostics/child-typed-scalar-product.lean.gz",
+      "sha256": "f59456def323b7d612bef5c6d3da029721d3f0f87860e9b27abf25663e9d03fd",
+      "gzip_sha256": "2e8ec9fbf5b8f0d4abd3ceebb1de30ef24b3c8c1babb38ca92508d76ecd2de9c",
+      "bytes": 7388
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/child-typed-scalar-product.log",
+      "archive": "attempts/full-proof-diagnostics/child-typed-scalar-product.log.gz",
+      "sha256": "e49f76e89eb7ced581e39907b63a2b8b0b5498030d30e941d29b6ab3c87e2d6b",
+      "gzip_sha256": "34f041d0aef0d589f0fcfaca7ed24fee7d43b70b2abd4e47245266a0eadd1762",
+      "bytes": 2737
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-proof-respect-false.lean",
+      "archive": "attempts/full-proof-diagnostics/root-proof-respect-false.lean.gz",
+      "sha256": "ab5c91f5e86ffa681cd105557aa58ae6f1073bf635fccee4848a2d54896b1eb7",
+      "gzip_sha256": "2bdb5834f81df52c16001989f75e3faaee61ba14d298e2eef2512bab47f27669",
+      "bytes": 12661
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-proof-respect-false.log",
+      "archive": "attempts/full-proof-diagnostics/root-proof-respect-false.log.gz",
+      "sha256": "e429ed5dd3fd54194fd96ae7d82e740c50f706f2cc089e5426a88a58ef3d187e",
+      "gzip_sha256": "7f573cf376b9bbe89af3f429fe595d7ea1421c95d83b8b7b48dc4f038a6954ee",
+      "bytes": 1156
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-proof-respect-false.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-proof-respect-false.meta.json.gz",
+      "sha256": "2ab8f8820d291672f8e17f197931b4625f486259c6a345a529a20bc4b677d3a9",
+      "gzip_sha256": "568eebcdc73e1877bd0ec02ee8ad6a6dbf95af527b8dda8e3a037647231d05bb",
+      "bytes": 491
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v2.lean",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v2.lean.gz",
+      "sha256": "92f6bd0d91294067404ea60b4b11078c706f72d8f178787324a9561b976fcb60",
+      "gzip_sha256": "cc1c66395daef6e305894eacc9b79b94e460e28c100270d79f0fadc897e2697f",
+      "bytes": 5266
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v2.log",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v2.log.gz",
+      "sha256": "4e1cd4970446063ac3aa89c7c405c74f19007e6be4c044bdfc00d755b6ecb123",
+      "gzip_sha256": "15c56e5d724098eb50c048c175dccc34724f4ec186415141d7939598451ffbac",
+      "bytes": 4880
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v2.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v2.meta.json.gz",
+      "sha256": "ea3f9be3f1a53edabfc5cef95f846430ab9ecb35e2a0233803df2132bc1bed27",
+      "gzip_sha256": "2a679c005bf70145fd5b6db287fb748efc90b8b923083b2aa82433ad9975ded5",
+      "bytes": 241
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v3.lean",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v3.lean.gz",
+      "sha256": "750cce97261823bf975a2f3f62571476ef0c0123176eb24d1277be24dc6e6f33",
+      "gzip_sha256": "033b4fc22f1b50744c0d4980eea101b6dee78c27d5f0bc0b1285dda8fa3acab8",
+      "bytes": 5279
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v3.log",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v3.log.gz",
+      "sha256": "374232b1a676d3ab4b7c4fff7abace8a282c0203f01f9b3084f6a218df953aa2",
+      "gzip_sha256": "be7c23ac699420b7119d0b038e5dfbda22c0ed238a522429d2b7c1b4e822d1d5",
+      "bytes": 650
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module-v3.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module-v3.meta.json.gz",
+      "sha256": "f53c88699ef557810d251c5dfb781596bbd480296980842bd9d58a24e3a37b3d",
+      "gzip_sha256": "aa9a8a9112a4b92547b21f80a29ea18b61c291c29a150666ce53a5af4930b7cf",
+      "bytes": 241
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module.lean",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module.lean.gz",
+      "sha256": "529d8c91c71bb1a0c54691e6b64d560eb2b007d6a546f91ec3a70e787c00a6e7",
+      "gzip_sha256": "6339b7c3e3a085eed0e71af61d4f67543c82b7ed6008adc33b10859387fff1d7",
+      "bytes": 5238
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module.log",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module.log.gz",
+      "sha256": "63925260596ade1877a2ad2aa6ef99eaea197d775199753cd3b3b3cbba81e321",
+      "gzip_sha256": "00f01498baa237a97bec3f37898a5575e3c0065baad90833605c265a54d89971",
+      "bytes": 159
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-raw-bilin-module.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-raw-bilin-module.meta.json.gz",
+      "sha256": "787ae4fb3811e08fb65482badbd957bb17e181a653c9dcb8e0f6cda81071a11e",
+      "gzip_sha256": "f77afcd193752c488d48798e18159846f39b5487c45e849c8877f320c461508b",
+      "bytes": 238
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums-v2.lean",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums-v2.lean.gz",
+      "sha256": "0be0c4f264dee638be3f187067d270f45b526b757a2885518d4be2884cf7f323",
+      "gzip_sha256": "45bece30864b959eaff9a1ab968fc9cde2255df62b8bbca9858130437c9b95fb",
+      "bytes": 6183
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums-v2.log",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums-v2.log.gz",
+      "sha256": "cb9816842f8b3e7fc9ddaec05ea2357009a1834a853cb504fb68d638f16dee92",
+      "gzip_sha256": "80540947d9e8d55ddc739381dd656fc62390772a99453f21b17bc5560dda1d57",
+      "bytes": 375
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums-v2.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums-v2.meta.json.gz",
+      "sha256": "de1d0e47be80aa31bef359103e9f520bbee69e2f3520507fd461ed9e4db1627d",
+      "gzip_sha256": "c73e0ab3390ad807ed22dc0b977ba14766bb845a299f018b9b1f76b7b2ffbb35",
+      "bytes": 235
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums.lean",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums.lean.gz",
+      "sha256": "64597fde2ca1d5cbbe5bba89b63675ea6f74d29925eca2d875e2d8d44fb69d86",
+      "gzip_sha256": "f52bafce907574e1349f1464a3a5fd177c739d425eadc29cdf4c8216fd51220a",
+      "bytes": 6247
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums.log",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums.log.gz",
+      "sha256": "d6ea806e10f88aa0848c4e91661c646c73e7d69bfee35ea02c970f58577e6f1d",
+      "gzip_sha256": "9cdc92d3dcabb60f4569fefb8bca8c671a5455737e59a5d43c5eb5af53d17085",
+      "bytes": 1784
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full-proof-diagnostics/root-typed-sums.meta.json",
+      "archive": "attempts/full-proof-diagnostics/root-typed-sums.meta.json.gz",
+      "sha256": "05bf39b01e870ddcf344f831de890830eeef1c071f98ffda18fed374cf8fd811",
+      "gzip_sha256": "f40cd3c957f6a71fac9ac46ac549ef6f1509468d00d20ccc3d3182d19a1b9244",
+      "bytes": 321
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.build.log",
+      "archive": "attempts/full.build.log.gz",
+      "sha256": "e2e29cb8ecfb442987933ce338bc67665ba55f977bc163e1ee06ff3c1cc46615",
+      "gzip_sha256": "b82f36d260dfe271a48bd8ebdb786769180ab8aff80365ad7f3d4eaf43f352c8",
+      "bytes": 677327
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.preflight.lean",
+      "archive": "attempts/full.preflight.lean.gz",
+      "sha256": "d5e4e50573a0bd63f9807c71e6e807bf96fcb18016152aa8eeb30ac61f45ea09",
+      "gzip_sha256": "ba4c942fa7a4c86cd2a29a1a948399594a65d9ee53736b502424d45558fd76e8",
+      "bytes": 5331
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.preflight.log",
+      "archive": "attempts/full.preflight.log.gz",
+      "sha256": "daaf94eac2823c7f7952be5087ce0b68b71a7f884b8fb9ea0e05642451de2e42",
+      "gzip_sha256": "59fca10f51bef3a23ee0292236b20d1b2c37e9250fc157e59beadb59e3eef501",
+      "bytes": 631
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v1.failed-contract.json",
+      "archive": "attempts/full.v1.failed-contract.json.gz",
+      "sha256": "29046c9809d6fe661d279b39c72303a6a3d03cc74be79d7dd5b5700173d5332b",
+      "gzip_sha256": "602341fb4bb4ec399a0c6e5ae6a610b2cbfd4ddcd4011a2874a97c7a5bd59d25",
+      "bytes": 6003
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v1.failed-preflight.lean",
+      "archive": "attempts/full.v1.failed-preflight.lean.gz",
+      "sha256": "849225695891b8ed23da693897c0a5cb124f9571df354012a66bcb683ba54aec",
+      "gzip_sha256": "9576e03aaa4134f6b7e85d02d0b0861018c8af2fc272c323202c585673fe1879",
+      "bytes": 4873
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v1.failed-preflight.log",
+      "archive": "attempts/full.v1.failed-preflight.log.gz",
+      "sha256": "f4215bf527c6c7c6814eeb393f0efc22b0a481bd6e152131b88956be3484893c",
+      "gzip_sha256": "652552bed96b80154ac4e10bbf9b3b15f6c807d4a5febf5d6d161f20f3548a86",
+      "bytes": 631
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v2.failed-contract.json",
+      "archive": "attempts/full.v2.failed-contract.json.gz",
+      "sha256": "1d7c523abf6d8a2236c6e3ed25fafe07e2c988224b0d4c9787480474b195c61e",
+      "gzip_sha256": "2b3ea0c1bdadd7e922932b51193e58d67af9f49b3e8ac03aa54e3932be4a4c17",
+      "bytes": 6461
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v2.failed-preflight.lean",
+      "archive": "attempts/full.v2.failed-preflight.lean.gz",
+      "sha256": "d5e4e50573a0bd63f9807c71e6e807bf96fcb18016152aa8eeb30ac61f45ea09",
+      "gzip_sha256": "ba4c942fa7a4c86cd2a29a1a948399594a65d9ee53736b502424d45558fd76e8",
+      "bytes": 5331
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/full.v2.failed-preflight.log",
+      "archive": "attempts/full.v2.failed-preflight.log.gz",
+      "sha256": "daaf94eac2823c7f7952be5087ce0b68b71a7f884b8fb9ea0e05642451de2e42",
+      "gzip_sha256": "59fca10f51bef3a23ee0292236b20d1b2c37e9250fc157e59beadb59e3eef501",
+      "bytes": 631
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/0.json",
+      "archive": "attempts/independent-full-a01/0.json.gz",
+      "sha256": "c0d75e98f58790bfa7814929a24b6220a3fbbba8eae9fa21d4feeb369afca376",
+      "gzip_sha256": "c75f6764df91a955365a5ae8ef57a40b9f3d4c6f1ddf95d39493674e38ea59ff",
+      "bytes": 279
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/0.log",
+      "archive": "attempts/independent-full-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/1.json",
+      "archive": "attempts/independent-full-a01/1.json.gz",
+      "sha256": "fea38fe285f66a1e5968e36b15b1b26431f9432e752e7ef1239a9a4f1a4da5bb",
+      "gzip_sha256": "8a761d2608071e8f4d0864d282ba16c3b0b387b7aa35b676da84d803c40a21bf",
+      "bytes": 314
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/1.log",
+      "archive": "attempts/independent-full-a01/1.log.gz",
+      "sha256": "eff339b4a7416b09d93dc4a794fd742f187bd0ade596bbbd96c26e4479782c75",
+      "gzip_sha256": "59e49c6676c793adaf1e9f45cd0df2d5d23278cc395b9be83fc67d196e40187f",
+      "bytes": 45
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/2.json",
+      "archive": "attempts/independent-full-a01/2.json.gz",
+      "sha256": "2d2ab9c70971b13bf00f92b4e63b7ad09afc90b81dca15ce93f6e06e6da1437f",
+      "gzip_sha256": "d089efd3e24e47d16052b460d8db6d276f0159564232562e99aac67674eded69",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/2.log",
+      "archive": "attempts/independent-full-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/3.json",
+      "archive": "attempts/independent-full-a01/3.json.gz",
+      "sha256": "c67e6f7f0b81847edcb2dd837e0fe1e496d96e6425a6929f52834ebc3b30689e",
+      "gzip_sha256": "d19d4fbad2f5948017a81c93eb398d309b10253032f955bda67ca6e591f89119",
+      "bytes": 312
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/3.log",
+      "archive": "attempts/independent-full-a01/3.log.gz",
+      "sha256": "a7a1f4e779fd3e35b9b62cad3b30be5491cb022f36a034d86f881f7b60c58bed",
+      "gzip_sha256": "1f73c338bf06b1766183173128f2fc9ed11b68d8725669ccdd02104c02276701",
+      "bytes": 677496
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/DeTurckJetLinearization.lean",
+      "archive": "attempts/independent-full-a01/DeTurckJetLinearization.lean.gz",
+      "sha256": "6bbeef18e719de7e5d61c3a41a35f5368720f508c840483ec04901c1ef7da566",
+      "gzip_sha256": "c8429102b05453a499937f98a35d15d4e363d5dd23a1d0fdd90ee685c7df660e",
+      "bytes": 14887
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/final.diff",
+      "archive": "attempts/independent-full-a01/final.diff.gz",
+      "sha256": "430aeeb691d4dc00b08d24604e3cf3d8544265e0833adb205c2f637ec96ac5a2",
+      "gzip_sha256": "a911d052e6838136c243e93ef53754ff189895111a72c546db901329c8d3d6da",
+      "bytes": 15318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/review.json",
+      "archive": "attempts/independent-full-a01/review.json.gz",
+      "sha256": "df6e76952d899f4f536cbf0887745eefc6510b3767954f032685892922c8292c",
+      "gzip_sha256": "f9cc716eb0764c8ff3750a642105d6a68f757f79958a04d0685254daf2943583",
+      "bytes": 1616
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-full-a01/task.snapshot.json",
+      "archive": "attempts/independent-full-a01/task.snapshot.json.gz",
+      "sha256": "c4a3562b699274c7b90cba1a461833ad94b6721f4732f86d5b85cef38023f5b6",
+      "gzip_sha256": "dc3f9e25c1bdbcae9c5a12506517129cf2997260b0a65788588f16a4864c0291",
+      "bytes": 10550
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/0.json",
+      "archive": "attempts/independent-inverse-a01/0.json.gz",
+      "sha256": "99d44c776aa82f47f5f76472ff252e14ee3d7ee3eaeb86cca73bf04f457d3fa5",
+      "gzip_sha256": "aae214cb4deec9ec97c5246a78b80291c13423b3ad3714ed32f5b28b39b6d224",
+      "bytes": 287
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/0.log",
+      "archive": "attempts/independent-inverse-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/1.json",
+      "archive": "attempts/independent-inverse-a01/1.json.gz",
+      "sha256": "0879b04d95526674ac57fbd2d36d59073ee5ad6ce0f638f69b14acf6a1badd7e",
+      "gzip_sha256": "7fae50271d8aae1657a6762b310c7e3a31ded881b66c06b1b81148e5e199b985",
+      "bytes": 321
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/1.log",
+      "archive": "attempts/independent-inverse-a01/1.log.gz",
+      "sha256": "1942786298eaa9036c403b7f6a596d7b2621b7566b2bda85f0d15317aceeca73",
+      "gzip_sha256": "ee9ab2e6b03e2979af74033fff3b70bcec419cde9d552d2c998da936835c9316",
+      "bytes": 51
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/2.json",
+      "archive": "attempts/independent-inverse-a01/2.json.gz",
+      "sha256": "d73c5c06c7f6f070635a8f940257adbb13054ed8e6fe4ccc896ab67a70d9602c",
+      "gzip_sha256": "eac3119f2d95670e5f6a98fd93d78d7219c0b4eb695561ad0f093a4157400f08",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/2.log",
+      "archive": "attempts/independent-inverse-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/3.json",
+      "archive": "attempts/independent-inverse-a01/3.json.gz",
+      "sha256": "47321465085acb57a0069cefdec9ef96fd53d99ccccbe4f5ecc5160c42465185",
+      "gzip_sha256": "e1d330c2df1622cf13fed4d4a00f7ea52cd2082f02bff6fd48a37bd8a394a53f",
+      "bytes": 315
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/3.log",
+      "archive": "attempts/independent-inverse-a01/3.log.gz",
+      "sha256": "45d281941f06aa371a6ca5dd3d0b11ec4299290600402f1065d596cc02eb9468",
+      "gzip_sha256": "aa65a2c6197736b5716048179d626ec07e65025223f9297d894f1c0b68c70dcb",
+      "bytes": 677514
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/DeTurckInverseEntryDerivative.lean",
+      "archive": "attempts/independent-inverse-a01/DeTurckInverseEntryDerivative.lean.gz",
+      "sha256": "a416bcc2842cbb12bed42bec5ed686ec086e14d3afe555c973e94efb5638720c",
+      "gzip_sha256": "3b62e76bf7d29b2c738be39cb94fd99fe8590d2756eda9f00c8e3c4d3874ee18",
+      "bytes": 2995
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/final.diff",
+      "archive": "attempts/independent-inverse-a01/final.diff.gz",
+      "sha256": "638024c79a92a6c870be26b2cf3cc61d0d546c5588e2dac0688cc9c6f50c01ea",
+      "gzip_sha256": "779c8dbc7d9a29b08277cc6f6550d25fc6cc3a03caf977443214ac32cd94f92b",
+      "bytes": 3325
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/review.json",
+      "archive": "attempts/independent-inverse-a01/review.json.gz",
+      "sha256": "6f4ebfca1f65b0ce2653f1455c044e736b3f57a8780e4001e2f433d3cf23e704",
+      "gzip_sha256": "51e9eb74214103aba093d143460fd6efca99932097ec8447cd7c1350141437bb",
+      "bytes": 1643
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-inverse-a01/task.snapshot.json",
+      "archive": "attempts/independent-inverse-a01/task.snapshot.json.gz",
+      "sha256": "0a19bc7d2b3e71d54f9bfd43531058527bbc7f85e8d4fa6a47f66d77aeebc9f4",
+      "gzip_sha256": "c85f55fe1a425e2491c3a91569f95fdb8b8cf3f11cf99ab36ee00a95b5755d49",
+      "bytes": 5633
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/0.json",
+      "archive": "attempts/independent-joint-a01/0.json.gz",
+      "sha256": "bc5c6ce2d89712da5d0727b0e2cbca81206903747bd06d5aaa7599f4e83a14bc",
+      "gzip_sha256": "aac9bc4b7f13430a966586700114b3d9107190226d4a16581b21018cf934ab51",
+      "bytes": 284
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/0.log",
+      "archive": "attempts/independent-joint-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/1.json",
+      "archive": "attempts/independent-joint-a01/1.json.gz",
+      "sha256": "03c2be543b462c9fa6f7428b55464d0065de64573ae71ca65178a0c1c838e848",
+      "gzip_sha256": "8ed7c1f866cd20eb587f1c0bbee8a1bd8ea47e1c89cea49f71517d88a07c8096",
+      "bytes": 318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/1.log",
+      "archive": "attempts/independent-joint-a01/1.log.gz",
+      "sha256": "59830662e88a9b52ae2248063361ce1ea05138e190fb27efd9de77a036d8771c",
+      "gzip_sha256": "7d8f7a470ae98a1a6e8f72eb8b08caa48a94645879bfc72270f6a20c443b1c37",
+      "bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/2.json",
+      "archive": "attempts/independent-joint-a01/2.json.gz",
+      "sha256": "548da97b324cb6a5418da16a6c41c05935ca2493a42a6a4d8f3b9feebfc1f250",
+      "gzip_sha256": "6b1d9820d9af6c88a6c79c4481e5db22c5a08bc79e2b1b218cb3aa93041d50da",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/2.log",
+      "archive": "attempts/independent-joint-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/3.json",
+      "archive": "attempts/independent-joint-a01/3.json.gz",
+      "sha256": "6cc3d1372e18aacdbaebcaa3b697794a58c73caf87307fa10757647b53288a74",
+      "gzip_sha256": "7bd2df72fca505d3a4c615c192d62eb183003905d7275adfee15eed63df90975",
+      "bytes": 312
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/3.log",
+      "archive": "attempts/independent-joint-a01/3.log.gz",
+      "sha256": "80a58fa40bcb050f4f8a9f394cd150c4b246ff4178d50a2a6b1b30ad4bbb3264",
+      "gzip_sha256": "635d61d7a0d27b21a818d2fb4c5df7a38f7271d8f913e77e63121029053f5b86",
+      "bytes": 677514
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/DeTurckLowerJointSmoothness.lean",
+      "archive": "attempts/independent-joint-a01/DeTurckLowerJointSmoothness.lean.gz",
+      "sha256": "a13a4aca10499e8d78499af0b338bb0da5b87c3fedd5aa96480eb0f241544a60",
+      "gzip_sha256": "897205d23bea3ad4737c90a7ca91dcb5c601a329853a604cda942bfa0153eb1c",
+      "bytes": 10987
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/final.diff",
+      "archive": "attempts/independent-joint-a01/final.diff.gz",
+      "sha256": "ea7ec28e5e592efe562622edd7828b1d135fbe4ba63634b9765a971e587a1003",
+      "gzip_sha256": "e211e7c4461337bf4a8b45ddedcdaef1fc31f16267092a404b6374f67359e633",
+      "bytes": 11408
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/review.json",
+      "archive": "attempts/independent-joint-a01/review.json.gz",
+      "sha256": "082c8deb71d74431a49a5995799db454fb40116ba4a8c190a0d6892625a03892",
+      "gzip_sha256": "e88de4d81f6011f390b543f1cdc9a950454eda13a0ff0291eef1d7ff2646622d",
+      "bytes": 1630
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-joint-a01/task.snapshot.json",
+      "archive": "attempts/independent-joint-a01/task.snapshot.json.gz",
+      "sha256": "26b3c248dbbf2cbfe5def73a8a10ebf22151b237500aef7088b5c5d79dbef30a",
+      "gzip_sha256": "6cb7dce1286975c1a5330683f6adeaa308c489cef50911c2523d1dbe32e5e91c",
+      "bytes": 8397
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/0.json",
+      "archive": "attempts/independent-unit-matrix-a01/0.json.gz",
+      "sha256": "01f11be6a33cd9b8f73e527bfc0798e753974985508f8b366c838e26f0b3ab04",
+      "gzip_sha256": "6d9aa41de106516484ad19efaf38387513cc388f3d30de66403f280343700afb",
+      "bytes": 284
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/0.log",
+      "archive": "attempts/independent-unit-matrix-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/1.json",
+      "archive": "attempts/independent-unit-matrix-a01/1.json.gz",
+      "sha256": "ca9abff209fa951689526a943a0f83226018e7601e3951df4e463263a86f7053",
+      "gzip_sha256": "d1cb97a7db705a47e8b75adcb641325c2558722c9978ca8c97108284a2123327",
+      "bytes": 318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/1.log",
+      "archive": "attempts/independent-unit-matrix-a01/1.log.gz",
+      "sha256": "0013e345d5e50d69b94863add757d6940714ddac89347adaddbb158a4361fb23",
+      "gzip_sha256": "76c4557a34d13232bf573ebc115576bc6a69662ffe79b318a16b9573c7d99b9e",
+      "bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/2.json",
+      "archive": "attempts/independent-unit-matrix-a01/2.json.gz",
+      "sha256": "2ff1c2a34103969e4e29e3c7f85432f4ea8d8695f0f10555e3465c58a03cdb4d",
+      "gzip_sha256": "51968be731c0295b24546a0fcea11f0a41bd103f797ba9abf31dc1f9510ff12f",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/2.log",
+      "archive": "attempts/independent-unit-matrix-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/3.json",
+      "archive": "attempts/independent-unit-matrix-a01/3.json.gz",
+      "sha256": "485dd0959e569c33871474b26a57cd69dd836ffc2d4999c861badf4e73e9f463",
+      "gzip_sha256": "70cbbc68cf2f78977eadf8688714e1474d9e0553392557e4a76198b9013a1bd8",
+      "bytes": 319
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/3.log",
+      "archive": "attempts/independent-unit-matrix-a01/3.log.gz",
+      "sha256": "b557a1a17551c5322a15ddf79f752fad93977213b663fd73c4ee4db1c383ed86",
+      "gzip_sha256": "d5a79b331366a1ed9b23301b648f409b7c82f91cd44da4aa1c98b2c6998ac1a0",
+      "bytes": 677510
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/DeTurckMetricJetNonsingular.lean",
+      "archive": "attempts/independent-unit-matrix-a01/DeTurckMetricJetNonsingular.lean.gz",
+      "sha256": "26ad947ae241d0a79a101855816a186f897b90891a34cee0572c2cfc66453a2b",
+      "gzip_sha256": "bbb5a532a8f20283bad365f0c41c55dd873677aec4973abe09a3bcc915bca66c",
+      "bytes": 1762
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/final.diff",
+      "archive": "attempts/independent-unit-matrix-a01/final.diff.gz",
+      "sha256": "19963b11ec57df5509f775667f9816c5638e84a46343a6b583ab7081c220afe0",
+      "gzip_sha256": "9671912aced69c1084342f74b75261a2876b2b47393aa48249630896038985f0",
+      "bytes": 2046
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/review.json",
+      "archive": "attempts/independent-unit-matrix-a01/review.json.gz",
+      "sha256": "0207c08732c3567458c97a59672e47ec2c54d8d87bb2cc3f5a0f902c5b999890",
+      "gzip_sha256": "c07e996ce35f2ccb383cb70513b2b1eaa33b6f0b82ebe09cd3e6b478b5d09c77",
+      "bytes": 1643
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent-unit-matrix-a01/task.snapshot.json",
+      "archive": "attempts/independent-unit-matrix-a01/task.snapshot.json.gz",
+      "sha256": "343e43ef6340f070b79eb2173f87b80e171f3e426d96d60e9cad1d26e1100e2c",
+      "gzip_sha256": "ba432422dcfe68adfa6e34d1e6858167c9098267f79b12ab514ca0d3798e0996",
+      "bytes": 5261
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/independent_gate.py",
+      "archive": "attempts/independent_gate.py.gz",
+      "sha256": "50e013d81b1b7e902da03a72892a072b6657c0acb186d4ba8c7d1405c5f2b077",
+      "gzip_sha256": "71b913b616d72a76cccbdb22ee2f9f68ecf6d103a4e6cbaf9b49e541b9e11d59",
+      "bytes": 1772
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/integrate-full.log",
+      "archive": "attempts/integrate-full.log.gz",
+      "sha256": "6c4209141ff7d483405d472a2a267fec7e42e577b42c934ea21e69984a405705",
+      "gzip_sha256": "1f8fad301bcb476206012e2560d2b0ea672cfc2da805c00682d433a79fe28681",
+      "bytes": 235
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/integrate-inverse.log",
+      "archive": "attempts/integrate-inverse.log.gz",
+      "sha256": "4d7e521a626240cbf1f72f83a93b94108250c43d3b132145fa21febccccc38b6",
+      "gzip_sha256": "73ed7fb5831d583751b34dbd32fbae5e9bd2d80174b91deb6c607e2c1d135899",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/integrate-joint.log",
+      "archive": "attempts/integrate-joint.log.gz",
+      "sha256": "1bc405bf5a4a478820a07da286103de33e85b8b4e7a0d0653844a70bf826ddb8",
+      "gzip_sha256": "84326f8cd8d697fbce20cc5d3bfd640d551ef11cb6392a729be4c64ab36764d1",
+      "bytes": 238
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/integrate-unit-matrix.log",
+      "archive": "attempts/integrate-unit-matrix.log.gz",
+      "sha256": "c038db7a8e90cf35d715d38ea570b3e3bd6eefb269b665cd44e3ae2d2882f880",
+      "gzip_sha256": "c5337f671223b2290dccebf82c38c38abb7583900c1014226f20ec6b8c4c9516",
+      "bytes": 241
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/integration-results.json",
+      "archive": "attempts/integration-results.json.gz",
+      "sha256": "0a4db7f02ea5978af38c35cbccd6f08d2aa1a33013258b45c4c621d48bd902dd",
+      "gzip_sha256": "cb57c75b743234fddc1251d91270a8321ac2ad772594220bc447796017c28d3a",
+      "bytes": 7859
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-01.lean",
+      "archive": "attempts/inverse-a01/attempt-01.lean.gz",
+      "sha256": "05d0122a49e567c40a91532bec720af59cfca734888e5c14277ce6fbc168893c",
+      "gzip_sha256": "e36fc25ab1465db75ab552f2e4c20c1f00d6d476afae8a28cd6693dee252af95",
+      "bytes": 2841
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-01.log",
+      "archive": "attempts/inverse-a01/attempt-01.log.gz",
+      "sha256": "73b20e6af9c053554a70312c09f958c7108fba1bb578c7dac49653afdc9388cc",
+      "gzip_sha256": "ce786b2e88b71755e0051634f2a71461f34801ca3f7255ee54a320d41f1b1966",
+      "bytes": 579
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-02.lean",
+      "archive": "attempts/inverse-a01/attempt-02.lean.gz",
+      "sha256": "05447da15e0ac8769b11afdea1f139e185ef0ee0dee859aba94274eb78d6237f",
+      "gzip_sha256": "2a543893c58ef1be24f46c150ec21515e71ab1a0273ed7cc78b4512430703caf",
+      "bytes": 2888
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-02.log",
+      "archive": "attempts/inverse-a01/attempt-02.log.gz",
+      "sha256": "66e4e4600ef631db344f98f0efec666391a3c3c7b5d93bd1fa58c1850677e14b",
+      "gzip_sha256": "3be5e54a689cdf172ccb354877585bee14b9bed40d29ba9fc0e42a4ccd769de6",
+      "bytes": 1446
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-03.lean",
+      "archive": "attempts/inverse-a01/attempt-03.lean.gz",
+      "sha256": "a416bcc2842cbb12bed42bec5ed686ec086e14d3afe555c973e94efb5638720c",
+      "gzip_sha256": "3b62e76bf7d29b2c738be39cb94fd99fe8590d2756eda9f00c8e3c4d3874ee18",
+      "bytes": 2995
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/attempt-03.log",
+      "archive": "attempts/inverse-a01/attempt-03.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/context-manifest.json",
+      "archive": "attempts/inverse-a01/context-manifest.json.gz",
+      "sha256": "709d700eb53947426ca1329dd3203d25da8db5a83f6a3ccb7fc81080c002eebf",
+      "gzip_sha256": "3386871783a247c921f33f67fa04fad465eb09f990889ab1462d78913b417bd8",
+      "bytes": 1468
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/final.diff",
+      "archive": "attempts/inverse-a01/final.diff.gz",
+      "sha256": "638024c79a92a6c870be26b2cf3cc61d0d546c5588e2dac0688cc9c6f50c01ea",
+      "gzip_sha256": "779c8dbc7d9a29b08277cc6f6550d25fc6cc3a03caf977443214ac32cd94f92b",
+      "bytes": 3325
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/gate-contract.log",
+      "archive": "attempts/inverse-a01/gate-contract.log.gz",
+      "sha256": "664657b18dd0e3af4dc774f1d68f0b8a5d13d5076c0c6273afc4fdb90a6adba2",
+      "gzip_sha256": "59cda407b174b1a408766bf24b39de5ef0651b755acbee0fad8d62a5a9b60696",
+      "bytes": 677589
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/gate-diff.log",
+      "archive": "attempts/inverse-a01/gate-diff.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/gate-forbidden.log",
+      "archive": "attempts/inverse-a01/gate-forbidden.log.gz",
+      "sha256": "1942786298eaa9036c403b7f6a596d7b2621b7566b2bda85f0d15317aceeca73",
+      "gzip_sha256": "ee9ab2e6b03e2979af74033fff3b70bcec419cde9d552d2c998da936835c9316",
+      "bytes": 51
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/gate-lean.log",
+      "archive": "attempts/inverse-a01/gate-lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/lease.json",
+      "archive": "attempts/inverse-a01/lease.json.gz",
+      "sha256": "c4b8129a248fe5318a15ccdf5c94606f7ef089993afd6954a0b7ee37545e00f8",
+      "gzip_sha256": "b57d09c3b3a97b4743ae400f848465eaeb85f2c426bc95c0b59c466721214c29",
+      "bytes": 406
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/lease.terminal.json",
+      "archive": "attempts/inverse-a01/lease.terminal.json.gz",
+      "sha256": "51892fb3e94970ee48460e1eec17afbfee9a9573afa26da35a53d7efaae7477f",
+      "gzip_sha256": "52b1c59296d35e65f4d73049d2fa44d9ec48f4bd43543f93071440d700fce589",
+      "bytes": 407
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/result.json",
+      "archive": "attempts/inverse-a01/result.json.gz",
+      "sha256": "8aad627e4327fceebef87791e108aeb73c82912e175dc44c5ce5aea65b480fc4",
+      "gzip_sha256": "4a6486b63d2241fde0499d5dcc34951f75328bc70f2d8b354001ffa2b6ac4b59",
+      "bytes": 852
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-a01/task.snapshot.json",
+      "archive": "attempts/inverse-a01/task.snapshot.json.gz",
+      "sha256": "0a19bc7d2b3e71d54f9bfd43531058527bbc7f85e8d4fa6a47f66d77aeebc9f4",
+      "gzip_sha256": "c85f55fe1a425e2491c3a91569f95fdb8b8cf3f11cf99ab36ee00a95b5755d49",
+      "bytes": 5633
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-definitions.build.log",
+      "archive": "attempts/inverse-definitions.build.log.gz",
+      "sha256": "98222928d112f182bab09acbbc42cdca20c5d54604a487bb8643128cdd51a8da",
+      "gzip_sha256": "bd3b67098c0762ff48aa23919e27f651bdaa2b24f31ee82bcae7b03ff8d254ff",
+      "bytes": 677345
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse-definitions.lean.log",
+      "archive": "attempts/inverse-definitions.lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse.build.log",
+      "archive": "attempts/inverse.build.log.gz",
+      "sha256": "e42efc15b75512d6946c4e99c9c1437cb01e237460ec9d270f5102347f0d316f",
+      "gzip_sha256": "2a7b2776fb37ef9367eafb5028f08ee6fac2a0416baaebc194c9fc8f0568395d",
+      "bytes": 677334
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse.preflight.lean",
+      "archive": "attempts/inverse.preflight.lean.gz",
+      "sha256": "c539b9a281bcae5c8c27f30224cb71123c965e0a60cea93f7e8558425929b9bb",
+      "gzip_sha256": "c3be651b19553fe3341f6e650816a8e498e4b33bf2234a0fd72305a5291cc6d8",
+      "bytes": 804
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/inverse.preflight.log",
+      "archive": "attempts/inverse.preflight.log.gz",
+      "sha256": "250a8f3c174ba191a41b85fbaff4def3ece6460abcb089d017de2ffcda8738af",
+      "gzip_sha256": "1f5ed38c2a1fbc104d30196ddab0ecf1ab4419737434575c44d23013042a5c0b",
+      "bytes": 39
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/jet-definitions.build.log",
+      "archive": "attempts/jet-definitions.build.log.gz",
+      "sha256": "efb41bb94ab19dc54641edfd479aa17b52f97ddee68192c73d9bf47ce70d0402",
+      "gzip_sha256": "2e62f0a2736da290cdae43bd986dc28246f1e89fae2e95fabba7e755a1536df1",
+      "bytes": 677338
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/jet-definitions.lean.log",
+      "archive": "attempts/jet-definitions.lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/artifact-hashes.json",
+      "archive": "attempts/joint-a01/artifact-hashes.json.gz",
+      "sha256": "0514f20f51115d167159b874ba74854a4c8eec0365729489787010eef1ab88db",
+      "gzip_sha256": "619e36fd18b9096bf04c246e6e3b678a2f85219cd4df6bda923d8b1637bd0beb",
+      "bytes": 1084
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/attempt01.lean",
+      "archive": "attempts/joint-a01/attempt01.lean.gz",
+      "sha256": "a13a4aca10499e8d78499af0b338bb0da5b87c3fedd5aa96480eb0f241544a60",
+      "gzip_sha256": "897205d23bea3ad4737c90a7ca91dcb5c601a329853a604cda942bfa0153eb1c",
+      "bytes": 10987
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/attempt01.log",
+      "archive": "attempts/joint-a01/attempt01.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/context-manifest.json",
+      "archive": "attempts/joint-a01/context-manifest.json.gz",
+      "sha256": "4125d21aad30a659f053b39b7b5bf2a71d47af4e0d8f52d374c6f975e7e7aeb9",
+      "gzip_sha256": "a5a2b0e0c6bd117023e5ebea5a7837b7cd500ebf5a677c83313a492647d1f90d",
+      "bytes": 1297
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/diff-check.log",
+      "archive": "attempts/joint-a01/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/final-source.lean",
+      "archive": "attempts/joint-a01/final-source.lean.gz",
+      "sha256": "a13a4aca10499e8d78499af0b338bb0da5b87c3fedd5aa96480eb0f241544a60",
+      "gzip_sha256": "897205d23bea3ad4737c90a7ca91dcb5c601a329853a604cda942bfa0153eb1c",
+      "bytes": 10987
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/final.diff",
+      "archive": "attempts/joint-a01/final.diff.gz",
+      "sha256": "ea7ec28e5e592efe562622edd7828b1d135fbe4ba63634b9765a971e587a1003",
+      "gzip_sha256": "e211e7c4461337bf4a8b45ddedcdaef1fc31f16267092a404b6374f67359e633",
+      "bytes": 11408
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/forbidden-scan.log",
+      "archive": "attempts/joint-a01/forbidden-scan.log.gz",
+      "sha256": "59830662e88a9b52ae2248063361ce1ea05138e190fb27efd9de77a036d8771c",
+      "gzip_sha256": "7d8f7a470ae98a1a6e8f72eb8b08caa48a94645879bfc72270f6a20c443b1c37",
+      "bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/frozen-contract.log",
+      "archive": "attempts/joint-a01/frozen-contract.log.gz",
+      "sha256": "66b4bb776b3efdbec928d040bafa33973b286c466ed01ba692d4bfba23c27f77",
+      "gzip_sha256": "36eb23975316fa2fb766b6837eb56a6d68c2c05f7134bf0224360a2d338b0069",
+      "bytes": 677587
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/lease.json",
+      "archive": "attempts/joint-a01/lease.json.gz",
+      "sha256": "a2fb1827fee42ef745c9f209ed74f9facec77d8b82ee3b5743c47378f525bfbf",
+      "gzip_sha256": "21c0efeaa963b84a7c415b903d7494a5591d993d089ad2c5310cb72ce0cd315c",
+      "bytes": 400
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/lease.terminal.json",
+      "archive": "attempts/joint-a01/lease.terminal.json.gz",
+      "sha256": "64c7f4dea4c587b8a3ebf9b22d9314a32012ec75ce48e862bb9529cc2495101f",
+      "gzip_sha256": "3fb3e328e121cb45fbf4b93dd00fa05a5af6f523fbcd07ee9e0825297c2bc0b3",
+      "bytes": 401
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/staged-diff-check.log",
+      "archive": "attempts/joint-a01/staged-diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/task.snapshot.json",
+      "archive": "attempts/joint-a01/task.snapshot.json.gz",
+      "sha256": "26b3c248dbbf2cbfe5def73a8a10ebf22151b237500aef7088b5c5d79dbef30a",
+      "gzip_sha256": "6cb7dce1286975c1a5330683f6adeaa308c489cef50911c2523d1dbe32e5e91c",
+      "bytes": 8397
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-a01/worker-result.json",
+      "archive": "attempts/joint-a01/worker-result.json.gz",
+      "sha256": "2c348032aad4a311a5d7a346c0e4f53b90a0b2cad7e62d144881692dddc96cf0",
+      "gzip_sha256": "8e051562877f161a4338bf2646ecd4bf557931784dfb8b6157f2b9313b564d21",
+      "bytes": 859
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-canonical-norms.lean",
+      "archive": "attempts/joint-canonical-norms.lean.gz",
+      "sha256": "1620aaeabac867dda93dc55449365fd6b69a907150a9c9221fe10f48c967bcc3",
+      "gzip_sha256": "2a75fa551bf753fd48f4c736720b44ce3bbe6b99318673f00d4fa2b12c333011",
+      "bytes": 3138
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-canonical-norms.log",
+      "archive": "attempts/joint-canonical-norms.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-canonical-norms.v1.failed.lean",
+      "archive": "attempts/joint-canonical-norms.v1.failed.lean.gz",
+      "sha256": "afa1711ec08c53eb0e967e7ae9833cc6fec851e4f1e6328f5a8b79c4ea8babc1",
+      "gzip_sha256": "d67768c9cb3d14da32b33999bb5bd7ceef5ade1a559e8f77eae1aa4c67c71742",
+      "bytes": 2986
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint-canonical-norms.v1.failed.log",
+      "archive": "attempts/joint-canonical-norms.v1.failed.log.gz",
+      "sha256": "e68d5eb598e2bff9a0dcbcc6c95a6422ca67eac4cc32f90dfe0fe7d3b5cc240f",
+      "gzip_sha256": "46c68d09eb7dde7be5ee940f2600f9002cad17b69940d85d77f851028228c58b",
+      "bytes": 320
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.build.log",
+      "archive": "attempts/joint.build.log.gz",
+      "sha256": "f046bb579080e8be3a5fa6c8d57f2f772a172d7a627dc36ca232cdfea129c3a7",
+      "gzip_sha256": "dc0288c8a5833c9714b0eac37ee8a0ce6255f8584d3946f4161fe534f352abc3",
+      "bytes": 677331
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.preflight.lean",
+      "archive": "attempts/joint.preflight.lean.gz",
+      "sha256": "5a759240452aa5e66b77db7a41dae19f85faceb011ba48f5c192fe505a7e546a",
+      "gzip_sha256": "c73610a406663a0fa768b85f55f455484eae156ad6989ebc0a5236df43925cc0",
+      "bytes": 3892
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.preflight.log",
+      "archive": "attempts/joint.preflight.log.gz",
+      "sha256": "ab360ce9dd846336e70178bd094b3079600a0d24a1c8a77735c3bc34950e62e7",
+      "gzip_sha256": "03b11611155037ff0797ddd36279ad6f75311ee0a445a039f0969bc50974effa",
+      "bytes": 41
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.v1.failed-contract.json",
+      "archive": "attempts/joint.v1.failed-contract.json.gz",
+      "sha256": "fa8ff8fff1a593613697fdd1e46b14dfb08e0e03156b3616ad3c13cf2c4239f0",
+      "gzip_sha256": "39a654ec9dcf242a738d235d774222698ffbc49587354276560a430d2af913e4",
+      "bytes": 2859
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.v1.failed-preflight.lean",
+      "archive": "attempts/joint.v1.failed-preflight.lean.gz",
+      "sha256": "b849fb1fb198668fdd3b20b798ac0cbd684a1f66541770162969cbd2a5ef8223",
+      "gzip_sha256": "624b2933263a714ac8bbb121daf3c01c27f2a4dcc4a5910b67a77aaa299348e8",
+      "bytes": 2086
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/joint.v1.failed-preflight.log",
+      "archive": "attempts/joint.v1.failed-preflight.log.gz",
+      "sha256": "17b96767128f21eb628eb7829f0a82436538b5ff188f3a630f77a44aa010d205",
+      "gzip_sha256": "bcc6bc9f5dd201ba14827c1cc42e67853ea579f44a2ca7525e6ab93958109329",
+      "bytes": 802
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/module-dependencies.lean",
+      "archive": "attempts/module-dependencies.lean.gz",
+      "sha256": "6a3061fa33bc839c1b43be6a6309f8eea2a1e07378c779e2a627b87380c5eb22",
+      "gzip_sha256": "6b2c64543ec539617b074dbdd358701ff1aefecee8d5d05683e1cb6bc632c576",
+      "bytes": 1147
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/module-dependencies.log",
+      "archive": "attempts/module-dependencies.log.gz",
+      "sha256": "4fef42c97755e659af89e78fe1a75b93544b8835a21d2f439aa9f45e5c40ee8f",
+      "gzip_sha256": "a1aca967ad908207bc24acc98639e6bd8ed1684e9bbc6db2621ebae983ab1c2a",
+      "bytes": 438
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/poincare-dq-freeze-20260930.py",
+      "archive": "attempts/poincare-dq-freeze-20260930.py.gz",
+      "sha256": "1a6ffcd3542436e1cafa24e67e6ae5fd9059229bc68e0248dbc3eab8f954c623",
+      "gzip_sha256": "edcf0a5d6bf709e1394aac89df2a2a4eb1a1bb0f222a475a5edbfb6f4034f561",
+      "bytes": 6610
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/poincare-dq-full-freeze-20260930.py",
+      "archive": "attempts/poincare-dq-full-freeze-20260930.py.gz",
+      "sha256": "a8a500c7805b424497ef9aec4ed4d225b2820f365b9973a268a92e6732f16987",
+      "gzip_sha256": "2d66ea6eb5a23d05dc223c70ca3e1a8b18fb03e1267c7efc3c2127223e2a33a3",
+      "bytes": 3422
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/poincare-dq-tasks-20260930.py",
+      "archive": "attempts/poincare-dq-tasks-20260930.py.gz",
+      "sha256": "bfafbdfec8bcbaf36cc0c7c63698437498583ee977cf8acbb8674e1f41b36419",
+      "gzip_sha256": "6a3e6a256912f0b2d386b79708633006b16a2fa6db31c1111a3eab509d988720",
+      "bytes": 3438
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/earlier-readback-probe-inventory.json",
+      "archive": "attempts/readback-diagnostics/earlier-readback-probe-inventory.json.gz",
+      "sha256": "f7c436d2a018e5c63f658c4c09b67068b402be1f9bd8d5bce042c0ea9adb2e39",
+      "gzip_sha256": "65b0f19c7612857b0438cf6860b49a595f034249bab711f792bde72cf5fed0db",
+      "bytes": 1495
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/full-literal-projections-norm-v1.lean",
+      "archive": "attempts/readback-diagnostics/full-literal-projections-norm-v1.lean.gz",
+      "sha256": "2d58f6f765aa6ac8dfb8097225775eabbf21317a14dfe683b2a816bf76700f5d",
+      "gzip_sha256": "b6f309447665b0a639409d9a45e02e84870cbf64da8c768e5415bc27862a2d74",
+      "bytes": 6540
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/full-literal-projections-norm-v1.log",
+      "archive": "attempts/readback-diagnostics/full-literal-projections-norm-v1.log.gz",
+      "sha256": "31942ac4a7eb8343c02c8dc9e13f6864130fad80960987625e74ec1f725b768e",
+      "gzip_sha256": "1587faf87f277e75f963ff04db4a982c3dea2b996a86de219458d618f8ee81c5",
+      "bytes": 880
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-joint-readback-v2.lean",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-joint-readback-v2.lean.gz",
+      "sha256": "d373400c17956accab08b115aa64dd439191268ea3b802ca2ebd045fbbf6e138",
+      "gzip_sha256": "2d810b68ad8be171fcd3cd94ca34071757bf362ce491d3d7eb544898fd41766a",
+      "bytes": 5125
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-joint-readback-v2.log",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-joint-readback-v2.log.gz",
+      "sha256": "2ca021f28e36e3ec431798647eb8bfd8f8dc7f9c024e25309c8046dde10758da",
+      "gzip_sha256": "056a88c05e2c927c8acd73053af52dd59b8f498843663e57f2fa08c81836e58d",
+      "bytes": 134
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-unit-inverse-readback.lean",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-unit-inverse-readback.lean.gz",
+      "sha256": "d8b100b5dce23171c39273fba1e9e32bad3a7192c437e9b7040619fde202e000",
+      "gzip_sha256": "9e138158d6642b496156fc38ebd04807bfcb61adc21f4786b6c487735c51397f",
+      "bytes": 2532
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-unit-inverse-readback.log",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-unit-inverse-readback.log.gz",
+      "sha256": "5bc7988f0db8422f495459ebf009da55017f70de45bca6500f2247fe58128df2",
+      "gzip_sha256": "05177f09d9eb506a1884359261c087c55244335d64b9fda1da9e5e259de742aa",
+      "bytes": 156
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-unit-matrix-raw-instance-readback.lean",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-unit-matrix-raw-instance-readback.lean.gz",
+      "sha256": "4fa6fb4e142c07387f6a39944910ae8e4171b879139cbf53bb8bc6c42f88ff9a",
+      "gzip_sha256": "8e13a9143cdd5298f90514dbdf4560e3b88ae2479c35125ccd346a074fb41f4c",
+      "bytes": 3390
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/readback-diagnostics/poincare-detruck-unit-matrix-raw-instance-readback.log",
+      "archive": "attempts/readback-diagnostics/poincare-detruck-unit-matrix-raw-instance-readback.log.gz",
+      "sha256": "c3845c71aba6aa910ee39dcaea16158d5d884c91ee9988fab6b07f2f163b43b5",
+      "gzip_sha256": "b89b0e01bdb20eb8018fdc34ebcd0292f6bc1ae6b29b7f56220dce41f605a20e",
+      "bytes": 1736
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/root.lean.log",
+      "archive": "attempts/root.lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/attempt01.lean",
+      "archive": "attempts/unit-a01/attempt01.lean.gz",
+      "sha256": "2acb602f76dbc18f9ac7bac64d34885d9f89559412fc7eae823ea186d232a757",
+      "gzip_sha256": "33deac6ef42c463bf6af6fe7b32b26dbfbab124a6f646b5be44029e40694cfb7",
+      "bytes": 1719
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/attempt01.log",
+      "archive": "attempts/unit-a01/attempt01.log.gz",
+      "sha256": "3ac32be100a4024ce52944fa349e3f5090409800bbd7e9b4bb31c1f6cc2084b4",
+      "gzip_sha256": "2b0f7ddb89335d61cf10cf3e5c3773bac845239dbcefcdfaad20f26bb8643344",
+      "bytes": 362
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/context-manifest.json",
+      "archive": "attempts/unit-a01/context-manifest.json.gz",
+      "sha256": "d12515635e5392a5e08a37df4768d8067df8c4ff111abe194647a009cbe9c633",
+      "gzip_sha256": "3e85633fa35212fbf0d0c392ae4b38e0b940c245f84de628d861cef31253acc0",
+      "bytes": 1144
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/explicit-matrix-probe.lean",
+      "archive": "attempts/unit-a01/explicit-matrix-probe.lean.gz",
+      "sha256": "26ad947ae241d0a79a101855816a186f897b90891a34cee0572c2cfc66453a2b",
+      "gzip_sha256": "bbb5a532a8f20283bad365f0c41c55dd873677aec4973abe09a3bcc915bca66c",
+      "bytes": 1762
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/explicit-matrix-probe.log",
+      "archive": "attempts/unit-a01/explicit-matrix-probe.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/lease.json",
+      "archive": "attempts/unit-a01/lease.json.gz",
+      "sha256": "53c338fe27019c63a2819852a39d337667014330f6d9e09361ed8fff1f27da6c",
+      "gzip_sha256": "063646a04cb8e319a70c3b98c50d3a09349cf2558d208ecb613d235e6202db2a",
+      "bytes": 398
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/lease.terminal.json",
+      "archive": "attempts/unit-a01/lease.terminal.json.gz",
+      "sha256": "a4c82b3c9f444927c6970ba9c30e7ce9b15a26877e87d04c36206ce86c50fee3",
+      "gzip_sha256": "4dda680088600ce73c8e943d2f2cc30f1724e0e1b360df358948120989a5ef00",
+      "bytes": 401
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/orchestrator-rejection.json",
+      "archive": "attempts/unit-a01/orchestrator-rejection.json.gz",
+      "sha256": "55aa50f4f5b7795793c9cf2299ca9ba967504d3bc97d5a2db33f502c2cebfc68",
+      "gzip_sha256": "e5f2d6ffd29e04e1431f6deea09e0b7036d1f956f954c4d9ece03c6662ff1cf0",
+      "bytes": 485
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/preflight-result.json",
+      "archive": "attempts/unit-a01/preflight-result.json.gz",
+      "sha256": "cdfc54da15220a17955903de7227a510c196d679820743c43d2da630525c494d",
+      "gzip_sha256": "14de9066c26a4ef05cb10c33c81e801ab454dacb1fa044588418624228f6feda",
+      "bytes": 1049
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-a01/task.snapshot.json",
+      "archive": "attempts/unit-a01/task.snapshot.json.gz",
+      "sha256": "6c190cb73684cc542c062319426fce7388c9b2557932f44b3c532ede8051503a",
+      "gzip_sha256": "ab1f1fe49a3a3efcedb3b1edb510cec11fd2a0dfbe588a9dc16a2710200acffb",
+      "bytes": 5182
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/attempt01.lean",
+      "archive": "attempts/unit-matrix-a01/attempt01.lean.gz",
+      "sha256": "26ad947ae241d0a79a101855816a186f897b90891a34cee0572c2cfc66453a2b",
+      "gzip_sha256": "bbb5a532a8f20283bad365f0c41c55dd873677aec4973abe09a3bcc915bca66c",
+      "bytes": 1762
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/attempt01.log",
+      "archive": "attempts/unit-matrix-a01/attempt01.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/context-manifest.json",
+      "archive": "attempts/unit-matrix-a01/context-manifest.json.gz",
+      "sha256": "667255378cfe458336236e671eb1adecf60c2978d7e272667242749c705b861d",
+      "gzip_sha256": "fc2d0e263a8294690603bc8751e4b03b8d6e09ba9c9a5b9ef40d74ed62e37aca",
+      "bytes": 1151
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/contract.log",
+      "archive": "attempts/unit-matrix-a01/contract.log.gz",
+      "sha256": "9963a0649988f9764336f4d4bc453ab1b4bda79725f607a128dfce3b8ce47aef",
+      "gzip_sha256": "8b857214a522cc3bfabc0e9a838d4c9e2b5e2059e66a9cee56c1518bd5f8d049",
+      "bytes": 677583
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/diff-check.log",
+      "archive": "attempts/unit-matrix-a01/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/final.diff",
+      "archive": "attempts/unit-matrix-a01/final.diff.gz",
+      "sha256": "19963b11ec57df5509f775667f9816c5638e84a46343a6b583ab7081c220afe0",
+      "gzip_sha256": "9671912aced69c1084342f74b75261a2876b2b47393aa48249630896038985f0",
+      "bytes": 2046
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/forbidden.log",
+      "archive": "attempts/unit-matrix-a01/forbidden.log.gz",
+      "sha256": "0013e345d5e50d69b94863add757d6940714ddac89347adaddbb158a4361fb23",
+      "gzip_sha256": "76c4557a34d13232bf573ebc115576bc6a69662ffe79b318a16b9573c7d99b9e",
+      "bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/lease.json",
+      "archive": "attempts/unit-matrix-a01/lease.json.gz",
+      "sha256": "8f89162b41dfd3f7c0888e5f56cbd61b41808f55251a7846c3d6ac0bf8d67cd1",
+      "gzip_sha256": "5a994558c745f3dc0786a107195e4a745092fdbf8ef824231109f1b70664d7ca",
+      "bytes": 412
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/lease.terminal.json",
+      "archive": "attempts/unit-matrix-a01/lease.terminal.json.gz",
+      "sha256": "7f3c1d3d4af4c03a81d5b61ec119392b691600793437f7d84af145e00b85a7ab",
+      "gzip_sha256": "5189df9c2bfca2cabd14b21fb236bc934af1fb1b7ec7e2df0e97b4e1bf041fbc",
+      "bytes": 413
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/task.snapshot.json",
+      "archive": "attempts/unit-matrix-a01/task.snapshot.json.gz",
+      "sha256": "343e43ef6340f070b79eb2173f87b80e171f3e426d96d60e9cad1d26e1100e2c",
+      "gzip_sha256": "ba432422dcfe68adfa6e34d1e6858167c9098267f79b12ab514ca0d3798e0996",
+      "bytes": 5261
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix-a01/worker-result.json",
+      "archive": "attempts/unit-matrix-a01/worker-result.json.gz",
+      "sha256": "63f061bc4f0ff59f9a814978bfc891599f338653bff5d0b1a16b6e68fda236fb",
+      "gzip_sha256": "db17123e19f4e9e05a45a7cae03acc6b65eee3b11610f125e5a26fc6350e4534",
+      "bytes": 1315
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit-matrix.build.log",
+      "archive": "attempts/unit-matrix.build.log.gz",
+      "sha256": "9b5dc3e46a08d2b529932760bc3a5b8842c4f283793261a689098c4291e49a9d",
+      "gzip_sha256": "c95491903ef375f4c27654a7e9bf9f7d99d6216587197626195c5a80994dacb6",
+      "bytes": 677332
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit.preflight.lean",
+      "archive": "attempts/unit.preflight.lean.gz",
+      "sha256": "34b3feedba1560c41b8b0f6ba6c707d892681d1f2dd34c44d2ece7028aac2b48",
+      "gzip_sha256": "4973de5f73134570dceeaf3dbdcc6426376dd35f92d218b23a75cefbcb113ab2",
+      "bytes": 744
+    },
+    {
+      "source": "harness/v2/state/core-deturck-linearization-20260930/unit.preflight.log",
+      "archive": "attempts/unit.preflight.log.gz",
+      "sha256": "76348d61b91a265f9b9c061b4140d8c7d553e35511b1d2fb955834ca498b8705",
+      "gzip_sha256": "55a3469d8eba9d5c6a4371b9c5eebcdf970b102f9666ad2c3064e34884aaafbc",
+      "bytes": 39
+    },
+    {
+      "source": "harness/v2/state/verification/latest.json",
+      "archive": "checkpoint/latest.json.gz",
+      "sha256": "d602a269a34d1f2826542de1db2b62a25e2a6f1caf3fc65c6bf1d5f4d63e31bf",
+      "gzip_sha256": "9e0961f8d59b015df86922ff90b894d438ee875c459a409a93e57955b43ab88a",
+      "bytes": 4946615
+    },
+    {
+      "source": "CURRENT_STATUS.md",
+      "archive": "checkpoint/CURRENT_STATUS.md.gz",
+      "sha256": "08d7012dcd179999af11140bb9fd46072a86f31dae1abaaa446c942ee74794e1",
+      "gzip_sha256": "305b757f2d0eb1db4b931781b1e24b1a7951ef0ffd8e8e8084fee49a9bb530ce",
+      "bytes": 72234
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/axiom.out",
+      "archive": "checkpoint/axiom.out.gz",
+      "sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "gzip_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73",
+      "bytes": 13558
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/axiom.status",
+      "archive": "checkpoint/axiom.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/axiom.timing.json",
+      "archive": "checkpoint/axiom.timing.json.gz",
+      "sha256": "831f3796ff48c7e345448bd910df6d6939c51256c20c8d1d5722ca39a06c01e7",
+      "gzip_sha256": "2629f5a5826942220ce80c484343ecb1c5b611a38aea874dae359bd57c2d20fc",
+      "bytes": 225
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/build.out",
+      "archive": "checkpoint/build.out.gz",
+      "sha256": "e539cd05b3937c1ccd998271d4f72223844568b13c0777af6f341022eac6d8a6",
+      "gzip_sha256": "f42e8aad2a8d4b342b8a97cc872c33e5901472cf9b4cf6fa15ce0fe8532d31ab",
+      "bytes": 829866
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/build.status",
+      "archive": "checkpoint/build.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/build.timing.json",
+      "archive": "checkpoint/build.timing.json.gz",
+      "sha256": "80222e208d4cc3a5408625081487015767fdfc9c8c5a0c89a86e4b6c881c349d",
+      "gzip_sha256": "371c930e8ca0a29727a91b97aeb2c027c551751b7bdba64705325ecabf8de6ff",
+      "bytes": 209
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/completion.out",
+      "archive": "checkpoint/completion.out.gz",
+      "sha256": "f029273d427a859a66887726b8cfd6e84b2c108c649061bdeb32ddd2cb697ed9",
+      "gzip_sha256": "a671e6bc9a6fd52aa837e5755b20e2d69bb38f1505310c30e3997af2265ed82d",
+      "bytes": 1636684
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/completion.status",
+      "archive": "checkpoint/completion.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/completion.timing.json",
+      "archive": "checkpoint/completion.timing.json.gz",
+      "sha256": "c1acf13e4769e35094463f109c1e81ba4bb2e9cb42fd9c258e4c390a0a2e26ff",
+      "gzip_sha256": "a1a1b4aacacf808373a89896480ac302b483088a64d8f3d20070963da52961ff",
+      "bytes": 413
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/interface.out",
+      "archive": "checkpoint/interface.out.gz",
+      "sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "gzip_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b",
+      "bytes": 25984
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/interface.status",
+      "archive": "checkpoint/interface.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/interface.timing.json",
+      "archive": "checkpoint/interface.timing.json.gz",
+      "sha256": "25f52dcc694845001e3f581ff9e3d16c864f703ff57a212195ea656679ab7fee",
+      "gzip_sha256": "447ee26419398a4dd743f2f403f1372b8c8306288913773e2e8988aa020a8c74",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/mathlib.out",
+      "archive": "checkpoint/mathlib.out.gz",
+      "sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "gzip_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592",
+      "bytes": 732
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/mathlib.status",
+      "archive": "checkpoint/mathlib.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/mathlib.timing.json",
+      "archive": "checkpoint/mathlib.timing.json.gz",
+      "sha256": "19c33937ee6b0756a35f446f65660ee8d61a7e05c5b14df2b6a8c7bac72d6d32",
+      "gzip_sha256": "67d1274b12be5a93d4e4a7b4c871624616315da541c9aaf67bd2a27389901226",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/receipt.json",
+      "archive": "checkpoint/receipt.json.gz",
+      "sha256": "d602a269a34d1f2826542de1db2b62a25e2a6f1caf3fc65c6bf1d5f4d63e31bf",
+      "gzip_sha256": "9e0961f8d59b015df86922ff90b894d438ee875c459a409a93e57955b43ab88a",
+      "bytes": 4946615
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/root_import.out",
+      "archive": "checkpoint/root_import.out.gz",
+      "sha256": "6412f8f68d24e826db868237e283767fd0918ef9e4965d5cc7ec86e8f12efcf1",
+      "gzip_sha256": "ee6ccab739756bc13f30deed14331e2de9d076e952e5ccd9b60a62dbd1fde1c6",
+      "bytes": 92329
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/root_import.status",
+      "archive": "checkpoint/root_import.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/root_import.timing.json",
+      "archive": "checkpoint/root_import.timing.json.gz",
+      "sha256": "b00f2cbf794e1aef27dcf83ffbbd7c8a16e7cadfda538b73a28a0ee5210b4345",
+      "gzip_sha256": "dbbf89155f2643a10260b075a283b5375621dc7985bfaf3e4ac3eb7974d3f0ce",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/semantic.out",
+      "archive": "checkpoint/semantic.out.gz",
+      "sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "gzip_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621",
+      "bytes": 14744
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/semantic.status",
+      "archive": "checkpoint/semantic.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/semantic.timing.json",
+      "archive": "checkpoint/semantic.timing.json.gz",
+      "sha256": "a49c6c18f301f6f39cd33a75bd6dcb823f8d2a472065f2e203229a7e54fdee92",
+      "gzip_sha256": "749c55b0d5d2a1c75a8819eab5844b6decf1a6d13ec0a51af8fc6488c65f4326",
+      "bytes": 239
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/shape.out",
+      "archive": "checkpoint/shape.out.gz",
+      "sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "gzip_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249",
+      "bytes": 91129
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/shape.status",
+      "archive": "checkpoint/shape.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/shape.timing.json",
+      "archive": "checkpoint/shape.timing.json.gz",
+      "sha256": "c1399df8dd6b91b5af33d3f5e1aa60b1265fec0b43e6dea1d5d9ef6f4e85ad7a",
+      "gzip_sha256": "03562e977b4cc94ab81a0266d25c4559b91a76e8b686a80ea86458ff5ed9bf3f",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/source-before.json",
+      "archive": "checkpoint/source-before.json.gz",
+      "sha256": "84912065236fc25492c434195c4c36300a4bb0ff345d51e12000743d381f3a0e",
+      "gzip_sha256": "aa365e434b85dbfcd4cf303b1ac6f7f88486e41dc9dce56c1440528515434d3f",
+      "bytes": 4712364
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/status.md",
+      "archive": "checkpoint/status.md.gz",
+      "sha256": "08d7012dcd179999af11140bb9fd46072a86f31dae1abaaa446c942ee74794e1",
+      "gzip_sha256": "305b757f2d0eb1db4b931781b1e24b1a7951ef0ffd8e8e8084fee49a9bb530ce",
+      "bytes": 72234
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/theorem.out",
+      "archive": "checkpoint/theorem.out.gz",
+      "sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "gzip_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166",
+      "bytes": 5523
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/theorem.status",
+      "archive": "checkpoint/theorem.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T095303Z-c9b5e25a133d4778bc528a40853c6866/theorem.timing.json",
+      "archive": "checkpoint/theorem.timing.json.gz",
+      "sha256": "874146ecadbf58a96838c328b505f344366b2ed061d73defb948a951281f8e0c",
+      "gzip_sha256": "8cc89d5e33cc659e080f3edaeb29210722824678284f238c4a192e2516df92a0",
+      "bytes": 237
+    }
+  ]
+}
