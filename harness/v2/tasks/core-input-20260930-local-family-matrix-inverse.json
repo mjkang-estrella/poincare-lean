@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-local-family-matrix-inverse",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "b6ef72aefe8f97d5e7402725d6cfa5d02ad770d8",
   "objective": {
     "title": "Construct actual local parametrix operators from the initial metric",
@@ -150,5 +150,6 @@
       "report_path": "harness/v2/contracts/core-local-parametrix-20260930/local-family-matrix-inverse.readback.json",
       "report_sha256": "914fdb73a24641e69823c8c6981493c703b2a5dbdb73ed5af9813d112414221e"
     }
-  }
+  },
+  "accepted_commit": "8890192d8f08ca7fb7f714da6b91a9ec72f2b625"
 }

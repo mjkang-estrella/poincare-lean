@@ -1,5 +1,45 @@
 # Handoff Snapshot
 
+## 2026-09-29 Constructed actual local solver operators
+
+The central objective remains universal Hamilton input existence. Neither
+`UniversalHamiltonConvergenceStatement` nor
+`ExistsSmoothabilitySmoothManifoldStatement` is discharged.
+
+`MetricAdaptedLocalParametrix.exists_metric_adapted_local_parametrix` now
+constructs the atlas, nested buffers, actual chart-local P_i/R_i, common
+nonnegative bounds and a positive lifespan from g0 and 0<alpha<1. It first
+chooses the actual solver's pointwise tolerances, then constructs its atlas.
+The independently verified inverse-metric coefficient and finite-lifespan
+proofs are consumed in this constructor. Residual and numerical estimates
+require forcing supported in coordSupport; only P_i.u spatial support is
+unconditional. Its residual is L_i(P_i f)-f, so local L_i P_i=id+R_i.
+
+The first unaccepted attempt exposed bare inverse notation elaborating as
+Pi.instInv in a function-valued coefficient position. Its original contract,
+incorrect readback, source and compiler evidence are preserved. A superseding
+independently reviewed contract explicitly binds Matrix.inv. Raw imported
+types confirm the accepted metric-neighborhood, buffered-atlas and inverse
+regularity statements already used Matrix.inv. All independent scoped gates
+passed for the corrected actual operator constructor; no hypothesis or final
+Poincare target was changed.
+
+The next inputs remain actual bounded global tensor L/P/R, matching the true
+DeTurck operator with its lower-order terms, with L.comp P=id-R and normR<1.
+The local plus-residual sign must be handled explicitly. Actual derivative
+transport, support/symmetry/overlap compatibility and its norm estimates are
+required; a value-only or extra-source-weight reconstruction is insufficient.
+Nonlinear inversion, matched initial jets and ordinary joint C3 at zero,
+general Ricci flow, continuation/surgery and favorable metric/limit production
+remain open. Do not infer these from the zero-extended local graph.
+
+First action: read the actual atlas tensor/jet gluing definitions and construct
+a bounded destination-only tensor transport for these local Graph outputs,
+retaining true chart-target/cutoff-one restrictions. Freeze its actual operator
+and jet norm contract before dispatch. See
+`harness/reports/core-local-parametrix-20260930.md` for the exact remaining core
+types, consumers and preserved failed-attempt evidence.
+
 ## 2026-09-29 Constructed metric-adapted solver geometry
 
 The core-first strategy remains unchanged. Both

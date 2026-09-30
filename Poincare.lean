@@ -20,6 +20,9 @@ import Poincare.Global.CenteredCoordinateNeighborhoodShrinking
 import Poincare.Global.MetricCoefficientNeighborhoods
 import Poincare.Global.RefinedFiniteAtlasExistence
 import Poincare.Global.MetricAdaptedBufferedAtlas
+import Poincare.Global.MetricInverseCoefficientRegularity
+import Poincare.Global.FiniteLocalSolverBounds
+import Poincare.Global.MetricAdaptedLocalParametrix
 import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer
