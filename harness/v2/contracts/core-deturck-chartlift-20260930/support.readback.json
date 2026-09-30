@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-chartlift-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "7393e33eca738a5df6a6cc8eb5e7d918577982b731f646fbc4ad43c44260b6eb",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckChartLift.compact_source_support",
+      "mathematical_statement": "Write E = ClosedSmoothModel 3 = EuclideanSpace real (Fin 3), I = closedSmoothModelWithCorners 3, and Bilin = E ->L[real] E ->L[real] real. For every M : Type u equipped with TopologicalSpace M, T2Space M, ChartedSpace E M, and IsManifold I infinity M, every anchor : M, and every arbitrary F : E -> Bilin, assume HasCompactSupport F and tsupport F is contained in the entire genuine target of extChartAt I anchor. The pinned localPullback is the actual tangent bilinear form F(extChartAt I anchor x) applied to A_x v and A_x w, where A_x is mfderiv I (the Euclidean model) (extChartAt I anchor) x. The pinned chartLift equals this form on the genuine chart source and the zero tangent bilinear form off it. The pinned sourceSupport is exactly (extChartAt I anchor).symm '' tsupport F, without intersecting the support with another set. Define S = {x : M | chartLift anchor F x is not zero}, where zero at each x is the zero continuous bilinear form in that actual tangent fiber. The conclusion is the full conjunction: sourceSupport is compact; it is contained in the chart source; at every x : M outside it the actual chartLift anchor F x is zero; closure S is compact; closure S is contained in sourceSupport; and for every x : M outside sourceSupport, chartLift anchor F y = 0 eventually in nhds x. Both closure operations use the actual nonzero-point set S in M. This explicit dependent-section formulation corrects the two earlier generic HasCompactSupport(chartLift) and tsupport(chartLift) clauses, whose constant-codomain API cannot accept these varying tangent bilinear fibers. HasCompactSupport and tsupport remain applied only to F, whose codomain Bilin is constant. The correction preserves the intended closed support of the actual global tensor, all original support/target quantifiers, pointwise zero extension, and neighborhood zero statements; it introduces no tensor identification or tangent seminorm surrogate. The coefficient support-target assumption makes its inverse-chart image a source-contained compact set, and T2 supports the closedness used for neighborhood vanishing. No compactness of the whole manifold, smoothness or continuity of F, background metric, positivity, center-only equality, extra support witness or PDE assertion is introduced."
+    }
+  ],
+  "findings": []
+}

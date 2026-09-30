@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-chartlift-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "69127548101cda5e122cf39de8f421b53f447ac524bc7b6fe78872113c26d0b3",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckChartLift.chartMetric_chartLift",
+      "mathematical_statement": "Write E = ClosedSmoothModel 3 = EuclideanSpace real (Fin 3), I = closedSmoothModelWithCorners 3, and Bilin = E ->L[real] E ->L[real] real. For every M : Type u with TopologicalSpace M, ChartedSpace E M, and IsManifold I infinity M, every anchor : M, every arbitrary F : E -> Bilin, and every z : E in the entire genuine target of extChartAt I anchor, the existing _root_.CovariantDerivative.chartMetric (I := I) of chartLift anchor F at anchor and z equals F z as a whole continuous bilinear form. The pinned lift is F(chart x) composed in both tangent arguments with the actual forward-chart mfderiv on the genuine source and zero off that source. The pinned chartMetric pulls that tensor at inverseChart z through the actual inverse-chart mfderivWithin on range I in both arguments. Thus this is tensor equality throughout the whole target, with forward/inverse derivative compatibility to be proved rather than supplied as an extra premise. There is no restriction to the anchor, coefficient support, selected compact set or a scalar pairing surrogate, and no compact-support, symmetry, smoothness, positivity, T2 or tangent seminorm assumption."
+    },
+    {
+      "name": "Poincare.DeTurckChartLift.chartLift_symmetric",
+      "mathematical_statement": "For every M : Type u with TopologicalSpace M, ChartedSpace E M, and IsManifold (closedSmoothModelWithCorners 3) infinity M, every anchor : M, and every F : E -> Bilin, where E is the actual Euclidean real 3-space and Bilin its continuous real bilinear forms, assume F z v w = F z w v for every z, v, w : E. Then for every x : M and every v, w : TangentSpace (closedSmoothModelWithCorners 3) x, the actual chartLift anchor F x v w equals chartLift anchor F x w v. The global quantifier includes all chart-source and off-source points; the pinned lift uses the forward chart differential in both arguments on source and the zero bilinear form elsewhere. The hypothesis quantifies all coefficient points and vectors, rather than merely the support or center. No compact-support, support-target, smoothness, positivity, T2, metric or tangent seminorm premise is added."
+    },
+    {
+      "name": "Poincare.DeTurckChartLift.chartLift_coordinates",
+      "mathematical_statement": "For every M : Type u with TopologicalSpace M, ChartedSpace E M, and IsManifold (closedSmoothModelWithCorners 3) infinity M, every anchor : M, every arbitrary F : E -> Bilin, and every x : M in the entire genuine source of extChartAt (closedSmoothModelWithCorners 3) anchor, let e be trivializationAt E (TangentSpace (closedSmoothModelWithCorners 3)) anchor, and let eR be trivializationAt real (fun _ : M => real) anchor. The second component of the actual nested bilinear bundle trivialization (e.continuousLinearMap (RingHom.id real) (e.continuousLinearMap (RingHom.id real) eR)) applied to the total-space point containing x and chartLift anchor F x equals F(extChartAt (closedSmoothModelWithCorners 3) anchor x). E is ClosedSmoothModel 3 and Bilin is E ->L[real] E ->L[real] real. This identifies the whole continuous bilinear coordinate form of the actual dependent tangent bilinear section, using both tangent slots and the scalar codomain. The domain is every point of the genuine chart source; the statement is neither only a tangent-vector coordinate identity nor only chartMetric recovery or a seminorm bound. No compact-support, support-target, symmetry, smoothness, positivity or supplied bundle-coordinate compatibility premise is present."
+    }
+  ],
+  "findings": []
+}

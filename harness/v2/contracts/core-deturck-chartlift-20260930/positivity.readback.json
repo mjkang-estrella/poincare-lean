@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-chartlift-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "d13e1e92b824dc0ef7a6bd1ca6e5739dfbed7049dd1723ea9505465e7b62a202",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckChartLift.exists_coordinate_variation_radius",
+      "mathematical_statement": "For every universe-u type M with a topology, Hausdorff separation, a charted structure with E = EuclideanSpace ℝ (Fin 3), and a smooth manifold structure for the boundaryless model I = closedSmoothModelWithCorners 3, take any actual smooth Riemannian tangent-bundle metric g0 : ClosedSmoothRiemannianMetric 3 M, any anchor : M, and any continuous-bilinear-form-valued field F : E → (E →L[ℝ] E →L[ℝ] ℝ). If F is globally smooth over ℝ, has compact topological support, and tsupport F is contained in the genuine target of extChartAt I anchor, then there exists a real ε > 0 such that, for every signed real s with |s| < ε, every z in that entire genuine chart target, and every v : E with v ≠ 0, the diagonal evaluation (CovariantDerivative.chartMetric g0.inner anchor z + s • F z) v v is strictly positive. The single ε is quantified before all s, z, and v; it may depend on the preceding metric, anchor, and field. The baseline is the actual chartMetric obtained by pulling g0.inner back through the inverse-chart derivative within range I, with no blending cutoff, reference coordinate metric, substituted norm, or supplied uniform coercivity margin. Compactness concerns tsupport F; no CompactSpace, ConnectedSpace, or SecondCountableTopology assumption on M occurs. The contract imposes no symmetry assumption on F and concludes only coordinate diagonal positivity. It does not construct a global actual smooth Riemannian metric family g0 + sH, assert symmetry of the perturbed forms, or identify H with chartLift; those require separate theorem-bearing construction and compatibility results. This interpretation was sealed from this exact contract and its six pinned definition files before reading README.md, the current dated HANDOFF.md section, or docs/PROJECT_MAP.md. The new author context, Task metadata, new proof module, and author proof route were not read. The six definition-file hashes and snapshot hash were independently checked with the repository snapshot utility; this is a statement readback, not verification that the declaration has been proved."
+    }
+  ],
+  "findings": []
+}
