@@ -147,3 +147,25 @@ Every failed compiler attempt, contract preflight, readback, worker snapshot,
 final diff and independent gate output is preserved append-only. Local Codex
 helpers are labelled honestly, not registered Pi/Leanstral Jobs. Historical
 and dirty worktrees remain intact. The complete-proof goal remains active.
+
+## Sealed integration checkpoint
+
+Clean source checkpoint: `5720eee4834ed98f7dacf3f3dbf18a5bdb690843`.
+Source-bound evidence: `harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423`.
+The build and interface, mathlib, shape, theorem, semantic, root-import and
+axiom phases returned 0. Completion returned 1 with exactly the reserved-name
+absence and exact endpoint probe failures; completion is not certified.
+The constructed-metric/atlas/carrier/operator application, fresh root Lean,
+whole-module dependency scan and live universal boundary probe passed.
+
+Compressed append-only evidence is under
+`core-deturck-compact-20260930-evidence/manifest.json`. Original and compressed
+SHA-256 hashes were verified for every archived payload. It retains failed
+preflights, the isolated jet proof and failed joint-import outputs, the
+superseding name-only repair and its joint probe, worker/compiler/frozen
+readback results, independent reviews and the next covariance findings.
+
+Use unique local-instance names in shared namespaces: anonymous compiler
+helpers collided despite individually passing modules in this batch.
+The first next task remains the full actual DQ localization product identity
+including the coupled first-order cutoff term. No universal core is discharged.

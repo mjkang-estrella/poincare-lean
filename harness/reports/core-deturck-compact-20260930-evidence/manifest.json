@@ -1,0 +1,1680 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "5720eee4834ed98f7dacf3f3dbf18a5bdb690843",
+  "backend": "local Codex helpers; not registered Pi/Leanstral Jobs",
+  "entries": [
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/__pycache__/freeze.cpython-314.pyc",
+      "archive": "attempts/__pycache__/freeze.cpython-314.pyc.gz",
+      "sha256": "23bf9a07b4eebe9faeaf138bd97ca22343de1fa4664d3348bfe0a1b82c35a65a",
+      "gzip_sha256": "995a699b5e14afe254788eab975d4a3a8639b31f23807722ebd01c70e9da315e",
+      "bytes": 10525
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/__pycache__/tasks.cpython-314.pyc",
+      "archive": "attempts/__pycache__/tasks.cpython-314.pyc.gz",
+      "sha256": "e290f9adfe190dff94b768ba75a65fdc833c9e34ef0c9c872ed292301d0ac7ff",
+      "gzip_sha256": "2f2c74235706e6e6cc2aa23a9f6b92f1197bda9db9fec7db523d3c4b0c39b62f",
+      "bytes": 6376
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.lean",
+      "archive": "attempts/actual-initial-metric-forcing.lean.gz",
+      "sha256": "c6f2230e59240c9dcabd46dd5c5d41f9baedaeaeba0a0fb291cf1001cd6aca89",
+      "gzip_sha256": "4a16efdc7b59bc9a3be4c0391f3f7f50205b37081d572811fb9f76b631abffd6",
+      "bytes": 9296
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.log",
+      "archive": "attempts/actual-initial-metric-forcing.log.gz",
+      "sha256": "8c7b7106b49a5b3fd18255a5d3bdc6df8a95c2d05e4b802d06dd477c08687f86",
+      "gzip_sha256": "3775906e59a0c8ecc9f61dc010a775d6109e4f183bc5c2ccba1d0b2f5bc28f57",
+      "bytes": 200
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.v1.import-collision.lean",
+      "archive": "attempts/actual-initial-metric-forcing.v1.import-collision.lean.gz",
+      "sha256": "8b261793219b6a45953d127d3296e6e8814933b12b8a8079f998cc2dc1330e4f",
+      "gzip_sha256": "50dcca7c389edf9be8cd8609ea1040f62cfc154b5b3f5e6a2ad6a3806c7c545e",
+      "bytes": 7451
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.v1.import-collision.log",
+      "archive": "attempts/actual-initial-metric-forcing.v1.import-collision.log.gz",
+      "sha256": "296087a738182c15e19b1c8b0d1927d1f533d2ad57c0f1f9916e5865dee87b7d",
+      "gzip_sha256": "1fc9020c4638e39551540e98c63626bbc547e07a56f3e9fbb3cc05ddaae14b79",
+      "bytes": 287
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.v2.metric-only.lean",
+      "archive": "attempts/actual-initial-metric-forcing.v2.metric-only.lean.gz",
+      "sha256": "8b261793219b6a45953d127d3296e6e8814933b12b8a8079f998cc2dc1330e4f",
+      "gzip_sha256": "50dcca7c389edf9be8cd8609ea1040f62cfc154b5b3f5e6a2ad6a3806c7c545e",
+      "bytes": 7451
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/actual-initial-metric-forcing.v2.metric-only.log",
+      "archive": "attempts/actual-initial-metric-forcing.v2.metric-only.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/archive_evidence.py",
+      "archive": "attempts/archive_evidence.py.gz",
+      "sha256": "ef75d1c9c23edbbbbf996a9f02fad6b67f6b40c348e9201af0cc566e31c37768",
+      "gzip_sha256": "5f8e778ad8db1b7a9e374df2dc6ecdf87b88b587943ade13017474402b4ad87b",
+      "bytes": 2095
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/compact-definitions.build.log",
+      "archive": "attempts/compact-definitions.build.log.gz",
+      "sha256": "2096d27748c74740e805e3611a3b52f2a2b7aef3dd4c0537a2516fd0131e0739",
+      "gzip_sha256": "4544edca3f31872dd7852250cca0d2cf516e5b2321d4d53e4e50bba1397cab7b",
+      "bytes": 677341
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/core-boundary.lean",
+      "archive": "attempts/core-boundary.lean.gz",
+      "sha256": "53f84bbc4bdf2f59756d18178e1f82c78fc2908c4cb743e6e6e97d11ae248bce",
+      "gzip_sha256": "3dfcd92819bc1d98d2f51a863aee1c0768c88a82fcfa22dde0362a5d31c11b86",
+      "bytes": 942
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/core-boundary.log",
+      "archive": "attempts/core-boundary.log.gz",
+      "sha256": "647d0918450f6b77fc2718fe32483b92266572592a2edeff3d1587d7c1759a0d",
+      "gzip_sha256": "7800c35c30ba0318011d36e515fea2be3a4bdea5bed2e80f0ddb12af8e278d6e",
+      "bytes": 3962
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/definitions-dependencies.log",
+      "archive": "attempts/definitions-dependencies.log.gz",
+      "sha256": "8d3b9957284a9d54f875d0dca858d84c05e681e83dfcbc7e19ec539abefdeafb",
+      "gzip_sha256": "54ffd1bcb5db4511225989955a484b101b5b29aeaa4ab0dd4347debb4452f14e",
+      "bytes": 154
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/definitions.log",
+      "archive": "attempts/definitions.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/final.diff",
+      "archive": "attempts/extension-a01/acceptance-001/final.diff.gz",
+      "sha256": "e0986540dcab391a1472d855d4718723fa03d6e08ddd0d39dc6574498acae452",
+      "gzip_sha256": "0aec5a3843b0c82685f23d5445ace71dc88e79316eb0ef21a6662941d7e23037",
+      "bytes": 12103
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/frozen-probe.lean",
+      "archive": "attempts/extension-a01/acceptance-001/frozen-probe.lean.gz",
+      "sha256": "b123eb5fdb9cf9990194cf765f6d9a86a9f5d5d9e9dbf5ba9a839c60d1c292fd",
+      "gzip_sha256": "e857dc49e6b7d403a43ee8448de14520979a5bd28e93d9b36a9b04f389dada0b",
+      "bytes": 4984
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-1.exit.json",
+      "archive": "attempts/extension-a01/acceptance-001/gate-1.exit.json.gz",
+      "sha256": "58fbaca35acf1863b408af1815afafe6d8e8405972705ea4990ebf88c9b5b15c",
+      "gzip_sha256": "1b6bc76e77485c7ce4a802862b697d95a6cf3a67e593d3da308a9b69dd42c703",
+      "bytes": 287
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-1.log",
+      "archive": "attempts/extension-a01/acceptance-001/gate-1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-2.exit.json",
+      "archive": "attempts/extension-a01/acceptance-001/gate-2.exit.json.gz",
+      "sha256": "8f8ecd66545d43ec0c8b32f602356cf62c1d637fe3ad1626b2e054d2e776afc9",
+      "gzip_sha256": "e9f7a15d3047ba518775ee5a14323b915889df03af41084c519c52cd487d2b25",
+      "bytes": 322
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-2.log",
+      "archive": "attempts/extension-a01/acceptance-001/gate-2.log.gz",
+      "sha256": "ce8315360f1bd7d5a3a783f60358a4ac5ad7dbd51b39f65ca9ec0e1c9b2b1913",
+      "gzip_sha256": "4242fabc30eb10b4a735881da43877c17730b8fad90c94d59a44fdd69d6c4bb2",
+      "bytes": 56
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-3.exit.json",
+      "archive": "attempts/extension-a01/acceptance-001/gate-3.exit.json.gz",
+      "sha256": "f7dfc1dd942cf73e4b4d11378d0f51adb2a8d083f40e81ab8be6078433707255",
+      "gzip_sha256": "80cd4dafe57412e016fbc9562aa75bb04b8c56827d160162b8689eb7d3417927",
+      "bytes": 193
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-3.log",
+      "archive": "attempts/extension-a01/acceptance-001/gate-3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-4.exit.json",
+      "archive": "attempts/extension-a01/acceptance-001/gate-4.exit.json.gz",
+      "sha256": "2666fabff42adda8c8cdf333f2047274131b1ccf9bfac81d6b3a87019f10a89b",
+      "gzip_sha256": "ef5108e0a4dc095149eb0a49a4028f8305ce62a7f7060b639477887208c0d926",
+      "bytes": 308
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/gate-4.log",
+      "archive": "attempts/extension-a01/acceptance-001/gate-4.log.gz",
+      "sha256": "f1aee9c15fc3c5043d1ab68e5aed0b714f8994e4c26dff3054f064e4430d1436",
+      "gzip_sha256": "26a81485ffebb1f80f8cb0a1e6e190f90290a139caff1d55809e9b0fee09b205",
+      "bytes": 694677
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/render.exit.json",
+      "archive": "attempts/extension-a01/acceptance-001/render.exit.json.gz",
+      "sha256": "81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2",
+      "gzip_sha256": "d83eb7c09cc2db2762e52e5580341a04d108d473b9334dc8cee729d4e406f985",
+      "bytes": 21
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/render.stderr",
+      "archive": "attempts/extension-a01/acceptance-001/render.stderr.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/acceptance-001/source.lean",
+      "archive": "attempts/extension-a01/acceptance-001/source.lean.gz",
+      "sha256": "075b3dacfbe06de30fd9f53262fc7c1bdff33779486b66c8423827f1678d1615",
+      "gzip_sha256": "2d0799daa178a8e0106362e10d4c99fff71832320669ed1e272dbfbcca64987d",
+      "bytes": 11691
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/commit-message.txt",
+      "archive": "attempts/extension-a01/commit-message.txt.gz",
+      "sha256": "0557ee153e8bcc9b44ac9b7e03c66822dbc3b3240905dac91d595bd95f9d930a",
+      "gzip_sha256": "858f37cea7973e4fb343be7877c340c0d26a6521750ec27120e243ca7cfd6383",
+      "bytes": 646
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/compile-001/compiler.log",
+      "archive": "attempts/extension-a01/compile-001/compiler.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/compile-001/exit.json",
+      "archive": "attempts/extension-a01/compile-001/exit.json.gz",
+      "sha256": "46ba44aad007442f42fd23e3b571e3441e497670a88170c9bf0b9e65f503a4f0",
+      "gzip_sha256": "6bff8ec990aae04902990b880e16d4d7575b31dbaa4dd978c26a2723d8f01268",
+      "bytes": 204
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/compile-001/source.lean",
+      "archive": "attempts/extension-a01/compile-001/source.lean.gz",
+      "sha256": "075b3dacfbe06de30fd9f53262fc7c1bdff33779486b66c8423827f1678d1615",
+      "gzip_sha256": "2d0799daa178a8e0106362e10d4c99fff71832320669ed1e272dbfbcca64987d",
+      "bytes": 11691
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/context-manifest.json",
+      "archive": "attempts/extension-a01/context-manifest.json.gz",
+      "sha256": "ac35ccb4d24086e55b57d51b82b393aa856faa330f984bbdf1e68eb14ee4c8c8",
+      "gzip_sha256": "158cb3bf431ebf0f26c24f943f2da8654d4aef157c87aab50f9f34f3b1f85ded",
+      "bytes": 2522
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/evidence-manifest.json",
+      "archive": "attempts/extension-a01/evidence-manifest.json.gz",
+      "sha256": "dad2af216c8cbc0ca85f0a120465e3b29c89f2e8980c296c0ea3867af9b7c735",
+      "gzip_sha256": "4ed3f73adafe73664192579860e5a11b90e4937df87f8b25dbebf1101f0dcc98",
+      "bytes": 3977
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/final-source.lean",
+      "archive": "attempts/extension-a01/final-source.lean.gz",
+      "sha256": "075b3dacfbe06de30fd9f53262fc7c1bdff33779486b66c8423827f1678d1615",
+      "gzip_sha256": "2d0799daa178a8e0106362e10d4c99fff71832320669ed1e272dbfbcca64987d",
+      "bytes": 11691
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/final.diff",
+      "archive": "attempts/extension-a01/final.diff.gz",
+      "sha256": "e0986540dcab391a1472d855d4718723fa03d6e08ddd0d39dc6574498acae452",
+      "gzip_sha256": "0aec5a3843b0c82685f23d5445ace71dc88e79316eb0ef21a6662941d7e23037",
+      "bytes": 12103
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/lease.json",
+      "archive": "attempts/extension-a01/lease.json.gz",
+      "sha256": "5511e29715f0efff3ab5a155c8afb83ba2cbaf22947e82cf07ec4af52c5ffa92",
+      "gzip_sha256": "f4be4c766b5e0e841dd09d66909dd6414991d1c577c541066947e3033da9e762",
+      "bytes": 424
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/lease.terminal.json",
+      "archive": "attempts/extension-a01/lease.terminal.json.gz",
+      "sha256": "eedac0aa580e423a3d6286a754c173c17e67010aa5d9c7ccfa6ae59ae78e8b4f",
+      "gzip_sha256": "17ed945f229a0896ff6510c13eaa0d2319dbd10052966a68059170912a047cc0",
+      "bytes": 426
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/run-compile.py",
+      "archive": "attempts/extension-a01/run-compile.py.gz",
+      "sha256": "844d9957bd965c2097a8c982e9acd342b0beb46294bd66a6ee2ea3b6085de6cb",
+      "gzip_sha256": "954175999d37754378e2737a9df3733471a2bf3a75bbe81a843e66cdca7af468",
+      "bytes": 936
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/run-gates.py",
+      "archive": "attempts/extension-a01/run-gates.py.gz",
+      "sha256": "9e92142b91892d9c97990ae02201f7c928106df2caf716e0bbf13c79bd28537a",
+      "gzip_sha256": "a24b16e92024d3caec677ffad47b9ffc300d396723fe18eabe681ac72fb1edde",
+      "bytes": 1878
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/task.snapshot.json",
+      "archive": "attempts/extension-a01/task.snapshot.json.gz",
+      "sha256": "18c45e8ddae602a295bfd327cc98042c8098c71b25d493f4d66c3d3153433cea",
+      "gzip_sha256": "cde7f5a69da45d9e6ed3b96d5bdafde553b7a6b369051f35e54516ae9740b755",
+      "bytes": 9386
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension-a01/worker-result.json",
+      "archive": "attempts/extension-a01/worker-result.json.gz",
+      "sha256": "e8558546722bfef707644028f5aa754e5aef26228fa17186f5086441fa524978",
+      "gzip_sha256": "0c46cdfe0bc381af67020249193d8f8ae2ac5c3315ab2e0a631de451a78ec520",
+      "bytes": 1263
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension.build.log",
+      "archive": "attempts/extension.build.log.gz",
+      "sha256": "729453075b7e2a93b404fdefd9cafb0bf94838537aa55feb4a9e63c5f18e640c",
+      "gzip_sha256": "f14195abf754f2b2caf709efc9c29aa7a32fb9a3919bcc9d8349b1b01d130002",
+      "bytes": 694416
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension.preflight.lean",
+      "archive": "attempts/extension.preflight.lean.gz",
+      "sha256": "0b692753bb165aa9a8bc08859f6d7a8f532e9166d2edc48b40e0c154322295a7",
+      "gzip_sha256": "a7bb164e9344098774bad1ae54519cc97bb92ec28a0b276df25875f221aaf9a6",
+      "bytes": 3142
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension.preflight.log",
+      "archive": "attempts/extension.preflight.log.gz",
+      "sha256": "deca29dc3e4fcb026536da90ec0d8b173b7df46f04929054a01685a2231b4272",
+      "gzip_sha256": "357fb68ce7542f141481e091ec7031fac344022a18c6b0d46f974321cc8a265b",
+      "bytes": 24
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension.preflight.v1.failed.lean",
+      "archive": "attempts/extension.preflight.v1.failed.lean.gz",
+      "sha256": "a3daaf68ad5615a6bb088e13fe35ed2796655e9ee632cbaf595fea80236f862e",
+      "gzip_sha256": "3cbcb50665c890171fbd3813568e5208c5acdfc1c4dfb1f64d6082884d0f5ff6",
+      "bytes": 3131
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/extension.preflight.v1.failed.log",
+      "archive": "attempts/extension.preflight.v1.failed.log.gz",
+      "sha256": "d1f699ce1bb272ef80f98a31b0a04a1bb79093fca2dd9d74453473dedb7ac5f4",
+      "gzip_sha256": "0aa3c0da7eb1cc2f61c5b2446215c82a838ca937dd1d3d7469c6f3856b13b5ac",
+      "bytes": 231
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/commit-message.txt",
+      "archive": "attempts/forcing-a01/commit-message.txt.gz",
+      "sha256": "03fe29b88b4cc5a9cd59f4692c540089110f478293749e157b496c299dc1d227",
+      "gzip_sha256": "601b0a97c90abe35fba10695fdc165bfb1bd21f756cbb0ab5ae8d3d1ce68f487",
+      "bytes": 556
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/commit-result.json",
+      "archive": "attempts/forcing-a01/commit-result.json.gz",
+      "sha256": "876d98205e3c074621fa6c7aff2fcd1ff43ea587e8db5ae472638910ecff1946",
+      "gzip_sha256": "91bb7d66139e3e5ce85bd8047979da63964b1971e8e21bf815a919a07f41c6e7",
+      "bytes": 272
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/commit.log",
+      "archive": "attempts/forcing-a01/commit.log.gz",
+      "sha256": "0300bdb1bbad32981427f031304a29faebf263940adb87c75424f61dda7fc1be",
+      "gzip_sha256": "65957117d0a2637f2e3da61d1f1294af6fda877bc9112d7b516db7a91070baf4",
+      "bytes": 200
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-01/compiler.log",
+      "archive": "attempts/forcing-a01/compile-01/compiler.log.gz",
+      "sha256": "5fae5ae2524babd0dc71974fcb0e5e13491226b57a7c0ff148716c3e36bd65e4",
+      "gzip_sha256": "88fc20a4b2f4533f4a47a1c8342c3ce4d2895423123bac0c37153162e58db48b",
+      "bytes": 78
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-01/result.json",
+      "archive": "attempts/forcing-a01/compile-01/result.json.gz",
+      "sha256": "c218afe6be26881798f74b4a9d8c7238b9885f4885846c341cacb040e3f7f8fc",
+      "gzip_sha256": "7e235f43c7177cc03e20f2f60a82b24eac523af905fba4b7d652197b5351e0e7",
+      "bytes": 252
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-01/source.lean",
+      "archive": "attempts/forcing-a01/compile-01/source.lean.gz",
+      "sha256": "ee807c322c3525ddbe79ffccab36e14de50a3020d5a3847982a03c1b48bfaa25",
+      "gzip_sha256": "bbb33729d7d8e02e8e9fac409805c3e90860a25ffecb54fbeb4b16e2544f9f5b",
+      "bytes": 3147
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-02/compiler.log",
+      "archive": "attempts/forcing-a01/compile-02/compiler.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-02/result.json",
+      "archive": "attempts/forcing-a01/compile-02/result.json.gz",
+      "sha256": "bfe08006ddb12ae796a152be7ec5d951e5031a080c9cc01d670afa34c92fce7e",
+      "gzip_sha256": "ffa1a6b7804a50b1f19880dfbdede0604c54b713f9dc9b7268cf575deb651f00",
+      "bytes": 253
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/compile-02/source.lean",
+      "archive": "attempts/forcing-a01/compile-02/source.lean.gz",
+      "sha256": "13681969671f290fc60ace8bb500f37b4f76e802d5708e84cff8b3205504e0b9",
+      "gzip_sha256": "61219c93e1a349d87fa9d2f8a35f45f573b54a4e3dc793fa2ceaffec6668d6d8",
+      "bytes": 7584
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/context-manifest.json",
+      "archive": "attempts/forcing-a01/context-manifest.json.gz",
+      "sha256": "c1eadd80d01532f829c2d0c3aea9abcfb591f0a094c389d817c93722ddd99e8b",
+      "gzip_sha256": "d9ee0aaef8ad5941f3bd528e4e3d566e3c809f381e118cbce2c665e2ba3a0c79",
+      "bytes": 2043
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/final-diff.patch",
+      "archive": "attempts/forcing-a01/final-diff.patch.gz",
+      "sha256": "a1809cc9e251a73f0aab3b4b92a248461955d5fc4325ffc0901573838ee02b68",
+      "gzip_sha256": "14c69dd89473e82d8db96b2ba44c9fae83d259818bb59341fe8d2e835a1ce6c1",
+      "bytes": 8140
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/final-source.lean",
+      "archive": "attempts/forcing-a01/final-source.lean.gz",
+      "sha256": "d0328c12cbf9e5bebe6db81ccd09b88e739ac14b2c83a0981ffbd73a01f642f2",
+      "gzip_sha256": "8213998e7bcdbfd4c24015e3de83c9e79b9e661e09ed8a41a9d7e2afdaa5875a",
+      "bytes": 7742
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/lease.json",
+      "archive": "attempts/forcing-a01/lease.json.gz",
+      "sha256": "ab3ac631b72fc9561f3f54a3e1d3c2d4771fa2ad07cb9ca794e1bcd3c809d1c9",
+      "gzip_sha256": "440656a1bf90330cb94e137709e5ea17697aac2fe9137703b3a0883909c0dd21",
+      "bytes": 407
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/lease.terminal.json",
+      "archive": "attempts/forcing-a01/lease.terminal.json.gz",
+      "sha256": "0600e70477bdbdc509da19853529081cdb1c5cd08735e09a83ad6719be8ec887",
+      "gzip_sha256": "c0a0a6e6e93834879df82e1e67ac026439876aad1509fc5df6d9f40fb63543c0",
+      "bytes": 409
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/diff.patch",
+      "archive": "attempts/forcing-a01/ordered-gates-01/diff.patch.gz",
+      "sha256": "a1809cc9e251a73f0aab3b4b92a248461955d5fc4325ffc0901573838ee02b68",
+      "gzip_sha256": "14c69dd89473e82d8db96b2ba44c9fae83d259818bb59341fe8d2e835a1ce6c1",
+      "bytes": 8140
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-1.json",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-1.json.gz",
+      "sha256": "d3161bdd14bc999cd889884785e441cd6d28138ca35cfdb5a3628164d95ad290",
+      "gzip_sha256": "be5bdf8c4c415731dc2e59fcea107f0f8799180edee31fedc411cf453a6a22d3",
+      "bytes": 290
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-1.log",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-2.json",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-2.json.gz",
+      "sha256": "adbe4c1706789356adf9564e6e9b19d4905d65a435d152fc19cf821457a105ec",
+      "gzip_sha256": "9a58ba1e23270acae0a45508b93599525cec41c0557758c9568ce025aababc2c",
+      "bytes": 323
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-2.log",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-2.log.gz",
+      "sha256": "d277515a77ab5ec38257d217ab0dab255a42268833d7d7ace72f380211fba6c6",
+      "gzip_sha256": "803b602054c76ea3dd27513f70ce50d15a2e12626f7467b802f55297b63c817e",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-3.json",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-3.json.gz",
+      "sha256": "2989be004d0a00c763f64b3c4d1446cb902df45ad934b20443138fe8a5d1594f",
+      "gzip_sha256": "099d88ede23bc398615fea7ae030d0dc0af428777581a819be4eafbf62cb00b2",
+      "bytes": 208
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-3.log",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-4.json",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-4.json.gz",
+      "sha256": "1f2ae21a9a25c27c871d38b1caeb4df7e5ce35a640b7a5b10e3a56e3f560b97d",
+      "gzip_sha256": "3d5c4e52f88ca4b82283712975b938e3cf90d8423da0b62fdec8e80e1820670d",
+      "bytes": 320
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/gate-4.log",
+      "archive": "attempts/forcing-a01/ordered-gates-01/gate-4.log.gz",
+      "sha256": "81435d7dac2d5f0882ab703e35b7bccba73ab65623e811527e2fdb8f7aff192b",
+      "gzip_sha256": "26ab42be8fce87ff0ee19ff769ce1cb9d6bb7ab3219155b188168ae1a836f58a",
+      "bytes": 677574
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/result.json",
+      "archive": "attempts/forcing-a01/ordered-gates-01/result.json.gz",
+      "sha256": "41c984d8d0f16bc3150da0955e806e05868c6ccbee51cf69d1b68d59f48aff1a",
+      "gzip_sha256": "bcbc8884ea9fec4c3ffdec63da76f77d18bdc72f15f196fce9d70a6a3aa5caca",
+      "bytes": 1382
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates-01/source.lean",
+      "archive": "attempts/forcing-a01/ordered-gates-01/source.lean.gz",
+      "sha256": "d0328c12cbf9e5bebe6db81ccd09b88e739ac14b2c83a0981ffbd73a01f642f2",
+      "gzip_sha256": "8213998e7bcdbfd4c24015e3de83c9e79b9e661e09ed8a41a9d7e2afdaa5875a",
+      "bytes": 7742
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/ordered-gates.py",
+      "archive": "attempts/forcing-a01/ordered-gates.py.gz",
+      "sha256": "6dec2f8ee9021b8b98cd3510c80c33fc6de93f4c8753afc0e98e565af97072d7",
+      "gzip_sha256": "5f153e8ac29081fd82245208e3d2206f200dfd4558d9db1ad690a06eb574fc6f",
+      "bytes": 1416
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/read-only-advice/Advice.lean",
+      "archive": "attempts/forcing-a01/read-only-advice/Advice.lean.gz",
+      "sha256": "a2a03d280c0bb416db81e850832fbfd121429ccd9f1a8f1f60347fdd5961bb02",
+      "gzip_sha256": "aa2abe17675d8221ba630839338f3002ff6e8f221338b5119ff66f0fcb6fc837",
+      "bytes": 2689
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/read-only-advice/compile.log",
+      "archive": "attempts/forcing-a01/read-only-advice/compile.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/read-only-advice/compiler-result.json",
+      "archive": "attempts/forcing-a01/read-only-advice/compiler-result.json.gz",
+      "sha256": "661e216a968cccc22103938efcb33025f3fd1b11251eca0dee3ad5cd6c6a2826",
+      "gzip_sha256": "c9090537ffe46acc514308cd81f2884c6e6c93d752b89881c67068d02eab8203",
+      "bytes": 402
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/result.json",
+      "archive": "attempts/forcing-a01/result.json.gz",
+      "sha256": "2f3ecc59e3bd28bcc861fa51b0442a769cb0093c58f0e48e4ce9adcd479e5cf7",
+      "gzip_sha256": "08048c53069e57a599415dabaeb1c0c7060069b201e08621c4065ad4112a85dd",
+      "bytes": 974
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/run-lean.py",
+      "archive": "attempts/forcing-a01/run-lean.py.gz",
+      "sha256": "f097ded1d0cc1fd626eb498f447d764f668bee1469f209e872828c351b0bafab",
+      "gzip_sha256": "b11bd13bd25142cac0343e3f8f036281fef22c8b0aaa89f11dccdfbc3d145956",
+      "bytes": 1023
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-a01/task.snapshot.json",
+      "archive": "attempts/forcing-a01/task.snapshot.json.gz",
+      "sha256": "9cf7fb6b1fdaa5f605d0ed40716135ff2a947850166d1e3972f5b383f274841f",
+      "gzip_sha256": "96d06c98063639e706790db780761d08cbc5196c99d1a8d8822989eef480e554",
+      "bytes": 8034
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-definitions.build.log",
+      "archive": "attempts/forcing-definitions.build.log.gz",
+      "sha256": "c74c19668bfc36c09fe4a1b78cc072784d674e6300069a21adac7e532fbb9ded",
+      "gzip_sha256": "932d8eba44c65dbcfdea882154cbe61aa0f355a01ffbf61c4551cbaecabe16dd",
+      "bytes": 677337
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-definitions.log",
+      "archive": "attempts/forcing-definitions.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-definitions.v1.failed.lean",
+      "archive": "attempts/forcing-definitions.v1.failed.lean.gz",
+      "sha256": "465c22c2c3d3b4169fa3028023e516b4ff047d3834fdb222078296702f4ff9c3",
+      "gzip_sha256": "7a9037d98d83599e28f309dbb4fb17223091ae6269f530e0f1d00d3226a103f7",
+      "bytes": 2116
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing-definitions.v1.failed.log",
+      "archive": "attempts/forcing-definitions.v1.failed.log.gz",
+      "sha256": "e8a60d69b41553cb4827be167e807aa951f3a5c39b6c5386745a195faca76b76",
+      "gzip_sha256": "7bf85490ba01b2a84bcca924e66925c4b74f15742f35ca61c3128c7b2808f82d",
+      "bytes": 460
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing.build.log",
+      "archive": "attempts/forcing.build.log.gz",
+      "sha256": "f5c91462becb9b1128106a9eba3993e6dc414202fcb79d12d70e8778dd5933b7",
+      "gzip_sha256": "f27e4b85a9911644388a87de9e5cabb94f98c27cf3463b96543a0787d8ed0e7b",
+      "bytes": 677325
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing.preflight.lean",
+      "archive": "attempts/forcing.preflight.lean.gz",
+      "sha256": "71764173994c20c2d907a8937002ab8d4a6f4e3418754bcd642d4f9a25343721",
+      "gzip_sha256": "dc3e08a0d6ccdddb72bbb28e07bad70b4a40bd7aea42309e277fe4116f138f0e",
+      "bytes": 2063
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing.preflight.log",
+      "archive": "attempts/forcing.preflight.log.gz",
+      "sha256": "d7f6272d80e1a5656557f83d9c617a04a94549b4b440ceb0340d8690b8e17223",
+      "gzip_sha256": "a9db4a84629cf4eb5dd0d85de33978d8a8e55f79e3126b6f1e127acea4930290",
+      "bytes": 22
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing.preflight.v1.failed.lean",
+      "archive": "attempts/forcing.preflight.v1.failed.lean.gz",
+      "sha256": "93be60bfdbde7b3c897e54c57d2849f5acb251de2cdfb62930123027b03c8fc4",
+      "gzip_sha256": "fc4df0d6b07eeaa72caa42e8656be73b3102408cdc2e136fde92f54b03f0b4e7",
+      "bytes": 2052
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/forcing.preflight.v1.failed.log",
+      "archive": "attempts/forcing.preflight.v1.failed.log.gz",
+      "sha256": "db5d38c8a13319031d1a7b4cc34ee082569a195f8078d3e3eac695469b881dd0",
+      "gzip_sha256": "f5bfce2b0c85d476e3deeb2fff9b41e5e4a0f9ccc5fa30f47f5bb8cb939ffb40",
+      "bytes": 227
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/freeze.py",
+      "archive": "attempts/freeze.py.gz",
+      "sha256": "81f7de4b0719c6e09dd4f7baeb8bb1dedaa7702f916570823888e5fcdd7adcdb",
+      "gzip_sha256": "ff2e7f507a7fe72006bfbc9ebaed33f6595365bc7f93e326b734477dc0816150",
+      "bytes": 7442
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/full-checkpoint.log",
+      "archive": "attempts/full-checkpoint.log.gz",
+      "sha256": "86fa0c742cb7e9d405363afe4dc36d4ece18c958816bc324620450515603f890",
+      "gzip_sha256": "833efc24054c99a08ef035f2f9f6a016f3e276d1723ce382bda56e9c85f82d48",
+      "bytes": 137
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/0.json",
+      "archive": "attempts/independent-extension-a01/0.json.gz",
+      "sha256": "972b3924c49655ac23139bea9dcfdb4ec9aeab1e40b5ccacca40f8283d72d3ea",
+      "gzip_sha256": "0d58afaa53136312985fa30f8a4bbb8ed8a393ecdf8459f64b3b7106a004b63d",
+      "bytes": 291
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/0.log",
+      "archive": "attempts/independent-extension-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/1.json",
+      "archive": "attempts/independent-extension-a01/1.json.gz",
+      "sha256": "40be2a07e64db88a49b287904a07a52342490115d3d748f37d5058664ba918ea",
+      "gzip_sha256": "2f25075ce6772bc3e8f6c81daa3193dcf97556c2c8040b1459099c3cd5c536c4",
+      "bytes": 326
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/1.log",
+      "archive": "attempts/independent-extension-a01/1.log.gz",
+      "sha256": "ce8315360f1bd7d5a3a783f60358a4ac5ad7dbd51b39f65ca9ec0e1c9b2b1913",
+      "gzip_sha256": "4242fabc30eb10b4a735881da43877c17730b8fad90c94d59a44fdd69d6c4bb2",
+      "bytes": 56
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/2.json",
+      "archive": "attempts/independent-extension-a01/2.json.gz",
+      "sha256": "8dfedafd964e8011af812f36babff0c590c1ba090d9c5f6f675680445f1cf9cd",
+      "gzip_sha256": "f23a520dc757fd357e36db0765fdf226222a3f588f230ddee03abfb751af87a0",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/2.log",
+      "archive": "attempts/independent-extension-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/3.json",
+      "archive": "attempts/independent-extension-a01/3.json.gz",
+      "sha256": "345590e248688aa17ce6ba762cfdb2f80a2569a9adb4b2a65465d02a0b634168",
+      "gzip_sha256": "36ecbe5011d8f0d9780d8045ca3a2ddb4c0920b5d3b96cd9368c8300f6a6db0a",
+      "bytes": 311
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/3.log",
+      "archive": "attempts/independent-extension-a01/3.log.gz",
+      "sha256": "9710a547a1cc1443a21bfc2166f5c77e17b56647973927d9129e35d6ab64f3d1",
+      "gzip_sha256": "747d60accd52077c449d10b7dbaa99740d4a759c384b0451bd87479d9839f7fd",
+      "bytes": 694598
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/DeTurckCompactCoefficientExtension.lean",
+      "archive": "attempts/independent-extension-a01/DeTurckCompactCoefficientExtension.lean.gz",
+      "sha256": "075b3dacfbe06de30fd9f53262fc7c1bdff33779486b66c8423827f1678d1615",
+      "gzip_sha256": "2d0799daa178a8e0106362e10d4c99fff71832320669ed1e272dbfbcca64987d",
+      "bytes": 11691
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/final.diff",
+      "archive": "attempts/independent-extension-a01/final.diff.gz",
+      "sha256": "e0986540dcab391a1472d855d4718723fa03d6e08ddd0d39dc6574498acae452",
+      "gzip_sha256": "0aec5a3843b0c82685f23d5445ace71dc88e79316eb0ef21a6662941d7e23037",
+      "bytes": 12103
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/review.json",
+      "archive": "attempts/independent-extension-a01/review.json.gz",
+      "sha256": "e487057780acfa38c9e574d60d84d93a53abb249f24eb5cf80e8171124ab8aec",
+      "gzip_sha256": "72d41bff87eb47bf1904efcf9c53419c5be0c9dd370ae9720febe43b6c848b09",
+      "bytes": 1660
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-extension-a01/task.snapshot.json",
+      "archive": "attempts/independent-extension-a01/task.snapshot.json.gz",
+      "sha256": "18c45e8ddae602a295bfd327cc98042c8098c71b25d493f4d66c3d3153433cea",
+      "gzip_sha256": "cde7f5a69da45d9e6ed3b96d5bdafde553b7a6b369051f35e54516ae9740b755",
+      "bytes": 9386
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/0.json",
+      "archive": "attempts/independent-forcing-a01/0.json.gz",
+      "sha256": "7f50fec95600279cb6b3fb09283f9127d4727fd40871836bf77d5869183f8577",
+      "gzip_sha256": "7d734e2f6a8a07ef5f5964282ebf222557a57177f0d4f3cf55b4411aae8906a5",
+      "bytes": 279
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/0.log",
+      "archive": "attempts/independent-forcing-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/1.json",
+      "archive": "attempts/independent-forcing-a01/1.json.gz",
+      "sha256": "fb7a2404b7db3d726574f9feb461b1b2739a570e99146f80fb3fee9e27036b36",
+      "gzip_sha256": "41291f210cebda5256159ad5c8060fee0e89c468cb0e2b44ccad7773f88eb1e9",
+      "bytes": 307
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/1.log",
+      "archive": "attempts/independent-forcing-a01/1.log.gz",
+      "sha256": "d277515a77ab5ec38257d217ab0dab255a42268833d7d7ace72f380211fba6c6",
+      "gzip_sha256": "803b602054c76ea3dd27513f70ce50d15a2e12626f7467b802f55297b63c817e",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/2.json",
+      "archive": "attempts/independent-forcing-a01/2.json.gz",
+      "sha256": "6626e69eb44c87f2df1367662df3bb19973dc9bb1e4cfa13185d4f84f44f63a3",
+      "gzip_sha256": "107778007a7557be36771b4f454ec5dc36933483eecbca5c05193b64095d2c7a",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/2.log",
+      "archive": "attempts/independent-forcing-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/3.json",
+      "archive": "attempts/independent-forcing-a01/3.json.gz",
+      "sha256": "6764378112c133b9351edc9f5200ed8b0e5f77801286de533a2cfaf47b6e9831",
+      "gzip_sha256": "33b9acbc34c60a2bdcaf2b7c9afde9248ede8c304892b66bb1a22c3e0da95122",
+      "bytes": 309
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/3.log",
+      "archive": "attempts/independent-forcing-a01/3.log.gz",
+      "sha256": "c212256cf706c8ef4de77214ca8bd1568ac6b2777acb48977b1141cbb56c5ce2",
+      "gzip_sha256": "625361b4829705494cdd8751603b9d361d774802d0480e527ea849f61cb5e45d",
+      "bytes": 677508
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/DeTurckCoupledForcing.lean",
+      "archive": "attempts/independent-forcing-a01/DeTurckCoupledForcing.lean.gz",
+      "sha256": "d0328c12cbf9e5bebe6db81ccd09b88e739ac14b2c83a0981ffbd73a01f642f2",
+      "gzip_sha256": "8213998e7bcdbfd4c24015e3de83c9e79b9e661e09ed8a41a9d7e2afdaa5875a",
+      "bytes": 7742
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/final.diff",
+      "archive": "attempts/independent-forcing-a01/final.diff.gz",
+      "sha256": "a1809cc9e251a73f0aab3b4b92a248461955d5fc4325ffc0901573838ee02b68",
+      "gzip_sha256": "14c69dd89473e82d8db96b2ba44c9fae83d259818bb59341fe8d2e835a1ce6c1",
+      "bytes": 8140
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/review.json",
+      "archive": "attempts/independent-forcing-a01/review.json.gz",
+      "sha256": "32ca12a3c2abe24f9e32c6b88bc815145e2ebb0edaf6ce3994606681c19fa8c0",
+      "gzip_sha256": "06a84232d739e021635a4717a791dd811e7b934f81b51e8cc8d0010973b91fcf",
+      "bytes": 1612
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-forcing-a01/task.snapshot.json",
+      "archive": "attempts/independent-forcing-a01/task.snapshot.json.gz",
+      "sha256": "9cf7fb6b1fdaa5f605d0ed40716135ff2a947850166d1e3972f5b383f274841f",
+      "gzip_sha256": "96d06c98063639e706790db780761d08cbc5196c99d1a8d8822989eef480e554",
+      "bytes": 8034
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/0.json",
+      "archive": "attempts/independent-jet-a01/0.json.gz",
+      "sha256": "39b9afb2fccbd8a11a132c0c2a39900f46b26963cd32a632fd594bcd062b90b1",
+      "gzip_sha256": "b2f8ee298ff0ead8f0d8cc89348aeeed1d233a9127159471057ab8cec422aac6",
+      "bytes": 278
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/0.log",
+      "archive": "attempts/independent-jet-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/1.json",
+      "archive": "attempts/independent-jet-a01/1.json.gz",
+      "sha256": "f71a56e55de460eda4d3cc05066d422fa6f3a4eb7eabfa8cdbaf1d24a657bc80",
+      "gzip_sha256": "064b3be5ff685b903f25ee343b2fe3c6daf519e5f0127d0e553acda9552c47bf",
+      "bytes": 312
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/1.log",
+      "archive": "attempts/independent-jet-a01/1.log.gz",
+      "sha256": "3cd86137ce0ee377ef77e35f4c85a375112864553c8cfd9271bde4482b26a379",
+      "gzip_sha256": "6969051338b08ffef90915506102566a20884e1b6a5e46ca581c62db60d17433",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/2.json",
+      "archive": "attempts/independent-jet-a01/2.json.gz",
+      "sha256": "6f62adbdb98d104b6a2b1f03fe2e25d70a0a7e0ca0ef65e6c19857acce391fde",
+      "gzip_sha256": "73d27e7aa1b765b78ff6513e87db787f7f69f6556e88498a908840e0ce45700a",
+      "bytes": 196
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/2.log",
+      "archive": "attempts/independent-jet-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/3.json",
+      "archive": "attempts/independent-jet-a01/3.json.gz",
+      "sha256": "60357f1cbc598abede73127ec0ec237dfda3f2bd1ef5b6e6574eb8fd253f4394",
+      "gzip_sha256": "3f7ebd456fdd534698473275e59ee7230a51b4833bee4bcfd91f49ca1a0533f5",
+      "bytes": 305
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/3.log",
+      "archive": "attempts/independent-jet-a01/3.log.gz",
+      "sha256": "0a42773330fa07bd1baf9582de8b9ccc2941d4eec6c428233686d501fa33d78d",
+      "gzip_sha256": "86aecf8d2d94ba4bbcdb164006a0632c554ab668dab38eacd6235924971c68e4",
+      "bytes": 677492
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/DeTurckTensorGraphJet.lean",
+      "archive": "attempts/independent-jet-a01/DeTurckTensorGraphJet.lean.gz",
+      "sha256": "97e4b356ddcfa18a50b8620d6448ac8a55e7ff0e23b9b4b14b56a71530d4934f",
+      "gzip_sha256": "18876c9aa75daa087c2a056d223e7245acd7174f7fd6bd55626d526d43e04b82",
+      "bytes": 1197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/final.diff",
+      "archive": "attempts/independent-jet-a01/final.diff.gz",
+      "sha256": "3310a166c5b071fe939a95a371cdeb9438f8115a6c2372aa38d8fb99a3462b3c",
+      "gzip_sha256": "c9e7f9cde81347bb379f77ad49ffba4d37bb6c1f74d28fa847f82d026af113bf",
+      "bytes": 1453
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/review.json",
+      "archive": "attempts/independent-jet-a01/review.json.gz",
+      "sha256": "b39f33d44e7710c1d02b2785d888177538b230284e6a7b535b4e1d453f623cd6",
+      "gzip_sha256": "077ae4b480802ace2779a5fbb582ea2a38fd5ea0709e0946ac2e4791eeb7d8aa",
+      "bytes": 1607
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-a01/task.snapshot.json",
+      "archive": "attempts/independent-jet-a01/task.snapshot.json.gz",
+      "sha256": "2db3002e60b4c080c9cb6c07ea743aada2e44c41e13ef0d1d2240857496110b3",
+      "gzip_sha256": "2a63b8e6cda1982e9973f0b083059e4ddbbb88b3057e78a105f77a0ffbe46749",
+      "bytes": 6624
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/0.json",
+      "archive": "attempts/independent-jet-import-a01/0.json.gz",
+      "sha256": "0a4ae0ec2b019dfa69773cc320e134ba3fc6eb7e7f50254435a1767ed1e120e9",
+      "gzip_sha256": "58befd9f77a3c7a1702ba215d072b8fb97448d9bfebe74665ac881c4d3d4279e",
+      "bytes": 278
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/0.log",
+      "archive": "attempts/independent-jet-import-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/1.json",
+      "archive": "attempts/independent-jet-import-a01/1.json.gz",
+      "sha256": "4dfd2566362219305d6dfe723f155cffc68f69b12c7c6a6643aaf199ebe4a5b1",
+      "gzip_sha256": "23e455ba1b3d33a1b145daf9b228a883d91b597364536fae2146110b699d1d50",
+      "bytes": 312
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/1.log",
+      "archive": "attempts/independent-jet-import-a01/1.log.gz",
+      "sha256": "3cd86137ce0ee377ef77e35f4c85a375112864553c8cfd9271bde4482b26a379",
+      "gzip_sha256": "6969051338b08ffef90915506102566a20884e1b6a5e46ca581c62db60d17433",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/2.json",
+      "archive": "attempts/independent-jet-import-a01/2.json.gz",
+      "sha256": "d9178f0b2919012b964d3abf797490764d760dba626659f0b450db5e685af4a1",
+      "gzip_sha256": "b3d7f6f0ac9ff0b7513c552359b5086a2665728f3537d8acf3046bd67b3fe591",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/2.log",
+      "archive": "attempts/independent-jet-import-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/3.json",
+      "archive": "attempts/independent-jet-import-a01/3.json.gz",
+      "sha256": "165991e15f704fd205f2d33a7468134732569ff04b35970b92e87ac88de087a8",
+      "gzip_sha256": "fd8d2daba0fecc9139308e5278c3fe114a0f522316f83b47b8779cf1343a26f8",
+      "bytes": 305
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/3.log",
+      "archive": "attempts/independent-jet-import-a01/3.log.gz",
+      "sha256": "3b86e1e786fe655424554d314a010721e181ff470467c7331497f7915955d99c",
+      "gzip_sha256": "51efaff9bc499dbe9d01a14310c255cf6029ca8a42a6a5f101076e356d4ea0e5",
+      "bytes": 677492
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/4.json",
+      "archive": "attempts/independent-jet-import-a01/4.json.gz",
+      "sha256": "79f0035d6b7e9fa001a71bdbe0ddac9854b42f96e99452ea17016645abb2d18b",
+      "gzip_sha256": "585c5b1b240d69a30b56a2820c2d393836db04cfd886fde2fb64364e8bbabb85",
+      "bytes": 308
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/4.log",
+      "archive": "attempts/independent-jet-import-a01/4.log.gz",
+      "sha256": "0faef97a952fc669f91f68d45b3df82ef6ac7c0c7b0041914ab010e30ab7ea3a",
+      "gzip_sha256": "2e0c55e3cde960ddbbb7ff9ee0c04dee897d291dcf051b31d6bfc59339fe9c93",
+      "bytes": 2345
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/DeTurckTensorGraphJet.lean",
+      "archive": "attempts/independent-jet-import-a01/DeTurckTensorGraphJet.lean.gz",
+      "sha256": "7a0534e247ca9b7f1495c3ac153592bc0cc80d0b65b4a535e4fcb3e29f5d01e2",
+      "gzip_sha256": "e971ee0953685a1a5f739e128b402e4a5f585eb105a0f5c90c688d89a5ca1a29",
+      "bytes": 1282
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/final.diff",
+      "archive": "attempts/independent-jet-import-a01/final.diff.gz",
+      "sha256": "923b278077d8de5a34bbaa862ac4f04c91bce6d44dbbba0fec88b5b0f1142ef9",
+      "gzip_sha256": "bac285e98888d868546070df64060146c830bc0ca67bd2df650831e437dbcedc",
+      "bytes": 1046
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/review.json",
+      "archive": "attempts/independent-jet-import-a01/review.json.gz",
+      "sha256": "ccd180e6840e5e84971d5b38170cc58bc296bd9419d26e32518a6accd2680347",
+      "gzip_sha256": "0d09b3f87d898eac5289a4230092396a1eab7f1745826b1bb4d97a6347bd9c91",
+      "bytes": 1976
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent-jet-import-a01/task.snapshot.json",
+      "archive": "attempts/independent-jet-import-a01/task.snapshot.json.gz",
+      "sha256": "0e931032f5b5538c078aa6103e7f30591fbbaca389cfd8d4116e7446efe86910",
+      "gzip_sha256": "a8e589cb2f3db89d7b7ab86c1d4ca4f92a654e8da8d6cc88082947c72d6c54fa",
+      "bytes": 7184
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/independent_gate.py",
+      "archive": "attempts/independent_gate.py.gz",
+      "sha256": "d6a1c76b3e7a5d6603e4a7b11731277f59ab7dc05160e7041c1f0ad374ba2dd9",
+      "gzip_sha256": "3472e7878605ef9cd32e9b73b01114e092752684a6c58db0d68980c64c1f540c",
+      "bytes": 1771
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/integrate-extension.log",
+      "archive": "attempts/integrate-extension.log.gz",
+      "sha256": "40e28ecb31c2f7330594adc204f16ccb2c2c6878a6113f1ec283c9b3aa8b9c4a",
+      "gzip_sha256": "11e28c50dd89971d832bf6da3c7a85dc043e3badf7dc758563554b814169a179",
+      "bytes": 252
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/integrate-forcing.log",
+      "archive": "attempts/integrate-forcing.log.gz",
+      "sha256": "e1dcc372183ba9a9c56788732429d8c849c0009dac01330830b7bc7ff06af989",
+      "gzip_sha256": "ff546790b80777e7e09e53e8844002188e3b05020dea85044d995940415eee83",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/integrate-jet-import.log",
+      "archive": "attempts/integrate-jet-import.log.gz",
+      "sha256": "967f8172f874e510603c9caa52666e1c4fb921edd2fbd8b5bcb118a4f8a21dce",
+      "gzip_sha256": "7b1dc41f62e7d3b332c303a9b14c1aa2625216bea9e1adb1019471125bf4ca00",
+      "bytes": 183
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/integrate-jet.log",
+      "archive": "attempts/integrate-jet.log.gz",
+      "sha256": "76b81a819d5a5fd2f197d479b1866987ca8a958dffe4a9e95327602757dbc83c",
+      "gzip_sha256": "68a1f760af72ea3c8a30028bdac082ca22a25188ea666aa45a3cb16ca9dfab09",
+      "bytes": 228
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-1.json",
+      "archive": "attempts/jet-a01/attempt-001/gate-1.json.gz",
+      "sha256": "dc3166a7fcc7352b40f6080ea5ba1bbfec0539a1455d719f99c0d23dfa09f1ed",
+      "gzip_sha256": "f23418e7d5fdf9c1f9c925f70fd9439f4ac1ad81a4268857764e6ab2f1e931da",
+      "bytes": 267
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-1.log",
+      "archive": "attempts/jet-a01/attempt-001/gate-1.log.gz",
+      "sha256": "ecaf24ad27c95d6deeaf478a2b6b58785a2be127076e0596b6adfa6c10f151e6",
+      "gzip_sha256": "5a53a4e1ed1a291a95a112e6122d20ba459d083a3ef54bd6b8c2ea8ebefa49a1",
+      "bytes": 653
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-2.json",
+      "archive": "attempts/jet-a01/attempt-001/gate-2.json.gz",
+      "sha256": "78ce3b0feab0f469ef84bc814b80178d2b82dbc9529e16692a5c7fe03c997bdb",
+      "gzip_sha256": "8d430869bde38ec49b28bf54627835e33753a53f2683c7d97653429132de4cea",
+      "bytes": 298
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-2.log",
+      "archive": "attempts/jet-a01/attempt-001/gate-2.log.gz",
+      "sha256": "3cd86137ce0ee377ef77e35f4c85a375112864553c8cfd9271bde4482b26a379",
+      "gzip_sha256": "6969051338b08ffef90915506102566a20884e1b6a5e46ca581c62db60d17433",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-3.json",
+      "archive": "attempts/jet-a01/attempt-001/gate-3.json.gz",
+      "sha256": "6b58369dca71d8e0e838bf86ebc2d06e079950d8e8fa2122860edd85fb3ecb85",
+      "gzip_sha256": "3bc8d6c4e2fe824219b6f117219ea6d7cf0721b58f1064eac9172f846ee1650d",
+      "bytes": 183
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-3.log",
+      "archive": "attempts/jet-a01/attempt-001/gate-3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-4.json",
+      "archive": "attempts/jet-a01/attempt-001/gate-4.json.gz",
+      "sha256": "dafebec3bf542c5fc698df1f9946d7788a7b31bee7b19e8b0be0acd25f6543ff",
+      "gzip_sha256": "fe5633efe64dadac45d0b5a62c8c5b06107247e662a12929d39b588e72dedca1",
+      "bytes": 294
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/gate-4.log",
+      "archive": "attempts/jet-a01/attempt-001/gate-4.log.gz",
+      "sha256": "16d83bc30bbdfb1ae29c0d96d9bfc228b60d8248c065b7f60d0792627fb8cd2b",
+      "gzip_sha256": "24a7e7b43e4122ab7c1a6f7a2b8e1409e61e769a133a92646bd0bcc0fa87bfda",
+      "bytes": 679810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-001/source.lean",
+      "archive": "attempts/jet-a01/attempt-001/source.lean.gz",
+      "sha256": "75b49f4cc0c6b9b29772859122736a8306177bed06ca00671de776f6dff931ab",
+      "gzip_sha256": "c1fa2112b507b62cf9feece1d8a8dfa93698883486e886d6efb38234a87f33e1",
+      "bytes": 1082
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-1.json",
+      "archive": "attempts/jet-a01/attempt-002/gate-1.json.gz",
+      "sha256": "32c7c2747451430e5764e27cd3e7c38cd7bd9ff49ed4e2066d237ef33c3dcf8f",
+      "gzip_sha256": "462f36db46b5debb35c925192314a0301a8ae8fdaaa2746296e913985b63936b",
+      "bytes": 267
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-1.log",
+      "archive": "attempts/jet-a01/attempt-002/gate-1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-2.json",
+      "archive": "attempts/jet-a01/attempt-002/gate-2.json.gz",
+      "sha256": "d29f4c61563e68daaef62b50ee23f95fcd5ebbbd0c07d23660520ee51033269e",
+      "gzip_sha256": "c9dbca2483badb381c7febe931de1e2fbd9965717dae5b3747206d354a51f840",
+      "bytes": 298
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-2.log",
+      "archive": "attempts/jet-a01/attempt-002/gate-2.log.gz",
+      "sha256": "3cd86137ce0ee377ef77e35f4c85a375112864553c8cfd9271bde4482b26a379",
+      "gzip_sha256": "6969051338b08ffef90915506102566a20884e1b6a5e46ca581c62db60d17433",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-3.json",
+      "archive": "attempts/jet-a01/attempt-002/gate-3.json.gz",
+      "sha256": "92e5633214ddb25c213f3cd50b5910d6843cb86b4371d59e471d866f5e369bb4",
+      "gzip_sha256": "a47c37464c8c49c29bc84cdb6037b7f569ca12a07e64335843b584bfd19fa8c7",
+      "bytes": 183
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-3.log",
+      "archive": "attempts/jet-a01/attempt-002/gate-3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-4.json",
+      "archive": "attempts/jet-a01/attempt-002/gate-4.json.gz",
+      "sha256": "8a39748fc79ac71440c227c5253a8132f93e8c3a47245fd0d1d4e8802f3110a9",
+      "gzip_sha256": "bb3e7051a99ff76d12fa4bb7b7113f5c057cb18aaaf9ed18dc6d01d321b1b62c",
+      "bytes": 294
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/gate-4.log",
+      "archive": "attempts/jet-a01/attempt-002/gate-4.log.gz",
+      "sha256": "40eafa5c09374e5d33eabb9616d5bcb7fae1326fd8c284d6707b4ef1eea62573",
+      "gzip_sha256": "81c23bbc29c8e3ad4106c8a53d1d22175c6a8cbd0175b7b725a012c070fe9a0c",
+      "bytes": 677559
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/attempt-002/source.lean",
+      "archive": "attempts/jet-a01/attempt-002/source.lean.gz",
+      "sha256": "97e4b356ddcfa18a50b8620d6448ac8a55e7ff0e23b9b4b14b56a71530d4934f",
+      "gzip_sha256": "18876c9aa75daa087c2a056d223e7245acd7174f7fd6bd55626d526d43e04b82",
+      "bytes": 1197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/commit-message.txt",
+      "archive": "attempts/jet-a01/commit-message.txt.gz",
+      "sha256": "47316319f99b47073a08362ca4633328e6fc1e4f4e8c9f111a39a069d1674ba9",
+      "gzip_sha256": "8980feb40054a2a6a0490a37887d380ac47198c836b143171e4ed3494b574c8f",
+      "bytes": 477
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/commit-receipt.json",
+      "archive": "attempts/jet-a01/commit-receipt.json.gz",
+      "sha256": "a33ed342381a0608f9b371155c6b6116f1db780d1b03d3ce5a8fa8aa708106cb",
+      "gzip_sha256": "001ebfe209b18c66fadf69be0c18e1131246c0f0db55e40f4c1b711dca79c03a",
+      "bytes": 345
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/context-manifest.json",
+      "archive": "attempts/jet-a01/context-manifest.json.gz",
+      "sha256": "30cf73a0e4a83aa9e8326393b50a461ea96514ceb7222f1d1abed67ffc6bef4d",
+      "gzip_sha256": "89bfca8a064c40be208c3ef65778444b2b9166147adb9ccad64c1427b84e4ebf",
+      "bytes": 2210
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/final-source.lean",
+      "archive": "attempts/jet-a01/final-source.lean.gz",
+      "sha256": "97e4b356ddcfa18a50b8620d6448ac8a55e7ff0e23b9b4b14b56a71530d4934f",
+      "gzip_sha256": "18876c9aa75daa087c2a056d223e7245acd7174f7fd6bd55626d526d43e04b82",
+      "bytes": 1197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/final.patch",
+      "archive": "attempts/jet-a01/final.patch.gz",
+      "sha256": "3310a166c5b071fe939a95a371cdeb9438f8115a6c2372aa38d8fb99a3462b3c",
+      "gzip_sha256": "c9e7f9cde81347bb379f77ad49ffba4d37bb6c1f74d28fa847f82d026af113bf",
+      "bytes": 1453
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/lease.json",
+      "archive": "attempts/jet-a01/lease.json.gz",
+      "sha256": "a10b4d6881de7be274c72e49ea8b12d03873abb45d26b0066ee19eff204769f8",
+      "gzip_sha256": "5ec02776cc960f7153e1559770b3fd91946af236d7b851846c3980b1ab1d9dbd",
+      "bytes": 404
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/lease.terminal.json",
+      "archive": "attempts/jet-a01/lease.terminal.json.gz",
+      "sha256": "ea0a88db395b4dcf64b83961dd036a44bdab99febd2224c6405ea5ac9d5ba031",
+      "gzip_sha256": "6bf45f57492622c2e6c8ec446bbd4e210c9eaad61db8078af1a7e53b0b3883ee",
+      "bytes": 406
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/result.json",
+      "archive": "attempts/jet-a01/result.json.gz",
+      "sha256": "d49ad7f9f1c27335f53bedbdb82550f648bfbade389c281aef793395108218c7",
+      "gzip_sha256": "e60ef80c691fd79c60cce442511bd447bdc65da79becfefb88f2ecaa8ded92d7",
+      "bytes": 2466
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-a01/task.snapshot.json",
+      "archive": "attempts/jet-a01/task.snapshot.json.gz",
+      "sha256": "2db3002e60b4c080c9cb6c07ea743aada2e44c41e13ef0d1d2240857496110b3",
+      "gzip_sha256": "2a63b8e6cda1982e9973f0b083059e4ddbbb88b3057e78a105f77a0ffbe46749",
+      "bytes": 6624
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-1.json",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-1.json.gz",
+      "sha256": "33d6c0b3921aeb29473d64f990ada05dc8d561f4e9b3a6c797595f122b0f244a",
+      "gzip_sha256": "3d823cdacb5c1fadc8f390f5d41aa3334877e8945d4f9649935662a20e4e10df",
+      "bytes": 267
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-1.log",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-2.json",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-2.json.gz",
+      "sha256": "b6fe1faeb8706c2f78e2b4c120c9a395cb174fe5fa9eec3ee56552ecb30b071e",
+      "gzip_sha256": "da7a2922eb19a12f7bfd97ab7e8022a150e9b2a178db9b7e0624f5337b377c51",
+      "bytes": 298
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-2.log",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-2.log.gz",
+      "sha256": "3cd86137ce0ee377ef77e35f4c85a375112864553c8cfd9271bde4482b26a379",
+      "gzip_sha256": "6969051338b08ffef90915506102566a20884e1b6a5e46ca581c62db60d17433",
+      "bytes": 43
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-3.json",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-3.json.gz",
+      "sha256": "b0c29cd521036f68a6f4f8a7b35784630f50866d89a7557165d51414cf6075a4",
+      "gzip_sha256": "e2f08770d7d9f5a241fe5d7db98e064dc8901037b42ffd066a799a6f49216557",
+      "bytes": 183
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-3.log",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-4.json",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-4.json.gz",
+      "sha256": "ca4e9aeaac337165999edbf754f7c1a82ec05c3fdf217131aa34a9bf62cd7742",
+      "gzip_sha256": "b29fff1ec1153d2e5a0e86abccd9173f37d167dc490d5b27f95ab5b97f5289d6",
+      "bytes": 294
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-4.log",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-4.log.gz",
+      "sha256": "4501cc0bc15ba9e9949c413cf12caedcc39dbb3ed3a6c785d0117b86c20bc4bf",
+      "gzip_sha256": "898829fe0e29621fe24bd944ae73d0fbf00432d7d915ae9cce0a5441dc1906d5",
+      "bytes": 677559
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-5.json",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-5.json.gz",
+      "sha256": "56c4dcadcf20a6247cdcb486665660fe8a04a7246ea9fbae452dc94a42d9b02a",
+      "gzip_sha256": "763c360e11d904676e9a9363cc4078be9ec6e9e5e1221b484a979b21ba1ac6e9",
+      "bytes": 297
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/gate-5.log",
+      "archive": "attempts/jet-import-a01/attempt-001/gate-5.log.gz",
+      "sha256": "0faef97a952fc669f91f68d45b3df82ef6ac7c0c7b0041914ab010e30ab7ea3a",
+      "gzip_sha256": "2e0c55e3cde960ddbbb7ff9ee0c04dee897d291dcf051b31d6bfc59339fe9c93",
+      "bytes": 2345
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/attempt-001/source.lean",
+      "archive": "attempts/jet-import-a01/attempt-001/source.lean.gz",
+      "sha256": "7a0534e247ca9b7f1495c3ac153592bc0cc80d0b65b4a535e4fcb3e29f5d01e2",
+      "gzip_sha256": "e971ee0953685a1a5f739e128b402e4a5f585eb105a0f5c90c688d89a5ca1a29",
+      "bytes": 1282
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/baseline-source.lean",
+      "archive": "attempts/jet-import-a01/baseline-source.lean.gz",
+      "sha256": "97e4b356ddcfa18a50b8620d6448ac8a55e7ff0e23b9b4b14b56a71530d4934f",
+      "gzip_sha256": "18876c9aa75daa087c2a056d223e7245acd7174f7fd6bd55626d526d43e04b82",
+      "bytes": 1197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/commit-message.txt",
+      "archive": "attempts/jet-import-a01/commit-message.txt.gz",
+      "sha256": "4ddc06610b108b3dbd28a9ad65a8b202538f5ad8f24a24eaec65f53b8af50bf4",
+      "gzip_sha256": "40b907964d2c09f15fa0c0d08a1197d38250feb663b1797c70d35b744e7da2c3",
+      "bytes": 519
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/commit-receipt.json",
+      "archive": "attempts/jet-import-a01/commit-receipt.json.gz",
+      "sha256": "5d45a2eafe0090599e5cade403f39abf9ae02655a5fc90a66276838287786ccd",
+      "gzip_sha256": "22cdfc7a4b6f740eac32ba13379d329723c0f710115b3dd46f92fe89efbc610e",
+      "bytes": 384
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/context-manifest.json",
+      "archive": "attempts/jet-import-a01/context-manifest.json.gz",
+      "sha256": "7e15c0459636e6713c2f03717e316fb178a8f838d63a04dd3fcd0f7c4d1589a0",
+      "gzip_sha256": "2a64112dde914ffd14290dc5601ae3b1047a8f67711a6d440d68383b941670a1",
+      "bytes": 2684
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/final-source.lean",
+      "archive": "attempts/jet-import-a01/final-source.lean.gz",
+      "sha256": "7a0534e247ca9b7f1495c3ac153592bc0cc80d0b65b4a535e4fcb3e29f5d01e2",
+      "gzip_sha256": "e971ee0953685a1a5f739e128b402e4a5f585eb105a0f5c90c688d89a5ca1a29",
+      "bytes": 1282
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/final.patch",
+      "archive": "attempts/jet-import-a01/final.patch.gz",
+      "sha256": "923b278077d8de5a34bbaa862ac4f04c91bce6d44dbbba0fec88b5b0f1142ef9",
+      "gzip_sha256": "bac285e98888d868546070df64060146c830bc0ca67bd2df650831e437dbcedc",
+      "bytes": 1046
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/lease.json",
+      "archive": "attempts/jet-import-a01/lease.json.gz",
+      "sha256": "7395c8f3cf26535311e15caec021c7125a9a2788d06602febacc4c6615dcd2d9",
+      "gzip_sha256": "1d73cad5708c3317946f1a4553882fdda090d11eb3065fd3935e1f635291af6b",
+      "bytes": 418
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/lease.terminal.json",
+      "archive": "attempts/jet-import-a01/lease.terminal.json.gz",
+      "sha256": "7dab0c87824365dfd45075d196d60b693981466ea704166aec0d53e712e421a6",
+      "gzip_sha256": "d713eabb411b7542afa04a3db78bba058a483af2bf6fddb5acb197356fbbfff9",
+      "bytes": 420
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/result.json",
+      "archive": "attempts/jet-import-a01/result.json.gz",
+      "sha256": "9c84b560e16e4461923bfcd733715157ef8c051fa31adaa8cd66e52cc649dc5e",
+      "gzip_sha256": "a614126497abaf8177345300da71f57f08dd6410615153c3e58d0a8204b89084",
+      "bytes": 2646
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import-a01/task.snapshot.json",
+      "archive": "attempts/jet-import-a01/task.snapshot.json.gz",
+      "sha256": "0e931032f5b5538c078aa6103e7f30591fbbaca389cfd8d4116e7446efe86910",
+      "gzip_sha256": "a8e589cb2f3db89d7b7ab86c1d4ca4f92a654e8da8d6cc88082947c72d6c54fa",
+      "bytes": 7184
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet-import.build.log",
+      "archive": "attempts/jet-import.build.log.gz",
+      "sha256": "674256fc065ed676a52563b78dc95326aa92485654d3a764a9e3a931b0d0874f",
+      "gzip_sha256": "c7bfa465149ce9b24b92c64380a79df1e29bd7d5792e1788c143e6ded5b94455",
+      "bytes": 677326
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet.build.log",
+      "archive": "attempts/jet.build.log.gz",
+      "sha256": "27ed3e4ab00c9b578f88aecf7c4ecb1b95204de87dc02f4844e4d25eea7e5b0f",
+      "gzip_sha256": "51daea465edfc58e10be633baf428bd1740ba1d8f9a1f5be8c436c1d283f1b6f",
+      "bytes": 677326
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet.preflight.lean",
+      "archive": "attempts/jet.preflight.lean.gz",
+      "sha256": "d08e083e3a204b73727891b7b079cacdbce1d7d63b89691206b0b7181c6f8463",
+      "gzip_sha256": "156d6eb94f9ae06da7d6beb6fe0176c4f43fb18d3d2b76fb71df0dc7459a6236",
+      "bytes": 924
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet.preflight.log",
+      "archive": "attempts/jet.preflight.log.gz",
+      "sha256": "1c4728b64a0f8115d7a411dd4aa88ba2149390ee90a09f789171777f6a02916c",
+      "gzip_sha256": "a74afc5252e26cda1c143589cf2bdf39907c79e3e404d9395e7599b039e7940e",
+      "bytes": 18
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet.supersession.v1.invalid-schema.json",
+      "archive": "attempts/jet.supersession.v1.invalid-schema.json.gz",
+      "sha256": "ab9cac799a646909a85a64edd07dc0a89ced56f8cac3e074b0f3a98e80c38933",
+      "gzip_sha256": "29dc58300541fc68d18ab66c7068795cb62b8bc64e9d2cc60fc31d213d729289",
+      "bytes": 6755
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/jet.v1.import-collision.lean",
+      "archive": "attempts/jet.v1.import-collision.lean.gz",
+      "sha256": "97e4b356ddcfa18a50b8620d6448ac8a55e7ff0e23b9b4b14b56a71530d4934f",
+      "gzip_sha256": "18876c9aa75daa087c2a056d223e7245acd7174f7fd6bd55626d526d43e04b82",
+      "bytes": 1197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/module-dependencies.lean",
+      "archive": "attempts/module-dependencies.lean.gz",
+      "sha256": "b6b2c5be297cf2bc795aae23de46256ca594f42252b30e2dff6ea83ecf1a39cf",
+      "gzip_sha256": "daf204e2cbded6c75435dc4bbd6690e4665c1a35a9f45d8188dd48bf999c8eb7",
+      "bytes": 1138
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/module-dependencies.log",
+      "archive": "attempts/module-dependencies.log.gz",
+      "sha256": "554acc44f3cc96af98ac8058aa2902117b9887a7f26220f05e17c9ed91c7eab4",
+      "gzip_sha256": "bcbb2eb0599e1c5980adf48bd5b7921c3e28f5e5e3c0db67a147af782e09544f",
+      "bytes": 359
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/module-dependencies.v1.import-collision.lean",
+      "archive": "attempts/module-dependencies.v1.import-collision.lean.gz",
+      "sha256": "b6b2c5be297cf2bc795aae23de46256ca594f42252b30e2dff6ea83ecf1a39cf",
+      "gzip_sha256": "daf204e2cbded6c75435dc4bbd6690e4665c1a35a9f45d8188dd48bf999c8eb7",
+      "bytes": 1138
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/module-dependencies.v1.import-collision.log",
+      "archive": "attempts/module-dependencies.v1.import-collision.log.gz",
+      "sha256": "8ba20847dc58f8aaab14568de2d03b619607e0181cb84fb5dbed2d77f4b5e9eb",
+      "gzip_sha256": "b58dc94575261554f8d2e3599f35112185fb52456f60a1d4cb6280c156b6a646",
+      "bytes": 277
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/next-covariance-readonly.md",
+      "archive": "attempts/next-covariance-readonly.md.gz",
+      "sha256": "8d830b5f03129b2ecaa526cc1e40fcd9acaa79f195b876941c9033d1dac2b6ce",
+      "gzip_sha256": "e1dcfeb8dea0b701ac12038575006a0b8a0afb68a8359d3bc985e8bb85290102",
+      "bytes": 1613
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/root-lean.log",
+      "archive": "attempts/root-lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/root-lean.v1.import-collision.log",
+      "archive": "attempts/root-lean.v1.import-collision.log.gz",
+      "sha256": "77b573126c2d6c854ccb532becc32d884ace5d84db02f01226a9f77f06b41046",
+      "gzip_sha256": "d65410b0dacc2f087f956470b7ede43301adf5109aed29ca4cf56c23282b7d59",
+      "bytes": 219
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/root.v1.import-collision.lean",
+      "archive": "attempts/root.v1.import-collision.lean.gz",
+      "sha256": "67bf30c697ff1a9f01a54e8354799af9515648d0a85ef3448493856773ec3f33",
+      "gzip_sha256": "71a57562fabcd3edc4abac142d020403a59e6533bcdd6e134e1f38a7a2250a12",
+      "bytes": 57938
+    },
+    {
+      "source": "harness/v2/state/core-deturck-compact-20260930/tasks.py",
+      "archive": "attempts/tasks.py.gz",
+      "sha256": "406f7aaf88c899cb67726f5375720048f8d451d5f1e41e979a35f5fd150d63aa",
+      "gzip_sha256": "b1166e2dfd6172ed7b8b427af95cf824e390b8d36540825ee2ce5773ad12624f",
+      "bytes": 3870
+    },
+    {
+      "source": "harness/v2/state/verification/latest.json",
+      "archive": "checkpoint/latest.json.gz",
+      "sha256": "c367ac4830b3f597f673f572e9c228519ad5aa170e7b345d2b1894d4bb36990b",
+      "gzip_sha256": "630614297eeb9b8225f1f842fbc7d19dbb70f44849e6e9f12336efcb203c0bb8",
+      "bytes": 4956231
+    },
+    {
+      "source": "CURRENT_STATUS.md",
+      "archive": "checkpoint/CURRENT_STATUS.md.gz",
+      "sha256": "a99b157e60c5240456766f2eda3a46b661447cdf1bab0bc51c83927ae6f1800d",
+      "gzip_sha256": "30db63996e72d1606e79330d1b90f7f7f0e7f88cbc95ee0b08b38002a585f384",
+      "bytes": 71913
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/axiom.out",
+      "archive": "checkpoint/axiom.out.gz",
+      "sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "gzip_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73",
+      "bytes": 13558
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/axiom.status",
+      "archive": "checkpoint/axiom.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/axiom.timing.json",
+      "archive": "checkpoint/axiom.timing.json.gz",
+      "sha256": "7abdc814e94c1f7a890d64ca0ce5ed067cbafae084f2ae1c6e4c6fe38ace0f1a",
+      "gzip_sha256": "2f03c2044bf4e3c67f26c1bc96c4cefb7ca55f1df7bd17b1637caf271c8f52b9",
+      "bytes": 225
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/build.out",
+      "archive": "checkpoint/build.out.gz",
+      "sha256": "2688b243dfcd49ca86d24a99cb93eae41c8e4bc50eb6bcd3cfeadcb2a07d98dd",
+      "gzip_sha256": "0e927ba33da71ba1e18e9bd0636047cc6d8845fa3dc932d4597f1a969ddcdb46",
+      "bytes": 829866
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/build.status",
+      "archive": "checkpoint/build.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/build.timing.json",
+      "archive": "checkpoint/build.timing.json.gz",
+      "sha256": "30961b68e9b8040fd2e4fa5e2f19d0f33bab1bd5354b00a83688e5d96f3e6877",
+      "gzip_sha256": "c9fc5ce293438703469603865762fe295430b20f1c5bfc52bacc9a7184c2a86e",
+      "bytes": 209
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/completion.out",
+      "archive": "checkpoint/completion.out.gz",
+      "sha256": "f029273d427a859a66887726b8cfd6e84b2c108c649061bdeb32ddd2cb697ed9",
+      "gzip_sha256": "a671e6bc9a6fd52aa837e5755b20e2d69bb38f1505310c30e3997af2265ed82d",
+      "bytes": 1636684
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/completion.status",
+      "archive": "checkpoint/completion.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/completion.timing.json",
+      "archive": "checkpoint/completion.timing.json.gz",
+      "sha256": "de93d46681acc51aae68bc841a499e1128b4a51c0f841e47941cebb4159a0e88",
+      "gzip_sha256": "e6359c634e43f1c7194be60f0560d6cbd23f5205a96a7e15516b47668643ad98",
+      "bytes": 414
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/interface.out",
+      "archive": "checkpoint/interface.out.gz",
+      "sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "gzip_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b",
+      "bytes": 25984
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/interface.status",
+      "archive": "checkpoint/interface.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/interface.timing.json",
+      "archive": "checkpoint/interface.timing.json.gz",
+      "sha256": "a885ff26260c92e956e0599b64da43dfef3c4ac2233e5e57dada8c43fba7a324",
+      "gzip_sha256": "fdc369587128b9a821396db779dd07ea524bdbbe1d16d91f96f0b21558ca9d4c",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/mathlib.out",
+      "archive": "checkpoint/mathlib.out.gz",
+      "sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "gzip_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592",
+      "bytes": 732
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/mathlib.status",
+      "archive": "checkpoint/mathlib.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/mathlib.timing.json",
+      "archive": "checkpoint/mathlib.timing.json.gz",
+      "sha256": "c3f39759e9b6156f34d1bb584a0f36bf417e59efdabd8582af1510149b73347a",
+      "gzip_sha256": "bad5491503b12f7881fb119a1742252724274cbc222b3f74bf8d470133b8bed8",
+      "bytes": 231
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/receipt.json",
+      "archive": "checkpoint/receipt.json.gz",
+      "sha256": "c367ac4830b3f597f673f572e9c228519ad5aa170e7b345d2b1894d4bb36990b",
+      "gzip_sha256": "630614297eeb9b8225f1f842fbc7d19dbb70f44849e6e9f12336efcb203c0bb8",
+      "bytes": 4956231
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/root_import.out",
+      "archive": "checkpoint/root_import.out.gz",
+      "sha256": "ab0910c5bd9c7eb6f13f8c3e63fa90c3cad5e1d41372230b9048e21a59217f2a",
+      "gzip_sha256": "c0f623dcbaec7923e64e4b0f5140b9fa862a76bcea556f2ded747793860aa51d",
+      "bytes": 93310
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/root_import.status",
+      "archive": "checkpoint/root_import.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/root_import.timing.json",
+      "archive": "checkpoint/root_import.timing.json.gz",
+      "sha256": "bde21049d465a9e70aea1286ab81f2f27a2efa360d95a70143a2482b22810d3b",
+      "gzip_sha256": "d32f324a1a14d399f56052188403907e1f3c1d7cb06b5df493adb2c92dc0d5fe",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/semantic.out",
+      "archive": "checkpoint/semantic.out.gz",
+      "sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "gzip_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621",
+      "bytes": 14744
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/semantic.status",
+      "archive": "checkpoint/semantic.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/semantic.timing.json",
+      "archive": "checkpoint/semantic.timing.json.gz",
+      "sha256": "2ab4bcb2277019e62246589bdcd93d21fe67a3fef135d4ad218dcd5d4ca3a84f",
+      "gzip_sha256": "bf9d9a350afef31d2ca556ce81c3635479bd47ba076a13be09d83a1e83d9f7bb",
+      "bytes": 239
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/shape.out",
+      "archive": "checkpoint/shape.out.gz",
+      "sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "gzip_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249",
+      "bytes": 91129
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/shape.status",
+      "archive": "checkpoint/shape.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/shape.timing.json",
+      "archive": "checkpoint/shape.timing.json.gz",
+      "sha256": "366bbe2c5475660081fb9eb099589633902d9ab4ace997d9939944182fcf7458",
+      "gzip_sha256": "c5fcaae801d4d7c6f02263c039050e78f92a0d3df64cde30271b043c593f5f83",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/source-before.json",
+      "archive": "checkpoint/source-before.json.gz",
+      "sha256": "0c7ccd6c0d8b038fb161f29df545ad93b8c49465a98f83176a459e073ad04124",
+      "gzip_sha256": "b92ac0705ba5b4bd629c83a9741acbd1f673abb22a72b75d5043577de111c29c",
+      "bytes": 4721549
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/status.md",
+      "archive": "checkpoint/status.md.gz",
+      "sha256": "a99b157e60c5240456766f2eda3a46b661447cdf1bab0bc51c83927ae6f1800d",
+      "gzip_sha256": "30db63996e72d1606e79330d1b90f7f7f0e7f88cbc95ee0b08b38002a585f384",
+      "bytes": 71913
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/theorem.out",
+      "archive": "checkpoint/theorem.out.gz",
+      "sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "gzip_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166",
+      "bytes": 5523
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/theorem.status",
+      "archive": "checkpoint/theorem.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T112653Z-9ed1919ebedd41239b8fbd92d7332423/theorem.timing.json",
+      "archive": "checkpoint/theorem.timing.json.gz",
+      "sha256": "ae500054f5ea9a73e46143fbad50af9f81e4f62fbddaeedc2a54250b823aed58",
+      "gzip_sha256": "2085593da4f87e680998753e4356debe316cd4abda072113936b2665e7e507e6",
+      "bytes": 238
+    }
+  ]
+}
