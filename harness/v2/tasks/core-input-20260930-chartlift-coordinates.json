@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-chartlift-coordinates",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "165c6fe285d86ee4358aa8d817a09d871f470fd6",
   "objective": {
     "title": "Construct actual global tensor/variation input: coordinates",
@@ -184,5 +184,6 @@
       "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/coordinates.readback.json",
       "report_sha256": "6cb8c4ed190702bc0721429e8734303823317483853e44527ed8a7b882aeb76d"
     }
-  }
+  },
+  "accepted_commit": "a37bd0f7011c6e35dc01870f4d50cf2c4278e65e"
 }
