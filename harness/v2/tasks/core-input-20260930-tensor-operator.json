@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-tensor-operator",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "7f3ee8255c1fb76819021b20a9e88dc4510feb45",
   "objective": {
     "title": "Construct actual tensor operator toward universal Hamilton existence",
@@ -152,5 +152,6 @@
       "report_path": "harness/v2/contracts/core-tensor-transport-20260930/operator.readback.json",
       "report_sha256": "f67753365affa98aa574bd1b2aa4e8d599950be4fe17a6600417487e985df4d3"
     }
-  }
+  },
+  "accepted_commit": "793e3987215d384915eddebedf34d6cc3aedc375"
 }
