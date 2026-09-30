@@ -1,0 +1,136 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-finite-bounds",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "055e782f94da95290584a4dbe047351cadb83bf9",
+  "objective": {
+    "title": "finite-bounds for actual Hamilton solver inputs",
+    "statement": "Core assumption addressed: UniversalHamiltonConvergenceStatement through general Ricci-flow input construction. Supply uniform finite-family bounds and a common positive lifespan for the constructed local P/R family. No curvature, sphere recognition, flow or supplied operator witness may be added.",
+    "deliverables": [
+      "Poincare.FiniteLocalSolverBounds.exists_common_bounds_and_lifespan"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/FiniteLocalSolverBounds.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-local-parametrix-20260930/finite-bounds.readback.json",
+      "harness/v2/contracts/core-local-parametrix-20260930/construction-context.md"
+    ],
+    "symbols": [
+      "Poincare.FiniteLocalSolverBounds.exists_common_bounds_and_lifespan"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/FiniteLocalSolverBounds.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/FiniteLocalSolverBounds.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-local-parametrix-20260930/finite-bounds.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.FiniteLocalSolverBounds.exists_common_bounds_and_lifespan"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.FiniteLocalSolverBounds"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.FiniteLocalSolverBounds.exists_common_bounds_and_lifespan",
+        "lean_type": "\u2200 (n : \u2115) (C D \u03c4 : Fin n \u2192 \u211d), (\u2200 i, 0 \u2264 C i) \u2192 (\u2200 i, 0 \u2264 D i) \u2192 (\u2200 i, 0 < \u03c4 i) \u2192 \u2203 C\u2080 D\u2080 \u03b4 : \u211d, 0 \u2264 C\u2080 \u2227 0 \u2264 D\u2080 \u2227 0 < \u03b4 \u2227 \u03b4 \u2264 1 \u2227 \u2200 i, C i \u2264 C\u2080 \u2227 D i \u2264 D\u2080 \u2227 \u03b4 \u2264 \u03c4 i",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "readback-local-solver-helpers",
+      "method": "blind-readback",
+      "snapshot_sha256": "c31fadfc42b02a0833acb178f306890352418e167f8583688bf3946cc5dda215",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-local-parametrix-20260930/finite-bounds.readback.json",
+      "report_sha256": "510f30c0fdfbe7ed79c879cdfffc89e90f93b8b191d530f9875b0653d6a615d1"
+    }
+  }
+}

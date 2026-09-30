@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricAdaptedLocalParametrix"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricAdaptedLocalParametrix.exists_metric_adapted_local_parametrix",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (\u03b1 : \u211d), 0 < \u03b1 \u2192 \u03b1 < 1 \u2192\n \u2203 A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M,\n \u2203 \u03c8 \u03be : Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 \u211d,\n (\u2200 i, ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (\u03c8 i) \u2227 HasCompactSupport (\u03c8 i) \u2227\n   (\u2200 z \u2208 Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i, Filter.Eventually (fun y \u21a6 \u03c8 i y = 1) (nhds z)) \u2227\n   (\u2200 z, \u03c8 i z \u2208 Set.Icc 0 1) \u2227\n   ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (\u03be i) \u2227 HasCompactSupport (\u03be i) \u2227\n   (\u2200 z, \u03be i z \u2208 Set.Icc 0 1) \u2227 (\u2200 z \u2208 tsupport (\u03c8 i), \u03be i z = 1) \u2227\n   tsupport (\u03be i) \u2286 (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).target \u2227\n   (\u2200 z \u2208 tsupport (\u03be i), Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor i) y = 1) (nhds z))) \u2227\n \u2203 C\u03c8 CP \u03c4 : \u211d, 0 \u2264 C\u03c8 \u2227 0 \u2264 CP \u2227 0 < \u03c4 \u2227 \u03c4 \u2264 1 \u2227\n \u2200 T \u2208 Set.Ioc 0 \u03c4,\n   \u2203 P : Fin A.cover.chartCount \u2192 (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T \u211d) \u2192L[\u211d] (Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T),\n   \u2203 R : Fin A.cover.chartCount \u2192 (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T \u211d) \u2192L[\u211d] (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T \u211d),\n   \u2200 i, (\u2200 f p, p.2 \u2209 tsupport (\u03c8 i) \u2192 (P i f).u p = 0) \u2227\n     \u2200 f : (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T \u211d), (\u2200 p, p.2 \u2209 Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i \u2192 f p = 0) \u2192\n       (\u2200 p, R i f p = Poincare.BufferedFrozenParabolicSolver.chartValue\n         (fun z \u21a6 (Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor i) z)\u207b\u00b9)\n         (P i f) p - f p) \u2227\n       \u2016R i f\u2016 \u2264 C\u03c8 * (T ^ ((1-\u03b1)/2) + T ^ (1-\u03b1/2)) * \u2016f\u2016 \u2227\n       \u2016P i f\u2016 \u2264 CP * \u2016f\u2016",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "readback-local-solver-helpers",
+      "method": "blind-readback",
+      "snapshot_sha256": "edc3a27e93912342d480492b1408ff4564ce486f980403fffe6d0798a14cb515",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-local-parametrix-20260930/local-family.readback.json",
+      "report_sha256": "79e04e484dcbb4b24a8bd05dd5070af85a28f4179929a089afbee3cca46fa11b"
+    }
+  }
+}
