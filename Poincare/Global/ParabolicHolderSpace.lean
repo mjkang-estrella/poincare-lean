@@ -314,10 +314,13 @@ theorem isClosed_holderSubmodule :
       (WithLp.continuous_snd ..)
   change IsClosed {v : Ambient T E F | (∀ p, p ∉ cylinder T → v.fst p = 0) ∧ _}
   apply IsClosed.inter
-  · simpa only [iInter_setOf] using
+  · change IsClosed {v : Ambient T E F | ∀ p, p ∉ cylinder T → v.fst p = 0}
+    simpa only [iInter_ofPred] using
       (isClosed_iInter fun p : ℝ × E => isClosed_iInter fun _ : p ∉ cylinder T =>
         isClosed_eq (ev₁ p) (continuous_const : Continuous (fun _ : Ambient T E F => (0 : F))))
-  · simpa only [iInter_setOf] using
+  · change IsClosed {v : Ambient T E F | ∀ i : Pairs (cylinder (E := E) T),
+      v.snd i = (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (v.fst i.1.1 - v.fst i.1.2)}
+    simpa only [iInter_ofPred, Pi.smul_apply, Pi.sub_apply] using
       (isClosed_iInter fun i : Pairs (cylinder (E := E) T) => isClosed_eq (ev₂ i)
         (((ev₁ i.1.1).sub (ev₁ i.1.2)).const_smul (parabolicDist i.1.1 i.1.2 ^ α)⁻¹))
 
