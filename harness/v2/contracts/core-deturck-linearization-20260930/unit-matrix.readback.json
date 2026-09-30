@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-linearization-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "1913941322e01fa05950fae3c676ec9c380f1eb803f48d7685e5073f54bbce4f",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit",
+      "mathematical_statement": "E is the fixed real three-dimensional Euclidean space ClosedSmoothModel 3. Bilin is E ->L[R] E ->L[R] R, a continuous real bilinear form regarded as a continuous real-linear map from E into its real continuous dual. basis3 i is the standard EuclideanSpace.basisFun vector e_i, for i : Fin 3. For every G0 in Bilin, if G0.IsInvertible, then the coordinate matrix K0 : Matrix (Fin 3) (Fin 3) R with entry K0_(i,j) = G0(e_i)(e_j) is a unit in the explicit monoid Matrix.semiring.toMonoidWithZero.toMonoid. The literal uses @IsUnit with this monoid as a supplied algebraic structure argument, so its meaning is fixed by actual matrix multiplication and matrix identity. For this exact monoid, multiplication satisfies (A*B)_(i,j) = sum_k A_(i,k) B_(k,j) over k : Fin 3, and the identity has entry one when i=j and zero otherwise. IsUnit is the existence of a bundled multiplicative unit equal to K0 in that monoid, equivalently a two-sided inverse N whose matrix products K0*N and N*K0 equal the diagonal identity matrix. It does not require each scalar entry of K0 to be nonzero, and no pointwise-function monoid is selected by this type. CLM.IsInvertible means that G0 is the forward map of a continuous linear equivalence E -> E dual. The conclusion derives the coordinate matrix unit property from only this CLM-invertibility premise. There is no extra coordinate-unit, nonzero-determinant, left-inverse, symmetry, positive-definiteness, curvature, or metric-realization assumption. The first coordinate-matrix index is the first bilinear argument and the second index is the covector evaluation argument, exactly as displayed in K0. No transpose or alternative matrix is substituted in the statement. The declaration has no universe parameters, manifold, spatial point, time, Hoelder exponent, background data, first/second-jet variable, or quantitative bound. It asserts algebraic nonsingularity in the explicitly fixed matrix monoid, with no Matrix norm choice and no scalar inverse derivative, full DeTurck differential, global L, residual, contraction, or flow conclusion."
+    }
+  ],
+  "findings": []
+}

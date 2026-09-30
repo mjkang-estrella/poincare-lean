@@ -30,9 +30,9 @@
       "reviewer": "deturck-linearization-readback",
       "method": "blind-readback",
       "snapshot_sha256": "1913941322e01fa05950fae3c676ec9c380f1eb803f48d7685e5073f54bbce4f",
-      "verdict": "pending",
+      "verdict": "approved",
       "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.readback.json",
-      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "report_sha256": "f8bdbf29a610d8f8c7be28b90d6bce0c1fa08b9be40718cad8f0af90bfe11f6e"
     }
   }
 }

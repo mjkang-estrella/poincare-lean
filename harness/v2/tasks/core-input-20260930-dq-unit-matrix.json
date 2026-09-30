@@ -1,0 +1,140 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-dq-unit-matrix",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "804d2c637b28a043e516b05937ebbbffc3693ef5",
+  "objective": {
+    "title": "Construct actual DeTurck unit-matrix coefficient toward Hamilton existence",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via true general Ricci flow. Subsequent proof: full finite-jet Q/DQ identification retaining Da(G0)[h]:H0, then joint spatial coefficient regularity, differentiated covariance, true bounded L=dt-DQ(g0) and signed global L/P/R contraction. Construct actual coefficient/derivative inputs rather than assume operator or limit packages.",
+    "deliverables": [
+      "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckMetricJetNonsingular.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.readback.json",
+      "harness/v2/contracts/core-deturck-linearization-20260930/construction-context.md",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckMetricJetNonsingular.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckMetricJetNonsingular.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckMetricJetNonsingular"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit",
+        "lean_type": "∀ G0 : Poincare.DeTurckPrincipalSecondJet.Bilin, G0.IsInvertible →\n@IsUnit (Matrix (Fin 3) (Fin 3) ℝ) Matrix.semiring.toMonoidWithZero.toMonoid\n(fun i j : Fin 3 => G0 (Poincare.DeTurckPrincipalSecondJet.basis3 i) (Poincare.DeTurckPrincipalSecondJet.basis3 j))",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-linearization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "1913941322e01fa05950fae3c676ec9c380f1eb803f48d7685e5073f54bbce4f",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.readback.json",
+      "report_sha256": "f8bdbf29a610d8f8c7be28b90d6bce0c1fa08b9be40718cad8f0af90bfe11f6e"
+    }
+  }
+}
