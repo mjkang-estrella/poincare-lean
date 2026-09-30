@@ -54,6 +54,12 @@ import Poincare.Global.DeTurckTensorSecondJetDefinitions
 import Poincare.Global.DeTurckTensorSecondJet
 import Poincare.Global.DeTurckJetRealizationDefinitions
 import Poincare.Global.DeTurckCompactJetRealization
+import Poincare.Global.DeTurckChartLiftDefinitions
+import Poincare.Global.DeTurckChartLiftSupport
+import Poincare.Global.DeTurckChartLiftCoordinates
+import Poincare.Global.DeTurckCompactCoordinateVariation
+import Poincare.Global.DeTurckChartLiftSmoothness
+import Poincare.Global.DeTurckMetricVariation
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions

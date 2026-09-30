@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-chartlift-metric-variation",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "2606a24d7633ebaefbe4c0352dd4a18706acde7e",
   "objective": {
     "title": "Construct actual global tensor/variation input: metric-variation",
@@ -172,5 +172,6 @@
       "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/metric-variation.readback.json",
       "report_sha256": "d27584d672f2982f7051605575e94fbccedb71cba8bcc25ffe42d150916250d8"
     }
-  }
+  },
+  "accepted_commit": "7f32cf23fa91cfb65b875065f2d7958cd0ab977c"
 }
