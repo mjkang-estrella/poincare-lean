@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-coefficient-neighborhoods",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "b95075ed949d5e5cd51ed66908bc942a94a4ae37",
   "objective": {
     "title": "coefficient-neighborhoods for constructed Ricci-flow geometry",
@@ -129,5 +129,6 @@
       "report_sha256": "661950f3cd592613a9db59fa5db78571b4198aad8298e72958128a577fd2509a",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "77c5def23f19bca1e2c140e2e81939b157df7cb4"
 }
