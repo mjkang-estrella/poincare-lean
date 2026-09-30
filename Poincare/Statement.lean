@@ -24,6 +24,9 @@ universe u
 
 open scoped Manifold ContDiff
 
+-- Retain the earlier elaboration transparency for existing dependent path proofs.
+set_option backward.isDefEq.respectTransparency false
+
 namespace Poincare
 
 /--
@@ -416,7 +419,9 @@ theorem path_concat_segment_range_subset_of_concat_range
                 Set.range (F (Fin.last N)) := Or.inl hy
           simpa [Path.trans_range] using hy'
         have hseg := ih (p ∘ Fin.castSucc) (fun k => F k.castSucc) hprefix k'
-        exact hseg (by simpa [hkcast] using hz)
+        change Set.range (F k'.castSucc) ⊆ S at hseg
+        rw [hkcast] at hseg
+        exact hseg hz
 
 /--
 A finite concatenation of paths whose pieces all stay inside one stereographic
@@ -960,8 +965,8 @@ theorem path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem
     (t₀ t₁ t₂ : unitInterval) :
     ∀ t, Path.Homotopy.subpathTransSubpathRefl p t₀ t₁ t₂ t ∈ S := by
   intro t
-  change ((p.subpath t₀ (Set.Icc.convexCombo t₁ t₂ t.1)).trans
-    (p.subpath (Set.Icc.convexCombo t₁ t₂ t.1) t₂)) t.2 ∈ S
+  change ((p.subpath t₀ (Set.Icc.convexComb t₁ t₂ t.1)).trans
+    (p.subpath (Set.Icc.convexComb t₁ t₂ t.1) t₂)) t.2 ∈ S
   rw [Path.trans_apply]
   split_ifs <;> change p _ ∈ S <;> exact hp _
 
@@ -1651,7 +1656,7 @@ theorem threeSphere_stereographicEquatorLoop_runBlock_source
     change start.val + k.val < stop.val
     have hk : k.val < stop.val - start.val := k.isLt
     omega
-  simpa [block, j] using hrun j hjle hjlt
+  simpa [block, j, Nat.add_assoc] using hrun j hjle hjlt
 
 /--
 Source containment over an interval of original finite-concat segments also
@@ -2627,8 +2632,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteC
     ext s
     simp [Path.cast_coe, Path.subpath, h0, h1]
   exact hconcat.trans (by
-    rw [hpath]
-    exact Path.Homotopic.refl _)
+    rw [hpath])
 
 /--
 The subpath-to-loop projection composes the existing concat-subpath homotopy
@@ -2648,8 +2652,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteC
           ext s
           simp [Path.cast_coe, Path.subpath, h0, h1]
         exact hconcat.trans (by
-          rw [hpath]
-          exact Path.Homotopic.refl _)) := by
+          rw [hpath])) := by
   apply Subsingleton.elim
 
 /--
@@ -3531,7 +3534,8 @@ theorem threeSphere_countableComplement_pathConnectedSpace_of_mem
   let t : Set (stereographic' 3 a).source :=
     {p : (stereographic' 3 a).source | (p : ThreeSphere) ∈ s}
   have ht : t.Countable := by
-    simpa [t] using hs.preimage Subtype.val_injective
+    change (Subtype.val ⁻¹' s).Countable
+    exact hs.preimage Subtype.val_injective
   letI : PathConnectedSpace (tᶜ : Set (stereographic' 3 a).source) :=
     threeSphere_stereographicSource_countableComplement_pathConnectedSpace a ht
   exact
@@ -3619,10 +3623,10 @@ theorem threeSphere_stereographic_sources_inter_locPathConnectedSpace
     LocPathConnectedSpace
       (((stereographic' 3 a).source ∩
         (stereographic' 3 b).source) : Set ThreeSphere) := by
-  letI : LocPathConnectedSpace ThreeSphere :=
-    ChartedSpace.locPathConnectedSpace
+  letI : LocallyPathConnectedSpace ThreeSphere :=
+    ChartedSpace.locallyPathConnectedSpace
       (H := EuclideanSpace ℝ (Fin 3)) (M := ThreeSphere)
-  exact (threeSphere_stereographic_sources_inter_isOpen a b).locPathConnectedSpace
+  exact (threeSphere_stereographic_sources_inter_isOpen a b).locallyPathConnectedSpace
 
 /-- A second point, distinct from `a`, as a point of the stereographic source at `a`. -/
 noncomputable def threeSphere_pointInStereographicSource
@@ -4311,8 +4315,7 @@ noncomputable def threeSphere_twoPointComplement_diffeomorph_puncturedChart
     { toEquiv := e.toEquiv
       contMDiff_toFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-          simpa [e, puncture] using
-            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+          exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
       contMDiff_invFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
           ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4346,8 +4349,7 @@ theorem threeSphere_twoPointComplement_diffeomorph_puncturedChart_eq
           { toEquiv := e.toEquiv
             contMDiff_toFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-                simpa [e, puncture] using
-                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+                exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
             contMDiff_invFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
                 ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4395,8 +4397,7 @@ noncomputable def threeSphere_stereographicSources_inter_diffeomorph_puncturedCh
     { toEquiv := e.toEquiv
       contMDiff_toFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-          simpa [e, puncture] using
-            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+          exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
       contMDiff_invFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
           ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4433,8 +4434,7 @@ theorem threeSphere_stereographicSources_inter_diffeomorph_puncturedChart_eq
           { toEquiv := e.toEquiv
             contMDiff_toFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-                simpa [e, puncture] using
-                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+                exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
             contMDiff_invFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
                 ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4612,8 +4612,7 @@ noncomputable def threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart
     { toEquiv := e.toEquiv
       contMDiff_toFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-          simpa [e, puncture] using
-            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+          exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
       contMDiff_invFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
           ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4650,8 +4649,7 @@ theorem threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart_eq
           { toEquiv := e.toEquiv
             contMDiff_toFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-                simpa [e, puncture] using
-                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+                exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
             contMDiff_invFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
                 ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4859,8 +4857,7 @@ noncomputable def threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap
     { toEquiv := e.toEquiv
       contMDiff_toFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-          simpa [e] using
-            contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+          exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
       contMDiff_invFun := by
         exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
           ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -4905,8 +4902,7 @@ theorem threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap_eq
           { toEquiv := e.toEquiv
             contMDiff_toFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := htarget) (by
-                simpa [e] using
-                  contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
+                exact contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) hsource)
             contMDiff_invFun := by
               exact ContMDiff.of_comp_isOpenEmbedding (h' := hsource)
                 ((contMDiff_isOpenEmbedding (I := 𝓡 3) (n := ∞) htarget).congr
@@ -6190,7 +6186,7 @@ theorem paths_homotopic_of_mapsTo_simplyConnectedSubtype
         exact q.target }
   have hU : Path.Homotopic pU qU :=
     SimplyConnectedSpace.paths_homotopic pU qU
-  simpa [pU, qU] using hU.map ⟨Subtype.val, continuous_subtype_val⟩
+  exact hU.map ⟨Subtype.val, continuous_subtype_val⟩
 
 /--
 Any ambient loop that stays inside a simply connected subtype is nullhomotopic
@@ -6413,10 +6409,12 @@ theorem twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
     exact (overlapPath t).2.2
   have hrBackURange : Set.range rBack ⊆ U := by
     rintro _ ⟨t, rfl⟩
-    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.1
+    simpa only [rBack, Path.cast_coe, Path.symm_apply, Function.comp_apply] using
+      hrURange ⟨unitInterval.symm t, rfl⟩
   have hrBackVRange : Set.range rBack ⊆ V := by
     rintro _ ⟨t, rfl⟩
-    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.2
+    simpa only [rBack, Path.cast_coe, Path.symm_apply, Function.comp_apply] using
+      hrVRange ⟨unitInterval.symm t, rfl⟩
   rcases path_homotopy_forall_mem_of_range_subset_simplyConnectedSubtype
       (U := U) p r hp hrURange with
     ⟨Hp, hHp⟩
@@ -6873,7 +6871,7 @@ theorem twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_fora
         intro k
         simpa [vSegs] using hV k)
   have hcloseU : uPts (Fin.last R) = x₀ := by
-    simpa [uPts] using hclose
+    simpa [uPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vPts p vSegs Upath hcloseU
       hp (by simpa [vPts] using hVBase)
@@ -7041,7 +7039,7 @@ theorem twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_fora
         intro k
         simpa [vSegs] using hV k)
   have hcloseV : vPts (Fin.last R) = x₀ := by
-    simpa [vPts] using hclose
+    simpa [vPts, Fin.last] using hclose
   rcases twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V)
       (p.trans Upath) Vpath hcloseV hprefixRange' hvRange with
@@ -7196,7 +7194,8 @@ theorem twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_r
     exact hBefore ⟨k.val, by omega⟩ k.isLt
   have hVBase : tailPts ⟨start.val, by omega⟩ ∈ V := by
     have hStart := hTerminal start (by omega)
-    simpa using hStart ⟨0, (tailSegs start).source⟩
+    simpa [Fin.castSucc, Fin.castAdd, Fin.castLE] using
+      hStart ⟨0, (tailSegs start).source⟩
   have hV : ∀ k : Fin R,
       Set.range (tailSegs ⟨start.val + k.val, by omega⟩) ⊆ V := by
     intro k
@@ -7966,7 +7965,8 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_f
     simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
   have hOppBase : tailPts ⟨A, by omega⟩ ∈ V := by
     have hStart := hrun start (by omega) hstartstop
-    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
+    simpa [A, Fin.castSucc, Fin.castAdd, Fin.castLE] using
+      hStart ⟨0, (tailSegs start).source⟩
   have hOpp : ∀ k : Fin B,
       Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V := by
     intro k
@@ -8063,7 +8063,8 @@ theorem twoSetOpenCover_sameHead_firstOppositeRun_tail_induction
     simpa [A] using hBefore ⟨k.val, by omega⟩ k.isLt
   have hOppBase : tailPts ⟨A, by omega⟩ ∈ V := by
     have hStart := hrun start (by omega) hstartstop
-    simpa [A] using hStart ⟨0, (tailSegs start).source⟩
+    simpa [A, Fin.castSucc, Fin.castAdd, Fin.castLE] using
+      hStart ⟨0, (tailSegs start).source⟩
   have hOpp : ∀ k : Fin B,
       Set.range (tailSegs ⟨A + k.val, by omega⟩) ⊆ V := by
     intro k
@@ -8288,8 +8289,10 @@ theorem twoSetOpenCover_path_sourceChoice_subpaths
   have hopen : ∀ side : Bool, IsOpen (coverSet side) := by
     intro side
     cases side
-    · simpa [coverSet] using hV.preimage γ.continuous
-    · simpa [coverSet] using hU.preimage γ.continuous
+    · change IsOpen (γ ⁻¹' V)
+      exact hV.preimage γ.continuous
+    · change IsOpen (γ ⁻¹' U)
+      exact hU.preimage γ.continuous
   have hcoverI : (Set.univ : Set unitInterval) ⊆ ⋃ side, coverSet side := by
     intro s _hs
     have hsUV : γ s ∈ U ∪ V := by
@@ -8369,7 +8372,8 @@ theorem twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice
     exact hConcat.symm.trans hFull
   have hCastBack :=
     Path.Homotopic.pathCast hCast hsourceAt.symm htargetAt.symm
-  simpa [Path.cast] using hCastBack
+  change Path.Homotopic γ (Path.refl basepoint) at hCastBack
+  exact hCastBack
 
 /--
 A finite source-choice subdivision contracts the original based loop through an
@@ -8853,7 +8857,8 @@ theorem twoSphere_countableComplement_pathConnectedSpace_of_mem
   let t : Set (stereographic' 2 a).source :=
     {p : (stereographic' 2 a).source | (p : TwoSphere) ∈ s}
   have ht : t.Countable := by
-    simpa [t] using hs.preimage Subtype.val_injective
+    change (Subtype.val ⁻¹' s).Countable
+    exact hs.preimage Subtype.val_injective
   letI : PathConnectedSpace (tᶜ : Set (stereographic' 2 a).source) :=
     twoSphere_stereographicSource_countableComplement_pathConnectedSpace a ht
   exact
@@ -9450,7 +9455,7 @@ theorem twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_foral
     path_homotopy_trans_forall_mem_of_forall_mem
       HsplitEnd HsplitPrefixLift hHsplitEnd hHsplitPrefixLift
   have hcloseVLast : vLastPts (Fin.last A) = x₀ := by
-    simpa [vLastPts] using hclose
+    simpa [vLastPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vPts p vSegs Upath VlastPath hcloseVLast hp
       (by simpa [vPts, prefixPts] using hVBase)
@@ -9723,7 +9728,7 @@ theorem twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_me
     path_homotopy_trans_forall_mem_of_forall_mem
       HsplitEnd HsplitPrefixLift hHsplitEnd hHsplitPrefixLift
   have hcloseULast : uLastPts (Fin.last A) = x₀ := by
-    simpa [uLastPts] using hclose
+    simpa [uLastPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vPts (p.trans Upath) vSegs UlastPath hcloseULast
       hprefixRange
@@ -10078,7 +10083,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_f
         HsplitTail HsplitPrefix₁Lift hHsplitTail hHsplitPrefix₁Lift)
       hHsplitPrefix₂Lift
   have hcloseULast : uLastPts (Fin.last B) = x₀ := by
-    simpa [uLastPts] using hclose
+    simpa [uLastPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlock_homotopy_to_overlapBlock_forall_mem_of_mapsTo
       (U := U) (V := V) vPts p vSegs U₁
       hp (by simpa [vPts, prefix₂Pts, prefix₁Pts] using hVBase)
@@ -10571,7 +10576,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotop
         change V₃ t.2 ∈ U ∪ V
         exact hV₃Union t.2)
   have hcloseVFinal : vFinalPts (Fin.last C) = x₀ := by
-    simpa [vFinalPts] using hclose
+    simpa [vFinalPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vLastPts ((p.trans q).trans U₁)
       vLastSegs U₂ V₃ hcloseVFinal hprefixRange
@@ -10781,7 +10786,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhom
       huRange with
     ⟨q, _hqU, hreplace, hprefixRange⟩
   have hcloseVFinal : vFinalPts (Fin.last C) = x₀ := by
-    simpa [vFinalPts] using hclose
+    simpa [vFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((p.trans q).trans (Path.concat uPts uSegs)).trans
@@ -11374,7 +11379,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_hom
         change U₃ t.2 ∈ U ∪ V
         exact hU₃Union t.2)
   have hcloseUFinal : uFinalPts (Fin.last D) = x₀ := by
-    simpa [uFinalPts] using hclose
+    simpa [uFinalPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlock_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vFinalPts
       ((((p.trans q₁).trans U₁).trans q₂).trans U₂)
@@ -11638,7 +11643,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nul
       huLastRange with
     ⟨q₂, _hq₂U, hreplace₂, hprefixRange₂⟩
   have hcloseUFinal : uFinalPts (Fin.last D) = x₀ := by
-    simpa [uFinalPts] using hclose
+    simpa [uFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((p.trans q₁).trans (Path.concat uPts uSegs)).trans q₂).trans
@@ -12402,7 +12407,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_
         change V₄ t.2 ∈ U ∪ V
         exact hV₄Union t.2)
   have hcloseVUltra : vUltraPts (Fin.last E) = x₀ := by
-    simpa [vUltraPts] using hclose
+    simpa [vUltraPts, Fin.last] using hclose
   rcases twoSetOpenCover_sameSideBlockOppositeReturn_trans_cast_homotopy_refl_forall_mem_of_mapsTo
       (U := U) (V := V) vFinalPts
       ((((p.trans q₁).trans U₁).trans q₂).trans U₂)
@@ -12712,7 +12717,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_
       huLastRange with
     ⟨q₂, _hq₂U, hreplace₂, hprefixRange₂⟩
   have hcloseVUltra : vUltraPts (Fin.last E) = x₀ := by
-    simpa [vUltraPts] using hclose
+    simpa [vUltraPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((((p.trans q₁).trans (Path.concat uPts uSegs)).trans q₂).trans
@@ -13381,7 +13386,7 @@ theorem twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_con
       huFinalRange with
     ⟨q₃, _hq₃U, hreplace₃, hprefixRange₃⟩
   have hcloseUUltra : uUltraPts (Fin.last F) = x₀ := by
-    simpa [uUltraPts] using hclose
+    simpa [uUltraPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((((p.trans q₁).trans (Path.concat uPts uSegs)).trans q₂).trans
@@ -18927,7 +18932,7 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockT
         intro k
         simpa [northLastSegs] using hNorthLast k)
   have hcloseNorthLast : northLastPts (Fin.last B) = x₀ := by
-    simpa [northLastPts] using hclose
+    simpa [northLastPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((p.trans (Path.concat southPts southSegs)).trans
@@ -19294,7 +19299,7 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockT
         intro k
         simpa [southLastSegs] using hSouthLast k)
   have hcloseSouthLast : southLastPts (Fin.last B) = x₀ := by
-    simpa [southLastPts] using hclose
+    simpa [southLastPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((p.trans (Path.concat northPts northSegs)).trans
@@ -19790,7 +19795,7 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockS
         intro k
         simpa [northSegs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorth k)
   have hcloseSouthFinal : southFinalPts (Fin.last C) = x₀ := by
-    simpa [southFinalPts] using hclose
+    simpa [southFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((p.trans (Path.concat southPts southSegs)).trans
@@ -20104,7 +20109,7 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockN
         intro k
         simpa [southSegs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouth k)
   have hcloseNorthFinal : northFinalPts (Fin.last C) = x₀ := by
-    simpa [northFinalPts] using hclose
+    simpa [northFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((p.trans (Path.concat northPts northSegs)).trans
@@ -21576,7 +21581,7 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockS
         intro k
         simpa [northSegs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorth k)
   have hcloseNorthFinal : northFinalPts (Fin.last D) = x₀ := by
-    simpa [northFinalPts] using hclose
+    simpa [northFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((p.trans (Path.concat southPts southSegs)).trans
@@ -21953,7 +21958,7 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockN
         intro k
         simpa [southSegs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouth k)
   have hcloseSouthFinal : southFinalPts (Fin.last D) = x₀ := by
-    simpa [southFinalPts] using hclose
+    simpa [southFinalPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((p.trans (Path.concat northPts northSegs)).trans
@@ -22371,7 +22376,7 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockS
         intro k
         simpa [northSegs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorth k)
   have hcloseSouthEnd : southEndPts (Fin.last E₀) = x₀ := by
-    simpa [southEndPts] using hclose
+    simpa [southEndPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((((p.trans (Path.concat southPts southSegs)).trans
@@ -22848,7 +22853,7 @@ theorem threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockS
         intro k
         simpa [northSegs, prefix₆Segs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hNorth k)
   have hcloseNorthEnd : northEndPts (Fin.last F₀) = x₀ := by
-    simpa [northEndPts] using hclose
+    simpa [northEndPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((((p.trans (Path.concat southPts southSegs)).trans
@@ -23309,7 +23314,7 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockN
         intro k
         simpa [southSegs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouth k)
   have hcloseNorthEnd : northEndPts (Fin.last E₀) = x₀ := by
-    simpa [northEndPts] using hclose
+    simpa [northEndPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         (((((((p.trans (Path.concat northPts northSegs)).trans
@@ -23791,7 +23796,7 @@ theorem threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockN
         intro k
         simpa [southSegs, prefix₆Segs, prefix₅Segs, prefix₄Segs, prefix₃Segs, prefix₂Segs, prefix₁Segs] using hSouth k)
   have hcloseSouthEnd : southEndPts (Fin.last F₀) = x₀ := by
-    simpa [southEndPts] using hclose
+    simpa [southEndPts, Fin.last] using hclose
   have hcontract :
       Path.Homotopic
         ((((((((p.trans (Path.concat northPts northSegs)).trans
@@ -27651,7 +27656,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhom
       funext s
       simp [Path.cast_coe]
       rw [hjoin]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hblocksToSubpath :
       Path.Homotopic
@@ -27733,7 +27737,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhom
       funext s
       simp [Path.cast_coe]
       rw [hjoin]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hblocksToSubpath :
       Path.Homotopic
@@ -27846,7 +27849,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext s
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -27867,7 +27869,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext s
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -27998,7 +27999,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext s
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28019,7 +28019,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext s
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -28142,7 +28141,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28163,7 +28161,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -28180,7 +28177,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -28317,7 +28313,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28338,7 +28333,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -28355,7 +28349,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -28508,7 +28501,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext z
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28529,7 +28521,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -28546,7 +28537,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat a W)
@@ -28563,7 +28553,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -28731,7 +28720,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext z
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28752,7 +28740,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -28769,7 +28756,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat a W)
@@ -28786,7 +28772,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext z
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -28972,7 +28957,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext c
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -28993,7 +28977,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -29010,7 +28993,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat a W)
@@ -29027,7 +29009,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat b Z)
@@ -29044,7 +29025,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -29247,7 +29227,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext c
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -29268,7 +29247,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -29285,7 +29263,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat a W)
@@ -29302,7 +29279,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat b Z)
@@ -29319,7 +29295,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext c
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -29539,7 +29514,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -29560,7 +29534,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -29577,7 +29550,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -29594,7 +29566,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -29611,7 +29582,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -29628,7 +29598,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -29877,7 +29846,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -29898,7 +29866,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -29915,7 +29882,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -29932,7 +29898,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -29949,7 +29914,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -29966,7 +29930,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -29983,7 +29946,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -30270,7 +30232,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -30291,7 +30252,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -30308,7 +30268,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -30325,7 +30284,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -30342,7 +30300,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -30359,7 +30316,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -30376,7 +30332,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatC :
       Path.Homotopic (Path.concat g Ptail)
@@ -30393,7 +30348,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinBC]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -30714,7 +30668,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -30735,7 +30688,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -30752,7 +30704,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -30769,7 +30720,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -30786,7 +30736,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -30803,7 +30752,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -30820,7 +30768,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatC :
       Path.Homotopic (Path.concat g Ptail)
@@ -30837,7 +30784,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinBC]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatD :
       Path.Homotopic (Path.concat i Pfinal)
@@ -30854,7 +30800,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinCD]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -31149,7 +31094,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -31170,7 +31114,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -31187,7 +31130,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -31204,7 +31146,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -31221,7 +31162,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -31238,7 +31178,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -31487,7 +31426,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -31508,7 +31446,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -31525,7 +31462,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -31542,7 +31478,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -31559,7 +31494,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -31576,7 +31510,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext b
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -31593,7 +31526,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -31880,7 +31812,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -31901,7 +31832,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -31918,7 +31848,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -31935,7 +31864,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -31952,7 +31880,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -31969,7 +31896,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -31986,7 +31912,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatC :
       Path.Homotopic (Path.concat g Ptail)
@@ -32003,7 +31928,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinBC]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -32324,7 +32248,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [← hjoinUV]
-      rfl
     exact htargetEq ▸ Path.Homotopic.refl _
   have hcatV :
       Path.Homotopic (Path.concat q G)
@@ -32345,7 +32268,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinVW]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatX :
       Path.Homotopic (Path.concat s J)
@@ -32362,7 +32284,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinWX]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatY :
       Path.Homotopic (Path.concat c W)
@@ -32379,7 +32300,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinXY]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatZ :
       Path.Homotopic (Path.concat d Z)
@@ -32396,7 +32316,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinYZ]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatA :
       Path.Homotopic (Path.concat e Q)
@@ -32413,7 +32332,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinZA]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatB :
       Path.Homotopic (Path.concat f O)
@@ -32430,7 +32348,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinAB]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatC :
       Path.Homotopic (Path.concat g Ptail)
@@ -32447,7 +32364,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinBC]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hcatD :
       Path.Homotopic (Path.concat i Pfinal)
@@ -32464,7 +32380,6 @@ theorem threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlo
       funext t
       simp [Path.cast_coe]
       rw [hjoinCD]
-      rfl
     exact hsourceEq ▸ Path.Homotopic.refl _
   have hblocksToSubpaths :
       Path.Homotopic
@@ -33603,7 +33518,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -33846,8 +33761,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -34034,7 +33947,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -34336,8 +34249,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -34535,7 +34446,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -34895,8 +34806,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -35107,7 +35016,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -35526,8 +35435,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -36054,7 +35961,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -36122,8 +36029,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -36276,7 +36181,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -36402,8 +36307,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -36567,7 +36470,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -36752,8 +36655,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -36940,7 +36841,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -37242,8 +37143,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -37441,7 +37340,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -37801,8 +37700,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -38012,7 +37909,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -38431,8 +38328,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -38609,7 +38504,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -38852,8 +38747,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -39017,7 +38910,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -39202,8 +39095,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -39355,7 +39246,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -39481,8 +39372,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -39635,7 +39524,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -39761,8 +39650,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -39914,7 +39801,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -40040,8 +39927,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -40182,7 +40067,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -40250,8 +40135,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -40392,7 +40275,7 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_north
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 threeSphere_northPole).source := by
       intro k
-      simpa [tailSegs] using htailNorth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k
     have hSouthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -40460,8 +40343,6 @@ theorem threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_north
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -40602,7 +40483,7 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_south
         Set.range (tailSegs ⟨k.val, by omega⟩) ⊆
           (stereographic' 3 (-threeSphere_northPole)).source := by
       intro k
-      simpa [tailSegs] using htailSouth k
+      simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k
     have hNorthBase :
         tailPts ⟨L, by omega⟩ ∈
           (stereographic' 3 threeSphere_northPole).source := by
@@ -40670,8 +40551,6 @@ theorem threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_south
         (((q.cast rfl htailStart).trans (Path.concat tailPts tailSegs)).cast
           rfl htailEnd.symm) = q.trans tailPath := by
       dsimp [tailPath]
-      exact (path_trans_cast_eq_trans_cast_target
-        q (Path.concat tailPts tailSegs) htailStart htailEnd.symm).symm
     have htargetEq :
         (((Path.refl (p 0)).cast rfl htailClose).cast rfl htailEnd.symm) =
           ((Path.refl (p 0)).cast rfl hclose) := by
@@ -40800,7 +40679,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1))).cast
         (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have ha1 : a (Fin.last (A₀ + 1)) = 1 := by
     simpa [a] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -40872,7 +40751,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
     (by
       rw [h1, h0]
       exact γ.target.trans γ.source.symm)
-    (by simpa [u, a] using hSub)
+    (by simpa [u, a, Fin.castAdd, Fin.cast] using hSub)
 
 /--
 Exact finite-concat quotient form for one subdivision split into nonempty
@@ -40998,7 +40877,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
         (R + 1) + (A₀ + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hb1 : b (Fin.last (B₀ + 1)) = 1 := by
     simpa [b] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41079,7 +40958,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
     (by
       rw [h1, h0]
       exact γ.target.trans γ.source.symm)
-    (by simpa [u, b] using hSub)
+    (by simpa [u, b, Fin.castAdd, Fin.cast] using hSub)
 
 /--
 Exact finite-concat quotient form for one subdivision split into nonempty
@@ -41205,7 +41084,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) +
         (R + 1) + (A₀ + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hb1 : b (Fin.last (B₀ + 1)) = 1 := by
     simpa [b] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41286,7 +41165,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
     (by
       rw [h1, h0]
       exact γ.target.trans γ.source.symm)
-    (by simpa [u, b] using hSub)
+    (by simpa [u, b, Fin.castAdd, Fin.cast] using hSub)
 
 /--
 Exact finite-concat quotient form for one subdivision split into nonempty
@@ -41389,7 +41268,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1) + (R + 1))).cast
         (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have ha1 : a (Fin.last (A₀ + 1)) = 1 := by
     simpa [a] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41461,7 +41340,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
     (by
       rw [h1, h0]
       exact γ.target.trans γ.source.symm)
-    (by simpa [u, a] using hSub)
+    (by simpa [u, a, Fin.castAdd, Fin.cast] using hSub)
 
 /--
 Exact finite-concat quotient form for one subdivision split into nonempty
@@ -41543,7 +41422,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
     fun o => t ((o.natAdd
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hz1 : z (Fin.last (R + 1)) = 1 := by
     simpa [z] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41614,7 +41493,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, z] using hSub
+    simpa [u, z, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -41721,7 +41600,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
     fun o => t ((o.natAdd
       ((N + 1) + (M + 1) + (L + 1) + (K + 1) + (T + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hz1 : z (Fin.last (R + 1)) = 1 := by
     simpa [z] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41792,7 +41671,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, z] using hSub
+    simpa [u, z, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -41887,7 +41766,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
     fun n => t ((n.natAdd ((N + 1) + (M + 1) + (L + 1) + (K + 1))).cast
       (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hy1 : y (Fin.last (T + 1)) = 1 := by
     simpa [y] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -41949,7 +41828,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, y] using hSub
+    simpa [u, y, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -42042,7 +41921,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
     fun n => t ((n.natAdd ((N + 1) + (M + 1) + (L + 1) + (K + 1))).cast
       (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hy1 : y (Fin.last (T + 1)) = 1 := by
     simpa [y] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -42104,7 +41983,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, y] using hSub
+    simpa [u, y, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -42183,7 +42062,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
   let x : Fin (K + 2) → unitInterval :=
     fun m => t ((m.natAdd ((N + 1) + (M + 1) + (L + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hx1 : x (Fin.last (K + 1)) = 1 := by
     simpa [x] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -42236,7 +42115,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, x] using hSub
+    simpa [u, x, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -42315,7 +42194,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
   let x : Fin (K + 2) → unitInterval :=
     fun m => t ((m.natAdd ((N + 1) + (M + 1) + (L + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hx1 : x (Fin.last (K + 1)) = 1 := by
     simpa [x] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -42368,7 +42247,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, x] using hSub
+    simpa [u, x, Fin.castAdd, Fin.cast] using hSub
   have hConcat := Path.Homotopic.concat_subpath γ t
   have hsourceAt : γ (t 0) = threeSphere_equatorPoint := by
     rw [h0]
@@ -42431,7 +42310,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
   let w : Fin (L + 2) → unitInterval :=
     fun l => t ((l.natAdd ((N + 1) + (M + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hw1 : w (Fin.last (L + 1)) = 1 := by
     simpa [w] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -42474,7 +42353,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, w] using hSub
+    simpa [u, w, Fin.castAdd, Fin.cast] using hSub
   have hConcat :
       Path.Homotopic
         (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1) + (L + 1)) =>
@@ -42541,7 +42420,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
   let w : Fin (L + 2) → unitInterval :=
     fun l => t ((l.natAdd ((N + 1) + (M + 1))).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hw1 : w (Fin.last (L + 1)) = 1 := by
     simpa [w] using h1
   have hjoinUV : v 0 = u (Fin.last (N + 1)) := by
@@ -42584,7 +42463,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, w] using hSub
+    simpa [u, w, Fin.castAdd, Fin.cast] using hSub
   have hConcat :
       Path.Homotopic
         (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1) + (L + 1)) =>
@@ -42642,7 +42521,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
   let v : Fin (M + 2) → unitInterval :=
     fun j => t ((j.natAdd (N + 1)).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hv1 : v (Fin.last (M + 1)) = 1 := by
     simpa [v] using h1
   have hjoin : v 0 = u (Fin.last (N + 1)) := by
@@ -42675,7 +42554,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, v] using hSub
+    simpa [u, v, Fin.castAdd, Fin.cast] using hSub
   have hConcat :
       Path.Homotopic
         (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
@@ -42731,7 +42610,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
   let v : Fin (M + 2) → unitInterval :=
     fun j => t ((j.natAdd (N + 1)).cast (by omega))
   have hu0 : u 0 = 0 := by
-    simpa [u] using h0
+    simpa [u, Fin.castAdd, Fin.cast] using h0
   have hv1 : v (Fin.last (M + 1)) = 1 := by
     simpa [v] using h1
   have hjoin : v 0 = u (Fin.last (N + 1)) := by
@@ -42764,7 +42643,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (by
             rw [h1, h0]
             exact γ.target.trans γ.source.symm)) := by
-    simpa [u, v] using hSub
+    simpa [u, v, Fin.castAdd, Fin.cast] using hSub
   have hConcat :
       Path.Homotopic
         (Path.concat (γ ∘ t) (fun k : Fin ((N + 1) + (M + 1)) =>
@@ -42845,7 +42724,6 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth
           (γ.subpath (t (Fin.last (N + 1)).castSucc)
             (t (Fin.last (N + 1)).succ))) := by
     rw [Path.concat_succ]
-    exact Path.Homotopic.refl _
   have hNorthBase :
       ((γ ∘ t) ∘ Fin.castSucc) 0 ∈
         (stereographic' 3 threeSphere_northPole).source := by
@@ -42939,7 +42817,6 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth
           (γ.subpath (t (Fin.last (N + 1)).castSucc)
             (t (Fin.last (N + 1)).succ))) := by
     rw [Path.concat_succ]
-    exact Path.Homotopic.refl _
   have hSouthBase :
       ((γ ∘ t) ∘ Fin.castSucc) 0 ∈
         (stereographic' 3 (-threeSphere_northPole)).source := by
@@ -43074,8 +42951,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlock
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 Exact finite-concat quotient form for a nonempty north-source block between
@@ -43172,8 +43048,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlock
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 The first non-degenerate mixed finite-concat collapse: two pieces of an
@@ -43254,8 +43129,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 The symmetric two-piece mixed finite-concat collapse, with the first segment
@@ -43334,8 +43208,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 The two-segment dispatcher for the actual finite-concat collapse hypothesis:
@@ -43475,8 +43348,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouth
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 The symmetric three-piece mixed finite-concat excursion collapse: south, then
@@ -43564,8 +43436,7 @@ theorem threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorth
     exact hsourceAt
   apply Path.Homotopic.Quotient.eq.mpr
   exact hconcat.trans (hmixed.trans (by
-    rw [htargetEq]
-    exact Path.Homotopic.refl _))
+    rw [htargetEq]))
 
 /--
 The three-segment dispatcher for the actual finite-concat collapse hypothesis:
@@ -43677,9 +43548,12 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientS
     threeSphereBasedLoopNullhomotopyStatement_eq]
   intro γ
   rcases hquotient γ with ⟨N, t, h0, h1, hsegment, hquot⟩
-  simpa [h0, h1] using
-    Path.Homotopic.Quotient.eq.mp
-      (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))
+  have hcast := Path.Homotopic.Quotient.eq.mp
+    (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))
+  have h := hcast.pathCast
+    (show threeSphere_equatorPoint = γ (t 0) from by simp [h0])
+    (show threeSphere_equatorPoint = γ (t (Fin.last N)) from by simp [h1])
+  convert h using 1 <;> apply Path.ext <;> funext s <;> rfl
 
 /--
 The quotient-and-collapse-to-loop route uses the finite-concat quotient equality
@@ -43693,9 +43567,12 @@ theorem threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientS
             threeSphereBasedLoopNullhomotopyStatement_eq]
           intro γ
           rcases hquotient γ with ⟨N, t, h0, h1, hsegment, hquot⟩
-          simpa [h0, h1] using
-            Path.Homotopic.Quotient.eq.mp
-              (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))) := by
+          have hcast := Path.Homotopic.Quotient.eq.mp
+            (hquot.symm.trans (hcollapse γ N t h0 h1 hsegment))
+          have h := hcast.pathCast
+            (show threeSphere_equatorPoint = γ (t 0) from by simp [h0])
+            (show threeSphere_equatorPoint = γ (t (Fin.last N)) from by simp [h1])
+          convert h using 1 <;> apply Path.ext <;> funext s <;> rfl) := by
   funext hquotient hcollapse
   apply Subsingleton.elim
 
