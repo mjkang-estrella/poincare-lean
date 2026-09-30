@@ -1,5 +1,40 @@
 # Handoff Snapshot
 
+## 2026-09-29 Constructed chart maps and nonlinear carrier transport
+
+Both universal core assumptions remain open. The new actual gated chart maps
+and Holder pullback are prerequisites for global Hamilton/Ricci-flow inputs;
+no sphere recognition, positive-Einstein seed, supplied flow/operator/bound
+package or extra assumption was used to produce them.
+
+BufferedChartTransitionExtensions constructs theta and globally smooth compact
+F from the atlas/buffers already produced by MetricAdaptedLocalParametrix.
+Theta is one near actual transport support and lies in the genuine transition
+domain with both cutoff-one germ restrictions. A second cutoff makes F agree
+with the actual chart change near ALL tsupport(theta). Actual global Lipschitz
+constants are outputs. The genuine-g0 producer-to-consumer application passed
+Lean, including the derived destination coordSupport germ premise.
+
+ParabolicSpatialHolderPullback now constructs actual bounded Q_T on scalar,
+vector, covector and Hessian Y carriers. Q_T f(t,z)=f(t,Fz), with one bound
+chosen before every real T and alpha>=0. No completeness of V is required.
+Compact F does not make Q_T f compactly supported; later localization must
+retain the overlap gate, destination partition and actual source outer buffer.
+
+The next unresolved theorem is a bounded nonlinear Graph pullback retaining
+all u,ut,du,ddu fields and within-time derivative certificates, with one norm
+bound for T in Ioc0 1. Existing compact-smooth derivative support/bounds and
+vector-valued cutoff carriers already supply DF,D2F and Jacobian-weight
+carriers; do not recreate them as alias-only helper files. Then prove actual
+destination-only tensor transport, overlap/symmetry and true global signed
+L/P/R identity with normR<1. Ordinary joint C3 at zero, nonlinear inversion,
+physical Ricci flow and later surgery/favorable metrics remain unproved.
+
+First action: freeze the nonlinear Graph pullback using the actual Y operator
+and constructed derivative carriers, including the chain-rule ddu term with
+D2F. Read `harness/reports/core-chart-transport-20260930.md` for exact remaining
+core/operator/physical types and preserved evidence.
+
 ## 2026-09-29 Constructed actual local solver operators
 
 The central objective remains universal Hamilton input existence. Neither

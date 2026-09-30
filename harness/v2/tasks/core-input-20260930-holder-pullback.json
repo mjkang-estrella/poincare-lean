@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-holder-pullback",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "e821fb6920b5ebb48e36a84792926caf8be75acd",
   "objective": {
     "title": "Construct actual nonlinear parabolic Holder pullback",
@@ -128,5 +128,6 @@
       "report_path": "harness/v2/contracts/core-chart-transport-20260930/holder-pullback.readback.json",
       "report_sha256": "7de8e17731028c15f6920822384e3e98fd3bebea099ba68b4d2f99f61489a2a2"
     }
-  }
+  },
+  "accepted_commit": "0a22321f4ceadd7edcf2ccc5670a4201006c7348"
 }
