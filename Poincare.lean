@@ -42,6 +42,11 @@ import Poincare.Global.DeTurckPartialCoefficientSmoothness
 import Poincare.Global.DeTurckActualSpatialCoefficients
 import Poincare.Global.DeTurckTensorBasisDefinitions
 import Poincare.Global.DeTurckTensorBasisReconstruction
+import Poincare.Global.DeTurckCompactCoefficientDefinitions
+import Poincare.Global.DeTurckCoupledForcingDefinitions
+import Poincare.Global.DeTurckCompactCoefficientExtension
+import Poincare.Global.DeTurckCoupledForcing
+import Poincare.Global.DeTurckTensorGraphJet
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions

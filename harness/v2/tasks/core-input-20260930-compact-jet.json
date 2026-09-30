@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-compact-jet",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "1d0160e1daef078ad09cd06553a36e55e24a9ab8",
   "objective": {
     "title": "Construct actual compact coefficients and coupled forcing: jet",
@@ -167,5 +167,6 @@
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
       "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
-  }
+  },
+  "accepted_commit": "2c3c4da737132b5a8476ae41bbbd45e56d092648"
 }
