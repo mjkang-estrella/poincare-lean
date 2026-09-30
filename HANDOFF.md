@@ -1,5 +1,48 @@
 # Handoff Snapshot
 
+## 2026-09-30 Proved full localization and compact symmetric two-jets
+
+The complete proof goal remains active. Universal smoothability and Hamilton
+convergence remain open; the reserved final theorem is absent. Frozen core
+statements, norms and prior work/evidence are preserved.
+
+DeTurckLocalization.differential_cutoff proves whole full-DQ localization,
+retaining both ordered principal mixed terms, the cutoff Hessian and the true
+coupled firstOrder(dc.smulRight h). The inverse-variation contribution against
+H0 remains in the base differential; zeroOrder cancels only by linearity.
+cutoff_hasFDerivAt_two identifies BOTH actual product derivatives, using
+first-jet equality on a neighborhood before differentiating it. L=dt-DQ takes
+the negative of the displayed correction.
+
+DeTurckTensorSecondJet reconstructs the actual whole Hessian from Graph
+certificates and proves fixed-time spatial C2 for alpha>0 with original
+carriers/norms. DeTurckJetRealization constructs an explicit smooth compact
+symmetric eta*quadratic Taylor field inside any prescribed open coordinate
+neighborhood, matching a symmetric C2 germ's value/D/D2 exactly. No smooth
+germ equality or full-Holder density claim is made. A joint kernel application
+localizes actual Graph jets and constructs the matched compact field.
+
+First action: freeze and construct the global smooth symmetric tangent-
+bilinear chartLift of the now constructed compact coefficient field F, zero
+off the actual chart source, with CovariantDerivative.chartMetric H anchor=F
+throughout the true target and actual compact source support. Prove forward/
+inverse differential and bundle-coordinate identities; do not add them as
+premises. Read harness/reports/core-deturck-localization-20260930.md.
+
+chartMetric itself has no cutoff; blendedChartMetric does. A point bump
+supports only germ agreement unless its one-region covers all nonzero F.
+After the lift, construct a COMMON positive epsilon and actual smooth
+Riemannian metrics g0+sH using coercivity derived from g0 on compact support.
+Then differentiate existing nonlinear covariance and transfer by matched
+2jets to symmetric C2 Graph germs. These global lift/metric-variation/
+linearized-covariance producers are still unproved.
+
+Stored source entries already carry their source partition. Actual global L/R
+and signed id-R contraction, nonlinear inversion, matched initial jets,
+ordinary joint C3, physical Ricci flow and later continuation/surgery/
+favorable-flow/finite-energy/compact-limit existence remain open. Compatible
+smoothability is independent. No universal core was discharged by this batch.
+
 ## 2026-09-30 Constructed actual compact lower-DQ forcing
 
 The complete proof goal remains active. Both universal smoothability and
