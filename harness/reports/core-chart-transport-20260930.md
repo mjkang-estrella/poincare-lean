@@ -146,3 +146,12 @@ constants for DF and D2F from F infinity/compact; the existing
 ParabolicCutoffCommutator.exists_cutoff_carrier accepts vector/CLM values and
 chooses bounds before T. Its bilinearY supplies actual derivative product
 carriers. These verified APIs should be consumed directly.
+
+The integration checkpoint at `61f36bebab245002f97c7c3a85835db5b0ba2a4c`
+passed fresh root source, full Lake build, interface, mathlib-gap, shape,
+theorem-contract, semantic, root-import and axiom audits. Root independently
+scanned internal-inclusive emitted dependencies for all new modules, with
+only the allowed foundational axioms. Completion failed only because the
+reserved final declaration is absent. The complete source-bound receipt and
+outputs are preserved under the integration evidence manifest. Neither
+universal core assumption is discharged; the complete objective remains active.
