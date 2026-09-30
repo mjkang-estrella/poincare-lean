@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-localization-hessian",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "e02105a51bd8ada40a512d66c4fceb0f4caf0feb",
   "objective": {
     "title": "Discharge actual localization/covariance input: hessian",
@@ -184,5 +184,6 @@
       "report_path": "harness/v2/contracts/core-deturck-localization-20260930/hessian.readback.json",
       "report_sha256": "44953c565de797d304e13b4b5a1a742a39557813849ca92da6e68b76d9242858"
     }
-  }
+  },
+  "accepted_commit": "7589e2b68abd4957459e1a5754a6716ad005065c"
 }
