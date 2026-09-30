@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-dq-joint",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "af96d92551a1fc9dd746494f76b47307c1ec13e8",
   "objective": {
     "title": "Construct actual DeTurck joint coefficient toward Hamilton existence",
@@ -137,5 +137,6 @@
       "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/joint.readback.json",
       "report_sha256": "56cf84c9251aa52a6f590bd79f44f3c00ba93a5c5e4155e086454a0a8bffdf48"
     }
-  }
+  },
+  "accepted_commit": "d322837f15c05368d498740987619e685d63d466"
 }
