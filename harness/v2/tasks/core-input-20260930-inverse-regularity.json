@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-inverse-regularity",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "055e782f94da95290584a4dbe047351cadb83bf9",
   "objective": {
     "title": "inverse-regularity for actual Hamilton solver inputs",
@@ -144,5 +144,6 @@
       "report_path": "harness/v2/contracts/core-local-parametrix-20260930/inverse-regularity.readback.json",
       "report_sha256": "87c0272471ac9b19e52cc89d34f917a23b0679be0caea59c5b1eaa753cffea93"
     }
-  }
+  },
+  "accepted_commit": "127725fb499b88b5b35654479d8859afeb8f4448"
 }

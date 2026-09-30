@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-finite-bounds",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "055e782f94da95290584a4dbe047351cadb83bf9",
   "objective": {
     "title": "finite-bounds for actual Hamilton solver inputs",
@@ -132,5 +132,6 @@
       "report_path": "harness/v2/contracts/core-local-parametrix-20260930/finite-bounds.readback.json",
       "report_sha256": "510f30c0fdfbe7ed79c879cdfffc89e90f93b8b191d530f9875b0653d6a615d1"
     }
-  }
+  },
+  "accepted_commit": "f667e5a11cf550fbe51dba9f1e4d607047553ff3"
 }
