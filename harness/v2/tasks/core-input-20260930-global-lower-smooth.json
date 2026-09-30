@@ -1,0 +1,137 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-global-lower-smooth",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "b3ae48a518c9679aa5c21bfbf18998e316491742",
+  "objective": {
+    "title": "Construct actual global parametrix lower-smooth for Hamilton inputs",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement through genuine general Ricci flow. Subsequent proof: explicit finite-jet derivative of actual DeTurck Q, then true L=dt-DQ(g0), covariance and bounded global L/P/R contraction. Prove actual lowerTerm smoothness, not an unspecified existential remainder or supplied operator package.",
+    "deliverables": [
+      "Poincare.DeTurckLowerJetSmoothness.contDiffAt_lowerTerm"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckLowerJetSmoothness.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth.readback.json",
+      "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth-context.md",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckCoordinateJointRegularity.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckLowerJetSmoothness.contDiffAt_lowerTerm"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckLowerJetSmoothness.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckLowerJetSmoothness.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckLowerJetSmoothness.contDiffAt_lowerTerm"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckLowerJetSmoothness"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckLowerJetSmoothness.contDiffAt_lowerTerm",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (B : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(DB : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (J0 : Poincare.DeTurckPrincipalSecondJet.Jet1), G0.IsInvertible →\nContDiffAt ℝ ((⊤ : ENat) : WithTop ENat)\n (fun p : Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1 => Poincare.DeTurckPrincipalIdentity.lowerTerm B DB p.1 p.2)\n (G0,J0)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "15725738610669f6718ca9d2b9c6a166286b9c9847c7f6c344fad9fd914dae3b",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth.readback.json",
+      "report_sha256": "e991700e4d7623ef6df55abf9c1b6b25e4567cd1f75a939cae43a1df8e7bfa38"
+    }
+  }
+}

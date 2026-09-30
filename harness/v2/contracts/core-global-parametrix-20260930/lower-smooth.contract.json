@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckLowerJetSmoothness"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckLowerJetSmoothness.contDiffAt_lowerTerm",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (B : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(DB : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (J0 : Poincare.DeTurckPrincipalSecondJet.Jet1), G0.IsInvertible →\nContDiffAt ℝ ((⊤ : ENat) : WithTop ENat)\n (fun p : Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1 => Poincare.DeTurckPrincipalIdentity.lowerTerm B DB p.1 p.2)\n (G0,J0)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "15725738610669f6718ca9d2b9c6a166286b9c9847c7f6c344fad9fd914dae3b",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth.readback.json",
+      "report_sha256": "e991700e4d7623ef6df55abf9c1b6b25e4567cd1f75a939cae43a1df8e7bfa38"
+    }
+  }
+}

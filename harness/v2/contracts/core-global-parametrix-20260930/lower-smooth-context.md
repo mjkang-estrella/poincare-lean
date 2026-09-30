@@ -1,0 +1,11 @@
+# Genuine DeTurck lower coefficient prerequisite
+
+Core assumption helped: UniversalHamiltonConvergenceStatement via actual general Ricci-flow construction. Subsequent consumer: construct the real finite-jet differential DQ(g0), then actual L=dt-DQ(g0):X_M ->L Y_M with full lower coefficients and its signed global residual/contraction. This task is independent of the global P assembly and closes the first explicit lower-coefficient differentiability obstacle.
+
+Use the ACTUAL DeTurckPrincipalIdentity.lowerTerm B DB G J, not the existential lower exported by principalIdentity and not survey/Appendix probes or an assumed linear CLM package. The explicit nonlinear expression is inverseEntries(G):H + lowerTerm(B,DB,G,J). Differentiating the principal part must later retain Da(G0)[h]:H0 in the zero-order term. Current task proves genuine smoothness at invertible G0 in the metric/first-jet product, with B/DB fixed; it does not claim the full differential, covariance or spatial coefficient regularity.
+
+Actual g0 invertibility in chart cutoff-one germs is proved by chartMetric_isInvertible_of_cutoff. Background Christoffel smoothness is already proved. ContinuousLinearMap.IsInvertible.contDiffAt_map_inverse supplies smooth inversion of the actual bilinear metric as E->L Cov. No symmetry, positive-curvature, metric seed, approximate coefficient, flow or operator assumption is permitted beyond the exact frozen hypothesis. The frozen literal binds the proved canonical Jet1 group and real NormedSpace using explicit scalar/identity-hom parameters. Diagnostics prove Jet1=fresh E->L Bilin and its norm equals actual CLM.opNorm by rfl. This resolves scalar/hom metavariable inference, adds no supplied hypothesis, and changes no norm. Use these canonical bindings only; do not introduce an alternate norm or scalar action.
+
+The remaining explicit field/operator algebra can use existing CLM comp/flip/apply/sum APIs and finite-dimensional coordinate/evaluation criteria for the actual continuousBilinear output. Preserve the bilinear lowerTerm, not merely its scalar values unless they are used to prove the same output smoothness.
+
+Both universal cores remain open. Local helpers are not registered Pi/Leanstral Jobs. Preserve every failed compiler/source attempt and final diff. Workers do not full-build, self-accept, merge or alter services.
