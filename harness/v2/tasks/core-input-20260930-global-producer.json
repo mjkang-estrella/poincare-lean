@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-producer",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "decb758bcfd05b89d7d58f5f519fbba55e7dba4e",
+  "status": "ready",
+  "base_commit": "41520e2d37b85dd5347b3c540d166d6af2490aa6",
   "objective": {
     "title": "Construct actual global parametrix producer for Hamilton inputs",
     "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via actual general Ricci-flow inputs. Subsequent proof: actual g0 global P:Y_M ->L X_M with linked local residuals and full Graph assembly, then true full DeTurck L/P/R identity and contraction. Construct required inputs rather than assume flow/operator packages; keep canonical norms and original universal cores.",
