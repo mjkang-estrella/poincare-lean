@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-chartlift-support",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "165c6fe285d86ee4358aa8d817a09d871f470fd6",
   "objective": {
     "title": "Construct actual global tensor/variation input: support",
@@ -163,5 +163,6 @@
       "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/support.readback.json",
       "report_sha256": "6a5a336e534159a266fea04e3bed70cce007b65737c80dea343cfa4a341573c9"
     }
-  }
+  },
+  "accepted_commit": "9619f618a59aadee449629d5ca19f660e4808a39"
 }
