@@ -191,7 +191,7 @@ The existing contDiffOn_ext_coord_change, buffered-cutoff and compact smooth
 Lipschitz APIs provide a direct route: choose theta, then another cutoff eta
 which is one near tsupport(theta), and extend eta times the true chart change
 by zero. The next operator B transports source graph entries to one destination
-chart, multiplies only the destination partition and the actual source outer
+chart, applies the overlap gate, destination partition and actual source outer
 cutoff, and proves a T-uniform Graph norm bound. On P_j outputs xi_j equals one,
 so the construction recovers the required tensor push without another source
 partition. Graph.ext_of_u, exists_cutoff_operator and the verified Jacobian
