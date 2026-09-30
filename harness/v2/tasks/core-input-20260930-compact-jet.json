@@ -168,6 +168,5 @@
       "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
   },
-  "accepted_commit": "2c3c4da737132b5a8476ae41bbbd45e56d092648",
-  "superseded_by": "core-input-20260930-compact-jet-import"
+  "accepted_commit": "2c3c4da737132b5a8476ae41bbbd45e56d092648"
 }

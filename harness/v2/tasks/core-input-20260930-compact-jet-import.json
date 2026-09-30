@@ -181,5 +181,6 @@
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
       "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
-  }
+  },
+  "supersedes": "core-input-20260930-compact-jet"
 }
