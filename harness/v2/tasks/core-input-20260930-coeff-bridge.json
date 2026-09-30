@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-coeff-bridge",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "270269a46b7d6e788b40e94cf72bb6df63c71c47",
   "objective": {
     "title": "Construct actual spatial DeTurck coefficients: bridge",
@@ -149,5 +149,6 @@
       "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/bridge.readback.json",
       "report_sha256": "0d83a3a6080c6b92d8a95d09cf3ba7f8466942bb67232d0013cbfd6ce84ffc27"
     }
-  }
+  },
+  "accepted_commit": "1f0ba7a4274471d591ff978c60dde62a1ed8b06c"
 }
