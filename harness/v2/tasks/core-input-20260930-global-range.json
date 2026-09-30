@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-range",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "a372e7b4e21394b33131a6de54cf9789151cf259",
   "objective": {
     "title": "Construct actual global parametrix range for Hamilton inputs",
@@ -150,5 +150,6 @@
       "report_path": "harness/v2/contracts/core-global-parametrix-20260930/range.readback.json",
       "report_sha256": "5dd45cad2491c29abf68fa3029466df68fe528007a8a57227c91dd35fa549cc6"
     }
-  }
+  },
+  "accepted_commit": "57f01dca1ddc288efc649d36856fb8c7b9bf649a"
 }
