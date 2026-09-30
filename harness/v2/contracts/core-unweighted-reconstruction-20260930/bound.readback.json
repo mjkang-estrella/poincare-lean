@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "unweighted-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "b3d40d0c2f5b5d451ad63f38d4bebb64904185d8d3cf8efa2d901293fecfdebe",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport",
+      "mathematical_statement": "Put E = EuclideanSpace R (Fin 3), with its Euclidean norm, and e_c = the c-th Euclidean basis vector. For every globally C-infinity real-valued theta, psi, xi on E, every globally C-infinity map F:E->E, and every ordered destination pair c,d in Fin 3, assume theta and F have compact topological support (the closure of their nonzero sets). No compact-support condition is imposed on psi or xi, no positivity or cutoff-one condition is imposed on these functions, and F need not be injective, invertible, or a chart transition. For each real exponent alpha with 0<alpha<1, there exists a nonnegative real C, chosen after theta,psi,xi,F,c,d,alpha but before T, such that for every 0<T<=1 there exists an R-continuous linear map B from the nine-entry function space (Fin 3 x Fin 3)->Graph(alpha,T) to Graph(alpha,T) whose operator norm is at most C. The domain carries its finite Pi maximum norm. Graph has norm ||u||_Y+||ut||_Y+||du||_Y+||ddu||_Y; for each value space the Y norm is the supremum norm plus the alpha parabolic Holder seminorm on [0,T]xE, using distance ||x-y||+sqrt(|t-s|), and every Y component is exactly zero outside that cylinder. A Graph also has u(0,x)=0, genuine first and second Frechet spatial derivatives du,ddu at every x for every t in [0,T], and time derivative ut within [0,T], including its endpoints. For every input w and every p=(t,z) in R x E, the output value is sum over all nine ordered source pairs a,b of theta(z)*psi(z)*xi(F(z))*[DF(z)e_c]_a*[DF(z)e_d]_b*w(a,b).u(t,F(z)); DF denotes Lean's total fderiv. This is the literal weight, with no destination atlas partition factor and no chart-source indicator. For every w, every real t and every z outside tsupport(psi), (B w).u(t,z)=0. The conclusion specifies u, the actual Graph membership and a bound for the full graph norm, but gives no explicit formula for the three output derivative carriers and no derivative-support conclusion. The bound C is uniform in T only, and B may depend on T. The inputs do not assume this transport map or its bound."
+    }
+  ],
+  "findings": []
+}

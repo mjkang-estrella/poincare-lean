@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicGraphTimeJets"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicGraphTimeJets.finite_time_transfer",
+        "lean_type": "∀ (E : Type u) [NormedAddCommGroup E] [NormedSpace ℝ E]\n(ι : Type v) [Fintype ι] (α T : ℝ)\n(G : Poincare.ParabolicSolutionGraph.Graph (E := E) α T)\n(W : ι → Poincare.ParabolicSolutionGraph.Graph (E := E) α T)\n(a : ι → ℝ) (x : E) (xs : ι → E), 0 < T →\n(∀ s ∈ Set.Icc 0 T, G.u (s,x) = ∑ i, a i * (W i).u (s,xs i)) →\n∀ t ∈ Set.Icc 0 T, G.ut (t,x) = ∑ i, a i * (W i).ut (t,xs i)",
+        "universes": [
+          "u",
+          "v"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      }
+    ],
+    "author": "root-orchestrator"
+  },
+  "snapshot_sha256": "c5a41d57f78535e5e8cb7e8a417fa9ecb0acd45eeaa879af027d73d0cd976d91"
+}

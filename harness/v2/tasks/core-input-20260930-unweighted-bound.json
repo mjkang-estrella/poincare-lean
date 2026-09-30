@@ -1,0 +1,173 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-unweighted-bound",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "a069fcc55c818e2e227f123c3b98cebe263dc38a",
+  "objective": {
+    "title": "Construct actual global reconstruction prerequisite: bound",
+    "statement": "CoreH; consumer actual unweighted Graph reconstruction for global L/R. Construct actual bounded nine-input row from existing Graph pullback/cutoff and smooth compact actual weight, with uniform bound before positive T<=1, raw values and destination buffer support. All derivative graph fields genuine, original norms unchanged, no supplied operator or carrier package.",
+    "deliverables": [
+      "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/BufferedUnweightedGraphTransport.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+      "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+      "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean",
+      "Poincare/Global/DeTurckChartIndependentPullback.lean",
+      "Poincare/Global/DeTurckParameterJet.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "Poincare/Global/DeTurckBUCChartCovariance.lean",
+      "Poincare/Global/DeTurckActualEvolutionDerivative.lean",
+      "Poincare/Global/GeodesicOverlap.lean",
+      "Poincare/Global/DeTurckPullbackTwoJet.lean",
+      "Poincare/Global/Curvature.lean",
+      "Poincare/Global/DeTurck.lean",
+      "Poincare/Global/DeTurckChartLiftOverlapJets.lean",
+      "Poincare/Global/DeTurckConstructedCovariance.lean",
+      "Poincare/Global/BufferedTensorGraphTransportOperator.lean",
+      "Poincare/Global/BufferedUnweightedGraphTransportDefinitions.lean",
+      "Poincare/Global/MetricAdaptedGlobalParametrix.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-unweighted-reconstruction-20260930/context.md",
+      "harness/v2/contracts/core-unweighted-reconstruction-20260930/bound.readback.json",
+      "harness/reports/core-deturck-c2-covariance-20260930.md",
+      "Poincare/Global/MetricAdaptedGlobalParametrix.lean",
+      "Poincare/Global/BufferedUnweightedGraphTransportDefinitions.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/BufferedTensorGraphTransportOperator.lean",
+      "Poincare/Global/ParabolicSpatialGraphPullback.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "Poincare/Global/ParabolicCutoffCommutator.lean"
+    ],
+    "symbols": [
+      "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/BufferedUnweightedGraphTransport.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/BufferedUnweightedGraphTransport.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-unweighted-reconstruction-20260930/bound.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedUnweightedGraphTransport"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport",
+        "lean_type": "∀ (θ ψ ξ : Poincare.ClosedSmoothModel 3 → ℝ) (F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3) (c d : Fin 3),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) θ → HasCompactSupport θ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ψ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ξ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F →\n∀ α : ℝ, 0 < α → α < 1 →\n∃ C : ℝ, 0 ≤ C ∧ ∀ T ∈ Set.Ioc (0 : ℝ) 1,\n∃ B : ((Fin 3 × Fin 3) → (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T)) →L[ℝ] (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T),\n‖B‖ ≤ C ∧\n(∀ w p, (B w).u p = ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.BufferedUnweightedGraphTransport.weight θ ψ ξ F a b c d p.2 *\n (w (a,b)).u (p.1,F p.2)) ∧\n∀ w t z, z ∉ tsupport ψ → (B w).u (t,z) = 0",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/BufferedUnweightedGraphTransportDefinitions.lean",
+        "sha256": "1382216e1f8bf0e97662411160d7654440fc538cab39e8f18d612c014ccee639"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "unweighted-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "b3d40d0c2f5b5d451ad63f38d4bebb64904185d8d3cf8efa2d901293fecfdebe",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/bound.readback.json",
+      "report_sha256": "e8515abc30f07d8476d2f01177cbbf07134c74ba79de81b493434ee90b770224"
+    }
+  }
+}

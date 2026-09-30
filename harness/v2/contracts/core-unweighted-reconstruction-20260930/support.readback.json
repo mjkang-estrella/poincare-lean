@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "unweighted-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "2a1e64409f32ba7fd6495e4970d59ad12f4f79a0f7af1450304474a748b05d69",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.ParabolicGraphSupport.derivatives_zero_off_closed",
+      "mathematical_statement": "For every universe u, every R-normed vector space E:Type u (no completeness or finite-dimensionality assumption), arbitrary real alpha,T and G:Graph(E,alpha,T), and every closed K subset E, assume 0<T and that for every s in the closed interval [0,T] and every y outside K, G.u(s,y)=0. Then for every real t and every x outside K, simultaneously G.ut(t,x)=0, G.du(t,x)=0 as a continuous linear map E->R, and G.ddu(t,x)=0 as a continuous bilinear map E->E->R. There is no restriction 0<alpha<1 and no requirement that K be bounded, compact, nonempty, or a prescribed topological support. Graph's u,ut,du,ddu are bounded alpha-parabolic Holder carriers on [0,T]xE, each extended exactly by zero outside this cylinder; its norm sums their individual sup-plus-Holder norms. Graph supplies actual spatial Frechet derivatives du,ddu throughout the closed slab and a time derivative ut within [0,T], together with u(0,x)=0. Thus the conclusion includes both endpoints, where the time derivative is a within-interval derivative, and all times outside the interval, where zero extension already applies. Closedness of K makes its complement locally open, and T>0 makes the within-time derivative identifiable even at the endpoints; at T=0 that identification would fail. The value-support assumption supplies neither derivative vanishing nor the conclusion. K=E yields a vacuous pointwise conclusion as the natural all-space special case; the general statement is not a vacuous wrapper."
+    }
+  ],
+  "findings": []
+}

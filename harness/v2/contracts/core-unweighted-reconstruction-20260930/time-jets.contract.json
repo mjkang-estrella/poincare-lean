@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicGraphTimeJets"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicGraphTimeJets.finite_time_transfer",
+        "lean_type": "∀ (E : Type u) [NormedAddCommGroup E] [NormedSpace ℝ E]\n(ι : Type v) [Fintype ι] (α T : ℝ)\n(G : Poincare.ParabolicSolutionGraph.Graph (E := E) α T)\n(W : ι → Poincare.ParabolicSolutionGraph.Graph (E := E) α T)\n(a : ι → ℝ) (x : E) (xs : ι → E), 0 < T →\n(∀ s ∈ Set.Icc 0 T, G.u (s,x) = ∑ i, a i * (W i).u (s,xs i)) →\n∀ t ∈ Set.Icc 0 T, G.ut (t,x) = ∑ i, a i * (W i).ut (t,xs i)",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "name": "Poincare.ParabolicGraphTimeJets.tensor_time_covariance",
+        "lean_type": "∀ (α T : ℝ) (U V : Poincare.DeTurckCoupledForcing.Inputs α T) (phi : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(J : Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3) (z : Poincare.ClosedSmoothModel 3) (t : ℝ),\n0 < T → t ∈ Set.Icc 0 T →\nFilter.Eventually\n (fun s => Poincare.DeTurckCoupledForcing.tensorValue U (s,z) =\n  Poincare.pullbackBilinearForm\n   (Poincare.DeTurckCoupledForcing.tensorValue V (s,phi z)) J)\n (nhdsWithin t (Set.Icc 0 T)) →\nlet TT := fun (W : Poincare.DeTurckCoupledForcing.Inputs α T) (p : ℝ × Poincare.ClosedSmoothModel 3) =>\n ∑ a : Fin 3, ∑ b : Fin 3,\n  (W (a,b)).ut p • Poincare.DeTurckTensorBasis.tensor a b\nTT U (t,z) = Poincare.pullbackBilinearForm (TT V (t,phi z)) J",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+        "sha256": "89a616a3273254afc2114d4232241cdccd4153d47cc31ee97e92c275517ab365"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+        "sha256": "1afc193c3d4223adb004340618b58f0f705d0b6abb007488568102460a457a11"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartIndependentPullback.lean",
+        "sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "unweighted-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "dfa5042a4afd244acc60e70e399cd99c0b746578594766c39d880315cbda6d37",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/time-jets.readback.json",
+      "report_sha256": "c54771165f912ae8a334787d530ca3794021fbb37e08fdacac64bdd76c6c0051"
+    }
+  }
+}

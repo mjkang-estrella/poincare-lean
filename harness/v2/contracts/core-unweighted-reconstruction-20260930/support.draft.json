@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicGraphSupport"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicGraphSupport.derivatives_zero_off_closed",
+        "lean_type": "∀ (E : Type u) [NormedAddCommGroup E] [NormedSpace ℝ E]\n(α T : ℝ) (G : Poincare.ParabolicSolutionGraph.Graph (E := E) α T)\n(K : Set E), IsClosed K → 0 < T →\n(∀ s ∈ Set.Icc 0 T, ∀ y : E, y ∉ K → G.u (s,y) = 0) →\n∀ (t : ℝ) (x : E), x ∉ K →\n G.ut (t,x) = 0 ∧ G.du (t,x) = 0 ∧ G.ddu (t,x) = 0",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      }
+    ],
+    "author": "root-orchestrator"
+  },
+  "snapshot_sha256": "2a1e64409f32ba7fd6495e4970d59ad12f4f79a0f7af1450304474a748b05d69"
+}

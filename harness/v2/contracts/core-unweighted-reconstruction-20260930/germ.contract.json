@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedUnweightedGraphTransportGerm"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedUnweightedGraphTransport.weighted_source_germ",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i j : Fin A.cover.chartCount) (θ ψ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(c d : Fin 3),\nHasCompactSupport ξ →\ntsupport ξ ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).target →\ntsupport θ ⊆ ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans\n (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source →\n(∀ v ∈ tsupport θ, ∀ᶠ y in nhds v,\n F y = Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) →\n(∀ v ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) ''\n (tsupport (A.partition i) ∩\n  (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport ξ),\n ∀ᶠ y in nhds v, θ y = 1) →\n∀ (f : (Fin 3 × Fin 3) → Poincare.ClosedSmoothModel 3 → ℝ)\n (z : Poincare.ClosedSmoothModel 3),\nz ∈ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i →\n(∀ᶠ y in nhds z, ψ y = 1) →\n∀ᶠ y in nhds z,\n (∑ a : Fin 3, ∑ b : Fin 3,\n  Poincare.BufferedUnweightedGraphTransport.weight θ ψ ξ F a b c d y *\n   f (a,b) (F y)) =\n (@ite ℝ\n  ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm y ∈\n   (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source)\n  (Classical.propDecidable _)\n  (ξ (Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) *\n   ∑ a : Fin 3, ∑ b : Fin 3,\n    (fderiv ℝ (Poincare.FiniteAtlasParabolicTensorSpace.change A i j) y\n      ((EuclideanSpace.basisFun (Fin 3) ℝ) c)) a *\n    (fderiv ℝ (Poincare.FiniteAtlasParabolicTensorSpace.change A i j) y\n      ((EuclideanSpace.basisFun (Fin 3) ℝ) d)) b *\n    f (a,b) (Poincare.FiniteAtlasParabolicTensorSpace.change A i j y)) 0)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedUnweightedGraphTransportDefinitions.lean",
+        "sha256": "1382216e1f8bf0e97662411160d7654440fc538cab39e8f18d612c014ccee639"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "unweighted-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "4a866e908bd76ba38c4d5ed1039ba63cf371642fbd4bd43bbd0ed28fdd82731c",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/germ.readback.json",
+      "report_sha256": "ed21bb7cf766f80c4259fec7749f78d493ff45ff7b0c8639d8901f855263a5b1"
+    }
+  }
+}

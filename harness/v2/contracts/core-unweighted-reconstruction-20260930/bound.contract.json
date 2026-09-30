@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedUnweightedGraphTransport"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedUnweightedGraphTransport.exists_entry_transport",
+        "lean_type": "∀ (θ ψ ξ : Poincare.ClosedSmoothModel 3 → ℝ) (F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3) (c d : Fin 3),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) θ → HasCompactSupport θ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ψ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ξ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F →\n∀ α : ℝ, 0 < α → α < 1 →\n∃ C : ℝ, 0 ≤ C ∧ ∀ T ∈ Set.Ioc (0 : ℝ) 1,\n∃ B : ((Fin 3 × Fin 3) → (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T)) →L[ℝ] (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T),\n‖B‖ ≤ C ∧\n(∀ w p, (B w).u p = ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.BufferedUnweightedGraphTransport.weight θ ψ ξ F a b c d p.2 *\n (w (a,b)).u (p.1,F p.2)) ∧\n∀ w t z, z ∉ tsupport ψ → (B w).u (t,z) = 0",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/BufferedUnweightedGraphTransportDefinitions.lean",
+        "sha256": "1382216e1f8bf0e97662411160d7654440fc538cab39e8f18d612c014ccee639"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "unweighted-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "b3d40d0c2f5b5d451ad63f38d4bebb64904185d8d3cf8efa2d901293fecfdebe",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/bound.readback.json",
+      "report_sha256": "e8515abc30f07d8476d2f01177cbbf07134c74ba79de81b493434ee90b770224"
+    }
+  }
+}

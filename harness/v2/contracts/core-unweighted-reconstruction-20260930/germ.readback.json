@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "unweighted-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "4a866e908bd76ba38c4d5ed1039ba63cf371642fbd4bd43bbd0ed28fdd82731c",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.BufferedUnweightedGraphTransport.weighted_source_germ",
+      "mathematical_statement": "For every universe u and every Hausdorff topological M:Type u with a smooth boundaryless 3-dimensional charted-manifold structure, take AtlasData A: a finite cover by genuine extended charts, open regions covering M with closures inside their chart sources and compact coordinate images, and a smooth partition of unity subordinate to those regions. Choose any indices i,j:Fin A.cover.chartCount, arbitrary real-valued functions theta,psi,xi on E=R^3, arbitrary F:E->E, and ordered destination slots c,d:Fin 3. Write chi_i=chart A i, chi_j=chart A j and h(y)=change A i j y=chi_j(chi_i.symm(y)). Assume xi has compact topological support contained in chi_j.target; tsupport(theta) lies in the source of the partial-homeomorphism composite chi_i.symm.trans chi_j, namely valid i-coordinate points whose inverse i-chart lies in the j-chart source; at every v in tsupport(theta), F agrees with h on some unrestricted neighborhood of v; and theta is identically 1 on some unrestricted neighborhood of each v in chi_i '' (tsupport(A.partition i) intersect (chi_j.symm '' tsupport(xi))). No smoothness of theta,psi,xi,F, no compact support of theta,psi,F, and no regularity or support of f is separately required by this statement. For every nine-entry family f:(Fin 3 x Fin 3)->E->R and every z in coordSupport A i=chi_i '' tsupport(A.partition i), if psi is identically 1 on an unrestricted neighborhood of z, then on an unrestricted neighborhood of z the sum over all a,b of theta(y)*psi(y)*xi(F(y))*[DF(y)e_c]_a*[DF(y)e_d]_b*f(a,b)(F(y)) equals the following piecewise expression: if chi_i.symm(y) belongs to chi_j.source, it is xi(h(y))*sum over all a,b of [Dh(y)e_c]_a*[Dh(y)e_d]_b*f(a,b)(h(y)); otherwise it is zero. The derivatives DF and Dh are the literal total fderiv operators, and the sum retains both actual differential slots and all nine ordered entries. The weight on the left has no atlas partition factor and no explicit source gate; the right does have the indicated actual j-source gate. Partition support enters only the destination coordinate set and the theta-one hypothesis; its value is not a multiplicative weight. This is a neighborhood identity of scalar value expressions for arbitrary f, not a construction of the buffers/F, a bounded transport map, or an assertion about graph derivatives. Its local map-agreement and cutoff-one hypotheses are real supplied inputs; neither the desired sum identity nor a tensor-covariance conclusion is assumed."
+    }
+  ],
+  "findings": []
+}
