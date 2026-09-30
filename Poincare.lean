@@ -30,6 +30,9 @@ import Poincare.Global.ParabolicSpatialHolderPullback
 import Poincare.Global.ParabolicSpatialPullbackChainRule
 import Poincare.Global.ParabolicHessianCarrierPullback
 import Poincare.Global.ParabolicSpatialGraphPullback
+import Poincare.Global.BufferedTensorGraphTransportDefinitions
+import Poincare.Global.BufferedTensorGraphTransportWeights
+import Poincare.Global.BufferedTensorGraphTransportValues
 import Poincare.Global.BufferedTensorGraphTransportOperator
 import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
@@ -60,6 +63,7 @@ import Poincare.Global.DuhamelSolutionOperatorBound
 import Poincare.Global.DuhamelSolutionOperatorCLM
 import Poincare.Global.FiniteAtlasParabolicTensorSpace
 import Poincare.Global.FiniteAtlasJacobianCocycle
+import Poincare.Global.FiniteAtlasBufferedTensorValueDefinitions
 import Poincare.Global.FiniteAtlasBufferedTensorValueCompatibility
 import Poincare.Global.FiniteTriangulationStatements
 import Poincare.Global.FixedChartAugmentedSystemRegularity

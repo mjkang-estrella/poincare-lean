@@ -156,3 +156,16 @@ Evidence is under `core-tensor-transport-20260930-evidence`; its gzip manifest
 pins original and compressed bytes. Local Codex helpers are honestly recorded
 as local attempts, not registered Pi/Leanstral runtime Jobs. Existing branches,
 dirty work and historical failed attempts remain preserved.
+
+The first integration checkpoint at `174e673c56ffbd16ef32db7e90b81c54b7e04d6d`
+passed every non-completion gate except root-import coverage: new helper
+modules were transitively available but lacked the required explicit root
+imports. The failed receipt and full output are retained. Required direct
+imports were added, preserving all proof types and bodies, before rerunning
+the integration checkpoint.
+
+The next global P contract must retain the same A,psi,xi, local P_j/R_j
+residual/support witnesses and B_ij maps, with full Graph equality to their
+actual finite assembly. Local CP estimates apply only to supported forcing;
+use supported_entry for Y_M inputs rather than claim an unrestricted local
+operator norm bound.

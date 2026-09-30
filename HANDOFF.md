@@ -31,7 +31,11 @@ alpha T from the SAME local P_j and newly constructed B_ij, with a positive
 lifespan and bound chosen before T. Sum B_ij(P_j f_j), prove tensor-submodule
 membership using the accepted support/value/finite compatibility lemmas, and
 restrict the actual CLM to X_M. Y_M symmetry and the same scalar P_j supply
-source symmetry. Retain xi until its removal follows from actual supp(psi)
+source symmetry. Retain the same local P_j/R_j residual and support witnesses,
+and require full Graph equality of global entries with the actual finite B_ij
+sum; a bare existence of P is insufficient. Local solution bounds apply to
+supported forcing entries, rather than unrestricted local operator norms.
+Retain xi until its removal follows from actual supp(psi)
 and xi=1 there. Read harness/reports/core-tensor-transport-20260930.md for exact
 remaining obligations and preserved evidence.
 
