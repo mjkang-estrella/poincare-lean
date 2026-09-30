@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-graph-pullback",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "536cc4bb9aec4fce4eb85cfbe8cc70b00597d4cf",
   "objective": {
     "title": "graph-pullback for actual nonlinear Graph transport",
@@ -136,5 +136,6 @@
       "report_path": "harness/v2/contracts/core-graph-pullback-20260930/graph-pullback.readback.json",
       "report_sha256": "21e409e1c6f1dfa909b5c3d7a641aa8011e5c14bf96471e36e2925cc6f230126"
     }
-  }
+  },
+  "accepted_commit": "f2f4cab36602709cdf9dde3a24aa323dfb1fd75e"
 }

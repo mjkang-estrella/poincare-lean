@@ -1,5 +1,43 @@
 # Handoff Snapshot
 
+## 2026-09-29 Constructed nonlinear derivative-graph transport
+
+The complete goal remains active. Both universal core existence obligations
+remain open: compatible smoothability and universal Hamilton/positive-Einstein
+existence. No sphere recognition, supplied flow/operator/bound package or
+extra assumption was used to construct the new Graph operator.
+
+ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback now constructs
+actual bounded Graph CLMs from compact smooth F and 0<alpha<1, with one bound
+chosen before T in Ioc0 1. It preserves zero trace and actual spatial/time
+derivative certificates, the unchanged sum norm of u,ut,du,ddu, and all-point
+jet identities including G.du applied to D2F. The actual-g0 application
+produces the required F and these operators for the same constructed atlas.
+The independent chain-rule and Hessian-carrier proofs are consumed directly.
+The Hessian type uses a proved canonical carrier NormedSpace letI; it adds no
+hypothesis and changes no norm. Failed preflights and compiler attempts remain
+preserved, including a stopped owned compiler whose expanded registry scan
+was replaced by a focused all-declaration dependency check.
+
+The next actual consumer is bounded destination-only tensor transport. Build
+smooth compact scalar weights from overlap gate theta, destination partition,
+actual source outer cutoff and DF Jacobian factors. Use this Graph pullback
+and existing actual cutoff graph operators for each weight, then finite sum.
+Prove destination support, symmetry/overlap compatibility and T-uniform norm.
+Do not multiply source forcing by another source partition; it is already
+weighted. The local id+R residual still needs a true signed global id-R
+identity and contraction for the full DeTurck operator with lower terms.
+
+Ordinary joint C3 at zero is not supplied by the within-Icc Graph derivative.
+Nonlinear inversion, matched initial jets, bootstrap, actual physical Ricci
+flow and later surgery/favorable metric/limit existence remain unproved.
+
+First action: freeze and construct the actual compact smooth tensor weight
+and bounded destination-entry Graph transport, with true chart restrictions,
+then assemble compatibility. Read
+`harness/reports/core-graph-pullback-20260930.md` for exact remaining types,
+consumers and preserved proof evidence.
+
 ## 2026-09-29 Constructed chart maps and nonlinear carrier transport
 
 Both universal core assumptions remain open. The new actual gated chart maps

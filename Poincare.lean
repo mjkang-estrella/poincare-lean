@@ -27,6 +27,9 @@ import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions
 import Poincare.Global.ParabolicSpatialHolderPullback
+import Poincare.Global.ParabolicSpatialPullbackChainRule
+import Poincare.Global.ParabolicHessianCarrierPullback
+import Poincare.Global.ParabolicSpatialGraphPullback
 import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer
