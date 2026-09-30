@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-compact-extension",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "18aed8ddafa2585c54d8e1544461b1fc4aba8c60",
   "objective": {
     "title": "Construct actual compact coefficients and coupled forcing: extension",
@@ -171,5 +171,6 @@
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/extension.readback.json",
       "report_sha256": "5c9d781afeceed08ba628f209c3caf6b43da383b02c26ed0e77d9e7a06b17281"
     }
-  }
+  },
+  "accepted_commit": "eda36d1087164fd8f7963570d4345593f1f88cc1"
 }
