@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-coeff-tensor-basis",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "43dd7b67c7c5306aba725ec4a9d7d1750c748cb8",
   "objective": {
     "title": "Construct actual spatial DeTurck coefficients: tensor-basis",
@@ -161,5 +161,6 @@
       "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/tensor-basis.readback.json",
       "report_sha256": "a40b5aa187dc2653631bcd0cf94516f743223e19943b1538fe3ded4d35edeffc"
     }
-  }
+  },
+  "accepted_commit": "db60a079a8f1de63aa0775a0f26cc0aa4409a111"
 }

@@ -34,6 +34,14 @@ import Poincare.Global.DeTurckInverseEntryDerivative
 import Poincare.Global.DeTurckLowerJointSmoothness
 import Poincare.Global.DeTurckJetLinearizationDefinitions
 import Poincare.Global.DeTurckJetLinearization
+import Poincare.Global.DeTurckCoefficientDefinitions
+import Poincare.Global.DeTurckSpatialCoefficientDefinitions
+import Poincare.Global.DeTurckPartialDerivativeBridge
+import Poincare.Global.DeTurckInverseEntrySmoothness
+import Poincare.Global.DeTurckPartialCoefficientSmoothness
+import Poincare.Global.DeTurckActualSpatialCoefficients
+import Poincare.Global.DeTurckTensorBasisDefinitions
+import Poincare.Global.DeTurckTensorBasisReconstruction
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions
