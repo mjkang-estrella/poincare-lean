@@ -1,0 +1,2524 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-30T16:11:53.253546+00:00",
+  "source_checkpoint": "81ec66b338c697dbf54ff55c1c101317c1cdc8cb",
+  "source_sha256": "af604a92a502cfafef760f882c5f6be11160e8c242f0741cfe8b789d2e4a0d67",
+  "backend": "local Codex helpers; not registered Pi/Leanstral Jobs",
+  "completion_certified": false,
+  "phase_exit_codes": {
+    "axiom": 0,
+    "build": 0,
+    "completion": 1,
+    "interface": 0,
+    "mathlib": 0,
+    "root_import": 0,
+    "semantic": 0,
+    "shape": 0,
+    "theorem": 0
+  },
+  "completion_failures": [
+    "FAIL: local reserved theorem name poincare_conjecture is absent",
+    "FAIL: Lean cannot confirm Poincare.poincare_conjecture : PoincareConjectureStatement"
+  ],
+  "entries": [
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-Graph-symmetry-application.lean",
+      "archive": "attempts/actual-Graph-symmetry-application.lean.gz",
+      "source_sha256": "354bc2f31129757e8bb1dc2588402a5d8684c72e726d38988d81bf790ad5d191",
+      "archive_sha256": "b45c2f935d09586bc4fa44eadbc5700c8d3d2b03894775c8201252fa133db8c3",
+      "source_bytes": 5739
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-Graph-symmetry-application.log",
+      "archive": "attempts/actual-Graph-symmetry-application.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a02.lean",
+      "archive": "attempts/actual-metric-Y-family-a02.lean.gz",
+      "source_sha256": "aaf185db2f5604434934b98b2857bb27890ff19b047afeeb667c9874bebdbec2",
+      "archive_sha256": "a3edcd4293d9be8995fac5ff71e6a727515123c25961b48c7f0031ebf7a7b5c3",
+      "source_bytes": 3614
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a02.log",
+      "archive": "attempts/actual-metric-Y-family-a02.log.gz",
+      "source_sha256": "b988bbb75a3d7c97bd3bc9427e988f0e8492f1caa30df212ca5b3b828720a990",
+      "archive_sha256": "8b735556f4bbfe85fb0d75ab15ddad4fde052b7d0063a31b917af9a4671b53ee",
+      "source_bytes": 203
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a03.lean",
+      "archive": "attempts/actual-metric-Y-family-a03.lean.gz",
+      "source_sha256": "ea7af02054a9fddcfcd7c35a2b98c1038bae539211a5a9a094d35e70c79cce43",
+      "archive_sha256": "354b5aeca22f135bff72ee442591847c446c8659e46d3227db2f16ee2b3be170",
+      "source_bytes": 3970
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a03.log",
+      "archive": "attempts/actual-metric-Y-family-a03.log.gz",
+      "source_sha256": "c377955064ba8e1b4a1482a4d5b766b5a5b47d527144f93ecc6e9c0229a51a80",
+      "archive_sha256": "14632404e0f1e51e9661ea156236ff1a67e258550e8d50d03bea5489e2a493c7",
+      "source_bytes": 204
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a04.lean",
+      "archive": "attempts/actual-metric-Y-family-a04.lean.gz",
+      "source_sha256": "def43484d80aa23318d0da3a46ee241f3c4334bd567e079cb80c0a0a731bfd23",
+      "archive_sha256": "f7527d9b5ce8520a5ed9b44fa56d31122c8582a8a542faf884cb51d7d057677f",
+      "source_bytes": 4018
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family-a04.log",
+      "archive": "attempts/actual-metric-Y-family-a04.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family.lean",
+      "archive": "attempts/actual-metric-Y-family.lean.gz",
+      "source_sha256": "345c09c5e6117e20271b81a2ee120f47b0b8d518fbc83cb68db333265c8f748c",
+      "archive_sha256": "551db42a8654cdc4bdc1824a68d196fd5ea34b9191f60c1791bd4b785ed1a4a3",
+      "source_bytes": 3618
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/actual-metric-Y-family.log",
+      "archive": "attempts/actual-metric-Y-family.log.gz",
+      "source_sha256": "ad008d63aba8c4d39117d4fea1c4dd6d8923f681ba2593a6af3e623d9b545d4b",
+      "archive_sha256": "52d3c62b34b128f99e3f45a76dd1e2d98e3db11bc8d2b13f68a2135293325f72",
+      "source_bytes": 841
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/archive_checkpoint.py",
+      "archive": "attempts/archive_checkpoint.py.gz",
+      "source_sha256": "5da27e9ac21b1281195aee2b2ae96ae267004b1c4419ed385efa14c35d3e2177",
+      "archive_sha256": "cee793fad5ac567f099a4afaeee27da81ecace55037a183722461efc3a5fb2ad",
+      "source_bytes": 3174
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/commit/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/argv.json",
+      "archive": "attempts/c2-covariance-a01/commit/argv.json.gz",
+      "source_sha256": "a01a7a567bf6c0e62c705c80cf196f42704b486b31d3100f56229bece2c464aa",
+      "archive_sha256": "1cd1f42ba38b9256935fd5bf83b783a7f77bca888535ea98efabc5e8d379d8af",
+      "source_bytes": 336
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/diff.patch",
+      "archive": "attempts/c2-covariance-a01/commit/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/result.json",
+      "archive": "attempts/c2-covariance-a01/commit/result.json.gz",
+      "source_sha256": "f902d508ba7b7f7087b541fdcd8f8bfa488bd6fa028ef11a18bafdafe2e017c5",
+      "archive_sha256": "a5d315443c85e4e427eae58e245ff584cbccd42a880e89dda5622433a45fa619",
+      "source_bytes": 446
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/stderr.log",
+      "archive": "attempts/c2-covariance-a01/commit/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit/stdout.log",
+      "archive": "attempts/c2-covariance-a01/commit/stdout.log.gz",
+      "source_sha256": "570e3f59548b33091338fde4f2be996ffef01202dda7b17c064584e6a0b8969e",
+      "archive_sha256": "2349512842fa0c1eb2f4cfd1865bf16a2887503a3a8fbbf88b97528ed1f455ce",
+      "source_bytes": 189
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/commit-message.txt",
+      "archive": "attempts/c2-covariance-a01/commit-message.txt.gz",
+      "source_sha256": "5a25169e1da05312df619bd48a087b68543dc12ae954dfa1fce6c82fb8b46a71",
+      "archive_sha256": "5729ebf461d3658e42b65276b44fd1d0d8074659d289b15a8a8aefad86832b8b",
+      "source_bytes": 657
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/compile-01/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "ac7a06f0dd11df31cb441e16e285b6f66f99e05a3996e81cf0dbfdbc9f593a3d",
+      "archive_sha256": "ce8161b258c918d4851072732c4e0ddeefe72acb51352a282716408e3d3aab81",
+      "source_bytes": 13755
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/argv.json",
+      "archive": "attempts/c2-covariance-a01/compile-01/argv.json.gz",
+      "source_sha256": "135ee4c502551f27d1abe78aa64989274329b2352d2efd9c2819a6d96a5cc328",
+      "archive_sha256": "9c1f3b2f965a9d03de4ee2adada1f15abfa6976d67b11ffa329a8fdcc6dde917",
+      "source_bytes": 259
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/diff.patch",
+      "archive": "attempts/c2-covariance-a01/compile-01/diff.patch.gz",
+      "source_sha256": "1839acf2ce79614e10c87aad9e0ba847e3f719748834704d945af60a41816378",
+      "archive_sha256": "63f03c06d10d92428d5eb92c9269dff89f1824bed0a9a9d96b084fcab78a3802",
+      "source_bytes": 14317
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/result.json",
+      "archive": "attempts/c2-covariance-a01/compile-01/result.json.gz",
+      "source_sha256": "be902ed1164fb60c0d609a969901558ef90af3b2145dd9a9ba677c75697e1e00",
+      "archive_sha256": "532523903a037a2c2aa3905441a5512cde6838bbadda870c6298c8b564c0da1c",
+      "source_bytes": 367
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/stderr.log",
+      "archive": "attempts/c2-covariance-a01/compile-01/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-01/stdout.log",
+      "archive": "attempts/c2-covariance-a01/compile-01/stdout.log.gz",
+      "source_sha256": "f38b85346012b16111d67d07f2367585c18df412c81121beeeef1b39d756be82",
+      "archive_sha256": "f1642b503cc55aebb931f2f710dff5c7860c3d8f5a573c1ffbe84c001f2dab40",
+      "source_bytes": 712
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/compile-02/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "fc154f43952ed5c57ed0c0d1ffe3256897dcade95944076c57cb91e2c2d28df5",
+      "archive_sha256": "a6a3791b449139f23eac2b15677f8242d93c32230eca4716b4936c5b31ac3b3e",
+      "source_bytes": 13765
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/argv.json",
+      "archive": "attempts/c2-covariance-a01/compile-02/argv.json.gz",
+      "source_sha256": "edaae055f6a361be67f60f65da98642b1885da515e022d14065d71784b3b2dbd",
+      "archive_sha256": "4a3bade59693f54f440790a05dd2a55b6d0ee519ffb20c504d6c3bf221793d2b",
+      "source_bytes": 259
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/diff.patch",
+      "archive": "attempts/c2-covariance-a01/compile-02/diff.patch.gz",
+      "source_sha256": "fa4957ba0f5888f4fbdf52562f1612ac2c708d2124bb46758dc00d7288bab7c8",
+      "archive_sha256": "ab491a8e15f8ca524bd861624a6bbf316ab46f30acec294939b1c13426b0bebe",
+      "source_bytes": 14327
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/result.json",
+      "archive": "attempts/c2-covariance-a01/compile-02/result.json.gz",
+      "source_sha256": "26e70665541b51d512b28e36667963ed47bad36d2c39e5976dd37f415e881c77",
+      "archive_sha256": "a604e0ae28d18c6320a8bd2a835788e3a2205100f25ec49f6cbc206bcfa1f734",
+      "source_bytes": 368
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/stderr.log",
+      "archive": "attempts/c2-covariance-a01/compile-02/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-02/stdout.log",
+      "archive": "attempts/c2-covariance-a01/compile-02/stdout.log.gz",
+      "source_sha256": "a796742db74af3082932b5a24132e24c4508563284d93c0023b71ed935029bfa",
+      "archive_sha256": "49019be0b0171452950466400e8b625fb0e6c55d9d0c99f3cb615df7b32b79cf",
+      "source_bytes": 80
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/compile-03/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/argv.json",
+      "archive": "attempts/c2-covariance-a01/compile-03/argv.json.gz",
+      "source_sha256": "94f41ef4190fb75ba1fa4e85c4b9099940c38ecbe478ef047b5d08be3eca05e0",
+      "archive_sha256": "82d94645ea31aec08185f4cd8fed46cb2c4299158bb5220d1ecefcd4c40f951b",
+      "source_bytes": 259
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/diff.patch",
+      "archive": "attempts/c2-covariance-a01/compile-03/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/result.json",
+      "archive": "attempts/c2-covariance-a01/compile-03/result.json.gz",
+      "source_sha256": "c90922a95d60539f51aba86ba79108710d38f29ada25db1088862650fe581776",
+      "archive_sha256": "8e8c076ede4fe8b21d3f8e02e8fdb289322029484163b76091ed2d1b103d3e19",
+      "source_bytes": 367
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/stderr.log",
+      "archive": "attempts/c2-covariance-a01/compile-03/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/compile-03/stdout.log",
+      "archive": "attempts/c2-covariance-a01/compile-03/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/context-manifest.json",
+      "archive": "attempts/c2-covariance-a01/context-manifest.json.gz",
+      "source_sha256": "44e55c7e20b29e40b5feae03d71c1579fb603ba29b358662fcdf3eea6127618f",
+      "archive_sha256": "2d3c825a14ef2c018849bdab6f9296bbcaaa66a5b03b340e074d7d9a1daec8fc",
+      "source_bytes": 2934
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/evidence-manifest.json",
+      "archive": "attempts/c2-covariance-a01/evidence-manifest.json.gz",
+      "source_sha256": "2a756762d46485739d2aadfd363803059f9a0a71f4a2942476dad004697e8efe",
+      "archive_sha256": "770ea7c1845e29ca05f01863734664d18a7f68521d61fc4c70d05cb0e4c41b0a",
+      "source_bytes": 6853
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/final-report.md",
+      "archive": "attempts/c2-covariance-a01/final-report.md.gz",
+      "source_sha256": "d6c2854230af3b9b882ae525423bb400e7f22d6b861b2a02e91223a774d589d4",
+      "archive_sha256": "e7c188ffb7f10ce102c87f39b2c7fb9f6dae3a7fafb57b5dbc59e58c6b093b75",
+      "source_bytes": 2380
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/final-status.txt",
+      "archive": "attempts/c2-covariance-a01/final-status.txt.gz",
+      "source_sha256": "1c29e9ade11c1a627501cb40270ea3521843cc70f0d1ffb84ee41dcb0faaeb18",
+      "archive_sha256": "5aa86ed76913f8c1d68ee141e3bab5aff8e8fe4e144b298911c06b402b801a3d",
+      "source_bytes": 179
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/final.diff.patch",
+      "archive": "attempts/c2-covariance-a01/final.diff.patch.gz",
+      "source_sha256": "197cb59c903fd2caf39fba0d8c5bfc31f62f0db36dff4ae906dd5e77fc14f41a",
+      "archive_sha256": "6dee00844f05daa9381aaac2629433b0b54fde0221f2ee285701ad1bde040d2e",
+      "source_bytes": 14199
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/gate-contract/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/argv.json",
+      "archive": "attempts/c2-covariance-a01/gate-contract/argv.json.gz",
+      "source_sha256": "7e8bb96c851ffb77eeee5611d75620c032decd014effcc4436b90410f852b843",
+      "archive_sha256": "ba284a67f75c6f167f5ff77e6c17eca0e45632d699682b65c32f2a4c671911ba",
+      "source_bytes": 304
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/diff.patch",
+      "archive": "attempts/c2-covariance-a01/gate-contract/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/result.json",
+      "archive": "attempts/c2-covariance-a01/gate-contract/result.json.gz",
+      "source_sha256": "055be19041223fa884e97adf95ea073885a9b161b62012bb806d651c3a0b24c7",
+      "archive_sha256": "5be235e2875012b8bc2580f4ab3939d32e11c16f18e5aaf80e9ab675af282148",
+      "source_bytes": 413
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/stderr.log",
+      "archive": "attempts/c2-covariance-a01/gate-contract/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-contract/stdout.log",
+      "archive": "attempts/c2-covariance-a01/gate-contract/stdout.log.gz",
+      "source_sha256": "7d280fa9a67bb055337bc1b46bdbca44b8c8f821745f230d13128ab3707ef5bc",
+      "archive_sha256": "2b7939775578ad0bb52324be9039ee70933db5c833c564b78acd5086512801d0",
+      "source_bytes": 697099
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/gate-diff/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/argv.json",
+      "archive": "attempts/c2-covariance-a01/gate-diff/argv.json.gz",
+      "source_sha256": "1ae11c53aa2dc50303c987f315c7f95d156d5e155f1ca65b39f60394f5d9f57b",
+      "archive_sha256": "6632ee2c44622bb16adceea47d4cc3623f0d7fc068779fa9ec67d73bab5ea01e",
+      "source_bytes": 177
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/diff.patch",
+      "archive": "attempts/c2-covariance-a01/gate-diff/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/result.json",
+      "archive": "attempts/c2-covariance-a01/gate-diff/result.json.gz",
+      "source_sha256": "53eb67ba0da8a7bec2f212e494719bfe8cc11c177267f43b34e777825dc71fc7",
+      "archive_sha256": "bac2a042f7cca60fed558bb3ad199041399402f827f7756c6d4f2ff329bf6125",
+      "source_bytes": 287
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/stderr.log",
+      "archive": "attempts/c2-covariance-a01/gate-diff/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-diff/stdout.log",
+      "archive": "attempts/c2-covariance-a01/gate-diff/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/gate-token/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/argv.json",
+      "archive": "attempts/c2-covariance-a01/gate-token/argv.json.gz",
+      "source_sha256": "5d20e25a640df232280e3c5e6bc8528af68dbbf691fb72f1434ae3dc528fe664",
+      "archive_sha256": "4a3f0afbb8bd0998d2ddf64e00c7523affe4b58fc7d784fbcb446af5d37de04e",
+      "source_bytes": 290
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/diff.patch",
+      "archive": "attempts/c2-covariance-a01/gate-token/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/result.json",
+      "archive": "attempts/c2-covariance-a01/gate-token/result.json.gz",
+      "source_sha256": "6b6d43b090d9a854b7b7e423a001489b615b5a9637e337391f9ebaa7fa7dfdac",
+      "archive_sha256": "35d4ebce775f4697a8529264c156236bc976033258213fd5088504afa1c27733",
+      "source_bytes": 401
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/stderr.log",
+      "archive": "attempts/c2-covariance-a01/gate-token/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/gate-token/stdout.log",
+      "archive": "attempts/c2-covariance-a01/gate-token/stdout.log.gz",
+      "source_sha256": "fd36c61e4380bf234e3837156e9c7542f61d302ced9d2b398b3912ee03f224a1",
+      "archive_sha256": "1e60f136108fa211056a135d27b96fe3e537bfdc1ada56751d13455990171dfe",
+      "source_bytes": 41
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/lease-release.json",
+      "archive": "attempts/c2-covariance-a01/lease-release.json.gz",
+      "source_sha256": "6d10b5b2884f9d77f4cb5e017bc81f4508df05188687c9da5b03d726b42aff24",
+      "archive_sha256": "78e8cedca57aaa50777e5a8fc233794925284b8468230cd72c5f36821d0d2792",
+      "source_bytes": 302
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/lease.json",
+      "archive": "attempts/c2-covariance-a01/lease.json.gz",
+      "source_sha256": "3b74ea067c14c71772e3aab532abd2754988fceff2366d3d517b358977643aeb",
+      "archive_sha256": "715d2f25f1edde82a877bc165568017eeec1756ebfb0d9f1188f43c77a47b102",
+      "source_bytes": 235
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "ac7a06f0dd11df31cb441e16e285b6f66f99e05a3996e81cf0dbfdbc9f593a3d",
+      "archive_sha256": "ce8161b258c918d4851072732c4e0ddeefe72acb51352a282716408e3d3aab81",
+      "source_bytes": 13755
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/argv.json",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/argv.json.gz",
+      "source_sha256": "a7c9bea24e7072701669e5dc3218966ef647e912bbc4fd5a7bc0ae6db5597ef5",
+      "archive_sha256": "ffe7c32bdb9b8ff3211d5b98670abc1f03be2af57737cfb0be1048301c8e074c",
+      "source_bytes": 252
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/diff.patch",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/diff.patch.gz",
+      "source_sha256": "1839acf2ce79614e10c87aad9e0ba847e3f719748834704d945af60a41816378",
+      "archive_sha256": "63f03c06d10d92428d5eb92c9269dff89f1824bed0a9a9d96b084fcab78a3802",
+      "source_bytes": 14317
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/result.json",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/result.json.gz",
+      "source_sha256": "ddb81d44071ec8e4d8265a725ecd3e5af353e3715acdf4f2dcd39a687f7b63f1",
+      "archive_sha256": "23b19b50edf851a1b290a1370215b35662205bb8bcb89bd046caaf5909e39ea7",
+      "source_bytes": 361
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/stderr.log",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/prerequisite-overlap-jets/stdout.log",
+      "archive": "attempts/c2-covariance-a01/prerequisite-overlap-jets/stdout.log.gz",
+      "source_sha256": "f72ba3938dcd3cbf97413eebb322712dc796e13bd878edda5f4dac545ae54cd9",
+      "archive_sha256": "678a65e1000418d302b7b36c311868ea736917f2470ebb0303cda1807a713f0a",
+      "source_bytes": 696287
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/run_attempt.py",
+      "archive": "attempts/c2-covariance-a01/run_attempt.py.gz",
+      "source_sha256": "b6313dc67170e37a38e23a8814583a9033d21d40a13fde75fba75c505746eb56",
+      "archive_sha256": "8f0cf6139faec5d11e5d7ccc52d4eaa51e3d14eba686ef95ad919f28b414b6b3",
+      "source_bytes": 1495
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/argv.json",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/argv.json.gz",
+      "source_sha256": "8152cd2dfc87b6c4cb771df908076898f0d20cab7ac0a33547d644979d273bb2",
+      "archive_sha256": "ca557accd026f807682bb37b28f43180ffcb133001ee9a1d79b9c40ab323ffa7",
+      "source_bytes": 193
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/diff.patch",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/result.json",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/result.json.gz",
+      "source_sha256": "a24adc9acdfaca6c232c43c43a456ca3e1a72f500d35bf3bb44c13b933a92b65",
+      "archive_sha256": "5d299ddb453d8a7dd682101d7459dd2df978581f76cfd36d704925ff8237ac2b",
+      "source_bytes": 304
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/stderr.log",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-staged-whitespace/stdout.log",
+      "archive": "attempts/c2-covariance-a01/source-staged-whitespace/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/DeTurckC2Covariance.lean",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/argv.json",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/argv.json.gz",
+      "source_sha256": "1147bcd91a239ce9ab282b7df666086d0be36f990cdf84a954c4c8f8ac196320",
+      "archive_sha256": "13ce0bca28f36bbd9673b130cf252a934a5726a3f9a5d1fd007bab141072e6c8",
+      "source_bytes": 260
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/diff.patch",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/diff.patch.gz",
+      "source_sha256": "78bc33885e8f9d9915f38a016efc8e3a76181c405af55a842198c4aef2d19380",
+      "archive_sha256": "d1d2ac5dacf4cee22e2de95dd00d7c93ef7f060caaec787c1fbf9b5894abc80c",
+      "source_bytes": 14373
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/result.json",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/result.json.gz",
+      "source_sha256": "535a32f6cb12a9c04199d2f690276990cdef1e70719f9cd1b42b88242413d4bd",
+      "archive_sha256": "63b14ff1e60138cb12b93d2fc3b693a76a832e9a2fc6dfdcda9334cdedb96507",
+      "source_bytes": 371
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/stderr.log",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/source-whitespace/stdout.log",
+      "archive": "attempts/c2-covariance-a01/source-whitespace/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/summary.json",
+      "archive": "attempts/c2-covariance-a01/summary.json.gz",
+      "source_sha256": "029ed4d9b5c85209e14d6b228a8de3e7e99102ebb79e50bc31422cf99a53f26d",
+      "archive_sha256": "23095bbb2efd25aec345e207e45d2af6520a733702408fbc8505b029254032b5",
+      "source_bytes": 4728
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/c2-covariance-a01/task-snapshot.json",
+      "archive": "attempts/c2-covariance-a01/task-snapshot.json.gz",
+      "source_sha256": "ae7c471cfaec30faacc0bdba287b2415c3d053bc0cdf7062bd7994a4bb1de00d",
+      "archive_sha256": "e73fee7f30a9dab7cfd2c6e80c02de5656f2a09a91a7f898c17036d5b76c40d8",
+      "source_bytes": 14885
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/checkpoint-driver.log",
+      "archive": "attempts/checkpoint-driver.log.gz",
+      "source_sha256": "6d24cd8d198ad6c2b32ab357f4f3abfbf9c8b8b391676ea7518d5c6bced169d3",
+      "archive_sha256": "b7146222b9b564394201df7174aec5f4dbb355dd7aefb439118b095daf401fca",
+      "source_bytes": 137
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/DeTurckDifferentialSymmetry.lean",
+      "archive": "attempts/differential-symmetry-a01/compile-001/DeTurckDifferentialSymmetry.lean.gz",
+      "source_sha256": "060b910d241779f496a848fb8fa81d3ea7ee1e168119de396c8e3b71ff22f3f6",
+      "archive_sha256": "a435238bd79f1a6df03d3c554876b40318e2247ca16448d982855e5a745f2fc5",
+      "source_bytes": 15887
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/argv.json",
+      "archive": "attempts/differential-symmetry-a01/compile-001/argv.json.gz",
+      "source_sha256": "7fedf1957335eeefe0bae23e86d68b1b9e6d95eb54d7e7e49eff5d3c6e90d945",
+      "archive_sha256": "818098e022acf2f552a62a537f035e6ff638c8f672d48a71716841d90aef76ec",
+      "source_bytes": 277
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/diff.patch",
+      "archive": "attempts/differential-symmetry-a01/compile-001/diff.patch.gz",
+      "source_sha256": "8e140fadad89139bc9f20d191e00e51d35dcc8d90ee7e3bd8281ab873cd15a79",
+      "archive_sha256": "976d58a59fa2517582c9f9f390cd3b976c4b14ee513168cb5d2f775ce4b41a1a",
+      "source_bytes": 16544
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/result.json",
+      "archive": "attempts/differential-symmetry-a01/compile-001/result.json.gz",
+      "source_sha256": "5aa9349f75615123ef75c1c3b950670620c46c8ce060dcb4f4c030e04a16957c",
+      "archive_sha256": "ae9c10cb7aedd734dfeb6dd3e60fbe06c425bcaa4c33cc27e0cdd6ff10f9bf55",
+      "source_bytes": 111
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/compile-001/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-001/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/compile-001/stdout.txt.gz",
+      "source_sha256": "c51e0ecc0ea7413b3460fed250f84128038bf9ac89d063163302f05b1e4c9c71",
+      "archive_sha256": "020630e92ea003b793835c4b63f387869482c45998443887ce2422103c9d7afd",
+      "source_bytes": 304
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/DeTurckDifferentialSymmetry.lean",
+      "archive": "attempts/differential-symmetry-a01/compile-002/DeTurckDifferentialSymmetry.lean.gz",
+      "source_sha256": "0352ef9b6cdbda4a48217d6454c9527283ed95fdf4b012756c5cfd026b759517",
+      "archive_sha256": "ee2f4f06f7e07c32c418cd90de09a16d34067db003ffb9c5a3a923c5acf400ee",
+      "source_bytes": 15983
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/argv.json",
+      "archive": "attempts/differential-symmetry-a01/compile-002/argv.json.gz",
+      "source_sha256": "0a93ddb4856376c2332ee9e7895330779433246ab560b83d97cc0c90c6736230",
+      "archive_sha256": "aeec956fecb9cae867e8ff4f972a75e43ad664d018958f4ff4b087b10fabdb36",
+      "source_bytes": 277
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/diff.patch",
+      "archive": "attempts/differential-symmetry-a01/compile-002/diff.patch.gz",
+      "source_sha256": "e2b4c239d55a3028d08ed898a19110d9d474b2495971e48cc49452a51dfd15c6",
+      "archive_sha256": "eefffeac05d6b13efca93241e04d3f10c736457dd0303666e3617c4566541b8c",
+      "source_bytes": 16640
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/result.json",
+      "archive": "attempts/differential-symmetry-a01/compile-002/result.json.gz",
+      "source_sha256": "9a25ea8e81dffd304b204a200bd2d7536fe59fb8271ac98567721bdec339c99e",
+      "archive_sha256": "51223ad31682224449bd133c5dc3b10ece4aa4df35ba68f2367a0b65f569b4e0",
+      "source_bytes": 111
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/compile-002/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/compile-002/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/compile-002/stdout.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/DeTurckDifferentialSymmetry.lean",
+      "archive": "attempts/differential-symmetry-a01/final-001/DeTurckDifferentialSymmetry.lean.gz",
+      "source_sha256": "0352ef9b6cdbda4a48217d6454c9527283ed95fdf4b012756c5cfd026b759517",
+      "archive_sha256": "ee2f4f06f7e07c32c418cd90de09a16d34067db003ffb9c5a3a923c5acf400ee",
+      "source_bytes": 15983
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-01/argv.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-01/argv.json.gz",
+      "source_sha256": "d235aeb3c30ad5c57570ca5e0b16e3ae630a0ee2e4c2468b37ed0c0c399aa3af",
+      "archive_sha256": "d9eff7f712a3e5d55cfab380888782c72ffbd6a2ed5edaad8b2ae9ff5744e47b",
+      "source_bytes": 227
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-01/result.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-01/result.json.gz",
+      "source_sha256": "793581b0d5575e9ad40a59dfe6c52b722c5c1587d45c74dee51b10d65e56b163",
+      "archive_sha256": "8087342d1d5ac3d181d3340784938e5bf24757bdfa31af8c68c0532fd49b4ab6",
+      "source_bytes": 64
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-01/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-01/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-01/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-01/stdout.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-02/argv.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-02/argv.json.gz",
+      "source_sha256": "59c053bd4b7db39d41de15278a30759ae13eb8a4fcf53c911c777513b396ae32",
+      "archive_sha256": "defe99039b3b648ae8daffd04751c68cf606273e99dba07b0e3a451f29f1ddbb",
+      "source_bytes": 203
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-02/result.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-02/result.json.gz",
+      "source_sha256": "b6ffad575a7055353edcb2de47ca4422d70297d5edc22e4006284f0ce91797e0",
+      "archive_sha256": "b2b697b09107e5d5cb3b39ab2c5942eb5e5017f51c5568370dd2f018e482617c",
+      "source_bytes": 64
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-02/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-02/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-02/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-02/stdout.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-03/argv.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-03/argv.json.gz",
+      "source_sha256": "147721f4257ad22b799b042a82ddaec4d562e34d5d83af98035c850d41e5db9a",
+      "archive_sha256": "e6932d387b1ab43e8e6140a23a05eda401b3d15d268593a6081917087382b34f",
+      "source_bytes": 364
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-03/result.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-03/result.json.gz",
+      "source_sha256": "4fd1af59498644e162010be9c73adc2686db96a6ddb1c487f3a868734c8fb374",
+      "archive_sha256": "482d3a2ce030a18a0d27f71a307879d7f71d2aaccc247ec53fbafa8ba1079c54",
+      "source_bytes": 64
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-03/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-03/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/command-03/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/command-03/stdout.txt.gz",
+      "source_sha256": "c4e51db08a397013c069e2cd1f0850c5fbc533c31f5d635cab43ba93b301434e",
+      "archive_sha256": "58df47e3cb06c5b553148acbceafe017db34112c296fe6115edc98e6b102c707",
+      "source_bytes": 198
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/commit-message.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/commit-message.txt.gz",
+      "source_sha256": "31d0a823b0be89de3ef31e3038b5b9d9801f27ac100038b92c2748065a770b9a",
+      "archive_sha256": "fb1b0474088838d16d92f437c96efaf3f7a2361c95ecd9ce414b426e87f45c9c",
+      "source_bytes": 519
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/final.patch",
+      "archive": "attempts/differential-symmetry-a01/final-001/final.patch.gz",
+      "source_sha256": "2d77f3fe63cc328f9f7f90b7fa0de5a71d878f6dc7a46de2748ac07b5b0abbca",
+      "archive_sha256": "e34322aedb13ead99157bb29c160567d3f47661e31358063e8a89f88c0854755",
+      "source_bytes": 16442
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/status.txt",
+      "archive": "attempts/differential-symmetry-a01/final-001/status.txt.gz",
+      "source_sha256": "3341f4417906d2cc9d92d92464ac8df7c38891f0f7982fad763016866f3877f0",
+      "archive_sha256": "10fd0c374b705c5ddf42389f35371765ed5f82924ad69fdf1584466c2b37cced",
+      "source_bytes": 299
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/summary.json",
+      "archive": "attempts/differential-symmetry-a01/final-001/summary.json.gz",
+      "source_sha256": "3bff56f310c8a011270a465fc574a04b9f8537a07cccaa857d6283772d190c8a",
+      "archive_sha256": "9aa225bc9d54173bb0e6280a32a45fd6267de52dab4556ec38dcff26d8a0d92d",
+      "source_bytes": 635
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/final-001/worker-report.md",
+      "archive": "attempts/differential-symmetry-a01/final-001/worker-report.md.gz",
+      "source_sha256": "c5baaf2ef568a677522f2721fba8f5614e2baabfade2ff0be1111e1ee5f763c4",
+      "archive_sha256": "fee3d8ad9efcba85b78bf7232f50d79e80d5f41845054c0a98d06dfad5e25c66",
+      "source_bytes": 1968
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/DeTurckDifferentialSymmetry.lean",
+      "archive": "attempts/differential-symmetry-a01/gates-001/DeTurckDifferentialSymmetry.lean.gz",
+      "source_sha256": "0352ef9b6cdbda4a48217d6454c9527283ed95fdf4b012756c5cfd026b759517",
+      "archive_sha256": "ee2f4f06f7e07c32c418cd90de09a16d34067db003ffb9c5a3a923c5acf400ee",
+      "source_bytes": 15983
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/diff.patch",
+      "archive": "attempts/differential-symmetry-a01/gates-001/diff.patch.gz",
+      "source_sha256": "2d77f3fe63cc328f9f7f90b7fa0de5a71d878f6dc7a46de2748ac07b5b0abbca",
+      "archive_sha256": "e34322aedb13ead99157bb29c160567d3f47661e31358063e8a89f88c0854755",
+      "source_bytes": 16442
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-02/argv.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-02/argv.json.gz",
+      "source_sha256": "0dcbcd92ede2cbd15ecc343c75d1591cbffb209a684e88ffd19087c300e43667",
+      "archive_sha256": "eba9852b8760503cfa1beb356aa03a1f6ec44f86d9e65faaea03ce593a404016",
+      "source_bytes": 308
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-02/result.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-02/result.json.gz",
+      "source_sha256": "f7eaab3d05cf7f578b851b34526ab1d3276238d5ae5631da42905ef3e70bb586",
+      "archive_sha256": "39067812afa20576a6a0bbec5c68b6e3b558c974baf880f4828debba49cd4d23",
+      "source_bytes": 389
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-02/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-02/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-02/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-02/stdout.txt.gz",
+      "source_sha256": "6bddda73e8b3190baea5e7af55c90d061d7a682a436633cc486117041844be9f",
+      "archive_sha256": "2ec4dc990b5e1957526314ee534d3178032087b46bd0b8c8216c03b030a25f17",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-03/argv.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-03/argv.json.gz",
+      "source_sha256": "1ac490b8e4891e8c66a1816f8a022cfb68f559f889630aef40cb9e81a5bc8bfb",
+      "archive_sha256": "7d708bae24c653c8e8ddbf38ff371b71d8e690d8d432ed4d08e951dcc57eea88",
+      "source_bytes": 187
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-03/result.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-03/result.json.gz",
+      "source_sha256": "1722010e9d1ef706a897232b1b738894722598b96b4df36117f93f7e9eee6171",
+      "archive_sha256": "06ce187cc5b79937079c8eced94cd30fd2ffca20c9fa7e35a5708be3a2c28472",
+      "source_bytes": 267
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-03/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-03/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-03/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-03/stdout.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-04/argv.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-04/argv.json.gz",
+      "source_sha256": "236a3c2182060fad3daffa6905c00ccbef9a554c75c20d0b496357791531d29e",
+      "archive_sha256": "792e4977ee7b7db10f9732226ce07d6073bc73f1052b68ccb047a32c0d6c9e77",
+      "source_bytes": 322
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-04/result.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-04/result.json.gz",
+      "source_sha256": "783a5a3722f32552bb5927d369e7869be1180a439e77cfa72c5d43d0761c035a",
+      "archive_sha256": "79040e52d5690ae93cf9fca315debb5e09b34d34e8b0d3219f64c02a9afdba75",
+      "source_bytes": 401
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-04/stderr.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-04/stderr.txt.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/gate-04/stdout.txt",
+      "archive": "attempts/differential-symmetry-a01/gates-001/gate-04/stdout.txt.gz",
+      "source_sha256": "e842dedc096a059074d8b76ac677ffee38b9ae36c3e3654f683755bdd32fc292",
+      "archive_sha256": "880dab68c8a4cb7464c5f55764a596bb92dd1ee7328e89e46235b2fade5862c7",
+      "source_bytes": 696150
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/gates-001/results.json",
+      "archive": "attempts/differential-symmetry-a01/gates-001/results.json.gz",
+      "source_sha256": "2ea27f1efe9852b2f0ca2d18d7f88e9944126b99b806e545b20b3de73603026a",
+      "archive_sha256": "951b56c626a072c258b6ccaedbd035db64fb90ca898ba12d6f18264eb79d363d",
+      "source_bytes": 1622
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/lease-release.json",
+      "archive": "attempts/differential-symmetry-a01/lease-release.json.gz",
+      "source_sha256": "a409a47b41e8367c54994cead77e3754ae0813113a8c40907b9cff3907d3b361",
+      "archive_sha256": "841d94f42e5930fd15c0b44885c1777e4cb581d349f6749a132935ec29970c1a",
+      "source_bytes": 310
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/differential-symmetry-a01/lease.json",
+      "archive": "attempts/differential-symmetry-a01/lease.json.gz",
+      "source_sha256": "7c6c1ffd7b1b143401c14d59aca165ef1ce4807ead2d9394a223eb9fe10d4073",
+      "archive_sha256": "5a4e0404bea8ec672938806021b558755ae2464777cb9075f4876a14689c5b19",
+      "source_bytes": 251
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/freeze_task.py",
+      "archive": "attempts/freeze_task.py.gz",
+      "source_sha256": "95cd5e13e9d9bd76cfa782738e371f0e0e729412012d4e3897ac28eff2c22419",
+      "archive_sha256": "aa9d1364f74805cc3387486f3fa12e09fd2de897678522662522014d0ece5295",
+      "source_bytes": 5817
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/0.json",
+      "archive": "attempts/independent-c2-covariance-a01/0.json.gz",
+      "source_sha256": "ba78f376346de740a17ccbcb7ecd906a61fd10a7fea0577a4ff65695d6a73418",
+      "archive_sha256": "084433b4eeb294c3aca9a1d2a68dd2519c6cb4d88853f0cde2ce159b09b22f86",
+      "source_bytes": 277
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/0.log",
+      "archive": "attempts/independent-c2-covariance-a01/0.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/1.json",
+      "archive": "attempts/independent-c2-covariance-a01/1.json.gz",
+      "source_sha256": "eb43b6dba699ca573942bf1b9e47d88195801d44777410e9501b29ebc8ea3f6f",
+      "archive_sha256": "3234556311fc91ebbb95fb49717f16ec14c7892af3631510b3d0b25c2bd25217",
+      "source_bytes": 310
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/1.log",
+      "archive": "attempts/independent-c2-covariance-a01/1.log.gz",
+      "source_sha256": "fd36c61e4380bf234e3837156e9c7542f61d302ced9d2b398b3912ee03f224a1",
+      "archive_sha256": "1e60f136108fa211056a135d27b96fe3e537bfdc1ada56751d13455990171dfe",
+      "source_bytes": 41
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/2.json",
+      "archive": "attempts/independent-c2-covariance-a01/2.json.gz",
+      "source_sha256": "45eaddbfad0a9606cbfde95ab213134668966ed3ef7430a994e1c070ecf3e4ab",
+      "archive_sha256": "dd8814df9de7c389a018f650cadbfd104afb2ab10f4c1d7bb26acf0f3beedfe3",
+      "source_bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/2.log",
+      "archive": "attempts/independent-c2-covariance-a01/2.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/3.json",
+      "archive": "attempts/independent-c2-covariance-a01/3.json.gz",
+      "source_sha256": "626d96243014b30c4fc459f1bf29be4fcc9e8dbf9a1bc6b747adc51410f2cf85",
+      "archive_sha256": "ab421b68d1b04e57124c99f608d9a9e16547ce6e8f48165482dc37cdfe50c43d",
+      "source_bytes": 322
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/3.log",
+      "archive": "attempts/independent-c2-covariance-a01/3.log.gz",
+      "source_sha256": "8c6d0059a3ed1bae2f08c64eaf48c4e69f3e65d677a0486008aad88660fc2917",
+      "archive_sha256": "bd178a4d7f6b1e2b5c0160620015a1ca923462e45ba5bbc38d57864ac0e71936",
+      "source_bytes": 697035
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/DeTurckC2Covariance.lean",
+      "archive": "attempts/independent-c2-covariance-a01/DeTurckC2Covariance.lean.gz",
+      "source_sha256": "158f1a5f807cd5ab092fec9caeeb7dcf5cca6e0c9f211a49832474cd92f4349f",
+      "archive_sha256": "67b60114f12195f01b24779aeb2ef451f1d1a6b90771b6c026e65da12bbd29fc",
+      "source_bytes": 13810
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/final.diff",
+      "archive": "attempts/independent-c2-covariance-a01/final.diff.gz",
+      "source_sha256": "197cb59c903fd2caf39fba0d8c5bfc31f62f0db36dff4ae906dd5e77fc14f41a",
+      "archive_sha256": "6dee00844f05daa9381aaac2629433b0b54fde0221f2ee285701ad1bde040d2e",
+      "source_bytes": 14199
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/review.json",
+      "archive": "attempts/independent-c2-covariance-a01/review.json.gz",
+      "source_sha256": "080156f9b811d5c694159b4b137eabc4a2132585e19ed34a9b2eb12117995514",
+      "archive_sha256": "6cac164c622dd3b8b21acffd058ed9dbac41beee420ab50ad509ec777ee647b7",
+      "source_bytes": 1622
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-c2-covariance-a01/task.snapshot.json",
+      "archive": "attempts/independent-c2-covariance-a01/task.snapshot.json.gz",
+      "source_sha256": "ae7c471cfaec30faacc0bdba287b2415c3d053bc0cdf7062bd7994a4bb1de00d",
+      "archive_sha256": "e73fee7f30a9dab7cfd2c6e80c02de5656f2a09a91a7f898c17036d5b76c40d8",
+      "source_bytes": 14885
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/0.json",
+      "archive": "attempts/independent-differential-symmetry-a01/0.json.gz",
+      "source_sha256": "9dff3cc3ae3d09c0e7853c37d966a4bda55d71231ee9ad0ff32ece8e826c9148",
+      "archive_sha256": "d9720229d19017dcace59c1b507508c7f929bc3749d37d89922642431d0daa13",
+      "source_bytes": 285
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/0.log",
+      "archive": "attempts/independent-differential-symmetry-a01/0.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/1.json",
+      "archive": "attempts/independent-differential-symmetry-a01/1.json.gz",
+      "source_sha256": "def8534cef82df52646cdb46b77a7004d080d4396257deae8f968cffadd03f2c",
+      "archive_sha256": "0f677ac60f8662e1ff559cd05f6529efdd11ee773fa1ebddc01776901c21e10e",
+      "source_bytes": 318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/1.log",
+      "archive": "attempts/independent-differential-symmetry-a01/1.log.gz",
+      "source_sha256": "6bddda73e8b3190baea5e7af55c90d061d7a682a436633cc486117041844be9f",
+      "archive_sha256": "2ec4dc990b5e1957526314ee534d3178032087b46bd0b8c8216c03b030a25f17",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/2.json",
+      "archive": "attempts/independent-differential-symmetry-a01/2.json.gz",
+      "source_sha256": "1a55485cd777ff0eb07a1799cd584d4c87f3c4395839ba029574ebbf69b417b6",
+      "archive_sha256": "f9f050208dc57cdf65b0481e607a225261cf6af96555eb5d870c91aed8aa5ed3",
+      "source_bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/2.log",
+      "archive": "attempts/independent-differential-symmetry-a01/2.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/3.json",
+      "archive": "attempts/independent-differential-symmetry-a01/3.json.gz",
+      "source_sha256": "b568df14806512582dc735d562a6b481f8e250bcc6172b62ae9b2dcf20d1cf83",
+      "archive_sha256": "a02b2b9035a51c1500422088ce3516dd1337f5b8a42b50d9bb4199e7c3969442",
+      "source_bytes": 329
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/3.log",
+      "archive": "attempts/independent-differential-symmetry-a01/3.log.gz",
+      "source_sha256": "547add159560f8d0e84b0743039aa5fa32d198b089a0c6794fa48f993db31293",
+      "archive_sha256": "8048006abe1e0ac49a955d6929d37686c35df56ce94d68307c8173882c5d9954",
+      "source_bytes": 696078
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/DeTurckDifferentialSymmetry.lean",
+      "archive": "attempts/independent-differential-symmetry-a01/DeTurckDifferentialSymmetry.lean.gz",
+      "source_sha256": "0352ef9b6cdbda4a48217d6454c9527283ed95fdf4b012756c5cfd026b759517",
+      "archive_sha256": "ee2f4f06f7e07c32c418cd90de09a16d34067db003ffb9c5a3a923c5acf400ee",
+      "source_bytes": 15983
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/final.diff",
+      "archive": "attempts/independent-differential-symmetry-a01/final.diff.gz",
+      "source_sha256": "2d77f3fe63cc328f9f7f90b7fa0de5a71d878f6dc7a46de2748ac07b5b0abbca",
+      "archive_sha256": "e34322aedb13ead99157bb29c160567d3f47661e31358063e8a89f88c0854755",
+      "source_bytes": 16442
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/review.json",
+      "archive": "attempts/independent-differential-symmetry-a01/review.json.gz",
+      "source_sha256": "62d92e419c1f0ac7416d69e98969d8aa52351aff1f4a0f9c3122930afa856128",
+      "archive_sha256": "89c84f52cd35c8ca994f3a4f42b2d9adcf0c77eb2719902052122ad8e472c152",
+      "source_bytes": 1661
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-differential-symmetry-a01/task.snapshot.json",
+      "archive": "attempts/independent-differential-symmetry-a01/task.snapshot.json.gz",
+      "source_sha256": "ba1bcb18b76a90ee2ce0a57e304933b4c825754c183fe863591f0519d841fcaf",
+      "archive_sha256": "144b71d12a3a0e406df0341970ed1c563844b58ab013bdab822334d0e3ae29b3",
+      "source_bytes": 15382
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/0.json",
+      "archive": "attempts/independent-overlap-jets-a01/0.json.gz",
+      "source_sha256": "785c168f90fd6dd8ffec289c86ec25be10f10bbaeba9ebeefdaf47d6006561b8",
+      "archive_sha256": "30678a651f1f9efa8fa5f1d6f8c46794e3be494d6096da766ea252b61e536e5a",
+      "source_bytes": 284
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/0.log",
+      "archive": "attempts/independent-overlap-jets-a01/0.log.gz",
+      "source_sha256": "feaeaf8fac844598dd6cb21bd54da82e440ff8072ec2609d0e7bef5f216eec80",
+      "archive_sha256": "111a6eaa30c9dd686a27893c965bb3ad27dd0295237eebaf54d3895a660db6f0",
+      "source_bytes": 922
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/1.json",
+      "archive": "attempts/independent-overlap-jets-a01/1.json.gz",
+      "source_sha256": "cfea0e742264085d3345460fb6b935cdd4f4f238ff45a9ee3df8be42cec75c39",
+      "archive_sha256": "66e8bc298ead0933881468d5fb7bcd4f2b7365746cc35c8daaba8950eb1c97ee",
+      "source_bytes": 318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/1.log",
+      "archive": "attempts/independent-overlap-jets-a01/1.log.gz",
+      "source_sha256": "1aece371f55be171f6b970722ff591d372ac1e0468b1f5b1159385ebd4c19f11",
+      "archive_sha256": "4e86bdd1413ed19e61ce6d822d722e53d4ddeaf97c18ea1e067d993629ffef97",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/2.json",
+      "archive": "attempts/independent-overlap-jets-a01/2.json.gz",
+      "source_sha256": "4635a5a679aad8eef11981b61d74b6631b02a73d32a1bf96d7bd35d331dc133d",
+      "archive_sha256": "54432129bcbd0f39a94e77e9a84ae78bba44c31585240a066e18b2ce02f7959a",
+      "source_bytes": 197
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/2.log",
+      "archive": "attempts/independent-overlap-jets-a01/2.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/3.json",
+      "archive": "attempts/independent-overlap-jets-a01/3.json.gz",
+      "source_sha256": "604393ca80d594742476a25e4f30166c309ebee06153958c4ce95cf97af149bd",
+      "archive_sha256": "bee5a16c27c34dd9f9176c531e1d567057a40f84643c4b5290b9bfdc72e6e3ae",
+      "source_bytes": 321
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/3.log",
+      "archive": "attempts/independent-overlap-jets-a01/3.log.gz",
+      "source_sha256": "da8c9eda8f1799583cac60679da7d3e05687887b7916839e7d48f1cac5b17a96",
+      "archive_sha256": "781c20569a5fff8522a98b93c82c148e83daa9f546f4d2d6ba6be37251617f36",
+      "source_bytes": 696535
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/DeTurckChartLiftOverlapJets.lean",
+      "archive": "attempts/independent-overlap-jets-a01/DeTurckChartLiftOverlapJets.lean.gz",
+      "source_sha256": "01630cd4eb500607751e491c0f0c558dce8e71cea0527570b2405c7fb4690f98",
+      "archive_sha256": "fc632a02b383e58d05ef22088c7bfaf282e7dda4b5ae585ea79cf896289e9676",
+      "source_bytes": 9441
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/final.diff",
+      "archive": "attempts/independent-overlap-jets-a01/final.diff.gz",
+      "source_sha256": "7b3c50c02a0a29de6ee6d9a4bd40750ccc54391c2ae9d69f2021fa7b96dd5133",
+      "archive_sha256": "77c48ca6eb06c124afc42fb68aacb7aaa0c73367164b4067507bdff3ff8b4ae3",
+      "source_bytes": 9824
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/review.json",
+      "archive": "attempts/independent-overlap-jets-a01/review.json.gz",
+      "source_sha256": "ea9e87219b2d99a6e1ce32ae30824f3762d904907803542f8662414299d73516",
+      "archive_sha256": "aa63b6eef46a248374b0f1c01c52609e775007052402ca746bd7f5ed9f2657d2",
+      "source_bytes": 1643
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-overlap-jets-a01/task.snapshot.json",
+      "archive": "attempts/independent-overlap-jets-a01/task.snapshot.json.gz",
+      "source_sha256": "7fccd69c0565e5a699daf5078c056800fd7ac6dcac9aa293a6cb23da7ae3bfa7",
+      "archive_sha256": "16f97c5898913cd89625679be8297130371cc4489785636f334c51b8609ef062",
+      "source_bytes": 13689
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/0.json",
+      "archive": "attempts/independent-y-transport-a01/0.json.gz",
+      "source_sha256": "1d152067905a63941695bb9a937442a8431b05f6d76d12a0150d69bccc0342d1",
+      "archive_sha256": "f07e85b1d72dc2e5652593fc8230d8ef501242495a257fff26614e85db34ce47",
+      "source_bytes": 285
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/0.log",
+      "archive": "attempts/independent-y-transport-a01/0.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/1.json",
+      "archive": "attempts/independent-y-transport-a01/1.json.gz",
+      "source_sha256": "452b52da20c8df77f5f759bc79375ed4a60a040a720871d597b2c4856e9bcd4d",
+      "archive_sha256": "f8412276bd16700f9eb6b2b7a846e864352903b817dfceddefd65f607a9730f1",
+      "source_bytes": 319
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/1.log",
+      "archive": "attempts/independent-y-transport-a01/1.log.gz",
+      "source_sha256": "51d91b29025cf3e5a800292fa52a2826f248129f125416fa921471a1db9e8e44",
+      "archive_sha256": "03e68c96603cafffd74ad7ae136bf82745592bfbff4b5e73464a52e9f8db00e4",
+      "source_bytes": 50
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/2.json",
+      "archive": "attempts/independent-y-transport-a01/2.json.gz",
+      "source_sha256": "6e224bf024389c0ffca14afbaf098aa6a6d067b6d16b138040b1ef6c87ff3602",
+      "archive_sha256": "ac144dc8bff4a481a36d236c2145084615a283fae20c19f7bdb4f3b0248d56fe",
+      "source_bytes": 196
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/2.log",
+      "archive": "attempts/independent-y-transport-a01/2.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/3.json",
+      "archive": "attempts/independent-y-transport-a01/3.json.gz",
+      "source_sha256": "2ecd68241a18f54abdfa581df66cd48cdb43c63e55ebe82b6d888d05ffa3bdc7",
+      "archive_sha256": "04e7165ee3be0f682504961c93f67bb4b93a71a19a91338453a7d19cd36ec130",
+      "source_bytes": 319
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/3.log",
+      "archive": "attempts/independent-y-transport-a01/3.log.gz",
+      "source_sha256": "4e6b6168e40e1a03b41a03f9bfe6699f4cdf56cdaf931f33069ac72b950ce03f",
+      "archive_sha256": "50776c9bf3b4056a4d7edcdaf301339609f7d0a7e65b69688feec58059f6c227",
+      "source_bytes": 660293
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/BufferedTensorValueTransport.lean",
+      "archive": "attempts/independent-y-transport-a01/BufferedTensorValueTransport.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/final.diff",
+      "archive": "attempts/independent-y-transport-a01/final.diff.gz",
+      "source_sha256": "77756773272905fe3edfa69526594145b00a8d96aea34060df90aa009250fb6a",
+      "archive_sha256": "6200a16b5da00c259fd6bac013f208030516537484d8dbf547287bc631f894dd",
+      "source_bytes": 7392
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/review.json",
+      "archive": "attempts/independent-y-transport-a01/review.json.gz",
+      "source_sha256": "5fdb7717df26ed23c15912a6fcce5ee15d84ded9a6febb31324255e9f08bac8c",
+      "archive_sha256": "e3a66033e8baaef78f0927d50838c016ff16a27a6cfcacef94b94c86a950bf46",
+      "source_bytes": 1642
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent-y-transport-a01/task.snapshot.json",
+      "archive": "attempts/independent-y-transport-a01/task.snapshot.json.gz",
+      "source_sha256": "74f5f880b81124fb84b99e47bd255f73899d8e49d0e846e92b901ed25261c0be",
+      "archive_sha256": "841c330b0e920056d002d967ea91f246a3782fc8de04564bc360a4dc61920116",
+      "source_bytes": 10095
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/independent_gate.py",
+      "archive": "attempts/independent_gate.py.gz",
+      "source_sha256": "abe6d64c111fc7f271e765be42f47dbb58ea27b8b740699e884a94243f1dd1d5",
+      "archive_sha256": "49d1b9bf9c933f1e9ca034d44356d30cf5864643225d0649b7254797e5718458",
+      "source_bytes": 2112
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/merge-c2-covariance.log",
+      "archive": "attempts/merge-c2-covariance.log.gz",
+      "source_sha256": "516c3e9d89ba70ec4397dc7e1ccce321261e6a14b89c3817fadabd7c5b6dd89f",
+      "archive_sha256": "fa9fce311c9f1998e2b913cab68298776a6d0c4932f5bf3f28d22d3bc852aa23",
+      "source_bytes": 224
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/merge-differential-symmetry.log",
+      "archive": "attempts/merge-differential-symmetry.log.gz",
+      "source_sha256": "153172c5ef09989dd9029f86adada4cefb6f7afd9178a4e84eb0d8268fbb4c2b",
+      "archive_sha256": "c91e92117088d4dba890b66156bc149d65cbaf25f5f3eaf91a427ace56c27cd1",
+      "source_bytes": 225
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/merge-overlap-jets.log",
+      "archive": "attempts/merge-overlap-jets.log.gz",
+      "source_sha256": "429a935478a60fdc5dea61f974d3042f23a4ed289e2a8bcaa987028373464a9a",
+      "archive_sha256": "375f32ce66c39be573e27d41bf936397acead1e83a810708a1925f78f1c79fd4",
+      "source_bytes": 237
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/merge-y-transport.log",
+      "archive": "attempts/merge-y-transport.log.gz",
+      "source_sha256": "401810d78114179b94ac7abd328174b6fcc1ca0f5d65b30fd4196b7134724c6d",
+      "archive_sha256": "dcf7c873123638010930b312d8cb19c97dce56339d7de752b19e700964b7c282",
+      "source_bytes": 241
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/module-dependencies.lean",
+      "archive": "attempts/module-dependencies.lean.gz",
+      "source_sha256": "06117f93d3eb25961b6900f25a34af5fa0eb4e08df9226d5c18fe2fb9c1cbe4d",
+      "archive_sha256": "344a55e370f86e682e3636d28454586f254581acbfdb2468c2fc1f0fea62938f",
+      "source_bytes": 1070
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/module-dependencies.log",
+      "archive": "attempts/module-dependencies.log.gz",
+      "source_sha256": "adc718ead3544b71d99b08d13e23768b8746e4d0bbb044875b00e3fe9bacd34f",
+      "archive_sha256": "52d749cc5740750c90f45b9c1ea36de6cc2c0a6ed5291d05a1ca1b392b49cc34",
+      "source_bytes": 273
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-01-lean.json",
+      "archive": "attempts/overlap-jets-a01/attempt-01-lean.json.gz",
+      "source_sha256": "04d1aafc3922a20fc9102ff3c6b0966b2c9479c6bf4898f61b8aaa3aee007b94",
+      "archive_sha256": "17a93f3b67e1729421f35689b031dfa20703692cf97ce7fbf6406cc5fe7ba362",
+      "source_bytes": 386
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-01-lean.stderr",
+      "archive": "attempts/overlap-jets-a01/attempt-01-lean.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-01-lean.stdout",
+      "archive": "attempts/overlap-jets-a01/attempt-01-lean.stdout.gz",
+      "source_sha256": "f4cfad174e4dac7665f232566b23e957e0443bc8087f960bc6076713337cdd79",
+      "archive_sha256": "37d45a50d5fb20ef3e057a2240b3c10e4eed5a273ef4dabc9842412fc3c4876a",
+      "source_bytes": 1033
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-01.source.lean",
+      "archive": "attempts/overlap-jets-a01/attempt-01.source.lean.gz",
+      "source_sha256": "1357c260d4b09e5012622d44eb55de1506f287b64bf1c23d16a7a68ebf7f329e",
+      "archive_sha256": "82afeb3f96fbf1ec865e4acce7a5df144c45bf2beca741c57e56082f9b28022c",
+      "source_bytes": 9524
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-02-lean.json",
+      "archive": "attempts/overlap-jets-a01/attempt-02-lean.json.gz",
+      "source_sha256": "73027a8a0bc45ae84338458f8858604bea65db673cc423ba53109af0603e7ceb",
+      "archive_sha256": "51fcaaa347dbc684568887d9026b6340de5013728688204053779eee30ffa283",
+      "source_bytes": 385
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-02-lean.stderr",
+      "archive": "attempts/overlap-jets-a01/attempt-02-lean.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-02-lean.stdout",
+      "archive": "attempts/overlap-jets-a01/attempt-02-lean.stdout.gz",
+      "source_sha256": "feaeaf8fac844598dd6cb21bd54da82e440ff8072ec2609d0e7bef5f216eec80",
+      "archive_sha256": "111a6eaa30c9dd686a27893c965bb3ad27dd0295237eebaf54d3895a660db6f0",
+      "source_bytes": 922
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/attempt-02.source.lean",
+      "archive": "attempts/overlap-jets-a01/attempt-02.source.lean.gz",
+      "source_sha256": "01630cd4eb500607751e491c0f0c558dce8e71cea0527570b2405c7fb4690f98",
+      "archive_sha256": "fc632a02b383e58d05ef22088c7bfaf282e7dda4b5ae585ea79cf896289e9676",
+      "source_bytes": 9441
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/commit-message.txt",
+      "archive": "attempts/overlap-jets-a01/commit-message.txt.gz",
+      "source_sha256": "c1d3785755c60064a1886f0e5f41c2d680c6552f8b95aab399c7749fc836f606",
+      "archive_sha256": "53571fb7138201589657153a09a7578d4d92252e0d82d3f73fd12a5658b0291c",
+      "source_bytes": 468
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/commit.json",
+      "archive": "attempts/overlap-jets-a01/commit.json.gz",
+      "source_sha256": "7caaa9ee331e8234a11ce0952836ce5286833ce21a6322aa947ab7bb410eaab2",
+      "archive_sha256": "03a98b402aeaee068ab6cb8458301dbe6d36767e5fede7829882bc8e100c8473",
+      "source_bytes": 521
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/commit.stderr",
+      "archive": "attempts/overlap-jets-a01/commit.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/commit.stdout",
+      "archive": "attempts/overlap-jets-a01/commit.stdout.gz",
+      "source_sha256": "cf882bbcdca3d41f55226a54ae003b23188c738fe27bfb6903649aafeb28ade7",
+      "archive_sha256": "cbbc64242bfe81cd1e41637e3bbeb57bfbffc250f4b198166e3828563768b0ad",
+      "source_bytes": 211
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/committed-paths.json",
+      "archive": "attempts/overlap-jets-a01/committed-paths.json.gz",
+      "source_sha256": "012c2faaf4f1e03281c38fc70734674d5b9d60573d5af46c8ab5dbbd21ae2532",
+      "archive_sha256": "41f033f94dac2d57d30764ad4b1ae34502810058e75b5bb4dba942ee98681ff9",
+      "source_bytes": 331
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/committed-paths.stderr",
+      "archive": "attempts/overlap-jets-a01/committed-paths.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/committed-paths.stdout",
+      "archive": "attempts/overlap-jets-a01/committed-paths.stdout.gz",
+      "source_sha256": "1aece371f55be171f6b970722ff591d372ac1e0468b1f5b1159385ebd4c19f11",
+      "archive_sha256": "4e86bdd1413ed19e61ce6d822d722e53d4ddeaf97c18ea1e067d993629ffef97",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-manifest.json",
+      "archive": "attempts/overlap-jets-a01/context-manifest.json.gz",
+      "source_sha256": "163404d2141451da2488d2bc14d464a2f835cdf5e400fc203b7a19dd8a27c64e",
+      "archive_sha256": "be70e54836860267371d25397ff231e00b610dcc34c1f7a2ccab6ca1914c7d18",
+      "source_bytes": 3397
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/AGENTS.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/AGENTS.md.gz",
+      "source_sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+      "archive_sha256": "689250fb2564498e222d50559ad8533923aec1af7f0981e050417319ec81461e",
+      "source_bytes": 4621
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/HANDOFF.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/HANDOFF.md.gz",
+      "source_sha256": "75a2783428ab0201d2cab39e006ad4d075178402cc17c27d1d1aeef1fbaf9390",
+      "archive_sha256": "9f09b78bd2963195afe5986e42f7054a5bcb5789d28f0db42d935e12aced9752",
+      "source_bytes": 218935
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/ChartTransport.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/ChartTransport.lean.gz",
+      "source_sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd",
+      "archive_sha256": "aef4a724f4818ea694773196347f9416a120d91b966493845b294dde7bcce198",
+      "source_bytes": 38192
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckBUCChartCovariance.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckBUCChartCovariance.lean.gz",
+      "source_sha256": "209fef02e9467b997978165aadad108b123bc579539f769fe6338cfbf20abce0",
+      "archive_sha256": "60f67a54bd165635e6e8e69f8a3bbd5ec573afb8c82e39d417a77b1914687a8e",
+      "source_bytes": 19446
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartIndependentPullback.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartIndependentPullback.lean.gz",
+      "source_sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd",
+      "archive_sha256": "f45d0ff23961aadca30c4ddda30a973c8ec655a69c94089e50561d907c85d9ba",
+      "source_bytes": 97971
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartLiftCoordinates.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartLiftCoordinates.lean.gz",
+      "source_sha256": "c4a3525082859aef6d21100056897acb5e1859a683b794e4b0d24c679daea182",
+      "archive_sha256": "81ebeb3d1ec38253fbdc5faf42003203f9ac66fe04a9207730813891c0ea2d98",
+      "source_bytes": 4746
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckChartLiftDefinitions.lean.gz",
+      "source_sha256": "d5c2de34fc67b5fbc25001524cd1d711c8c1e230c5ed37853aed2405cc81d804",
+      "archive_sha256": "8f9b99eaba3bbb06662a6178209bf9c1f59bdb473b401aded9e07376fb13413a",
+      "source_bytes": 1553
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean.gz",
+      "source_sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516",
+      "archive_sha256": "6636ea9d2f179577f0172d091c2cc5e00d10290f39f14ebb4f41aba4daca6043",
+      "source_bytes": 761
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckJetLinearizationDefinitions.lean.gz",
+      "source_sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a",
+      "archive_sha256": "458002c4b1857f7f18e43b9985edf2febddd6c320634054a2eaf921cbc9f874e",
+      "source_bytes": 2875
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckJetRealizationDefinitions.lean.gz",
+      "source_sha256": "3b4bc4a8ea08d0f181080b1030ebba69b58575c1601b96c3b5a1e6ed77ed5086",
+      "archive_sha256": "955dfd0f4f32c965a27885589713f6ab697b41367671d1e8156323f35a0b05fb",
+      "source_bytes": 1803
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPrincipalIdentity.lean.gz",
+      "source_sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641",
+      "archive_sha256": "98659fab3236b047a0997d2f42fb6a65b949b60df5536eb8f56b1eaa834ca124",
+      "source_bytes": 33941
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPrincipalSecondJet.lean.gz",
+      "source_sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07",
+      "archive_sha256": "e59ee3801c1773a6fbd05e252d0574f75167eb6d59e68fde9a47becf06343fa0",
+      "source_bytes": 11851
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPullbackTwoJet.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/DeTurckPullbackTwoJet.lean.gz",
+      "source_sha256": "66bb3aabad874a5f45780fa0a929bc2a797731f8f8bbe14209507c8082cbefdc",
+      "archive_sha256": "38b743476d8f29881adbd730e7999e8d047c24337521ddb06f0a7daf2a8268bf",
+      "source_bytes": 10418
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/GeodesicOverlap.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/GeodesicOverlap.lean.gz",
+      "source_sha256": "2e093593b1277329bdfff1623b68963e44a66810df18e71c9d7dab5cc8e2d53c",
+      "archive_sha256": "64c36b8e26b51885af40df719db4ed12e545852300db61a0b286bce308bcfcc3",
+      "source_bytes": 6915
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/GeodesicTransport.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/GeodesicTransport.lean.gz",
+      "source_sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f",
+      "archive_sha256": "2745a1e190ab1c15229c41b3528ddc7dc133a21023ca85a3e08936849d103f1f",
+      "source_bytes": 14029
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/Poincare/Global/RiemannianContext.lean",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/Poincare/Global/RiemannianContext.lean.gz",
+      "source_sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a",
+      "archive_sha256": "cc79c5b87841df650279a641aa73144eea1078f6b103fae458d5b54e42c5f848",
+      "source_bytes": 9303
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/README.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/README.md.gz",
+      "source_sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+      "archive_sha256": "75c81e0f4565d8d436cf3a278eafc931ef906cbb79300adb00a491220daa82c5",
+      "source_bytes": 6731
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/docs/PROJECT_MAP.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/docs/PROJECT_MAP.md.gz",
+      "source_sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+      "archive_sha256": "b203efae61311919d3a5e428b8b9aeb4781c7a4dcafcf30424ec3a996a3610d9",
+      "source_bytes": 6906
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/harness/reports/core-deturck-covariance-20260930.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/harness/reports/core-deturck-covariance-20260930.md.gz",
+      "source_sha256": "487ea11b0cf5e2ed31b342fc75a4a1ab8d6c481e7d926ba2b7f7285d0e9788cb",
+      "archive_sha256": "ba4c4a47acc45d78204bc0df81c0c0e3ae23d1e415adfe0ac4cd6863c32db167",
+      "source_bytes": 7901
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/harness/v2/SPEC.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/harness/v2/SPEC.md.gz",
+      "source_sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+      "archive_sha256": "ba47f9cc254c4eaa2eabc196f1ac9050b0e58181df4e1f59c9451b290b8c84e6",
+      "source_bytes": 22137
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/harness/v2/contracts/core-deturck-c2-covariance-20260930/context.md",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/harness/v2/contracts/core-deturck-c2-covariance-20260930/context.md.gz",
+      "source_sha256": "4815178d5e6f2c660754ab59855c3777bf6ba0ce36485252ecb11068e3682fd9",
+      "archive_sha256": "cd7390561a8eaf9ba39ee8886637578beb035763ffdd8fffd4572fd175ace467",
+      "source_bytes": 3098
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/harness/v2/contracts/core-deturck-c2-covariance-20260930/overlap-jets.readback.json",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/harness/v2/contracts/core-deturck-c2-covariance-20260930/overlap-jets.readback.json.gz",
+      "source_sha256": "b11e043bc27acc25355e040e543dffebc5da26ed2e4a0e0e59d51fdbbab4d1e7",
+      "archive_sha256": "9c12b2a41cb6cf9f93d3680f70c6ac782e2a398ca517e219bf517a9f91a02c6d",
+      "source_bytes": 2791
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/context-snapshot/harness/v2/tasks/core-input-20260930-overlap-jets.json",
+      "archive": "attempts/overlap-jets-a01/context-snapshot/harness/v2/tasks/core-input-20260930-overlap-jets.json.gz",
+      "source_sha256": "d049b887fd83014311b4d26252e658940f21ca370ae019bd49b09e6aa13c15c3",
+      "archive_sha256": "f10436113bad4b627fe29832f619d5ceedd599dd4e375255ffc5f3d0ee755c16",
+      "source_bytes": 13137
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/evidence-manifest.json",
+      "archive": "attempts/overlap-jets-a01/evidence-manifest.json.gz",
+      "source_sha256": "53da800cacdc282ba6a981ddf693eba65c0a63cc3079defb472383bb24783af0",
+      "archive_sha256": "81d81031491864a9412543a5eabb4cd04e5e31f907489e5cbaf825e92564f1f2",
+      "source_bytes": 12736
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-diff-check.json",
+      "archive": "attempts/overlap-jets-a01/final-diff-check.json.gz",
+      "source_sha256": "15e2bd702bffde4d4502aaf895d1beb7307a88ab0eaa2547ee9302aff90d83d1",
+      "archive_sha256": "53ee14e7ced40ecbea59d6f6508eda93ee3e74dc46d95eb66350305699b1c603",
+      "source_bytes": 298
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-diff-check.stderr",
+      "archive": "attempts/overlap-jets-a01/final-diff-check.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-diff-check.stdout",
+      "archive": "attempts/overlap-jets-a01/final-diff-check.stdout.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-head.json",
+      "archive": "attempts/overlap-jets-a01/final-head.json.gz",
+      "source_sha256": "402f0c80061a1699cfdb9f0dbfd667c413cdcde1b8c72a902b941decc62e10bb",
+      "archive_sha256": "8393aecd2ab577f81e866f3c116cbae26a55f620f59601ac750a26249e31024d",
+      "source_bytes": 300
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-head.stderr",
+      "archive": "attempts/overlap-jets-a01/final-head.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-head.stdout",
+      "archive": "attempts/overlap-jets-a01/final-head.stdout.gz",
+      "source_sha256": "337a67e4809d2832e024106d859c91d9157912ccd986f7b0c113fdfe67876aa8",
+      "archive_sha256": "1fac3e4a1d0bac78e22e3256cfa020f40a8e2a453ece236f8fefc3a9fed9c2fe",
+      "source_bytes": 41
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-status.json",
+      "archive": "attempts/overlap-jets-a01/final-status.json.gz",
+      "source_sha256": "2e4e6036f8cf7214da980645674eb2772aa5c1cac9ca683554987faa9d0ee2ba",
+      "archive_sha256": "f4a4c63f0aeacd876854cc61923c3545020df495735d7f3ae0a094575bbf3fb7",
+      "source_bytes": 315
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-status.stderr",
+      "archive": "attempts/overlap-jets-a01/final-status.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final-status.stdout",
+      "archive": "attempts/overlap-jets-a01/final-status.stdout.gz",
+      "source_sha256": "7b7655e76d394254cdadd88558972d20525091cf7ad6c6e22c9e3931004cc54f",
+      "archive_sha256": "23f4839f92598b3fbaa263398ee78dd58e4182580f468cbb5972d5f6236e7472",
+      "source_bytes": 160
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final.diff",
+      "archive": "attempts/overlap-jets-a01/final.diff.gz",
+      "source_sha256": "7b3c50c02a0a29de6ee6d9a4bd40750ccc54391c2ae9d69f2021fa7b96dd5133",
+      "archive_sha256": "77c48ca6eb06c124afc42fb68aacb7aaa0c73367164b4067507bdff3ff8b4ae3",
+      "source_bytes": 9824
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/final.source.lean",
+      "archive": "attempts/overlap-jets-a01/final.source.lean.gz",
+      "source_sha256": "01630cd4eb500607751e491c0f0c558dce8e71cea0527570b2405c7fb4690f98",
+      "archive_sha256": "fc632a02b383e58d05ef22088c7bfaf282e7dda4b5ae585ea79cf896289e9676",
+      "source_bytes": 9441
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-02.json",
+      "archive": "attempts/overlap-jets-a01/gate-02.json.gz",
+      "source_sha256": "03de7be89e5ca4c9cdc5dc92bad17ac1567d5f77c7842a4fcaad590d2160e587",
+      "archive_sha256": "242c0b986175d3f69e731240027640b74b7aea350940cb83e6fc376fb8fa5169",
+      "source_bytes": 419
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-02.stderr",
+      "archive": "attempts/overlap-jets-a01/gate-02.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-02.stdout",
+      "archive": "attempts/overlap-jets-a01/gate-02.stdout.gz",
+      "source_sha256": "1aece371f55be171f6b970722ff591d372ac1e0468b1f5b1159385ebd4c19f11",
+      "archive_sha256": "4e86bdd1413ed19e61ce6d822d722e53d4ddeaf97c18ea1e067d993629ffef97",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-03.json",
+      "archive": "attempts/overlap-jets-a01/gate-03.json.gz",
+      "source_sha256": "7aed373482f1be301cf2a1b7ed190af33e02b0336c358b1e200f76e80eb08827",
+      "archive_sha256": "ee74ebf501dd9aeeb516521f199d06345ddc44b24f8f7b475f1b492c9926287a",
+      "source_bytes": 297
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-03.stderr",
+      "archive": "attempts/overlap-jets-a01/gate-03.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-03.stdout",
+      "archive": "attempts/overlap-jets-a01/gate-03.stdout.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-04.json",
+      "archive": "attempts/overlap-jets-a01/gate-04.json.gz",
+      "source_sha256": "30d37173f8685135df76e2b6a4114a4e5bafdc281d794fe11f16167a98b2fae8",
+      "archive_sha256": "07e5bc542e589b412991e51d5aee0e47e97b7f4e6b29021b2bbb7922a53091ee",
+      "source_bytes": 421
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-04.stderr",
+      "archive": "attempts/overlap-jets-a01/gate-04.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/gate-04.stdout",
+      "archive": "attempts/overlap-jets-a01/gate-04.stdout.gz",
+      "source_sha256": "50b053c16fee6c395904d458ca818e63738d2b92afbf0a4b1131ee3b241baa58",
+      "archive_sha256": "69f8256a597d1bc1caa2a9c2931f06cb28cb67df08f850012195af39d8ec6ebb",
+      "source_bytes": 696539
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/lease-release.json",
+      "archive": "attempts/overlap-jets-a01/lease-release.json.gz",
+      "source_sha256": "a6453f0df618ac44be138867b48bb84823bb171e052a6b485632943b6316fde3",
+      "archive_sha256": "41a7dd46528f3ba86ebb7612162b182fc1fa2bbf4a5a380414ec049b4d4c5114",
+      "source_bytes": 301
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/lease.json",
+      "archive": "attempts/overlap-jets-a01/lease.json.gz",
+      "source_sha256": "5a726f416a30af6da128e080f92da2388ecf9d2c70254978578301d2a039ac01",
+      "archive_sha256": "08a440ab95974be0226df34a3441a77b7406fbc37855197da9eadbbfc925c154",
+      "source_bytes": 242
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-head.json",
+      "archive": "attempts/overlap-jets-a01/preflight-head.json.gz",
+      "source_sha256": "b714584c5fe14f9fbf17fc97b235ae8fa10788b11130129c7d54c188827422c5",
+      "archive_sha256": "12ad33d2c149041273a247ddd6566e233bab151e4fc3dfa1e38f8e2ec6571d63",
+      "source_bytes": 207
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-head.stderr",
+      "archive": "attempts/overlap-jets-a01/preflight-head.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-head.stdout",
+      "archive": "attempts/overlap-jets-a01/preflight-head.stdout.gz",
+      "source_sha256": "35be53ffe42487b162b7fd749cddbbf22e557a0a47eb1af28b3f85814c3bdc28",
+      "archive_sha256": "6914ea0f8b2f2ba3f5ba2fc309fa3bb2f5eebbe56dc9fb96b5ac2ea3d25c4666",
+      "source_bytes": 41
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-status.json",
+      "archive": "attempts/overlap-jets-a01/preflight-status.json.gz",
+      "source_sha256": "7b4b9538d0ffdc3f70aa9dfd2f28b68cededbbb4ac1578ecdaeb689755aa7123",
+      "archive_sha256": "b0636779837750b62042af6e7b164068eae4a162163fca27a446250026c51e5d",
+      "source_bytes": 223
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-status.stderr",
+      "archive": "attempts/overlap-jets-a01/preflight-status.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-status.stdout",
+      "archive": "attempts/overlap-jets-a01/preflight-status.stdout.gz",
+      "source_sha256": "7b7655e76d394254cdadd88558972d20525091cf7ad6c6e22c9e3931004cc54f",
+      "archive_sha256": "23f4839f92598b3fbaa263398ee78dd58e4182580f468cbb5972d5f6236e7472",
+      "source_bytes": 160
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-worktrees.json",
+      "archive": "attempts/overlap-jets-a01/preflight-worktrees.json.gz",
+      "source_sha256": "d63e6914ff84f2f361c4c6b474d31a0dd31f962b9b025dd07effdf4279ca0b7d",
+      "archive_sha256": "e3616cc0cca3d3f69b186e92dec00434d3ab67691cbababeda3b48e03ca73dec",
+      "source_bytes": 225
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-worktrees.stderr",
+      "archive": "attempts/overlap-jets-a01/preflight-worktrees.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/preflight-worktrees.stdout",
+      "archive": "attempts/overlap-jets-a01/preflight-worktrees.stdout.gz",
+      "source_sha256": "550511e88374af2d677e7c5caa55481a419fef2f8bc3115f0e1dc89a8dc05116",
+      "archive_sha256": "deed9c913f0d7746ef2665db85e8d49d0fb07084320105f6f1c20a82b7789a65",
+      "source_bytes": 13327
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/prototype.source.lean",
+      "archive": "attempts/overlap-jets-a01/prototype.source.lean.gz",
+      "source_sha256": "15960ddc8244b8945eecf3aa88e427cd91acf3d4cb0052d726a33631e00e2b09",
+      "archive_sha256": "fddf6105a1489ed2a2148571f20966c57fbb06fd73a8c2423f05a2568d1b774b",
+      "source_bytes": 4610
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/stage.json",
+      "archive": "attempts/overlap-jets-a01/stage.json.gz",
+      "source_sha256": "059a9e3a91bf8a9456699eba6eef4f6f9ee898ef78e052c32a1469d628b39b0b",
+      "archive_sha256": "d8dbbe3268f182a3cf6da37edd7109a9a228c835bbbe7de7f6a5d954e6a589d4",
+      "source_bytes": 347
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/stage.stderr",
+      "archive": "attempts/overlap-jets-a01/stage.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/stage.stdout",
+      "archive": "attempts/overlap-jets-a01/stage.stdout.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff-check.json",
+      "archive": "attempts/overlap-jets-a01/staged-diff-check.json.gz",
+      "source_sha256": "70456f66856243ecafc6c98f34a2601dd24098d92a7a67fd98bf1956c291338c",
+      "archive_sha256": "3507b45c7069bb3d70a80230515ac4649d00a7840de533f698c950b15e77f3f1",
+      "source_bytes": 314
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff-check.stderr",
+      "archive": "attempts/overlap-jets-a01/staged-diff-check.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff-check.stdout",
+      "archive": "attempts/overlap-jets-a01/staged-diff-check.stdout.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff.json",
+      "archive": "attempts/overlap-jets-a01/staged-diff.json.gz",
+      "source_sha256": "de2e146837911cbee34a48209c2c37086a2feafe293358c2c82798cc476f1380",
+      "archive_sha256": "b6f3369d50894cd707c86ba90d1754831736f8772fdb392b0b161b51548b7816",
+      "source_bytes": 314
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff.stderr",
+      "archive": "attempts/overlap-jets-a01/staged-diff.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-diff.stdout",
+      "archive": "attempts/overlap-jets-a01/staged-diff.stdout.gz",
+      "source_sha256": "7b3c50c02a0a29de6ee6d9a4bd40750ccc54391c2ae9d69f2021fa7b96dd5133",
+      "archive_sha256": "77c48ca6eb06c124afc42fb68aacb7aaa0c73367164b4067507bdff3ff8b4ae3",
+      "source_bytes": 9824
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-paths.json",
+      "archive": "attempts/overlap-jets-a01/staged-paths.json.gz",
+      "source_sha256": "aae77addf3eca9673a5a7950fcb917115ac168c7c0e9d4b11fad43058ecc1523",
+      "archive_sha256": "4736c215f31dde1272dfcea05a2c70f3e98a342ba92dfe05ecb78df4dbb67c23",
+      "source_bytes": 318
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-paths.stderr",
+      "archive": "attempts/overlap-jets-a01/staged-paths.stderr.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/staged-paths.stdout",
+      "archive": "attempts/overlap-jets-a01/staged-paths.stdout.gz",
+      "source_sha256": "1aece371f55be171f6b970722ff591d372ac1e0468b1f5b1159385ebd4c19f11",
+      "archive_sha256": "4e86bdd1413ed19e61ce6d822d722e53d4ddeaf97c18ea1e067d993629ffef97",
+      "source_bytes": 49
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/overlap-jets-a01/worker-result.json",
+      "archive": "attempts/overlap-jets-a01/worker-result.json.gz",
+      "source_sha256": "36052dfb45bc5ce6ee059bd115e5fce47a74311028d011d04b1982e1c38da261",
+      "archive_sha256": "3ee07b9f9be4962564346ce1e72993557270bd870335512282fde7ce7e61597a",
+      "source_bytes": 2418
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/root-import-lean.log",
+      "archive": "attempts/root-import-lean.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/root-prerequisite-build.log",
+      "archive": "attempts/root-prerequisite-build.log.gz",
+      "source_sha256": "f3b0c0796735138e7ad1e194d934c4f1d63a9f0fd223b2a36bdb2ebef35f1fb5",
+      "archive_sha256": "a2bfce7dbd6ff897b171031110f4f494d266e482171ccaebc6da86880e3a6ce2",
+      "source_bytes": 696943
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/root-symmetry-build.log",
+      "archive": "attempts/root-symmetry-build.log.gz",
+      "source_sha256": "72491c4fd5ed69921ac405fc67b992c6089bc9cd314d456e607d0a1d23b37dab",
+      "archive_sha256": "923b519712c9db6774919808bb26d318860cc81f61b9d42186023620cfbf35d9",
+      "source_bytes": 695883
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/symmetry-type-preflight.lean",
+      "archive": "attempts/symmetry-type-preflight.lean.gz",
+      "source_sha256": "d473dd676cef371923456a952383522ecb66f9ba4c480c8f7a38d6d9492503b7",
+      "archive_sha256": "3e62c561ff36196c69b91ab79c00f0b2d7be421027756983c6c13ad4f6cc237c",
+      "source_bytes": 5270
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/symmetry-type-preflight.log",
+      "archive": "attempts/symmetry-type-preflight.log.gz",
+      "source_sha256": "e414b3ec8d580231d5ee57e38eee7534107e31154dc57cb6041ff19740a3bf78",
+      "archive_sha256": "fe2c3a2144b923799bcfb72772cfea089aabf2a9291184cd79b1a135ae67499f",
+      "source_bytes": 1663
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/task-id-case-draft/Y-transport.contract.json",
+      "archive": "attempts/task-id-case-draft/Y-transport.contract.json.gz",
+      "source_sha256": "02d1401a2df36536febd2c5746933f1d336ada006ca4d3be3e774bc409e13e40",
+      "archive_sha256": "91bddded4ad8eb364d44e6d347254738872172e75f5b625ab6633b4eacaf15a6",
+      "source_bytes": 4017
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/task-id-case-draft/Y-transport.draft.json",
+      "archive": "attempts/task-id-case-draft/Y-transport.draft.json.gz",
+      "source_sha256": "0f04319191e245bec875e107f48fa7b0892ff4e61940fc3f777d13d3e83efe2c",
+      "archive_sha256": "c2986f85b3f64f008d5888ee1dbece51ffb49365e9cf4a73b7794b22e3ba5acc",
+      "source_bytes": 3681
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/task-id-case-draft/Y-transport.readback.json",
+      "archive": "attempts/task-id-case-draft/Y-transport.readback.json.gz",
+      "source_sha256": "63d4cad24665d5372e91f9a85bd5d3c03a44951264984cb07caa396f056a5da2",
+      "archive_sha256": "7fcb902af7e977699ea8ce5a1a8ab4d05a350fe326790549ad7fd320df3aadb3",
+      "source_bytes": 3641
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-1.lean",
+      "archive": "attempts/transition-api-probe-20260930-1.lean.gz",
+      "source_sha256": "0fdee10b1274fe4cdd93895594195d3040beb66b904aa5d7ea4cd36ce98bf175",
+      "archive_sha256": "931d5d6b0e09815c10cbe2b5b083ef1e059a831a8fe593e20d79bdf24ff9b5c3",
+      "source_bytes": 2712
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-1.log",
+      "archive": "attempts/transition-api-probe-20260930-1.log.gz",
+      "source_sha256": "8c9c91900036d7c3b49bdb1d166ff9689fd88e2c21757c38e35df19b750bc1af",
+      "archive_sha256": "3944deb44e7fa3b8ccb4b3ec53a0a52c39d3fcaae469af2f27a15da5ee16cd91",
+      "source_bytes": 1430
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-2.lean",
+      "archive": "attempts/transition-api-probe-20260930-2.lean.gz",
+      "source_sha256": "1067df1f6b7e75be787dbb899b9f205f39ae31cd4ccdb9f2c99341a3d7e68793",
+      "archive_sha256": "fe9cad9c8c2fca1e375f66acb9d1261ccfafc78bd1eb6663b807e5d85c99fb08",
+      "source_bytes": 5040
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-2.log",
+      "archive": "attempts/transition-api-probe-20260930-2.log.gz",
+      "source_sha256": "e981ffcf0d8def060c79a1e25cf052b0bd34dfb1f9fdaf2878cb99744d376e5c",
+      "archive_sha256": "301f205fda825ae2ad5ccf67ebf76f5419117e5f2f6e2f082867023892fc8149",
+      "source_bytes": 937
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-3.lean",
+      "archive": "attempts/transition-api-probe-20260930-3.lean.gz",
+      "source_sha256": "15960ddc8244b8945eecf3aa88e427cd91acf3d4cb0052d726a33631e00e2b09",
+      "archive_sha256": "fddf6105a1489ed2a2148571f20966c57fbb06fd73a8c2423f05a2568d1b774b",
+      "source_bytes": 4610
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/transition-api-probe-20260930-3.log",
+      "archive": "attempts/transition-api-probe-20260930-3.log.gz",
+      "source_sha256": "cabd05a23f20a9ce75c2f6eb1de34dcff8e874819e63ecfd565ac62c41a84ce8",
+      "archive_sha256": "a30a849d128979ea1b2aa45e40cc14eb947ba295a8f29925439f88baeb0a75e9",
+      "source_bytes": 959
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/types-preflight-a02.lean",
+      "archive": "attempts/types-preflight-a02.lean.gz",
+      "source_sha256": "7b997d69e1badef0ac3b29ab030e7ed6019bfb0e46627e3e941813f82fb9ffd3",
+      "archive_sha256": "fa1ce55f683b4b9289db5e0b744bb36501ddb7e90372b932722d2c4b3bf13d67",
+      "source_bytes": 12685
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/types-preflight-a02.log",
+      "archive": "attempts/types-preflight-a02.log.gz",
+      "source_sha256": "24f322b3f3f94dec9983b9d781fc44d7a7ff15e0f9a695c3fc10ae914f554801",
+      "archive_sha256": "2f0fcae7c47ed349f25ebbf14f69d4dcb1376904818a42b4bd2dabcb4f999816",
+      "source_bytes": 6940
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/types-preflight.lean",
+      "archive": "attempts/types-preflight.lean.gz",
+      "source_sha256": "5f947e0e05c1d75255223d2ddcfa6bf8c47e34e84147418237e4815f6cb74825",
+      "archive_sha256": "68aa6050882739d4fde172232b345dbd698f5bbf6209aa9cb2e9136eaa30fff2",
+      "source_bytes": 12467
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/types-preflight.log",
+      "archive": "attempts/types-preflight.log.gz",
+      "source_sha256": "85712251a76033ca642dae59cc0b02b7ea001489f95ccedb625758a376751496",
+      "archive_sha256": "e02b4c427876e28f708fd7fc71d1881e78fcf58e8a73b9734934bf71d7764c75",
+      "source_bytes": 4127
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/api-help/probe-001/RowApi.lean",
+      "archive": "attempts/y-transport-a01/api-help/probe-001/RowApi.lean.gz",
+      "source_sha256": "820e0429e351b1d317cdb3d35c8b259f0af31425318569791b5797fdfb84bb8c",
+      "archive_sha256": "103ed50f1008bd7238dae80250c18046176ce8c003551203143432ff09b02187",
+      "source_bytes": 4248
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/api-help/probe-001/evidence.json",
+      "archive": "attempts/y-transport-a01/api-help/probe-001/evidence.json.gz",
+      "source_sha256": "0b62b5ca3e2691a8b3e1b7c481aa09d679fe4169d9efeaec45e90ba84176ed42",
+      "archive_sha256": "9367f680538a1f02903ca9383b930acb50c3e9c749a50231fbf2e52a53bb1002",
+      "source_bytes": 3307
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/api-help/probe-001/lean.log",
+      "archive": "attempts/y-transport-a01/api-help/probe-001/lean.log.gz",
+      "source_sha256": "6e78897da1549c6fc6b7d1dc255b71be7b7414338a65e8808d71f6caf98e39f1",
+      "archive_sha256": "72ae18f60d58375eb5710f2374fa158fb8e6f6a5b9e43975db7fbceb33913b3c",
+      "source_bytes": 1881
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/commit-message.txt",
+      "archive": "attempts/y-transport-a01/commit-message.txt.gz",
+      "source_sha256": "a208fb8dea9b7f8e7a2393afa227144e0598cd3d5f4b2dad36000bf5d8474448",
+      "archive_sha256": "f9fa6621d068800b380a0dea37b4411dcb653e27fd137ed08b73ed2ec2f3bb3b",
+      "source_bytes": 497
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/commit-receipt.json",
+      "archive": "attempts/y-transport-a01/commit-receipt.json.gz",
+      "source_sha256": "06b3b0556c1a67165621adffc403b850d4bc1f47a56e900f2f22ce2b54d00f18",
+      "archive_sha256": "9cd37fd740b6b916e407c4ae24d2e0e787c39b92fa127eea0cdcd9d73039f15d",
+      "source_bytes": 393
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/compile-01/argv.json",
+      "archive": "attempts/y-transport-a01/compile-01/argv.json.gz",
+      "source_sha256": "4b8f4c5df0b288a06d5bf15991a2c34160c05d3d9c4b18bb28e70bbcf614a494",
+      "archive_sha256": "71811fb95168c19732243446e8fbb77500330782d4a56048ecb47541c317ad1b",
+      "source_bytes": 120
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/compile-01/result.json",
+      "archive": "attempts/y-transport-a01/compile-01/result.json.gz",
+      "source_sha256": "851e8e99e624ecbf576162a8feb73dd95d72425ce1e828e5628f1470cc6526be",
+      "archive_sha256": "d311f28aba63e26a0ed0f5a25b58047eee0b091f575345bc66e38b5cb3acaeec",
+      "source_bytes": 237
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/compile-01/source.lean",
+      "archive": "attempts/y-transport-a01/compile-01/source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/compile-01/stderr.log",
+      "archive": "attempts/y-transport-a01/compile-01/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/compile-01/stdout.log",
+      "archive": "attempts/y-transport-a01/compile-01/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/final-diff.patch",
+      "archive": "attempts/y-transport-a01/final-diff.patch.gz",
+      "source_sha256": "77756773272905fe3edfa69526594145b00a8d96aea34060df90aa009250fb6a",
+      "archive_sha256": "6200a16b5da00c259fd6bac013f208030516537484d8dbf547287bc631f894dd",
+      "source_bytes": 7392
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/frozen-01/argv.json",
+      "archive": "attempts/y-transport-a01/frozen-01/argv.json.gz",
+      "source_sha256": "a0578362015efb2e235f6b9a589c819e92d687c9153eb7beb6cfc520a0305c72",
+      "archive_sha256": "04ba5159bd1308c0fc6b7b2d58170ab00b6a6d1fdf8312cbf03aec954fa5b80a",
+      "source_bytes": 158
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/frozen-01/result.json",
+      "archive": "attempts/y-transport-a01/frozen-01/result.json.gz",
+      "source_sha256": "a5d6faa1efe4d2778688d2b124124d748314a254cd7455d24d097e3cfdf643d0",
+      "archive_sha256": "846fb7be01788b1fd570b15ba4648cf6a5db12b38756839bbdb40d97b4eb787e",
+      "source_bytes": 238
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/frozen-01/source.lean",
+      "archive": "attempts/y-transport-a01/frozen-01/source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/frozen-01/stderr.log",
+      "archive": "attempts/y-transport-a01/frozen-01/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/frozen-01/stdout.log",
+      "archive": "attempts/y-transport-a01/frozen-01/stdout.log.gz",
+      "source_sha256": "ad39c5284c6190ddcdbac952164c7bb9f86deaf2b23835923c9f9d8100a6509e",
+      "archive_sha256": "4f4e1ef6f83d41749ff20ba2ce761e2fa06bc98b049e156edf3e3e975b8e632d",
+      "source_bytes": 660367
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/lease-release.json",
+      "archive": "attempts/y-transport-a01/lease-release.json.gz",
+      "source_sha256": "49f1a106beff7f8c9d9746e0621dacf4f2939eb72b67e4d0995502351049447e",
+      "archive_sha256": "9e6b4a9679a793b111a201fe880045f520c73114175b89b6b9354ba56f9c3d0f",
+      "source_bytes": 300
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/lease.json",
+      "archive": "attempts/y-transport-a01/lease.json.gz",
+      "source_sha256": "20b19d5b0939049bc7d9e29447609d3192eec310401c65069aee07836950b644",
+      "archive_sha256": "177636a8f729c391ef24512928828cd833c85133e8c76fecb4138282c74cf846",
+      "source_bytes": 242
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/run-gate.py",
+      "archive": "attempts/y-transport-a01/run-gate.py.gz",
+      "source_sha256": "cb7fad33b1281b29231464135adf67e36bee8919122aab0717a4e6a49806da5d",
+      "archive_sha256": "6283243c36a4a49bf3f8e97bb7bfacd8d2afaae3e17b180f55ebaaf48945fce2",
+      "source_bytes": 1040
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/tokens-01/argv.json",
+      "archive": "attempts/y-transport-a01/tokens-01/argv.json.gz",
+      "source_sha256": "b496780d9b171b0853273782efbe9f92514efc632713904967f6508ac6eeb53b",
+      "archive_sha256": "e28ed560063d2cc2832afaca39abc4355850939eb220d6e8ef1f24418037b7cd",
+      "source_bytes": 155
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/tokens-01/result.json",
+      "archive": "attempts/y-transport-a01/tokens-01/result.json.gz",
+      "source_sha256": "6858e062f8bfd1540758c73751fe8057d0c2865ecc7ae2f76ae035e8bb944623",
+      "archive_sha256": "64a5ee66594eb3dd8eaa795083b7f7cec98c4187edfca23995068a797119adc6",
+      "source_bytes": 239
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/tokens-01/source.lean",
+      "archive": "attempts/y-transport-a01/tokens-01/source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/tokens-01/stderr.log",
+      "archive": "attempts/y-transport-a01/tokens-01/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/tokens-01/stdout.log",
+      "archive": "attempts/y-transport-a01/tokens-01/stdout.log.gz",
+      "source_sha256": "51d91b29025cf3e5a800292fa52a2826f248129f125416fa921471a1db9e8e44",
+      "archive_sha256": "03e68c96603cafffd74ad7ae136bf82745592bfbff4b5e73464a52e9f8db00e4",
+      "source_bytes": 50
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/verified-source.lean",
+      "archive": "attempts/y-transport-a01/verified-source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-01/argv.json",
+      "archive": "attempts/y-transport-a01/whitespace-01/argv.json.gz",
+      "source_sha256": "2cf4c873959d31c535d46af34b5521e1be742aba3eda3d28e63a815163114c66",
+      "archive_sha256": "4fb3e4a48ca3c12f79dd881a229b13176bba473e8f0dc4eed57a44a1ae3bcb38",
+      "source_bytes": 35
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-01/result.json",
+      "archive": "attempts/y-transport-a01/whitespace-01/result.json.gz",
+      "source_sha256": "484b529677095af1dd19890325ea193504bf4bb2a25eb20765ef7dc80ca8491c",
+      "archive_sha256": "6c158f0b41128f792f51741bec25cb4362e75df25123521536146eba4c150886",
+      "source_bytes": 239
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-01/source.lean",
+      "archive": "attempts/y-transport-a01/whitespace-01/source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-01/stderr.log",
+      "archive": "attempts/y-transport-a01/whitespace-01/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-01/stdout.log",
+      "archive": "attempts/y-transport-a01/whitespace-01/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-02/argv.json",
+      "archive": "attempts/y-transport-a01/whitespace-02/argv.json.gz",
+      "source_sha256": "2cf4c873959d31c535d46af34b5521e1be742aba3eda3d28e63a815163114c66",
+      "archive_sha256": "4fb3e4a48ca3c12f79dd881a229b13176bba473e8f0dc4eed57a44a1ae3bcb38",
+      "source_bytes": 35
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-02/result.json",
+      "archive": "attempts/y-transport-a01/whitespace-02/result.json.gz",
+      "source_sha256": "699a6a0beec2ecce2422e15f78eaf7823a9bee38f09399c7bd2be0ce383071bb",
+      "archive_sha256": "716c7c3a947b68ef073d862b39c5de577937fa42888f3077229bba47a5cfc7f2",
+      "source_bytes": 240
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-02/source.lean",
+      "archive": "attempts/y-transport-a01/whitespace-02/source.lean.gz",
+      "source_sha256": "976b27e83b2d7480f2f2629bca6fe738ef47e3b0ea62cfb7046077e52998f242",
+      "archive_sha256": "3eeaba0453e939920bf18164e955fda34761c2f6a3801d32bcb8ea6b64e1562e",
+      "source_bytes": 7007
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-02/stderr.log",
+      "archive": "attempts/y-transport-a01/whitespace-02/stderr.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/whitespace-02/stdout.log",
+      "archive": "attempts/y-transport-a01/whitespace-02/stdout.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "source_bytes": 0
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/worker-result.json",
+      "archive": "attempts/y-transport-a01/worker-result.json.gz",
+      "source_sha256": "bfeae8981fecb4ca8ec75f86d94248fae7fe5727b10a17d40517e5024ca58179",
+      "archive_sha256": "95e149dc903faece8857ae09518904be09d94113dc92b26fb1cdb08548c33539",
+      "source_bytes": 1482
+    },
+    {
+      "source": "harness/v2/state/core-deturck-c2-covariance-20260930/y-transport-a01/worker-start.json",
+      "archive": "attempts/y-transport-a01/worker-start.json.gz",
+      "source_sha256": "6e3318850dbef0a9edbc647b199e5be7b9008e97744bd492d3d2f1d39f569124",
+      "archive_sha256": "7ee0b61aff9638131418f416c3cecbe14090f9e93ce97754c95f6a0b9a4bf6ca",
+      "source_bytes": 281
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/axiom.out",
+      "archive": "checkpoint/axiom.out.gz",
+      "source_sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "archive_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73",
+      "source_bytes": 13558
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/axiom.status",
+      "archive": "checkpoint/axiom.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/axiom.timing.json",
+      "archive": "checkpoint/axiom.timing.json.gz",
+      "source_sha256": "41b9675ed0657056a9e2a1c6c9053add599dade42bff2ecc26f45363b0bfae78",
+      "archive_sha256": "50f5b0b0f7c977fd1aeff94dee63325a026f3b4b82b21d4e37ac536aaa8940d9",
+      "source_bytes": 225
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/build.out",
+      "archive": "checkpoint/build.out.gz",
+      "source_sha256": "b4fcf4e36e04a334308db46e9f0d83ca9689912cdf92948234ca8061e9a3a4a2",
+      "archive_sha256": "40c240cd4683f65f927c86f40a9601a0ff551ebcbd932f8bb84c9840f3c6d3f9",
+      "source_bytes": 832330
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/build.status",
+      "archive": "checkpoint/build.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/build.timing.json",
+      "archive": "checkpoint/build.timing.json.gz",
+      "source_sha256": "1dd9cc3683e21e0d0df01bdeb3fbc43944eb033f42c3cdfd514b01c9bc6daff6",
+      "archive_sha256": "060f7f53cca2d4e8097a3a8856050ce8babf268427c1f034b0bdcbccfcfe9403",
+      "source_bytes": 210
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/completion.out",
+      "archive": "checkpoint/completion.out.gz",
+      "source_sha256": "f029273d427a859a66887726b8cfd6e84b2c108c649061bdeb32ddd2cb697ed9",
+      "archive_sha256": "a671e6bc9a6fd52aa837e5755b20e2d69bb38f1505310c30e3997af2265ed82d",
+      "source_bytes": 1636684
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/completion.status",
+      "archive": "checkpoint/completion.status.gz",
+      "source_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "archive_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/completion.timing.json",
+      "archive": "checkpoint/completion.timing.json.gz",
+      "source_sha256": "cb8c8fda3b04eed9bac47c9962a3bf5298ce39478fc2ebaa1ca116a03961e59a",
+      "archive_sha256": "49fecb961bf971ac1d168ddecbf131a8fa001e05087e83437ae8b9005110bd09",
+      "source_bytes": 414
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/interface.out",
+      "archive": "checkpoint/interface.out.gz",
+      "source_sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "archive_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b",
+      "source_bytes": 25984
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/interface.status",
+      "archive": "checkpoint/interface.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/interface.timing.json",
+      "archive": "checkpoint/interface.timing.json.gz",
+      "source_sha256": "36a74651e19617e4c95fb8a70c69c40340aea9e311a42f0800bca60fbcb1095d",
+      "archive_sha256": "fbec835cacd291dfe9f185584a1348d57441b4acdfdcad39f32ad264d9d40f81",
+      "source_bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/mathlib.out",
+      "archive": "checkpoint/mathlib.out.gz",
+      "source_sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "archive_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592",
+      "source_bytes": 732
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/mathlib.status",
+      "archive": "checkpoint/mathlib.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/mathlib.timing.json",
+      "archive": "checkpoint/mathlib.timing.json.gz",
+      "source_sha256": "b254148a7e1a33f310a716435644d030ae40a9dc7e4c038039240c8f2a5b38cc",
+      "archive_sha256": "fc1b469bf947e207e70459660f9de881904375681722fd9054cbcabeff46a97d",
+      "source_bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/receipt.json",
+      "archive": "checkpoint/receipt.json.gz",
+      "source_sha256": "ee1a964041d74f9f48cf8cd04940abb8bb316ba7d400fc1a87ec834ef27f53be",
+      "archive_sha256": "7ba9deb88e3837994397d17a9e756596070d385cfba53730036e3bea6939f7c3",
+      "source_bytes": 4975775
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/root_import.out",
+      "archive": "checkpoint/root_import.out.gz",
+      "source_sha256": "4493b610f6daca5b4841711100ce3ee57f3d5b6333306ec001ca6c8b8745587b",
+      "archive_sha256": "f2f9f10757c0e4ba5e11a18469e8899b62f720809f47d2fb8e023898769dd79d",
+      "source_bytes": 94804
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/root_import.status",
+      "archive": "checkpoint/root_import.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/root_import.timing.json",
+      "archive": "checkpoint/root_import.timing.json.gz",
+      "source_sha256": "e9f4bd1422cf289fb43ea04e96e4391974198e53efc3fc51352daeff514c9f2e",
+      "archive_sha256": "c850a8b626028a45727c503dcf8dac3d7c784e36590ee3e0fd0c21b5a0023947",
+      "source_bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/semantic.out",
+      "archive": "checkpoint/semantic.out.gz",
+      "source_sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "archive_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621",
+      "source_bytes": 14744
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/semantic.status",
+      "archive": "checkpoint/semantic.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/semantic.timing.json",
+      "archive": "checkpoint/semantic.timing.json.gz",
+      "source_sha256": "75a2374bcd17f7f12f5b562aa26e55f90659c35640b128653414c8a69739a943",
+      "archive_sha256": "fe1c99c6f7b6336fec8bdb6a4a7f2d255f3e1dd8975f8f635449ad210004057f",
+      "source_bytes": 239
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/shape.out",
+      "archive": "checkpoint/shape.out.gz",
+      "source_sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "archive_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249",
+      "source_bytes": 91129
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/shape.status",
+      "archive": "checkpoint/shape.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/shape.timing.json",
+      "archive": "checkpoint/shape.timing.json.gz",
+      "source_sha256": "29fa34cdc5cbdb8b9b425fcc189a3cc4bac4ed4b98b802a26d904c481565b89e",
+      "archive_sha256": "4cd46a0c369a34537edae5f25edff6e3a999526bb36211ca5fe779e9d1293ede",
+      "source_bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/source-before.json",
+      "archive": "checkpoint/source-before.json.gz",
+      "source_sha256": "7ede87c8cde58ff5db2e3e740d758c5b1e9197dcbc8906a014234950f8c6999a",
+      "archive_sha256": "7bc7c6e3044f21dc581264c84dc4c3df5eb75062908740c75170a5759b532372",
+      "source_bytes": 4740232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/status.md",
+      "archive": "checkpoint/status.md.gz",
+      "source_sha256": "2f12dfb82c3c81c5b8688a69a1c21dfe91defb7cb83030889a6664710e87c35b",
+      "archive_sha256": "2366a17a1f9937cadeca5d5798eaff87b0192eb0e783159fdb3a9abb7aebcccf",
+      "source_bytes": 71686
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/theorem.out",
+      "archive": "checkpoint/theorem.out.gz",
+      "source_sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "archive_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166",
+      "source_bytes": 5523
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/theorem.status",
+      "archive": "checkpoint/theorem.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "archive_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "source_bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T160511Z-e7509837abeb455e9fc457046905102f/theorem.timing.json",
+      "archive": "checkpoint/theorem.timing.json.gz",
+      "source_sha256": "d63e60eec0e2ec96109c38d1e687aeff11fc6ccf8c942123b63e56be89f6e20b",
+      "archive_sha256": "f085bad8cde324b43ae265025e7865c31a67abe9e03b1dec3406713fb9cdc2e8",
+      "source_bytes": 238
+    },
+    {
+      "source": "harness/v2/state/verification/latest.json",
+      "archive": "checkpoint/receipt.json.gz",
+      "source_sha256": "ee1a964041d74f9f48cf8cd04940abb8bb316ba7d400fc1a87ec834ef27f53be",
+      "archive_sha256": "7ba9deb88e3837994397d17a9e756596070d385cfba53730036e3bea6939f7c3",
+      "source_bytes": 4975775
+    }
+  ]
+}

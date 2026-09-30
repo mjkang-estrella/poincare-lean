@@ -126,3 +126,18 @@ ID was rejected by schema validation before dispatch; its metadata was
 preserved and the ID normalized without changing any literal type. Local
 helpers are explicitly not registered Pi/Leanstral Jobs. No dirty or unmerged
 historical worktree was removed and no model/GPU service was touched.
+
+## Sealed integration checkpoint
+
+Clean checked source: `81ec66b338c697dbf54ff55c1c101317c1cdc8cb`.
+
+Source SHA256: `af604a92a502cfafef760f882c5f6be11160e8c242f0741cfe8b789d2e4a0d67`.
+
+Full build and every integration audit passed. Completion exited 1 only
+for the absent reserved theorem and the failed exact final-declaration probe.
+Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement remains
+absent. Both universal cores remain open.
+
+All compiler attempts and checkpoint artifacts are sealed in the adjacent
+evidence archive. Original/gzip hashes were independently checked against
+retained originals. Final evidence/status changes preserve the checked source.
