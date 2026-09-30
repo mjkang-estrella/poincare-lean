@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-centered-shrink",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "b95075ed949d5e5cd51ed66908bc942a94a4ae37",
   "objective": {
     "title": "centered-shrink for constructed Ricci-flow geometry",
@@ -119,5 +119,6 @@
       "report_sha256": "95039b027f79e96c48f7c8abd2a0b11e907b39fcc0b116c0784f68e23f87698a",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "8c18065332dec0c59d1c5f5aebe6e64abcb36c3e"
 }
