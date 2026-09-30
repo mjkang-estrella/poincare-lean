@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-vector-extension",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
   "objective": {
     "title": "vector-extension for actual global tensor transport",
@@ -135,5 +135,6 @@
       "report_path": "harness/v2/contracts/core-chart-transport-20260930/vector-extension.readback.json",
       "report_sha256": "d7c3b9c211cbe9e4da876cab02b1de4b4b638871d6907d7461679d0b6704ad6c"
     }
-  }
+  },
+  "accepted_commit": "c84e3c5065674445283a52fe0e19f8c93d7a5100"
 }

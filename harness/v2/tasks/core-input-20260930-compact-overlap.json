@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-compact-overlap",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
   "objective": {
     "title": "compact-overlap for actual global tensor transport",
@@ -137,5 +137,6 @@
       "report_path": "harness/v2/contracts/core-chart-transport-20260930/compact-overlap.readback.json",
       "report_sha256": "3cf7e9b8a29193453813520b8c7c558af9d9c0400d6e7bea9fc3512614d2c73d"
     }
-  }
+  },
+  "accepted_commit": "8308932123debe641f9ad79f2cf7ced39266061a"
 }

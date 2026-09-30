@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-gated-transitions",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
+  "status": "ready",
+  "base_commit": "8308932123debe641f9ad79f2cf7ced39266061a",
   "objective": {
     "title": "gated-transitions for actual global tensor transport",
     "statement": "Core assumption addressed: UniversalHamiltonConvergenceStatement through genuine general Ricci-flow input construction. Bounded destination-only Graph/tensor transport consumes the constructed theta/F maps, followed by actual global DeTurck L/P/R assembly. The geometric A/xi inputs are already constructed by MetricAdaptedLocalParametrix; no supplied curvature, flow, operator-existence, limit or sphere recognition premise may be added.",
@@ -39,7 +39,9 @@
       "harness/v2/contracts/core-chart-transport-20260930/construction-context.md",
       "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
       "Poincare/Global/BufferedFrozenParabolicSolver.lean",
-      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean"
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean",
+      "Poincare/Global/CompactBufferedChartOverlap.lean",
+      "Poincare/Global/SmoothCutoffVectorExtension.lean"
     ],
     "symbols": [
       "Poincare.BufferedChartTransitionExtensions.exists_gated_chart_extensions"
