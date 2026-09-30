@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-dq-full",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "a76d579377780f92a80d48f07a61a6b6061a62a4",
+  "status": "ready",
+  "base_commit": "9372d4c1351ce31164a2bcec4eaf47ec25a1276d",
   "objective": {
     "title": "Construct actual DeTurck full coefficient toward Hamilton existence",
     "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via true general Ricci flow. Subsequent proof: full finite-jet Q/DQ identification retaining Da(G0)[h]:H0, then joint spatial coefficient regularity, differentiated covariance, true bounded L=dt-DQ(g0) and signed global L/P/R contraction. Construct actual coefficient/derivative inputs rather than assume operator or limit packages.",
