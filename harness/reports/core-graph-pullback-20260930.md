@@ -121,3 +121,12 @@ evidence preserved. The focused module scan checked every emitted constant
 without expanded type/value export and passed. These are local Codex
 orchestrator helpers, not registered Pi/Leanstral runtime Jobs. No model
 service, remote harness or other worker source was altered.
+
+The integration checkpoint at `e263e07838ea1a80e13d204f3ebfe23674a1d5f1`
+passed fresh root source, full Lake build, interface, mathlib-gap, shape,
+theorem-contract, semantic, root-import and axiom audits. All new module
+dependencies were independently scanned without expanded metadata export.
+Completion failed only because the reserved final declaration is absent.
+The full source-bound receipt and outputs are archived in the integration
+evidence manifest. Neither universal core is discharged; the full objective
+remains active.
