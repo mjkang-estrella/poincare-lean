@@ -1,5 +1,49 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed actual compact lower-DQ forcing
+
+The complete proof goal remains active. Both universal smoothability and
+universal Hamilton convergence remain open; the reserved final theorem is
+absent. No target, norm or core assumption was changed. The actual global P
+and its local solvers/residuals remain available.
+
+DeTurckCompactCoefficients.exists_actual_compact_carriers constructs a smooth
+compact eta in the actual chart/cutoff-one zone, equal one near the entire
+existing outer support xi. All actual eta*raw0/raw1 coefficients are smooth
+compact and agree germwise there. Their actual Y carriers have common row
+bounds C0/C1 chosen before every real T. These coefficients retain inverse
+variation against D2g0 and all ordered tensor/direction slots.
+
+DeTurckCoupledForcing.exists_actual_coupled_forcing constructs the true
+nine-input Graph ->L scalar Y lower action with the original Pi/Graph norms,
+separate T^((1-alpha)/2) and T^(1-alpha/2) powers, all-point value and whole
+actual eta*entry(Z(h)+F(tensorJet)) action on the cylinder. tensorJet_hasFDerivAt
+identifies tensorJet with the actual spatial derivative of tensorValue from
+Graph certificates. The lower action is positive in DQ and is subtracted in L.
+A joint import initially failed on duplicate compiler-generated local-instance
+helpers; the scoped pass and failed integration evidence are preserved, and a
+superseding repair task names the instances uniquely and passes an independent
+joint probe. A kernel application constructs g0, the actual metric-adapted
+atlas/buffers, the carriers and K, whose formula uses the proved ordinary Dh.
+
+First action: freeze and prove the full-DQ localization product identity for
+stored partition-weighted entries chi_i*h_i, retaining both principal mixed
+and Hessian cutoff terms AND firstOrder((Dchi_i).smulRight h_i). This exact
+identity is consumed by the actual global L/P/R residual calculation. Read
+harness/reports/core-deturck-compact-20260930.md and next-covariance evidence.
+
+Full linearized coordinate covariance is also unproved. Existing nonlinear
+covariance of actual metrics can be differentiated only after a genuine
+smooth metric variation/2jet realization is constructed for the symmetric C2
+Graph perturbation germs; do not assume same-alpha full-Holder norm density.
+Actual bounded global L/R and signed id-R contraction, nonlinear inversion,
+matched initial jets, ordinary joint C3, physical Ricci flow and later
+continuation/surgery/favorable-flow/finite-energy/limit existence remain open.
+Compatible smoothability is independent. The smaller universal finite-energy
+flow existence interface remains sufficient for Hamilton convergence, but
+none of its universal flow/energy/compact-realization/positive-floor witnesses
+has been constructed by this batch.
+
 ## 2026-09-30 Constructed actual smooth coupled DeTurck coefficients
 
 The complete proof goal remains active. Neither universal smoothability nor
