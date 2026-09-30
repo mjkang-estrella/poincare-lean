@@ -52,9 +52,9 @@
       "reviewer": "deturck-compact-readback",
       "method": "blind-readback",
       "snapshot_sha256": "64fc552f4a1e6fb16e6a8d7cb0432375f565e6fe0403e8b79f02982e8a56b52d",
-      "verdict": "pending",
+      "verdict": "approved",
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/extension.readback.json",
-      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "report_sha256": "5c9d781afeceed08ba628f209c3caf6b43da383b02c26ed0e77d9e7a06b17281"
     }
   }
 }
