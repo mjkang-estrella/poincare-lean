@@ -169,3 +169,11 @@ residual/support witnesses and B_ij maps, with full Graph equality to their
 actual finite assembly. Local CP estimates apply only to supported forcing;
 use supported_entry for Y_M inputs rather than claim an unrestricted local
 operator norm bound.
+
+The repaired source-bound checkpoint at `0b931ab994e97bc60c4b0f198f73bc666a01b53b`
+passed the full Lake build, interface, mathlib-gap, shape, theorem-contract,
+semantic, explicit root-import and axiom audits. Completion exited 1 only
+because `Poincare.poincare_conjecture : PoincareConjectureStatement` is absent;
+completion is not certified. Evidence identity: `harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf`.
+Both the original root-coverage failure and repaired full outputs are
+archived. Both universal cores and the complete proof goal remain open.

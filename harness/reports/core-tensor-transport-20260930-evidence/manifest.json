@@ -1,0 +1,1757 @@
+{
+  "schema_version": "1.0",
+  "source_commit": "0b931ab994e97bc60c4b0f198f73bc666a01b53b",
+  "backend": "local Codex helpers; not registered Pi/Leanstral Jobs",
+  "entries": [
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/actual-metric-use.lean",
+      "archive": "attempts/actual-metric-use.lean.gz",
+      "sha256": "4a501dfd860a8b0cf68632199972d44efe31a71e787c047de439f98482e6aab2",
+      "gzip_sha256": "a94c38410b3273cb5e06243df01629630afc65722594f25959bab1ef52808b31",
+      "bytes": 3275
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/actual-metric-use.log",
+      "archive": "attempts/actual-metric-use.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/actual-metric-use.v1.failed.lean",
+      "archive": "attempts/actual-metric-use.v1.failed.lean.gz",
+      "sha256": "4bad946cb7730255672374fc59b1a2a105f62299f1117b65a131d96616526631",
+      "gzip_sha256": "ee4282a41e709fcc0cf5960c8d3ecf6e13216cf77b9eaddad60f914e08bb012b",
+      "bytes": 3235
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/actual-metric-use.v1.failed.log",
+      "archive": "attempts/actual-metric-use.v1.failed.log.gz",
+      "sha256": "04e70129dd6d4f0bbcd4a25756f58b31ec120ba03ca38c02075ecd934d796561",
+      "gzip_sha256": "4ae2529d4aca8a4cf341c1c27c9c7cbcf3137808cabbde5a0cd87f922307b4b2",
+      "bytes": 666
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/archive_evidence.py",
+      "archive": "attempts/archive_evidence.py.gz",
+      "sha256": "8dfb6145949844aa84635c298675e12f5c71cda47f3b766e04b64f6b0c82ab80",
+      "gzip_sha256": "8eac7713bec40bf8f8b8af2f73cdfb2c52c25225c0a8326a4fc9827380eff6a6",
+      "bytes": 2011
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-01/lean.log",
+      "archive": "attempts/compatibility-a01/attempt-01/lean.log.gz",
+      "sha256": "953334a1a9d0cab2feda22bf27c885e1213e0cea5b2f169aea4125754ef8ae8a",
+      "gzip_sha256": "e816cd0ea3013308315968bcf1c64255cfbffdef013c7a8a1eaf9b640e4e836a",
+      "bytes": 3234
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-01/lean.status",
+      "archive": "attempts/compatibility-a01/attempt-01/lean.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-01/source.lean",
+      "archive": "attempts/compatibility-a01/attempt-01/source.lean.gz",
+      "sha256": "c7f3abcea6a9794f19ecbdfb08c53114a72a110111cd3ed713e3dd52eff7ea39",
+      "gzip_sha256": "feb751870fed99863d7a6e5810cf9d3325fe3bbc5a5ccce5f99617375c23a973",
+      "bytes": 3369
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-02/lean.log",
+      "archive": "attempts/compatibility-a01/attempt-02/lean.log.gz",
+      "sha256": "e345f8a3612ed06a1c3c49ade2cfb8ecbe9f17dc58767324d4c98e499bf6d164",
+      "gzip_sha256": "8effa8f4ed71c0d920952d19fbfbf06017d7b5a6ae21e60e99b121c99a538ce4",
+      "bytes": 299
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-02/lean.status",
+      "archive": "attempts/compatibility-a01/attempt-02/lean.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-02/source.lean",
+      "archive": "attempts/compatibility-a01/attempt-02/source.lean.gz",
+      "sha256": "8e1496e0a309e865575d89fd023955665579a9e6b07f68272ae0454884ae4347",
+      "gzip_sha256": "0a3c6890c2a8ba8780ab15c261d916814a776deb1198e55c7cf849598c701a16",
+      "bytes": 3392
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-03/lean.log",
+      "archive": "attempts/compatibility-a01/attempt-03/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-03/lean.status",
+      "archive": "attempts/compatibility-a01/attempt-03/lean.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/attempt-03/source.lean",
+      "archive": "attempts/compatibility-a01/attempt-03/source.lean.gz",
+      "sha256": "8eb3a5831638bf02f3b08f048248ec6e40d209fe2d0f58326028a85cdba72a44",
+      "gzip_sha256": "56633b1b0f150fd22627b7f8490d895c64e5b438d201336b2dde14c268c58bda",
+      "bytes": 3490
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/commit-message.txt",
+      "archive": "attempts/compatibility-a01/commit-message.txt.gz",
+      "sha256": "187b7a7fe5a767ef51444949c85a3420ee3befaf5c70fd7f85825b5da39dde48",
+      "gzip_sha256": "bc05b54bc4bb502ce94c1fc1883ed3d9df293562b60ff61e6d82c2773f18f280",
+      "bytes": 602
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/contract.log",
+      "archive": "attempts/compatibility-a01/contract.log.gz",
+      "sha256": "650736a0b68c07b277a66c8eae0191a7c9338bf2085831842783dc8a2b7ffebf",
+      "gzip_sha256": "526951913e5e7441db4650dcca2dca50e4b0f345ade8376f4c0f32509599b12e",
+      "bytes": 632329
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/contract.status",
+      "archive": "attempts/compatibility-a01/contract.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/diff-check.log",
+      "archive": "attempts/compatibility-a01/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/diff-check.status",
+      "archive": "attempts/compatibility-a01/diff-check.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/contract.log",
+      "archive": "attempts/compatibility-a01/final-gates/contract.log.gz",
+      "sha256": "6dbc8b24c0783b3d7122cad173bf635c6093994beb7c64957202aa04fc5c0e2d",
+      "gzip_sha256": "fbfb75e8f990626a9f1912b6eaecbcce41da681b7ebac7d4a4c9ec229056c350",
+      "bytes": 631953
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/contract.status",
+      "archive": "attempts/compatibility-a01/final-gates/contract.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/diff-check.log",
+      "archive": "attempts/compatibility-a01/final-gates/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/diff-check.status",
+      "archive": "attempts/compatibility-a01/final-gates/diff-check.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/final.diff",
+      "archive": "attempts/compatibility-a01/final-gates/final.diff.gz",
+      "sha256": "d5456cc42f41cabc88026c93a2afebe6a2a55287c7552525196af6fcdbf006af",
+      "gzip_sha256": "14848b5a6a223c11153f06fce1aa67f7a75dacc2ca53d023958feefe012a3df6",
+      "bytes": 3884
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/forbidden.log",
+      "archive": "attempts/compatibility-a01/final-gates/forbidden.log.gz",
+      "sha256": "3d41814e0095555d798d822a6bd05c0381663c943d179434e745c8ce3d65a24b",
+      "gzip_sha256": "98a8f88862787b3fcc8a6ad7ee71d0e06c2e1545de2ded139446075454be7879",
+      "bytes": 65
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/forbidden.status",
+      "archive": "attempts/compatibility-a01/final-gates/forbidden.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/staged-diff-check.log",
+      "archive": "attempts/compatibility-a01/final-gates/staged-diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/final-gates/staged-diff-check.status",
+      "archive": "attempts/compatibility-a01/final-gates/staged-diff-check.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/forbidden.log",
+      "archive": "attempts/compatibility-a01/forbidden.log.gz",
+      "sha256": "3d41814e0095555d798d822a6bd05c0381663c943d179434e745c8ce3d65a24b",
+      "gzip_sha256": "98a8f88862787b3fcc8a6ad7ee71d0e06c2e1545de2ded139446075454be7879",
+      "bytes": 65
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/forbidden.status",
+      "archive": "attempts/compatibility-a01/forbidden.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/lease.json",
+      "archive": "attempts/compatibility-a01/lease.json.gz",
+      "sha256": "c8fb765afab8fb3cc89141abd40ff68489ae530627032b4fc587866b100197a1",
+      "gzip_sha256": "e43077bd29f41cbe707cac4fb9f2dab55078134c0a63a354da6da0dd83543300",
+      "bytes": 440
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/lease.terminal.json",
+      "archive": "attempts/compatibility-a01/lease.terminal.json.gz",
+      "sha256": "133abf703cfddd1eaecd980f720e9037a30bab070bb81300a4d4c77f139a8bdf",
+      "gzip_sha256": "0d914c318cd10bd6c638dca69e4277039813661deff95d0c318f51eb954fcbd0",
+      "bytes": 441
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/task.snapshot.json",
+      "archive": "attempts/compatibility-a01/task.snapshot.json.gz",
+      "sha256": "ad8c17c4b9a35c659e47b02a34027d81702b4b48f4c35ab76f370c464ee14b52",
+      "gzip_sha256": "c8df8fc2dd49b11101f2361e9879ef1ac20d538470a846416c9d50fa55422eec",
+      "bytes": 6642
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility-a01/worker-result.json",
+      "archive": "attempts/compatibility-a01/worker-result.json.gz",
+      "sha256": "4dd708777fd227aded20fcc6c7f31c94dc5f946d4ff5c94a00f7ada85785970f",
+      "gzip_sha256": "1297731696606105274041c0cc2ef304be8cc1d18a440294b30d998d9b097f43",
+      "bytes": 960
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility.build.log",
+      "archive": "attempts/compatibility.build.log.gz",
+      "sha256": "5aa8a4786910e68438b8678e20ed6f9a7435083c3fbf27ad61e75bb773e9f5e4",
+      "gzip_sha256": "f542c40e485e01879118c8b973f2b61b0b46a02bf85bf91a29b5005acdfcd3cf",
+      "bytes": 631567
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility.preflight.lean",
+      "archive": "attempts/compatibility.preflight.lean.gz",
+      "sha256": "cc5904118645e6fdb46a5f1a63dc37dfd98f83e01fc8a603184052ad1ee42447",
+      "gzip_sha256": "cd049ba7e9adabd929d881ddb520164606a46eb8f46c87215ece4d8213b45cba",
+      "bytes": 2420
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/compatibility.preflight.log",
+      "archive": "attempts/compatibility.preflight.log.gz",
+      "sha256": "74808e8b1e92c2b420e99eba9f8057f29bc9cc747e1db8efd7e6239cab09e2dc",
+      "gzip_sha256": "7ccfccc0fd7ab2f861d3a5eadb62580ed00219126636e908d516f0ea7a0598a4",
+      "bytes": 58
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/core-boundary.lean",
+      "archive": "attempts/core-boundary.lean.gz",
+      "sha256": "1b9137cf120d3e2c09af0ad3aecbe7111ff4290b8be2e87586325beebbcd3ae6",
+      "gzip_sha256": "4961a977c101cc347f41e2ff80156f0a5722dd604e714a7a5385a060ab7a6f1f",
+      "bytes": 658
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/core-boundary.log",
+      "archive": "attempts/core-boundary.log.gz",
+      "sha256": "e39d431ea55c393db465c1d9f0c20c2b4a932f3041ce119a1bb3e0fd2a3fd1b4",
+      "gzip_sha256": "8239cd9d93ea56f5c5146bf775d877d0ce6c945640bd34abfc3cabb0b195af7a",
+      "bytes": 1541
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/definitions.build.log",
+      "archive": "attempts/definitions.build.log.gz",
+      "sha256": "10d9f985f7324a80993a989fc7aa9b1b3ebb4c7db2e658408328750a3d591bc5",
+      "gzip_sha256": "80d95e9d3575438d5181de0fa899a9e975e8e09e7ccd644737e554c702fb593a",
+      "bytes": 631563
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/failed-checkpoint.receipt.json",
+      "archive": "attempts/failed-checkpoint.receipt.json.gz",
+      "sha256": "e75b496968e32f3c3fa5df681f83f9143c2ba440045df294739cc628809be151",
+      "gzip_sha256": "9a9c34b933806047dc89405ff02aa8dd519dfe2cd7d67a97388845564f2433a7",
+      "bytes": 4937453
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/failed-checkpoint.status.md",
+      "archive": "attempts/failed-checkpoint.status.md.gz",
+      "sha256": "066b8a478a4644284c75ef42df5b3fe66881a65688be2b729df4f544c8f81c9c",
+      "gzip_sha256": "fb42dd87e3ae8cd44ab6809b9f38af715d2c71a9cadae036ad3670917e9e0873",
+      "bytes": 66450
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/full-checkpoint.failed.log",
+      "archive": "attempts/full-checkpoint.failed.log.gz",
+      "sha256": "d119bc2a7c3faa8c79d6aab2b4c374fbb72310e1a193a6282f35363b11648bdd",
+      "gzip_sha256": "288e582da161baa1973168e61e0e389bc4fc5153d1bcc1a9363d13f83737dff3",
+      "bytes": 137
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/full-checkpoint.log",
+      "archive": "attempts/full-checkpoint.log.gz",
+      "sha256": "d119bc2a7c3faa8c79d6aab2b4c374fbb72310e1a193a6282f35363b11648bdd",
+      "gzip_sha256": "288e582da161baa1973168e61e0e389bc4fc5153d1bcc1a9363d13f83737dff3",
+      "bytes": 137
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/full-checkpoint.repaired.log",
+      "archive": "attempts/full-checkpoint.repaired.log.gz",
+      "sha256": "fd7532612c5aa071f4cf0c00ecc0143ffe363fd14262da47b491436bd9310470",
+      "gzip_sha256": "709f543e47417a53e8e2a76b8308573483c3cbfd33f864d83188942a3e36893a",
+      "bytes": 137
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/helper.build.log",
+      "archive": "attempts/helper.build.log.gz",
+      "sha256": "bf2990c53f16136e5040b2a5e842a1f0a22f9d9baafb096572e13d4872cc37eb",
+      "gzip_sha256": "2ac854dec28da7ec49761f08708303df1bdb8e26a5ff22fc763dbddd608fecd0",
+      "bytes": 650136
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/0.json",
+      "archive": "attempts/independent-compatibility-a01/0.json.gz",
+      "sha256": "ba99262bffccf7f739b07c2330548b0e6dc4d5e9e73da50ed14281e7a0ca719b",
+      "gzip_sha256": "8cf7b8a6df029bcc81b75254c45b0a41dcf5dfa4adba260b06f29c8dded18764",
+      "bytes": 301
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/0.log",
+      "archive": "attempts/independent-compatibility-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/1.json",
+      "archive": "attempts/independent-compatibility-a01/1.json.gz",
+      "sha256": "986924b1105be58abb64cd3c712e29b1a10d64cece9735b8c20b9bb2ae4cca68",
+      "gzip_sha256": "bad54cc6c629409d8f1891f239740e68b5c8800f62cb542ec3cb9d88c52a9a05",
+      "bytes": 333
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/1.log",
+      "archive": "attempts/independent-compatibility-a01/1.log.gz",
+      "sha256": "3d41814e0095555d798d822a6bd05c0381663c943d179434e745c8ce3d65a24b",
+      "gzip_sha256": "98a8f88862787b3fcc8a6ad7ee71d0e06c2e1545de2ded139446075454be7879",
+      "bytes": 65
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/2.json",
+      "archive": "attempts/independent-compatibility-a01/2.json.gz",
+      "sha256": "f97cd541a4d2e1823fe9a63ff453ea5d0a753f94d4c15b8d8c76ee2315d3fb33",
+      "gzip_sha256": "03258b811155613dcdf35f462c3ba2a8abebaeac597cc0a9ed7d04d72fb044a7",
+      "bytes": 196
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/2.log",
+      "archive": "attempts/independent-compatibility-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/3.json",
+      "archive": "attempts/independent-compatibility-a01/3.json.gz",
+      "sha256": "b77e1c51543e104202bc5263dd2219cd65a284ab54ebdcbe7f99540025754c82",
+      "gzip_sha256": "89ea54e5e5480cfa98f157e1edbc30cb0a13df0b4cbe6d84644563106881efba",
+      "bytes": 316
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/3.log",
+      "archive": "attempts/independent-compatibility-a01/3.log.gz",
+      "sha256": "cd2e51e6bbdc90307fb5ac06e02d4c7dda714a35973fcb5a4234a6855028c4a5",
+      "gzip_sha256": "8812270719a69107f92b43a1fa365ce024b267774d89833a9f9767d7a97dc053",
+      "bytes": 631864
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/FiniteAtlasBufferedTensorValueCompatibility.lean",
+      "archive": "attempts/independent-compatibility-a01/FiniteAtlasBufferedTensorValueCompatibility.lean.gz",
+      "sha256": "8eb3a5831638bf02f3b08f048248ec6e40d209fe2d0f58326028a85cdba72a44",
+      "gzip_sha256": "56633b1b0f150fd22627b7f8490d895c64e5b438d201336b2dde14c268c58bda",
+      "bytes": 3490
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/final.diff",
+      "archive": "attempts/independent-compatibility-a01/final.diff.gz",
+      "sha256": "d5456cc42f41cabc88026c93a2afebe6a2a55287c7552525196af6fcdbf006af",
+      "gzip_sha256": "14848b5a6a223c11153f06fce1aa67f7a75dacc2ca53d023958feefe012a3df6",
+      "bytes": 3884
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/review.json",
+      "archive": "attempts/independent-compatibility-a01/review.json.gz",
+      "sha256": "c7401d034d19dc458ffec09925b60b2887c6c51a4c9d6879f2925c2682976337",
+      "gzip_sha256": "2a17fde569ed2d7cbf60def4f9679170c14058e3f31d6b4445f26c5acb6d6c36",
+      "bytes": 1693
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-compatibility-a01/task.snapshot.json",
+      "archive": "attempts/independent-compatibility-a01/task.snapshot.json.gz",
+      "sha256": "ad8c17c4b9a35c659e47b02a34027d81702b4b48f4c35ab76f370c464ee14b52",
+      "gzip_sha256": "c8df8fc2dd49b11101f2361e9879ef1ac20d538470a846416c9d50fa55422eec",
+      "bytes": 6642
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/0.json",
+      "archive": "attempts/independent-operator-a01/0.json.gz",
+      "sha256": "26744e1253a4ca87cc88b63f8491a40ee1db22643504ef1fae7cd96cdd494fb7",
+      "gzip_sha256": "184e62d7264aef0e08bfaad53499c58a7c5e048d0d42a58169f9198666fbf348",
+      "bytes": 294
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/0.log",
+      "archive": "attempts/independent-operator-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/1.json",
+      "archive": "attempts/independent-operator-a01/1.json.gz",
+      "sha256": "50f50efccfe616119bb33d745138ef2a6c53bf56d452c60609939d80055aa663",
+      "gzip_sha256": "8c77e75b71ee6c6a2c83182d8e28cd62de4407df3151d6826187d20d33162dd9",
+      "bytes": 327
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/1.log",
+      "archive": "attempts/independent-operator-a01/1.log.gz",
+      "sha256": "9c412421452ab03bf14a1e9af443904664551f57455c9273f54a5deb544b6c42",
+      "gzip_sha256": "999dc2a0f90ff6bf4e40cde2101ebedec578a7078e431fe282c36db711cde138",
+      "bytes": 58
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/2.json",
+      "archive": "attempts/independent-operator-a01/2.json.gz",
+      "sha256": "1c422b41468817be47693caa58b1083466cd1d499717017d4f7e57c32d981e2d",
+      "gzip_sha256": "f8876db22f1666abe92ec587ec2c3864d75a08efd87188e23dc19d1479e41fa6",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/2.log",
+      "archive": "attempts/independent-operator-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/3.json",
+      "archive": "attempts/independent-operator-a01/3.json.gz",
+      "sha256": "45b1239547b44c132737e8d21a9e53637ff545230b3504bcd93217f36e6aa978",
+      "gzip_sha256": "fe0d5b4eeec90d576d91fcd5ae306ec9338d77df3e334907ba58b6da3a1cfcd1",
+      "bytes": 311
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/3.log",
+      "archive": "attempts/independent-operator-a01/3.log.gz",
+      "sha256": "076245af70242cc4eb8d4d269bac42eb1d854c1bbd9e26149a68a8889ef7ffd2",
+      "gzip_sha256": "4b903c3e00643cb9228fc0f79d5ca74595516473f2510e6e5ceb18d66d9d79f7",
+      "bytes": 660289
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/BufferedTensorGraphTransportOperator.lean",
+      "archive": "attempts/independent-operator-a01/BufferedTensorGraphTransportOperator.lean.gz",
+      "sha256": "efec3cf5da20f0598a6bd6a23a9aea768d2143d56c9da067cfb91919c02d72a2",
+      "gzip_sha256": "ae5b4d4a29d14b7ed506b930a024a6a0ee716cf40734de63fde54b93c1c0df6b",
+      "bytes": 6709
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/final.diff",
+      "archive": "attempts/independent-operator-a01/final.diff.gz",
+      "sha256": "4e935acd6fe46531d10ccd4f8501feb3a69eab27e57178d43b0688a81f72d9e9",
+      "gzip_sha256": "b27c8c70954b84116fabd6d3103bff64cd6e7774e36d30eff1c373d78a373d0e",
+      "bytes": 7107
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/review.json",
+      "archive": "attempts/independent-operator-a01/review.json.gz",
+      "sha256": "312c44e23b022a92a87b73f1376e6517cebdbdee5668efd482cd403ba22b7ec7",
+      "gzip_sha256": "01d516bc677fd215adf1dbccd65d7e0f68a5d53a01f77e05747c1260b2bfd6c7",
+      "bytes": 1664
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-operator-a01/task.snapshot.json",
+      "archive": "attempts/independent-operator-a01/task.snapshot.json.gz",
+      "sha256": "0268e14865e0598e0d998ca6db0c24db3a379819c4ab0974197aa65d4f386263",
+      "gzip_sha256": "f31e3568029c4d9b88f9364a3d2e11cd68074e415517daf95c5f8c8f580796d5",
+      "bytes": 7912
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/0.json",
+      "archive": "attempts/independent-values-a01/0.json.gz",
+      "sha256": "c272b33cfe8e3e2a732843be40729b5d4faa2749298cbfcecec78bf18c63a259",
+      "gzip_sha256": "fd933c891eae97b22a87874a8d23439d31965079f146589a274c186951791acb",
+      "bytes": 291
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/0.log",
+      "archive": "attempts/independent-values-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/1.json",
+      "archive": "attempts/independent-values-a01/1.json.gz",
+      "sha256": "8ead11c8dad17805d1fb5dffae3261a63a019302b6bdee11673832d01a1ba5c3",
+      "gzip_sha256": "7f14eaf3db8528474e22ccdd2816247685da802523c95937ea50da1af4444a89",
+      "bytes": 324
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/1.log",
+      "archive": "attempts/independent-values-a01/1.log.gz",
+      "sha256": "f1841710131c0f19e18b292480b9e2414b02e866df5051a497f4dc056e9a8339",
+      "gzip_sha256": "c7c7403b4576dd78439d352f9531788b4e9f4d3f8aba70c96fb31c4ff1056e16",
+      "bytes": 56
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/2.json",
+      "archive": "attempts/independent-values-a01/2.json.gz",
+      "sha256": "e6093f0ad1b739612b3b1059c9c0e071523445e414da2896e92c144c2df4b7a1",
+      "gzip_sha256": "9f9aa67e676947f7ca0467734f579c7a30b37b98fa9224a4b873790c1f76b8e4",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/2.log",
+      "archive": "attempts/independent-values-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/3.json",
+      "archive": "attempts/independent-values-a01/3.json.gz",
+      "sha256": "132e5d2b9b9d31a4d67cf95ac201ca4a5535147451bbca0215c18d442f5460b6",
+      "gzip_sha256": "94906d8e5ee7d7c729d8b1dc5f70735554fd1d497f45d7b021706c1cbb87bd68",
+      "bytes": 309
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/3.log",
+      "archive": "attempts/independent-values-a01/3.log.gz",
+      "sha256": "c8a843d8ca72111b05f5de57061589388550d62f601bda0b6e2f9f7b9e03f740",
+      "gzip_sha256": "5f9399a1621da5eeb42ba8c39b1851e308aa253079e5d8fd5d85df1c1f2c953a",
+      "bytes": 631898
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/BufferedTensorGraphTransportValues.lean",
+      "archive": "attempts/independent-values-a01/BufferedTensorGraphTransportValues.lean.gz",
+      "sha256": "6eabfe9002fa21fd00144859e3f8a7994446826ba7f8efdc066efb70ed2908ed",
+      "gzip_sha256": "792629e4058e22be3c1f0b9dd3f2330cd3a25abc4b5c37e4daab6c08ad2dc616",
+      "bytes": 3784
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/final.diff",
+      "archive": "attempts/independent-values-a01/final.diff.gz",
+      "sha256": "3af77dfa4273ad9feeb58dcc9040cb6030b9f9b10038d7e8f3ab026e0412e533",
+      "gzip_sha256": "8b3aef54cb67b484b83ccf09bb71394f5eb06f31fbf0694674eb7ecd8103fcc0",
+      "bytes": 4131
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/review.json",
+      "archive": "attempts/independent-values-a01/review.json.gz",
+      "sha256": "d141835b8ffb5b8ae912e44c5d41e7f64772aa1fe0c259407a8ef77461d70ce9",
+      "gzip_sha256": "52bba18084fb063459c6f9a5e9fec7374de7a0daa218e169af2defc7c6c535dc",
+      "bytes": 1652
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-values-a01/task.snapshot.json",
+      "archive": "attempts/independent-values-a01/task.snapshot.json.gz",
+      "sha256": "c08a194cad2c77673c3c97ca42ee6ebd5053e66927637a321d30ff54dfb1be89",
+      "gzip_sha256": "83aac2770116b83dd7196f2cd75d7da474ebd6171de71696b35323d9cc2ea73c",
+      "bytes": 7429
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/0.json",
+      "archive": "attempts/independent-weights-a01/0.json.gz",
+      "sha256": "a05b3f9f92ed5113954d23ec1ee0cebf9a21235a1e22337fbacab859370ae5db",
+      "gzip_sha256": "d00912f2fac8b3e71b8505fb2d78f2806592057e769e8f92ef104e10ead355ab",
+      "bytes": 293
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/0.log",
+      "archive": "attempts/independent-weights-a01/0.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/1.json",
+      "archive": "attempts/independent-weights-a01/1.json.gz",
+      "sha256": "a50bc0cc2c8b1c52d92f5611356f71037d0838d719afbdf0253be38bb38c9ff9",
+      "gzip_sha256": "69bdd7d083d6704447e7d17ee2e799f28f9d4bc9946c690fdb9ca95e9e815692",
+      "bytes": 326
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/1.log",
+      "archive": "attempts/independent-weights-a01/1.log.gz",
+      "sha256": "b3ac5f1f09b98107e106639e822d709c384485da76484e56cc89d3f9ea2ed403",
+      "gzip_sha256": "77fbd17fb9a5ba427e65b3ea2c61777565ad0100122f53e0d18bdfad901317a9",
+      "bytes": 57
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/2.json",
+      "archive": "attempts/independent-weights-a01/2.json.gz",
+      "sha256": "a8722fa492ab173c380c374000d9b3094713ad0492ba67bff29ba43773cd2062",
+      "gzip_sha256": "5f10a48fcb0bb1091415f046130219c826f7881dcfc566df768d196846d6a2c5",
+      "bytes": 197
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/2.log",
+      "archive": "attempts/independent-weights-a01/2.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/3.json",
+      "archive": "attempts/independent-weights-a01/3.json.gz",
+      "sha256": "923420b7eb5e881e8e44b2a34ea1d1a0cbbdafb1a008decba79482fadbbabf11",
+      "gzip_sha256": "1e70941845e1353fdda76911812569271360b76b4524cc30f779fb12c6cfb0e3",
+      "bytes": 311
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/3.log",
+      "archive": "attempts/independent-weights-a01/3.log.gz",
+      "sha256": "949c86fbc085e363d3e8918dce8095913db4788c413d6f0bc674a3f7c9274653",
+      "gzip_sha256": "b2bca7f0ebf2b88f1305ddbd7c68f62a0e57dd2fa474ed1bc1514ac333a39e04",
+      "bytes": 650246
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/BufferedTensorGraphTransportWeights.lean",
+      "archive": "attempts/independent-weights-a01/BufferedTensorGraphTransportWeights.lean.gz",
+      "sha256": "941d407311d7b38719fa716a245a0a7772eb756a485db1d098c312fe677d9c36",
+      "gzip_sha256": "e01baad67532c01c78b750344a3700ebe840c26b619b0b1548ce99fc113363ae",
+      "bytes": 2076
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/final.diff",
+      "archive": "attempts/independent-weights-a01/final.diff.gz",
+      "sha256": "b16a6ada3dd3f3aabe0a58c747624e07168d0cf1a56383764ee67fcc18fc72a6",
+      "gzip_sha256": "d885d8ed1487b962824925e1d652ff118d621891b2e2e78ed758ff5cf6d9ca3c",
+      "bytes": 2388
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/review.json",
+      "archive": "attempts/independent-weights-a01/review.json.gz",
+      "sha256": "dde2fd0a4b935d3ac1bde2fbb940632c851573c6b73985375de09936345782d2",
+      "gzip_sha256": "5d394da59d35069e059d22bcaf15708b1a5c30c66980644ed2fe30a34e1c8b17",
+      "bytes": 1660
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent-weights-a01/task.snapshot.json",
+      "archive": "attempts/independent-weights-a01/task.snapshot.json.gz",
+      "sha256": "a9ad3b1c39446fff5e438d4045d44c90985f436e847cbbeb7fea3e7ca3d4bbdb",
+      "gzip_sha256": "c875993ab5419751898999660588b5817ea8500fe48b548ae2258925c5837b5b",
+      "bytes": 5718
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/independent_gate.py",
+      "archive": "attempts/independent_gate.py.gz",
+      "sha256": "afafdf8a108fc708535ceb016bc3404f37824890d22360136bbe5de57de9462f",
+      "gzip_sha256": "4d46994bf3713a445b4b186b50cb6d825d167d3cb151c208be6f95770c3eb034",
+      "bytes": 1777
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/integrate-compatibility.log",
+      "archive": "attempts/integrate-compatibility.log.gz",
+      "sha256": "2be56a63064a0ec841d4b5089e92db15d5560d70f1203c60d8175227809ed2c7",
+      "gzip_sha256": "8d92bd0ad133892885e1b879f9b1c8aea407788050739533d73d4ec60aff75de",
+      "bytes": 260
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/integrate-operator.log",
+      "archive": "attempts/integrate-operator.log.gz",
+      "sha256": "3c7cfdd7e3381a1532599a44d76e405c842e482eac884d84d9c1b3aa11a54226",
+      "gzip_sha256": "b4ce90d7df52306026fb3d1934acb4287f72a0b791de2c2ab0452a031337bfec",
+      "bytes": 246
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/integrate-values.log",
+      "archive": "attempts/integrate-values.log.gz",
+      "sha256": "5a15ec207617d01529fd123684c16eed349ba1e5c4acebb79eb810556e82f443",
+      "gzip_sha256": "6cace417d18fb977396f7e8dd8c8a2ee12cbf752ca9fef745407f63557306fe5",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/integrate-weights.log",
+      "archive": "attempts/integrate-weights.log.gz",
+      "sha256": "9f6ad19eb9a8faef7bd989b3e8ff5aab7409604e3428450bfd9bd95896b7dd39",
+      "gzip_sha256": "6f09a42cef0f97b6e5ff9caa9600c1b522801c2ccb274b77fbc3b9f4078f1e79",
+      "bytes": 242
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/integration-results.json",
+      "archive": "attempts/integration-results.json.gz",
+      "sha256": "81f406ea940c95b26858d16ae7e1f41dd97a5a1d7c6f52705a3ff526b7930dcc",
+      "gzip_sha256": "59f64536a62892c74fee7bfe466625e24aaf3fc77fc0b0753fb623b9d3532a5b",
+      "bytes": 7874
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/module-dependencies.lean",
+      "archive": "attempts/module-dependencies.lean.gz",
+      "sha256": "b3ace6da92d1fa317f6a37109552c2d62fc75436950fae787fe128eeaf90781d",
+      "gzip_sha256": "7fb409ffcc1f79e3ffab4352ca5346c3fe2d00b924024e19cebccdbb281d1fbf",
+      "bytes": 1224
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/module-dependencies.log",
+      "archive": "attempts/module-dependencies.log.gz",
+      "sha256": "8a3a1e403bbfe6a192f4aed809256735a85e7fbf7b64b8b51dff3c013215ea6a",
+      "gzip_sha256": "a62eac45c3983dcb9d4da10b9533522afff28447c521a3863919eaba8f6fd1e1",
+      "bytes": 486
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-01/BufferedTensorGraphTransportOperator.lean",
+      "archive": "attempts/operator-a01/attempt-01/BufferedTensorGraphTransportOperator.lean.gz",
+      "sha256": "b21953bdf74d2c9c942a6dcf3bb6b38f14b5a137a97acbfd05375825cb9b0821",
+      "gzip_sha256": "78293edadeb88c52b7eceec274af5c4c1035e26a9d82f41f7ab7724ebb80a10a",
+      "bytes": 6593
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-01/compiler.log",
+      "archive": "attempts/operator-a01/attempt-01/compiler.log.gz",
+      "sha256": "9473fa75c9dd9ad45940f632a0e48dae77675bca395ae48d1791ee8b41d6d4a3",
+      "gzip_sha256": "dcee472dee2ed63e5a5a32a8969447ba533c9ca3d096e097e32b1d2f6a98f3d0",
+      "bytes": 797
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-01/exit.status",
+      "archive": "attempts/operator-a01/attempt-01/exit.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-01/worktree.json",
+      "archive": "attempts/operator-a01/attempt-01/worktree.json.gz",
+      "sha256": "0b6d93fc68809ed710b1165724e4e957ee3197719c71fc1094c9242abf40861d",
+      "gzip_sha256": "63739012dd3b492bf97c24ad7ea3893a4bec65d14b4d0802795c52284522a717",
+      "bytes": 171
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-02/BufferedTensorGraphTransportOperator.lean",
+      "archive": "attempts/operator-a01/attempt-02/BufferedTensorGraphTransportOperator.lean.gz",
+      "sha256": "efec3cf5da20f0598a6bd6a23a9aea768d2143d56c9da067cfb91919c02d72a2",
+      "gzip_sha256": "ae5b4d4a29d14b7ed506b930a024a6a0ee716cf40734de63fde54b93c1c0df6b",
+      "bytes": 6709
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-02/compiler.log",
+      "archive": "attempts/operator-a01/attempt-02/compiler.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/attempt-02/exit.status",
+      "archive": "attempts/operator-a01/attempt-02/exit.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/commit.json",
+      "archive": "attempts/operator-a01/commit.json.gz",
+      "sha256": "8085cb0946409d60c1cefa6b3534dcb0df4a4bcb36075115e06c1ed4cafeedc5",
+      "gzip_sha256": "14e6ed714317e7affc102d20c48ee9547c26bb8f5418a015aa13c2f1c78beb4b",
+      "bytes": 112
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/final-source.lean",
+      "archive": "attempts/operator-a01/final-source.lean.gz",
+      "sha256": "efec3cf5da20f0598a6bd6a23a9aea768d2143d56c9da067cfb91919c02d72a2",
+      "gzip_sha256": "ae5b4d4a29d14b7ed506b930a024a6a0ee716cf40734de63fde54b93c1c0df6b",
+      "bytes": 6709
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/01-lean.log",
+      "archive": "attempts/operator-a01/gates/01-lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/01-lean.status",
+      "archive": "attempts/operator-a01/gates/01-lean.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/02.log",
+      "archive": "attempts/operator-a01/gates/02.log.gz",
+      "sha256": "9c412421452ab03bf14a1e9af443904664551f57455c9273f54a5deb544b6c42",
+      "gzip_sha256": "999dc2a0f90ff6bf4e40cde2101ebedec578a7078e431fe282c36db711cde138",
+      "bytes": 58
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/02.status",
+      "archive": "attempts/operator-a01/gates/02.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/03.log",
+      "archive": "attempts/operator-a01/gates/03.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/03.status",
+      "archive": "attempts/operator-a01/gates/03.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/04-contract.log",
+      "archive": "attempts/operator-a01/gates/04-contract.log.gz",
+      "sha256": "c071a807cc8924f31ac1e06282a4fc327300535ca66f4e604cb95cbe63991228",
+      "gzip_sha256": "94378227c9fd8a16ddb07f281f9b60b85aa29762ad139dca24262d72b5c65b7c",
+      "bytes": 660370
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/04-contract.status",
+      "archive": "attempts/operator-a01/gates/04-contract.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/gates/final.diff",
+      "archive": "attempts/operator-a01/gates/final.diff.gz",
+      "sha256": "4e935acd6fe46531d10ccd4f8501feb3a69eab27e57178d43b0688a81f72d9e9",
+      "gzip_sha256": "b27c8c70954b84116fabd6d3103bff64cd6e7774e36d30eff1c373d78a373d0e",
+      "bytes": 7107
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/lease.json",
+      "archive": "attempts/operator-a01/lease.json.gz",
+      "sha256": "da38b959c5dc08041ee8dfa374c0b8f66dd9e708e1397e94f8f73a7e4234562f",
+      "gzip_sha256": "98b9a41f5e04f83d9a2a5a979277aa13e84512b1c87e94e175a7627add7dd656",
+      "bytes": 423
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/lease.terminal.json",
+      "archive": "attempts/operator-a01/lease.terminal.json.gz",
+      "sha256": "70115b8239fd866407634a303286b3a8b66ba4d19657b603235e38c395e9be0f",
+      "gzip_sha256": "1ec4b5a2df47e94027e41dc3cf2a517136ce76ed93fb550c9245e4bad2f107cb",
+      "bytes": 424
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/result.json",
+      "archive": "attempts/operator-a01/result.json.gz",
+      "sha256": "561bb570d4c383a9c0d16458c9c5c395f5c7fb03f1593b3dfa8358af94e9423c",
+      "gzip_sha256": "cf1cef6eb90ddca5083fcf020c5bdc9a2c30849bf5c7ba3c2cd26f38feb89529",
+      "bytes": 859
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator-a01/task.snapshot.json",
+      "archive": "attempts/operator-a01/task.snapshot.json.gz",
+      "sha256": "0268e14865e0598e0d998ca6db0c24db3a379819c4ab0974197aa65d4f386263",
+      "gzip_sha256": "f31e3568029c4d9b88f9364a3d2e11cd68074e415517daf95c5f8c8f580796d5",
+      "bytes": 7912
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator.build.log",
+      "archive": "attempts/operator.build.log.gz",
+      "sha256": "6812c20d458f172b3542d1eeb54dbf89ebf70c1fdd879a383204a1059861b797",
+      "gzip_sha256": "eddeb60f9e87c89f3751bf5925bf58d9ea9342f82711a99a2e065127829fcda1",
+      "bytes": 660097
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator.preflight.lean",
+      "archive": "attempts/operator.preflight.lean.gz",
+      "sha256": "501d9e7c57ff9782fc47c4703e75aab5e20eb9d735b1b5fab01768c8a8312c8e",
+      "gzip_sha256": "0270c619bd9e33d0b55bda4d89176ee55d8c97b370004903442f555aff2af69a",
+      "bytes": 2751
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator.preflight.log",
+      "archive": "attempts/operator.preflight.log.gz",
+      "sha256": "85232c73952f20b7a1372214bbf30bf8955ef5a253d9cfd0653f0e7b8f298a4b",
+      "gzip_sha256": "a7bf0f3a50a0e4cedd192856de0fd5cc7e66907f3cc05e3dcb6012738eafb534",
+      "bytes": 49
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator.v1.failed-contract.json",
+      "archive": "attempts/operator.v1.failed-contract.json.gz",
+      "sha256": "b06ced9a5fddf5ab3c3e6b9361e42750f1b0636ee9104b3c263e344241fdd8c1",
+      "gzip_sha256": "7908494cab270d590343de3b89e9a0aa26fa7b76210976d0a8750c01bb66d466",
+      "bytes": 3889
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/operator.v1.failed-preflight.log",
+      "archive": "attempts/operator.v1.failed-preflight.log.gz",
+      "sha256": "a58a1e0ae6db29309c5d18c5fcd98aac9b07be33314c71a11d0dda5c3e8901de",
+      "gzip_sha256": "934def03c402cf0cac8137a7fde80a55453f3bdd8f71f6e68ee9d7c655ae8949",
+      "bytes": 191
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/poincare-freeze-tensor-20260930.py",
+      "archive": "attempts/poincare-freeze-tensor-20260930.py.gz",
+      "sha256": "58ab3c77474ed6e90d8bf2e756f86bf403c771f2315c57cfe49bae4dc37d3a78",
+      "gzip_sha256": "38ae631c7741f121ba9ee8ed7fe6461dec35259449b9d3209fdb40f681176044",
+      "bytes": 5892
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/poincare-tensor-compat-contract-20260930.py",
+      "archive": "attempts/poincare-tensor-compat-contract-20260930.py.gz",
+      "sha256": "7dbb789103a1c116d8dd2feef97b83117f7404ba43591031767268d1ff76d620",
+      "gzip_sha256": "c4d8638d781a140b551277f10be4caf8d622b66f3f6f9e1b163b65538d2d8a8d",
+      "bytes": 2751
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/poincare-tensor-compat-task-20260930.py",
+      "archive": "attempts/poincare-tensor-compat-task-20260930.py.gz",
+      "sha256": "68a2998e4c7fa079c29ca414ef0021f87dae9599d60f278ab7d9b8876b600cde",
+      "gzip_sha256": "b110f4942cf76dcec78ca8cd214ba8302da4d8d5e4dcc82e5a6d0865e3b71845",
+      "bytes": 4168
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/poincare-tensor-operator-contract-20260930.py",
+      "archive": "attempts/poincare-tensor-operator-contract-20260930.py.gz",
+      "sha256": "09c148a59d325c8c888002a3447dd2ca0fa775c63521770fc0b8231262902f52",
+      "gzip_sha256": "3a652188b12f556f2da04798f9efe93d8815ac774360bb35462ea1f984b1e3d3",
+      "bytes": 3309
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/poincare-tensor-tasks-20260930.py",
+      "archive": "attempts/poincare-tensor-tasks-20260930.py.gz",
+      "sha256": "f8c2f12b611c17983be5a4cbdc026f0f893c32810cbe837b6608a51aab793ca2",
+      "gzip_sha256": "d0d41574078721da8200683d6f567f5d99d15a014cef35a9bf8903cc18b11349",
+      "bytes": 3341
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/INVENTORY.md",
+      "archive": "attempts/readback-evidence/INVENTORY.md.gz",
+      "sha256": "78389d6c107429af78443ef21fae535d96d7ceedb6c91d65bf03f7186bf80ba2",
+      "gzip_sha256": "e96cbee79c330d53a4e4a076dec941f2f6cc979ff52b7eb7fc10233f30a7b35f",
+      "bytes": 2041
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-graph-readback-overload-probe-v2.lean",
+      "archive": "attempts/readback-evidence/poincare-graph-readback-overload-probe-v2.lean.gz",
+      "sha256": "25301409838a8ace45df558226a238c7ebdf2f1b7680f4b81e6963d4af9ceb44",
+      "gzip_sha256": "59ceea0c852e74d4c97b56dfa36d3ed8fd3b298cf4ec1d4bd837546fd726fab0",
+      "bytes": 638
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-graph-readback-overload-probe.lean",
+      "archive": "attempts/readback-evidence/poincare-graph-readback-overload-probe.lean.gz",
+      "sha256": "8977949e30e9b6ce97062a3079afad6b8475d18c54341f88b58561d1207984da",
+      "gzip_sha256": "037a150f81198fe7eed6d5f3b374b063024ff5a8ed3b77ae22ed486869f3ee03",
+      "bytes": 634
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-hessian-readback-canonical-instance-v2.lean",
+      "archive": "attempts/readback-evidence/poincare-hessian-readback-canonical-instance-v2.lean.gz",
+      "sha256": "63ceefe74198e085b7308957cda5c73668edf7bda20b1e08dd9b7abcd588e7e3",
+      "gzip_sha256": "a5e59313774f839a88df534bee42d6a62b944bc8b6f26a1e8cda41f9f9e01645",
+      "bytes": 1557
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-hessian-readback-canonical-instance.lean",
+      "archive": "attempts/readback-evidence/poincare-hessian-readback-canonical-instance.lean.gz",
+      "sha256": "c14d05fa5125b430a675b6e8469e5f5ec82fd2821d0a325bc255fef22ec1c48c",
+      "gzip_sha256": "e61f448706dcf1e2c28d71b92f3997c9aa6ae229d220ce0d34efd349b0f823a8",
+      "bytes": 1778
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-tensor-value-compatibility-readback-types.lean",
+      "archive": "attempts/readback-evidence/poincare-tensor-value-compatibility-readback-types.lean.gz",
+      "sha256": "0d8dc4a830b3c16b86305e9416d195e37cdbe9ee7a9da721c3d0108748b530aa",
+      "gzip_sha256": "178d36d5ff0fcb8829d2ba0172dc1d6301406ac6ddd5c0f00ee5da75bcbcc958",
+      "bytes": 2568
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-tensor-weight-readback-types-v2.lean",
+      "archive": "attempts/readback-evidence/poincare-tensor-weight-readback-types-v2.lean.gz",
+      "sha256": "60253f22b7a2f272c8373533787463a94529be217ba55e714f8d80df2ac49a0a",
+      "gzip_sha256": "404871e83dbffde3f3f9c5f0adf5ddcb8ccfd3decc914fa5418113291d1347f5",
+      "bytes": 4132
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/poincare-tensor-weight-readback-types.lean",
+      "archive": "attempts/readback-evidence/poincare-tensor-weight-readback-types.lean.gz",
+      "sha256": "a1104d5ce873f96cf8af948c4f7f0d238a1110a894cff99eaf7f46b27de5403f",
+      "gzip_sha256": "4091b535d961c6faba01c328a41fd8e7dd30751da0a7e2b1e9af92aefa08766c",
+      "bytes": 4120
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/readback-evidence/probe-inventory.json",
+      "archive": "attempts/readback-evidence/probe-inventory.json.gz",
+      "sha256": "f758ab7c1a84a13441942f73bfc0166642cca26e70bb0a95d40fc5168909ea36",
+      "gzip_sha256": "90c2f8c7653bfa53aca48809d76edb47c0213e6cefa95d501ef7841656454915",
+      "bytes": 3189
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/root.explicit-imports.lean.log",
+      "archive": "attempts/root.explicit-imports.lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/root.lean.log",
+      "archive": "attempts/root.lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/tensor-value-definitions.build.log",
+      "archive": "attempts/tensor-value-definitions.build.log.gz",
+      "sha256": "70046be2a63eed216533a46f49e97b1fd1b0330525bc886106d8fdaa94c4ad99",
+      "gzip_sha256": "e51f5544f0d6272c00f3251169429b36843b33aec4c52acea09a97064001dc4a",
+      "bytes": 631565
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/tensor-value-definitions.log",
+      "archive": "attempts/tensor-value-definitions.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/attempt-01/lean.log",
+      "archive": "attempts/values-a01/attempt-01/lean.log.gz",
+      "sha256": "6774d06b0dd8e3d1630d65290fe685b80a44a7b22e08772bad3623c8f1c3faa4",
+      "gzip_sha256": "5b5f3dc8ca1fc7844b2caeb3aaf0b49c4b2af93f1e50a2533bc54610cfad33c2",
+      "bytes": 705
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/attempt-01/source.lean",
+      "archive": "attempts/values-a01/attempt-01/source.lean.gz",
+      "sha256": "0faf16b99e57f939de1e4185cd9e15aa052c8a5fe59c1468d39acc68abbf9df9",
+      "gzip_sha256": "02c744be1cfd6459decec16aa557ffa5b73e5228c042e90277301ada8ba93470",
+      "bytes": 3734
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/attempt-02/lean.log",
+      "archive": "attempts/values-a01/attempt-02/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/attempt-02/source.lean",
+      "archive": "attempts/values-a01/attempt-02/source.lean.gz",
+      "sha256": "6eabfe9002fa21fd00144859e3f8a7994446826ba7f8efdc066efb70ed2908ed",
+      "gzip_sha256": "792629e4058e22be3c1f0b9dd3f2330cd3a25abc4b5c37e4daab6c08ad2dc616",
+      "bytes": 3784
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/final-source.lean",
+      "archive": "attempts/values-a01/final-source.lean.gz",
+      "sha256": "6eabfe9002fa21fd00144859e3f8a7994446826ba7f8efdc066efb70ed2908ed",
+      "gzip_sha256": "792629e4058e22be3c1f0b9dd3f2330cd3a25abc4b5c37e4daab6c08ad2dc616",
+      "bytes": 3784
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/final.diff",
+      "archive": "attempts/values-a01/final.diff.gz",
+      "sha256": "3af77dfa4273ad9feeb58dcc9040cb6030b9f9b10038d7e8f3ab026e0412e533",
+      "gzip_sha256": "8b3aef54cb67b484b83ccf09bb71394f5eb06f31fbf0694674eb7ecd8103fcc0",
+      "bytes": 4131
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/gates-01/1.log",
+      "archive": "attempts/values-a01/gates-01/1.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/gates-01/2.log",
+      "archive": "attempts/values-a01/gates-01/2.log.gz",
+      "sha256": "f1841710131c0f19e18b292480b9e2414b02e866df5051a497f4dc056e9a8339",
+      "gzip_sha256": "c7c7403b4576dd78439d352f9531788b4e9f4d3f8aba70c96fb31c4ff1056e16",
+      "bytes": 56
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/gates-01/3.log",
+      "archive": "attempts/values-a01/gates-01/3.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/gates-01/4.log",
+      "archive": "attempts/values-a01/gates-01/4.log.gz",
+      "sha256": "75ebf21680603f2cef24a60e2a81ae84a516e6c0a846dddc72b8a167c74d7a27",
+      "gzip_sha256": "14f7603dd6a1b183995d081b7d299ac6831a0f7b99c0f2de52a7e1a5bc246dfe",
+      "bytes": 631978
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/gates-01/results.json",
+      "archive": "attempts/values-a01/gates-01/results.json.gz",
+      "sha256": "c660fa23ad0a495813e6e72ce31c60b822dcd3785f072525d9e68c6bdf7d6525",
+      "gzip_sha256": "b210e22e660873eb52eafe75a7fcb690eaa9216ed5484879435541b16b05aa4a",
+      "bytes": 733
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/lease.json",
+      "archive": "attempts/values-a01/lease.json.gz",
+      "sha256": "d8a1015d6e303f19814722d83ea2155e798e342fc82d5f2daa17d2112c6080db",
+      "gzip_sha256": "10e922acbae21e909cb75097d996934283a93c33f56876bae1de9c2489fda84f",
+      "bytes": 417
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/lease.terminal.json",
+      "archive": "attempts/values-a01/lease.terminal.json.gz",
+      "sha256": "0c2878b66f2ec125406ab887a19a23daec3f76eeb46e6e9b989cb94d740d22fc",
+      "gzip_sha256": "722269ece19281fa8e3db848c1cb464f0f86f5c9c9add4d3a4c898a9ca39f684",
+      "bytes": 418
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/task.snapshot.json",
+      "archive": "attempts/values-a01/task.snapshot.json.gz",
+      "sha256": "c08a194cad2c77673c3c97ca42ee6ebd5053e66927637a321d30ff54dfb1be89",
+      "gzip_sha256": "83aac2770116b83dd7196f2cd75d7da474ebd6171de71696b35323d9cc2ea73c",
+      "bytes": 7429
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values-a01/worker-result.json",
+      "archive": "attempts/values-a01/worker-result.json.gz",
+      "sha256": "49fa8178d50c5b164085b30e0ca7092459ecd572c868031949d48e3ec6f9da5a",
+      "gzip_sha256": "95b4398cdb32e7d33c4e2af961606ca544640a0d38cea2b86c80814169a39120",
+      "bytes": 610
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.preflight.lean",
+      "archive": "attempts/values.preflight.lean.gz",
+      "sha256": "06869b88d21800adfd1fd97a853bcbedb83acb2f555841d83fdb2bccc86e2ae5",
+      "gzip_sha256": "c2e03c12ceff131e162193f6e4efd794e62996377db47d6349476d58677cd5ca",
+      "bytes": 3203
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.preflight.log",
+      "archive": "attempts/values.preflight.log.gz",
+      "sha256": "81ba2a503ff235af9f1e985ffc0376a804d30603846c27bd1c6d87141348fbc8",
+      "gzip_sha256": "cdc3c574e33afb1bc19040cb002e6ef1c99c696b8e9b3e6a877d026277898e0a",
+      "bytes": 79
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.v1.failed-contract.json",
+      "archive": "attempts/values.v1.failed-contract.json.gz",
+      "sha256": "645ae5f612bb4224aeb619666c33f417c2a2fc568e1cfe3240270ef718ea8f4d",
+      "gzip_sha256": "017afc6694e1b8c3a4cfa735b225595f15bb9876dc38753045f756bfebc059e2",
+      "bytes": 3708
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.v1.failed-preflight.lean",
+      "archive": "attempts/values.v1.failed-preflight.lean.gz",
+      "sha256": "8689472033e66978c118add7d97a629ac00998d0b76aaf04cc32721c0ffe1493",
+      "gzip_sha256": "848a6b2e8b3660b24620fd37663341eaba52c80e3c1990c75b780b27eb602df4",
+      "bytes": 3187
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.v1.failed-preflight.log",
+      "archive": "attempts/values.v1.failed-preflight.log.gz",
+      "sha256": "95b6068e2b26e4719bffea5d1d72ad3b646d168c57af3b73bf81f3239be325c5",
+      "gzip_sha256": "618915293d209e8c45c63e460b77e6dd8408f9763902d445f2e7bef2f4e04bdb",
+      "bytes": 444
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/values.v2.scope-contract.json",
+      "archive": "attempts/values.v2.scope-contract.json.gz",
+      "sha256": "c9c6e015c3146b4aeffd326b874a463cf7610582e5be58f5f9983883081fbe06",
+      "gzip_sha256": "1d64eaf11194abcd97a5ea381a34e0a8a794de83a15a80b79d3b49623da02935",
+      "bytes": 3733
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-01/lean.log",
+      "archive": "attempts/weights-a01/attempt-01/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-01/source.lean",
+      "archive": "attempts/weights-a01/attempt-01/source.lean.gz",
+      "sha256": "df6261f6fd9b7d3520036a5dc5866d9c96c239e666e937b2fdc18739923e800f",
+      "gzip_sha256": "77779a387b361eb3165255096afd420f8bd5473a6481ce5b973388843184e1ab",
+      "bytes": 2060
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-02/lean.log",
+      "archive": "attempts/weights-a01/attempt-02/lean.log.gz",
+      "sha256": "a478482a6c0b129ffc53486b6cdcaae8b195e148306a50ab65aae0ed8371e006",
+      "gzip_sha256": "46295bb687ae6bf957197a18ad6d840436836e49ddccd4acedf696e2731e50e5",
+      "bytes": 380
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-02/source.lean",
+      "archive": "attempts/weights-a01/attempt-02/source.lean.gz",
+      "sha256": "2261a4a5b3a9fa694c5aa0e60cf2ccf27eeca10383757ef0a75370175c63451d",
+      "gzip_sha256": "efec50a2360e3dc9463fb2681ad2c35d6f6f64080df2ff43e4d8f2b5d28d9955",
+      "bytes": 2023
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-03/lean.log",
+      "archive": "attempts/weights-a01/attempt-03/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/attempt-03/source.lean",
+      "archive": "attempts/weights-a01/attempt-03/source.lean.gz",
+      "sha256": "941d407311d7b38719fa716a245a0a7772eb756a485db1d098c312fe677d9c36",
+      "gzip_sha256": "e01baad67532c01c78b750344a3700ebe840c26b619b0b1548ce99fc113363ae",
+      "bytes": 2076
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/diff-check.log",
+      "archive": "attempts/weights-a01/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/final-gates/diff-check.log",
+      "archive": "attempts/weights-a01/final-gates/diff-check.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/final-gates/forbidden.log",
+      "archive": "attempts/weights-a01/final-gates/forbidden.log.gz",
+      "sha256": "b3ac5f1f09b98107e106639e822d709c384485da76484e56cc89d3f9ea2ed403",
+      "gzip_sha256": "77fbd17fb9a5ba427e65b3ea2c61777565ad0100122f53e0d18bdfad901317a9",
+      "bytes": 57
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/final-gates/frozen-contract.log",
+      "archive": "attempts/weights-a01/final-gates/frozen-contract.log.gz",
+      "sha256": "d5b674a5949004d1dd83194effff58abdd3d205cc644d04bf483468f32f3e41f",
+      "gzip_sha256": "fd06c5143e08b0c067f2904ef4dd1377c4e0d0ce9f935810ea2f31d2864c42e4",
+      "bytes": 650327
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/final-gates/lean.log",
+      "archive": "attempts/weights-a01/final-gates/lean.log.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "bytes": 0
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/final.diff",
+      "archive": "attempts/weights-a01/final.diff.gz",
+      "sha256": "b16a6ada3dd3f3aabe0a58c747624e07168d0cf1a56383764ee67fcc18fc72a6",
+      "gzip_sha256": "d885d8ed1487b962824925e1d652ff118d621891b2e2e78ed758ff5cf6d9ca3c",
+      "bytes": 2388
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/forbidden.log",
+      "archive": "attempts/weights-a01/forbidden.log.gz",
+      "sha256": "b3ac5f1f09b98107e106639e822d709c384485da76484e56cc89d3f9ea2ed403",
+      "gzip_sha256": "77fbd17fb9a5ba427e65b3ea2c61777565ad0100122f53e0d18bdfad901317a9",
+      "bytes": 57
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/frozen-contract.log",
+      "archive": "attempts/weights-a01/frozen-contract.log.gz",
+      "sha256": "775b4569e3571e3b983408b0f53c3fd99854ed44fa47bea3c98a5d97c341eabc",
+      "gzip_sha256": "d5cdb614576c81314714a804dbba86c8faba245daab6863540d554bb2f66cbc8",
+      "bytes": 650327
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/lease.json",
+      "archive": "attempts/weights-a01/lease.json.gz",
+      "sha256": "1f752323166e523ed9cfbb7ba1f52c101d55fdaf6d24c748407d8e8981da3d1c",
+      "gzip_sha256": "3e7aee7ddad60a75765c8b3d6a38f2d1e1d2af3054ffa2b7dc9c0a883e3d53f2",
+      "bytes": 420
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/lease.terminal.json",
+      "archive": "attempts/weights-a01/lease.terminal.json.gz",
+      "sha256": "f9d5b5f206871c1abc1cb7cd7eb0c588e0cd6ee49f78e42daba73afbfd2fce8e",
+      "gzip_sha256": "6652e829beb58830a3837e2c89c0108b228f83eed3e01e613baf98f26b3a1baf",
+      "bytes": 421
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/task.snapshot.json",
+      "archive": "attempts/weights-a01/task.snapshot.json.gz",
+      "sha256": "a9ad3b1c39446fff5e438d4045d44c90985f436e847cbbeb7fea3e7ca3d4bbdb",
+      "gzip_sha256": "c875993ab5419751898999660588b5817ea8500fe48b548ae2258925c5837b5b",
+      "bytes": 5718
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights-a01/worker-result.json",
+      "archive": "attempts/weights-a01/worker-result.json.gz",
+      "sha256": "c65b4066d04bafc20323240bdc9cd7bf6d15052975b498c96efb6ace5483675f",
+      "gzip_sha256": "b3466d8fea1072ddba4114e124dbc07d186702f2dc7efc0557a2f22fb3641f7b",
+      "bytes": 1130
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights.preflight.lean",
+      "archive": "attempts/weights.preflight.lean.gz",
+      "sha256": "dbc4c7faed238f30b5ab23075a1dac9b701205b43996928fe32a096065838bff",
+      "gzip_sha256": "879e1409ab1c7ca3d51eb0d8d49c0733db4fb7be9407aecbea9303b201e81aab",
+      "bytes": 1429
+    },
+    {
+      "source": "harness/v2/state/local-core-tensor-transport-20260930/weights.preflight.log",
+      "archive": "attempts/weights.preflight.log.gz",
+      "sha256": "ec570d70264a23cc2baafe8ea2dd4cedd4e39e2cd590cc832d316afc68f3b09d",
+      "gzip_sha256": "c89f29c7f9892eabd663bc2276904ceeaf793c6552bd21a4c9dd49a4e809f377",
+      "bytes": 48
+    },
+    {
+      "source": "harness/v2/state/verification/latest.json",
+      "archive": "checkpoint/latest.json.gz",
+      "sha256": "e2d91fdf70885bf8b37e5a4da1d39d468a9b12f25700ec32e1c3f9c0ebca5dcf",
+      "gzip_sha256": "4ec09295e711cc0cd445ef54cb6ca387f3d30a1cd3f064e72510217bb6905b70",
+      "bytes": 4937456
+    },
+    {
+      "source": "CURRENT_STATUS.md",
+      "archive": "checkpoint/CURRENT_STATUS.md.gz",
+      "sha256": "f65bfdc9d07279277cbc63a286fa29897641f1f45abc2260276531b02f053b1f",
+      "gzip_sha256": "a30155ed55f9a79f57915acdbf9c82dbe0b9ceb86f10bdacc754b12843357b0f",
+      "bytes": 71706
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/axiom.out",
+      "archive": "checkpoint/axiom.out.gz",
+      "sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "gzip_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73",
+      "bytes": 13558
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/axiom.status",
+      "archive": "checkpoint/axiom.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/axiom.timing.json",
+      "archive": "checkpoint/axiom.timing.json.gz",
+      "sha256": "2e132003818ab82a39993e49cc5ea42f947d6719a237799b9f2248199987bf6f",
+      "gzip_sha256": "25be4df8207ecfb3d48b29da62b198b5047daed2a487998ac8c8bf047c071e01",
+      "bytes": 225
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/build.out",
+      "archive": "checkpoint/build.out.gz",
+      "sha256": "9513adef30bc99ece10f1bf377232e0a9c65baffbbf8d0ae45eedf5b7934c616",
+      "gzip_sha256": "fad2dbb53ae548dac0d292b3d429fe6eda3417c41b5e148cff518951851b6176",
+      "bytes": 829866
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/build.status",
+      "archive": "checkpoint/build.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/build.timing.json",
+      "archive": "checkpoint/build.timing.json.gz",
+      "sha256": "0318308384c63a2aba8017d0356f9937c9dcf3eca10e31bf974b5a5211faa8ad",
+      "gzip_sha256": "fcb7cbd981fc0e7412e12e3685cb53b6cfd1997d3b8a0c176ed4f04f645f851a",
+      "bytes": 209
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/completion.out",
+      "archive": "checkpoint/completion.out.gz",
+      "sha256": "f029273d427a859a66887726b8cfd6e84b2c108c649061bdeb32ddd2cb697ed9",
+      "gzip_sha256": "a671e6bc9a6fd52aa837e5755b20e2d69bb38f1505310c30e3997af2265ed82d",
+      "bytes": 1636684
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/completion.status",
+      "archive": "checkpoint/completion.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/completion.timing.json",
+      "archive": "checkpoint/completion.timing.json.gz",
+      "sha256": "7ddb91bf34835fc6aaf9abfcf3ff5f28a30ed79560265ce6aa0c259d467318ab",
+      "gzip_sha256": "c7d15b47dc6f50d9623092afd9679f68de977d4e897850ff4c2422375fe66da8",
+      "bytes": 414
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/interface.out",
+      "archive": "checkpoint/interface.out.gz",
+      "sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "gzip_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b",
+      "bytes": 25984
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/interface.status",
+      "archive": "checkpoint/interface.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/interface.timing.json",
+      "archive": "checkpoint/interface.timing.json.gz",
+      "sha256": "c159842c8ed15f3e851113d9dc6649f39a7d33b8553312b82bdbb10bc4f75837",
+      "gzip_sha256": "4848c8bb9c4272cda2f1be55ebd45a6c85a9ef2213eb4430e80d46ee81352ce0",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/mathlib.out",
+      "archive": "checkpoint/mathlib.out.gz",
+      "sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "gzip_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592",
+      "bytes": 732
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/mathlib.status",
+      "archive": "checkpoint/mathlib.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/mathlib.timing.json",
+      "archive": "checkpoint/mathlib.timing.json.gz",
+      "sha256": "89c8d1b8661abe617a58958d909452c0d197132294c22d841bf2eafafbd97f1f",
+      "gzip_sha256": "8ab22cef19d91fa359c9cc601717e901fed7cfd13931c97a27fa180a7828dcc7",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/receipt.json",
+      "archive": "checkpoint/receipt.json.gz",
+      "sha256": "e2d91fdf70885bf8b37e5a4da1d39d468a9b12f25700ec32e1c3f9c0ebca5dcf",
+      "gzip_sha256": "4ec09295e711cc0cd445ef54cb6ca387f3d30a1cd3f064e72510217bb6905b70",
+      "bytes": 4937456
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/root_import.out",
+      "archive": "checkpoint/root_import.out.gz",
+      "sha256": "4fc03cea1887d3cb1bd64b919ad064f65a762dde6c84e62bec75557a65d69d88",
+      "gzip_sha256": "c6ff8a0bc2665227996144a3040d166cc84913c83adb32429b5bdb9d77850534",
+      "bytes": 91507
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/root_import.status",
+      "archive": "checkpoint/root_import.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/root_import.timing.json",
+      "archive": "checkpoint/root_import.timing.json.gz",
+      "sha256": "60ca78b4c45982c3acb7198ccd51a50a84d7f699c590c4926d8745c36208bf7a",
+      "gzip_sha256": "4cbf95fa92cd039fca74544d0d361d1175f88ab9008568b4b921fd8ed846cc7c",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/semantic.out",
+      "archive": "checkpoint/semantic.out.gz",
+      "sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "gzip_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621",
+      "bytes": 14744
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/semantic.status",
+      "archive": "checkpoint/semantic.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/semantic.timing.json",
+      "archive": "checkpoint/semantic.timing.json.gz",
+      "sha256": "ab3cdcacd58dcca02c8d3fd0bb7fcaeeaf1cd6ad7c785a7ee25aa87b0e3b4c39",
+      "gzip_sha256": "286e2598711bd5433a50dc0a81c0a0a2611eab2cd426f6d35708995b3762382d",
+      "bytes": 239
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/shape.out",
+      "archive": "checkpoint/shape.out.gz",
+      "sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "gzip_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249",
+      "bytes": 91129
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/shape.status",
+      "archive": "checkpoint/shape.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/shape.timing.json",
+      "archive": "checkpoint/shape.timing.json.gz",
+      "sha256": "861e917f212fee7113a200c24220a05b0e422bddf0dd853ecdb271f42c11a8c5",
+      "gzip_sha256": "fc86844abc4edd7cd53251b17aec0590bbee915e2105b21149064eefb38d48f0",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/source-before.json",
+      "archive": "checkpoint/source-before.json.gz",
+      "sha256": "5f3300e552c64c3a38a960803fa8485f0032a202ea94043d9eabea3f66dfd3c2",
+      "gzip_sha256": "72d4442ee0c8c8ccbab21e51462f3ee329e815c4fb7a0d7b8a942374689a190a",
+      "bytes": 4703615
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/status.md",
+      "archive": "checkpoint/status.md.gz",
+      "sha256": "f65bfdc9d07279277cbc63a286fa29897641f1f45abc2260276531b02f053b1f",
+      "gzip_sha256": "a30155ed55f9a79f57915acdbf9c82dbe0b9ceb86f10bdacc754b12843357b0f",
+      "bytes": 71706
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/theorem.out",
+      "archive": "checkpoint/theorem.out.gz",
+      "sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "gzip_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166",
+      "bytes": 5523
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/theorem.status",
+      "archive": "checkpoint/theorem.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075709Z-88ca0b24bb3b415a930cd3af20dcebaf/theorem.timing.json",
+      "archive": "checkpoint/theorem.timing.json.gz",
+      "sha256": "9fea4f287ba62905436c3a0931594a368170521cd556d87d8a4ecd944fd62c71",
+      "gzip_sha256": "2544193424bf175576c9cf86895d4569d1bc9087b91c8646066788c0681b7108",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/axiom.out",
+      "archive": "failed-checkpoint/axiom.out.gz",
+      "sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "gzip_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73",
+      "bytes": 13558
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/axiom.status",
+      "archive": "failed-checkpoint/axiom.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/axiom.timing.json",
+      "archive": "failed-checkpoint/axiom.timing.json.gz",
+      "sha256": "e6ffd4b3a2d4ddd229c66f647ed0ee820a1e3ffa0784b3b7bece9a9a5f846ae2",
+      "gzip_sha256": "df8947cb1aefecccf359a344e7813c7cef2bf779c43abe27c040a932a10161cc",
+      "bytes": 225
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/build.out",
+      "archive": "failed-checkpoint/build.out.gz",
+      "sha256": "e19c5308a95e576da96217796b1f79545d0f755c6af64337cf9a0a199df9bec4",
+      "gzip_sha256": "31ffc009b44278cb3387b14d7ad378c7c85fc9e1cf8feb0441eb18a66fe977bf",
+      "bytes": 829866
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/build.status",
+      "archive": "failed-checkpoint/build.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/build.timing.json",
+      "archive": "failed-checkpoint/build.timing.json.gz",
+      "sha256": "a9698af3b2057424e0fb2e764f17708b552eb7fc3ce20233255836f073b6166a",
+      "gzip_sha256": "01b4ea8a701cb72756e70b15b576e796a7665c32dafabe222364553ff0840ae2",
+      "bytes": 209
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/completion.out",
+      "archive": "failed-checkpoint/completion.out.gz",
+      "sha256": "134c42af55f77773e70b2c22ce5e513e9cc67c4cafe4b0d984e4f342dc66eeb6",
+      "gzip_sha256": "5e85a8d620d33d0c5215a3b5b42cb7874d79daeb30eec5e3b85070fbb1641e28",
+      "bytes": 539
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/completion.status",
+      "archive": "failed-checkpoint/completion.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/completion.timing.json",
+      "archive": "failed-checkpoint/completion.timing.json.gz",
+      "sha256": "0ab13d8ba899057bd3abe9cff9ac006bd412bca2add451f1f12eb369425587da",
+      "gzip_sha256": "1f0a0e4ea557f06fed0df7b3c14acffce3ecb175561298bdf88b58149c2c6884",
+      "bytes": 411
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/interface.out",
+      "archive": "failed-checkpoint/interface.out.gz",
+      "sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "gzip_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b",
+      "bytes": 25984
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/interface.status",
+      "archive": "failed-checkpoint/interface.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/interface.timing.json",
+      "archive": "failed-checkpoint/interface.timing.json.gz",
+      "sha256": "b2b8c048159f8a8893ee62e55be1065ee93c1028e08e2b13c201cfc1bf7900b1",
+      "gzip_sha256": "8540af803b714a326cc726fbcbadcf8404ad669ffc4ec5d2cdeef1f39d8fa4ab",
+      "bytes": 233
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/mathlib.out",
+      "archive": "failed-checkpoint/mathlib.out.gz",
+      "sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "gzip_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592",
+      "bytes": 732
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/mathlib.status",
+      "archive": "failed-checkpoint/mathlib.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/mathlib.timing.json",
+      "archive": "failed-checkpoint/mathlib.timing.json.gz",
+      "sha256": "6a34740ab9e6ab7ae3920925af71ccda75bd1894c42f475260aac1f30e6122e6",
+      "gzip_sha256": "b0ad030a5bbaf51149073237e14fb2f2c7d612a3d70e95db66dfc08d66b3d374",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/receipt.json",
+      "archive": "failed-checkpoint/receipt.json.gz",
+      "sha256": "e75b496968e32f3c3fa5df681f83f9143c2ba440045df294739cc628809be151",
+      "gzip_sha256": "9a9c34b933806047dc89405ff02aa8dd519dfe2cd7d67a97388845564f2433a7",
+      "bytes": 4937453
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/root_import.out",
+      "archive": "failed-checkpoint/root_import.out.gz",
+      "sha256": "4b12b0c5549e4a4a524b93a3415c56629c7b47182cfa40a846f1c3bcab72cde1",
+      "gzip_sha256": "51247e58944e2e08ef6929a154647979b897850b6ede080ff834935d071358d6",
+      "bytes": 91539
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/root_import.status",
+      "archive": "failed-checkpoint/root_import.status.gz",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/root_import.timing.json",
+      "archive": "failed-checkpoint/root_import.timing.json.gz",
+      "sha256": "0fcbbf1a379d1208a66d4efc0ab999e12bd3bbc1c73126d7e5d8f7c16bda1c77",
+      "gzip_sha256": "156f0831db42011e32729833a79e6f43736e55acc76ca5e85da0ecb26e3faf4a",
+      "bytes": 237
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/semantic.out",
+      "archive": "failed-checkpoint/semantic.out.gz",
+      "sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "gzip_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621",
+      "bytes": 14744
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/semantic.status",
+      "archive": "failed-checkpoint/semantic.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/semantic.timing.json",
+      "archive": "failed-checkpoint/semantic.timing.json.gz",
+      "sha256": "6d5c155cefa4cc6485ba218a834c2baf0e4828d7330c7f56377451c503a045a7",
+      "gzip_sha256": "9fe312d6b5d443a48fc4784a3ca5a7953f68baf1038f8b192723bdc0c6e9c8b2",
+      "bytes": 239
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/shape.out",
+      "archive": "failed-checkpoint/shape.out.gz",
+      "sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "gzip_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249",
+      "bytes": 91129
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/shape.status",
+      "archive": "failed-checkpoint/shape.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/shape.timing.json",
+      "archive": "failed-checkpoint/shape.timing.json.gz",
+      "sha256": "daf53c5a86f609459e9dd3a4d092fa946d4b12ba9ad79f3719354b928b45d220",
+      "gzip_sha256": "569ad43ae21d3c089314d96eb6f5c38cf295741767ef9f4883e8138ac102431e",
+      "bytes": 232
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/source-before.json",
+      "archive": "failed-checkpoint/source-before.json.gz",
+      "sha256": "3a265e7abe9d613ee66af0b85a235cc3401b59106f6c067f7598b4d3ee938702",
+      "gzip_sha256": "844fdecebe774da2e45c2b635c3b185790fca18d636e5f814c2a83e2513d9900",
+      "bytes": 4703615
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/status.md",
+      "archive": "failed-checkpoint/status.md.gz",
+      "sha256": "066b8a478a4644284c75ef42df5b3fe66881a65688be2b729df4f544c8f81c9c",
+      "gzip_sha256": "fb42dd87e3ae8cd44ab6809b9f38af715d2c71a9cadae036ad3670917e9e0873",
+      "bytes": 66450
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/theorem.out",
+      "archive": "failed-checkpoint/theorem.out.gz",
+      "sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "gzip_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166",
+      "bytes": 5523
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/theorem.status",
+      "archive": "failed-checkpoint/theorem.status.gz",
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae",
+      "bytes": 2
+    },
+    {
+      "source": "harness/v2/state/verification/checkpoints/20260930T075151Z-f7c3ced5adc54075841d6e49f1071b68/theorem.timing.json",
+      "archive": "failed-checkpoint/theorem.timing.json.gz",
+      "sha256": "c2b4e37dd1cbfa3518997068593a1ac31ffc1bc431ef42d1ce262fcaaf951be8",
+      "gzip_sha256": "7850ae526c64461a78a3d1e79087d30c6b15eba6baf4d517be85d747a2dcfc39",
+      "bytes": 237
+    }
+  ]
+}
