@@ -1,5 +1,40 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed bounded tensor Graph transport
+
+The complete goal remains active. Both universal cores remain open:
+compatible smoothability and universal Hamilton/positive-Einstein existence.
+The kernel probe confirms their exact quantified types and that the reserved
+Poincare.poincare_conjecture is absent. No target or core premise was weakened.
+
+BufferedTensorGraphTransport.exists_destination_entry_transport constructs
+actual bounded nine-source-entry to one-destination-entry Graph operators
+from the actual atlas/gate/source buffer/chart map. Its bound precedes all
+0<T<=1, and it retains the original Pi/Graph norms and genuine derivative
+certificates. The actual destination-only coefficient is smooth compact;
+all-point raw values, zero off coordSupport and source-indicated true chart
+values are proved. Existing uniform cutoff estimates and nonlinear Graph
+pullback are consumed directly. An application check constructs the initial
+metric, local solver atlas/buffers and gated maps before applying this theorem;
+no unconstructed metric/operator/bound/flow/recognition package is assumed.
+
+FiniteAtlasBufferedTensorValue proves the actual buffered finite sum's weighted
+transition law and symmetry, using the existing tensor cocycle. This removes
+the algebraic obstacle to X_M membership for the constructed Graph sum. The
+actual global P codomain restriction, global L/R for full DeTurck including
+lower terms, signed id-R identity and contraction are still unproved. Matched
+initial jets, nonlinear inversion, ordinary joint C3, physical Ricci flow and
+later continuation/surgery/favorable metric/limit existence remain open.
+
+First action: freeze and construct actual global P:Y_M A alpha T ->L X_M A
+alpha T from the SAME local P_j and newly constructed B_ij, with a positive
+lifespan and bound chosen before T. Sum B_ij(P_j f_j), prove tensor-submodule
+membership using the accepted support/value/finite compatibility lemmas, and
+restrict the actual CLM to X_M. Y_M symmetry and the same scalar P_j supply
+source symmetry. Retain xi until its removal follows from actual supp(psi)
+and xi=1 there. Read harness/reports/core-tensor-transport-20260930.md for exact
+remaining obligations and preserved evidence.
+
 ## 2026-09-29 Constructed nonlinear derivative-graph transport
 
 The complete goal remains active. Both universal core existence obligations
