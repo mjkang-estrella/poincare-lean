@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-buffered-atlas",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "863883708cc3a621cf334091c8001ce51ddfc08b",
   "objective": {
     "title": "buffered-atlas for constructed Ricci-flow geometry",
@@ -139,5 +139,6 @@
       "report_sha256": "180b6b6ac905e1ac63f21b45694c3ae70881ef5f9b0808f7baab347e93a03a82",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "67744751a3a23828d2318dc430985a6b6364a020"
 }

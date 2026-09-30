@@ -16,6 +16,10 @@ import Poincare.ModelLaplacian
 import Poincare.ModelLaplacianRootAliases
 import Poincare.Statement
 import Poincare.Global.BufferedFrozenParabolicSolver
+import Poincare.Global.CenteredCoordinateNeighborhoodShrinking
+import Poincare.Global.MetricCoefficientNeighborhoods
+import Poincare.Global.RefinedFiniteAtlasExistence
+import Poincare.Global.MetricAdaptedBufferedAtlas
 import Poincare.Global.CartanSuppliedBufferedPairAgreement
 import Poincare.Global.CartanSuppliedDifferentialSuccessor
 import Poincare.Global.CartanSuppliedDifferentialTransfer

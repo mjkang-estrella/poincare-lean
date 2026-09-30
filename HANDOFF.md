@@ -1,5 +1,34 @@
 # Handoff Snapshot
 
+## 2026-09-29 Constructed metric-adapted solver geometry
+
+The core-first strategy remains unchanged. Both
+`ExistsSmoothabilitySmoothManifoldStatement` and
+`UniversalHamiltonConvergenceStatement` are still open. The initial metric
+witness is reused; no curvature, sphere recognition or supplied atlas is used.
+
+`MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas` now constructs
+an actual finite atlas, smooth subordinate partition and nested compact
+coordinate buffers from g0 and arbitrary positive anchor tolerances. Outer
+supports stay in the real chart target, the fixed-anchor cutoff-one germ locus
+and small inverse-metric oscillation patches. All helpers and this exact
+constructor passed independent root source/frozen type and permitted-axiom
+gates. The failed attempt using an extra connectedness premise is preserved;
+the final inverse-entry continuity proof is genuinely local.
+
+The next actual consumer is
+`BufferedFrozenParabolicSolver.exists_single_chart_parametrix`. First choose
+its own positive tolerance at each freezing point, then use this atlas to
+construct local operator families and a common positive lifespan. Global
+tensor L/P/R assembly, nonlinear inversion and ordinary joint C3 at initial
+time zero remain unproved. Do not use the graph's zero extension or supplied
+plain-BUC Lipschitz packages to fill these gaps.
+
+First action: construct the metric-adapted local parametrix family from g0,
+retaining its true support-restricted residual and bounds. Read
+`harness/reports/core-buffered-atlas-20260930.md` for exact core obligations,
+consumer types, tolerance/sign conventions and preserved proof evidence.
+
 ## 2026-09-29 Core input existence strategy
 
 The user retained the complete Poincare goal and changed execution priority to
