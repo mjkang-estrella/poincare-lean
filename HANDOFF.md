@@ -1,5 +1,36 @@
 # Handoff Snapshot
 
+## 2026-09-30 C2 covariance, symmetry and bounded forcing transport
+
+The full Poincare goal remains active. Compatible smoothability and universal
+Hamilton convergence remain open; no core/final target, topology or norm was
+weakened. Root independently accepted the exact scoped worker gates.
+
+DeTurckChartLiftOverlapJets derives true transition C3 and actual lift/pullback
+neighborhood/full2jet identities. DeTurckC2Covariance now proves full DQ tensor
+covariance for arbitrary symmetric C2 germs using constructed compact smooth
+exact jets and genuine metric variations. No density or q=F germ assumption.
+DeTurckDifferentialSymmetry proves BOTH full DQ and combined zero/first-order
+forcing symmetry, retaining inverse variation against D2g0. Consumers are
+original Graph tensor carriers and the symmetric global residual codomain.
+
+BufferedTensorValueTransport constructs actual bounded nine-input Y rows,
+with common bounds before ALL real T and destination weights once. Source
+weights are already present. Actual metric-adapted atlas/buffers/gates/maps
+supply these inputs; local error R_i-K_i*S_i will use the constructed rows.
+
+First action: freeze and construct the bounded UNWEIGHTED Graph reconstruction
+row with theta_ij*psi_i*xi_j(F_ij)*DF slots, where actual psi_i is one near
+coordSupport_i. Derive germ agreement on coordSupport_i from actual buffers
+and gates, without supplying a coordinate package. Then assemble actual
+L=dt-DQ on reconstructed tensors, destination-localize, and prove Y_M range
+and LPglobal=id-Rglobal. Local residuals are id+R_i, so Rglobal is the negative
+of the transported full error. Do not apply L_i to stored chi_i*h_i directly.
+See harness/reports/core-deturck-c2-covariance-20260930.md for exact obligations.
+Global L/R/contraction, nonlinear inversion/ordinary initial regularity,
+physical flow and universal continuation/surgery/favorable-flow/energy/limit
+production remain open. All failed work and historical worktrees are retained.
+
 ## 2026-09-30 Constructed full linearized covariance
 
 The selected core remains UniversalHamiltonConvergenceStatement. Neither

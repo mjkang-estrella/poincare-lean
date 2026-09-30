@@ -1032,3 +1032,11 @@ import Poincare.Global.DeTurckPullbackTwoJet
 import Poincare.Global.DeTurckActualEvolutionDerivative
 
 import Poincare.Global.DeTurckConstructedCovariance
+
+import Poincare.Global.DeTurckChartLiftOverlapJets
+
+import Poincare.Global.DeTurckC2Covariance
+
+import Poincare.Global.BufferedTensorValueTransport
+
+import Poincare.Global.DeTurckDifferentialSymmetry
