@@ -1,0 +1,181 @@
+{
+  "source_head": "a2e17d41dc9ef166d6bd4ded73cb58514f71fac8",
+  "checkpoint": "20260930T043801Z-e1d7f801cbbf4045b238ec0afceffc5c",
+  "files": [
+    {
+      "path": "checkpoint/axiom.out.gz",
+      "source_sha256": "e128d953a11116511dbf04d6f1c983db45851cc4516cf298d2fb6e4a9f6161dc",
+      "gzip_sha256": "fe03e84c1b121d02e532279d01d11d2441225b1540ec0c7f04bea8e011688f73"
+    },
+    {
+      "path": "checkpoint/axiom.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/axiom.timing.json.gz",
+      "source_sha256": "f40a473b115c7fa3cd21c38476cbe98bb827c9d0ffc2f2a297142bb33f2abc82",
+      "gzip_sha256": "3d0942aad94c953c0fdf838713d8ab9051cc3ca281714acccbf4837e2f063194"
+    },
+    {
+      "path": "checkpoint/build.out.gz",
+      "source_sha256": "48ffc1730c6cdab3326b3ec9684db4cfdc6453acf221041d190837d74a2bd325",
+      "gzip_sha256": "561d73d9c7982b14a1ef979481dd9e844c05b07fef2d71ae2dc7796062a69af2"
+    },
+    {
+      "path": "checkpoint/build.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/build.timing.json.gz",
+      "source_sha256": "153b0ae5591bd44dcca4ae2f8453852810219483b7e2fe73ba2fe3f1e05f01cd",
+      "gzip_sha256": "0d44c39cf2cd2d478456d927f17e9e79b33ec3723d0151ff6e25fe5602fbef9b"
+    },
+    {
+      "path": "checkpoint/completion.out.gz",
+      "source_sha256": "f029273d427a859a66887726b8cfd6e84b2c108c649061bdeb32ddd2cb697ed9",
+      "gzip_sha256": "a671e6bc9a6fd52aa837e5755b20e2d69bb38f1505310c30e3997af2265ed82d"
+    },
+    {
+      "path": "checkpoint/completion.status.gz",
+      "source_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "gzip_sha256": "c28cc69d141393e44a931229323624ef7b8c5bde3ee047ca9b87332daef23c82"
+    },
+    {
+      "path": "checkpoint/completion.timing.json.gz",
+      "source_sha256": "d924025acaaf7a35c9e1293f5862c5125312bd57c8f89d19d60d11bc199394e1",
+      "gzip_sha256": "a9c47ff4fdf5f8f24e598703571f1ff105a7f759b3ec9b5ae8e2ca50437fe474"
+    },
+    {
+      "path": "checkpoint/interface.out.gz",
+      "source_sha256": "959f2c63936903df1369deb5358b5a84ca43b3f5feb23b099f31b11ae83aaacf",
+      "gzip_sha256": "3d3d281bd306bf82a401bb898e97d921b937c3da40b57c325198d96acf22347b"
+    },
+    {
+      "path": "checkpoint/interface.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/interface.timing.json.gz",
+      "source_sha256": "cb4bb3802f164ac2f6ae588d0341277b724be8715e78f958c147d8630927f16a",
+      "gzip_sha256": "110a8a61c4c1a60140d34cd75217dc2a9de787238aa372df78ddfbec7c4c0fc1"
+    },
+    {
+      "path": "checkpoint/mathlib.out.gz",
+      "source_sha256": "d155a5a27aca7a15f9de1a68d7ae3a7633b378bfbafc7af2a469d5b4bbb37421",
+      "gzip_sha256": "df18fabbc54d99fb09d5e6d71e413b2cf0ad3c375740d8172f411048160c0592"
+    },
+    {
+      "path": "checkpoint/mathlib.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/mathlib.timing.json.gz",
+      "source_sha256": "7521ba19549dd4675c09fbc845fc961d034c9f210231c982288b6faaea925440",
+      "gzip_sha256": "657472f858694a29eb2e936d5d70643a0708961612f37e4d2f94eb9eb2cbbe1c"
+    },
+    {
+      "path": "checkpoint/receipt.json.gz",
+      "source_sha256": "a986b2f92964a6ab2a404c016acf5439f8630bb9f24a137e7571c03f7038cf9a",
+      "gzip_sha256": "3259b2780f1b4416cc7d1c667a53698874e88b2312e9f2e71cc109d77855f751"
+    },
+    {
+      "path": "checkpoint/root_import.out.gz",
+      "source_sha256": "1e5443dbec2393ff9271f815cf6a8f6a3dc552e236d2a9025755508958021b86",
+      "gzip_sha256": "750eb91c221f03fdc42e5b55f6a0e158b73317cd1773c00b9d70a7e7f981aec0"
+    },
+    {
+      "path": "checkpoint/root_import.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/root_import.timing.json.gz",
+      "source_sha256": "929fc3174445674674e7208d729b16060e9aca6eb7ce9545a30a7128130ecd3d",
+      "gzip_sha256": "777f6a567e37bb01247d1028237a6ff7ad63ed20967ac00d694200855f89f92e"
+    },
+    {
+      "path": "checkpoint/semantic.out.gz",
+      "source_sha256": "ae7260fecd858a5bd5320b09e2d1bdb91c97283f9a05d3da2f3910f4fb2c061a",
+      "gzip_sha256": "4e4f36ef2df0a50b91a853b2291fa7bfa54c2389ac7b3b5389306c97a9411621"
+    },
+    {
+      "path": "checkpoint/semantic.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/semantic.timing.json.gz",
+      "source_sha256": "1002e259a3d744c704fc648b8a74476e7eb855b01b92b63512d1dfbf589530fa",
+      "gzip_sha256": "b3de1463f947ecac78f23afbfc68d3ef3a4c46dfb2a1c1a4dfc2c2e55e1fe8c6"
+    },
+    {
+      "path": "checkpoint/shape.out.gz",
+      "source_sha256": "1748d750c37c6f835468adfc1b93d321186bf6025b7066446d4b8f7eb8af0143",
+      "gzip_sha256": "0105d4dc97ee52be92cf82ae16a4f54f1c16e4819b8fff11eb0de1632203b249"
+    },
+    {
+      "path": "checkpoint/shape.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/shape.timing.json.gz",
+      "source_sha256": "768a7ec4774ef55da419b05bd54b6ccf98642d9fc264c65ea7d9af813ee5774e",
+      "gzip_sha256": "b6ed42638b12ef88deeadca24b08e63c1f2d2af5be1cae7bf74148ffaeb720f4"
+    },
+    {
+      "path": "checkpoint/source-before.json.gz",
+      "source_sha256": "2221390862a65ddaf801eafbb9ef4057459318189e32c1f93ceda58d719cc87f",
+      "gzip_sha256": "f4fb7ecec0a79141e720a595ad0409c862fc9947d5f748681a004cc4dbc64b00"
+    },
+    {
+      "path": "checkpoint/status.md.gz",
+      "source_sha256": "a19c91ed2c13be180f0fa42038a685a2414788b0fc21a5a21cf13fb9668c7f89",
+      "gzip_sha256": "3f64496baab8db18137b04c2b8203b47f85d9eed74eeb57c4384293b2e76fad2"
+    },
+    {
+      "path": "checkpoint/theorem.out.gz",
+      "source_sha256": "da534052fd506003512e198ae0ace93ac8df06438d26a2e2675375381098054d",
+      "gzip_sha256": "a2369d5de2b728471d10aaf2f20048caf472e924bd688099b8ef29ce4aaf2166"
+    },
+    {
+      "path": "checkpoint/theorem.status.gz",
+      "source_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "gzip_sha256": "89ed3b723e0e40d8957a2df55fcb04d57b6d95fa665c5fe67b098df7f29694ae"
+    },
+    {
+      "path": "checkpoint/theorem.timing.json.gz",
+      "source_sha256": "6f73a5a3a6d21e260f483005a0dbe193979d57ff5ab93bdf7abdca983c3636bc",
+      "gzip_sha256": "27222bbcf90874c4bde788a60cf5f252a9a336b30977f84ff78bfd5c00a81e2c"
+    },
+    {
+      "path": "root/root-source.log.gz",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzip_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "root/IntegrationFamilyAxioms.lean.gz",
+      "source_sha256": "24cff55fb172b5efd359d149190be61058ba6c5079a86bed5a1fca7b6e0841b4",
+      "gzip_sha256": "b71a00e8605ae23020eebef6d8bda6687837c70f9d13e71977d6fb8e48c7d461"
+    },
+    {
+      "path": "root/integration-family-axioms.log.gz",
+      "source_sha256": "236a49195617a6ba23b3ae93cc7cef2d94a978af67d6ebd6778f1b146bdee9ec",
+      "gzip_sha256": "70eb0999ddd65f4be6511f2d6a1f230cc5c6b7f398fefea3775c67d7b6df2955"
+    },
+    {
+      "path": "root/integration-status.log.gz",
+      "source_sha256": "e249446a3eefefa4f9938c6855ad81cb4d481d4179391e7a6dc64195b9f189f4",
+      "gzip_sha256": "fb86abb0e278835f0d57c804bf8d6fe3de84d37e021a4c2ca55c56e3e1791df5"
+    },
+    {
+      "path": "root/integration-family-build.log.gz",
+      "source_sha256": "61fb99bc8798ee004bf808ac33eca5bc784d99ea668d0345b7ae58f1c39cc17a",
+      "gzip_sha256": "95c8c8e7affb83d99a124b68ac46c3ee09cf699cfe25bfd719656ba26ef60559"
+    }
+  ]
+}

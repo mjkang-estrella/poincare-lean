@@ -163,3 +163,37 @@ internal-inclusive axiom scans allow only propext, Classical.choice and
 Quot.sound. All failed source/compiler evidence is preserved in the portable
 gzip evidence directories. These are local Codex orchestrator helpers, not
 registered Pi/Leanstral runtime Jobs. No model service or remote harness changed.
+
+The integration checkpoint at `a2e17d41dc9ef166d6bd4ded73cb58514f71fac8`
+passed fresh root source compilation, full Lake build, interface, mathlib-gap,
+shape, theorem-contract, semantic, root-import and axiom audits. The independent
+root internal scan of the corrected constructor passed with the three allowed
+foundational axioms. Completion failed only because the reserved final
+declaration is absent. Full outputs and receipt are preserved under the
+integration evidence manifest. Both core assumptions remain open.
+
+## Next concrete spatial construction
+
+Read-only scoping identified an actual compact-overlap construction for the
+next bounded transport proof. For destination i and source j, form
+K_ij = chart_i '' (tsupport(partition_i) intersect chart_j.symm '' tsupport(xi_j)).
+The verified outer buffers keep xi_j support in the true source chart target;
+partition_i support is in the destination source. The next proof must construct
+a smooth compact overlap gate theta_ij supported inside the true transition
+domain and both cutoff-one germ loci, with theta=1 near K. It must then
+construct a global smooth compact coordinate map F_ij agreeing germwise with
+the actual chart change on all tsupport(theta), plus an actual Lipschitz bound.
+Agreement throughout that gate prevents a global extension from creating
+spurious source values. Smooth infinity supplies the higher derivatives needed
+by Jacobian-weight jet norms. These new witnesses are not yet constructed.
+
+The existing contDiffOn_ext_coord_change, buffered-cutoff and compact smooth
+Lipschitz APIs provide a direct route: choose theta, then another cutoff eta
+which is one near tsupport(theta), and extend eta times the true chart change
+by zero. The next operator B transports source graph entries to one destination
+chart, multiplies only the destination partition and the actual source outer
+cutoff, and proves a T-uniform Graph norm bound. On P_j outputs xi_j equals one,
+so the construction recovers the required tensor push without another source
+partition. Graph.ext_of_u, exists_cutoff_operator and the verified Jacobian
+cocycle can then establish the actual finite assembly. The nonlinear graph
+composition and its bound remain open.
