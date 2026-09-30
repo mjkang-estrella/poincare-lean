@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-buffered-atlas",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "b95075ed949d5e5cd51ed66908bc942a94a4ae37",
+  "objective": {
+    "title": "buffered-atlas for constructed Ricci-flow geometry",
+    "statement": "Core assumption addressed: universal Hamilton input existence through actual general Ricci-flow construction. Construct the exact reviewed geometric output without any supplied atlas, curvature, flow or operator existence premise. Subsequent proof: BufferedFrozenParabolicSolver.exists_single_chart_parametrix consumes these actual patches after its own positive tolerances are selected; global L/P/R and regularRicciFlowGoal remain later constructions.",
+    "deliverables": [
+      "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/MetricAdaptedBufferedAtlas.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "Poincare/Global/HausdorffInverseChartGramContinuity.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-buffered-atlas-20260930/buffered-atlas.readback.json",
+      "harness/v2/contracts/core-buffered-atlas-20260930/construction-context.md"
+    ],
+    "symbols": [
+      "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas"
+    ],
+    "depends_on": [
+      "core-input-20260930-refined-atlas",
+      "core-input-20260930-coefficient-neighborhoods"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/MetricAdaptedBufferedAtlas.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/MetricAdaptedBufferedAtlas.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-buffered-atlas-20260930/buffered-atlas.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricAdaptedBufferedAtlas"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (ε : M → ℝ), (∀ p, 0 < ε p) → ∃ A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M, ∃ ψ ξ : Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ, ∀ k, ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ψ k) ∧ HasCompactSupport (ψ k) ∧ (∀ z ∈ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A k, Filter.Eventually (fun y ↦ ψ k y = 1) (nhds z)) ∧ (∀ z, ψ k z ∈ Set.Icc 0 1) ∧ ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ξ k) ∧ HasCompactSupport (ξ k) ∧ (∀ z, ξ k z ∈ Set.Icc 0 1) ∧ (∀ z ∈ tsupport (ψ k), ξ k z = 1) ∧ tsupport (ξ k) ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).target ∧ (∀ z ∈ tsupport (ξ k), Filter.Eventually (fun y ↦ Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds (z))) ∧ (∀ z ∈ tsupport (ξ k), ∀ a b : Fin 3, |(Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor k) (z))⁻¹ a b - (Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor k) (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (A.cover.anchor k) (A.cover.anchor k)))⁻¹ a b| ≤ ε (A.cover.anchor k))",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "buffered-atlas-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "630438246c81d196a00388d04eb3455e8ade267c3cea14fa0cc38ac1d2f8a050",
+      "report_path": "harness/v2/contracts/core-buffered-atlas-20260930/buffered-atlas.readback.json",
+      "report_sha256": "180b6b6ac905e1ac63f21b45694c3ae70881ef5f9b0808f7baab347e93a03a82",
+      "verdict": "approved"
+    }
+  }
+}

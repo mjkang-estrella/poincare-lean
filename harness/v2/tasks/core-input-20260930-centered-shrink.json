@@ -1,0 +1,123 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-centered-shrink",
+  "revision": 1,
+  "status": "active",
+  "base_commit": "b95075ed949d5e5cd51ed66908bc942a94a4ae37",
+  "objective": {
+    "title": "centered-shrink for constructed Ricci-flow geometry",
+    "statement": "Core assumption addressed: universal Hamilton input existence through actual general Ricci-flow construction. Construct the exact reviewed geometric output without any supplied atlas, curvature, flow or operator existence premise. Subsequent proof: RefinedFiniteAtlasExistence.exists_refined_atlasData constructs the actual finite atlas from these centered shrinks.",
+    "deliverables": [
+      "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/CenteredCoordinateNeighborhoodShrinking.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-buffered-atlas-20260930/centered-shrink.readback.json",
+      "harness/v2/contracts/core-buffered-atlas-20260930/construction-context.md"
+    ],
+    "symbols": [
+      "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/CenteredCoordinateNeighborhoodShrinking.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/CenteredCoordinateNeighborhoodShrinking.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-buffered-atlas-20260930/centered-shrink.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.CenteredCoordinateNeighborhoodShrinking"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ (p : M) (V : Set (Poincare.ClosedSmoothModel 3)), IsOpen V → extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p) p ∈ V → ∃ U : Set M, IsOpen U ∧ p ∈ U ∧ closure U ⊆ (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)).source ∧ IsCompact ((extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)) '' closure U) ∧ (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)) '' closure U ⊆ V",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "buffered-atlas-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "0848497cd303eb3378139c2cac37fad917dc1f19b7b64ea815525d2ace0db214",
+      "report_path": "harness/v2/contracts/core-buffered-atlas-20260930/centered-shrink.readback.json",
+      "report_sha256": "95039b027f79e96c48f7c8abd2a0b11e907b39fcc0b116c0784f68e23f87698a",
+      "verdict": "approved"
+    }
+  }
+}
