@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckPullbackTwoJet"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr",
+        "lean_type": "\u2200 (E : Type u) [NormedAddCommGroup E] [NormedSpace \u211d E]\n(h F : E \u2192 (E \u2192L[\u211d] E \u2192L[\u211d] \u211d)) (phi : E \u2192 E) (z : E),\nContDiffAt \u211d 2 h (phi z) \u2192 ContDiffAt \u211d 2 F (phi z) \u2192\nContDiffAt \u211d 3 phi z \u2192\nh (phi z) = F (phi z) \u2192\nfderiv \u211d h (phi z) = fderiv \u211d F (phi z) \u2192\nfderiv \u211d (fderiv \u211d h) (phi z) = fderiv \u211d (fderiv \u211d F) (phi z) \u2192\nlet T := fun (q : E \u2192 (E \u2192L[\u211d] E \u2192L[\u211d] \u211d)) (y : E) =>\n Poincare.pullbackBilinearForm (q (phi y)) (fderiv \u211d phi y)\nT h z = T F z \u2227 fderiv \u211d (T h) z = fderiv \u211d (T F) z \u2227\n fderiv \u211d (fderiv \u211d (T h)) z = fderiv \u211d (fderiv \u211d (T F)) z",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/DeTurckChartIndependentPullback.lean",
+        "sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "covariance-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "509c83826fe603d037631f2ebe161d46fd1cc80707cd407e1320bef1985e2736",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/pullback-jet.readback.json",
+      "report_sha256": "e70bdf0e0513d87b36eafcf0d171bf3867240a5bbe872dedeb2789be03d4124f"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "covariance-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "70ae0ae7e722cec92bfc77cc488ace2a9f4d19c8c149723b7da082da813302d0",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open",
+      "mathematical_statement": "For every pair of universes u,v and types E : Type u, B : Type v, equipped with arbitrary NormedAddCommGroup and NormedSpace over the real numbers, every set V subset E, every proof that V is open, every z : E with z in V, every real epsilon > 0, every family G : real -> E -> B and functions G0,F : E -> B, assume ContDiffOn real 2 G0 V and ContDiffOn real 2 F V, and assume that for every real s with |s| < epsilon and every y in V, G(s,y) = G0(y) + s times F(y). For each s let J(s) = ((G(s,z), D_x(G(s))(z)), D_x(D_x(G(s)))(z)), where D_x is the ordinary Frechet derivative fderiv over the real numbers. Then HasDerivAt J ((F(z), D_x F(z)), D_x(D_x F)(z)) 0 holds: the derivative of this entire spatial two-jet tuple with respect to the real parameter at s=0 is the corresponding two-jet of F. The tuple lies in (B times (E ->L[real] B)) times (E ->L[real] (E ->L[real] B)); continuous linear maps carry their canonical operator norms, and both product layers carry the canonical maximum product norm. The given E and B norms are unchanged. The spatial C2 and open-neighborhood affine identity make the total fderiv expressions actual first and second derivatives at z for |s| < epsilon. No completeness, finite-dimensionality, metric symmetry or positivity, joint smoothness of G, parameter regularity away from zero, flow equation, or nonaffine variation assertion is quantified. There is no circular derivative premise: exact local affine dependence is supplied, and its jet derivative is concluded."
+    }
+  ],
+  "findings": []
+}

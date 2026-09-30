@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckParameterJet"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open",
+        "lean_type": "\u2200 (E : Type u) (B : Type v) [NormedAddCommGroup E] [NormedSpace \u211d E]\n[NormedAddCommGroup B] [NormedSpace \u211d B]\n(V : Set E), IsOpen V \u2192 \u2200 z : E, z \u2208 V \u2192\n\u2200 \u03b5 : \u211d, 0 < \u03b5 \u2192 \u2200 (G : \u211d \u2192 E \u2192 B) (G0 F : E \u2192 B),\nContDiffOn \u211d 2 G0 V \u2192 ContDiffOn \u211d 2 F V \u2192\n(\u2200 s : \u211d, |s| < \u03b5 \u2192 \u2200 y \u2208 V, G s y = G0 y + s \u2022 F y) \u2192\nHasDerivAt\n (fun s => ((G s z, fderiv \u211d (G s) z), fderiv \u211d (fderiv \u211d (G s)) z))\n ((F z, fderiv \u211d F z), fderiv \u211d (fderiv \u211d F) z) 0",
+        "universes": [
+          "u",
+          "v"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      }
+    ],
+    "author": "root-orchestrator"
+  },
+  "snapshot_sha256": "70ae0ae7e722cec92bfc77cc488ace2a9f4d19c8c149723b7da082da813302d0"
+}

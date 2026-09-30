@@ -1,0 +1,148 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-parameter-jet",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "eaffa8b75c0cf7ecaf9654c91bac1d8bdf099b63",
+  "objective": {
+    "title": "Remove actual Hamilton covariance obstacle: parameter-jet",
+    "statement": "Core H; consumer actual geometric DeTurck evolution derivative. Prove complete parameter derivative of value/first/second spatial jets for actual common open-domain affine fields, from C2 base/variation, without supplied derivative package.",
+    "deliverables": [
+      "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckParameterJet.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+      "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+      "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean",
+      "Poincare/Global/DeTurckChartIndependentPullback.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-deturck-covariance-20260930/context.md",
+      "harness/v2/contracts/core-deturck-covariance-20260930/parameter-jet.readback.json",
+      "harness/reports/core-deturck-chartlift-20260930.md",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckParameterJet.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckParameterJet.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-covariance-20260930/parameter-jet.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckParameterJet"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckParameterJet.twoJet_hasDerivAt_of_affine_on_open",
+        "lean_type": "\u2200 (E : Type u) (B : Type v) [NormedAddCommGroup E] [NormedSpace \u211d E]\n[NormedAddCommGroup B] [NormedSpace \u211d B]\n(V : Set E), IsOpen V \u2192 \u2200 z : E, z \u2208 V \u2192\n\u2200 \u03b5 : \u211d, 0 < \u03b5 \u2192 \u2200 (G : \u211d \u2192 E \u2192 B) (G0 F : E \u2192 B),\nContDiffOn \u211d 2 G0 V \u2192 ContDiffOn \u211d 2 F V \u2192\n(\u2200 s : \u211d, |s| < \u03b5 \u2192 \u2200 y \u2208 V, G s y = G0 y + s \u2022 F y) \u2192\nHasDerivAt\n (fun s => ((G s z, fderiv \u211d (G s) z), fderiv \u211d (fderiv \u211d (G s)) z))\n ((F z, fderiv \u211d F z), fderiv \u211d (fderiv \u211d F) z) 0",
+        "universes": [
+          "u",
+          "v"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "covariance-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "70ae0ae7e722cec92bfc77cc488ace2a9f4d19c8c149723b7da082da813302d0",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/parameter-jet.readback.json",
+      "report_sha256": "a41603833c935d2af10cf0ea74d9c50d9b7d841194264d76a8e2dc09d33bbcf9"
+    }
+  }
+}

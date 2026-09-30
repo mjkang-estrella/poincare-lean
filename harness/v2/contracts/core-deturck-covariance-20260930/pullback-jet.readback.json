@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "covariance-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "509c83826fe603d037631f2ebe161d46fd1cc80707cd407e1320bef1985e2736",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr",
+      "mathematical_statement": "For every universe u and type E : Type u, equipped with arbitrary NormedAddCommGroup and NormedSpace over the real numbers, every pair of fields h,F : E -> (E ->L[real] (E ->L[real] real)), every map phi : E -> E, and every point z : E, assume ContDiffAt real 2 h (phi(z)), ContDiffAt real 2 F (phi(z)), and ContDiffAt real 3 phi z. Assume also equality of the field values h(phi(z)) = F(phi(z)), equality of the first ordinary Frechet derivatives D h(phi(z)) = D F(phi(z)), and equality of the derivatives of the derivative fields D(D h)(phi(z)) = D(D F)(phi(z)). Define T(q)(y) = pullbackBilinearForm(q(phi(y)), D phi(y)); the pinned definition means that for all u,v : E, T(q)(y)(u,v) = q(phi(y))(D phi(y)(u), D phi(y)(v)). Then T(h)(z) = T(F)(z), D(T(h))(z) = D(T(F))(z), and D(D(T(h)))(z) = D(D(T(F)))(z), with all three conjuncts asserting equality of the actual continuous bilinear form or continuous-linear-map-valued derivatives. The bilinear-form carrier and its derivative carriers use the canonical iterated continuous-linear-map operator norms induced by the unchanged norm of E and the usual absolute-value norm of the real numbers. C2 field regularity and C3 regularity of phi are explicit assumptions; third derivatives of phi can enter the second derivative of the Jacobian-slot pullback. No completeness, finite-dimensionality, invertibility of phi or its derivative, symmetry, positive definiteness, chart source/target membership, manifold structure, norm bound, time dependence, or evolution equation is required. This is a same-coordinate-space, fixed-point preservation of an already equal two-jet under bilinear pullback, and allows singular or constant phi. It does not assert equality away from z, a diffeomorphism, chart independence of an evolution operator, or full DeTurck covariance. No circular input appears: equality of the source two-jets is supplied, while equality of the distinct pulled-back two-jets is concluded."
+    }
+  ],
+  "findings": []
+}

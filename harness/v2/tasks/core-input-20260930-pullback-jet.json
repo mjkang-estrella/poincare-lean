@@ -1,0 +1,147 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-pullback-jet",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "eaffa8b75c0cf7ecaf9654c91bac1d8bdf099b63",
+  "objective": {
+    "title": "Remove actual Hamilton covariance obstacle: pullback-jet",
+    "statement": "Core H; consumer transfer linearized DeTurck covariance from constructed compact smooth metric variations to symmetric C2 Graph germs and actual global L/R. Prove exact two-jet pullback congruence retaining both Jacobian slots through D3phi; no density, symmetry, invertibility or equality of germs input.",
+    "deliverables": [
+      "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckPullbackTwoJet.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+      "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+      "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean",
+      "Poincare/Global/DeTurckChartIndependentPullback.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-deturck-covariance-20260930/context.md",
+      "harness/v2/contracts/core-deturck-covariance-20260930/pullback-jet.readback.json",
+      "harness/reports/core-deturck-chartlift-20260930.md",
+      "Poincare/Global/DeTurckChartIndependentPullback.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckPullbackTwoJet.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckPullbackTwoJet.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-covariance-20260930/pullback-jet.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckPullbackTwoJet"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckPullbackTwoJet.pullback_twoJet_congr",
+        "lean_type": "\u2200 (E : Type u) [NormedAddCommGroup E] [NormedSpace \u211d E]\n(h F : E \u2192 (E \u2192L[\u211d] E \u2192L[\u211d] \u211d)) (phi : E \u2192 E) (z : E),\nContDiffAt \u211d 2 h (phi z) \u2192 ContDiffAt \u211d 2 F (phi z) \u2192\nContDiffAt \u211d 3 phi z \u2192\nh (phi z) = F (phi z) \u2192\nfderiv \u211d h (phi z) = fderiv \u211d F (phi z) \u2192\nfderiv \u211d (fderiv \u211d h) (phi z) = fderiv \u211d (fderiv \u211d F) (phi z) \u2192\nlet T := fun (q : E \u2192 (E \u2192L[\u211d] E \u2192L[\u211d] \u211d)) (y : E) =>\n Poincare.pullbackBilinearForm (q (phi y)) (fderiv \u211d phi y)\nT h z = T F z \u2227 fderiv \u211d (T h) z = fderiv \u211d (T F) z \u2227\n fderiv \u211d (fderiv \u211d (T h)) z = fderiv \u211d (fderiv \u211d (T F)) z",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/DeTurckChartIndependentPullback.lean",
+        "sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "covariance-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "509c83826fe603d037631f2ebe161d46fd1cc80707cd407e1320bef1985e2736",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/pullback-jet.readback.json",
+      "report_sha256": "e70bdf0e0513d87b36eafcf0d171bf3867240a5bbe872dedeb2789be03d4124f"
+    }
+  }
+}
