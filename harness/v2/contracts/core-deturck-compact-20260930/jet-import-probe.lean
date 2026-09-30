@@ -1,0 +1,4 @@
+import Poincare.Global.DeTurckCoupledForcing
+import Poincare.Global.DeTurckTensorGraphJet
+#check Poincare.DeTurckCoupledForcing.exists_actual_coupled_forcing
+#check Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt
