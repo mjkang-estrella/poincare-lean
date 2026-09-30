@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-unweighted-germ",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "a069fcc55c818e2e227f123c3b98cebe263dc38a",
   "objective": {
     "title": "Construct actual global reconstruction prerequisite: germ",
@@ -171,5 +171,6 @@
       "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/germ.readback.json",
       "report_sha256": "ed21bb7cf766f80c4259fec7749f78d493ff45ff7b0c8639d8901f855263a5b1"
     }
-  }
+  },
+  "accepted_commit": "86ed19dd8fdfdaa3767ac271a1bdc452b8eb5292"
 }

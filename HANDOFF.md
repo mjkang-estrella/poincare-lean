@@ -1,5 +1,32 @@
 # Handoff Snapshot
 
+## 2026-09-30 Unweighted reconstruction and external proof review
+
+The frozen final goal remains active. Our reserved theorem is absent, and our
+universal smoothability/Hamilton inputs remain open. Independent exact gates
+accepted the bounded unweighted Graph row, genuine chart germ, closed-support
+ut/du/ddu propagation and scalar/tensor within-time transfer. Actual metric/
+atlas/buffer/map inputs, local PDE/residual support and row time jets are used
+in joint Lean applications. No norms, core types or gate scope were weakened.
+Global L/R/contraction and physical flow remain unconstructed independently.
+
+The user's strategy review triggered a current upstream search. Published
+FrenzyMath and DifferentialGeometry endpoints structurally match our target;
+DifferentialGeometry's Moise producer matches the correct replacement-atlas
+existence core. Pinned source comparisons are recorded in
+EXTERNAL_RESEARCH_STATUS.md and docs/PROOF_STRATEGY_REVIEW.md. No external
+build/axiom/Comparator verification has yet been reproduced in this task.
+Stable DifferentialGeometry v0.1.3 is 7a48598d35109aa99d1cc678e2724c213cdf4ff3
+on Lean4.33.1; our project remains Lean4.30rc2. Independent work is preserved.
+
+First action: verify that pinned upstream release's genuine smoothing producer
+and exact endpoint in an isolated project under its own toolchain, including
+allowed axioms and type equivalence. Then build the smallest credited adapter
+to our unchanged frozen target. Do not call upstream reuse a newly completed
+independent proof. Do not dispatch more independent local lemma work before
+resolving this concrete reuse opportunity. Preserve existing audits/history;
+version and production-boundary migration require their own checked contract.
+
 ## 2026-09-30 C2 covariance, symmetry and bounded forcing transport
 
 The full Poincare goal remains active. Compatible smoothability and universal

@@ -1,5 +1,40 @@
 # External Research Status
 
+## 2026-09-30 Published endpoint comparison
+
+The May research below is historical and no longer describes public availability.
+Two public projects now provide claimed completed Poincare endpoints:
+
+- FrenzyMath: https://github.com/frenzymath/PoincareConjecture at
+  `3d7318c32025ccb30465dd29850e95a9e2aa1526`, Lean4.33.1. Statement/Main and
+  Comparator/Solution were inspected. Comparator config names the two real
+  endpoint proofs, permits propext/Classical.choice/Quot.sound and enables
+  Nanoda. Their September28 announcement reports successful checking; we have
+  NOT yet reproduced that build or independent-kernel check. The older
+  frenzymath/Poincare-Conjecture repository is a different active workspace.
+- DifferentialGeometry: https://github.com/qinz1yang/differential-geometry at
+  `777299070a5529e96345e0033979706fd00c7e62`, development Lean4.35rc3. Its
+  Topology/ThreeManifold/Poincare endpoint structurally matches our frozen
+  topological statement and literal standard sphere. Moise352Producer produces
+  a replacement compatible smooth atlas, matching our existence-shaped core.
+  README reports a full build/standard axiom footprint; we have NOT yet
+  reproduced these checks. Stable v0.1.3 was fetched at `7a48598d35109aa99d1cc678e2724c213cdf4ff3`;
+  its toolchain is Lean4.33.1 and its source contains the matching endpoint.
+
+Our toolchain remains Lean4.30rc2. Reuse needs isolated version alignment and
+exact statement/axiom validation before any production endpoint or core closure.
+Frenzy adds second countability, derivable here from compactness plus the
+Euclidean charted space, as our existing topological bridge already does.
+Do not map Moise into the older arbitrary-ambient-atlas smoothability predicate,
+which our MoiseSmoothabilityTarget explicitly identifies as a false frontier.
+
+First action: reproduce a pinned compatible upstream smoothing producer and
+exact endpoint in an isolated comparison project, check allowed axioms and
+statement identity, then build the smallest credited adapter to the existing
+frozen target. Preserve independent proof work; do not call upstream reuse
+a newly completed independent proof. See docs/PROOF_STRATEGY_REVIEW.md.
+
+
 Date: 2026-05-02
 
 This note records external research performed while assessing whether a complete

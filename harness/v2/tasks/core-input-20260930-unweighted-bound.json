@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-unweighted-bound",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "a069fcc55c818e2e227f123c3b98cebe263dc38a",
   "objective": {
     "title": "Construct actual global reconstruction prerequisite: bound",
@@ -169,5 +169,6 @@
       "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/bound.readback.json",
       "report_sha256": "e8515abc30f07d8476d2f01177cbbf07134c74ba79de81b493434ee90b770224"
     }
-  }
+  },
+  "accepted_commit": "f46944c9582197aaf6fac543af405b8f7ba47628"
 }

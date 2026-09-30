@@ -1040,3 +1040,13 @@ import Poincare.Global.DeTurckC2Covariance
 import Poincare.Global.BufferedTensorValueTransport
 
 import Poincare.Global.DeTurckDifferentialSymmetry
+
+import Poincare.Global.BufferedUnweightedGraphTransportDefinitions
+
+import Poincare.Global.BufferedUnweightedGraphTransport
+
+import Poincare.Global.BufferedUnweightedGraphTransportGerm
+
+import Poincare.Global.ParabolicGraphSupport
+
+import Poincare.Global.ParabolicGraphTimeJets

@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-unweighted-support",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "a069fcc55c818e2e227f123c3b98cebe263dc38a",
   "objective": {
     "title": "Construct actual global reconstruction prerequisite: support",
@@ -162,5 +162,6 @@
       "report_path": "harness/v2/contracts/core-unweighted-reconstruction-20260930/support.readback.json",
       "report_sha256": "9a5b15abed385417c8b8f8e01fd7955fffb3fe494324f07dda43fec7974eb4d7"
     }
-  }
+  },
+  "accepted_commit": "ac9bb8e469e6344b6a7a302a713deb190db04a7c"
 }
