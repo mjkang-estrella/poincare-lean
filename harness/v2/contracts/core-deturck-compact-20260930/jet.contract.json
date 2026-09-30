@@ -50,9 +50,9 @@
       "reviewer": "deturck-jet-readback",
       "method": "blind-readback",
       "snapshot_sha256": "c41541b3377fb68efeba0bfc8d4c03067bb693e182381d28a01927e1c265765e",
-      "verdict": "pending",
+      "verdict": "approved",
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
-      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
   }
 }
