@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicSpatialPullbackChainRule"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicSpatialPullbackChainRule.hasFDerivAt_graph_covector_pullback",
+        "lean_type": "\u2200 (F : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) F \u2192\n\u2200 (\u03b1 T : \u211d) (G : Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T) (t : \u211d), t \u2208 Set.Icc 0 T \u2192 \u2200 x : (Poincare.ClosedSmoothModel 3),\nHasFDerivAt (fun z \u21a6 (G.du (t, F z)).comp (fderiv \u211d F z))\n (((ContinuousLinearMap.compL \u211d (Poincare.ClosedSmoothModel 3) (Poincare.ClosedSmoothModel 3) \u211d).flip (fderiv \u211d F x)).comp ((G.ddu (t, F x)).comp (fderiv \u211d F x)) +\n  ((ContinuousLinearMap.compL \u211d (Poincare.ClosedSmoothModel 3) (Poincare.ClosedSmoothModel 3) \u211d) (G.du (t, F x))).comp (fderiv \u211d (fderiv \u211d F) x)) x",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "graph-pullback-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "7508623fb7f10531a44584ea2802ff809d62943f8d62e165e7796b0c23a4b6d3",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-graph-pullback-20260930/chain-rule.readback.json",
+      "report_sha256": "9b409449e28efabcc3e9938deb32777d35821646b2841fd98ee1c10d938f492b"
+    }
+  }
+}

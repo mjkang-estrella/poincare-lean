@@ -1,0 +1,28 @@
+{
+  "imports": [
+    "Poincare.Global.ParabolicSpatialGraphPullback"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback",
+      "lean_type": "\u2200 (F : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) F \u2192 HasCompactSupport F \u2192\n\u2200 (\u03b1 : \u211d), 0 < \u03b1 \u2192 \u03b1 < 1 \u2192 \u2203 C : \u211d, 0 \u2264 C \u2227 \u2200 T \u2208 Set.Ioc (0 : \u211d) 1,\n\u2203 Q : (Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T) \u2192L[\u211d] (Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T), \u2016Q\u2016 \u2264 C \u2227 \u2200 G p,\n (Q G).u p = G.u (p.1, F p.2) \u2227\n (Q G).ut p = G.ut (p.1, F p.2) \u2227\n (\u2200 v : (Poincare.ClosedSmoothModel 3), (Q G).du p v = G.du (p.1, F p.2) (fderiv \u211d F p.2 v)) \u2227\n (\u2200 v w : (Poincare.ClosedSmoothModel 3), (Q G).ddu p v w =\n   G.ddu (p.1, F p.2) (fderiv \u211d F p.2 v) (fderiv \u211d F p.2 w) +\n   G.du (p.1, F p.2) (fderiv \u211d (fderiv \u211d F) p.2 v w))",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/ParabolicHolderSpace.lean",
+      "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+    },
+    {
+      "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+      "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "52ca233c33403e13cdebc93ff464783f4637b2611705550dc71c5dfce80d5181"
+}
