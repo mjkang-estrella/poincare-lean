@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "chart-extension-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "c163e2d5f04e2a1dbce0ec9b2d0c8888592660a6d1f107843dcbd0980c9a9fdf",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap",
+      "mathematical_statement": "Let E3 be EuclideanSpace R (Fin 3), the real three-dimensional Euclidean vector space. For arbitrary universe u, let M : Type u carry a topology, be Hausdorff and compact, and carry an E3 charted-space structure that is C-infinity for the identity model with corners over R. Let A be AtlasData M. This data includes a finite family of extended charts C_k = extChartAt at anchors a_k, open regions covering M whose closures lie in their chart sources and have compact coordinate images, and a smooth partition of unity p_k on all of M subordinate to those regions. The index set is Fin A.cover.chartCount. Let xi_k : E3 -> R be total functions. Assume for every k that xi_k has compact topological support S_k, that S_k is contained in the target of C_k, that the fixed GeodesicTransport cutoff c_k based at a_k equals one on some full Euclidean neighborhood of every point of S_k, and that c_k likewise equals one on some full Euclidean neighborhood of every point of Q_k = C_k image tsupport(p_k), the defined coordSupport A k. Topological support is the closure of the nonzero set. These premises do not require xi_k to be smooth, to lie in [0,1], or to equal one; the cutoff-one hypotheses concern the separately defined c_k. No connectedness, Riemannian metric, or time variable is explicitly assumed. For each ordered pair i,j, set T_ij(z) = C_j(C_i.symm(z)), the defined change A i j, which is the coordinate transition from i coordinates to j coordinates. Set K_ij = C_i image (tsupport(p_i) intersect (C_j.symm image S_j)). Set G_k to be the locus of z in E3 where c_k equals one on some full Euclidean neighborhood of z. Set O_ij = source(C_i.symm.trans C_j) intersect G_i intersect T_ij preimage G_j. The partial-homeomorphism source requires z to lie in target(C_i) and C_i.symm(z) to lie in source(C_j); trans applies C_i.symm first and C_j second. Each predicate function E3 -> Prop in the draft is used as the corresponding set; each preimage is an ordinary set preimage under the total function T_ij. Then K_ij is compact, O_ij is open, and K_ij is a subset of O_ij for every ordered pair i,j. The conclusion asserts these three set properties and does not itself construct a cutoff or an extension of T_ij. All the cutoff-one loci use ambient nhds, not a within-set neighborhood filter. C-infinity denotes the ENat top injected into WithTop ENat."
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,34 @@
+{
+  "imports": [
+    "Poincare.Global.CompactBufferedChartOverlap"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap",
+      "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (\u03be : Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 \u211d),\n (\u2200 k, HasCompactSupport (\u03be k)) \u2192\n (\u2200 k, tsupport (\u03be k) \u2286 (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).target) \u2192\n (\u2200 k, \u2200 z \u2208 tsupport (\u03be k), Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192\n (\u2200 k, \u2200 z \u2208 Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A k, Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192 \u2200 i j, let K := (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) '' (tsupport (A.partition i) \u2229 (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport (\u03be j)); let O := ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source \u2229\n (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor i) y = 1) (nhds z)) \u2229\n (Poincare.FiniteAtlasParabolicTensorSpace.change A i j) \u207b\u00b9' (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor j) y = 1) (nhds z)); IsCompact K \u2227 IsOpen O \u2227 K \u2286 O",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+    },
+    {
+      "path": "Poincare/Global/GeodesicTransport.lean",
+      "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+    },
+    {
+      "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "c163e2d5f04e2a1dbce0ec9b2d0c8888592660a6d1f107843dcbd0980c9a9fdf"
+}
