@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/CanonicalTarget433Probe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T18:42:03.398744+00:00",
+  "source_head": "69918e0ba2022b499de24817938cb0980288f3cc",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,10 @@
+OK: PoincareAudit/Axiom/Footprint.lean: 10210 checks (9783 unique names) match the legacy heredocs
+OK: PoincareAudit/Root/Contracts.lean: 9574 checks (9204 unique names) match the legacy heredocs
+OK: PoincareAudit/Semantic/Surface.lean: 15805 checks (15172 unique names) match the legacy heredocs
+OK: PoincareAudit/Semantic/CertificateRoutes.lean: 19120 checks (18965 unique names) match the legacy heredocs
+OK: PoincareAudit/Completion/RootContract.lean: 12422 checks (12177 unique names) match the legacy heredocs
+OK: PoincareAudit/Completion/DependencyContract.lean: 7298 checks (7062 unique names) match the legacy heredocs
+OK: PoincareAudit/Completion/CertificateRoutes.lean: 19668 checks (19475 unique names) match the legacy heredocs
+OK: semantic manual coverage markers match the legacy scripts
+OK: completion reserved-endpoint probe matches the legacy heredoc
+PAYLOADS: audit modules are a lossless extraction of the legacy heredocs

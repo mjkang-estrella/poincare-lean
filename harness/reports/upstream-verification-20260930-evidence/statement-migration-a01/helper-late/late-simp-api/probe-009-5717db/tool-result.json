@@ -1,0 +1,7 @@
+{
+  "chunk_id": "5717db",
+  "wall_time_seconds": 2.2853793749999998,
+  "exit_code": 1,
+  "original_token_count": 194,
+  "output": "<stdin>:19:25: error: unsolved goals\nX : Type u\ninst✝ : TopologicalSpace X\nx : X\nγ : Path x x\nN : ℕ\nt : Fin (N + 1) → ↑unitInterval\nh0 : t 0 = 0\nh1 : t (Fin.last N) = 1\nh : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)\n⊢ ?m.58 = x\n<stdin>:19:40: error: unsolved goals\nX : Type u\ninst✝ : TopologicalSpace X\nx : X\nγ : Path x x\nN : ℕ\nt : Fin (N + 1) → ↑unitInterval\nh0 : t 0 = 0\nh1 : t (Fin.last N) = 1\nh : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)\n⊢ ?m.59 = x\n<stdin>:18:33: error: unsolved goals\nX : Type u\ninst✝ : TopologicalSpace X\nx : X\nγ : Path x x\nN : ℕ\nt : Fin (N + 1) → ↑unitInterval\nh0 : t 0 = 0\nh1 : t (Fin.last N) = 1\nh : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)\n⊢ γ.Homotopic (Path.refl x)\n"
+}

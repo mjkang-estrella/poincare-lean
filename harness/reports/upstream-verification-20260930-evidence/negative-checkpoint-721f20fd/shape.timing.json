@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/shape_contract_audit.sh"
+  ],
+  "duration_seconds": 6.570585,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:48:41.721386Z",
+  "label": "shape",
+  "started_at": "2026-09-30T18:48:35.150581Z"
+}

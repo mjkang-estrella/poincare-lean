@@ -1,0 +1,21 @@
+<stdin>:22:4: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 1
+  c ≥ 0
+  c - d ≥ 1
+  b ≥ 0
+  b - c ≤ 0
+  a ≥ 0
+  a - b ≥ 1
+  a - c ≤ 0
+where
+ a := ↑↑(Fin.last N)
+ b := ↑↑⟨↑start + (N - ↑start - 1 + 1), ⋯⟩
+ c := ↑N
+ d := ↑↑start
+<stdin>:25:21: warning: Variable name `hstart0` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hstart0
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`

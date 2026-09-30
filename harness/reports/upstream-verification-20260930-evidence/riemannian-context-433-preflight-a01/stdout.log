@@ -1,0 +1,65 @@
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:71:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:66:0: warning: Definition `toIsContMDiffRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:79:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:74:0: warning: Definition `toIsContinuousRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:106:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:107:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:100:0: warning: Definition `toIsRiemannianManifold` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:167:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:168:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean:178:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`

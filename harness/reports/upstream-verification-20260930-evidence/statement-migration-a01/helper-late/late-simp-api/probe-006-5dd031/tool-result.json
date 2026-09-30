@@ -1,0 +1,7 @@
+{
+  "chunk_id": "5dd031",
+  "wall_time_seconds": 2.09806725,
+  "exit_code": 1,
+  "original_token_count": 187,
+  "output": "<stdin>:20:2: error: Type mismatch: After simplification, term\n  htail k\n has type\n  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + ↑k + 1, ⋯⟩))) U\nbut is expected to have type\n  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U\n<stdin>:37:2: error: Type mismatch: After simplification, term\n  htail k\n has type\n  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + ↑k + 1, ⋯⟩))) U\nbut is expected to have type\n  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U\n"
+}

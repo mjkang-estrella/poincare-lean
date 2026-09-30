@@ -1,0 +1,11 @@
+{
+  "backend": "local Codex helper; not registered Pi Job",
+  "base_commit": "a3b03ff7263b9d610de0a86d00a3a0f4b7f30794",
+  "branch": "codex/completion-status-contract-a01",
+  "worktree": "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare",
+  "started_at": "2026-09-30T17:16:47.912392+00:00",
+  "scope": [
+    "scripts/completion_audit.sh",
+    "scripts/tests/test_completion_status_contract.py"
+  ]
+}

@@ -1,0 +1,5 @@
+info: mathlib: URL has changed; deleting '/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib' and cloning again
+info: mathlib: cloning https://github.com/leanprover-community/mathlib4.git
+info: mathlib: checking out revision '0df444a360eaa60ab8c11dca51a86af692955474'
+info: toolchain not updated; already up-to-date
+info: mathlib: running post-update hooks

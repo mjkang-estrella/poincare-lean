@@ -1,0 +1,4 @@
+[codex/poincare-completion 14d48870] Allow completed status without weakening live theorem gates
+ Date: Wed Sep 30 10:23:58 2026 -0700
+ 2 files changed, 231 insertions(+), 14 deletions(-)
+ create mode 100644 scripts/tests/test_completion_status_contract.py

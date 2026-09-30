@@ -1,0 +1,42 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-006-chart-diffeomorph/Probe.lean:9:0: warning: automatically included section variable(s) unused in theorem `Probe.targetEmbedding`:
+  [Nonempty ↑{q}ᶜ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty ↑{q}ᶜ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-006-chart-diffeomorph/Probe.lean:12:0: warning: automatically included section variable(s) unused in theorem `Probe.sourceEmbedding`:
+  [Nonempty X]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty X] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-006-chart-diffeomorph/Probe.lean:35:10: error: Type mismatch: After simplification, term
+  contMDiff_isOpenEmbedding hsource
+ has type
+  @ContMDiff ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) X inst✝² hsource.singletonChartedSpace
+    (EuclideanSpace ℝ (Fin 3)) (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ)
+    (EuclideanSpace ℝ (Fin 3)) PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (chartedSpaceSelf (EuclideanSpace ℝ (Fin 3))) ∞ fun p => ↑(e p)
+but is expected to have type
+  @ContMDiff ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) X inst✝² (sourceCharts q e) (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) E (PiLp.topologicalSpace 2 fun x => ℝ)
+    (𝓡 3) E (PiLp.topologicalSpace 2 fun x => ℝ) (chartedSpaceSelf E) ∞ (Subtype.val ∘ ⇑e)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-006-chart-diffeomorph/Probe.lean:56:10: error: Type mismatch: After simplification, term
+  contMDiff_isOpenEmbedding hsource
+ has type
+  @ContMDiff ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) X inst✝² hsource.singletonChartedSpace
+    (EuclideanSpace ℝ (Fin 3)) (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ)
+    (EuclideanSpace ℝ (Fin 3)) PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (chartedSpaceSelf (EuclideanSpace ℝ (Fin 3))) ∞ fun p => ↑(e p)
+but is expected to have type
+  @ContMDiff ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) X inst✝² (sourceCharts q e) (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) E (PiLp.topologicalSpace 2 fun x => ℝ)
+    (𝓡 3) E (PiLp.topologicalSpace 2 fun x => ℝ) (chartedSpaceSelf E) ∞ (Subtype.val ∘ ⇑e)

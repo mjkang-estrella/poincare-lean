@@ -1,0 +1,708 @@
+{
+  "base_commit": "a3b03ff7263b9d610de0a86d00a3a0f4b7f30794",
+  "source_sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7",
+  "base_source_sha256": "55c32a8accda33a329bdc139270ecc2b1d8fafc0ec6f90dcdf01e76a48368b8e",
+  "declaration_count": 1498,
+  "names_unchanged": true,
+  "canonical_bytes_unchanged": [
+    "ThreeSphere",
+    "PoincareConjectureStatement"
+  ],
+  "changed_declarations": [
+    {
+      "name": "path_concat_segment_range_subset_of_concat_range",
+      "kind": "theorem",
+      "base_line": 378,
+      "current_line": 381
+    },
+    {
+      "name": "path_homotopy_subpathTransSubpathRefl_forall_mem_of_forall_mem",
+      "kind": "theorem",
+      "base_line": 957,
+      "current_line": 962
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_runBlock_source",
+      "kind": "theorem",
+      "base_line": 1625,
+      "current_line": 1630
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement",
+      "kind": "theorem",
+      "base_line": 2618,
+      "current_line": 2623
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement_eq",
+      "kind": "theorem",
+      "base_line": 2637,
+      "current_line": 2641
+    },
+    {
+      "name": "threeSphere_countableComplement_pathConnectedSpace_of_mem",
+      "kind": "theorem",
+      "base_line": 3527,
+      "current_line": 3530
+    },
+    {
+      "name": "threeSphere_stereographic_sources_inter_locPathConnectedSpace",
+      "kind": "theorem",
+      "base_line": 3617,
+      "current_line": 3621
+    },
+    {
+      "name": "threeSphere_twoPointComplement_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4283,
+      "current_line": 4287
+    },
+    {
+      "name": "threeSphere_twoPointComplement_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4327,
+      "current_line": 4330
+    },
+    {
+      "name": "threeSphere_stereographicSources_inter_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4362,
+      "current_line": 4364
+    },
+    {
+      "name": "threeSphere_stereographicSources_inter_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4411,
+      "current_line": 4412
+    },
+    {
+      "name": "threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4579,
+      "current_line": 4579
+    },
+    {
+      "name": "threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4628,
+      "current_line": 4627
+    },
+    {
+      "name": "threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap",
+      "kind": "def",
+      "base_line": 4825,
+      "current_line": 4823
+    },
+    {
+      "name": "threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap_eq",
+      "kind": "theorem",
+      "base_line": 4881,
+      "current_line": 4878
+    },
+    {
+      "name": "paths_homotopic_of_mapsTo_simplyConnectedSubtype",
+      "kind": "theorem",
+      "base_line": 6164,
+      "current_line": 6160
+    },
+    {
+      "name": "twoSetOpenCover_twoPieceLoop_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 6382,
+      "current_line": 6378
+    },
+    {
+      "name": "twoSetOpenCover_sameSideBlockSameSideTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 6796,
+      "current_line": 6794
+    },
+    {
+      "name": "twoSetOpenCover_sameSideBlockOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 6956,
+      "current_line": 6954
+    },
+    {
+      "name": "twoSetOpenCover_sameHead_terminalOppositeRun_tail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 7171,
+      "current_line": 7169
+    },
+    {
+      "name": "twoSetOpenCover_sameHead_firstOppositeRun_tail_induction_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 7930,
+      "current_line": 7929
+    },
+    {
+      "name": "twoSetOpenCover_sameHead_firstOppositeRun_tail_induction",
+      "kind": "theorem",
+      "base_line": 8028,
+      "current_line": 8028
+    },
+    {
+      "name": "twoSetOpenCover_path_sourceChoice_subpaths",
+      "kind": "theorem",
+      "base_line": 8276,
+      "current_line": 8277
+    },
+    {
+      "name": "twoSetOpenCover_basedLoop_nullhomotopic_of_sourceChoice",
+      "kind": "theorem",
+      "base_line": 8328,
+      "current_line": 8331
+    },
+    {
+      "name": "twoSphere_countableComplement_pathConnectedSpace_of_mem",
+      "kind": "theorem",
+      "base_line": 8849,
+      "current_line": 8853
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 9314,
+      "current_line": 9319
+    },
+    {
+      "name": "twoSetOpenCover_sameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 9579,
+      "current_line": 9584
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 9852,
+      "current_line": 9857
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 10209,
+      "current_line": 10214
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 10634,
+      "current_line": 10639
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 10865,
+      "current_line": 10870
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 11445,
+      "current_line": 11450
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_homotopy_refl_forall_mem_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 11751,
+      "current_line": 11756
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeTail_concat_cast_nullhomotopic_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 12473,
+      "current_line": 12478
+    },
+    {
+      "name": "twoSetOpenCover_oppositeSameOppositeSameOppositeSameOppositeSameTail_concat_cast_nullhomotopic_of_mapsTo",
+      "kind": "theorem",
+      "base_line": 13093,
+      "current_line": 13098
+    },
+    {
+      "name": "threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 18803,
+      "current_line": 18808
+    },
+    {
+      "name": "threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 19170,
+      "current_line": 19175
+    },
+    {
+      "name": "threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 19653,
+      "current_line": 19658
+    },
+    {
+      "name": "threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 19967,
+      "current_line": 19972
+    },
+    {
+      "name": "threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 21399,
+      "current_line": 21404
+    },
+    {
+      "name": "threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 21776,
+      "current_line": 21781
+    },
+    {
+      "name": "threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 22157,
+      "current_line": 22162
+    },
+    {
+      "name": "threeSphere_stereographic_northSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 22593,
+      "current_line": 22598
+    },
+    {
+      "name": "threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 23095,
+      "current_line": 23100
+    },
+    {
+      "name": "threeSphere_stereographic_southNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockTail_concat_cast_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 23536,
+      "current_line": 23541
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 27587,
+      "current_line": 27592
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 27669,
+      "current_line": 27673
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 27751,
+      "current_line": 27754
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 27903,
+      "current_line": 27904
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 28055,
+      "current_line": 28054
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 28230,
+      "current_line": 28226
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 28405,
+      "current_line": 28398
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 28628,
+      "current_line": 28617
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 28851,
+      "current_line": 28836
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 29126,
+      "current_line": 29106
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 29401,
+      "current_line": 29376
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 29728,
+      "current_line": 29697
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 30101,
+      "current_line": 30063
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 30530,
+      "current_line": 30484
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 31011,
+      "current_line": 30956
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 31338,
+      "current_line": 31277
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 31711,
+      "current_line": 31643
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopSubpath_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_nullhomotopic",
+      "kind": "theorem",
+      "base_line": 32140,
+      "current_line": 32064
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 33463,
+      "current_line": 33378
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 33883,
+      "current_line": 33796
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 34373,
+      "current_line": 34284
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 34934,
+      "current_line": 34843
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 35948,
+      "current_line": 35855
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 36159,
+      "current_line": 36064
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 36439,
+      "current_line": 36342
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 36789,
+      "current_line": 36690
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 37279,
+      "current_line": 37178
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 37839,
+      "current_line": 37736
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_southBlockNorthBlockSouthBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 38469,
+      "current_line": 38364
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 38889,
+      "current_line": 38782
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 39238,
+      "current_line": 39129
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 39518,
+      "current_line": 39407
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 39797,
+      "current_line": 39684
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_northBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 40076,
+      "current_line": 39961
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstSouthRun_fullConcat_tail_northBlockSouthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 40286,
+      "current_line": 40169
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoop_firstNorthRun_fullConcat_tail_southBlockNorthBlock_collapse",
+      "kind": "theorem",
+      "base_line": 40496,
+      "current_line": 40377
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 40706,
+      "current_line": 40585
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 40881,
+      "current_line": 40760
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 41088,
+      "current_line": 40967
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 41295,
+      "current_line": 41174
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 41470,
+      "current_line": 41349
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 41648,
+      "current_line": 41527
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 41826,
+      "current_line": 41705
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 41981,
+      "current_line": 41860
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 42136,
+      "current_line": 42015
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 42268,
+      "current_line": 42147
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 42400,
+      "current_line": 42279
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 42510,
+      "current_line": 42389
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouthBlock",
+      "kind": "theorem",
+      "base_line": 42620,
+      "current_line": 42499
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorthBlock",
+      "kind": "theorem",
+      "base_line": 42709,
+      "current_line": 42588
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northBlockSouth",
+      "kind": "theorem",
+      "base_line": 42798,
+      "current_line": 42677
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southBlockNorth",
+      "kind": "theorem",
+      "base_line": 42892,
+      "current_line": 42770
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_northSouthBlockNorth",
+      "kind": "theorem",
+      "base_line": 42986,
+      "current_line": 42863
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_southNorthBlockSouth",
+      "kind": "theorem",
+      "base_line": 43084,
+      "current_line": 42960
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoNorthSouth",
+      "kind": "theorem",
+      "base_line": 43184,
+      "current_line": 43059
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_twoSouthNorth",
+      "kind": "theorem",
+      "base_line": 43264,
+      "current_line": 43138
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeNorthSouthNorth",
+      "kind": "theorem",
+      "base_line": 43396,
+      "current_line": 43269
+    },
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatCollapse_threeSouthNorthSouth",
+      "kind": "theorem",
+      "base_line": 43485,
+      "current_line": 43357
+    },
+    {
+      "name": "threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement",
+      "kind": "theorem",
+      "base_line": 43672,
+      "current_line": 43543
+    },
+    {
+      "name": "threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq",
+      "kind": "theorem",
+      "base_line": 43688,
+      "current_line": 43562
+    }
+  ],
+  "embedded_Prop_proof_type_edits": [
+    {
+      "name": "threeSphere_stereographicEquatorLoopFiniteConcatLoopStatement_of_finiteConcatSubpathStatement_eq",
+      "kind": "theorem",
+      "base_line": 2637,
+      "current_line": 2641
+    },
+    {
+      "name": "threeSphere_twoPointComplement_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4327,
+      "current_line": 4330
+    },
+    {
+      "name": "threeSphere_stereographicSources_inter_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4411,
+      "current_line": 4412
+    },
+    {
+      "name": "threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart_eq",
+      "kind": "theorem",
+      "base_line": 4628,
+      "current_line": 4627
+    },
+    {
+      "name": "threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap_eq",
+      "kind": "theorem",
+      "base_line": 4881,
+      "current_line": 4878
+    },
+    {
+      "name": "threeSphere_stereographicVanKampenLoopStatement_of_finiteConcatQuotientStatement_and_finiteConcatCollapseStatement_eq",
+      "kind": "theorem",
+      "base_line": 43688,
+      "current_line": 43562
+    }
+  ],
+  "changed_definition_proof_fields": [
+    {
+      "name": "threeSphere_twoPointComplement_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4283,
+      "current_line": 4287
+    },
+    {
+      "name": "threeSphere_stereographicSources_inter_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4362,
+      "current_line": 4364
+    },
+    {
+      "name": "threeSphere_antipodalSourceOverlap_diffeomorph_puncturedChart",
+      "kind": "def",
+      "base_line": 4579,
+      "current_line": 4579
+    },
+    {
+      "name": "threeSphere_antipodalActualOverlap_diffeomorph_sourceOverlap",
+      "kind": "def",
+      "base_line": 4825,
+      "current_line": 4823
+    }
+  ],
+  "note": "Four definition edits are only contMDiff_toFun proof terms; computational toEquiv and other fields unchanged. Six equality-theorem type edits adapt embedded Prop proof terms. Orchestrator independently checks semantic type preservation."
+}

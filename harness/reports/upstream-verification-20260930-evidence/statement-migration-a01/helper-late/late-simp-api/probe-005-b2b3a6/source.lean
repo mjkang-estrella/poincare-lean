@@ -1,0 +1,10 @@
+import Mathlib.Topology.Subpath
+#check Fin.castSucc_mk
+#check Fin.succ_mk
+#check Fin.mk_succ
+#check Fin.coe_castSucc
+#check Fin.val_succ
+#check Fin.val_mk
+#check Fin.castSucc
+#print Fin.succ
+#print Fin.castSucc

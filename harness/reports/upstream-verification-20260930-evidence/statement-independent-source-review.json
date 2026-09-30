@@ -1,0 +1,9 @@
+{
+  "canonical_byte_hashes": {
+    "ThreeSphere": "d0333cb3463e274db0bf51858153f286142caa2c2659194e157c1f524bb6cdb5",
+    "PoincareConjectureStatement": "67c1d6f5d4dbf973c22f8e8ff688f3c3ca33acb4fdb6768b33af5019d523083d"
+  },
+  "declaration_names_preserved": true,
+  "diff_review": "Only proof tactics/API normalization, Prop proof fields/embedded proof terms, and elaboration transparency option changed. No hypotheses or computational data weakened.",
+  "source_commit": "1d94e7669e9b37513385d66cbf14024db097de74"
+}

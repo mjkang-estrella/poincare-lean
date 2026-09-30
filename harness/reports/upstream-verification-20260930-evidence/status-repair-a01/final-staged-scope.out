@@ -1,0 +1,2 @@
+scripts/completion_audit.sh
+scripts/tests/test_completion_status_contract.py

@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-09-30T17:20:26.532543+00:00",
+  "argv": [
+    "git",
+    "diff",
+    "--no-index",
+    "--",
+    "/dev/null",
+    "scripts/tests/test_completion_status_contract.py"
+  ],
+  "exit_code": 1,
+  "tool_elapsed_seconds": 0.1,
+  "error": "subprocess.check_output treated git diff --no-index expected changed-file exit 1 as CalledProcessError. Existing empty attempt-01-tests.patch retained. Full diff/argv/exit/time subsequently preserved in attempt-01-tests-diff.out/json."
+}

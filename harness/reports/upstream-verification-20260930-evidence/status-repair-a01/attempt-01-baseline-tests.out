@@ -1,0 +1,290 @@
+F...FFFFFFFFFFFFFFFF.............
+======================================================================
+FAIL: test_coherent_achieved_fixture_is_accepted (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_coherent_achieved_fixture_is_accepted)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 91, in test_coherent_achieved_fixture_is_accepted
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : PASS: Generated current status -> CURRENT_STATUS.md exists
+FAIL: Generated current status content -> CURRENT_STATUS.md lacks required evidence
+FAIL: generated status snapshot does not record the current scaffold/completion/boundary state
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+FAIL: generated status snapshot is missing sentinel output from one or more scaffold/completion audit sections
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Completion: not achieved')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Build status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Interface audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Mathlib gap audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Shape contract audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Theorem contract audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Semantic surface audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Root import audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Axiom footprint audit status: 0')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Completion audit status: 1')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_contract_rows_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_contract_rows_are_rejected) (row='- Completion boundary status: reserved theorem absent only')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 136, in test_duplicate_contract_rows_are_rejected
+    self.assert_rejected(fixture() + row + "\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_or_conflicting_completion_sentinels_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_or_conflicting_completion_sentinels_are_rejected) (sentinel='achieved')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 149, in test_duplicate_or_conflicting_completion_sentinels_are_rejected
+    self.assert_rejected(fixture() + f"COMPLETION: {sentinel}\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_duplicate_or_conflicting_completion_sentinels_are_rejected (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_duplicate_or_conflicting_completion_sentinels_are_rejected) (sentinel='not achieved')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 149, in test_duplicate_or_conflicting_completion_sentinels_are_rejected
+    self.assert_rejected(fixture() + f"COMPLETION: {sentinel}\n")
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 86, in assert_rejected
+    self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1 : PASS: Generated current status -> CURRENT_STATUS.md exists
+PASS: Generated current status content -> CURRENT_STATUS.md contains required evidence
+PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary
+PASS: generated status snapshot includes all scaffold and completion audit evidence sections
+PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section
+PASS: generated status snapshot matches current Lean toolchain
+
+
+======================================================================
+FAIL: test_generation_skip_ignores_stale_status_content (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_generation_skip_ignores_stale_status_content) (content='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 168, in test_generation_skip_ignores_stale_status_content
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : PASS: Generated current status -> CURRENT_STATUS.md exists
+FAIL: Generated current status content -> CURRENT_STATUS.md lacks required evidence
+SKIP: generated status snapshot checks disabled during status generation
+
+
+======================================================================
+FAIL: test_generation_skip_ignores_stale_status_content (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_generation_skip_ignores_stale_status_content) (content='obsolete status content\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 168, in test_generation_skip_ignores_stale_status_content
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : PASS: Generated current status -> CURRENT_STATUS.md exists
+FAIL: Generated current status content -> CURRENT_STATUS.md lacks required evidence
+SKIP: generated status snapshot checks disabled during status generation
+
+
+======================================================================
+FAIL: test_generation_skip_ignores_stale_status_content (scripts.tests.test_completion_status_contract.CompletionStatusContractTest.test_generation_skip_ignores_stale_status_content) (content='# Current Poincare Formalizati')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare/scripts/tests/test_completion_status_contract.py", line 168, in test_generation_skip_ignores_stale_status_content
+    self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 1 != 0 : PASS: Generated current status -> CURRENT_STATUS.md exists
+FAIL: Generated current status content -> CURRENT_STATUS.md lacks required evidence
+SKIP: generated status snapshot checks disabled during status generation
+
+
+----------------------------------------------------------------------
+Ran 20 tests in 144.955s
+
+FAILED (failures=17)

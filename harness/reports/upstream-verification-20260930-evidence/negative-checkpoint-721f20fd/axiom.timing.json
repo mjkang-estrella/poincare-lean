@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/axiom_audit.sh"
+  ],
+  "duration_seconds": 42.044706,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:51:16.897181Z",
+  "label": "axiom",
+  "started_at": "2026-09-30T18:50:34.852224Z"
+}

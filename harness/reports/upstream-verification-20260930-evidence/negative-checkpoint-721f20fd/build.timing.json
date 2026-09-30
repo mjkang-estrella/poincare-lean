@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "lake",
+    "build"
+  ],
+  "duration_seconds": 1.670646,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:48:14.036937Z",
+  "label": "build",
+  "started_at": "2026-09-30T18:48:12.366091Z"
+}

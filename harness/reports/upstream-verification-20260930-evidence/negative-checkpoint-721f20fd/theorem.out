@@ -1,0 +1,65 @@
+== Theorem contract audit ==
+ℹ [2876/2886] Replayed Poincare.Surgery
+info: stderr:
+PANIC at _private.Lean.LibrarySuggestions.SymbolFrequency.0.Lean.Environment.unsafeRunMetaM Lean.LibrarySuggestions.SymbolFrequency:71:24: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+backtrace:
+0   libleanshared.dylib                 0x000000010f8efe18 _ZN4leanL15print_backtraceEb + 60
+1   libleanshared.dylib                 0x000000010f8e6924 _ZN4leanL15lean_panic_implEPKcmb + 176
+2   libleanshared.dylib                 0x000000010f8e6a40 lean_panic_fn_borrowed + 64
+3   libleanshared.dylib                 0x000000010d1bb934 Lean.LibrarySuggestions.symbolFrequencyExt.unsafe_3 [private] + 176
+4   libleanshared.dylib                 0x000000010d1bba0c Lean.LibrarySuggestions.initFn._lam_2 [boxed] + 20
+5   libleanshared.dylib                 0x000000010f8f46a4 <apply/2> + 312
+6   libleanshared.dylib                 0x000000010d093eb0 Array.mapMUnsafe.map [private] spec at Lean.computeExtEntries + 424
+7   libleanshared.dylib                 0x000000010d0940c0 Lean.computeExtEntries [private] + 52
+8   libleanshared.dylib                 0x000000010d094f7c Lean.mkModuleData + 124
+9   libleanshared.dylib                 0x000000010d095948 Lean.writeModule + 276
+10  libleanshared.dylib                 0x000000010f8f3188 <apply/1> + 2864
+11  libleanshared.dylib                 0x000000010f7868ec Lean.profileitIOUnsafe [λ, arity↓] + 20
+12  libleanshared.dylib                 0x000000010f8f32f4 <apply/1> + 3228
+13  libleanshared.dylib                 0x000000010f8f32f4 <apply/1> + 3228
+14  libleanshared.dylib                 0x000000010f8c952c lean_profileit + 128
+15  libleanshared.dylib                 0x000000010f786ae4 Lean.profileitIOUnsafe [arity↓] + 156
+16  libleanshared.dylib                 0x000000010b822d28 Lean.Elab.runFrontend + 2972
+17  libleanshared.dylib                 0x000000010f6e7ed8 lean_shell_main + 12672
+18  libleanshared.dylib                 0x000000010a151e1c _ZN4lean14run_shell_mainEiPPcRKNS_10object_refE + 364
+19  libleanshared.dylib                 0x000000010a152570 lean_main + 488
+20  dyld                                0x000000019b687e88 start + 6688
+PANIC at _private.Lean.LibrarySuggestions.SymbolFrequency.0.Lean.Environment.unsafeRunMetaM Lean.LibrarySuggestions.SymbolFrequency:71:24: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.(invalid MessageData.lazy, missing context)
+backtrace:
+0   libleanshared.dylib                 0x000000010f8efe18 _ZN4leanL15print_backtraceEb + 60
+1   libleanshared.dylib                 0x000000010f8e6924 _ZN4leanL15lean_panic_implEPKcmb + 176
+2   libleanshared.dylib                 0x000000010f8e6a40 lean_panic_fn_borrowed + 64
+3   libleanshared.dylib                 0x000000010d19ee34 Lean.LibrarySuggestions.SineQuaNon.sineQuaNonExt.unsafe_3 [private] + 272
+4   libleanshared.dylib                 0x000000010d19f6d4 Lean.LibrarySuggestions.SineQuaNon.initFn._lam_2 [boxed] + 20
+5   libleanshared.dylib                 0x000000010f8f46a4 <apply/2> + 312
+6   libleanshared.dylib                 0x000000010d093eb0 Array.mapMUnsafe.map [private] spec at Lean.computeExtEntries + 424
+7   libleanshared.dylib                 0x000000010d0940c0 Lean.computeExtEntries [private] + 52
+8   libleanshared.dylib                 0x000000010d094f7c Lean.mkModuleData + 124
+9   libleanshared.dylib                 0x000000010d095948 Lean.writeModule + 276
+10  libleanshared.dylib                 0x000000010f8f3188 <apply/1> + 2864
+11  libleanshared.dylib                 0x000000010f7868ec Lean.profileitIOUnsafe [λ, arity↓] + 20
+12  libleanshared.dylib                 0x000000010f8f32f4 <apply/1> + 3228
+13  libleanshared.dylib                 0x000000010f8f32f4 <apply/1> + 3228
+14  libleanshared.dylib                 0x000000010f8c952c lean_profileit + 128
+15  libleanshared.dylib                 0x000000010f786ae4 Lean.profileitIOUnsafe [arity↓] + 156
+16  libleanshared.dylib                 0x000000010b822d28 Lean.Elab.runFrontend + 2972
+17  libleanshared.dylib                 0x000000010f6e7ed8 lean_shell_main + 12672
+18  libleanshared.dylib                 0x000000010a151e1c _ZN4lean14run_shell_mainEiPPcRKNS_10object_refE + 364
+19  libleanshared.dylib                 0x000000010a152570 lean_main + 488
+20  dyld                                0x000000019b687e88 start + 6688
+Build completed successfully (2894 jobs).
+AXIOM_CONTRACT_OK: Poincare.GroundedTopologyUniversalSourceStatement
+AXIOM_CONTRACT_OK: Poincare.GroundedTopologyThreeSphereCoveringStatement
+AXIOM_CONTRACT_OK: Poincare.GroundedTopologySource.active_components_cover
+AXIOM_CONTRACT_OK: Poincare.GroundedTopologySource.unique_active_component
+AXIOM_CONTRACT_OK: Poincare.poincare_statement_of_groundedTopologySources_and_covering
+FROZEN_CONTRACT_OK: Poincare.GroundedTopologyUniversalSourceStatement
+FROZEN_CONTRACT_OK: Poincare.GroundedTopologyThreeSphereCoveringStatement
+FROZEN_CONTRACT_OK: Poincare.GroundedTopologySource.active_components_cover
+FROZEN_CONTRACT_OK: Poincare.GroundedTopologySource.unique_active_component
+FROZEN_CONTRACT_OK: Poincare.poincare_statement_of_groundedTopologySources_and_covering
+PASS: 5 curated frozen type and axiom contracts; global theorem coverage is not claimed

@@ -1,0 +1,7 @@
+{
+  "chunk_id": "cac17c",
+  "wall_time_seconds": 2.239636208,
+  "exit_code": 1,
+  "original_token_count": 173,
+  "output": "<stdin>:22:2: error: Type mismatch: After simplification, term\n  htail k\n has type\n  LE.le.{0} (Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩)) (⇑γ ⁻¹' U)\nbut is expected to have type\n  LE.le.{u} (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U\n<stdin>:39:2: error: Type mismatch: After simplification, term\n  htail k\n has type\n  LE.le.{0} (Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩)) (⇑γ ⁻¹' U)\nbut is expected to have type\n  LE.le.{u} (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U\n"
+}

@@ -1,0 +1,39 @@
+{
+  "id": "completion-status-contract-repair",
+  "base_commit": "a3b03ff7263b9d610de0a86d00a3a0f4b7f30794",
+  "objective": "Permit honest achieved status snapshots while retaining every live mathematical completion check; current absent endpoint still fails exactly. Reject inconsistent/stale status combinations. No weakening of frozen theorem/axiom/build/interface/root-import requirements.",
+  "allowed_files": [
+    "scripts/completion_audit.sh",
+    "scripts/tests/test_completion_status_contract.py"
+  ],
+  "forbidden": [
+    "Poincare/**",
+    "Poincare.lean",
+    "audit/**",
+    "lean-toolchain",
+    "lake-manifest.json",
+    "harness/v2/contracts/**"
+  ],
+  "context": [
+    "README.md",
+    "HANDOFF.md",
+    "docs/PROJECT_MAP.md",
+    "AGENTS.md",
+    "scripts/completion_audit.sh",
+    "scripts/write_status_summary.sh",
+    "scripts/tests/test_completion_gate_reuse.py",
+    "scripts/verification_receipts.py"
+  ],
+  "acceptance": [
+    "python3 -m unittest scripts.tests.test_completion_status_contract scripts.tests.test_completion_gate_reuse",
+    "sh -n scripts/completion_audit.sh",
+    "git diff --check",
+    "orchestrator fresh negative completion checkpoint retains exactly missing reserved theorem failures"
+  ],
+  "stop_conditions": [
+    "Preserve mathematical probes byte-identical and source-bound cache rules.",
+    "Do not use mocked positive fixtures as proof evidence.",
+    "If status contract needs broader semantics, report exact blocker before widening scope."
+  ],
+  "backend": "local Codex helper; not registered Pi Job"
+}

@@ -1,0 +1,851 @@
+{
+  "option": "backward.isDefEq.respectTransparency false",
+  "changes": [
+    {
+      "kind": "definitionally equal countable preimage",
+      "count": 2,
+      "old": "    simpa [t] using hs.preimage Subtype.val_injective",
+      "new": "    change (Subtype.val \u207b\u00b9' s).Countable\n    exact hs.preimage Subtype.val_injective"
+    },
+    {
+      "baseline_line": 2631,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _)",
+      "new": ""
+    },
+    {
+      "baseline_line": 2652,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "          exact Path.Homotopic.refl _)) := by",
+      "new": ""
+    },
+    {
+      "baseline_line": 6876,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uPts] using hclose",
+      "new": "    simpa [uPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 7044,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vPts] using hclose",
+      "new": "    simpa [vPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 9453,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vLastPts] using hclose",
+      "new": "    simpa [vLastPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 9726,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uLastPts] using hclose",
+      "new": "    simpa [uLastPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 10081,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uLastPts] using hclose",
+      "new": "    simpa [uLastPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 10574,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vFinalPts] using hclose",
+      "new": "    simpa [vFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 10784,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vFinalPts] using hclose",
+      "new": "    simpa [vFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 11377,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uFinalPts] using hclose",
+      "new": "    simpa [uFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 11641,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uFinalPts] using hclose",
+      "new": "    simpa [uFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 12405,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vUltraPts] using hclose",
+      "new": "    simpa [vUltraPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 12715,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [vUltraPts] using hclose",
+      "new": "    simpa [vUltraPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 13384,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [uUltraPts] using hclose",
+      "new": "    simpa [uUltraPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 18930,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [northLastPts] using hclose",
+      "new": "    simpa [northLastPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 19297,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [southLastPts] using hclose",
+      "new": "    simpa [southLastPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 19793,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [southFinalPts] using hclose",
+      "new": "    simpa [southFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 20107,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [northFinalPts] using hclose",
+      "new": "    simpa [northFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 21579,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [northFinalPts] using hclose",
+      "new": "    simpa [northFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 21956,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [southFinalPts] using hclose",
+      "new": "    simpa [southFinalPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 22374,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [southEndPts] using hclose",
+      "new": "    simpa [southEndPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 22851,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [northEndPts] using hclose",
+      "new": "    simpa [northEndPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 23312,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [northEndPts] using hclose",
+      "new": "    simpa [northEndPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 23794,
+      "kind": "explicit Fin.last reduction",
+      "old": "    simpa [southEndPts] using hclose",
+      "new": "    simpa [southEndPts, Fin.last] using hclose"
+    },
+    {
+      "baseline_line": 27654,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 27736,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 27849,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 27870,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28001,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28022,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28145,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28166,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28183,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28320,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28341,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28358,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28511,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28532,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28549,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28566,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28734,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28755,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28772,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28789,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28975,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 28996,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29013,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29030,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29047,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29250,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29271,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29288,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29305,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29322,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29542,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29563,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29580,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29597,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29614,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29631,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29880,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29901,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29918,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29935,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29952,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29969,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 29986,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30273,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30294,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30311,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30328,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30345,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30362,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30379,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30396,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30717,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30738,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30755,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30772,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30789,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30806,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30823,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30840,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 30857,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31152,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31173,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31190,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31207,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31224,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31241,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31490,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31511,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31528,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31545,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31562,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31579,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31596,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31883,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31904,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31921,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31938,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31955,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31972,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 31989,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32006,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32327,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32348,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32365,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32382,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32399,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32416,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32433,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32450,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 32467,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      rfl",
+      "new": ""
+    },
+    {
+      "baseline_line": 33849,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 34339,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 34898,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 35529,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 36125,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 36405,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 36755,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 37245,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 37804,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 38434,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 38855,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 39205,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 39484,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 39764,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 40043,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 40253,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 40463,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 40673,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "      exact (path_trans_cast_eq_trans_cast_target",
+      "new": ""
+    },
+    {
+      "baseline_line": 42848,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _",
+      "new": ""
+    },
+    {
+      "baseline_line": 42942,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _",
+      "new": ""
+    },
+    {
+      "baseline_line": 43078,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    },
+    {
+      "baseline_line": 43176,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    },
+    {
+      "baseline_line": 43258,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    },
+    {
+      "baseline_line": 43338,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    },
+    {
+      "baseline_line": 43479,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    },
+    {
+      "baseline_line": 43568,
+      "kind": "compiler-confirmed redundant tactic",
+      "old": "    exact Path.Homotopic.refl _))",
+      "new": ""
+    }
+  ]
+}

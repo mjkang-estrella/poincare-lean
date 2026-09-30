@@ -1,0 +1,7 @@
+{
+  "chunk_id": "9c0db5",
+  "wall_time_seconds": 2.1880085,
+  "exit_code": 0,
+  "original_token_count": 163,
+  "output": "<stdin>:5:21: warning: Variable name `hstart0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hstart0\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n<stdin>:26:21: warning: Variable name `hstart0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hstart0\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n"
+}

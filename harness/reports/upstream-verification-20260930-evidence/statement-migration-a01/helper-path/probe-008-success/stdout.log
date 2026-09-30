@@ -1,0 +1,12 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-008-success/Probe.lean:101:0: warning: automatically included section variable(s) unused in theorem `ChartDiff.targetEmbedding`:
+  [Nonempty ↑{q}ᶜ]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty ↑{q}ᶜ] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-008-success/Probe.lean:104:0: warning: automatically included section variable(s) unused in theorem `ChartDiff.sourceEmbedding`:
+  [Nonempty X]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Nonempty X] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

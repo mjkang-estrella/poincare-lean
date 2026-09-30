@@ -1,0 +1,18 @@
+{
+  "status": "completed",
+  "evidence_origin": "Copied exactly from completed tool calls and retained responses; no probe was rerun.",
+  "cwd": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "explicit_environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "inherited_environment": "Not separately captured by the tool.",
+  "shell": "Not explicitly supplied; exec_command default shell was used. Session environment declares zsh.",
+  "command_file": "command.sh",
+  "source_file": "stdin.lean",
+  "captured_output_file": "stdout-stderr.log",
+  "output_capture": "Tool retained a merged stdout/stderr stream. Separate streams unavailable.",
+  "exit_code": 0,
+  "timing": "Per-call wall_time_seconds retained verbatim in tool-captures.json. Absolute start/end timestamps and total process wall duration unavailable.",
+  "source_editing": "No repository Lean source edits. This record saves the completed stdin probe source.",
+  "full_build": "Not run."
+}

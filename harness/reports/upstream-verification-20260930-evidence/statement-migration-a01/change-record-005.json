@@ -1,0 +1,22 @@
+[
+  {
+    "old": "simpa [tailSegs, Nat.add_assoc] using htailNorth k",
+    "new": "simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailNorth k",
+    "count": 9
+  },
+  {
+    "old": "simpa [tailSegs, Nat.add_assoc] using htailSouth k",
+    "new": "simpa [tailSegs, Path.subpath, Nat.add_assoc] using htailSouth k",
+    "count": 9
+  },
+  {
+    "kind": "explicit typed pathCast endpoints to avoid unsolved metavar endpoints",
+    "count": 2,
+    "embedded_Prop_proof": true
+  },
+  {
+    "kind": "direct exact mapped homotopy as independently probed",
+    "old": "  have hpMap : pU.map continuous_subtype_val = p := by\n    apply Path.ext\n    rfl\n  have hqMap : qU.map continuous_subtype_val = q := by\n    apply Path.ext\n    rfl\n  simpa only [hpMap, hqMap] using hU.map \u27e8Subtype.val, continuous_subtype_val\u27e9",
+    "new": "  exact hU.map \u27e8Subtype.val, continuous_subtype_val\u27e9"
+  }
+]

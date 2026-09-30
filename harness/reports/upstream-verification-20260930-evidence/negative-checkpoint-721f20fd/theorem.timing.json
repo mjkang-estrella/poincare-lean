@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/theorem_contract_audit.sh"
+  ],
+  "duration_seconds": 14.642036,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:48:56.411349Z",
+  "label": "theorem",
+  "started_at": "2026-09-30T18:48:41.769100Z"
+}

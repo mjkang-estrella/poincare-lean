@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "env",
+    "COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT=1",
+    "COMPLETION_AUDIT_GATE_RESULTS_DIR=/var/folders/ym/hprbgc291ll1k8t9g4ljz7wh0000gn/T//poincare-status.20381-LsnsfY",
+    "sh",
+    "scripts/completion_audit.sh"
+  ],
+  "duration_seconds": 156.246024,
+  "exit_code": 1,
+  "finished_at": "2026-09-30T18:53:53.193687Z",
+  "label": "completion",
+  "started_at": "2026-09-30T18:51:16.947357Z"
+}

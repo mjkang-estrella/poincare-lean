@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/root_import_audit.sh"
+  ],
+  "duration_seconds": 49.813263,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:50:34.796851Z",
+  "label": "root_import",
+  "started_at": "2026-09-30T18:49:44.983341Z"
+}

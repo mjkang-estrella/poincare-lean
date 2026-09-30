@@ -1,0 +1,13 @@
+[
+  {
+    "old": "Set.Icc.convexCombo",
+    "new": "Set.Icc.convexComb",
+    "count": 2,
+    "kind": "renamed actual API in proof tactic only"
+  },
+  {
+    "old": "  letI : LocPathConnectedSpace ThreeSphere :=\n    ChartedSpace.locPathConnectedSpace\n      (H := EuclideanSpace \u211d (Fin 3)) (M := ThreeSphere)\n  exact (threeSphere_stereographic_sources_inter_isOpen a b).locPathConnectedSpace",
+    "new": "  letI : LocallyPathConnectedSpace ThreeSphere :=\n    ChartedSpace.locallyPathConnectedSpace\n      (H := EuclideanSpace \u211d (Fin 3)) (M := ThreeSphere)\n  exact (threeSphere_stereographic_sources_inter_isOpen a b).locallyPathConnectedSpace",
+    "kind": "current locally-path-connected proof-local instance and API"
+  }
+]

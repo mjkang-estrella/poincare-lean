@@ -1,0 +1,142 @@
+[
+  {
+    "attempt": "attempt-000-baseline",
+    "exit_code": 1,
+    "elapsed_seconds": 72.64266987505835,
+    "end": "2026-09-30T17:21:42.312485+00:00",
+    "error_count": 236,
+    "first_errors": [
+      [
+        "397",
+        "8",
+        "Type mismatch: After simplification, term"
+      ],
+      [
+        "417",
+        "10",
+        "Type mismatch: After simplification, term"
+      ],
+      [
+        "419",
+        "23",
+        "Type mismatch: After simplification, term"
+      ],
+      [
+        "963",
+        "25",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ]
+    ]
+  },
+  {
+    "attempt": "attempt-001-transparency-option",
+    "exit_code": 1,
+    "elapsed_seconds": 65.17876045801677,
+    "end": "2026-09-30T17:23:24.044150+00:00",
+    "error_count": 212,
+    "first_errors": [
+      [
+        "419",
+        "23",
+        "Type mismatch: After simplification, term"
+      ],
+      [
+        "963",
+        "25",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "964",
+        "16",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "1654",
+        "2",
+        "Type mismatch: After simplification, term"
+      ]
+    ]
+  },
+  {
+    "attempt": "attempt-002-goal-and-fin-compat",
+    "exit_code": 1,
+    "elapsed_seconds": 70.17742995801382,
+    "end": "2026-09-30T17:26:12.318479+00:00",
+    "error_count": 70,
+    "first_errors": [
+      [
+        "422",
+        "23",
+        "Type mismatch: After simplification, term"
+      ],
+      [
+        "966",
+        "25",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "967",
+        "16",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "1657",
+        "2",
+        "Type mismatch: After simplification, term"
+      ]
+    ]
+  },
+  {
+    "attempt": "attempt-003-explicit-compat",
+    "exit_code": 1,
+    "elapsed_seconds": 73.6315333340317,
+    "end": "2026-09-30T17:29:57.195469+00:00",
+    "error_count": 27,
+    "first_errors": [
+      [
+        "968",
+        "25",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "969",
+        "16",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "3629",
+        "8",
+        "failed to synthesize instance of type class"
+      ],
+      [
+        "33527",
+        "6",
+        "Type mismatch: After simplification, term"
+      ]
+    ]
+  },
+  {
+    "attempt": "attempt-004-subpath-cast-completion",
+    "exit_code": 1,
+    "elapsed_seconds": 70.09235841594636,
+    "end": "2026-09-30T17:31:53.519588+00:00",
+    "error_count": 3,
+    "first_errors": [
+      [
+        "968",
+        "25",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "969",
+        "16",
+        "Unknown constant `Set.Icc.convexCombo`"
+      ],
+      [
+        "3629",
+        "8",
+        "failed to synthesize instance of type class"
+      ]
+    ]
+  }
+]

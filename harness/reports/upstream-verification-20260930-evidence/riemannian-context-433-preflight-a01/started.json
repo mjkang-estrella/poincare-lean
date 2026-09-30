@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RiemannianContext.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T18:45:02.266747+00:00",
+  "source_head": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

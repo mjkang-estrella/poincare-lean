@@ -1,0 +1,13 @@
+Preserve the canonical statement interface on Lean 4.33
+
+Mathlib API renames and Lean's stricter simplifier comparison prevent the
+existing statement proofs from elaborating under the pinned upstream toolchain.
+Adapt only proof terms, explicit index normalization, and elaborator
+transparency while preserving the canonical target and computational data.
+
+Constraint: Preserve mathematical interfaces modulo Prop proof irrelevance
+Scope-risk: narrow
+Reversibility: clean
+Tested: Scoped Statement.lean elaboration with Lean 4.33.1 and Mathlib 0df444a
+Tested: Forbidden-term scan and git diff --check
+Not-tested: Root integration and audits under 4.33; orchestrator owns that gate

@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-09-30T17:21:59.325484+00:00",
+  "outside_status_snapshot_byte_identical": true,
+  "base_normalized_sha256": "3012f8a9f269e7725f73bc446964fb68a7226ecf46d503a916933e086a3c23c2",
+  "current_normalized_sha256": "3012f8a9f269e7725f73bc446964fb68a7226ecf46d503a916933e086a3c23c2",
+  "exclusions": [
+    "obsolete unconditional CURRENT_STATUS.md not-achieved content check",
+    "guarded status snapshot contract block"
+  ],
+  "unchanged_scope": "All other script bytes, including mathematical gates, frozen endpoint/type/axiom/proof-placeholder checks, root/import checks, audit payload calls and final completion status decision."
+}

@@ -1,0 +1,21 @@
+[
+  {
+    "kind": "direct contMDiff proof avoids destructive instance simplification",
+    "count": 8
+  },
+  {
+    "old": "    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.1",
+    "new": "    simpa only [rBack, Path.cast_coe, Path.symm_apply, Function.comp_apply] using\n      hrURange \u27e8unitInterval.symm t, rfl\u27e9",
+    "count": 1
+  },
+  {
+    "old": "    simpa [rBack, Path.cast_coe] using (overlapPath (unitInterval.symm t)).2.2",
+    "new": "    simpa only [rBack, Path.cast_coe, Path.symm_apply, Function.comp_apply] using\n      hrVRange \u27e8unitInterval.symm t, rfl\u27e9",
+    "count": 1
+  },
+  {
+    "old": "  simpa [Path.cast] using hCastBack",
+    "new": "  have hleft :\n      (\u03b3.cast hsourceAt htargetAt).cast hsourceAt.symm htargetAt.symm = \u03b3 := by\n    apply Path.ext\n    rfl\n  have hright :\n      ((Path.refl basepoint).cast hsourceAt htargetAt).cast\n        hsourceAt.symm htargetAt.symm = Path.refl basepoint := by\n    apply Path.ext\n    rfl\n  simpa only [hleft, hright] using hCastBack",
+    "count": 1
+  }
+]

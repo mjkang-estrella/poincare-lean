@@ -1,0 +1,6 @@
+{
+  "recorded_at": "2026-09-30T17:21:41.227745+00:00",
+  "task": "statement-433-migration",
+  "clarification": "Obsolete tactic fragments inside Prop proof terms embedded in theorem types may be adapted; review modulo proof irrelevance. Mathematical signature, hypotheses and computational definition data unchanged. Canonical ThreeSphere/PoincareConjectureStatement bytes remain exact. Record such edits separately for independent review.",
+  "reason": "New Mathlib simp closes embedded proof goals earlier, so literal tactic preservation prevents elaboration although mathematical proposition is unchanged."
+}

@@ -1,0 +1,6 @@
+<stdin>:20:2: error: Type mismatch: After simplification, term
+  htail k
+ has type
+  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩.castSucc) (t ⟨↑stop + 1 + ↑k, ⋯⟩.succ))) U
+but is expected to have type
+  @LE.le (Set X) Set.instLE (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U

@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "git",
+    "commit",
+    "-F",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/status-repair-a01/commit-message.txt"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare",
+  "started_at": "2026-09-30T17:23:58.423445+00:00",
+  "finished_at": "2026-09-30T17:23:58.468990+00:00",
+  "duration_seconds": 0.04539500002283603,
+  "exit_code": 0
+}

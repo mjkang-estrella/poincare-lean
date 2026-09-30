@@ -1,0 +1,22 @@
+{
+  "session_path": "/Users/mjkang/.codex/sessions/2026/09/30/rollout-2026-09-30T10-20-27-01a0f354-fa5f-7fc2-8d38-c6277e278713.jsonl",
+  "record_lines": [
+    136,
+    138,
+    141,
+    143
+  ],
+  "record_timestamps": [
+    "2026-09-30T17:27:07.846Z",
+    "2026-09-30T17:27:09.006Z",
+    "2026-09-30T17:27:11.162Z",
+    "2026-09-30T17:27:11.269Z"
+  ],
+  "source_and_command_match": "Saved stdin.lean and command.sh match the JSON-decoded actual custom_tool_call cmd exactly.",
+  "capture_match": "Saved response objects match the JSON content blocks of the actual custom_tool_call_output records.",
+  "timing_addendum": "Session request/response timestamps are preserved here. Exact process start/end timestamps and total process wall duration remain unavailable.",
+  "inherited_environment": "Unavailable; only inline LEAN_NUM_THREADS=1 is known.",
+  "separate_stdout_stderr": "Unavailable; tool retained a merged output stream.",
+  "os_wrapper_argv": "Unavailable.",
+  "reruns": 0
+}

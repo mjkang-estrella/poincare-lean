@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--no-index",
+    "--",
+    "/dev/null",
+    "scripts/tests/test_completion_status_contract.py"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare",
+  "started_at": "2026-09-30T17:18:28.755472+00:00",
+  "finished_at": "2026-09-30T17:18:28.770214+00:00",
+  "duration_seconds": 0.014596167020499706,
+  "exit_code": 1
+}

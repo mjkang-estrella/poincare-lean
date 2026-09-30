@@ -1,0 +1,180 @@
+[
+  {
+    "line_before": 40696,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 40768,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    (by simpa [u, a] using hSub)",
+    "new": "    (by simpa [u, a, Fin.castAdd, Fin.cast] using hSub)"
+  },
+  {
+    "line_before": 40894,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 40975,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    (by simpa [u, b] using hSub)",
+    "new": "    (by simpa [u, b, Fin.castAdd, Fin.cast] using hSub)"
+  },
+  {
+    "line_before": 41101,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 41182,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    (by simpa [u, b] using hSub)",
+    "new": "    (by simpa [u, b, Fin.castAdd, Fin.cast] using hSub)"
+  },
+  {
+    "line_before": 41285,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 41357,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    (by simpa [u, a] using hSub)",
+    "new": "    (by simpa [u, a, Fin.castAdd, Fin.cast] using hSub)"
+  },
+  {
+    "line_before": 41439,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 41510,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, z] using hSub",
+    "new": "    simpa [u, z, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 41617,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 41688,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, z] using hSub",
+    "new": "    simpa [u, z, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 41783,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 41845,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, y] using hSub",
+    "new": "    simpa [u, y, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 41938,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42000,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, y] using hSub",
+    "new": "    simpa [u, y, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42079,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42132,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, x] using hSub",
+    "new": "    simpa [u, x, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42211,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42264,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, x] using hSub",
+    "new": "    simpa [u, x, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42327,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42370,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, w] using hSub",
+    "new": "    simpa [u, w, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42437,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42480,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, w] using hSub",
+    "new": "    simpa [u, w, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42538,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42571,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, v] using hSub",
+    "new": "    simpa [u, v, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "line_before": 42627,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u] using h0",
+    "new": "    simpa [u, Fin.castAdd, Fin.cast] using h0"
+  },
+  {
+    "line_before": 42660,
+    "kind": "explicit Fin.castAdd and Fin.cast normalization",
+    "old": "    simpa [u, v] using hSub",
+    "new": "    simpa [u, v, Fin.castAdd, Fin.cast] using hSub"
+  },
+  {
+    "kind": "kernel-definitional double path cast conversion",
+    "old": "  have hleft :\n      (\u03b3.cast hsourceAt htargetAt).cast hsourceAt.symm htargetAt.symm = \u03b3 := by\n    apply Path.ext\n    rfl\n  have hright :\n      ((Path.refl basepoint).cast hsourceAt htargetAt).cast\n        hsourceAt.symm htargetAt.symm = Path.refl basepoint := by\n    apply Path.ext\n    rfl\n  simpa only [hleft, hright] using hCastBack",
+    "new": "  change Path.Homotopic \u03b3 (Path.refl basepoint) at hCastBack\n  exact hCastBack"
+  },
+  {
+    "kind": "cast quotient homotopy back to original endpoints with Path.ext",
+    "count": 2,
+    "embedded_Prop_proof": true
+  }
+]

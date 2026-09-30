@@ -1,0 +1,47 @@
+[
+  {
+    "old": "        exact hseg (by simpa [hkcast] using hz)",
+    "new": "        change Set.range (F k'.castSucc) \u2286 S at hseg\n        rw [hkcast] at hseg\n        exact hseg hz",
+    "count": 1
+  },
+  {
+    "old": "  simpa [block, j] using hrun j hjle hjlt",
+    "new": "  simpa [block, j, Nat.add_assoc] using hrun j hjle hjlt",
+    "count": 1
+  },
+  {
+    "old": "  simpa [pU, qU] using hU.map \u27e8Subtype.val, continuous_subtype_val\u27e9",
+    "new": "  have hpMap : pU.map continuous_subtype_val = p := by\n    apply Path.ext\n    rfl\n  have hqMap : qU.map continuous_subtype_val = q := by\n    apply Path.ext\n    rfl\n  simpa only [hpMap, hqMap] using hU.map \u27e8Subtype.val, continuous_subtype_val\u27e9",
+    "count": 1
+  },
+  {
+    "old": "    simpa using hStart \u27e80, (tailSegs start).source\u27e9",
+    "new": "    simpa [Fin.castSucc, Fin.castAdd, Fin.castLE] using\n      hStart \u27e80, (tailSegs start).source\u27e9",
+    "count": 1
+  },
+  {
+    "old": "    simpa [A] using hStart \u27e80, (tailSegs start).source\u27e9",
+    "new": "    simpa [A, Fin.castSucc, Fin.castAdd, Fin.castLE] using\n      hStart \u27e80, (tailSegs start).source\u27e9",
+    "count": 2
+  },
+  {
+    "old": "    \u00b7 simpa [coverSet] using hV.preimage \u03b3.continuous",
+    "new": "    \u00b7 change IsOpen (\u03b3 \u207b\u00b9' V)\n      exact hV.preimage \u03b3.continuous",
+    "count": 1
+  },
+  {
+    "old": "    \u00b7 simpa [coverSet] using hU.preimage \u03b3.continuous",
+    "new": "    \u00b7 change IsOpen (\u03b3 \u207b\u00b9' U)\n      exact hU.preimage \u03b3.continuous",
+    "count": 1
+  },
+  {
+    "old": "      simpa [tailSegs] using htailNorth k",
+    "new": "      simpa [tailSegs, Nat.add_assoc] using htailNorth k",
+    "count": 9
+  },
+  {
+    "old": "      simpa [tailSegs] using htailSouth k",
+    "new": "      simpa [tailSegs, Nat.add_assoc] using htailSouth k",
+    "count": 9
+  }
+]

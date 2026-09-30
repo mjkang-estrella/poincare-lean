@@ -1,0 +1,19 @@
+{
+  "observed_at": "2026-09-30T17:14:47.056659+00:00",
+  "repo": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "source_head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+  "tree": "7dcafa0dd485206a66831930fb970f3f27c37d3d",
+  "pinned_files": {
+    "lean-toolchain": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+    "lakefile.toml": "2a5404369d027bb8288a5842e185e430703c6816d19886cda2919a900a7ce548",
+    "lake-manifest.json": "660ee55ac9deabd7be914399979d694405eca813cec1065a551de12711a92264",
+    "DifferentialGeometry/Topology/ThreeManifold/Poincare.lean": "d4c8441788aa7e101fa2cafed792d08678f79ea6bc3ec53519a8a7e15f578ddc",
+    "DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.lean": "cdd66d048afed7ab54ac76641c99a1751743a472d170f374f5cdd9ea388b3482"
+  },
+  "binaries": {
+    "/Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean": "1b370cfcbf44e80d1b004ab1b1ab9a4c73951f9f7c242140bcff9bc577576554",
+    "/Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lake": "58261a1a2fa1a362376c71e02ca854a093e71cc5e6ea64b287a931cb2565273d"
+  },
+  "build_completed": false,
+  "axiom_check_completed": false
+}

@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/semantic_surface_audit.sh"
+  ],
+  "duration_seconds": 48.459421,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:49:44.919486Z",
+  "label": "semantic",
+  "started_at": "2026-09-30T18:48:56.459825Z"
+}

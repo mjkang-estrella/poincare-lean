@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "python3",
+    "-m",
+    "unittest",
+    "scripts.tests.test_completion_status_contract",
+    "scripts.tests.test_completion_gate_reuse"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare",
+  "started_at": "2026-09-30T17:22:09.878559+00:00",
+  "finished_at": "2026-09-30T17:22:20.196742+00:00",
+  "duration_seconds": 10.318031457951292,
+  "exit_code": 0
+}

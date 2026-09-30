@@ -1,0 +1,29 @@
+[
+  {
+    "attempt": "attempt-001-convexComb",
+    "source": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-001-convexComb/stdin.lean",
+    "command": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-001-convexComb/command.sh",
+    "metadata": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-001-convexComb/metadata.json",
+    "tool_captures": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-001-convexComb/tool-captures.json",
+    "captured_stdout_stderr": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-001-convexComb/stdout-stderr.log",
+    "exit_code": 0
+  },
+  {
+    "attempt": "attempt-002-Fin-zero",
+    "source": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-002-Fin-zero/stdin.lean",
+    "command": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-002-Fin-zero/command.sh",
+    "metadata": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-002-Fin-zero/metadata.json",
+    "tool_captures": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-002-Fin-zero/tool-captures.json",
+    "captured_stdout_stderr": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-002-Fin-zero/stdout-stderr.log",
+    "exit_code": 0
+  },
+  {
+    "attempt": "attempt-003-Homotopic-transport",
+    "source": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-003-Homotopic-transport/stdin.lean",
+    "command": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-003-Homotopic-transport/command.sh",
+    "metadata": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-003-Homotopic-transport/metadata.json",
+    "tool_captures": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-003-Homotopic-transport/tool-captures.json",
+    "captured_stdout_stderr": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-late/icc-api/attempt-003-Homotopic-transport/stdout-stderr.log",
+    "exit_code": 0
+  }
+]

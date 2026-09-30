@@ -1,0 +1,11 @@
+== Mathlib gap audit ==
+GAP: mathlib 3D Poincare statements are still proof_wanted
+47:proof_wanted SimplyConnectedSpace.nonempty_homeomorph_sphere_three
+52:proof_wanted SimplyConnectedSpace.nonempty_diffeomorph_sphere_three
+INFO: mathlib proof_wanted 3D Poincare names are not exposed as Lean constants
+== Mathlib proof-wanted dependency guard ==
+PASS: local Lean source does not reference mathlib Poincare proof-wanted shortcut names
+READY: mathlib has smooth Riemannian metric infrastructure
+GAP: Ricci-specific manifold declarations not found
+INFO: no topological Seifert-Van Kampen theorem names found in local mathlib topology/algebraic-topology
+GAP: Ricci-flow-with-surgery / Perelman finite-extinction declarations not found

@@ -1,0 +1,124 @@
+== Semantic surface audit ==
+PASS: semantic surface audit covers route-bearing Poincare declarations
+PASS: semantic surface audit generated #checks for all parser-visible Poincare declarations
+PASS: semantic surface audit generated no stale parser-visible #check lines
+PASS: semantic surface audit has no stale manual #check lines
+PASS: semantic completion certificate constructors expose reserved-theorem endpoints
+PASS: semantic completion certificate constructors expose reserved-payload endpoints
+PASS: semantic completion certificate constructors expose target-statement endpoints
+PASS: semantic completion certificate constructors expose canonical-payload endpoints
+PASS: semantic completion certificate constructors expose project-payload endpoints
+PASS: semantic completion certificate constructors expose canonical-target endpoints
+PASS: semantic completion certificate constructors expose completion-criterion endpoints
+PASS: semantic completion certificate constructors expose canonical-criterion endpoints
+PASS: semantic completion certificate constructors expose full-assembly endpoints
+PASS: semantic completion certificate constructors expose certified-full-assembly endpoints
+PASS: semantic completion certificate constructors expose theoremName payload routes
+PASS: semantic completion certificate constructors expose literal payload routes
+PASS: semantic completion certificate constructors expose canonical_statement payload routes
+PASS: semantic completion certificate constructors expose aggregate_canonical_statement payload routes
+PASS: semantic completion certificate constructors expose aggregate_dependency payload routes
+PASS: semantic completion certificate constructors expose project_statement payload routes
+PASS: semantic boundary-aware completion certificate constructors expose poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation
+PASS: semantic boundary-aware completion certificate constructors expose canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: semantic boundary-aware completion certificate constructors expose theoremName payload equality routes
+PASS: semantic boundary-aware completion certificate constructors expose literal payload equality routes
+PASS: semantic boundary-aware completion certificate constructors expose canonical_statement payload equality routes
+PASS: semantic boundary-aware completion certificate constructors expose aggregate_canonical_statement payload equality routes
+PASS: semantic boundary-aware completion certificate constructors expose aggregate_dependency payload equality routes
+PASS: semantic boundary-aware completion certificate constructors expose project_statement payload equality routes
+PASS: semantic literal payload routes have theorem-name payload counterparts
+PASS: semantic theorem-name payload routes have literal payload counterparts
+PASS: semantic literal payload projection routes have constructor counterparts
+PASS: semantic boundary-aware literal payload routes have theorem-name payload counterparts
+PASS: semantic boundary-aware theorem-name payload routes have literal payload counterparts
+PASS: semantic boundary-aware literal payload projection routes have constructor counterparts
+PASS: semantic canonical_statement payload routes have theorem-name payload counterparts
+PASS: semantic theorem-name payload routes have canonical_statement payload counterparts
+PASS: semantic canonical_statement payload projection routes have constructor counterparts
+PASS: semantic boundary-aware canonical_statement payload routes have theorem-name payload counterparts
+PASS: semantic boundary-aware theorem-name payload routes have canonical_statement payload counterparts
+PASS: semantic boundary-aware canonical_statement payload projection routes have constructor counterparts
+PASS: semantic aggregate_canonical_statement payload routes have theorem-name payload counterparts
+PASS: semantic theorem-name payload routes have aggregate_canonical_statement payload counterparts
+PASS: semantic aggregate_canonical_statement payload projection routes have constructor counterparts
+PASS: semantic boundary-aware aggregate_canonical_statement payload routes have theorem-name payload counterparts
+PASS: semantic boundary-aware theorem-name payload routes have aggregate_canonical_statement payload counterparts
+PASS: semantic boundary-aware aggregate_canonical_statement payload projection routes have constructor counterparts
+PASS: semantic aggregate_dependency payload routes have theorem-name payload counterparts
+PASS: semantic theorem-name payload routes have aggregate_dependency payload counterparts
+PASS: semantic aggregate_dependency payload projection routes have constructor counterparts
+PASS: semantic boundary-aware aggregate_dependency payload routes have theorem-name payload counterparts
+PASS: semantic boundary-aware theorem-name payload routes have aggregate_dependency payload counterparts
+PASS: semantic boundary-aware aggregate_dependency payload projection routes have constructor counterparts
+PASS: semantic project_statement payload routes have theorem-name payload counterparts
+PASS: semantic theorem-name payload routes have project_statement payload counterparts
+PASS: semantic project_statement payload projection routes have constructor counterparts
+PASS: semantic boundary-aware project_statement payload routes have theorem-name payload counterparts
+PASS: semantic boundary-aware theorem-name payload routes have project_statement payload counterparts
+PASS: semantic boundary-aware project_statement payload projection routes have constructor counterparts
+PASS: semantic direct-verification route aliases have package aliases
+PASS: semantic package route aliases have direct-verification aliases outside remaining packaged smooth routes
+PASS: semantic statement route aliases have package aliases
+PASS: semantic statement route aliases have direct-verification aliases
+PASS: semantic finite-extinction route aliases have required counterparts
+PASS: semantic boundary route aliases have required counterparts
+PASS: semantic lifted route aliases have required counterparts
+PASS: semantic extraction-derivation route aliases have required counterparts
+PASS: semantic remaining-dependency route aliases have required counterparts
+PASS: semantic forgetful-dependencies route aliases have required counterparts
+PASS: semantic boundary-certificate route aliases have required counterparts
+PASS: semantic projected-dependency route aliases have required counterparts
+PASS: semantic projected-dependency route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget boundary-aware analytic-foundation certificate route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget boundary-aware analytic derivation-boundary payload certificate route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget boundary-aware analytic derivation certificate route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget boundary-aware finite-extinction certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget top-level boundary-aware completion-certificate projection route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware checked-certificate payload projection route equality contracts expose direct endpoint names
+PASS: CompletionTarget literal-payload checked-certificate bootstrap route equality contracts expose direct endpoint names
+PASS: CompletionTarget remaining-dependency checked-certificate field reconstruction route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package requirement/projection checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package component-requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package milestone requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target component-requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target milestone requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target component extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target package-layer extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget strengthened remaining-package boundary-target milestone extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware theorem-name constructor payload route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware literal-payload constructor payload route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware project-statement constructor payload route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware aggregate-dependency constructor payload route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware literal-payload constructor route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware project-statement constructor route equality contracts expose direct endpoint names
+PASS: CompletionTarget boundary-aware aggregate-dependency payload constructor route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget boundary-aware equation-boundary payload certificate route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly certified extraction route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly package extraction statement route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly one-point recognition project-payload route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly one-point recognition extraction-statement route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly one-point recognition package route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget one-point recognition project endpoint equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget one-point recognition extraction-statement route equality contracts expose direct endpoint names
+PASS: semantic CompletionTarget one-point recognition package route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly package topology extraction-derivation route equality contracts expose direct endpoint names
+PASS: semantic FullAssembly boundary input route equality contracts expose direct endpoint names
+PASS: semantic topology-package statement route equality contract exposes direct endpoint name
+PASS: semantic topology-package extraction statement payload route equality contracts expose direct endpoint names
+PASS: semantic smoothability subobligation bridge payload route equality contract exposes direct endpoint name
+PASS: semantic RicciFlowInterface reserved route equality contracts expose direct endpoint names
+SEMANTIC SURFACE: conditional theorem types, projection lemmas, target contracts, mathlib-shaped adapters, adapter-target/project-target statements, blocker/project-target endpoints, blocker adapter nonempty/full-ledger characterizations, whole-ledger/package-layer/component-slot blocker characterizations, adapter-to-whole-image, whole-ledger-to-image, blocker milestone/package/component image iff bridges, package-to-component image bridges, blocker requirement witness routes, ordinary and strengthened component-slot witness bridges, ordinary and strengthened universal blocker discharge routes, component/package/milestone payload bridges, and ledger crosswalk/package-layer/component-slot/milestone-requirement route check

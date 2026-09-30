@@ -1,0 +1,8 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-fin/probe-004-map-original.lean:54:2: error: Type mismatch: After simplification, term
+  Path.Homotopic.map hU { toFun := Subtype.val, continuous_toFun := continuous_subtype_val }
+ has type
+  @Path.Homotopic Y inst✝¹ (↑xU) (↑yU)
+    ({ toFun := fun t => ⟨p t, ⋯⟩, continuous_toFun := ⋯, source' := ⋯, target' := ⋯ }.map ⋯)
+    ({ toFun := fun t => ⟨q t, ⋯⟩, continuous_toFun := ⋯, source' := ⋯, target' := ⋯ }.map ⋯)
+but is expected to have type
+  @Path.Homotopic Y inst✝¹ x y p q

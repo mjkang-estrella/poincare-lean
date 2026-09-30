@@ -1,0 +1,18 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-fin/probe-014-concat-range-simp.lean:31:4: error: Type mismatch
+  Or.inr hz
+has type
+  ?m.395 ∨ z ∈ Set.range ⇑T
+but is expected to have type
+  z ∈
+    Set.range
+      ⇑((((p.trans (Path.concat (fun i => tailPts ⟨↑i, ⋯⟩) prefixSegs)).trans
+                  (Path.concat (fun i => tailPts ⟨A + ↑i, ⋯⟩) oppSegs)).trans
+              (Path.concat (fun i => tailPts ⟨A + (B + ↑i), ⋯⟩) returnSegs)).trans
+          (Path.concat (fun i => tailPts ⟨A + (B + 1) + ↑i, ⋯⟩) afterSegs))
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-fin/probe-014-concat-range-simp.lean:30:67: warning: This simp argument is unused:
+  Path.trans_range
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [P, O, R, T, prefixPts, oppPts, returnPts, afterPts]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

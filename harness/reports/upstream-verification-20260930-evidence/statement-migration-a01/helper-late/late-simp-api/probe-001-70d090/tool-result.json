@@ -1,0 +1,7 @@
+{
+  "chunk_id": "70d090",
+  "wall_time_seconds": 2.031419417,
+  "exit_code": 1,
+  "original_token_count": 162,
+  "output": "<stdin>:22:4: error: omega could not prove the goal:\na possible counterexample may satisfy the constraints\n  d ≥ 1\n  c ≥ 0\n  c - d ≥ 1\n  b ≥ 0\n  b - c ≤ 0\n  a ≥ 0\n  a - b ≥ 1\n  a - c ≤ 0\nwhere\n a := ↑↑(Fin.last N)\n b := ↑↑⟨↑start + (N - ↑start - 1 + 1), ⋯⟩\n c := ↑N\n d := ↑↑start\n<stdin>:25:21: warning: Variable name `hstart0` is not explicitly referenced.\n\nHint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:\n  [apply] _hstart0\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n"
+}

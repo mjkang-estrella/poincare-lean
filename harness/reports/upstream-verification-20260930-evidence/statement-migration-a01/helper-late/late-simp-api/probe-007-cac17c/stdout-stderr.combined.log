@@ -1,0 +1,12 @@
+<stdin>:22:2: error: Type mismatch: After simplification, term
+  htail k
+ has type
+  LE.le.{0} (Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩)) (⇑γ ⁻¹' U)
+but is expected to have type
+  LE.le.{u} (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U
+<stdin>:39:2: error: Type mismatch: After simplification, term
+  htail k
+ has type
+  LE.le.{0} (Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩)) (⇑γ ⁻¹' U)
+but is expected to have type
+  LE.le.{u} (Set.range ⇑(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩))) U

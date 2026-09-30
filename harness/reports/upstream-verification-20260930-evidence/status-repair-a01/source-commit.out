@@ -1,0 +1,3 @@
+[codex/completion-status-contract-a01 b7701374] Allow completed status without weakening live theorem gates
+ 2 files changed, 231 insertions(+), 14 deletions(-)
+ create mode 100644 scripts/tests/test_completion_status_contract.py

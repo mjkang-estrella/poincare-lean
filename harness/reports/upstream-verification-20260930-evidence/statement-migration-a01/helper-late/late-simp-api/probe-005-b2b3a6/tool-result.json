@@ -1,0 +1,7 @@
+{
+  "chunk_id": "b2b3a6",
+  "wall_time_seconds": 2.571492834,
+  "exit_code": 1,
+  "original_token_count": 173,
+  "output": "Fin.castSucc_mk (n i : ℕ) (h : i < n) : ⟨i, h⟩.castSucc = ⟨i, ⋯⟩\nFin.succ_mk (n i : ℕ) (h : i < n) : ⟨i, h⟩.succ = ⟨i + 1, ⋯⟩\n<stdin>:4:7: error(lean.unknownIdentifier): Unknown constant `Fin.mk_succ`\nFin.coe_castSucc {n : ℕ} (i : Fin n) : ↑i.castSucc = ↑i\nFin.val_succ {n : ℕ} (j : Fin n) : ↑j.succ = ↑j + 1\nFin.val_mk {m n : ℕ} (h : m < n) : ↑⟨m, h⟩ = m\nFin.castSucc {n : ℕ} : Fin n → Fin (n + 1)\n@[implicit_reducible] def Fin.succ : {n : ℕ} → Fin n → Fin (n + 1) :=\nfun {n} x =>\n  match x with\n  | ⟨i, h⟩ => ⟨i + 1, ⋯⟩\n@[implicit_reducible] def Fin.castSucc : {n : ℕ} → Fin n → Fin (n + 1) :=\nfun {n} => Fin.castAdd 1\n"
+}

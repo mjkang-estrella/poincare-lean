@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "sh",
+    "scripts/mathlib_gap_audit.sh"
+  ],
+  "duration_seconds": 8.730624,
+  "exit_code": 0,
+  "finished_at": "2026-09-30T18:48:35.099320Z",
+  "label": "mathlib",
+  "started_at": "2026-09-30T18:48:26.368486Z"
+}

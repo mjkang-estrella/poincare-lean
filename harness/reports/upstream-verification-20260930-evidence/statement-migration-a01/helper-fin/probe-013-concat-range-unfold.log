@@ -1,0 +1,51 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-fin/probe-013-concat-range-unfold.lean:31:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Set.range ⇑(Path.trans ?γ₁ ?γ₂)
+in the target expression
+  z ∈
+    Set.range
+      ⇑((((p.trans (Path.concat (fun i => tailPts ⟨↑i, ⋯⟩) prefixSegs)).trans
+                  (Path.concat (fun i => tailPts ⟨A + ↑i, ⋯⟩) oppSegs)).trans
+              (Path.concat (fun i => tailPts ⟨A + (B + ↑i), ⋯⟩) returnSegs)).trans
+          (Path.concat (fun i => tailPts ⟨A + (B + 1) + ↑i, ⋯⟩) afterSegs))
+
+Y : Type u
+inst✝ : TopologicalSpace Y
+A B C : ℕ
+x₀ : Y
+tailPts : Fin (A + (B + 1) + C + 1) → Y
+tailSegs : (k : Fin (A + (B + 1) + C)) → Path (tailPts k.castSucc) (tailPts k.succ)
+p : Path x₀ (tailPts 0)
+prefixPts : Fin (A + 1) → Y := fun i => tailPts ⟨↑i, ⋯⟩
+prefixSegs : (k : Fin A) → Path (prefixPts k.castSucc) (prefixPts k.succ) := fun k => tailSegs ⟨↑k, ⋯⟩
+oppPts : Fin (B + 1) → Y := fun i => tailPts ⟨A + ↑i, ⋯⟩
+oppSegs : (k : Fin B) → Path (oppPts k.castSucc) (oppPts k.succ) := fun k => tailSegs ⟨A + ↑k, ⋯⟩
+returnPts : Fin (1 + 1) → Y := fun i => tailPts ⟨A + (B + ↑i), ⋯⟩
+returnSegs : (k : Fin 1) → Path (returnPts k.castSucc) (returnPts k.succ) := fun k => tailSegs ⟨A + (B + ↑k), ⋯⟩
+afterPts : Fin (C + 1) → Y := fun i => tailPts ⟨A + (B + 1) + ↑i, ⋯⟩
+afterSegs : (k : Fin C) → Path (afterPts k.castSucc) (afterPts k.succ) := fun k => tailSegs ⟨A + (B + 1) + ↑k, ⋯⟩
+P : Path (prefixPts 0) (prefixPts (Fin.last A)) := Path.concat prefixPts prefixSegs
+O : Path (oppPts 0) (oppPts (Fin.last B)) := Path.concat oppPts oppSegs
+R : Path (returnPts 0) (returnPts (Fin.last 1)) := Path.concat returnPts returnSegs
+T : Path (afterPts 0) (afterPts (Fin.last C)) := Path.concat afterPts afterSegs
+hjoin : oppPts 0 = prefixPts (Fin.last A)
+hCastEq : (((p.trans P).trans (O.cast ⋯ ⋯)).trans R).trans T = (((p.trans P).trans O).trans R).trans T
+hCastEq' : O.cast ⋯ ⋯ = O
+z : Y
+hz : z ∈ Set.range ⇑T
+⊢ z ∈
+    Set.range
+      ⇑((((p.trans (Path.concat (fun i => tailPts ⟨↑i, ⋯⟩) prefixSegs)).trans
+                  (Path.concat (fun i => tailPts ⟨A + ↑i, ⋯⟩) oppSegs)).trans
+              (Path.concat (fun i => tailPts ⟨A + (B + ↑i), ⋯⟩) returnSegs)).trans
+          (Path.concat (fun i => tailPts ⟨A + (B + 1) + ↑i, ⋯⟩) afterSegs))
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Path.concat (fun i => tailPts ⟨↑i, ⋯⟩) prefixSegs
+  has type
+    @Path Y inst✝ (tailPts ⟨↑0, ⋯⟩) (tailPts ⟨↑(Fin.last A), ⋯⟩)
+  but is expected to have type
+    @Path Y inst✝ (tailPts 0) (tailPts ⟨↑(Fin.last A), ⋯⟩)
+  in the application
+    p.trans (Path.concat (fun i => tailPts ⟨↑i, ⋯⟩) prefixSegs)

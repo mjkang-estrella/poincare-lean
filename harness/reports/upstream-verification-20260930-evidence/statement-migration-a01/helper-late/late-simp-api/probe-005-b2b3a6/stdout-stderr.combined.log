@@ -1,0 +1,13 @@
+Fin.castSucc_mk (n i : ℕ) (h : i < n) : ⟨i, h⟩.castSucc = ⟨i, ⋯⟩
+Fin.succ_mk (n i : ℕ) (h : i < n) : ⟨i, h⟩.succ = ⟨i + 1, ⋯⟩
+<stdin>:4:7: error(lean.unknownIdentifier): Unknown constant `Fin.mk_succ`
+Fin.coe_castSucc {n : ℕ} (i : Fin n) : ↑i.castSucc = ↑i
+Fin.val_succ {n : ℕ} (j : Fin n) : ↑j.succ = ↑j + 1
+Fin.val_mk {m n : ℕ} (h : m < n) : ↑⟨m, h⟩ = m
+Fin.castSucc {n : ℕ} : Fin n → Fin (n + 1)
+@[implicit_reducible] def Fin.succ : {n : ℕ} → Fin n → Fin (n + 1) :=
+fun {n} x =>
+  match x with
+  | ⟨i, h⟩ => ⟨i + 1, ⋯⟩
+@[implicit_reducible] def Fin.castSucc : {n : ℕ} → Fin n → Fin (n + 1) :=
+fun {n} => Fin.castAdd 1

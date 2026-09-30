@@ -1,0 +1,6 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-005-path-fin/Probe.lean:91:23: error: Type mismatch: After simplification, term
+  hz
+ has type
+  @Membership.mem Y (Set Y) Set.instMembership (Set.range ⇑(F k)) z
+but is expected to have type
+  @Membership.mem Y (Set Y) Set.instMembership (Set.range ⇑(F k'.castSucc)) z

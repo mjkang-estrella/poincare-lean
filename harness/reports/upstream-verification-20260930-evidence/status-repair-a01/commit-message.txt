@@ -1,0 +1,14 @@
+Allow completed status without weakening live theorem gates
+
+The snapshot contract assumed the reserved theorem was absent, so it rejected
+honest achieved reports and still read old content during status generation.
+Accept unique, consistent achieved/0/proved or incomplete/1/absent rows with
+a matching completion sentinel. Preserve the status file presence check and
+all live mathematical checks byte-for-byte outside the snapshot contract.
+
+Constraint: Only status snapshot validation and fixture regressions changed
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: 21 unittest cases; sh -n; git diff --check; outside-contract byte comparison
+Not-tested: Live negative completion checkpoint reserved for orchestrator

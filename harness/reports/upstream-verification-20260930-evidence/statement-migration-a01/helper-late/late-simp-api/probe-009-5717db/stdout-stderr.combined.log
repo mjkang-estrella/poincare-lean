@@ -1,0 +1,33 @@
+<stdin>:19:25: error: unsolved goals
+X : Type u
+inst✝ : TopologicalSpace X
+x : X
+γ : Path x x
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+h : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)
+⊢ ?m.58 = x
+<stdin>:19:40: error: unsolved goals
+X : Type u
+inst✝ : TopologicalSpace X
+x : X
+γ : Path x x
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+h : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)
+⊢ ?m.59 = x
+<stdin>:18:33: error: unsolved goals
+X : Type u
+inst✝ : TopologicalSpace X
+x : X
+γ : Path x x
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+h : (γ.cast ⋯ ⋯).Homotopic ((Path.refl x).cast ⋯ ⋯)
+⊢ γ.Homotopic (Path.refl x)

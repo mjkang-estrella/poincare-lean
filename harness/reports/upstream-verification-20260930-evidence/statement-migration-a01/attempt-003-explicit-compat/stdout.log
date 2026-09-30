@@ -1,0 +1,2234 @@
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:158:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:170:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:203:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:219:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:252:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:299:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:968:25: error(lean.unknownIdentifier): Unknown constant `Set.Icc.convexCombo`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:969:16: error(lean.unknownIdentifier): Unknown constant `Set.Icc.convexCombo`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3218:0: warning: Definition `threeSphere_stereographicOpenCoverPackage` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3431:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3447:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3539:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3623:4: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3626:9: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3627:4: warning: `ChartedSpace.locPathConnectedSpace` has been deprecated: Use `ChartedSpace.locallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3626:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3629:61: warning: `IsOpen.locPathConnectedSpace` has been deprecated: Use `IsOpen.locallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:3629:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  LocallyPathConnectedSpace ThreeSphere
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4132:4: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4133:76: warning: `Topology.IsOpenEmbedding.locPathConnectedSpace` has been deprecated: Use `Topology.IsOpenEmbedding.locallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4229:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4277:2: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4515:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4755:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4970:13: warning: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:4991:19: warning: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5039:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5055:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5212:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5228:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5254:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5571:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5573:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5590:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5592:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5873:4: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5874:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5875:8: warning: `ChartedSpace.locPathConnectedSpace` has been deprecated: Use `ChartedSpace.locallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5881:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5882:14: warning: `ChartedSpace.locPathConnectedSpace` has been deprecated: Use `ChartedSpace.locallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5889:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:5896:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6006:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6037:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6071:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6099:4: warning: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6111:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:6240:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8531:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8617:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8618:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8629:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8660:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8662:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8664:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8777:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8868:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8930:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8932:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:8934:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9010:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9022:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9024:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9036:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9050:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9062:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9078:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9144:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9146:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:9148:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14001:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14045:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14048:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14051:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14101:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14144:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14147:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14150:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14206:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14209:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14219:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14313:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14316:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14326:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14423:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14426:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14429:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14480:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14483:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14486:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14547:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14550:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14553:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14618:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14621:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14624:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14692:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14695:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14698:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14761:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14764:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:14767:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15065:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15068:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15071:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15106:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15109:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15112:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15170:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15173:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15176:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15238:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15241:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15244:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15293:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15296:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15324:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:15327:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:16592:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:16595:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:16644:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:16647:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17091:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17094:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17097:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17173:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17176:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17179:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17308:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17311:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17314:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17814:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17817:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17820:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17908:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17911:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:17914:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18132:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18135:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18138:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18287:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18290:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18293:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18445:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18448:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18451:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18600:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18603:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:18606:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19034:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19037:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19040:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19401:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19404:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19407:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19914:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19917:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:19920:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:20228:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:20231:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:20234:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:21717:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:21720:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:21723:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22094:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22097:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22100:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22529:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22532:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:22535:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23024:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23027:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23030:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23467:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23470:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23473:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23967:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23970:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:23973:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24107:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24110:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24113:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24414:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24417:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24420:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24726:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24729:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:24732:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25073:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25076:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25079:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25430:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25433:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25436:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25967:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25970:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:25973:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26167:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26170:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26173:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26698:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26701:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26704:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26881:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26884:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:26887:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:27156:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:27159:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:27162:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32584:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32586:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32588:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32645:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32647:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32649:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32695:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32697:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32699:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32778:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32780:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:32782:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:33527:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:33956:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:34455:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:35025:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:35970:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:36190:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:36479:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:36850:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:37349:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:37918:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:38513:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:38919:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:39255:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:39533:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:39810:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:40076:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:40284:6: error: Type mismatch: After simplification, term
+  htailNorth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:40492:6: error: Type mismatch: After simplification, term
+  htailSouth k
+ has type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ⟨x, ⋯⟩ ∈ Set.uIcc (t ⟨↑stop + (1 + ↑k), ⋯⟩) (t ⟨↑stop + (1 + (↑k + 1)), ⋯⟩) → ¬γ ⟨x, ⋯⟩ = -threeSphere_northPole
+but is expected to have type
+  ∀ (x : ℝ) (hp : 0 ≤ x) (hq : x ≤ 1),
+    ¬(γ.subpath (t ⟨↑stop + 1 + ↑k, ⋯⟩) (t ⟨↑stop + 1 + (↑k + 1), ⋯⟩)) ⟨x, ⋯⟩ = -threeSphere_northPole
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43559:28: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ ?m.68 = threeSphere_equatorPoint
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43559:43: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ ?m.69 = threeSphere_equatorPoint
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43552:54: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ γ.Homotopic (Path.refl threeSphere_equatorPoint)
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43576:36: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ ?m.76 = threeSphere_equatorPoint
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43576:51: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ ?m.77 = threeSphere_equatorPoint
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43569:8: error: unsolved goals
+hquotient : ThreeSphereStereographicEquatorLoopFiniteConcatQuotientStatement
+hcollapse : ThreeSphereStereographicEquatorLoopFiniteConcatCollapseStatement
+γ : Path threeSphere_equatorPoint threeSphere_equatorPoint
+N : ℕ
+t : Fin (N + 1) → ↑unitInterval
+h0 : t 0 = 0
+h1 : t (Fin.last N) = 1
+hsegment :
+  ∀ (k : Fin N),
+    Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 threeSphere_northPole).source ∨
+      Set.range ⇑(γ.subpath (t k.castSucc) (t k.succ)) ⊆ (stereographic' 3 (-threeSphere_northPole)).source
+hquot :
+  Path.Homotopic.Quotient.mk (Path.concat (⇑γ ∘ t) fun k => γ.subpath (t k.castSucc) (t k.succ)) =
+    Path.Homotopic.Quotient.mk (γ.cast ⋯ ⋯)
+hcast : (γ.cast ⋯ ⋯).Homotopic ((Path.refl threeSphere_equatorPoint).cast ⋯ ⋯)
+⊢ γ.Homotopic (Path.refl threeSphere_equatorPoint)
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43663:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43665:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43667:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43735:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43736:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:43737:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44058:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44083:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44176:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44206:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44209:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44241:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44300:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44303:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44333:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44372:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44389:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44432:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44441:4: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44458:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44474:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:44582:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45009:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45027:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45143:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45179:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45340:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45380:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45397:10: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:45886:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46106:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46116:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46127:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46138:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46148:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46930:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46972:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:46975:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47019:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47073:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47076:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47132:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47199:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47202:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47272:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47319:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47322:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47491:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47585:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47665:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47668:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47749:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47817:17: warning: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean:47820:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`

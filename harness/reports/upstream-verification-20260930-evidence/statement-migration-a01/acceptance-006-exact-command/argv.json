@@ -1,0 +1,13 @@
+{
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "env": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "start": "2026-09-30T18:09:51.310326+00:00"
+}

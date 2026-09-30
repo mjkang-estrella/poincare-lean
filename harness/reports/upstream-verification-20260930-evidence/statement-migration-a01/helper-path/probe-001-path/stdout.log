@@ -1,0 +1,68 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-001-path/Probe.lean:24:12: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Set.range ⇑(Path.trans ?γ₁ ?γ₂)
+in the target expression
+  z ∈ Set.range ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+
+case pos
+Y : Type u
+inst✝ : TopologicalSpace Y
+S : Set Y
+N : ℕ
+ih :
+  ∀ (p : Fin (N + 1) → Y) (F : (k : Fin N) → Path (p k.castSucc) (p k.succ)),
+    Set.range ⇑(Path.concat p F) ⊆ S → ∀ (k : Fin N), Set.range ⇑(F k) ⊆ S
+p : Fin (N + 1 + 1) → Y
+F : (k : Fin (N + 1)) → Path (p k.castSucc) (p k.succ)
+hconcat : Set.range ⇑(Path.concat p F) ⊆ S
+z : Y
+hz : z ∈ Set.range ⇑(F (Fin.last N))
+hz' : z ∈ Set.range ⇑(Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc) ∪ Set.range ⇑(F (Fin.last N))
+⊢ z ∈ Set.range ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    (Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N))
+  has type
+    @Path Y inst✝ ((p ∘ Fin.castSucc) 0) (p (Fin.last N).succ)
+  but is expected to have type
+    @Path Y inst✝ (p 0) (p (Fin.last (N + 1)))
+  in the application
+    ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-001-path/Probe.lean:45:14: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Set.range ⇑(Path.trans ?γ₁ ?γ₂)
+in the target expression
+  y ∈ Set.range ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+
+Y : Type u
+inst✝ : TopologicalSpace Y
+S : Set Y
+N : ℕ
+ih :
+  ∀ (p : Fin (N + 1) → Y) (F : (k : Fin N) → Path (p k.castSucc) (p k.succ)),
+    Set.range ⇑(Path.concat p F) ⊆ S → ∀ (k : Fin N), Set.range ⇑(F k) ⊆ S
+p : Fin (N + 1 + 1) → Y
+F : (k : Fin (N + 1)) → Path (p k.castSucc) (p k.succ)
+hconcat : Set.range ⇑(Path.concat p F) ⊆ S
+k : Fin (N + 1)
+z : Y
+hz : z ∈ Set.range ⇑(F k)
+hk : ¬k = Fin.last N
+k' : Fin N := ⟨↑k, ⋯⟩
+hkcast : k'.castSucc = k
+y : Y
+hy : y ∈ Set.range ⇑(Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc)
+hy' : y ∈ Set.range ⇑(Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc) ∪ Set.range ⇑(F (Fin.last N))
+⊢ y ∈ Set.range ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    (Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N))
+  has type
+    @Path Y inst✝ ((p ∘ Fin.castSucc) 0) (p (Fin.last N).succ)
+  but is expected to have type
+    @Path Y inst✝ (p 0) (p (Fin.last (N + 1)))
+  in the application
+    ⇑((Path.concat (p ∘ Fin.castSucc) fun k => F k.castSucc).trans (F (Fin.last N)))
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-001-path/Probe.lean:48:8: error: `simp` made no progress

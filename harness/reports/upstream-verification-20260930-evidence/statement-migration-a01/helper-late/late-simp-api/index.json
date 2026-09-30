@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "source_session": "/Users/mjkang/.codex/sessions/2026/09/30/rollout-2026-09-30T10-20-06-01a0f354-a730-7fe3-921f-1c23a16502ee.jsonl",
+  "probe_count": 11,
+  "probes": [
+    {
+      "directory": "probe-001-70d090",
+      "chunk_id": "70d090",
+      "call_id": "call_Ekyjgv6R0kzkVMh6TWm2TLAv",
+      "exit_code": 1,
+      "wall_time_seconds": 2.031419417,
+      "source_sha256": "576c049e3eda54a7ab4dafd1e308fb3e34c208dfa4c7b23845a0f110fe863b43"
+    },
+    {
+      "directory": "probe-002-9c0db5",
+      "chunk_id": "9c0db5",
+      "call_id": "call_r25PIN4QkVBKjoWBMQv1a41R",
+      "exit_code": 0,
+      "wall_time_seconds": 2.1880085,
+      "source_sha256": "fca67fd1378b9b2a5ab05e34c0637f98dbe44ec11a9c2c13a51e79075b9264ef"
+    },
+    {
+      "directory": "probe-003-5674da",
+      "chunk_id": "5674da",
+      "call_id": "call_80L6xRcBTB7IaigT8GRTOMnm",
+      "exit_code": 0,
+      "wall_time_seconds": 2.081750417,
+      "source_sha256": "bac0092cbff9a44bed1586e66a1688e05eba4595cd2e47cbc809ecf78aa56927"
+    },
+    {
+      "directory": "probe-004-e529a9",
+      "chunk_id": "e529a9",
+      "call_id": "call_6Tc17lPSHz3vNLkcaSlByg6y",
+      "exit_code": 1,
+      "wall_time_seconds": 2.126882208,
+      "source_sha256": "072b40a531d36753498d2f897a3a38ffbf96fd185325fd702162b7cf14daa48d"
+    },
+    {
+      "directory": "probe-005-b2b3a6",
+      "chunk_id": "b2b3a6",
+      "call_id": "call_lfqiB2PeeMAuzqgFFA00x0dI",
+      "exit_code": 1,
+      "wall_time_seconds": 2.571492834,
+      "source_sha256": "83167d4057e3a4afc98e4e02fa19a368b8039eef20ea3688e97596125ed17958"
+    },
+    {
+      "directory": "probe-006-5dd031",
+      "chunk_id": "5dd031",
+      "call_id": "call_mc8F3Klf2IW5ctCCzTHf1lhD",
+      "exit_code": 1,
+      "wall_time_seconds": 2.09806725,
+      "source_sha256": "24733eac39431ed323d96067caf36e0a268c5a221b21068d7e3f94b05504c6e6"
+    },
+    {
+      "directory": "probe-007-cac17c",
+      "chunk_id": "cac17c",
+      "call_id": "call_ZdD11tw0GbOOvYklHse133in",
+      "exit_code": 1,
+      "wall_time_seconds": 2.239636208,
+      "source_sha256": "f74c12437a4aeaf9b133be3fba4c4dcdd6f08a49762d9059d6ee0b23fb8448fb"
+    },
+    {
+      "directory": "probe-008-ac7c13",
+      "chunk_id": "ac7c13",
+      "call_id": "call_c8jf4HAsXlIfB9p10og1C0Z4",
+      "exit_code": 1,
+      "wall_time_seconds": 2.351526458,
+      "source_sha256": "9f9f0ce9f140cc9e7609659262677456b8f6e5c2b6e71cdaf6a0d7ce0e77bc9f"
+    },
+    {
+      "directory": "probe-009-5717db",
+      "chunk_id": "5717db",
+      "call_id": "call_Btv4diavZXrt2Rrij1wS7awG",
+      "exit_code": 1,
+      "wall_time_seconds": 2.2853793749999998,
+      "source_sha256": "3b9e1df8683bde0536ab3bc1ad615a97c53f62556f5e1fab5e5a67edb0cffe3d"
+    },
+    {
+      "directory": "probe-010-3c4f58",
+      "chunk_id": "3c4f58",
+      "call_id": "call_SY3nYEYPyQQigJ17wY9TDHAB",
+      "exit_code": 0,
+      "wall_time_seconds": 2.811206083,
+      "source_sha256": "c080a9ce2c863056cc262ecdb6bb926946eaa9ed48a1368fb70f7abee8721e15"
+    },
+    {
+      "directory": "probe-011-d8bd45",
+      "chunk_id": "d8bd45",
+      "call_id": "call_tCYU1OChjhixxs9GXhesUtiB",
+      "exit_code": 0,
+      "wall_time_seconds": 2.233724625,
+      "source_sha256": "05b8beb5d8fdf7be1bc155d8235c4b2b4a4c3605977f9d17c7f0a67e4af38e62"
+    }
+  ]
+}

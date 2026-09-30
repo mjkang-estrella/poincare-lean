@@ -1,0 +1,112 @@
+== Axiom footprint audit ==
+PASS: generalized route counterparts are present in axiom audit surface
+PASS: projected-dependency route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware analytic-foundation certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware analytic derivation-boundary payload certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware analytic derivation certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware finite-extinction certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget top-level boundary-aware completion-certificate projection route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware checked-certificate payload projection route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget literal-payload checked-certificate bootstrap route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget remaining-dependency checked-certificate field reconstruction route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package requirement/projection checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package component-requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package milestone requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target component-requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target package-layer requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target milestone requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target component extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target package-layer extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget strengthened remaining-package boundary-target milestone extraction-derivation requirements payload checked-certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware theorem-name constructor payload route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware literal-payload constructor payload route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware project-statement constructor payload route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware aggregate-dependency constructor payload route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware literal-payload constructor route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware project-statement constructor route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware aggregate-dependency payload constructor route equality contracts expose direct endpoint names in axiom audit surface
+PASS: CompletionTarget boundary-aware equation-boundary payload certificate route equality contracts expose direct endpoint names in axiom audit surface
+PASS: RicciFlowInterface reserved route equality contracts expose direct endpoint names in axiom audit surface
+PASS: FullAssembly certified extraction route equality contracts expose direct endpoint names in axiom audit surface
+PASS: FullAssembly package extraction statement route equality contracts expose direct endpoint names in axiom audit surface
+PASS: FullAssembly package topology extraction-derivation route equality contracts expose direct endpoint names in axiom audit surface
+PASS: FullAssembly boundary input route equality contracts expose direct endpoint names in axiom audit surface
+PASS: topology-package statement route equality contract exposes direct endpoint name in axiom audit surface
+PASS: topology-package extraction statement payload route equality contracts expose direct endpoint names in axiom audit surface
+PASS: smoothability subobligation bridge payload route equality contract exposes direct endpoint name in axiom audit surface
+PASS: route suffix counterparts are present in axiom audit surface
+PASS: equation-boundary payload route cluster counterparts are present in axiom audit surface
+PASS: axiom audit literal payload routes have theorem-name counterparts
+PASS: axiom audit theorem-name payload routes have literal counterparts
+PASS: axiom audit literal payload routes have constructor counterparts
+PASS: axiom audit boundary-aware literal payload routes have theorem-name counterparts
+PASS: axiom audit boundary-aware theorem-name payload routes have literal counterparts
+PASS: axiom audit boundary-aware literal payload routes have constructor counterparts
+PASS: axiom audit canonical_statement payload routes have theorem-name counterparts
+PASS: axiom audit theorem-name payload routes have canonical_statement counterparts
+PASS: axiom audit canonical_statement payload routes have constructor counterparts
+PASS: axiom audit boundary-aware canonical_statement payload routes have theorem-name counterparts
+PASS: axiom audit boundary-aware theorem-name payload routes have canonical_statement counterparts
+PASS: axiom audit boundary-aware canonical_statement payload routes have constructor counterparts
+PASS: axiom audit aggregate_canonical_statement payload routes have theorem-name counterparts
+PASS: axiom audit theorem-name payload routes have aggregate_canonical_statement counterparts
+PASS: axiom audit aggregate_canonical_statement payload routes have constructor counterparts
+PASS: axiom audit boundary-aware aggregate_canonical_statement payload routes have theorem-name counterparts
+PASS: axiom audit boundary-aware theorem-name payload routes have aggregate_canonical_statement counterparts
+PASS: axiom audit boundary-aware aggregate_canonical_statement payload routes have constructor counterparts
+PASS: axiom audit aggregate_dependency payload routes have theorem-name counterparts
+PASS: axiom audit theorem-name payload routes have aggregate_dependency counterparts
+PASS: axiom audit aggregate_dependency payload routes have constructor counterparts
+PASS: axiom audit boundary-aware aggregate_dependency payload routes have theorem-name counterparts
+PASS: axiom audit boundary-aware theorem-name payload routes have aggregate_dependency counterparts
+PASS: axiom audit boundary-aware aggregate_dependency payload routes have constructor counterparts
+PASS: axiom audit project_statement payload routes have theorem-name counterparts
+PASS: axiom audit theorem-name payload routes have project_statement counterparts
+PASS: axiom audit project_statement payload routes have constructor counterparts
+PASS: axiom audit boundary-aware project_statement payload routes have theorem-name counterparts
+PASS: axiom audit boundary-aware theorem-name payload routes have project_statement counterparts
+PASS: axiom audit boundary-aware project_statement payload routes have constructor counterparts
+PASS: axiom audit completion certificate constructors expose reserved-theorem endpoints
+PASS: axiom audit completion certificate constructors expose reserved-payload endpoints
+PASS: axiom audit completion certificate constructors expose target-statement endpoints
+PASS: axiom audit completion certificate constructors expose canonical-payload endpoints
+PASS: axiom audit completion certificate constructors expose project-payload endpoints
+PASS: axiom audit completion certificate constructors expose canonical-target endpoints
+PASS: axiom audit completion certificate constructors expose completion-criterion endpoints
+PASS: axiom audit completion certificate constructors expose canonical-criterion endpoints
+PASS: axiom audit completion certificate constructors expose full-assembly endpoints
+PASS: axiom audit completion certificate constructors expose certified full-assembly endpoints
+PASS: axiom audit completion certificate constructors expose theoremName payload routes
+PASS: axiom audit completion certificate constructors expose literal payload routes
+PASS: axiom audit completion certificate constructors expose canonical_statement payload routes
+PASS: axiom audit completion certificate constructors expose aggregate_canonical_statement payload routes
+PASS: axiom audit completion certificate constructors expose aggregate_dependency payload routes
+PASS: axiom audit completion certificate constructors expose project_statement payload routes
+PASS: axiom audit boundary-aware constructors expose poincare_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose target_statement_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose canonical_completion_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose canonical_completion_target_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincare_conjecture_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincare_conjecture_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose canonical_completion_criterion_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincare_full_assembly_payload_of_completion_certificate_with_equation_boundary_verification_payload_extraction_derivation
+PASS: axiom audit boundary-aware constructors expose analytic_foundation_with_equation_boundary_statements_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose equation_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose analytic_derivation_and_boundary_payload_statements_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose analytic_derivation_statements_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose canonical_three_sphere_statement_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincareCompletionCertificate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose poincareCompletionCertificate_aggregate_canonical_statement_payload_of_completion_certificate_with_equation_boundary_verification_payload
+PASS: axiom audit boundary-aware constructors expose theoremName payload equality routes
+PASS: axiom audit boundary-aware constructors expose literal payload equality routes
+PASS: axiom audit boundary-aware constructors expose canonical_statement payload equality routes
+PASS: axiom audit boundary-aware constructors expose aggregate_canonical_statement payload equality routes
+PASS: axiom audit boundary-aware constructors expose aggregate_dependency payload equality routes
+PASS: axiom audit boundary-aware constructors expose project_statement payload equality routes
+== Mathlib proof-wanted dependency guard ==
+PASS: local Lean source does not reference mathlib Poincare proof-wanted shortcut names
+AXIOMS: local proof-bearing assembly surface uses only standard mathlib axioms

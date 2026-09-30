@@ -1,0 +1,82 @@
+diff --git a/scripts/completion_audit.sh b/scripts/completion_audit.sh
+index 29323115..621bbd0b 100644
+--- a/scripts/completion_audit.sh
++++ b/scripts/completion_audit.sh
+@@ -153,7 +153,6 @@ check_file_contains "Markdown dependency ledger content" "DEPENDENCY_LEDGER.md"
+ check_file_contains "Mathlib gap analysis content" "MATHLIB_GAP_ANALYSIS.md" '3D statements are currently `proof_wanted`'
+ check_file_contains "External research status content" "EXTERNAL_RESEARCH_STATUS.md" 'No complete Lean proof artifact was found to import'
+ check_file_contains "Progress report content" "POINCARE_FORMALIZATION_REPORT.md" 'Implement a complete Lean proof of the Poincare Conjecture'
+-check_file_contains "Generated current status content" "CURRENT_STATUS.md" '^- Completion: not achieved$'
+ 
+ if rg -q '^(structure|inductive) ExternalFormalizationBlocker\b' Poincare/Milestones.lean &&
+     rg -q '^def externalFormalizationBlockerLedger\b' Poincare/Milestones.lean &&
+@@ -228,18 +227,48 @@ fi
+ if [ "${COMPLETION_AUDIT_SKIP_STATUS_SNAPSHOT:-0}" = "1" ]; then
+   echo "SKIP: generated status snapshot checks disabled during status generation"
+ else
+-if rg -q '^- Completion: not achieved$' CURRENT_STATUS.md &&
+-    rg -q '^- Build status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Interface audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Mathlib gap audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Axiom footprint audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Shape contract audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Theorem contract audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Semantic surface audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Root import audit status: 0$' CURRENT_STATUS.md &&
+-    rg -q '^- Completion audit status: 1$' CURRENT_STATUS.md &&
+-    rg -q '^- Completion boundary status: reserved theorem absent only$' CURRENT_STATUS.md; then
+-  echo "PASS: generated status snapshot records clean scaffold audits, incomplete completion audit, and reserved theorem boundary"
++# A snapshot reports either a proved endpoint or only the absent endpoint.
++# Require unique rows and one matching completion sentinel so conflicting old
++# output cannot satisfy the contract. The live mathematical checks below still
++# decide completion; these status rows are never a theorem certificate.
++if awk '
++    BEGIN {
++      split("Build;Interface audit;Mathlib gap audit;Axiom footprint audit;Shape contract audit;Theorem contract audit;Semantic surface audit;Root import audit", gates, ";")
++    }
++    /^- Completion:/ { completion_count++; completion = $0 }
++    /^- Completion audit status:/ { audit_count++; audit = $0 }
++    /^- Completion boundary status:/ { boundary_count++; boundary = $0 }
++    /^COMPLETION:/ { sentinel_count++; sentinel = $0 }
++    {
++      for (i in gates) {
++        prefix = "- " gates[i] " status:"
++        if (index($0, prefix) == 1) {
++          gate_count[i]++
++          gate_row[i] = $0
++        }
++      }
++    }
++    END {
++      if (completion_count != 1 || audit_count != 1 || boundary_count != 1 || sentinel_count != 1)
++        exit 1
++      for (i in gates)
++        if (gate_count[i] != 1 || gate_row[i] != "- " gates[i] " status: 0")
++          exit 1
++      if (completion == "- Completion: achieved" &&
++          audit == "- Completion audit status: 0" &&
++          boundary == "- Completion boundary status: proved")
++        expected = "COMPLETION: achieved"
++      else if (completion == "- Completion: not achieved" &&
++               audit == "- Completion audit status: 1" &&
++               boundary == "- Completion boundary status: reserved theorem absent only")
++        expected = "COMPLETION: not achieved"
++      else
++        exit 1
++      if (sentinel != expected)
++        exit 1
++    }
++  ' CURRENT_STATUS.md; then
++  echo "PASS: generated status snapshot records clean scaffold audits and coherent completion/boundary evidence"
+ else
+   echo "FAIL: generated status snapshot does not record the current scaffold/completion/boundary state"
+   status=1
+@@ -269,7 +298,7 @@ if rg -q '^Build completed successfully' CURRENT_STATUS.md &&
+     rg -q '^== Root import audit ==$' CURRENT_STATUS.md &&
+     rg -q '^== Axiom footprint audit ==$' CURRENT_STATUS.md &&
+     rg -q '^== Build gate ==$' CURRENT_STATUS.md &&
+-    rg -q '^COMPLETION: not achieved$' CURRENT_STATUS.md; then
++    rg -q '^COMPLETION: (achieved|not achieved)$' CURRENT_STATUS.md; then
+   echo "PASS: generated status snapshot includes sentinel output from each scaffold and completion audit section"
+ else
+   echo "FAIL: generated status snapshot is missing sentinel output from one or more scaffold/completion audit sections"

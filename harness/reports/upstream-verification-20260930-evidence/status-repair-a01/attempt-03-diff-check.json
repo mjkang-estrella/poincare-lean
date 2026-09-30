@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/completion-status-contract/poincare",
+  "started_at": "2026-09-30T17:22:09.878066+00:00",
+  "finished_at": "2026-09-30T17:22:09.907575+00:00",
+  "duration_seconds": 0.029347416944801807,
+  "exit_code": 0
+}

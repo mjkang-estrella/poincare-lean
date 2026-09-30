@@ -1,0 +1,10 @@
+{
+  "README.md": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+  "HANDOFF.md": "bd9515411d8845edf7032388c6071bf0a20f2394fb4c19c3cc66b160224d8ea9",
+  "docs/PROJECT_MAP.md": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+  "AGENTS.md": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+  "scripts/completion_audit.sh": "d926fce622a4c3f706e81656bf9bd7b1e1eb749fe916842778a00be61b4c38d9",
+  "scripts/write_status_summary.sh": "4301012dffef9798c697cd0ff8806ea48ed1363ec034b60694de896bf3917cde",
+  "scripts/tests/test_completion_gate_reuse.py": "56210a3c01731a0734ee674fe88cfc0846e0ec9826a322982e1cfe15bf3646e0",
+  "scripts/verification_receipts.py": "954a3300504b3e37de5a629b784f2f0833b98a6f180886f9be828e07283c684f"
+}

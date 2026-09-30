@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "archive_kind": "completed-read-only-stdin-probe",
+  "ordinal": 5,
+  "call_id": "call_lfqiB2PeeMAuzqgFFA00x0dI",
+  "chunk_id": "b2b3a6",
+  "command": "LEAN_NUM_THREADS=1 lake env lean --stdin <<'LEAN'\nimport Mathlib.Topology.Subpath\n#check Fin.castSucc_mk\n#check Fin.succ_mk\n#check Fin.mk_succ\n#check Fin.coe_castSucc\n#check Fin.val_succ\n#check Fin.val_mk\n#check Fin.castSucc\n#print Fin.succ\n#print Fin.castSucc\nLEAN",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "--stdin"
+  ],
+  "argv_scope": "exact explicit CLI argv; OS shell/wrapper argv was not retained by exec_command",
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "inherited_environment": "unavailable; not captured by original tool call",
+  "cwd": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "shell_option": "omitted in original exec_command request; actual shell/wrapper argv unavailable",
+  "exit_code": 1,
+  "wall_time_seconds": 2.571492834,
+  "timing_scope": "exec_command reported wall-clock duration; CPU time unavailable",
+  "call_transcript_timestamp": "2026-09-30T17:26:33.267Z",
+  "result_transcript_timestamp": "2026-09-30T17:26:35.999Z",
+  "stdout_stderr_separation": "unavailable; original exec_command output is one combined string preserved exactly",
+  "captured_output_truncation": "no truncation indication in retained original tool result",
+  "source_origin": "/Users/mjkang/.codex/sessions/2026/09/30/rollout-2026-09-30T10-20-06-01a0f354-a730-7fe3-921f-1c23a16502ee.jsonl",
+  "source_session_sha256_at_extraction": "41fa35ca65bcc84150624f7c59df74b8face2d9e3ae85d8769e3c600aaf7b869",
+  "files_sha256": {
+    "source.lean": "83167d4057e3a4afc98e4e02fa19a368b8039eef20ea3688e97596125ed17958",
+    "command.sh": "bd3d4353fbd69a6fbd091c8383a4300dea06675bf65b8c49ddcd1bcb941d4482",
+    "stdout-stderr.combined.log": "9db64c98236042a7fab03e3712b6afdbe8baf6ee23b3f5dfadea46e77d571d64",
+    "tool-result.json": "d6659fa48f3d60b76394c02a92251b7bb7b2e5b570ab37ff56a9fca2e03dc5dd",
+    "transcript-records.jsonl": "26def89a69804318daee8eb29fc3bd0572c749134ea32845270d3e5d1d35c4db"
+  }
+}

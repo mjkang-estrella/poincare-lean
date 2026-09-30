@@ -1,0 +1,35 @@
+{
+  "id": "statement-433-migration",
+  "base_commit": "a3b03ff7263b9d610de0a86d00a3a0f4b7f30794",
+  "objective": "Compile the existing unchanged mathematical interface of Poincare/Statement.lean under pinned Lean/Mathlib4.33.1. Adapt proof tactics/API compatibility only. Canonical ThreeSphere and PoincareConjectureStatement and all theorem signatures/definition contents remain unchanged. No assumed theorem/axioms/placeholder bypass.",
+  "allowed_files": [
+    "Poincare/Statement.lean"
+  ],
+  "forbidden": [
+    "Poincare.lean",
+    "lean-toolchain",
+    "lake-manifest.json",
+    "scripts/**",
+    "harness/v2/contracts/**"
+  ],
+  "context": [
+    "README.md",
+    "HANDOFF.md",
+    "docs/PROJECT_MAP.md",
+    "AGENTS.md",
+    "Poincare/Statement.lean",
+    "docs/PROOF_STRATEGY_REVIEW.md"
+  ],
+  "compiler_environment": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "acceptance": [
+    "LEAN_NUM_THREADS=1 lake env lean <absolute owned Statement.lean> in compiler_environment",
+    "comment-aware placeholder scan; git diff --check",
+    "independent signature/definition/diff review; root does not merge into4.30 prematurely"
+  ],
+  "stop_conditions": [
+    "No target/body definition or theorem signature changes.",
+    "If a Mathlib definition changes the mathematical meaning, report exact resisting type.",
+    "Preserve all failures and strongest compiling partial; no stubs."
+  ],
+  "backend": "local Codex helper; not registered Pi Job"
+}

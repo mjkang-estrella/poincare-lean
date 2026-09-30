@@ -1,0 +1,12 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-003-backward-false/Probe.lean:47:23: error: Type mismatch: After simplification, term
+  hz
+ has type
+  ∃ a, ∃ (h : 0 ≤ a ∧ a ≤ 1), (F k) ⟨a, ⋯⟩ = z
+but is expected to have type
+  ∃ a, ∃ (h : 0 ≤ a ∧ a ≤ 1), (F k'.castSucc) ⟨a, ⋯⟩ = z
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/statement-migration-a01/helper-path/probe-003-backward-false/Probe.lean:55:2: error: Type mismatch: After simplification, term
+  Set.Countable.preimage hs Subtype.val_injective
+ has type
+  @Set.Countable { x // x ∈ q } (Subtype.val ⁻¹' s)
+but is expected to have type
+  @Set.Countable ↑q {p | ↑p ∈ s}

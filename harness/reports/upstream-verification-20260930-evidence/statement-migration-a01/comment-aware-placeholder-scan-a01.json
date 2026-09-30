@@ -1,0 +1,14 @@
+{
+  "source": "/Users/mjkang/.codex/worktrees/statement-433-migration/poincare/Poincare/Statement.lean",
+  "source_sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7",
+  "nested_comments_and_strings_ignored": true,
+  "forbidden_tokens": [
+    "sorry",
+    "admit",
+    "axiom",
+    "postulate",
+    "native_decide"
+  ],
+  "matches": [],
+  "pass": true
+}
