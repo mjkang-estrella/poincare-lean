@@ -178,3 +178,10 @@ Pi/Leanstral runtime Jobs. Source/compiler failures, exact type diagnostics,
 readback probes, final diffs and gate logs are archived in gzip manifests.
 Existing dirty work and old branches were preserved. Root direct-import
 coverage is checked before the single integration checkpoint.
+
+The source-bound integration checkpoint at `5feae0855391338af7281ad9165f89e0db6bd7d6` passed
+fresh root source and the full Lake build, interface, mathlib-gap, shape,
+theorem-contract, semantic, root-import and axiom audits. Completion exited 1
+only because the reserved final theorem is absent. Completion is not
+certified; both universal cores and the complete proof goal remain open.
+Evidence: `harness/v2/state/verification/checkpoints/20260930T084421Z-81c7bad93dfb4a109931295b29b3e56a`.
