@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckCompactJetRealization"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckJetRealization.exists_compact_symmetric_realization",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 := ContinuousLinearMap.toNormedAddCommGroup\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 := ContinuousLinearMap.toNormedSpace\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (h : Poincare.DeTurckPrincipalSecondJet.E → Poincare.DeTurckPrincipalSecondJet.Bilin) (z : Poincare.DeTurckPrincipalSecondJet.E) (U : Set Poincare.DeTurckPrincipalSecondJet.E),\nIsOpen U → z ∈ U → ContDiffAt ℝ (2 : WithTop ENat) h z →\n(Filter.Eventually (fun y => ∀ v w : Poincare.DeTurckPrincipalSecondJet.E, h y v w = h y w v) (nhds z)) →\n∃ η : Poincare.DeTurckPrincipalSecondJet.E → ℝ,\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) η ∧ HasCompactSupport η ∧ tsupport η ⊆ U ∧\n(Filter.Eventually (fun y => η y = 1) (nhds z)) ∧\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) (Poincare.DeTurckJetRealization.realized η h z) ∧\nHasCompactSupport (Poincare.DeTurckJetRealization.realized η h z) ∧ tsupport (Poincare.DeTurckJetRealization.realized η h z) ⊆ U ∧\n(∀ y v w : Poincare.DeTurckPrincipalSecondJet.E, Poincare.DeTurckJetRealization.realized η h z y v w = Poincare.DeTurckJetRealization.realized η h z y w v) ∧\nPoincare.DeTurckJetRealization.realized η h z z = h z ∧\nfderiv ℝ (Poincare.DeTurckJetRealization.realized η h z) z = fderiv ℝ h z ∧\nfderiv ℝ (fderiv ℝ (Poincare.DeTurckJetRealization.realized η h z)) z = fderiv ℝ (fderiv ℝ h) z",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+        "sha256": "4e3c86cc24337bd3c130d24db1a80b47e691ab36f9ad0066c539402d0f04b094"
+      },
+      {
+        "path": "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+        "sha256": "9c57ac1cd739060ef25a33fa8ddecb64b3c7e2254d126d456d7ee70cf1ae76df"
+      },
+      {
+        "path": "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+        "sha256": "4e61097a72289621822cd4df53c7e72c00bdee01c179f9506247a2a9ee96e1e9"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+        "sha256": "3b4bc4a8ea08d0f181080b1030ebba69b58575c1601b96c3b5a1e6ed77ed5086"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+        "sha256": "89a616a3273254afc2114d4232241cdccd4153d47cc31ee97e92c275517ab365"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-localization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "87a83ee098cad67d5dcffa68e6ed58741bdc879548b875ca63b57ddc0849b4d6",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-deturck-localization-20260930/realization.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}

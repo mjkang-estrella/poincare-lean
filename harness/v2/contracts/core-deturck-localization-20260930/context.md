@@ -1,0 +1,13 @@
+# Full cutoff localization and actual C2 jet realization
+
+All tasks help UniversalHamiltonConvergenceStatement by real physical flow input construction. Localization/product are consumed by the true global L=dt-DQ(g0) on stored chi_i*h_i, its correct signed residual and contraction. Hessian/C2 and compact symmetric realization are consumed by actual smooth metric variations and differentiated nonlinear covariance on symmetric C2 Graph germs. Both universal cores/final theorem remain open/unchanged; no flow/limit/curvature/coefficient package may replace construction.
+
+Localization uses actual full differential, including Da(G0)[h]:H0 and lowerDifferential. The scalar cutoff product jets include BOTH ordered mixed terms, Hessian cutoff term, and firstOrder(dc.smulRight h); only zeroOrder cancels by true linearity. No symmetric principal assumption or offdiagonal convention. In L=dt-DQ the correction is negative. Algebra at arbitrary base jets is instantiated at actual metric jets on the invertibility zone supplied by the accepted actual coefficient producer. Product theorem must identify actual second fderiv using first-jet equality NEARBY, not at only one point. Stored source entries already include their partition; do not multiply source chi again.
+
+Hessian uses genuine Graph.hasFDeriv_du and fixed smulRightL, finite sums; targetHasFD has no alpha restrictions. Global fixed-time C2 uses 0<alpha and spatial continuity of the same Y carriers; no ordinary joint/time C3 is inferred.
+
+Realization constructs eta from singleton z in open U using actual buffered cutoff, then the explicit quadratic Taylor polynomial of the supplied C2 germ. Use direction-slot Hessian symmetry and covariant-slot symmetry differentiated from eventual tensor symmetry. Match value/D/D2 exactly; no smooth germ equality or full-Holder norm density is claimed. All original nested operator norms and all9 tensor slots remain. This supplies a real compact smooth coefficient field; subsequent global bundle lift and small positive actual metric family remain unproved producers.
+
+Name EVERY local instance uniquely per module in shared namespaces. Prior anonymous compiler-generated helper collision and name-only repair are preserved. Canonical groups/spaces and IsBoundedSMul proved with opNorm_smul_le preserve existing norms/actions; no substitute normalization allowed.
+
+Preserve every source/compiler failure and finaldiff append-only; LEAN_NUM_THREADS=1. Workers are not alone and own only task allowedfile; never revert others/edit main/root/defs/contracts/merge/selfaccept/fullbuild/manage services. Local Codex helper is not a registered Pi/Leanstral Job. Root independently reruns exact scoped gates/actual diff and integrates once per batch.

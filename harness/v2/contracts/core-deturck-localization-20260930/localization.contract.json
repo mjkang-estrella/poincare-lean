@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckLocalization"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckLocalization.differential_cutoff",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 := ContinuousLinearMap.toNormedAddCommGroup\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 := ContinuousLinearMap.toNormedSpace\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n  (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (B : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(DB : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)\n(G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (J0 : Poincare.DeTurckPrincipalSecondJet.Jet1) (H0 : Poincare.DeTurckJetLinearization.Jet2)\n(c : ℝ) (dc : Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] ℝ) (ddc : Poincare.DeTurckPrincipalSecondJet.Bilin) (p : Poincare.DeTurckJetLinearization.Variables),\nPoincare.DeTurckJetLinearization.differential B DB G0 J0 H0 (Poincare.DeTurckLocalization.cutoffVariables c dc ddc p) =\nc • Poincare.DeTurckJetLinearization.differential B DB G0 J0 H0 p +\n(∑ i : Fin 3, ∑ j : Fin 3, Poincare.DeTurckPrincipalSecondJet.inverseEntries G0 i j •\n (dc (Poincare.DeTurckPrincipalSecondJet.basis3 i) • p.1.2 (Poincare.DeTurckPrincipalSecondJet.basis3 j) + dc (Poincare.DeTurckPrincipalSecondJet.basis3 j) • p.1.2 (Poincare.DeTurckPrincipalSecondJet.basis3 i) + ddc (Poincare.DeTurckPrincipalSecondJet.basis3 i) (Poincare.DeTurckPrincipalSecondJet.basis3 j) • p.1.1)) +\nPoincare.DeTurckSpatialCoefficients.firstOrder B DB G0 J0 (dc.smulRight p.1.1)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+        "sha256": "4e3c86cc24337bd3c130d24db1a80b47e691ab36f9ad0066c539402d0f04b094"
+      },
+      {
+        "path": "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+        "sha256": "9c57ac1cd739060ef25a33fa8ddecb64b3c7e2254d126d456d7ee70cf1ae76df"
+      },
+      {
+        "path": "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+        "sha256": "4e61097a72289621822cd4df53c7e72c00bdee01c179f9506247a2a9ee96e1e9"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+        "sha256": "3b4bc4a8ea08d0f181080b1030ebba69b58575c1601b96c3b5a1e6ed77ed5086"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+        "sha256": "89a616a3273254afc2114d4232241cdccd4153d47cc31ee97e92c275517ab365"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-localization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "183cc5dafbfbea4155335cb4a24e2bc899b4b339aaa442e33f6a8becdcf81186",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-deturck-localization-20260930/localization.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}
