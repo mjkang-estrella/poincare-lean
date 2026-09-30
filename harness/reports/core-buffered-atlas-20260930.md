@@ -106,3 +106,11 @@ buffered atlas and produce a common positive lifespan and uniform local-family
 bounds. This must construct the operators; assumed P/R packages or plain-BUC
 remainder witnesses cannot replace them. The true DeTurck nonlinear remainder
 contains spatial derivatives, so a parabolic graph/jet norm is needed.
+
+The integration checkpoint at `27fcdf8a75d084f798c682e3e9d7acedde348361`
+passed the fresh root import, full Lake build, interface, mathlib-gap, shape,
+theorem-contract, semantic, root-import and axiom audits. The completion gate
+reported only the absent reserved final declaration. Neither core existence
+obligation is discharged. The checkpoint receipt and full outputs are archived
+under `core-buffered-atlas-20260930-evidence/integration`; no compiler failure
+evidence was discarded.
