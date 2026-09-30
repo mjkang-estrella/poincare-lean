@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-lower-smooth",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "b34ec6e855538f4cb972d28507cce64553309530",
   "objective": {
     "title": "Construct actual global parametrix lower-smooth for Hamilton inputs",
@@ -133,5 +133,6 @@
       "report_path": "harness/v2/contracts/core-global-parametrix-20260930/lower-smooth.readback.json",
       "report_sha256": "e991700e4d7623ef6df55abf9c1b6b25e4567cd1f75a939cae43a1df8e7bfa38"
     }
-  }
+  },
+  "accepted_commit": "52e5403c304ee969779f6dbee2185492d8a64d03"
 }
