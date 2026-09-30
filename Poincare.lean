@@ -47,6 +47,13 @@ import Poincare.Global.DeTurckCoupledForcingDefinitions
 import Poincare.Global.DeTurckCompactCoefficientExtension
 import Poincare.Global.DeTurckCoupledForcing
 import Poincare.Global.DeTurckTensorGraphJet
+import Poincare.Global.DeTurckLocalizationDefinitions
+import Poincare.Global.DeTurckLocalization
+import Poincare.Global.DeTurckLocalizationProduct
+import Poincare.Global.DeTurckTensorSecondJetDefinitions
+import Poincare.Global.DeTurckTensorSecondJet
+import Poincare.Global.DeTurckJetRealizationDefinitions
+import Poincare.Global.DeTurckCompactJetRealization
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions
