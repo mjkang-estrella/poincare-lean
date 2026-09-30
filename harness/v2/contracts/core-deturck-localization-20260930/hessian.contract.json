@@ -63,9 +63,9 @@
       "reviewer": "deturck-localization-readback",
       "method": "blind-readback",
       "snapshot_sha256": "4c902213d06c01d293af6ddc5ae8d0c14e212b30e96e31475fe897d3d2240047",
-      "verdict": "pending",
+      "verdict": "approved",
       "report_path": "harness/v2/contracts/core-deturck-localization-20260930/hessian.readback.json",
-      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "report_sha256": "44953c565de797d304e13b4b5a1a742a39557813849ca92da6e68b76d9242858"
     }
   }
 }
