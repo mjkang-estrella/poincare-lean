@@ -1,0 +1,11 @@
+{
+  "recorded_at": "2026-09-30T21:16:13.197816+00:00",
+  "authorized_by": "root operational extension instruction",
+  "authorization": "Any later resource-only verification budget overrun can be extended within existing root instruction to complete exact acceptance.",
+  "extension_minutes": 15,
+  "renewed_deadline": "2026-09-30T21:31:13.197816+00:00",
+  "scope": "Resource-only completed evidence sealing, copying and final handoff. All compiled gates and scoped commit already completed; no source/proof/type scope changes.",
+  "host_clock_gap": "scoped commit ended20:58:26.929045UTC; evidence copy timestamp21:15:51.736886UTC despite no additional compiler command",
+  "commit": "492b3c025d8df1f5d417e9f870b099f909a46072",
+  "original_budget_and_artifacts_preserved": true
+}

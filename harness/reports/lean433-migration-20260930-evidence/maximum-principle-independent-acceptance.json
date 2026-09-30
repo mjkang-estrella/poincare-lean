@@ -1,0 +1,12 @@
+{
+  "candidate": "492b3c025d8df1f5d417e9f870b099f909a46072",
+  "integration_commit": "36550ffa",
+  "accepted": true,
+  "base": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "independent_lean": 0,
+  "independent_build": 0,
+  "independent_frozen_probe": 0,
+  "headers_byte_identical": true,
+  "new_core_assumptions_discharged": [],
+  "remaining": "Full retained-root migration and upstream endpoint proof/axiom acceptance."
+}

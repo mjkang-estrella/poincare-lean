@@ -1,0 +1,46 @@
+{
+  "imports": [
+    "Poincare.Global.ParabolicHolderSpace"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ}, IsClosed (Poincare.ParabolicHolder.holderSubmodule (E := E) (F := F) α T : Set (Poincare.ParabolicHolder.Ambient T E F))",
+      "name": "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ} [CompleteSpace F], CompleteSpace (Poincare.ParabolicHolder.Y (E := E) α T F)",
+      "name": "Poincare.ParabolicHolder.instCompleteSpace",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ} (f : Poincare.ParabolicHolder.Y (E := E) α T F), ‖f‖ = Poincare.ParabolicHolder.supNorm (Poincare.ParabolicHolder.cylinder (E := E) T) f + Poincare.ParabolicHolder.holderSeminorm α (Poincare.ParabolicHolder.cylinder (E := E) T) f",
+      "name": "Poincare.ParabolicHolder.norm_eq",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/definitions-for-review.txt",
+      "sha256": "4d1459dbc4087ac6229459dbb9e7054774bae84a9b8596fba72662303a0b0434"
+    }
+  ],
+  "snapshot_sha256": "32deff101fb89119de96fba19f85ced9eedd5a3c751e56745bc8ac6795d51283"
+}

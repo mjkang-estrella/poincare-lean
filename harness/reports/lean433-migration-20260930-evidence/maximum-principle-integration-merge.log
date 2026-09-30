@@ -1,0 +1,3 @@
+[codex/upstream-integration-433 36550ffa] Preserve maximum-principle proofs across the Lean 4.33 migration
+ Date: Wed Sep 30 13:58:26 2026 -0700
+ 1 file changed, 16 insertions(+), 14 deletions(-)

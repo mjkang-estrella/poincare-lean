@@ -1,0 +1,9 @@
+{
+  "source_head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+  "scope": "all DifferentialGeometry/**/*.lean files; raw rg scan then comment-aware classification of every matching file",
+  "raw_matches": 9,
+  "formal_code_matches": [],
+  "all_raw_matches_are_comments": true,
+  "raw_scan_sha256": "7c69fad8566e9b802361afe9da0b51ec4b149c7cafa912c01ca22716564662ce",
+  "does_not_certify": "This source shortcut scan is not endpoint compilation or transitive axiom acceptance."
+}

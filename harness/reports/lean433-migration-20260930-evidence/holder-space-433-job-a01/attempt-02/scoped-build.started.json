@@ -1,0 +1,14 @@
+{
+  "name": "scoped-build",
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.ParabolicHolderSpace"
+  ],
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+  "started_utc": "2026-09-30T21:18:08.500626+00:00"
+}

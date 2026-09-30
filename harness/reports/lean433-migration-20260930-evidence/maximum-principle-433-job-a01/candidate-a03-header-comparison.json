@@ -1,0 +1,32 @@
+{
+  "captured_at": "2026-09-30T20:56:47.322564+00:00",
+  "method": "literal theorem-header comparison before :=, whitespace normalized",
+  "declaration_count": 22,
+  "identical": true,
+  "names": [
+    "ode_comparison_nonpos",
+    "ode_comparison_nonneg",
+    "riccati_lower_bound",
+    "riccati_forces_finite_time",
+    "einstein_scalar_hasDerivAt_riccati",
+    "riccati_upper_bound",
+    "riccati_doubling_time",
+    "secondDeriv_nonneg_of_isLocalMin",
+    "hessian_nonneg_of_isLocalMin",
+    "fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+    "exists_first_zero",
+    "ode_comparison_nonpos_eq",
+    "ode_comparison_nonneg_eq",
+    "riccati_lower_bound_eq",
+    "riccati_forces_finite_time_eq",
+    "einstein_scalar_hasDerivAt_riccati_eq",
+    "riccati_upper_bound_eq",
+    "riccati_doubling_time_eq",
+    "secondDeriv_nonneg_of_isLocalMin_eq",
+    "hessian_nonneg_of_isLocalMin_eq",
+    "fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+    "exists_first_zero_eq"
+  ],
+  "source_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "limitation": "This does not replace the frozen Lean type and axiom gate, which is still pending budget renewal."
+}

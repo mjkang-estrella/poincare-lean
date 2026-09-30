@@ -1,0 +1,46 @@
+{
+  "imports": [
+    "Poincare.Global.ParabolicHolderSpace"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedAddCommGroup.{u_2} F] [inst_2 : NormedSpace.{0, u_2} Real F] {α T : Real}, IsClosed.{max u_1 u_2} ↑(Poincare.ParabolicHolder.holderSubmodule.{u_1, u_2} α T)",
+      "name": "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedAddCommGroup.{u_2} F] [inst_2 : NormedSpace.{0, u_2} Real F] {α T : Real} [CompleteSpace.{u_2} F], CompleteSpace.{max u_2 u_1} (Poincare.ParabolicHolder.Y.{u_1, u_2} α T F)",
+      "name": "Poincare.ParabolicHolder.instCompleteSpace",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} {F : Type u_2} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedAddCommGroup.{u_2} F] [inst_2 : NormedSpace.{0, u_2} Real F] {α T : Real} (f : Poincare.ParabolicHolder.Y.{u_1, u_2} α T F), Eq.{1} (Norm.norm.{max u_1 u_2} f) (HAdd.hAdd.{0, 0, 0} (Poincare.ParabolicHolder.supNorm.{u_1, u_2} (Poincare.ParabolicHolder.cylinder.{u_1} T) ↑(WithLp.fst.{max u_1 u_2, max u_1 u_2} ↑f)) (Poincare.ParabolicHolder.holderSeminorm.{u_1, u_2} α (Poincare.ParabolicHolder.cylinder.{u_1} T) ↑(WithLp.fst.{max u_1 u_2, max u_1 u_2} ↑f)))",
+      "name": "Poincare.ParabolicHolder.norm_eq",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/definitions-for-review.txt",
+      "sha256": "4d1459dbc4087ac6229459dbb9e7054774bae84a9b8596fba72662303a0b0434"
+    }
+  ],
+  "snapshot_sha256": "00f7e7649309f7ec27c8b38a8649952764fb1dd6e5a4502ff35b26b89f97f63f"
+}

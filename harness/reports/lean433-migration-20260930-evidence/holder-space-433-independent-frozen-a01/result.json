@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:21:28.434258+00:00",
+  "source_head": "f54f9fe614dd061e13e95537e5231b00689e06a0",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 7.065751075744629,
+  "completed_at": "2026-09-30T21:21:35.519982+00:00",
+  "log_hashes": {
+    "stdout.log": "96cd626db0206358e3464d2fc5f27dc54f7e46e2f41135fc319da595649ed3c1",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "cwd": "/Users/mjkang/.codex/worktrees/maximum-principle-433/poincare",
+  "started_at": "2026-09-30T19:09:41.488770+00:00",
+  "branch": "codex/maximum-principle-433-a01",
+  "status": "## codex/maximum-principle-433-a01\n",
+  "scope": [
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "acceptance_authority": "root orchestrator"
+}

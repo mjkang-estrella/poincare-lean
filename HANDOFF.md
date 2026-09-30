@@ -1,5 +1,41 @@
 # Handoff Snapshot
 
+## 2026-09-30 Retained-root compatibility repairs on Lean 4.33.1
+
+This is the isolated aligned branch, not the production completion checkpoint.
+The canonical target and sphere definition are unchanged. No original core
+existence assumption has been discharged; no final endpoint is accepted.
+
+At f54f9fe614dd061e13e95537e5231b00689e06a0, independently accepted scoped
+repairs preserve MaximumPrinciple's exact declaration types/universes and
+modify only the Holder closedness proof body. All surrounding Holder carrier,
+WithLp 1 sum norm, completeness instance and other proofs are byte-identical.
+Both modules passed independent direct Lean, scoped build and frozen literal
+allowed-axiom/unsafe/partial checks. Original ParabolicSolutionGraph compiles
+and builds unchanged against that Holder proof. RiemannCurvatureOperator also
+passed an independent unchanged check. No full retained-root check has run on
+4.33; the old grounded-topology context pins still need reviewed migration.
+
+Append-only completed evidence, including failed attempts and blind readbacks,
+is in harness/reports/lean433-migration-20260930-evidence. Upstream whole-source
+shortcut scans found only comment matches, with no matching formal code; this
+is not endpoint compilation or axiom acceptance.
+
+The SAME external endpoint build remains live at the pinned release checkout:
+root session85355, wrapper65764/lake65773. Root drains that handle; agent
+monitor_upstream_verification observes durable results and owns the subsequent
+exact producer/endpoint probe. Its observer never starts or signals the build.
+Live logs remain in the old integration's ignored state; they were excluded
+from this completed evidence archive.
+
+Exact first action: validate the same live process and terminal result under
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/endpoint-build-a01.
+After genuine terminal success, run saved UpstreamEndpointProbe.lean in the
+pinned upstream environment and independently reproduce its literal-type,
+allowed-axiom and unsafe/partial results before importing any credited final
+adapter. Retain all root imports; migrate old strict contract pins through
+reviewed successors, then run the full exact completion gate on one clean HEAD.
+
 ## 2026-09-30 Unweighted reconstruction and external proof review
 
 The frozen final goal remains active. Our reserved theorem is absent, and our

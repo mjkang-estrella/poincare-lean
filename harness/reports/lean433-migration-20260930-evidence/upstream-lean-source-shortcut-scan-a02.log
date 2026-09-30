@@ -1,0 +1,9 @@
+DifferentialGeometry/External/Schoenflies/FiniteTransfer.lean:1521:/-- A face and two distinct boundary vertices of a generated pair admit the target polygonal
+DifferentialGeometry/External/Schoenflies/JordanClosed.lean:21:standing rule that a missing result is named rather than `sorry`-ed:
+DifferentialGeometry/External/Schoenflies/Endgame.lean:332:`f : C → C'` and prescribed points `a ∈ Int(C)`, `b ∈ Int(C')` admit a closed-interior
+DifferentialGeometry/External/Schoenflies/OuterChain.lean:652:counterexample, instead of as a `sorry` nobody revisited. -/
+DifferentialGeometry/External/Schoenflies/CellulationInvariants.lean:47:axiom whatever: nothing says `S.boundary F` is a closed walk, nothing ties it to `S.sub`, and
+DifferentialGeometry/External/Schoenflies/OuterChainClosed.lean:24:`Schoenflies/OuterChain.lean` where that version used to stand. Had the gap been a `sorry`
+DifferentialGeometry/External/Schoenflies/MatchedArc.lean:19:* Two named arcs admit an endpoint-preserving homeomorphism, obtained by matching their
+DifferentialGeometry/External/Schoenflies/MatchedArc.lean:165:/-- Any two named arcs admit an endpoint-preserving homeomorphism. -/
+DifferentialGeometry/External/ClassificationOfSurfaces/Moise/GeometricTriangulation.lean:29:* non-example: `ℝ` and `ℚ` admit no geometric triangulation (they are not compact).

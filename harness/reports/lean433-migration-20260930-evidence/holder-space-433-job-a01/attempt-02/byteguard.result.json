@@ -1,0 +1,15 @@
+{
+  "name": "byteguard",
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/check-proof-scope.py"
+  ],
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+  "started_utc": "2026-09-30T21:18:22.612610+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 0.03868304204661399,
+  "completed_utc": "2026-09-30T21:18:22.651235+00:00",
+  "passed": true
+}

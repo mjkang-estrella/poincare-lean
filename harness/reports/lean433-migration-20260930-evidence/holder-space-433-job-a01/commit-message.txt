@@ -1,0 +1,13 @@
+Preserve Hölder completeness under the Mathlib 4.33 set API
+
+Make the two closed-set goals explicit and use iInter_ofPred with pointwise
+function simplification. The graph carrier, WithLp 1 sum norm, completeness
+instance, and every neighboring proof retain their original source.
+
+Constraint: only isClosed_holderSubmodule proof body may change
+Tested: scoped Lean; module build; frozen type and axiom probe; byteguard
+Tested: forbidden-token scan; git diff --check
+Not-tested: full root build and final completion audits
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean

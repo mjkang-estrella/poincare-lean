@@ -1,0 +1,15 @@
+{
+  "authorized_by": "root orchestrator",
+  "authorization": "Renewed15minutes from current UTC for existing exact acceptance commands and scoped commit; no mathematical contract or file scope changes.",
+  "recorded_at": "2026-09-30T20:57:04.827463+00:00",
+  "renewed_deadline": "2026-09-30T21:12:04.827463+00:00",
+  "clock_anomaly": "attempt2 ended2026-09-30T19:11:00.560657+00:00; attempt3 began2026-09-30T20:55:46.654534+00:00 after a large unaccounted host-clock/dispatch gap",
+  "compiler_durations_seconds": [
+    13.03429312503431,
+    5.996247375034727,
+    12.271210000035353
+  ],
+  "total_recorded_compiler_seconds": 31.30175050010439,
+  "source_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "original_task_budget_preserved": true
+}

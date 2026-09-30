@@ -1,0 +1,137 @@
+Poincare/MaximumPrinciple.lean:39:4: error: Type mismatch: After simplification, term
+  HasDerivAt.mul h1 (hd s hs)
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedCommRing.toAddCommGroup
+    (NormedAlgebra.toNormedSpace ℝ).toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun s' => Real.exp (-(C * s'))) * u) (-(Real.exp (-(C * s)) * C * u s) + Real.exp (-(C * s)) * u' s) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s => Real.exp (-(C * s)) * u s)
+    (-(Real.exp (-(C * s)) * C * u s) + Real.exp (-(C * s)) * u' s) s
+Poincare/MaximumPrinciple.lean:60:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Poincare/MaximumPrinciple.lean:118:6: error: Type mismatch: After simplification, term
+  HasDerivAt.inv (hd s hs) (ne_of_gt (hpos s hs))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ
+    DenselyNormedField.toNontriviallyNormedField.toDivisionRing.toAddCommGroup (NormedAlgebra.toNormedSpace ℝ).toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ u⁻¹ (-u' s / u s ^ 2) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s' => (u s')⁻¹) (-u' s / u s ^ 2) s
+Poincare/MaximumPrinciple.lean:119:4: error: Type mismatch: After simplification, term
+  HasDerivAt.add h1 (HasDerivAt.const_mul a (hasDerivAt_id s))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    NormedField.toNormedSpace.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun s' => (u s')⁻¹) + fun y => a * y) (-u' s / u s ^ 2 + a) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s => (u s)⁻¹ + a * s) (-u' s / u s ^ 2 + a) s
+Poincare/MaximumPrinciple.lean:192:6: error: Type mismatch: After simplification, term
+  HasDerivAt.inv (hd s hs) (ne_of_gt (hpos s hs))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ
+    DenselyNormedField.toNontriviallyNormedField.toDivisionRing.toAddCommGroup (NormedAlgebra.toNormedSpace ℝ).toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ u⁻¹ (-u' s / u s ^ 2) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s' => (u s')⁻¹) (-u' s / u s ^ 2) s
+Poincare/MaximumPrinciple.lean:193:4: error: Type mismatch: After simplification, term
+  HasDerivAt.add h1 (HasDerivAt.const_mul a (hasDerivAt_id s))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    NormedField.toNormedSpace.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun s' => (u s')⁻¹) + fun y => a * y) (-u' s / u s ^ 2 + a) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s => (u s)⁻¹ + a * s) (-u' s / u s ^ 2 + a) s
+Poincare/MaximumPrinciple.lean:241:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  - -?a
+in the target expression
+  Real.instAddCommGroup = DenselyNormedField.toNontriviallyNormedField.toDivisionRing.toAddCommGroup
+
+case e'_4
+lam n t : ℝ
+hn : n ≠ 0
+ht : 1 - 2 * lam * t ≠ 0
+hf : HasDerivAt (fun s => 1 - 2 * lam * s) (-(2 * lam)) t
+h2 : HasDerivAt (fun s => 1 - 2 * lam * s)⁻¹ (- -(2 * lam) / (1 - 2 * lam * t) ^ 2) t
+⊢ Real.instAddCommGroup = DenselyNormedField.toNontriviallyNormedField.toDivisionRing.toAddCommGroup
+Poincare/MaximumPrinciple.lean:244:2: error: `field_simp` made no progress on the goal
+Poincare/MaximumPrinciple.lean:267:6: error: Type mismatch: After simplification, term
+  HasDerivAt.inv (hd s hs) (ne_of_gt (hpos s hs))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ
+    DenselyNormedField.toNontriviallyNormedField.toDivisionRing.toAddCommGroup (NormedAlgebra.toNormedSpace ℝ).toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ u⁻¹ (-u' s / u s ^ 2) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s' => (u s')⁻¹) (-u' s / u s ^ 2) s
+Poincare/MaximumPrinciple.lean:268:4: error: Type mismatch: After simplification, term
+  HasDerivAt.add h1 (HasDerivAt.const_mul a (hasDerivAt_id s))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    NormedField.toNormedSpace.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun s' => (u s')⁻¹) + fun y => a * y) (-u' s / u s ^ 2 + a) s
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun s => (u s)⁻¹ + a * s) (-u' s / u s ^ 2 + a) s
+Poincare/MaximumPrinciple.lean:346:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Poincare/MaximumPrinciple.lean:425:4: error: Type mismatch: After simplification, term
+  h2
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    NormedField.toNormedSpace.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    (⇑((ContinuousLinearMap.apply ℝ ℝ) v) ∘ fun s => fderiv ℝ f (ℓ s)) (((fderiv ℝ (fderiv ℝ f) (ℓ t)) v) v) t
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun t => (fderiv ℝ f (ℓ t)) v) (g'' t) t
+Poincare/MaximumPrinciple.lean:470:2: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Poincare/MaximumPrinciple.lean:522:6: error: Type mismatch: After simplification, term
+  IsLocalMin.comp_continuous hm (ContDiffAt.continuousAt hℓC2)
+ has type
+  @IsLocalMin ℝ ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace Real.instPreorder (f ∘ ℓ) 0
+but is expected to have type
+  @IsLocalMin ℝ ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace Real.instPreorder (fun t => f (ℓ t)) 0
+Poincare/MaximumPrinciple.lean:546:8: error: Type mismatch: After simplification, term
+  h2
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    NormedField.toNormedSpace.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    (⇑((ContinuousLinearMap.apply ℝ ℝ) v) ∘ fun s => fderiv ℝ f (ℓ s)) (((fderiv ℝ (fderiv ℝ f) (ℓ t)) v) v) t
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun t => (fderiv ℝ f (ℓ t)) v)
+    (((fderiv ℝ (fderiv ℝ f) (ℓ t)) v) v) t
+Poincare/MaximumPrinciple.lean:634:4: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+Poincare/MaximumPrinciple.lean:625:16: warning: This simp argument is unused:
+  Set.mem_sep_iff
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hS, Set.mem_inter_iff, Set.mem_preimage]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

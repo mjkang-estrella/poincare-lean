@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/maximum-principle-433/poincare",
+  "started_at": "2026-09-30T21:16:01.587848+00:00",
+  "source_head": "492b3c025d8df1f5d417e9f870b099f909a46072",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "task": "holder-space-433-preserve",
+  "owner": "/root/upstream_endpoint_comparison",
+  "base": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "worktree": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "branch": "codex/holder-space-433-a01",
+  "allowed_file": "Poincare/Global/ParabolicHolderSpace.lean",
+  "allowed_proof": "isClosed_holderSubmodule",
+  "status": "allocated"
+}

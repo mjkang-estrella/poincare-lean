@@ -1,0 +1,17 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/maximum-principle-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.MaximumPrinciple"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "status": "## codex/maximum-principle-433-a01\n M Poincare/MaximumPrinciple.lean\n",
+  "source_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "started_at": "2026-09-30T20:57:04.888989+00:00"
+}

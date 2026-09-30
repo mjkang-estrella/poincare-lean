@@ -1,0 +1,5 @@
+{
+  "reason": "Original prettyprinter omitted implicit E/F and subtype/function coercions. These manually annotated source literals preserve the original binder order and are accepted only after a fresh original rigid type probe and blind readback.",
+  "old_snapshot": "00f7e7649309f7ec27c8b38a8649952764fb1dd6e5a4502ff35b26b89f97f63f",
+  "new_snapshot": "32deff101fb89119de96fba19f85ced9eedd5a3c751e56745bc8ac6795d51283"
+}

@@ -1,0 +1,47 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "bd9515411d8845edf7032388c6071bf0a20f2394fb4c19c3cc66b160224d8ea9",
+    "bytes": 222669
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/MaximumPrinciple.lean",
+    "sha256": "432eb2dad3776168385422dd39d3a4c5d4ef1ca051663ea5a6caecf50ba49b29",
+    "bytes": 31392
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/blind-readback-a02.json",
+    "sha256": "8a6c74e6d9455564e0b6f7ab28c6808545cec6c7016f669f40e4830256891c1a",
+    "bytes": 13695
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe-a02.lean",
+    "sha256": "f8a4030351aa7c17d7d5bb4164aba644a86b9fdcb1ded55202e579f3feee5323",
+    "bytes": 54445
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/maximum-principle-433-preflight-a01/compiler.log",
+    "sha256": "0af3e4a38f02057459e33b6723752b910851a0ee2702d1c5cdfe7e9e195d1f21",
+    "bytes": 8947
+  }
+]

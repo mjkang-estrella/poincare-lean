@@ -1,0 +1,13 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.ParabolicSolutionGraph"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:22:34.696891+00:00",
+  "source_head": "f54f9fe614dd061e13e95537e5231b00689e06a0",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

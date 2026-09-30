@@ -1,0 +1,16 @@
+Preserve maximum-principle proofs across the Lean 4.33 migration
+
+Use convert! for derivative transports so equivalent real scalar instances
+unfold during proof elaboration. Expand function composition at the local
+minimum transport and remove an empty simp step.
+
+All 22 original declaration types, hypotheses and universe arities remain
+frozen. This compatibility change enables retained-root integration; it
+constructs no independent Hamilton input.
+
+Tested: Lean 4.33.1 scoped compilation and Poincare.MaximumPrinciple build
+Tested: 22 frozen exact type/universe and permitted axiom/safety checks
+Tested: Scoped forbidden-token scan and git diff --check
+Not-tested: Full root and completion audits, owned by the orchestrator
+Scope-risk: narrow
+Reversibility: clean

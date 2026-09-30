@@ -1,0 +1,10 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "argv": [
+    "git",
+    "commit",
+    "--file",
+    "/Users/mjkang/.codex/worktrees/holder-space-433/poincare/harness/v2/state/upstream-verification-20260930/holder-space-433-job-a01/commit-message.txt"
+  ],
+  "exit_code": 0
+}

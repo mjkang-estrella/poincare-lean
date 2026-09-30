@@ -1,0 +1,28 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "head_after": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "status_after": "## codex/holder-space-433-a01\n M Poincare/Global/ParabolicHolderSpace.lean\n",
+  "all_scoped_gates_passed": false,
+  "results": [
+    {
+      "name": "lean",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderSpace.lean"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "43648b43120aa0a70786fd53bd2ae2997e765a06d7b8aef548f71c0aeacc57c7",
+      "started_utc": "2026-09-30T21:16:49.551701+00:00",
+      "exit_code": 1,
+      "elapsed_seconds": 12.897015834110789,
+      "completed_utc": "2026-09-30T21:17:02.448616+00:00",
+      "passed": false
+    }
+  ]
+}

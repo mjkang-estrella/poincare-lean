@@ -1,0 +1,121 @@
+{
+  "label": "holder-space-433-job-a01",
+  "status": "reviewing",
+  "task_accepted": false,
+  "merged": false,
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "commit_sha": "0eeafeb5dda18a7ed89c622223490f7d6f37d6b3",
+  "branch": "codex/holder-space-433-a01",
+  "all_scoped_gates_passed": true,
+  "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+  "completed_utc": "2026-09-30T21:19:33.959375+00:00",
+  "status_final": "## codex/holder-space-433-a01\n",
+  "results": [
+    {
+      "name": "lean",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderSpace.lean"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:04.025011+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 4.475055041024461,
+      "completed_utc": "2026-09-30T21:18:08.499986+00:00",
+      "passed": true
+    },
+    {
+      "name": "scoped-build",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ParabolicHolderSpace"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:08.500626+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 8.78018429200165,
+      "completed_utc": "2026-09-30T21:18:17.280701+00:00",
+      "passed": true
+    },
+    {
+      "name": "frozen-probe",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:17.281275+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 5.330707083106972,
+      "completed_utc": "2026-09-30T21:18:22.611937+00:00",
+      "passed": true
+    },
+    {
+      "name": "byteguard",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/check-proof-scope.py"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:22.612610+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.03868304204661399,
+      "completed_utc": "2026-09-30T21:18:22.651235+00:00",
+      "passed": true
+    },
+    {
+      "name": "token-scan",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ParabolicHolderSpace.lean"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:22.651885+00:00",
+      "exit_code": 1,
+      "elapsed_seconds": 0.02213970897719264,
+      "completed_utc": "2026-09-30T21:18:22.673967+00:00",
+      "passed": true
+    },
+    {
+      "name": "diff-check",
+      "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+      "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b",
+      "started_utc": "2026-09-30T21:18:22.674458+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.040665125008672476,
+      "completed_utc": "2026-09-30T21:18:22.715063+00:00",
+      "passed": true
+    }
+  ],
+  "evidence_copy_destination": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-space-433-job-a01"
+}

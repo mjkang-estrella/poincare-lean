@@ -1,0 +1,12 @@
+{
+  "name": "forbidden-token-scan",
+  "argv": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/RiemannCurvatureOperator.lean"
+  ],
+  "env": {},
+  "exit_code": 1,
+  "elapsed_seconds": 0.006104332976974547
+}

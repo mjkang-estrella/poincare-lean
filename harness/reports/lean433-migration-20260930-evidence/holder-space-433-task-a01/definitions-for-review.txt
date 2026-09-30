@@ -1,0 +1,111 @@
+import Mathlib.Analysis.Normed.Lp.lpSpace
+import Mathlib.Analysis.Normed.Lp.ProdLp
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
+
+/-!
+The bounded parabolic Hölder space, with the sum norm.
+
+An element is represented by a bounded function, zero off the cylinder, and
+its bounded scaled differences. The graph equations determine the second
+component uniquely. Thus the carrier includes every bounded Hölder function,
+with no approximation or continuity condition. The graph is closed in the
+sum of two complete spaces of bounded functions.
+-/
+
+noncomputable section
+
+namespace Poincare.ParabolicHolder
+
+open Set
+open scoped ENNReal
+
+variable {E F : Type*} [NormedAddCommGroup E]
+  [NormedAddCommGroup F] [NormedSpace ℝ F]
+
+def parabolicDist (p q : ℝ × E) : ℝ :=
+  ‖p.2 - q.2‖ + Real.sqrt |p.1 - q.1|
+
+theorem parabolicDist_nonneg (p q : ℝ × E) : 0 ≤ parabolicDist p q := by
+  exact add_nonneg (norm_nonneg _) (Real.sqrt_nonneg _)
+
+theorem parabolicDist_symm (p q : ℝ × E) :
+    parabolicDist p q = parabolicDist q p := by
+  simp only [parabolicDist, norm_sub_rev, abs_sub_comm]
+
+theorem parabolicDist_pos {p q : ℝ × E} (h : p ≠ q) : 0 < parabolicDist p q := by
+  by_cases hx : p.2 = q.2
+  · have ht : p.1 ≠ q.1 := fun ht => h (Prod.ext ht hx)
+    exact add_pos_of_nonneg_of_pos (norm_nonneg _)
+      (Real.sqrt_pos.2 (abs_pos.2 (sub_ne_zero.2 ht)))
+  · exact add_pos_of_pos_of_nonneg (norm_pos_iff.2 (sub_ne_zero.2 hx))
+      (Real.sqrt_nonneg _)
+
+def cylinder (T : ℝ) : Set (ℝ × E) := Icc 0 T ×ˢ univ
+
+def HasHolderBound (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) (K : ℝ) : Prop :=
+  ∀ p ∈ S, ∀ q ∈ S, ‖f p - f q‖ ≤ K * parabolicDist p q ^ α
+
+/-- Distinct ordered pairs in the set; the diagonal contributes zero. -/
+def Pairs (S : Set (ℝ × E)) :=
+  {pq : (ℝ × E) × (ℝ × E) // pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2}
+
+/-- Inserting zero also specifies the seminorm on the empty set. -/
+def holderSeminorm (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun i : Pairs S =>
+    ‖f i.1.1 - f i.1.2‖ / parabolicDist i.1.1 i.1.2 ^ α))
+
+def supNorm (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun p : S => ‖f p‖))
+
+/-- The first factor stores values and the second stores scaled differences. -/
+abbrev Ambient (T : ℝ) (E F : Type*) [NormedAddCommGroup E] [NormedAddCommGroup F] :=
+  WithLp 1 (lp (fun _ : ℝ × E => F) ∞ × lp (fun _ : Pairs (cylinder (E := E) T) => F) ∞)
+
+def holderSubmodule (α T : ℝ) : Submodule ℝ (Ambient T E F) where
+  carrier := {v | (∀ p, p ∉ cylinder T → v.fst p = 0) ∧
+    ∀ i : Pairs (cylinder (E := E) T), v.snd i =
+      (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (v.fst i.1.1 - v.fst i.1.2)}
+  zero_mem' := by
+    constructor
+    · intro p _
+      rfl
+    · intro i
+      change (0 : F) = _ • (0 - 0)
+      simp
+  add_mem' := by
+    intro v w hv hw
+    constructor
+    · intro p hp
+      change v.fst p + w.fst p = 0
+      rw [hv.1 p hp, hw.1 p hp, add_zero]
+    · intro i
+      change v.snd i + w.snd i = _
+      rw [hv.2 i, hw.2 i, ← smul_add]
+      congr 1
+      change _ = (v.fst i.1.1 + w.fst i.1.1) - (v.fst i.1.2 + w.fst i.1.2)
+      abel
+  smul_mem' := by
+    intro c v hv
+    constructor
+    · intro p hp
+      change c • v.fst p = 0
+      rw [hv.1 p hp, smul_zero]
+    · intro i
+      change c • v.snd i = _
+      rw [hv.2 i, smul_comm]
+      congr 1
+      exact smul_sub c _ _
+
+/-- The graph subtype stores the boundedness witnesses in its two `lp` factors.
+The support equation selects the unique extension that is zero off the cylinder. -/
+abbrev Y (α T : ℝ) (F : Type*) [NormedAddCommGroup F] [NormedSpace ℝ F] :=
+  ↥(holderSubmodule (E := E) (F := F) α T)
+
+variable {α T : ℝ}
+
+instance instCoeFun : CoeFun (Y (E := E) α T F) (fun _ => ℝ × E → F) := ⟨fun f => f.val.fst⟩
+

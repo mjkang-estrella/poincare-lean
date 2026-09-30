@@ -1,0 +1,15 @@
+{
+  "supersedes_explanation_in": [
+    "forbidden-token-scan-corrected.result.json",
+    "report.md"
+  ],
+  "fact": "Both scan arguments are identical and valid. Nested JSON escaping was misread as doubled runtime backslashes. The original scan and repeat each returned exit 1 with no matches.",
+  "pattern_prefix_codepoints": [
+    92,
+    98,
+    40,
+    115
+  ],
+  "pattern_length": 37,
+  "source_or_lean_changes": false
+}

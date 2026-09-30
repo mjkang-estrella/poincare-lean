@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "bce9e204652408bbd6cd2637baef69f387f2cf7b94cf86d471456f4ea441f134",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "RicciFlow.ode_comparison_nonpos",
+      "mathematical_statement": "For implicit functions u,u' : R -> R and implicit reals C,T, assume that u has the ordinary derivative u'(t) at every t in [0,T], and u'(t) <= C*u(t) throughout [0,T]. From u(0) <= 0, conclude u(t) <= 0 for every implicit t in [0,T]. C is unrestricted and no T >= 0 premise is stated; when T < 0 the interval conclusion is empty. HasDerivAt is an ordinary two-sided derivative, including at both endpoints. All numeric zeros are real. There are no declaration universe parameters. This conditional scalar comparison constructs no solution or PDE flow."
+    },
+    {
+      "name": "RicciFlow.ode_comparison_nonneg",
+      "mathematical_statement": "For implicit u,u' : R -> R and implicit reals C,T, assume ordinary derivative u'(t) of u at every t in [0,T], C*u(t) <= u'(t) there, and 0 <= u(0). Then 0 <= u(t) for every implicit t in [0,T]. There is no sign restriction on C and no explicit T >= 0 assumption; negative T makes the interval conclusion empty. Endpoint derivatives are ordinary two-sided derivatives. All zeros are real; there are no declaration universe parameters. No solution or geometric flow is constructed."
+    },
+    {
+      "name": "RicciFlow.riccati_lower_bound",
+      "mathematical_statement": "For implicit u,u' : R -> R and real a,T, assume a >= 0, ordinary derivative u'(t) of u throughout [0,T], a*u(t)^2 <= u'(t) there, and u(0) > 0. For every implicit t in [0,T], conclude u(0)/(1-a*u(0)*t) <= u(t). The power exponent 2 is a natural number; the other displayed numerals in arithmetic are real. No T >= 0 or denominator-positivity premise occurs. The quotient uses Lean's total real division, which is 0 at denominator 0, so it is not a positive blow-up lower estimate past the pole. Endpoint derivatives are two-sided. There are no declaration universe parameters or solution-existence assertion."
+    },
+    {
+      "name": "RicciFlow.riccati_forces_finite_time",
+      "mathematical_statement": "For implicit u,u' : R -> R and reals a,T, assume a > 0, T >= 0, ordinary derivative u'(t) of u throughout [0,T], a*u(t)^2 <= u'(t) there, and u(0) > 0. Then T < 1/(a*u(0)). The square has natural exponent 2 and scalar numerals are real. The inequality is strict and concerns a supplied differentiable function on the whole closed interval, with two-sided derivatives even at endpoints. It does not construct a solution or assert a geometric flow lifespan. There are no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati",
+      "mathematical_statement": "For implicit real lam,n,t with n != 0 and 1-2*lam*t != 0, the rational real function s |-> lam*n/(1-2*lam*s) has ordinary derivative (2/n)*(lam*n/(1-2*lam*t))^2 at t. Here n is real, not a natural-number dimension; coefficients 0,1,2 are real and the square exponent is the natural number 2. There are no positivity, interval, metric, curvature, or Einstein-geometry hypotheses. This is solely a derivative identity and has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.riccati_upper_bound",
+      "mathematical_statement": "For implicit u,u' : R -> R and real a,T, assume a >= 0; u has ordinary derivative u'(t) throughout [0,T]; u'(t) <= a*u(t)^2 there; and u(t) > 0 at every t in [0,T]. For each implicit t in [0,T] additionally satisfying 1-a*u(0)*t > 0, conclude u(t) <= u(0)/(1-a*u(0)*t). Positivity of u is a hypothesis on the entire closed interval and denominator positivity is an additional premise at the queried time. No T >= 0 assumption is stated. Endpoint derivatives are two-sided; the square exponent is natural and scalar numerals are real. There are no declaration universe parameters or solution-existence conclusion."
+    },
+    {
+      "name": "RicciFlow.riccati_doubling_time",
+      "mathematical_statement": "For implicit u,u' : R -> R and real a,T, assume a > 0, ordinary derivative u'(t) of u throughout [0,T], u'(t) <= a*u(t)^2 there, and strict positivity of u throughout [0,T]. For each implicit t in [0,T] with t <= 1/(2*a*u(0)), conclude u(t) <= 2*u(0). No T >= 0 premise is stated. This is a bound on a supplied trajectory before a threshold, not existence up to that threshold, which need not lie in the interval. Endpoint derivatives are ordinary two-sided derivatives. The square exponent is natural and scalar numerals are real. There are no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+      "mathematical_statement": "For implicit functions g,g',g'' : R -> R, suppose at every real t the ordinary derivative of g is g'(t) and the ordinary derivative of g' is g''(t), and g'' is continuous on all of R. If g has a local minimum at the real point 0, then g''(0) >= 0. Derivative and continuity assumptions are global; the minimum is local and fixed at 0. There are no declaration universe parameters. This is a scalar second-derivative test, with no PDE or geometric conclusion."
+    },
+    {
+      "name": "RicciFlow.hessian_nonneg_of_isLocalMin",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1 with implicit NormedAddCommGroup E and NormedSpace R E instances, and an implicit f : E -> R, assume global ContDiff R 2 f, with regularity order 2 in WithTop ENat. For every implicit x0 : E where f has a local minimum, and every explicit v : E, conclude ((fderiv R (fderiv R f) x0) v) v >= 0, with real zero. No completeness, finite-dimensionality, inner-product, manifold, or metric-curvature hypothesis is present. This is nonnegativity of the diagonal iterated Frechet derivative; it supplies no geometric Hessian or evolution. The single declaration universe is u_1."
+    },
+    {
+      "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1 with implicit NormedAddCommGroup E and NormedSpace R E instances, implicit f : E -> R and implicit x0 : E, assume ContDiffAt R 2 f x0, with order 2 in WithTop ENat, and a local minimum of f at x0. For every explicit v : E, conclude ((fderiv R (fderiv R f) x0) v) v >= 0, with real zero. The regularity assumption is at x0 rather than global. No completeness, finite-dimensionality, inner-product, manifold, or curvature assumptions occur. The conclusion concerns the diagonal iterated Frechet derivative only. The single declaration universe is u_1."
+    },
+    {
+      "name": "RicciFlow.exists_first_zero",
+      "mathematical_statement": "For implicit g : R -> R and implicit real T, assume g is continuous on [0,T], g(0) > 0, and there exists a real t in [0,T] with g(t) <= 0. Then there exists t0 in (0,T] with g(t0) = 0 and g(s) > 0 for every real s in [0,t0). All zeros are real. No derivative or explicit T >= 0 assumption occurs; the hypotheses force a crossing strictly after 0. The conclusion states a first zero in this sense, but neither positivity nor negativity after t0 nor uniqueness of all zeros. There are no declaration universe parameters or geometric hypotheses."
+    },
+    {
+      "name": "RicciFlow.ode_comparison_nonpos_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.ode_comparison_nonpos equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.ode_comparison_nonneg_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.ode_comparison_nonneg equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.riccati_lower_bound_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.riccati_lower_bound equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.riccati_forces_finite_time_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.riccati_forces_finite_time equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.einstein_scalar_hasDerivAt_riccati equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.riccati_upper_bound_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.riccati_upper_bound equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.riccati_doubling_time_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.riccati_doubling_time equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.secondDeriv_nonneg_of_isLocalMin equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    },
+    {
+      "name": "RicciFlow.hessian_nonneg_of_isLocalMin_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.hessian_nonneg_of_isLocalMin equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It carries the single universe u_1 and all normed-vector-space typeclass instances of the original theorem."
+    },
+    {
+      "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It carries the single universe u_1 and all normed-vector-space typeclass instances of the original theorem."
+    },
+    {
+      "name": "RicciFlow.exists_first_zero_eq",
+      "mathematical_statement": "The fully explicit proof function @RicciFlow.exists_first_zero equals itself. All implicit parameters, hypotheses, typeclass instances and conclusions of the original theorem remain arguments or components of this same function. This is reflexive self-equality, not equality to a different proof or implementation, and provides no additional comparison, estimate, existence result or geometric conclusion. It has no declaration universe parameters."
+    }
+  ],
+  "findings": []
+}

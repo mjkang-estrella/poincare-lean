@@ -1,0 +1,12 @@
+{
+  "base": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "candidate": "0eeafeb5dda18a7ed89c622223490f7d6f37d6b3",
+  "integration_commit": "f54f9fe614dd061e13e95537e5231b00689e06a0",
+  "accepted": true,
+  "independent_lean": 0,
+  "independent_build": 0,
+  "independent_frozen_probe": 0,
+  "entire_surrounding_source_byte_identical": true,
+  "dependent_graph_unchanged_lean": 0,
+  "new_core_assumptions_discharged": []
+}

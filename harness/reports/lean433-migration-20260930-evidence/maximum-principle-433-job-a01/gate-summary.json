@@ -1,0 +1,14 @@
+{
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "source_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "frozen_type_universe_checks": 22,
+  "allowed_axiom_safety_checks": 22,
+  "forbidden_tokens": "no matches, rg exit1",
+  "diff_check_exit": 0,
+  "changed_files": [
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "scope_preserved": true,
+  "transparency_option_used": false,
+  "acceptance": "worker gates passed; orchestrator acceptance pending"
+}

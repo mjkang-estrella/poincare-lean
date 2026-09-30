@@ -1,0 +1,56 @@
+{
+  "label": "holder-space-433-job-a01",
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "branch": "codex/holder-space-433-a01",
+  "started_utc": "2026-09-30T21:16:19.736745+00:00",
+  "ownership": "Only isClosed_holderSubmodule proof body in Poincare/Global/ParabolicHolderSpace.lean",
+  "acceptance_authority": "/root",
+  "task_sha256": "fec292f6357eb8cfef417b2df01f80a13149559774d60a791503fdab7b2e3d85",
+  "context": [
+    {
+      "path": "README.md",
+      "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a"
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256": "bd9515411d8845edf7032388c6071bf0a20f2394fb4c19c3cc66b160224d8ea9"
+    },
+    {
+      "path": "docs/PROJECT_MAP.md",
+      "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69"
+    },
+    {
+      "path": "harness/v2/SPEC.md",
+      "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3"
+    },
+    {
+      "path": "Poincare/Global/ParabolicHolderSpace.lean",
+      "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/blind-readback-a02.json",
+      "sha256": "13bc46901902196fe2058aa1dcf25700218a71d03561d2729d71a163f4a6a8dc"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/definitions-for-review.txt",
+      "sha256": "4d1459dbc4087ac6229459dbb9e7054774bae84a9b8596fba72662303a0b0434"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean",
+      "sha256": "6a7bd677c36ad744a02a325dfc559e8746d792719a0117055cb812edcd1cf014"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/check-proof-scope.py",
+      "sha256": "65a1df0592bb5558d068dd0e02a0ad35fa959a47b20787be066cc1cb62d28cd2"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-preflight-a01/stdout.log",
+      "sha256": "dab2a7a6eb22e2815db35d27bf8e0684d2502429bc8eff45324c08f0cdf9d419"
+    }
+  ]
+}

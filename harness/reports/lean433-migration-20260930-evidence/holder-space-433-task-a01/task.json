@@ -1,0 +1,170 @@
+{
+  "schema_version": "2.1",
+  "id": "holder-space-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "objective": {
+    "title": "Preserve the original Holder carrier closedness on Lean 4.33",
+    "statement": "Repair only isClosed_holderSubmodule proof body so the unchanged module compiles in the aligned environment. Carrier, WithLp1 sum norm, completeness and every other proof/definition must remain byte-identical. This removes a required retained-root compatibility obstruction for final credited upstream endpoint integration; it does not discharge the independent Hamilton existence core. Original ParabolicSolutionGraph and its downstream tensor/PDE consumers reuse this carrier and completeness.",
+    "deliverables": [
+      "The existing closedness theorem compiles and all exact type/axiom and whole-surrounding-source preservation checks pass."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/ParabolicHolderSpace.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.toml",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/blind-readback-a02.json",
+      "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean",
+      "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/check-proof-scope.py",
+      "harness/v2/state/upstream-verification-20260930/holder-space-433-preflight-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+      "Poincare.ParabolicHolder.instCompleteSpace",
+      "Poincare.ParabolicHolder.norm_eq"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderSpace.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ParabolicHolderSpace"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/check-proof-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ParabolicHolderSpace.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+      "Poincare.ParabolicHolder.instCompleteSpace",
+      "Poincare.ParabolicHolder.norm_eq"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicHolderSpace"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ}, IsClosed (Poincare.ParabolicHolder.holderSubmodule (E := E) (F := F) α T : Set (Poincare.ParabolicHolder.Ambient T E F))",
+        "name": "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+        "universes": [
+          "u_1",
+          "u_2"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ} [CompleteSpace F], CompleteSpace (Poincare.ParabolicHolder.Y (E := E) α T F)",
+        "name": "Poincare.ParabolicHolder.instCompleteSpace",
+        "universes": [
+          "u_1",
+          "u_2"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} {F : Type u_2} [NormedAddCommGroup E] [NormedAddCommGroup F] [NormedSpace ℝ F] {α T : ℝ} (f : Poincare.ParabolicHolder.Y (E := E) α T F), ‖f‖ = Poincare.ParabolicHolder.supNorm (Poincare.ParabolicHolder.cylinder (E := E) T) f + Poincare.ParabolicHolder.holderSeminorm α (Poincare.ParabolicHolder.cylinder (E := E) T) f",
+        "name": "Poincare.ParabolicHolder.norm_eq",
+        "universes": [
+          "u_1",
+          "u_2"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/definitions-for-review.txt",
+        "sha256": "4d1459dbc4087ac6229459dbb9e7054774bae84a9b8596fba72662303a0b0434"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "32deff101fb89119de96fba19f85ced9eedd5a3c751e56745bc8ac6795d51283",
+      "report_path": "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "13bc46901902196fe2058aa1dcf25700218a71d03561d2729d71a163f4a6a8dc",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "Any change outside the single allowed closedness proof body is required.",
+    "The same genuine blocker persists after three distinct attempts.",
+    "All scoped gates pass, then report and commit without accepting or merging."
+  ],
+  "budget": {
+    "max_attempts": 10,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 18000,
+    "disk_mb": 2048
+  }
+}

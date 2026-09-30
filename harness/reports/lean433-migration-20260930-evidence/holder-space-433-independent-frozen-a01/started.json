@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/FrozenHolderProbe-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:21:28.434258+00:00",
+  "source_head": "f54f9fe614dd061e13e95537e5231b00689e06a0",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

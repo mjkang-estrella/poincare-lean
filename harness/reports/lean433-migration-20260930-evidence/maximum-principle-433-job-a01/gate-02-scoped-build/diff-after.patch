@@ -1,0 +1,98 @@
+diff --git a/Poincare/MaximumPrinciple.lean b/Poincare/MaximumPrinciple.lean
+index a2e1f307..fa659497 100644
+--- a/Poincare/MaximumPrinciple.lean
++++ b/Poincare/MaximumPrinciple.lean
+@@ -34,7 +34,7 @@ theorem ode_comparison_nonpos {u u' : ℝ → ℝ} {C T : ℝ}
+     have h1 : HasDerivAt (fun s' ↦ Real.exp (-C * s'))
+         (Real.exp (-C * s) * -C) s := by
+       simpa using ((hasDerivAt_id s).const_mul (-C)).exp
+-    simpa [hv] using h1.mul (hd s hs)
++    convert! h1.mul (hd s hs) using 1
+   have hmono : AntitoneOn v (Icc (0 : ℝ) T) := by
+     apply antitoneOn_of_deriv_nonpos (convex_Icc 0 T)
+     · exact fun s hs ↦ ((hvd s hs).continuousAt).continuousWithinAt
+@@ -72,7 +72,6 @@ theorem ode_comparison_nonneg {u u' : ℝ → ℝ} {C T : ℝ}
+     (fun s hs ↦ (hd s hs).neg)
+     (fun s hs ↦ by
+       have := hineq s hs
+-      simp only
+       linarith)
+     (by simpa using h0) ht
+   simpa using this
+@@ -114,8 +113,9 @@ theorem riccati_lower_bound {u u' : ℝ → ℝ} {a T : ℝ} (ha : 0 ≤ a)
+       HasDerivAt w (-(u' s) / u s ^ 2 + a) s := by
+     intro s hs
+     have h1 : HasDerivAt (fun s' ↦ (u s')⁻¹) (-(u' s) / u s ^ 2) s := by
+-      simpa using (hd s hs).inv (ne_of_gt (hpos s hs))
+-    simpa [hw] using h1.add ((hasDerivAt_id s).const_mul a)
++      convert! (hd s hs).inv (ne_of_gt (hpos s hs)) using 1
++    convert! h1.add ((hasDerivAt_id s).const_mul a) using 1
++    simp
+   have hwmono : AntitoneOn w (Icc (0 : ℝ) T) := by
+     apply antitoneOn_of_deriv_nonpos (convex_Icc 0 T)
+     · exact fun s hs ↦ ((hwd s hs).continuousAt).continuousWithinAt
+@@ -188,8 +188,9 @@ theorem riccati_forces_finite_time {u u' : ℝ → ℝ} {a T : ℝ}
+       HasDerivAt w (-(u' s) / u s ^ 2 + a) s := by
+     intro s hs
+     have h1 : HasDerivAt (fun s' ↦ (u s')⁻¹) (-(u' s) / u s ^ 2) s := by
+-      simpa using (hd s hs).inv (ne_of_gt (hpos s hs))
+-    simpa [hw] using h1.add ((hasDerivAt_id s).const_mul a)
++      convert! (hd s hs).inv (ne_of_gt (hpos s hs)) using 1
++    convert! h1.add ((hasDerivAt_id s).const_mul a) using 1
++    simp
+   have hwmono : AntitoneOn w (Icc (0 : ℝ) T) := by
+     apply antitoneOn_of_deriv_nonpos (convex_Icc 0 T)
+     · exact fun s hs ↦ ((hwd s hs).continuousAt).continuousWithinAt
+@@ -236,10 +237,10 @@ theorem einstein_scalar_hasDerivAt_riccati {lam n t : ℝ} (hn : n ≠ 0)
+   have hinv : HasDerivAt (fun s ↦ (1 - 2 * lam * s)⁻¹)
+       (2 * lam / (1 - 2 * lam * t) ^ 2) t := by
+     have h2 := hf.inv ht
+-    convert h2 using 1
+-    rw [neg_neg]
++    convert! h2 using 1
++    simp [neg_neg]
+   have := hinv.const_mul (lam * n)
+-  convert this using 1
++  convert! this using 1
+   field_simp
+ 
+ end RicciFlow
+@@ -263,8 +264,9 @@ theorem riccati_upper_bound {u u' : ℝ → ℝ} {a T : ℝ} (ha : 0 ≤ a)
+       HasDerivAt w (-(u' s) / u s ^ 2 + a) s := by
+     intro s hs
+     have h1 : HasDerivAt (fun s' ↦ (u s')⁻¹) (-(u' s) / u s ^ 2) s := by
+-      simpa using (hd s hs).inv (ne_of_gt (hpos s hs))
+-    simpa [hw] using h1.add ((hasDerivAt_id s).const_mul a)
++      convert! (hd s hs).inv (ne_of_gt (hpos s hs)) using 1
++    convert! h1.add ((hasDerivAt_id s).const_mul a) using 1
++    simp
+   have hwmono : MonotoneOn w (Icc (0 : ℝ) T) := by
+     apply monotoneOn_of_deriv_nonneg (convex_Icc 0 T)
+     · exact fun s hs ↦ ((hwd s hs).continuousAt).continuousWithinAt
+@@ -421,7 +423,7 @@ theorem hessian_nonneg_of_isLocalMin {f : E → ℝ} (hf : ContDiff ℝ 2 f)
+       ((hdf (ℓ t)).hasFDerivAt).comp_hasDerivAt t (hℓd t)
+     have h2 := (ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp_hasDerivAt
+       t h1
+-    simpa [hg', ContinuousLinearMap.apply_apply] using h2
++    convert! h2 using 1
+   have hcont : Continuous g'' := by
+     have h2 : Continuous (fderiv ℝ (fderiv ℝ f)) :=
+       ((hf.fderiv_right (m := 1) (by norm_num))).continuous_fderiv
+@@ -518,7 +520,7 @@ theorem fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt {f : E → ℝ}
+   have hg'0 : g' 0 = 0 := by
+     have hmin_line : IsLocalMin g 0 := by
+       have hm : IsLocalMin f (ℓ 0) := by simpa [hℓ0] using hmin
+-      simpa [g] using hm.comp_continuous hℓC2.continuousAt
++      simpa [g, Function.comp_def] using hm.comp_continuous hℓC2.continuousAt
+     have hdg0 : HasDerivAt g (g' 0) 0 := by
+       have hfdiff0 : DifferentiableAt ℝ f (ℓ 0) := by
+         simpa [hℓ0] using hf.differentiableAt (by norm_num)
+@@ -542,7 +544,7 @@ theorem fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt {f : E → ℝ}
+               (by norm_num)).hasFDerivAt).comp_hasDerivAt t (hℓd t)
+         have h2 := (ContinuousLinearMap.apply ℝ ℝ v).hasFDerivAt.comp_hasDerivAt
+           t h1
+-        simpa [g', g'', ContinuousLinearMap.apply_apply] using h2
++        convert! h2 using 1
+       rw [hdg'.deriv]
+       exact hballneg (by
+         rw [Real.dist_eq, sub_zero]

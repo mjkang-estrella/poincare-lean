@@ -1,0 +1,2 @@
+[codex/maximum-principle-433-a01 492b3c02] Preserve maximum-principle proofs across the Lean 4.33 migration
+ 1 file changed, 16 insertions(+), 14 deletions(-)

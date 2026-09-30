@@ -1,0 +1,13 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.MaximumPrinciple"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:16:30.223759+00:00",
+  "source_head": "36550ffad19e79d952ad61ae38ee0b3beb9a55e3",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

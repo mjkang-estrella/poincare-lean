@@ -1,0 +1,3 @@
+harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/export-types.lean:10:18: error(lean.unknownIdentifier): Unknown constant `Poincare.ParabolicHolder.Y.isClosed_holderSubmodule`
+harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/export-types.lean:10:73: error(lean.unknownIdentifier): Unknown constant `Poincare.ParabolicHolder.Y.instCompleteSpace`
+harness/v2/state/upstream-verification-20260930/holder-space-433-task-a01/export-types.lean:10:121: error(lean.unknownIdentifier): Unknown constant `Poincare.ParabolicHolder.Y.norm_eq`

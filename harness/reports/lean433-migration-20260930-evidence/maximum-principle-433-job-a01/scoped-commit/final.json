@@ -1,0 +1,21 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/maximum-principle-433/poincare",
+  "argv": [
+    "git",
+    "commit",
+    "--only",
+    "-F",
+    "harness/v2/state/upstream-verification-20260930/maximum-principle-433-job-a01/commit-message.txt",
+    "--",
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "head_before": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "head_after": "492b3c025d8df1f5d417e9f870b099f909a46072",
+  "started_at": "2026-09-30T20:58:26.809398+00:00",
+  "ended_at": "2026-09-30T20:58:26.929045+00:00",
+  "duration_seconds": 0.11946883401833475,
+  "exit_code": 0,
+  "source_before_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "source_after_sha256": "aff7a9b72bf51e625012ebaade5f2f6ccfcbca1e0d4fe47ee6169612867a9df3",
+  "status_after": "## codex/maximum-principle-433-a01\n"
+}

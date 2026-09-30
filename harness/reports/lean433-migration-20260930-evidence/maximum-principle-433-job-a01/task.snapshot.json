@@ -1,0 +1,292 @@
+{
+  "schema_version": "2.1",
+  "id": "maximum-principle-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "objective": {
+    "title": "Restore the existing maximum-principle proofs on Lean 4.33.1",
+    "statement": "Repair precisely the recorded Lean 4.33 elaboration failures while preserving every existing declaration type, hypothesis and universe. This enables final upstream endpoint integration in the retained full root. The scalar comparisons remain consumers in the independent Hamilton estimates route; migration itself discharges no core existence assumption. Do not add conditional theorems, alter definitions, norms or final target, or discard old results.",
+    "deliverables": [
+      "The unchanged MaximumPrinciple API compiles on the pinned 4.33 toolchain, passes every frozen exact-type and allowed-axiom check, with all failed output retained."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/MaximumPrinciple.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/**",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.toml",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/MaximumPrinciple.lean",
+      "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/blind-readback-a02.json",
+      "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe-a02.lean",
+      "harness/v2/state/upstream-verification-20260930/maximum-principle-433-preflight-a01/compiler.log"
+    ],
+    "symbols": [
+      "RicciFlow.ode_comparison_nonpos",
+      "RicciFlow.ode_comparison_nonneg",
+      "RicciFlow.riccati_lower_bound",
+      "RicciFlow.riccati_forces_finite_time",
+      "RicciFlow.einstein_scalar_hasDerivAt_riccati",
+      "RicciFlow.riccati_upper_bound",
+      "RicciFlow.riccati_doubling_time",
+      "RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+      "RicciFlow.hessian_nonneg_of_isLocalMin",
+      "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+      "RicciFlow.exists_first_zero",
+      "RicciFlow.ode_comparison_nonpos_eq",
+      "RicciFlow.ode_comparison_nonneg_eq",
+      "RicciFlow.riccati_lower_bound_eq",
+      "RicciFlow.riccati_forces_finite_time_eq",
+      "RicciFlow.einstein_scalar_hasDerivAt_riccati_eq",
+      "RicciFlow.riccati_upper_bound_eq",
+      "RicciFlow.riccati_doubling_time_eq",
+      "RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq",
+      "RicciFlow.hessian_nonneg_of_isLocalMin_eq",
+      "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+      "RicciFlow.exists_first_zero_eq"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/MaximumPrinciple.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.MaximumPrinciple"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe-a02.lean"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/MaximumPrinciple.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "RicciFlow.ode_comparison_nonpos",
+      "RicciFlow.ode_comparison_nonneg",
+      "RicciFlow.riccati_lower_bound",
+      "RicciFlow.riccati_forces_finite_time",
+      "RicciFlow.einstein_scalar_hasDerivAt_riccati",
+      "RicciFlow.riccati_upper_bound",
+      "RicciFlow.riccati_doubling_time",
+      "RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+      "RicciFlow.hessian_nonneg_of_isLocalMin",
+      "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+      "RicciFlow.exists_first_zero",
+      "RicciFlow.ode_comparison_nonpos_eq",
+      "RicciFlow.ode_comparison_nonneg_eq",
+      "RicciFlow.riccati_lower_bound_eq",
+      "RicciFlow.riccati_forces_finite_time_eq",
+      "RicciFlow.einstein_scalar_hasDerivAt_riccati_eq",
+      "RicciFlow.riccati_upper_bound_eq",
+      "RicciFlow.riccati_doubling_time_eq",
+      "RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq",
+      "RicciFlow.hessian_nonneg_of_isLocalMin_eq",
+      "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+      "RicciFlow.exists_first_zero_eq"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.MaximumPrinciple"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {u u' : Real → Real} {C T : Real}, (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} C (u t))) → LE.le.{0} (u (0 : Real)) (0 : Real) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (u t) (0 : Real)",
+        "name": "RicciFlow.ode_comparison_nonpos",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {u u' : Real → Real} {C T : Real}, (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} C (u t)) (u' t)) → LE.le.{0} (0 : Real) (u (0 : Real)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (0 : Real) (u t)",
+        "name": "RicciFlow.ode_comparison_nonneg",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LE.le.{0} (0 : Real) a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) (2 : Nat))) (u' t)) → LT.lt.{0} (0 : Real) (u (0 : Real)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (HDiv.hDiv.{0, 0, 0} (u (0 : Real)) (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u (0 : Real))) t))) (u t)",
+        "name": "RicciFlow.riccati_lower_bound",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LT.lt.{0} (0 : Real) a → LE.le.{0} (0 : Real) T → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) (2 : Nat))) (u' t)) → LT.lt.{0} (0 : Real) (u (0 : Real)) → LT.lt.{0} T (HDiv.hDiv.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} a (u (0 : Real))))",
+        "name": "RicciFlow.riccati_forces_finite_time",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {lam n t : Real}, Ne.{1} n (0 : Real) → Ne.{1} (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (2 : Real) lam) t)) (0 : Real) → HasDerivAt.{0, 0} (fun (s : Real) => HDiv.hDiv.{0, 0, 0} (HMul.hMul.{0, 0, 0} lam n) (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (2 : Real) lam) s))) (HMul.hMul.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (2 : Real) n) (HPow.hPow.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (HMul.hMul.{0, 0, 0} lam n) (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (2 : Real) lam) t))) (2 : Nat))) t",
+        "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LE.le.{0} (0 : Real) a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) (2 : Nat)))) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LT.lt.{0} (0 : Real) (u t)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LT.lt.{0} (0 : Real) (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u (0 : Real))) t)) → LE.le.{0} (u t) (HDiv.hDiv.{0, 0, 0} (u (0 : Real)) (HSub.hSub.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u (0 : Real))) t)))",
+        "name": "RicciFlow.riccati_upper_bound",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LT.lt.{0} (0 : Real) a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) (2 : Nat)))) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LT.lt.{0} (0 : Real) (u t)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t → LE.le.{0} t (HDiv.hDiv.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (2 : Real) a) (u (0 : Real)))) → LE.le.{0} (u t) (HMul.hMul.{0, 0, 0} (2 : Real) (u (0 : Real)))",
+        "name": "RicciFlow.riccati_doubling_time",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {g g' g'' : Real → Real}, (∀ (t : Real), HasDerivAt.{0, 0} g (g' t) t) → (∀ (t : Real), HasDerivAt.{0, 0} g' (g'' t) t) → Continuous.{0, 0} g'' → IsLocalMin.{0, 0} g (0 : Real) → LE.le.{0} (0 : Real) (g'' (0 : Real))",
+        "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {f : E → Real}, ContDiff.{0, u_1, 0} Real (2 : WithTop.{0} ENat) f → ∀ {x₀ : E}, IsLocalMin.{u_1, 0} f x₀ → ∀ (v : E), LE.le.{0} (0 : Real) (((fderiv.{0, u_1, u_1} Real (fderiv.{0, u_1, 0} Real f) x₀) v) v)",
+        "name": "RicciFlow.hessian_nonneg_of_isLocalMin",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {f : E → Real} {x₀ : E}, ContDiffAt.{0, u_1, 0} Real (2 : WithTop.{0} ENat) f x₀ → IsLocalMin.{u_1, 0} f x₀ → ∀ (v : E), LE.le.{0} (0 : Real) (((fderiv.{0, u_1, u_1} Real (fderiv.{0, u_1, 0} Real f) x₀) v) v)",
+        "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {g : Real → Real} {T : Real}, ContinuousOn.{0, 0} g (Set.Icc.{0} (0 : Real) T) → LT.lt.{0} (0 : Real) (g (0 : Real)) → (∃ (t : Real), And (Membership.mem.{0, 0} (Set.Icc.{0} (0 : Real) T) t) (LE.le.{0} (g t) (0 : Real))) → ∃ (t₀ : Real), And (Membership.mem.{0, 0} (Set.Ioc.{0} (0 : Real) T) t₀) (And (Eq.{1} (g t₀) (0 : Real)) (∀ (s : Real), Membership.mem.{0, 0} (Set.Ico.{0} (0 : Real) t₀) s → LT.lt.{0} (0 : Real) (g s)))",
+        "name": "RicciFlow.exists_first_zero",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.ode_comparison_nonpos @RicciFlow.ode_comparison_nonpos",
+        "name": "RicciFlow.ode_comparison_nonpos_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.ode_comparison_nonneg @RicciFlow.ode_comparison_nonneg",
+        "name": "RicciFlow.ode_comparison_nonneg_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.riccati_lower_bound @RicciFlow.riccati_lower_bound",
+        "name": "RicciFlow.riccati_lower_bound_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.riccati_forces_finite_time @RicciFlow.riccati_forces_finite_time",
+        "name": "RicciFlow.riccati_forces_finite_time_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.einstein_scalar_hasDerivAt_riccati @RicciFlow.einstein_scalar_hasDerivAt_riccati",
+        "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.riccati_upper_bound @RicciFlow.riccati_upper_bound",
+        "name": "RicciFlow.riccati_upper_bound_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.riccati_doubling_time @RicciFlow.riccati_doubling_time",
+        "name": "RicciFlow.riccati_doubling_time_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.secondDeriv_nonneg_of_isLocalMin @RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+        "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.hessian_nonneg_of_isLocalMin.{u_1} @RicciFlow.hessian_nonneg_of_isLocalMin.{u_1}",
+        "name": "RicciFlow.hessian_nonneg_of_isLocalMin_eq",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt.{u_1} @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt.{u_1}",
+        "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "Eq.{0} @RicciFlow.exists_first_zero @RicciFlow.exists_first_zero",
+        "name": "RicciFlow.exists_first_zero_eq",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "bce9e204652408bbd6cd2637baef69f387f2cf7b94cf86d471456f4ea441f134",
+      "report_path": "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "8a6c74e6d9455564e0b6f7ab28c6808545cec6c7016f669f40e4830256891c1a",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "A repair requires any change outside the allowed proof module or to a declaration type/hypothesis/universe.",
+    "The same genuine blocker persists after three distinct proof attempts.",
+    "All exact gates succeed; preserve final diff and report without merging or accepting."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 40,
+    "max_output_tokens": 32000,
+    "disk_mb": 2048
+  }
+}

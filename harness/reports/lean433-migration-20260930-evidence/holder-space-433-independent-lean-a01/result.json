@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/ParabolicHolderSpace.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/holder-space-433/poincare",
+  "started_at": "2026-09-30T21:19:58.182628+00:00",
+  "source_head": "0eeafeb5dda18a7ed89c622223490f7d6f37d6b3",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 4.052139043807983,
+  "completed_at": "2026-09-30T21:20:02.252633+00:00",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "lean",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/RiemannCurvatureOperator.lean"
+  ],
+  "env": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "elapsed_seconds": 9.063909124932252
+}

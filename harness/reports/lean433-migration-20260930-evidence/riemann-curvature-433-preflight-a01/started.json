@@ -1,0 +1,23 @@
+{
+  "label": "riemann-curvature-433-preflight-a01",
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "expected_base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "status_before": "## codex/upstream-integration-433\n",
+  "source": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/RiemannCurvatureOperator.lean",
+  "source_sha256_before": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "mathlib_rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+  "lean_command": {
+    "argv": [
+      "lake",
+      "env",
+      "lean",
+      "Poincare/RiemannCurvatureOperator.lean"
+    ],
+    "env": {
+      "LEAN_NUM_THREADS": "1"
+    }
+  },
+  "started_utc": "2026-09-30T19:00:17.793303+00:00"
+}

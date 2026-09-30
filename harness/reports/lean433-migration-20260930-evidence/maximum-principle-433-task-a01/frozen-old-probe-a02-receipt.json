@@ -1,0 +1,16 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare",
+  "exit_code": 0,
+  "kernel_type_checks": 22,
+  "transitive_axiom_and_safety_checks": 22,
+  "log_sha256": "129e0e59af3bec59abb87a3e00b3cb319379796f0982ac2fb609c89d906d5fd1",
+  "proves": "Original production declarations match the exported frozen literal types. This is migration contract evidence only."
+}

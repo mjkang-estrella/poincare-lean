@@ -1,0 +1,11 @@
+{
+  "name": "diff-check",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "env": {},
+  "exit_code": 0,
+  "elapsed_seconds": 0.03758008300792426
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "00f7e7649309f7ec27c8b38a8649952764fb1dd6e5a4502ff35b26b89f97f63f",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.ParabolicHolder.isClosed_holderSubmodule",
+      "mathematical_statement": "Universally over independent universes u_1,u_2, implicit E : Type u_1 and F : Type u_2, assume only NormedAddCommGroup E, NormedAddCommGroup F and NormedSpace R F. For arbitrary implicit real alpha,T, the underlying set of holderSubmodule alpha T is closed in Ambient T E F with its inherited norm topology. The ambient space is the L1 normed product of two infinity-lp spaces of actual bounded functions: values on R x E and scaled differences indexed by distinct ordered pairs in the cylinder [0,T] x E. The submodule consists of pairs (v,w) with v zero outside that cylinder and w(p,q) = (norm(x-y)+sqrt(abs(t-s)))^(-alpha) times the vector v(p)-v(q) for each distinct pair p=(t,x),q=(s,y) in the cylinder, where this notation denotes the inverse of the positive alpha-th real power as in the supplied definition. Both components are bounded by their infinity-lp membership. Neither E nor F is assumed complete here, and E is not assumed to be a real normed vector space. No restriction such as 0 < alpha <= 1, T >= 0, finite-dimensionality, compact spatial domain, smoothness, differentiability, or approximation by smooth functions is imposed. The space has no separate continuity constraint. When T < 0 the cylinder is empty and the support equation forces the value component to be zero. The assertion is closedness of this graph-defined submodule, not existence of a PDE solution."
+    },
+    {
+      "name": "Poincare.ParabolicHolder.instCompleteSpace",
+      "mathematical_statement": "For independent universes u_1,u_2 and implicit E : Type u_1,F : Type u_2, assume NormedAddCommGroup E, NormedAddCommGroup F and NormedSpace R F. For arbitrary implicit real alpha,T, if F additionally has CompleteSpace, then Y alpha T F, with the implicit domain E retained, has CompleteSpace in its inherited norm metric. Here Y is the subtype of the graph-defined holderSubmodule in the L1 product of two infinity-lp spaces of bounded functions. Each element stores a bounded function v on R x E that is zero outside [0,T] x E and its bounded scaled difference function over distinct cylinder pairs; the graph equation determines the second component from v. Completeness of E, a real scalar structure on E, a sign or usual Holder-range assumption on alpha, and T >= 0 are not hypotheses. This establishes completeness for this particular sum-norm Holder carrier when the target F is complete. It does not assert differentiability, derivative-jet control, approximation by smooth functions, PDE evolution, or equivalence to another Holder-space definition. The output carrier universe is max u_2 u_1."
+    },
+    {
+      "name": "Poincare.ParabolicHolder.norm_eq",
+      "mathematical_statement": "For independent universes u_1,u_2 and implicit E : Type u_1,F : Type u_2 with NormedAddCommGroup E, NormedAddCommGroup F and NormedSpace R F, arbitrary implicit real alpha,T, and an explicit f : Y alpha T F, its inherited norm equals supNorm(cylinder T,v) + holderSeminorm(alpha,cylinder T,v), where v is exactly the first WithLp/infinity-lp component of f. The first term is the real supremum of {0} together with the norms of v(p) for p in [0,T] x E. The second is the real supremum of {0} together with norm(v(p)-v(q))/(norm(x-y)+sqrt(abs(t-s)))^alpha over distinct ordered pairs p=(t,x),q=(s,y) in that cylinder. The inserted zero fixes both quantities on empty indexing sets. These suprema refer to a member of Y, whose value component and scaled-difference component are bounded and whose value component is zero outside the cylinder; this is not a norm formula for arbitrary unbounded functions. F need not be complete for the identity. No completeness or real scalar-space assumption on E, usual exponent range, T >= 0, smoothness, derivative norm, or separate continuity hypothesis is present. The formula is the sum norm of this concrete graph carrier, with both implicit domain and target universes retained."
+    }
+  ],
+  "findings": []
+}

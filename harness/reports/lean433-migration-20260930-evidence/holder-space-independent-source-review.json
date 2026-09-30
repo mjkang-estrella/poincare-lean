@@ -1,0 +1,9 @@
+{
+  "base": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "candidate": "0eeafeb5dda18a7ed89c622223490f7d6f37d6b3",
+  "entire_surrounding_source_byte_identical": true,
+  "changed_files": [
+    "Poincare/Global/ParabolicHolderSpace.lean"
+  ],
+  "source_sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b"
+}

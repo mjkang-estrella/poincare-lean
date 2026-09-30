@@ -1,0 +1,25 @@
+Poincare/Global/ParabolicHolderSpace.lean:317:16: warning: `Set.iInter_setOf` has been deprecated: Use `Set.iInter_ofPred` instead
+Poincare/Global/ParabolicHolderSpace.lean:317:4: error: Type mismatch: After simplification, term
+  isClosed_iInter fun p => isClosed_iInter fun x => isClosed_eq (ev₁ p) continuous_const
+ has type
+  @IsClosed (Ambient T E F) (WithLp.instProdTopologicalSpace 1 ↥(lp (fun x => F) ∞) ↥(lp (fun x => F) ∞))
+    {x | ∀ i ∉ cylinder T, ↑(WithLp.fst x) i = 0}
+but is expected to have type
+  @IsClosed (Ambient T E F) (WithLp.instProdTopologicalSpace 1 ↥(lp (fun x => F) ∞) ↥(lp (fun x => F) ∞)) fun v =>
+    ∀ p ∉ cylinder T, ↑(WithLp.fst v) p = 0
+Poincare/Global/ParabolicHolderSpace.lean:320:16: warning: `Set.iInter_setOf` has been deprecated: Use `Set.iInter_ofPred` instead
+Poincare/Global/ParabolicHolderSpace.lean:320:4: error: Type mismatch: After simplification, term
+  isClosed_iInter fun i =>
+    isClosed_eq (ev₂ i)
+      (Continuous.const_smul (Continuous.sub (ev₁ (↑i).1) (ev₁ (↑i).2)) (parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹)
+ has type
+  @IsClosed (Ambient T E F) (WithLp.instProdTopologicalSpace 1 ↥(lp (fun x => F) ∞) ↥(lp (fun x => F) ∞))
+    {x |
+      ∀ (i : Pairs (cylinder T)),
+        ↑(WithLp.snd x) i =
+          ((parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹ • ((fun v => ↑(WithLp.fst v) (↑i).1) - fun v => ↑(WithLp.fst v) (↑i).2))
+            x}
+but is expected to have type
+  @IsClosed (Ambient T E F) (WithLp.instProdTopologicalSpace 1 ↥(lp (fun x => F) ∞) ↥(lp (fun x => F) ∞)) fun v =>
+    ∀ (i : Pairs (cylinder T)),
+      ↑(WithLp.snd v) i = (parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹ • (↑(WithLp.fst v) (↑i).1 - ↑(WithLp.fst v) (↑i).2)

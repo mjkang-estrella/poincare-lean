@@ -1,0 +1,6 @@
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolder.isClosed_holderSubmodule
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolder.instCompleteSpace
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolder.norm_eq
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolder.isClosed_holderSubmodule
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolder.instCompleteSpace
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolder.norm_eq

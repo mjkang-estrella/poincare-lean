@@ -1,0 +1,10 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "exit_code": 0,
+  "captured_at": "2026-09-30T18:59:40.872765+00:00"
+}

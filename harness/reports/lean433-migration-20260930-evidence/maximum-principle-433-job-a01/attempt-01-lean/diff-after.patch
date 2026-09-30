@@ -1,0 +1,21 @@
+diff --git a/Poincare/MaximumPrinciple.lean b/Poincare/MaximumPrinciple.lean
+index a2e1f307..9c492bab 100644
+--- a/Poincare/MaximumPrinciple.lean
++++ b/Poincare/MaximumPrinciple.lean
+@@ -11,6 +11,8 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
+ import Mathlib.Analysis.Calculus.Deriv.MeanValue
+ import Mathlib.Analysis.Calculus.Deriv.Inv
+ 
++set_option backward.isDefEq.respectTransparency false
++
+ noncomputable section
+ 
+ open Set
+@@ -72,7 +74,6 @@ theorem ode_comparison_nonneg {u u' : ℝ → ℝ} {C T : ℝ}
+     (fun s hs ↦ (hd s hs).neg)
+     (fun s hs ↦ by
+       have := hineq s hs
+-      simp only
+       linarith)
+     (by simpa using h0) ht
+   simpa using this

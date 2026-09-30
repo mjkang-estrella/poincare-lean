@@ -1,0 +1,18 @@
+Poincare/Global/ParabolicHolderSpace.lean:317:4: error: Type mismatch: After simplification, term
+  isClosed_iInter fun p => isClosed_iInter fun x => isClosed_eq (ev₁ p) continuous_const
+ has type
+  IsClosed (⋂ i, ⋂ (_ : i ∉ cylinder T), fun y => ↑(WithLp.fst y) i = 0)
+but is expected to have type
+  IsClosed fun v => ∀ p ∉ cylinder T, ↑(WithLp.fst v) p = 0
+Poincare/Global/ParabolicHolderSpace.lean:320:4: error: Type mismatch: After simplification, term
+  isClosed_iInter fun i =>
+    isClosed_eq (ev₂ i)
+      (Continuous.const_smul (Continuous.sub (ev₁ (↑i).1) (ev₁ (↑i).2)) (parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹)
+ has type
+  IsClosed
+    (⋂ i, fun y =>
+      ↑(WithLp.snd y) i = (parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹ • (↑(WithLp.fst y) (↑i).1 - ↑(WithLp.fst y) (↑i).2))
+but is expected to have type
+  IsClosed fun v =>
+    ∀ (i : Pairs (cylinder T)),
+      ↑(WithLp.snd v) i = (parabolicDist (↑i).1 (↑i).2 ^ α)⁻¹ • (↑(WithLp.fst v) (↑i).1 - ↑(WithLp.fst v) (↑i).2)

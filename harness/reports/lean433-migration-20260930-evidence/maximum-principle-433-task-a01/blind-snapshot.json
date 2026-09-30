@@ -1,0 +1,136 @@
+{
+  "imports": [
+    "Poincare.MaximumPrinciple"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {u u' : Real → Real} {C T : Real}, (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} C (u t))) → LE.le.{0} (u 0) 0 → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (u t) 0",
+      "name": "RicciFlow.ode_comparison_nonpos",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {u u' : Real → Real} {C T : Real}, (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} C (u t)) (u' t)) → LE.le.{0} 0 (u 0) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} 0 (u t)",
+      "name": "RicciFlow.ode_comparison_nonneg",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LE.le.{0} 0 a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) 2)) (u' t)) → LT.lt.{0} 0 (u 0) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (HDiv.hDiv.{0, 0, 0} (u 0) (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u 0)) t))) (u t)",
+      "name": "RicciFlow.riccati_lower_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LT.lt.{0} 0 a → LE.le.{0} 0 T → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) 2)) (u' t)) → LT.lt.{0} 0 (u 0) → LT.lt.{0} T (HDiv.hDiv.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} a (u 0)))",
+      "name": "RicciFlow.riccati_forces_finite_time",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {lam n t : Real}, Ne.{1} n 0 → Ne.{1} (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} 2 lam) t)) 0 → HasDerivAt.{0, 0} (fun (s : Real) => HDiv.hDiv.{0, 0, 0} (HMul.hMul.{0, 0, 0} lam n) (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} 2 lam) s))) (HMul.hMul.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} 2 n) (HPow.hPow.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (HMul.hMul.{0, 0, 0} lam n) (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} 2 lam) t))) 2)) t",
+      "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LE.le.{0} 0 a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) 2))) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LT.lt.{0} 0 (u t)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LT.lt.{0} 0 (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u 0)) t)) → LE.le.{0} (u t) (HDiv.hDiv.{0, 0, 0} (u 0) (HSub.hSub.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} a (u 0)) t)))",
+      "name": "RicciFlow.riccati_upper_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {u u' : Real → Real} {a T : Real}, LT.lt.{0} 0 a → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → HasDerivAt.{0, 0} u (u' t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} (u' t) (HMul.hMul.{0, 0, 0} a (HPow.hPow.{0, 0, 0} (u t) 2))) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LT.lt.{0} 0 (u t)) → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t → LE.le.{0} t (HDiv.hDiv.{0, 0, 0} 1 (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} 2 a) (u 0))) → LE.le.{0} (u t) (HMul.hMul.{0, 0, 0} 2 (u 0))",
+      "name": "RicciFlow.riccati_doubling_time",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {g g' g'' : Real → Real}, (∀ (t : Real), HasDerivAt.{0, 0} g (g' t) t) → (∀ (t : Real), HasDerivAt.{0, 0} g' (g'' t) t) → Continuous.{0, 0} g'' → IsLocalMin.{0, 0} g 0 → LE.le.{0} 0 (g'' 0)",
+      "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {f : E → Real}, ContDiff.{0, u_1, 0} Real 2 f → ∀ {x₀ : E}, IsLocalMin.{u_1, 0} f x₀ → ∀ (v : E), LE.le.{0} 0 (((fderiv.{0, u_1, u_1} Real (fderiv.{0, u_1, 0} Real f) x₀) v) v)",
+      "name": "RicciFlow.hessian_nonneg_of_isLocalMin",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {f : E → Real} {x₀ : E}, ContDiffAt.{0, u_1, 0} Real 2 f x₀ → IsLocalMin.{u_1, 0} f x₀ → ∀ (v : E), LE.le.{0} 0 (((fderiv.{0, u_1, u_1} Real (fderiv.{0, u_1, 0} Real f) x₀) v) v)",
+      "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {g : Real → Real} {T : Real}, ContinuousOn.{0, 0} g (Set.Icc.{0} 0 T) → LT.lt.{0} 0 (g 0) → (∃ (t : Real), And (Membership.mem.{0, 0} (Set.Icc.{0} 0 T) t) (LE.le.{0} (g t) 0)) → ∃ (t₀ : Real), And (Membership.mem.{0, 0} (Set.Ioc.{0} 0 T) t₀) (And (Eq.{1} (g t₀) 0) (∀ (s : Real), Membership.mem.{0, 0} (Set.Ico.{0} 0 t₀) s → LT.lt.{0} 0 (g s)))",
+      "name": "RicciFlow.exists_first_zero",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.ode_comparison_nonpos @RicciFlow.ode_comparison_nonpos",
+      "name": "RicciFlow.ode_comparison_nonpos_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.ode_comparison_nonneg @RicciFlow.ode_comparison_nonneg",
+      "name": "RicciFlow.ode_comparison_nonneg_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.riccati_lower_bound @RicciFlow.riccati_lower_bound",
+      "name": "RicciFlow.riccati_lower_bound_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.riccati_forces_finite_time @RicciFlow.riccati_forces_finite_time",
+      "name": "RicciFlow.riccati_forces_finite_time_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.einstein_scalar_hasDerivAt_riccati @RicciFlow.einstein_scalar_hasDerivAt_riccati",
+      "name": "RicciFlow.einstein_scalar_hasDerivAt_riccati_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.riccati_upper_bound @RicciFlow.riccati_upper_bound",
+      "name": "RicciFlow.riccati_upper_bound_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.riccati_doubling_time @RicciFlow.riccati_doubling_time",
+      "name": "RicciFlow.riccati_doubling_time_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.secondDeriv_nonneg_of_isLocalMin @RicciFlow.secondDeriv_nonneg_of_isLocalMin",
+      "name": "RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq",
+      "universes": []
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.hessian_nonneg_of_isLocalMin.{u_1} @RicciFlow.hessian_nonneg_of_isLocalMin.{u_1}",
+      "name": "RicciFlow.hessian_nonneg_of_isLocalMin_eq",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt.{u_1} @RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt.{u_1}",
+      "name": "RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @RicciFlow.exists_first_zero @RicciFlow.exists_first_zero",
+      "name": "RicciFlow.exists_first_zero_eq",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+    }
+  ],
+  "snapshot_sha256": "c4f454a5fd57984fbe9681f948cfae87c80d2ab90754e77efafcb0da330be706"
+}

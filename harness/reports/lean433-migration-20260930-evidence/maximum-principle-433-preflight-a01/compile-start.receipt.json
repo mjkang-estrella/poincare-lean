@@ -1,0 +1,17 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "base_sha": "18e6d0225ba98f9aa4cf706f41e0daaf9ef4c46f",
+  "status_before": "## codex/upstream-integration-433\n",
+  "source_sha256": "432eb2dad3776168385422dd39d3a4c5d4ef1ca051663ea5a6caecf50ba49b29",
+  "lean_toolchain": "leanprover/lean4:v4.33.1",
+  "started_at": "2026-09-30T18:59:30.966341+00:00"
+}

@@ -1,0 +1,65 @@
+AXIOM_CONTRACT_OK: RicciFlow.ode_comparison_nonpos
+AXIOM_CONTRACT_OK: RicciFlow.ode_comparison_nonneg
+AXIOM_CONTRACT_OK: RicciFlow.riccati_lower_bound
+AXIOM_CONTRACT_OK: RicciFlow.riccati_forces_finite_time
+AXIOM_CONTRACT_OK: RicciFlow.einstein_scalar_hasDerivAt_riccati
+AXIOM_CONTRACT_OK: RicciFlow.riccati_upper_bound
+AXIOM_CONTRACT_OK: RicciFlow.riccati_doubling_time
+AXIOM_CONTRACT_OK: RicciFlow.secondDeriv_nonneg_of_isLocalMin
+AXIOM_CONTRACT_OK: RicciFlow.hessian_nonneg_of_isLocalMin
+AXIOM_CONTRACT_OK: RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt
+AXIOM_CONTRACT_OK: RicciFlow.exists_first_zero
+AXIOM_CONTRACT_OK: RicciFlow.ode_comparison_nonpos_eq
+AXIOM_CONTRACT_OK: RicciFlow.ode_comparison_nonneg_eq
+AXIOM_CONTRACT_OK: RicciFlow.riccati_lower_bound_eq
+AXIOM_CONTRACT_OK: RicciFlow.riccati_forces_finite_time_eq
+AXIOM_CONTRACT_OK: RicciFlow.einstein_scalar_hasDerivAt_riccati_eq
+AXIOM_CONTRACT_OK: RicciFlow.riccati_upper_bound_eq
+AXIOM_CONTRACT_OK: RicciFlow.riccati_doubling_time_eq
+AXIOM_CONTRACT_OK: RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq
+AXIOM_CONTRACT_OK: RicciFlow.hessian_nonneg_of_isLocalMin_eq
+AXIOM_CONTRACT_OK: RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq
+AXIOM_CONTRACT_OK: RicciFlow.exists_first_zero_eq
+FROZEN_CONTRACT_OK: RicciFlow.ode_comparison_nonpos
+FROZEN_CONTRACT_OK: RicciFlow.ode_comparison_nonneg
+FROZEN_CONTRACT_OK: RicciFlow.riccati_lower_bound
+FROZEN_CONTRACT_OK: RicciFlow.riccati_forces_finite_time
+harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe.lean:3:0: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HSub ℕ ℝ ?m.7
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe.lean:8:13: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HSub ℕ ℝ ?m.43
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe.lean:13:22: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HSub ℕ ℝ ?m.89
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe.lean:15:7: error: Application type mismatch: The argument
+  1 - a * u 0 * t
+has type
+  ℝ
+but is expected to have type
+  ℕ
+in the application
+  0 < 1 - a * u 0 * t
+harness/v2/state/upstream-verification-20260930/maximum-principle-433-task-a01/FrozenMaximumPrincipleProbe.lean:15:8: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HDiv ℕ ℝ ?m.68
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+FROZEN_CONTRACT_OK: RicciFlow.secondDeriv_nonneg_of_isLocalMin
+FROZEN_CONTRACT_OK: RicciFlow.hessian_nonneg_of_isLocalMin
+FROZEN_CONTRACT_OK: RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt
+FROZEN_CONTRACT_OK: RicciFlow.exists_first_zero
+FROZEN_CONTRACT_OK: RicciFlow.ode_comparison_nonpos_eq
+FROZEN_CONTRACT_OK: RicciFlow.ode_comparison_nonneg_eq
+FROZEN_CONTRACT_OK: RicciFlow.riccati_lower_bound_eq
+FROZEN_CONTRACT_OK: RicciFlow.riccati_forces_finite_time_eq
+FROZEN_CONTRACT_OK: RicciFlow.einstein_scalar_hasDerivAt_riccati_eq
+FROZEN_CONTRACT_OK: RicciFlow.riccati_upper_bound_eq
+FROZEN_CONTRACT_OK: RicciFlow.riccati_doubling_time_eq
+FROZEN_CONTRACT_OK: RicciFlow.secondDeriv_nonneg_of_isLocalMin_eq
+FROZEN_CONTRACT_OK: RicciFlow.hessian_nonneg_of_isLocalMin_eq
+FROZEN_CONTRACT_OK: RicciFlow.fderiv_fderiv_nonneg_of_isLocalMin_contDiffAt_eq
+FROZEN_CONTRACT_OK: RicciFlow.exists_first_zero_eq

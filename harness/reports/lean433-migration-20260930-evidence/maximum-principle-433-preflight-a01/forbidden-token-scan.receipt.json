@@ -1,0 +1,11 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "argv": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/MaximumPrinciple.lean"
+  ],
+  "exit_code": 1,
+  "captured_at": "2026-09-30T18:59:40.853136+00:00"
+}
