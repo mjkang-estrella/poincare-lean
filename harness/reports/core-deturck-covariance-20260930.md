@@ -137,3 +137,20 @@ rigid expression comparison are unchanged. The regression suite passed.
 Original failed probes and all compiler attempts are retained. Pullback worker
 evidence written under primary state was also copied into integration state
 without deleting the original. Dirty/unmerged historical worktrees remain.
+
+## Sealed integration checkpoint
+
+Clean checked source: `773b742d76e9adee76f8df959df8907f5c735600`.
+
+Source SHA256: `ecdfba9888fd7c6adf10beeb1c97c803900e2d01f929b1c31cf8b5eefab7ddf0`.
+
+The full build and all integration audits passed. Completion exited 1 only
+for the absent local reserved name and failed exact final-theorem probe.
+`Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement` remains
+absent. No completion claim follows from this checkpoint.
+
+Every retained attempt and checkpoint artifact is compressed under
+`core-deturck-covariance-20260930-evidence`; manifest SHA256 values for both
+original and gzip bytes were independently rechecked against originals.
+The final evidence commit changes only archived reports/generated status,
+preserving the checked source identity.
