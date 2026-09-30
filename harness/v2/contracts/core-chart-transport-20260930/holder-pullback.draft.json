@@ -1,0 +1,26 @@
+{
+  "imports": [
+    "Poincare.Global.ParabolicSpatialHolderPullback"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.ParabolicSpatialHolderPullback.exists_spatial_Y_pullback",
+      "lean_type": "\u2200 {V : Type v} [NormedAddCommGroup V] [NormedSpace \u211d V],\n\u2200 (F : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) F \u2192 HasCompactSupport F \u2192\n\u2200 (\u03b1 : \u211d), 0 \u2264 \u03b1 \u2192 \u2203 C : \u211d, 0 \u2264 C \u2227 \u2200 T : \u211d,\n\u2203 Q : (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T V) \u2192L[\u211d] (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T V), \u2016Q\u2016 \u2264 C \u2227 \u2200 f p, Q f p = f (p.1, F p.2)",
+      "universes": [
+        "v"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/ParabolicHolderSpace.lean",
+      "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "09fd49d76865b0c54abab37c43ff2e6c5677e1c242365ae50c6e0804e81b3e9a"
+}
