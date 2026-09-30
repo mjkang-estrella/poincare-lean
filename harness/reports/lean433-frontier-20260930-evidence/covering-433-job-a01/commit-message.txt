@@ -1,0 +1,18 @@
+Preserve covering globalization through the Lean 4.33 migration
+
+Use the current locally path connected class, whose deprecated alias is
+independently definitionally equal. Supply the local-homeomorphism equality
+in the orientation required by the current covering factory.
+
+Preserve all six exact declaration types, hypotheses and universe arities,
+and the bundled homeomorphism construction after the reviewed alias rename.
+This repairs compatibility for downstream recognition consumers and
+constructs no universal source or core existence input.
+
+Tested: Scoped Lean 4.33.1 compilation and covering module build
+Tested: Six frozen exact type/universe and permitted axiom/safety checks
+Tested: Scope/header and bundled homeomorphism data byte guard
+Tested: Scoped forbidden-token scan and git diff --check
+Not-tested: Full retained-root and completion audits, owned by orchestrator
+Scope-risk: narrow
+Reversibility: clean

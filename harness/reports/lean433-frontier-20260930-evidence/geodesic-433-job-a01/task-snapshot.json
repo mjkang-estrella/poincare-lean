@@ -1,0 +1,248 @@
+{
+  "schema_version": "2.1",
+  "id": "geodesic-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "objective": {
+    "title": "Restore the exact chart-geodesic local ODE proofs on Lean 4.33",
+    "statement": "Repair only recorded ODE import/proof API errors while preserving every exact original declaration type/universe and the geodesicFlowField data. Minimal Mathlib ExistUnique import may expose the moved original ODE APIs. This enables final retained-root upstream endpoint integration; GeodesicTransport consumes the original local existence/uniqueness and coordinate component statements. It does not discharge independent core existence assumptions.",
+    "deliverables": [
+      "Existing chart-geodesic APIs compile and all frozen type/axiom/data-preservation gates pass."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/GeodesicChart.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.toml",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/GeodesicChart.lean",
+      "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/blind-readback-a02.json",
+      "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/FrozenMigrationProbe-a02.lean",
+      "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/check-scope.py",
+      "harness/v2/state/upstream-verification-20260930/leaf-frontier-433-build-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.geodesicFlowField",
+      "Poincare.geodesicFlowField_apply",
+      "Poincare.contDiffAt_geodesicFlowField",
+      "Poincare.contDiff_geodesicFlowField",
+      "Poincare.exists_geodesicFlowField_solution_of_contDiffAt",
+      "Poincare.exists_geodesicFlowField_solution",
+      "Poincare.exists_geodesicFlowField_solution_of_contDiff",
+      "Poincare.geodesicFlowField_eventuallyEq_of_lipschitz",
+      "Poincare.geodesicFlowField_eventuallyEq_of_contDiffAt",
+      "Poincare.geodesic_position_hasDerivAt",
+      "Poincare.geodesic_velocity_hasDerivAt",
+      "Poincare.geodesic_components_hasDerivAt"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/GeodesicChart.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.GeodesicChart"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/FrozenMigrationProbe-a02.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/check-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/GeodesicChart.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.geodesicFlowField",
+      "Poincare.geodesicFlowField_apply",
+      "Poincare.contDiffAt_geodesicFlowField",
+      "Poincare.contDiff_geodesicFlowField",
+      "Poincare.exists_geodesicFlowField_solution_of_contDiffAt",
+      "Poincare.exists_geodesicFlowField_solution",
+      "Poincare.exists_geodesicFlowField_solution_of_contDiff",
+      "Poincare.geodesicFlowField_eventuallyEq_of_lipschitz",
+      "Poincare.geodesicFlowField_eventuallyEq_of_contDiffAt",
+      "Poincare.geodesic_position_hasDerivAt",
+      "Poincare.geodesic_velocity_hasDerivAt",
+      "Poincare.geodesic_components_hasDerivAt"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.GeodesicChart"
+    ],
+    "declarations": [
+      {
+        "lean_type": "{E : Type u_1} → [inst : NormedAddCommGroup.{u_1} E] → [inst_1 : NormedSpace.{0, u_1} Real E] → (E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)) → Prod.{u_1, u_1} E E → Prod.{u_1, u_1} E E",
+        "name": "Poincare.geodesicFlowField",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] (Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)) (p : Prod.{u_1, u_1} E E), Eq.{u_1 + 1} (Poincare.geodesicFlowField.{u_1} Γ p) (Prod.mk.{u_1, u_1} p.2 (Neg.neg.{u_1} (((Γ p.1) p.2) p.2)))",
+        "name": "Poincare.geodesicFlowField_apply",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {p₀ : Prod.{u_1, u_1} E E}, ContDiffAt.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) Γ p₀.1 → ContDiffAt.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) (Poincare.geodesicFlowField.{u_1} Γ) p₀",
+        "name": "Poincare.contDiffAt_geodesicFlowField",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)}, ContDiff.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) Γ → ContDiff.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) (Poincare.geodesicFlowField.{u_1} Γ)",
+        "name": "Poincare.contDiff_geodesicFlowField",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] [CompleteSpace.{u_1} E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {p₀ : Prod.{u_1, u_1} E E}, ContDiffAt.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) (Poincare.geodesicFlowField.{u_1} Γ) p₀ → ∃ (ε : Real), And (GT.gt.{0} ε (0 : Real)) (∃ (γ : Real → Prod.{u_1, u_1} E E), And (Eq.{u_1 + 1} (γ (0 : Real)) p₀) (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (Neg.neg.{0} ε) ε) t → HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t))",
+        "name": "Poincare.exists_geodesicFlowField_solution_of_contDiffAt",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] [CompleteSpace.{u_1} E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {p₀ : Prod.{u_1, u_1} E E}, ContDiffAt.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) Γ p₀.1 → ∃ (ε : Real), And (GT.gt.{0} ε (0 : Real)) (∃ (γ : Real → Prod.{u_1, u_1} E E), And (Eq.{u_1 + 1} (γ (0 : Real)) p₀) (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (Neg.neg.{0} ε) ε) t → HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t))",
+        "name": "Poincare.exists_geodesicFlowField_solution",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] [CompleteSpace.{u_1} E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)}, ContDiff.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) Γ → ∀ (p₀ : Prod.{u_1, u_1} E E), ∃ (ε : Real), And (GT.gt.{0} ε (0 : Real)) (∃ (γ : Real → Prod.{u_1, u_1} E E), And (Eq.{u_1 + 1} (γ (0 : Real)) p₀) (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (Neg.neg.{0} ε) ε) t → HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t))",
+        "name": "Poincare.exists_geodesicFlowField_solution_of_contDiff",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {γ η : Real → Prod.{u_1, u_1} E E} {K : NNReal} {s : Real → Set.{u_1} (Prod.{u_1, u_1} E E)}, (∀ᶠ (t : Real) in nhds.{0} (0 : Real), LipschitzOnWith.{u_1, u_1} K (fun (p : Prod.{u_1, u_1} E E) => Poincare.geodesicFlowField.{u_1} Γ p) (s t)) → (∀ᶠ (t : Real) in nhds.{0} (0 : Real), And (HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t) (Membership.mem.{u_1, u_1} (s t) (γ t))) → (∀ᶠ (t : Real) in nhds.{0} (0 : Real), And (HasDerivAt.{0, u_1} η (Poincare.geodesicFlowField.{u_1} Γ (η t)) t) (Membership.mem.{u_1, u_1} (s t) (η t))) → Eq.{u_1 + 1} (γ (0 : Real)) (η (0 : Real)) → Filter.EventuallyEq.{0, u_1} (nhds.{0} (0 : Real)) γ η",
+        "name": "Poincare.geodesicFlowField_eventuallyEq_of_lipschitz",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {p₀ : Prod.{u_1, u_1} E E} {γ η : Real → Prod.{u_1, u_1} E E}, ContDiffAt.{0, u_1, u_1} Real (1 : WithTop.{0} ENat) (Poincare.geodesicFlowField.{u_1} Γ) p₀ → Eq.{u_1 + 1} (γ (0 : Real)) p₀ → Eq.{u_1 + 1} (η (0 : Real)) p₀ → (∀ᶠ (t : Real) in nhds.{0} (0 : Real), HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t) → (∀ᶠ (t : Real) in nhds.{0} (0 : Real), HasDerivAt.{0, u_1} η (Poincare.geodesicFlowField.{u_1} Γ (η t)) t) → Filter.EventuallyEq.{0, u_1} (nhds.{0} (0 : Real)) γ η",
+        "name": "Poincare.geodesicFlowField_eventuallyEq_of_contDiffAt",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {γ : Real → Prod.{u_1, u_1} E E} {t : Real}, HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t → HasDerivAt.{0, u_1} (fun (τ : Real) => (γ τ).1) (γ t).2 t",
+        "name": "Poincare.geodesic_position_hasDerivAt",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {γ : Real → Prod.{u_1, u_1} E E} {t : Real}, HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t → HasDerivAt.{0, u_1} (fun (τ : Real) => (γ τ).2) (Neg.neg.{u_1} (((Γ (γ t).1) (γ t).2) (γ t).2)) t",
+        "name": "Poincare.geodesic_velocity_hasDerivAt",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : NormedSpace.{0, u_1} Real E] {Γ : E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E (ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E)} {γ : Real → Prod.{u_1, u_1} E E} {I : Set.{0} Real}, (∀ (t : Real), Membership.mem.{0, 0} I t → HasDerivAt.{0, u_1} γ (Poincare.geodesicFlowField.{u_1} Γ (γ t)) t) → And (∀ (t : Real), Membership.mem.{0, 0} I t → HasDerivAt.{0, u_1} (fun (τ : Real) => (γ τ).1) (γ t).2 t) (∀ (t : Real), Membership.mem.{0, 0} I t → HasDerivAt.{0, u_1} (fun (τ : Real) => (γ τ).2) (Neg.neg.{u_1} (((Γ (γ t).1) (γ t).2) (γ t).2)) t)",
+        "name": "Poincare.geodesic_components_hasDerivAt",
+        "universes": [
+          "u_1"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/definitions-for-review.txt",
+        "sha256": "ed44404890245196e04834710f33159e90bc562f2b29c2961aee0cabdffcd787"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "e7523216bf8ab6844eced6b86d20b249893778ad4dcdc0fbf9f997b61b4fd0f1",
+      "report_path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "8c68e5e6a2ccb238a1e821b79104f09cefd06d2a5596d7c3ebc5622f65f759bb",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "A repair requires any change outside the allowed proof module or to a declaration type/hypothesis/universe.",
+    "The same genuine blocker persists after three distinct proof attempts.",
+    "All exact gates succeed; preserve final diff and report without merging or accepting."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 18000,
+    "disk_mb": 2048
+  }
+}

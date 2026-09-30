@@ -1,0 +1,42 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Assembly",
+    "Poincare.FlatModelConnection",
+    "Poincare.Global.Alignment",
+    "Poincare.Global.CenteredCoordinateNeighborhoodShrinking",
+    "Poincare.Global.CompactCoefficientEllipticity",
+    "Poincare.Global.ControlledChartInstance",
+    "Poincare.Global.FiniteExtinctionInitialScale",
+    "Poincare.Global.FiniteExtinctionSurgerySchedule",
+    "Poincare.Global.HeatKernelIntegral",
+    "Poincare.Global.HeatKernelPDE",
+    "Poincare.Global.LeviCivita",
+    "Poincare.Global.MetricCompleteness",
+    "Poincare.Global.ParabolicSolutionGraph",
+    "Poincare.Global.ParabolicSpatialHolderPullback",
+    "Poincare.Global.RiemannianMetricInstanceTransport",
+    "Poincare.Global.RoundSphereMetric",
+    "Poincare.Global.SmoothCutoffVectorExtension",
+    "Poincare.Global.SmoothInitialMetricDefinitions",
+    "Poincare.Global.SmoothabilityFinitePrecompactTopologicalAtlasReduction",
+    "Poincare.Global.VolumeMeasure",
+    "Poincare.LeviCivitaUniqueness",
+    "Poincare.LocalConnectionRegularity",
+    "Poincare.Milestones"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:42:22.839037+00:00",
+  "source_head": "8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 1,
+  "seconds": 61.855551958084106,
+  "completed_at": "2026-09-30T21:43:24.709795+00:00",
+  "log_hashes": {
+    "stdout.log": "87a8e3bdd5df54e0b104b3508b4b1033e1613a5bbe513cd6d2a5a265d08ba359",
+    "stderr.log": "c4a27db198c4d8632369ee6102944ef46e83c20d685f7c17a6aaff9cfcfc710f"
+  }
+}

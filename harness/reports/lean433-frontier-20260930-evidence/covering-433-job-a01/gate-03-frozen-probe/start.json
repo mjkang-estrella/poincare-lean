@@ -1,0 +1,18 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/covering-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "status": "## codex/covering-433-a01\n M Poincare/Global/CoveringSkeleton.lean\n",
+  "source_sha256": "f645f0317f584c3b8a172952f956f289198ac3a5c02196f41bd40268eb6ac26c",
+  "started_at": "2026-09-30T21:36:25.503887+00:00"
+}

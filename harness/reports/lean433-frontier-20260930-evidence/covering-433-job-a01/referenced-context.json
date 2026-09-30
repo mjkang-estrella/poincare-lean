@@ -1,0 +1,6 @@
+{
+  "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/frozen-base.lean",
+  "sha256": "07b447bc82df5361f28d941bc34efe9bc22032f67be154d90abac2e90fc9dd90",
+  "matches_actual_base_source": true,
+  "purpose": "referenced by immutable check-scope.py"
+}

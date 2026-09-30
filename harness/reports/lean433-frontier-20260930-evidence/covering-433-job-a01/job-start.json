@@ -1,0 +1,12 @@
+{
+  "base_sha": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "cwd": "/Users/mjkang/.codex/worktrees/covering-433/poincare",
+  "started_at": "2026-09-30T21:35:31.980889+00:00",
+  "branch": "codex/covering-433-a01",
+  "status": "## codex/covering-433-a01\n",
+  "scope": [
+    "Poincare/Global/CoveringSkeleton.lean"
+  ],
+  "acceptance_authority": "root orchestrator",
+  "helper_agents": "forbidden by Task dispatch"
+}

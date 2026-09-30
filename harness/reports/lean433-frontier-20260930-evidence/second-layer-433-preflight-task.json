@@ -1,0 +1,32 @@
+{
+  "base": "8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c",
+  "objective": "Identify exact compatibility failures in retained-root modules immediately consuming the verified foundations. No source edits; do not launch full default build.",
+  "targets": [
+    "Poincare.Assembly",
+    "Poincare.FlatModelConnection",
+    "Poincare.Global.Alignment",
+    "Poincare.Global.CenteredCoordinateNeighborhoodShrinking",
+    "Poincare.Global.CompactCoefficientEllipticity",
+    "Poincare.Global.ControlledChartInstance",
+    "Poincare.Global.FiniteExtinctionInitialScale",
+    "Poincare.Global.FiniteExtinctionSurgerySchedule",
+    "Poincare.Global.HeatKernelIntegral",
+    "Poincare.Global.HeatKernelPDE",
+    "Poincare.Global.LeviCivita",
+    "Poincare.Global.MetricCompleteness",
+    "Poincare.Global.ParabolicSolutionGraph",
+    "Poincare.Global.ParabolicSpatialHolderPullback",
+    "Poincare.Global.RiemannianMetricInstanceTransport",
+    "Poincare.Global.RoundSphereMetric",
+    "Poincare.Global.SmoothCutoffVectorExtension",
+    "Poincare.Global.SmoothInitialMetricDefinitions",
+    "Poincare.Global.SmoothabilityFinitePrecompactTopologicalAtlasReduction",
+    "Poincare.Global.VolumeMeasure",
+    "Poincare.LeviCivitaUniqueness",
+    "Poincare.LocalConnectionRegularity",
+    "Poincare.Milestones"
+  ],
+  "allowed_source_edits": [],
+  "serves": "Full final endpoint integration with all original modules retained; no original core assumption discharge.",
+  "stop": "Save compiler failures/successes before reviewed repair tasks."
+}

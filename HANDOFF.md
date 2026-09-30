@@ -1,5 +1,41 @@
 # Handoff Snapshot
 
+## 2026-09-30 Covering and chart-ODE migration accepted
+
+At clean mathematical-source commit8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c,
+root independently accepted CoveringSkeleton and GeodesicChart repairs.
+Covering changes only the equivalent current local-path-connected class name,
+current compact covering factory and equality orientation. Current class alias
+equality passed by rfl; all exact normalized interface types/universes and
+bundled homeomorphism data passed independent checks. Geodesic adds the moved
+Mathlib ODE import and repairs one proof; all original public types/universes
+and actual flow-field data are unchanged. Both direct Lean, scoped builds,
+frozen type/axiom/unsafe/partial checks and source guards passed.
+
+The initial scoped foundation build and immediate-consumer build are preserved
+in harness/reports/lean433-frontier-20260930-evidence, including failed attempts,
+original checked-type exports and blind readbacks. The second layer stops at
+concrete4.33 errors in FlatModelConnection, HeatKernelPDE, HeatKernelIntegral,
+RoundSphereMetric, SmoothInitialMetricDefinitions and LeviCivitaUniqueness.
+None was silently accepted or changed. The initial scoped build's only two
+resisting foundation modules are now independently accepted.
+
+No original core assumption is discharged. The exact remaining original inputs
+are ExistsSmoothabilitySmoothManifoldStatement.{u},
+UniversalHamiltonFrontInputsStatement.{u,v}, and
+UniversalHamiltonConvergenceStatement.{u}. The final reserved theorem is absent.
+Full root compatibility and the reviewed strict pilot-contract successor remain
+required; all existing root imports, canonical target and audits are retained.
+
+First action: revalidate the SAME pinned upstream process and terminal result
+(session85355, wrapper65764/lake65773) before running the exact saved smoothing/
+endpoint type and allowed-axiom probe. Agentmonitor_upstream_verification owns
+that unique probe; root drains original buildhandle. Do not restart a livebuild.
+In parallel, freeze and independently review proof-only repairs for the exact
+six recorded consumer errors before editing. A legacy contract successor must
+preserve all five declaration literals/universes and bind a fresh independent
+readback to changed context pins; retain historical review/Job evidence.
+
 ## 2026-09-30 Retained-root compatibility repairs on Lean 4.33.1
 
 This is the isolated aligned branch, not the production completion checkpoint.

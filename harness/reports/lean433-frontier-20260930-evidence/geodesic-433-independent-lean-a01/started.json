@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/GeodesicChart.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/geodesic-433/poincare",
+  "started_at": "2026-09-30T21:40:12.265648+00:00",
+  "source_head": "8159987d5047a98cea00ca1baeb0081979126405",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

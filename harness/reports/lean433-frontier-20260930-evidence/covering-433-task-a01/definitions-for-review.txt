@@ -1,0 +1,9 @@
+class LocallyPathConnectedSpace (X : Type*) [TopologicalSpace X] : Prop where
+  /-- Each neighborhood filter has a basis of path-connected neighborhoods. -/
+  path_connected_basis : ∀ x : X, (𝓝 x).HasBasis (fun s : Set X => s ∈ 𝓝 x ∧ IsPathConnected s) id
+
+@[deprecated (since := "2026-06-21")] alias LocPathConnectedSpace := LocallyPathConnectedSpace
+@[deprecated (since := "2026-06-21")]
+alias LocPathConnectedSpace.path_connected_basis :=
+  LocallyPathConnectedSpace.path_connected_basis
+

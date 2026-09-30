@@ -1,0 +1,201 @@
+{
+  "schema_version": "2.1",
+  "id": "covering-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "objective": {
+    "title": "Restore unchanged covering globalization under the current class alias",
+    "statement": "Repair recorded covering proof failure and rename only LocPathConnectedSpace to its definitionally identical current class LocallyPathConnectedSpace. Preserve all hypotheses/universes/exact normalized public types and bundled Homeomorph data. This enables retained-root final endpoint integration; downstream UnitRecognitionNext/IsometryConsumers reuse these proofs. It does not produce a universal source or discharge original Hamilton or smoothability existence.",
+    "deliverables": [
+      "Existing covering APIs compile with all frozen type/axiom/data-preservation gates."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/CoveringSkeleton.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/UnitRecognitionNext.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.toml",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/CoveringSkeleton.lean",
+      "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/blind-readback.json",
+      "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/FrozenMigrationProbe.lean",
+      "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/check-scope.py",
+      "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/AliasEquivalenceProbe.lean",
+      "harness/v2/state/upstream-verification-20260930/leaf-frontier-433-build-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.GlobalCoveringSkeleton.surjective_of_isOpen_isClosed_range",
+      "Poincare.GlobalCoveringSkeleton.IsLocalHomeomorph.surjective_of_isClosed_range",
+      "Poincare.GlobalCoveringSkeleton.isCoveringMap_of_compact_isLocalHomeomorph",
+      "Poincare.GlobalCoveringSkeleton.bijective_of_isCoveringMap_simplyConnected",
+      "Poincare.GlobalCoveringSkeleton.isHomeomorph_of_isCoveringMap_simplyConnected",
+      "Poincare.GlobalCoveringSkeleton.homeomorphOfIsCoveringMapSimplyConnected"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/CoveringSkeleton.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.CoveringSkeleton"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/check-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/CoveringSkeleton.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.GlobalCoveringSkeleton.surjective_of_isOpen_isClosed_range",
+      "Poincare.GlobalCoveringSkeleton.IsLocalHomeomorph.surjective_of_isClosed_range",
+      "Poincare.GlobalCoveringSkeleton.isCoveringMap_of_compact_isLocalHomeomorph",
+      "Poincare.GlobalCoveringSkeleton.bijective_of_isCoveringMap_simplyConnected",
+      "Poincare.GlobalCoveringSkeleton.isHomeomorph_of_isCoveringMap_simplyConnected",
+      "Poincare.GlobalCoveringSkeleton.homeomorphOfIsCoveringMapSimplyConnected"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.CoveringSkeleton"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{v} X] {p : E → X} [@PreconnectedSpace.{v} X inst] [Nonempty.{u + 1} E], @IsOpen.{v} X inst (@Set.range.{v, u + 1} X E p) → @IsClosed.{v} X inst (@Set.range.{v, u + 1} X E p) → @Function.Surjective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.surjective_of_isOpen_isClosed_range",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@PreconnectedSpace.{v} X inst_1] [Nonempty.{u + 1} E], @IsLocalHomeomorph.{u, v} E X inst inst_1 p → @IsClosed.{v} X inst_1 (@Set.range.{v, u + 1} X E p) → @Function.Surjective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.IsLocalHomeomorph.surjective_of_isClosed_range",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@T2Space.{u} E inst] [@T2Space.{v} X inst_1] [@CompactSpace.{u} E inst], @IsLocalHomeomorph.{u, v} E X inst inst_1 p → @IsCoveringMap.{u, v} E X inst inst_1 p",
+        "name": "Poincare.GlobalCoveringSkeleton.isCoveringMap_of_compact_isLocalHomeomorph",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@ConnectedSpace.{u} E inst] [@SimplyConnectedSpace.{v} X inst_1] [@LocallyPathConnectedSpace.{v} X inst_1], @IsCoveringMap.{u, v} E X inst inst_1 p → @Function.Bijective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.bijective_of_isCoveringMap_simplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@ConnectedSpace.{u} E inst] [@SimplyConnectedSpace.{v} X inst_1] [@LocallyPathConnectedSpace.{v} X inst_1], @IsCoveringMap.{u, v} E X inst inst_1 p → @IsHomeomorph.{u, v} E X inst inst_1 p",
+        "name": "Poincare.GlobalCoveringSkeleton.isHomeomorph_of_isCoveringMap_simplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "{E : Type u} → {X : Type v} → [inst : TopologicalSpace.{u} E] → [inst_1 : TopologicalSpace.{v} X] → {p : E → X} → [@ConnectedSpace.{u} E inst] → [@SimplyConnectedSpace.{v} X inst_1] → [@LocallyPathConnectedSpace.{v} X inst_1] → @IsCoveringMap.{u, v} E X inst inst_1 p → @Homeomorph.{u, v} E X inst inst_1",
+        "name": "Poincare.GlobalCoveringSkeleton.homeomorphOfIsCoveringMapSimplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/definitions-for-review.txt",
+        "sha256": "ac0836f13c97e1bfb3e20aefe90c9c479412faeb0eb3d014523d2c80c89accf6"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "ef5768c7f65284d0496d4d437d3536069738a3c37a82bae128e91a5791a864d7",
+      "report_path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/blind-readback.json",
+      "report_sha256": "1365ea820d9c304749cf6d6aa46062c8c9cbb823740e71d68238afeb88d44507",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "A repair requires any change outside the allowed proof module or to a declaration type/hypothesis/universe.",
+    "The same genuine blocker persists after three distinct proof attempts.",
+    "All exact gates succeed; preserve final diff and report without merging or accepting."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 18000,
+    "disk_mb": 2048
+  }
+}

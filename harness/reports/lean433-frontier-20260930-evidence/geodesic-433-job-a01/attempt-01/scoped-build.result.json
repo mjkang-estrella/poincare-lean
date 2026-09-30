@@ -1,0 +1,18 @@
+{
+  "name": "scoped-build",
+  "cwd": "/Users/mjkang/.codex/worktrees/geodesic-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.GeodesicChart"
+  ],
+  "base_sha": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "source_sha256": "cdf1713afc66419789e36814c7dd5ccf9c44e2f95e0a79021a486f2401d1e3f6",
+  "started_utc": "2026-09-30T21:37:58.322931+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 7.6583563750609756,
+  "completed_utc": "2026-09-30T21:38:05.981244+00:00",
+  "passed": true
+}

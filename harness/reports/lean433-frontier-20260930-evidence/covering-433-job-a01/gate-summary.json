@@ -1,0 +1,14 @@
+{
+  "base_sha": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "source_sha256": "f645f0317f584c3b8a172952f956f289198ac3a5c02196f41bd40268eb6ac26c",
+  "frozen_type_universe_checks": 6,
+  "allowed_axiom_safety_checks": 6,
+  "public_headers_identical_after_reviewed_class_alias_normalization": true,
+  "bundled_homeomorphism_suffix_byte_preserved_after_class_alias_normalization": true,
+  "forbidden_scan": "no matches, rg exit1",
+  "diff_check_exit": 0,
+  "changed_files": [
+    "Poincare/Global/CoveringSkeleton.lean"
+  ],
+  "acceptance": "worker gates passed; orchestrator acceptance pending"
+}

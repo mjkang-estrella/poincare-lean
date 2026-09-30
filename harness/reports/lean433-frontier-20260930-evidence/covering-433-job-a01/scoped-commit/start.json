@@ -1,0 +1,19 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/covering-433/poincare",
+  "argv": [
+    "git",
+    "commit",
+    "--only",
+    "-F",
+    "harness/v2/state/upstream-verification-20260930/covering-433-job-a01/commit-message.txt",
+    "--",
+    "Poincare/Global/CoveringSkeleton.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "status": "## codex/covering-433-a01\n M Poincare/Global/CoveringSkeleton.lean\n",
+  "source_sha256": "f645f0317f584c3b8a172952f956f289198ac3a5c02196f41bd40268eb6ac26c",
+  "started_at": "2026-09-30T21:37:28.462735+00:00"
+}

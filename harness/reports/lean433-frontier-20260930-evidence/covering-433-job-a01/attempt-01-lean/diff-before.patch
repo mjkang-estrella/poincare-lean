@@ -1,0 +1,44 @@
+diff --git a/Poincare/Global/CoveringSkeleton.lean b/Poincare/Global/CoveringSkeleton.lean
+index 9a43ebb2..8b4379da 100644
+--- a/Poincare/Global/CoveringSkeleton.lean
++++ b/Poincare/Global/CoveringSkeleton.lean
+@@ -61,10 +61,10 @@ theorem isCoveringMap_of_compact_isLocalHomeomorph
+     (hp : IsLocalHomeomorph p) :
+     IsCoveringMap p := by
+   rw [isCoveringMap_iff_isCoveringMapOn_univ]
+-  exact IsCoveringMapOn.of_openPartialHomeomorph
++  exact IsCoveringMapOn.of_isLocalHomeomorphOn
+     (f := p) (s := univ) hp.continuous fun e _he => by
+       rcases hp e with ⟨φ, hφ_source, hφ_eq⟩
+-      exact ⟨φ, hφ_source, hφ_eq.symm⟩
++      exact ⟨φ, hφ_source, hφ_eq⟩
+ 
+ /--
+ A covering map with connected total space over a simply connected locally path
+@@ -75,7 +75,7 @@ injectivity are both extracted from the lifting theorem applied to
+ `id : X → X` and the uniqueness of lifts from the connected total space.
+ -/
+ theorem bijective_of_isCoveringMap_simplyConnected
+-    [ConnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
++    [ConnectedSpace E] [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
+     (hp : IsCoveringMap p) :
+     Bijective p := by
+   let e₀ : E := Classical.arbitrary E
+@@ -106,7 +106,7 @@ theorem bijective_of_isCoveringMap_simplyConnected
+ The unbundled homeomorphism statement for the globalization endgame.
+ -/
+ theorem isHomeomorph_of_isCoveringMap_simplyConnected
+-    [ConnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
++    [ConnectedSpace E] [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
+     (hp : IsCoveringMap p) :
+     IsHomeomorph p :=
+   ⟨hp.continuous, hp.isOpenMap, bijective_of_isCoveringMap_simplyConnected hp⟩
+@@ -116,7 +116,7 @@ Bundled homeomorphism version of
+ `isHomeomorph_of_isCoveringMap_simplyConnected`.
+ -/
+ def homeomorphOfIsCoveringMapSimplyConnected
+-    [ConnectedSpace E] [SimplyConnectedSpace X] [LocPathConnectedSpace X]
++    [ConnectedSpace E] [SimplyConnectedSpace X] [LocallyPathConnectedSpace X]
+     (hp : IsCoveringMap p) :
+     E ≃ₜ X :=
+   hp.isLocalHomeomorph.toHomeomorphOfBijective

@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "e7523216bf8ab6844eced6b86d20b249893778ad4dcdc0fbf9f997b61b4fd0f1",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.geodesicFlowField",
+      "mathematical_statement": "Universally in the single universe u_1, for an implicit real normed vector space E : Type u_1 with NormedAddCommGroup E and NormedSpace R E instances, geodesicFlowField takes an explicit arbitrary coefficient function Gamma : E -> (E ->L[R] E ->L[R] E) and returns a function E x E -> E x E. The supplied definition sends (x,v) to (v,-Gamma(x)(v)(v)). Gamma(x) is continuous and linear in each of its last two arguments, but this interface imposes no symmetry, continuity in x, metric compatibility, curvature, completeness, finite-dimensionality or manifold-chart-domain requirement. This is a definition of an autonomous coordinate ODE field, not a solution-existence statement."
+    },
+    {
+      "name": "Poincare.geodesicFlowField_apply",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, explicit Gamma : E -> (E ->L[R] E ->L[R] E) and explicit p : E x E, geodesicFlowField Gamma p equals (p.second,-Gamma(p.first)(p.second)(p.second)). This is the exact evaluation formula. Gamma is arbitrary as a function of position and need not be symmetric or regular in position. There is no completeness, finite-dimensionality, metric or manifold hypothesis, and no time interval or solution conclusion. The sole declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.contDiffAt_geodesicFlowField",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E) and implicit phase point p0 : E x E, if Gamma is ContDiffAt R 1 at p0.first, then geodesicFlowField Gamma is ContDiffAt R 1 at p0. The regularity order is 1 in WithTop ENat, so this is a C1-at-a-point transfer from the position coefficient to the phase-space vector field. E need not be complete or finite-dimensional. No symmetry, metric, chart-domain, bound, existence interval or solution hypothesis occurs. The declaration has the single universe u_1."
+    },
+    {
+      "name": "Poincare.contDiff_geodesicFlowField",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1 and implicit Gamma : E -> (E ->L[R] E ->L[R] E), global ContDiff R 1 Gamma implies global ContDiff R 1 (geodesicFlowField Gamma). This is a global C1 regularity transfer, with order 1 in WithTop ENat. Completeness and finite-dimensionality of E are not assumed, and no norm bound, metric, symmetry, chart domain, ODE solution or global-in-time flow is supplied. The sole declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.exists_geodesicFlowField_solution_of_contDiffAt",
+      "mathematical_statement": "For an implicit complete real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), and implicit p0 : E x E, assume the phase-space field geodesicFlowField Gamma is C1 at p0. Then there exist a real epsilon > 0 and gamma : R -> E x E such that gamma(0)=p0 and, for every real t in the open symmetric interval (-epsilon,epsilon), gamma has ordinary derivative geodesicFlowField Gamma (gamma(t)) at t. Gamma is not separately required to be C1. Completeness is an explicit assumption only on E; no finite-dimensionality, metric, symmetry, chart restriction, norm bound or global Lipschitz constant is assumed. The curve is a total function but the ODE is asserted only on this local interval, not at its endpoints or outside it. No uniqueness, uniform lifespan, global geodesic completeness or limit assertion is included. The single declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.exists_geodesicFlowField_solution",
+      "mathematical_statement": "For an implicit complete real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), and implicit p0 : E x E, assume Gamma is C1 at the initial position p0.first. Then there exist epsilon > 0 and a total curve gamma : R -> E x E with gamma(0)=p0 and ordinary derivative geodesicFlowField Gamma (gamma(t)) for every t in (-epsilon,epsilon). No separate regularity of Gamma away from that point, norm bound, metric, symmetry, finite-dimensionality or chart-domain assumption is stated. The result is local existence, with no ODE assertion at interval endpoints or outside the interval, no uniqueness or uniform/global lifespan, and no asymptotic limit. The declaration is polymorphic only in u_1."
+    },
+    {
+      "name": "Poincare.exists_geodesicFlowField_solution_of_contDiff",
+      "mathematical_statement": "For an implicit complete real normed vector space E : Type u_1 and implicit Gamma : E -> (E ->L[R] E ->L[R] E), assume Gamma is globally C1. For each explicit initial phase point p0 : E x E there exist epsilon > 0 and gamma : R -> E x E with gamma(0)=p0 and ordinary derivative geodesicFlowField Gamma (gamma(t)) for all t in (-epsilon,epsilon). E is complete but need not be finite-dimensional; no metric, symmetry, norm bound or global Lipschitz assumption occurs. The choices may depend on p0, and global C1 of Gamma does not make the conclusion global in time or furnish a uniform epsilon. No ODE assertion outside the local open interval, uniqueness or limit is stated. The sole universe is u_1."
+    },
+    {
+      "name": "Poincare.geodesicFlowField_eventuallyEq_of_lipschitz",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), implicit curves gamma,eta : R -> E x E, implicit K : NNReal and implicit family s : R -> Set(E x E), assume that eventually for t in the neighborhood filter of the real point 0, the phase field is LipschitzOnWith K on s(t). Assume also that eventually near 0 gamma has ordinary derivative field(gamma(t)) and gamma(t) lies in s(t), and likewise eta has ordinary derivative field(eta(t)) and lies in s(t). If gamma(0)=eta(0), then gamma and eta are EventuallyEq in the same neighborhood filter of 0, meaning they coincide on some neighborhood of 0. The same nonnegative constant K is used through the eventual hypotheses although the sets may vary with time. No completeness of E, C1 regularity of Gamma, global Lipschitz property or fixed interval is assumed. The conclusion is local uniqueness near 0, not equality for all time or an assertion at infinity. The single declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.geodesicFlowField_eventuallyEq_of_contDiffAt",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), implicit p0 : E x E and implicit curves gamma,eta : R -> E x E, assume the phase-space field is C1 at p0, gamma(0)=p0 and eta(0)=p0. Assume eventually in the neighborhood filter of 0 that gamma has ordinary derivative field(gamma(t)), and likewise for eta. Then gamma and eta agree eventually in the neighborhood filter of 0, hence on some neighborhood of that point. No completeness, finite-dimensionality, metric, symmetry, explicit Lipschitz bound, curve-membership set or global C1 hypothesis is stated. The result is local uniqueness, not existence or equality on an entire lifespan, and the filter is near 0 rather than at infinity. The declaration has the single universe u_1."
+    },
+    {
+      "name": "Poincare.geodesic_position_hasDerivAt",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), implicit gamma : R -> E x E and implicit real t, if gamma has ordinary derivative geodesicFlowField Gamma (gamma(t)) at t, then the first-component curve tau |-> gamma(tau).first has ordinary derivative gamma(t).second at t. No completeness, regularity of Gamma, metric, norm bound, initial condition or interval hypothesis is required. The conclusion is a pointwise projection of the supplied ODE, not a solution construction or an explicitly asserted second derivative. The sole universe is u_1."
+    },
+    {
+      "name": "Poincare.geodesic_velocity_hasDerivAt",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), implicit gamma : R -> E x E and implicit real t, if gamma has ordinary derivative geodesicFlowField Gamma (gamma(t)) at t, then the second-component curve tau |-> gamma(tau).second has ordinary derivative -Gamma(gamma(t).first)(gamma(t).second)(gamma(t).second) at t. No completeness, regularity or symmetry of Gamma, metric, initial condition, norm bound or interval hypothesis occurs. This is the velocity projection of the supplied ODE at one point. The declaration has the single universe u_1."
+    },
+    {
+      "name": "Poincare.geodesic_components_hasDerivAt",
+      "mathematical_statement": "For an implicit real normed vector space E : Type u_1, implicit Gamma : E -> (E ->L[R] E ->L[R] E), implicit gamma : R -> E x E and arbitrary implicit set I of real times, assume gamma has ordinary derivative geodesicFlowField Gamma (gamma(t)) at every t in I. Then both component equations hold at every t in I: the first component has derivative gamma(t).second, and the second component has derivative -Gamma(gamma(t).first)(gamma(t).second)(gamma(t).second). I is any set, not necessarily an interval or open, and HasDerivAt is ordinary rather than within-set differentiability, including any endpoints belonging to I. No completeness, regularity of Gamma, initial condition, metric, symmetry or norm bound is assumed. This packages projections of a supplied solution; it does not assert existence, an explicit second derivative, a global lifespan or a limit. The single declaration universe is u_1."
+    }
+  ],
+  "findings": []
+}

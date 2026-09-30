@@ -1,0 +1,7 @@
+{
+  "owner": "/root/exact_target_migration",
+  "base": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "worktree": "/Users/mjkang/.codex/worktrees/covering-433/poincare",
+  "allowed_file": "Poincare/Global/CoveringSkeleton.lean",
+  "status": "allocated"
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/covering-433-task-a01/AliasEquivalenceProbe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:31:03.682785+00:00",
+  "source_head": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

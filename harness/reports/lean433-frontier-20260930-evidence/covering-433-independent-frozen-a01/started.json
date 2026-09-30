@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:39:46.422193+00:00",
+  "source_head": "e06e679b31cbc2537556e21859d127f1c80eba10",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

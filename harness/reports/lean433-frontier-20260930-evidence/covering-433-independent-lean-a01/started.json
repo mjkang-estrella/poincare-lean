@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/CoveringSkeleton.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/covering-433/poincare",
+  "started_at": "2026-09-30T21:38:24.524262+00:00",
+  "source_head": "0d2cfb6407176a056d25c3f16e423517c8f60cff",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

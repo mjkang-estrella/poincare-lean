@@ -1,0 +1,56 @@
+{
+  "label": "geodesic-433-job-a01",
+  "cwd": "/Users/mjkang/.codex/worktrees/geodesic-433/poincare",
+  "base_sha": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "branch": "codex/geodesic-433-a01",
+  "started_utc": "2026-09-30T21:37:38.190781+00:00",
+  "ownership": "Only recorded import/proof API migration in Poincare/Global/GeodesicChart.lean; all types and flow data frozen",
+  "acceptance_authority": "/root",
+  "task_sha256": "e2a87877df8c4b5d84697ac28e714a4a94ffa6b9583cf71c1566f8fb33eb6caa",
+  "context": [
+    {
+      "path": "README.md",
+      "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a"
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256": "654760a995cc8eda4033333d2277bde4de40e06367c5e40bdea9682fb875340e"
+    },
+    {
+      "path": "docs/PROJECT_MAP.md",
+      "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69"
+    },
+    {
+      "path": "harness/v2/SPEC.md",
+      "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3"
+    },
+    {
+      "path": "Poincare/Global/GeodesicChart.lean",
+      "sha256": "692de66163d2969b2c023141aa5e6ec0452094573c5cca80152edce1c34dc62f"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/blind-readback-a02.json",
+      "sha256": "8c68e5e6a2ccb238a1e821b79104f09cefd06d2a5596d7c3ebc5622f65f759bb"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/FrozenMigrationProbe-a02.lean",
+      "sha256": "50cc04551b89baf8bc44b5d2dd2bfb765d777a928c2a11fc5f6a3fb2fa6a30a9"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/definitions-for-review.txt",
+      "sha256": "ed44404890245196e04834710f33159e90bc562f2b29c2961aee0cabdffcd787"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/check-scope.py",
+      "sha256": "6f4999d23f79237a806769118b15a6f57510a2825f736bee0e42999fff51beed"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/leaf-frontier-433-build-a01/stdout.log",
+      "sha256": "9befaa13543d38d8288a1fc0cb13c02e81a4ea1608c47614609ced30c20851b7"
+    }
+  ]
+}

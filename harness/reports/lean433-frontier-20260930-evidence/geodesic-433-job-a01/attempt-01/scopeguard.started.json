@@ -1,0 +1,11 @@
+{
+  "name": "scopeguard",
+  "cwd": "/Users/mjkang/.codex/worktrees/geodesic-433/poincare",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/check-scope.py"
+  ],
+  "base_sha": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "source_sha256": "cdf1713afc66419789e36814c7dd5ccf9c44e2f95e0a79021a486f2401d1e3f6",
+  "started_utc": "2026-09-30T21:38:19.031814+00:00"
+}

@@ -1,0 +1,14 @@
+Preserve chart geodesic solutions across the Mathlib ODE move
+
+Import ExistUnique to expose the moved local existence and uniqueness APIs.
+Make the existing flow field explicit in the regularity proof so the product
+proof elaborates directly on Lean 4.33. The flow data and all twelve original
+declaration types and universes remain unchanged.
+
+Constraint: retain all original types, hypotheses, universes and flow data
+Tested: scoped Lean; module build; frozen type and axiom probe; scope guard
+Tested: forbidden-token scan; git diff --check
+Not-tested: full root build and final completion audits
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean

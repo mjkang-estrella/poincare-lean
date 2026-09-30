@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/geodesic-433-task-a01/FrozenMigrationProbe-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:41:47.673639+00:00",
+  "source_head": "8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 14.365382194519043,
+  "completed_at": "2026-09-30T21:42:02.055745+00:00",
+  "log_hashes": {
+    "stdout.log": "001680d5e75e0ac6fff464098f86f59ed642a0ddc19145de969843dc89d43d9e",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

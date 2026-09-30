@@ -1,0 +1,20 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.CoveringSkeleton"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:39:04.913721+00:00",
+  "source_head": "e06e679b31cbc2537556e21859d127f1c80eba10",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 9.972742795944214,
+  "completed_at": "2026-09-30T21:39:14.900881+00:00",
+  "log_hashes": {
+    "stdout.log": "f950a54a84191f26aaa58a7ad0a8f84f6f6959bca645696007a64d11845766a0",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

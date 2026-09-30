@@ -1,0 +1,3000 @@
+⚠ [2684/2686] Replayed Poincare.Statement
+warning: Poincare/Statement.lean:158:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:170:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:203:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:219:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:252:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:299:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:3218:0: Definition `threeSphere_stereographicOpenCoverPackage` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Statement.lean:3431:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:3447:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:3539:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:3623:4: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:3626:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:4132:4: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:4133:76: `Topology.IsOpenEmbedding.locPathConnectedSpace` has been deprecated: Use `Topology.IsOpenEmbedding.locallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:4229:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:4277:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:4515:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:4755:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:4970:13: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Poincare/Statement.lean:4991:19: `Set.mem_setOf_eq` has been deprecated: Use `Set.mem_ofPred_eq` instead
+warning: Poincare/Statement.lean:5039:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5055:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5212:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5228:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5254:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5571:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5573:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5590:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5592:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5873:4: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:5874:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5875:8: `ChartedSpace.locPathConnectedSpace` has been deprecated: Use `ChartedSpace.locallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:5881:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5882:14: `ChartedSpace.locPathConnectedSpace` has been deprecated: Use `ChartedSpace.locallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:5889:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:5896:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:6006:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:6037:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:6071:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:6099:4: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:6111:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:6234:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8525:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8611:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8612:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8623:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8654:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8656:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8658:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8771:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8862:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8924:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8926:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:8928:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9004:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9016:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9018:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9030:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9044:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9056:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9072:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9138:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9140:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:9142:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:13995:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14039:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14042:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14045:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14095:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14138:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14141:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14144:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14200:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14203:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14213:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14307:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14310:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14320:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14417:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14420:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14423:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14474:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14477:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14480:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14541:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14544:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14547:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14612:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14615:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14618:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14686:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14689:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14692:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14755:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14758:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:14761:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15059:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15062:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15065:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15100:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15103:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15106:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15164:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15167:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15170:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15232:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15235:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15238:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15287:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15290:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15318:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:15321:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:16586:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:16589:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:16638:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:16641:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17085:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17088:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17091:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17167:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17170:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17173:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17302:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17305:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17308:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17808:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17811:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17814:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17902:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17905:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:17908:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18126:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18129:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18132:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18281:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18284:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18287:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18439:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18442:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18445:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18594:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18597:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:18600:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19028:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19031:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19034:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19395:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19398:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19401:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19908:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19911:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:19914:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:20222:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:20225:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:20228:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:21711:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:21714:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:21717:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22088:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22091:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22094:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22523:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22526:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:22529:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23018:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23021:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23024:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23461:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23464:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23467:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23961:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23964:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:23967:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24101:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24104:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24107:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24408:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24411:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24414:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24720:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24723:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:24726:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25067:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25070:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25073:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25424:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25427:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25430:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25961:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25964:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:25967:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26161:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26164:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26167:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26692:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26695:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26698:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26875:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26878:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:26881:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:27150:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:27153:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:27156:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32578:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32580:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32582:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32639:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32641:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32643:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32689:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32691:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32693:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32772:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32774:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:32776:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43661:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43663:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43665:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43733:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43734:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:43735:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44056:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44081:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44174:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44204:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:44207:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44239:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44298:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:44301:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44331:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:44370:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44387:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44430:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:44439:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44456:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:44472:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:44580:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45007:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45025:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45141:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45177:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45338:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45378:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45395:10: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:45884:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:46104:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46114:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46125:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46136:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46146:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46928:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:46970:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:46973:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47017:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47071:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47074:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47130:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47197:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47200:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47270:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47317:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47320:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47489:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47583:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47663:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47666:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47747:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Statement.lean:47815:17: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Statement.lean:47818:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [2685/2706] Built Poincare.Assembly (5.6s)
+warning: Poincare/Assembly.lean:303:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:349:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:395:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:435:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:475:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:516:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:557:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:611:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:666:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:722:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:775:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:827:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:879:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:941:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1004:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1067:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1103:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1140:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1178:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1275:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1372:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1468:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1521:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1574:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1628:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1695:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1763:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:1931:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:1985:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2039:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2089:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2139:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2191:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2254:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2318:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2383:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2456:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2529:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2603:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2650:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2697:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2746:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2853:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:2960:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3067:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3130:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3193:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3258:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3336:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3414:19: `LocPathConnectedSpace` has been deprecated: Use `LocallyPathConnectedSpace` instead
+warning: Poincare/Assembly.lean:3836:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:4005:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:4370:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Assembly.lean:4548:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [2735/2740] Replayed Poincare.RiemannCurvatureOperator
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+ℹ [2737/2740] Replayed Poincare.Global.Statement
+info: Poincare/Global/Statement.lean:38:0: inferInstance : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ↑(Metric.sphere 0 1)
+info: Poincare/Global/Statement.lean:42:0: inferInstance : IsManifold (𝓡 3) ∞ ↑(Metric.sphere 0 1)
+✖ [2738/2740] Building Poincare.FlatModelConnection (2.3s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/FlatModelConnection.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/FlatModelConnection.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/FlatModelConnection.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/FlatModelConnection.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/FlatModelConnection.setup.json --json
+warning: Poincare/FlatModelConnection.lean:52:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:54:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:65:19: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/FlatModelConnection.lean:65:8: `simp` made no progress
+error: Poincare/FlatModelConnection.lean:82:4: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  lieBracketWithin ?m.71 ?m.76 ?m.77 univ
+in the target expression
+  lieBracketWithin 𝕜 V W univ = lieBracket 𝕜 V W
+
+𝕜 : Type u_1
+inst✝² : NontriviallyNormedField 𝕜
+E : Type u_2
+inst✝¹ : NormedAddCommGroup E
+inst✝ : NormedSpace 𝕜 E
+V W : (x : E) → TangentSpace 𝓘(𝕜, E) x
+⊢ lieBracketWithin 𝕜 V W univ = lieBracket 𝕜 V W
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    V
+  has type
+    (x : E) → TangentSpace 𝓘(𝕜, E) x
+  but is expected to have type
+    E → E
+  in the application
+    lieBracketWithin 𝕜 V
+warning: Poincare/FlatModelConnection.lean:103:37: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+warning: Poincare/FlatModelConnection.lean:104:4: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+error: Poincare/FlatModelConnection.lean:106:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((fderiv 𝕜 (fderiv 𝕜 Z) x) (V x)) (W x)
+in the target expression
+  (fderiv 𝕜 Z x ∘SL fderiv 𝕜 W x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (W x)) (V x) -
+        (fderiv 𝕜 Z x ∘SL fderiv 𝕜 V x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (V x)) (W x) -
+      ((fderiv 𝕜 Z x) ((fderiv 𝕜 W x) (V x)) - (fderiv 𝕜 Z x) ((fderiv 𝕜 V x) (W x))) =
+    0
+
+𝕜 : Type u_1
+inst✝² : NontriviallyNormedField 𝕜
+E : Type u_2
+inst✝¹ : NormedAddCommGroup E
+inst✝ : NormedSpace 𝕜 E
+V W Z : (x : E) → TangentSpace 𝓘(𝕜, E) x
+x : E
+hV : DifferentiableAt 𝕜 V x
+hW : DifferentiableAt 𝕜 W x
+hZ' : DifferentiableAt 𝕜 (fderiv 𝕜 Z) x
+hsymm : IsSymmSndFDerivAt 𝕜 Z x
+⊢ (fderiv 𝕜 Z x ∘SL fderiv 𝕜 W x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (W x)) (V x) -
+        (fderiv 𝕜 Z x ∘SL fderiv 𝕜 V x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (V x)) (W x) -
+      ((fderiv 𝕜 Z x) ((fderiv 𝕜 W x) (V x)) - (fderiv 𝕜 Z x) ((fderiv 𝕜 V x) (W x))) =
+    0
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Z
+  has type
+    (x : E) → TangentSpace 𝓘(𝕜, E) x
+  but is expected to have type
+    E → E
+  in the application
+    fderiv 𝕜 Z
+warning: Poincare/FlatModelConnection.lean:103:37: This simp argument is unused:
+  ContinuousLinearMap.add_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.coe_comp', Function.comp_apply,
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/FlatModelConnection.lean:104:4: This simp argument is unused:
+  ContinuousLinearMap.coe_comp'
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, Function.comp_apply,
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/FlatModelConnection.lean:104:35: This simp argument is unused:
+  Function.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/FlatModelConnection.lean:105:4: This simp argument is unused:
+  ContinuousLinearMap.flip_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    Function.comp_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: Poincare/FlatModelConnection.lean:142:2: `simp` made no progress
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Y
+  has type
+    F → F
+  but is expected to have type
+    (x : F) → TangentSpace 𝓘(ℝ, F) x
+  in the application
+    ↑(flatCovariantDerivative ℝ F) Y
+warning: Poincare/FlatModelConnection.lean:159:4: Try this: intro σ hσ x _
+error: Lean exited with code 1
+✔ [2739/2745] Built Poincare.Global.Alignment (1.9s)
+⚠ [2974/2978] Replayed Poincare.Global.RiemannianContext
+warning: Poincare/Global/RiemannianContext.lean:71:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:66:0: Definition `toIsContMDiffRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:79:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:74:0: Definition `toIsContinuousRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:106:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:107:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:100:0: Definition `toIsRiemannianManifold` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:167:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:168:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:178:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [2975/2983] Built Poincare.Global.ControlledChartInstance (2.7s)
+warning: Poincare/Global/ControlledChartInstance.lean:42:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:47:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:63:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:79:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:82:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:83:4: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:85:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:96:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:97:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:178:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/ControlledChartInstance.lean:228:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+⚠ [2976/2983] Built Poincare.Global.CompactCoefficientEllipticity (2.1s)
+warning: Poincare/Global/CompactCoefficientEllipticity.lean:34:45: `ContinuousLinearMap.smul_apply` has been deprecated: Use `smul_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.smul_apply` to `smul_apply x`).
+✔ [2977/2984] Built Poincare.Global.CenteredCoordinateNeighborhoodShrinking (1.9s)
+✔ [2982/2988] Built Poincare.Global.FiniteExtinctionSurgerySchedule (2.0s)
+✔ [2983/3022] Built Poincare.Global.FiniteExtinctionInitialScale (1.8s)
+✖ [3061/3068] Building Poincare.Global.HeatKernelPDE (1.9s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/HeatKernelPDE.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatKernelPDE.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatKernelPDE.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatKernelPDE.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatKernelPDE.setup.json --json
+error: Poincare/Global/HeatKernelPDE.lean:25:4: No applicable extensionality theorem found for type
+  AddCommGroup ℝ
+
+Note: Extensionality theorems can be registered by marking them with the `[ext]` attribute
+error: Poincare/Global/HeatKernelPDE.lean:27:4: `field_simp` made no progress on the goal
+error: Poincare/Global/HeatKernelPDE.lean:23:67: unsolved goals
+case e'_8
+c t : ℝ
+ht : t ≠ 0
+⊢ (fun τ => -c / (4 * τ)) = fun y => -(c / 4) * y⁻¹
+
+case e'_9
+c t : ℝ
+ht : t ≠ 0
+⊢ c / (4 * t ^ 2) = -(c / 4) * -(t ^ 2)⁻¹
+error: Poincare/Global/HeatKernelPDE.lean:56:2: Type mismatch: After simplification, term
+  HasDerivAt.mul hnorm hexp
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedCommRing.toAddCommGroup
+    (NormedAlgebra.toNormedSpace ℝ).toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun τ => (4 * Real.pi * τ) ^ (-↑(Module.finrank ℝ E) / 2)) * fun τ => Real.exp (-‖x‖ ^ 2 / (4 * τ)))
+    (4 * Real.pi * (-↑(Module.finrank ℝ E) / 2) * (4 * Real.pi * t) ^ (-↑(Module.finrank ℝ E) / 2 - 1) *
+        Real.exp (-‖x‖ ^ 2 / (4 * t)) +
+      (4 * Real.pi * t) ^ (-↑(Module.finrank ℝ E) / 2) * (Real.exp (-‖x‖ ^ 2 / (4 * t)) * (‖x‖ ^ 2 / (4 * t ^ 2))))
+    t
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    (fun τ => (4 * Real.pi * τ) ^ (-↑(Module.finrank ℝ E) / 2) * Real.exp (-‖x‖ ^ 2 / (4 * τ)))
+    (4 * Real.pi * (-↑(Module.finrank ℝ E) / 2) * (4 * Real.pi * t) ^ (-↑(Module.finrank ℝ E) / 2 - 1) *
+        Real.exp (-‖x‖ ^ 2 / (4 * t)) +
+      (4 * Real.pi * t) ^ (-↑(Module.finrank ℝ E) / 2) * (Real.exp (-‖x‖ ^ 2 / (4 * t)) * (‖x‖ ^ 2 / (4 * t ^ 2))))
+    t
+error: Poincare/Global/HeatKernelPDE.lean:80:4: Type mismatch: After simplification, term
+  HasDerivAt.pow (hasDerivAt_id x) 2
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedCommRing.toCommRing.toAddCommGroup
+    (NormedAlgebra.toNormedSpace ℝ).toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (id ^ 2) (2 * x) x
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun y => y ^ 2) (2 * x) x
+error: Poincare/Global/HeatKernelPDE.lean:82:4: `field_simp` made no progress on the goal
+error: Poincare/Global/HeatKernelPDE.lean:78:70: unsolved goals
+case e'_5
+t x : ℝ
+ht : t ≠ 0
+hsq : HasDerivAt (fun y => y ^ 2) (2 * x) x
+e_4✝ : Real.instAddCommGroup = NormedField.toNormedDivisionRing.toAddCommGroup
+⊢ Semiring.toModule = (NormedAlgebra.toNormedSpace ℝ).toModule
+
+case e'_8
+t x : ℝ
+ht : t ≠ 0
+hsq : HasDerivAt (fun y => y ^ 2) (2 * x) x
+⊢ (fun y => -y ^ 2 / (4 * t)) = fun x => (-fun y => y ^ 2) x / (4 * t)
+
+case e'_9
+t x : ℝ
+ht : t ≠ 0
+hsq : HasDerivAt (fun y => y ^ 2) (2 * x) x
+⊢ -(x / (2 * t)) = -(2 * x) / (4 * t)
+error: Poincare/Global/HeatKernelPDE.lean:92:2: Type mismatch: After simplification, term
+  HasDerivAt.mul (hasDerivAt_const x ((4 * Real.pi * t) ^ (-1 / 2))) hexp
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedCommRing.toAddCommGroup
+    (NormedAlgebra.toNormedSpace ℝ).toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    ((fun x => (4 * (Real.pi * t)) ^ (-1 / 2)) * fun y => Real.exp (-y ^ 2 / (4 * t)))
+    (-((4 * (Real.pi * t)) ^ (-1 / 2) * (Real.exp (-x ^ 2 / (4 * t)) * (x / (2 * t))))) x
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    (fun y => (4 * (Real.pi * t)) ^ (-1 / 2) * Real.exp (-y ^ 2 / (4 * t)))
+    (-((4 * (Real.pi * t)) ^ (-1 / 2) * (Real.exp (-x ^ 2 / (4 * t)) * (x / (2 * t))))) x
+error: Poincare/Global/HeatKernelPDE.lean:105:4: Type mismatch: After simplification, term
+  HasDerivAt.neg (HasDerivAt.div_const (hasDerivAt_id x) (2 * t))
+ has type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.normedAddCommGroup.toAddCommGroup
+    RCLike.toInnerProductSpaceReal.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯
+    (-fun x => x / (2 * t)) (-(t⁻¹ * 2⁻¹)) x
+but is expected to have type
+  @HasDerivAt ℝ DenselyNormedField.toNontriviallyNormedField ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ⋯ (fun y => -(y / (2 * t))) (-(t⁻¹ * 2⁻¹)) x
+error: Poincare/Global/HeatKernelPDE.lean:107:2: `field_simp` made no progress on the goal
+error: Lean exited with code 1
+⚠ [3063/3068] Built Poincare.Global.LeviCivita (4.3s)
+warning: Poincare/Global/LeviCivita.lean:53:8: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+⚠ [3066/3072] Built Poincare.Global.MetricCompleteness (1.8s)
+warning: Poincare/Global/MetricCompleteness.lean:36:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/MetricCompleteness.lean:47:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+✖ [3068/3074] Building Poincare.Global.HeatKernelIntegral (2.1s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/HeatKernelIntegral.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatKernelIntegral.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatKernelIntegral.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatKernelIntegral.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatKernelIntegral.setup.json --json
+error: Poincare/Global/HeatKernelIntegral.lean:171:2: Type mismatch: After simplification, term
+  Tendsto.comp (Real.tendsto_integral_gaussian_smul' hf hcf) heatTimeFourierScale_tendsto_atTop
+ has type
+  @Tendsto ℝ ℂ
+    ((fun c =>
+        ∫ (w : E),
+          ((↑Real.pi * ↑c) ^ (↑(Module.finrank ℝ E) / 2) * Complex.exp (-↑Real.pi ^ 2 * ↑c * ↑‖x - w‖ ^ 2)) • f w) ∘
+      fun t => (4 * Real.pi ^ 2 * t)⁻¹)
+    (𝓝[>] 0) (𝓝 (f x))
+but is expected to have type
+  @Tendsto ℝ ℂ
+    (fun t =>
+      ∫ (y : E),
+        ((↑Real.pi * ↑(4 * Real.pi ^ 2 * t)⁻¹) ^ (↑(Module.finrank ℝ E) / 2) *
+            Complex.exp (-↑Real.pi ^ 2 * ↑(4 * Real.pi ^ 2 * t)⁻¹ * ↑‖x - y‖ ^ 2)) •
+          f y)
+    (𝓝[>] 0) (𝓝 (f x))
+error: Lean exited with code 1
+⚠ [3071/3074] Replayed Poincare.Global.ParabolicSolutionGraph
+warning: Poincare/Global/ParabolicSolutionGraph.lean:298:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+✔ [3072/3074] Built Poincare.Global.ParabolicSpatialHolderPullback (2.4s)
+✔ [3073/3077] Built Poincare.Global.RiemannianMetricInstanceTransport (2.6s)
+✔ [3075/3077] Built Poincare.Global.SmoothCutoffVectorExtension (1.9s)
+✖ [3076/3080] Building Poincare.Global.RoundSphereMetric (4.3s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RoundSphereMetric.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/RoundSphereMetric.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/RoundSphereMetric.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/RoundSphereMetric.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/RoundSphereMetric.setup.json --json
+error: Poincare/Global/RoundSphereMetric.lean:58:51: unsolved goals
+x : RoundSphere3
+v w : TangentSpace (𝓡 3) x
+⊢ ((({ toFun := fun f => f ∘SL mfderiv% Subtype.val x, map_add' := ⋯, map_smul' := ⋯, cont := ⋯ } ∘SL innerSL ℝ) ∘SL
+          mfderiv% Subtype.val x)
+        v)
+      w =
+    inner ℝ ((mfderiv% Subtype.val x) v) ((mfderiv% Subtype.val x) w)
+error: Poincare/Global/RoundSphereMetric.lean:72:2: Type mismatch: After simplification, term
+  roundSphereMetric3_inner_apply x v w
+ has type
+  @Eq ℝ (((roundSphereMetric3_inner x) v) w) (inner ℝ ((mfderiv% Subtype.val x) v) ((mfderiv% Subtype.val x) w))
+but is expected to have type
+  @Eq ℝ (((roundSphereMetric3_inner x) v) w) (inner ℝ ((mfderiv% Subtype.val x) v) ((mfderiv% Subtype.val x) w))
+warning: Poincare/Global/RoundSphereMetric.lean:90:13: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+warning: Poincare/Global/RoundSphereMetric.lean:95:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:97:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:99:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:104:4: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+error: Poincare/Global/RoundSphereMetric.lean:159:4: Type mismatch: After simplification, term
+  ContDiff.comp contDiff_inner (ContDiff.prodMk hv hw)
+ has type
+  @ContDiff ℝ DenselyNormedField.toNontriviallyNormedField (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace ℝ
+    NonUnitalNormedRing.toNormedAddCommGroup RCLike.toInnerProductSpaceReal.toNormedSpace ∞
+    ((fun p => inner ℝ p.1 p.2) ∘ fun x => (x v, x w))
+but is expected to have type
+  @ContDiff ℝ DenselyNormedField.toNontriviallyNormedField (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace ℝ Real.normedAddCommGroup
+    RCLike.toInnerProductSpaceReal.toNormedSpace ∞ fun D => inner ℝ (D v) (D w)
+error: Poincare/Global/RoundSphereMetric.lean:161:2: Type mismatch: After simplification, term
+  hinner
+ has type
+  @ContDiff ℝ DenselyNormedField.toNontriviallyNormedField (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace ℝ Real.normedAddCommGroup
+    RCLike.toInnerProductSpaceReal.toNormedSpace ∞ fun D => inner ℝ (D v) (D w)
+but is expected to have type
+  @ContDiff ℝ DenselyNormedField.toNontriviallyNormedField (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace ℝ Real.normedAddCommGroup
+    RCLike.toInnerProductSpaceReal.toNormedSpace ∞ fun x =>
+    ({ toFun := fun f => f ∘SL x, map_add' := ⋯, map_smul' := ⋯, cont := ⋯ } ((innerSL ℝ) (x v))) w
+error: Poincare/Global/RoundSphereMetric.lean:190:4: Type mismatch: After simplification, term
+  ContMDiffAt.mfderiv_const hcoe (of_eq_true (Std.le_refl._simp_1 ∞))
+ has type
+  @ContMDiffAt ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) { x // x ∈ Metric.sphere 0 1 } instTopologicalSpaceSubtype
+    (instChartedSpaceEuclideanSpaceRealFinElemHAddNatOfNatSphere 3) (EuclideanSpace ℝ (Fin 3) →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace
+    (EuclideanSpace ℝ (Fin 3) →L[ℝ] RoundSphereAmbient4) ContinuousLinearMap.topologicalSpace
+    𝓘(ℝ, EuclideanSpace ℝ (Fin 3) →L[ℝ] RoundSphereAmbient4) (EuclideanSpace ℝ (Fin 3) →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.topologicalSpace (chartedSpaceSelf (EuclideanSpace ℝ (Fin 3) →L[ℝ] RoundSphereAmbient4)) ∞
+    (inTangentCoordinates (𝓡 3) 𝓘(ℝ, RoundSphereAmbient4) id Subtype.val (mfderiv% Subtype.val) x₀) x₀
+but is expected to have type
+  @ContMDiffAt ℝ DenselyNormedField.toNontriviallyNormedField (EuclideanSpace ℝ (Fin 3))
+    (PiLp.normedAddCommGroup 2 fun x => ℝ) (PiLp.normedSpace 2 ℝ fun x => ℝ) (EuclideanSpace ℝ (Fin 3))
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (𝓡 3) RoundSphere3 instTopologicalSpaceSubtype
+    (instChartedSpaceEuclideanSpaceRealFinElemHAddNatOfNatSphere 3) (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.toNormedAddCommGroup ContinuousLinearMap.toNormedSpace
+    (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4) PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+    𝓘(ℝ, RoundSphereModel3 →L[ℝ] RoundSphereAmbient4) (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)
+    ContinuousLinearMap.topologicalSpace (chartedSpaceSelf (RoundSphereModel3 →L[ℝ] RoundSphereAmbient4)) ∞
+    (inTangentCoordinates (𝓡 3) 𝓘(ℝ, RoundSphereAmbient4) id Subtype.val roundSphereMetric3_inclusionDeriv x₀) x₀
+error: Poincare/Global/RoundSphereMetric.lean:211:4: Tactic `rfl` failed: The left-hand side
+  inner ℝ ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x v))
+    ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x w))
+is not definitionally equal to the right-hand side
+  inner ℝ
+    ((1 ∘SL
+        mfderiv% Subtype.val x ∘SL
+          Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+      v)
+    ((1 ∘SL
+        mfderiv% Subtype.val x ∘SL
+          Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+      w)
+
+x₀ : RoundSphere3
+Dcoord : RoundSphere3 → RoundSphereModel3 →L[ℝ] RoundSphereAmbient4 :=
+  inTangentCoordinates (𝓡 3) 𝓘(ℝ, RoundSphereAmbient4) id Subtype.val roundSphereMetric3_inclusionDeriv x₀
+hD : ContMDiffAt (𝓡 3) 𝓘(ℝ, RoundSphereModel3 →L[ℝ] RoundSphereAmbient4) ∞ Dcoord x₀
+hmodel :
+  ContMDiffAt (𝓡 3) 𝓘(ℝ, RoundSphereModel3 →L[ℝ] RoundSphereModel3 →L[ℝ] ℝ) ∞
+    (fun x => roundSphereMetric3_modelInner (Dcoord x)) x₀
+x : RoundSphere3
+hx : x ∈ (chartAt RoundSphereModel3 x₀).source
+hx_triv : x ∈ (trivializationAt RoundSphereModel3 (fun x => TangentSpace (𝓡 3) x) x₀).baseSet
+v w : EuclideanSpace ℝ (Fin 3)
+⊢ inner ℝ ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x v))
+      ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x w)) =
+    inner ℝ
+      ((1 ∘SL
+          mfderiv% Subtype.val x ∘SL
+            Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+        v)
+      ((1 ∘SL
+          mfderiv% Subtype.val x ∘SL
+            Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+        w)
+error: Lean exited with code 1
+✖ [3078/3082] Building Poincare.Global.SmoothInitialMetricDefinitions (2.0s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/SmoothInitialMetricDefinitions.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/SmoothInitialMetricDefinitions.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/SmoothInitialMetricDefinitions.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/SmoothInitialMetricDefinitions.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/SmoothInitialMetricDefinitions.setup.json --json
+warning: Poincare/Global/SmoothInitialMetricDefinitions.lean:1:0: 'Mathlib.Geometry.Manifold.VectorBundle.SmoothSection' has been deprecated: please replace this import by
+
+import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection
+error: Poincare/Global/SmoothInitialMetricDefinitions.lean:40:93: unsolved goals
+M : Type u
+inst✝² : TopologicalSpace M
+inst✝¹ : ChartedSpace (ClosedSmoothModel 3) M
+inst✝ : IsManifold (closedSmoothModelWithCorners 3) ∞ M
+p x : M
+a b : TangentSpace (closedSmoothModelWithCorners 3) x
+⊢ ({
+          toFun := fun f =>
+            f ∘SL
+              Trivialization.continuousLinearMapAt ℝ
+                (trivializationAt (ClosedSmoothModel 3) (TangentSpace (closedSmoothModelWithCorners 3)) p) x,
+          map_add' := ⋯, map_smul' := ⋯, cont := ⋯ }
+        ((innerSL ℝ)
+          ((Trivialization.linearMapAt ℝ
+              (trivializationAt (ClosedSmoothModel 3) (TangentSpace (closedSmoothModelWithCorners 3)) p) x)
+            a)))
+      b =
+    inner ℝ
+      ((Trivialization.linearMapAt ℝ
+          (trivializationAt (ClosedSmoothModel 3) (TangentSpace (closedSmoothModelWithCorners 3)) p) x)
+        a)
+      ((Trivialization.linearMapAt ℝ
+          (trivializationAt (ClosedSmoothModel 3) (TangentSpace (closedSmoothModelWithCorners 3)) p) x)
+        b)
+error: Lean exited with code 1
+✔ [3081/3084] Built Poincare.Global.SmoothabilityFinitePrecompactTopologicalAtlasReduction (1.8s)
+✖ [3093/3096] Building Poincare.LeviCivitaUniqueness (2.5s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/LeviCivitaUniqueness.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/LeviCivitaUniqueness.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/LeviCivitaUniqueness.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/LeviCivitaUniqueness.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/LeviCivitaUniqueness.setup.json --json
+warning: Poincare/LeviCivitaUniqueness.lean:39:8: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:39:20: Application type mismatch: The argument
+  fun y => ((g y) (Y y)) (Z y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.150 ?m.152 ?m.155
+in the application
+  @extDerivFun ?m.150 ?m.151 ?m.152 ?m.153 ?m.154 ?m.155 ?m.156 fun y => ((g y) (Y y)) (Z y)
+error: Poincare/LeviCivitaUniqueness.lean:62:10: Function expected at
+  MetricCompatibleAt g
+but this term has type
+  Prop
+
+Note: Expected a function because this term is being applied to the argument
+  cov
+error: Poincare/LeviCivitaUniqueness.lean:62:45: Function expected at
+  MetricCompatibleAt g
+but this term has type
+  Prop
+
+Note: Expected a function because this term is being applied to the argument
+  cov'
+warning: Poincare/LeviCivitaUniqueness.lean:133:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:133:22: Application type mismatch: The argument
+  fun y => ((g y) (Y y)) (Z y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.276 ?m.278 ?m.281
+in the application
+  @extDerivFun ?m.276 ?m.277 ?m.278 ?m.279 ?m.280 ?m.281 ?m.282 fun y => ((g y) (Y y)) (Z y)
+warning: Poincare/LeviCivitaUniqueness.lean:138:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:138:22: Application type mismatch: The argument
+  fun y => ((g y) (Y y)) (Z y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.371 ?m.373 ?m.376
+in the application
+  @extDerivFun ?m.371 ?m.372 ?m.373 ?m.374 ?m.375 ?m.376 ?m.377 fun y => ((g y) (Y y)) (Z y)
+error: Poincare/LeviCivitaUniqueness.lean:216:10: Function expected at
+  MetricCompatibleAt g
+but this term has type
+  Prop
+
+Note: Expected a function because this term is being applied to the argument
+  cov
+warning: Poincare/LeviCivitaUniqueness.lean:221:6: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:221:18: Application type mismatch: The argument
+  fun y => ((g y) (Y y)) (Z y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.164 ?m.166 ?m.169
+in the application
+  @extDerivFun ?m.164 ?m.165 ?m.166 ?m.167 ?m.168 ?m.169 ?m.170 fun y => ((g y) (Y y)) (Z y)
+warning: Poincare/LeviCivitaUniqueness.lean:222:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:222:22: Application type mismatch: The argument
+  fun y => ((g y) (X y)) (Z y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.182 ?m.184 ?m.187
+in the application
+  @extDerivFun ?m.182 ?m.183 ?m.184 ?m.185 ?m.186 ?m.187 ?m.188 fun y => ((g y) (X y)) (Z y)
+warning: Poincare/LeviCivitaUniqueness.lean:223:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/LeviCivitaUniqueness.lean:223:22: Application type mismatch: The argument
+  fun y => ((g y) (X y)) (Y y)
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.202 ?m.204 ?m.207
+in the application
+  @extDerivFun ?m.202 ?m.203 ?m.204 ?m.205 ?m.206 ?m.207 ?m.208 fun y => ((g y) (X y)) (Y y)
+warning: Poincare/LeviCivitaUniqueness.lean:276:8: declaration uses `sorry`
+error: Poincare/LeviCivitaUniqueness.lean:282:5: Unknown constant `CovariantDerivative.leviCivita_unique_at_values`
+error: Poincare/LeviCivitaUniqueness.lean:283:7: Unknown constant `CovariantDerivative.leviCivita_unique_at_values`
+error: Poincare/LeviCivitaUniqueness.lean:288:5: Unknown constant `CovariantDerivative.koszul_formula`
+error: Poincare/LeviCivitaUniqueness.lean:288:43: Unknown constant `CovariantDerivative.koszul_formula`
+error: Lean exited with code 1
+⚠ [3095/3108] Built Poincare.Global.VolumeMeasure (1.0s)
+warning: Poincare/Global/VolumeMeasure.lean:65:4: `MeasureTheory.NoAtoms` has been deprecated: Use `MeasureTheory.NullSingletonClass` instead
+warning: Poincare/Global/VolumeMeasure.lean:66:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/VolumeMeasure.lean:68:8: `MeasureTheory.Measure.noAtoms_hausdorff` has been deprecated: Use `MeasureTheory.Measure.nullSingletonClass_hausdorff` instead
+✔ [3107/3108] Built Poincare.Milestones (2.1s)
+⚠ [3108/3108] Built Poincare.LocalConnectionRegularity (3.2s)
+warning: Poincare/LocalConnectionRegularity.lean:187:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:192:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:195:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:183:0: automatically included section variable(s) unused in theorem `CovariantDerivative.contMDiffAt_mlieBracket_of_contMDiffAt_three`:
+  [T2Space M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [T2Space M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:268:44: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/LocalConnectionRegularity.lean:291:0: automatically included section variable(s) unused in theorem `CovariantDerivative.curvatureOp_congr_of_eventuallyEq`:
+  [CompleteSpace E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:332:0: automatically included section variable(s) unused in theorem `CovariantDerivative.curvatureTensorAt_congr_of_eventuallyEq`:
+  [CompleteSpace E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:332:8: Overlapping instance parameters in `curvatureTensorAt_congr_of_eventuallyEq`:
+
+⚠️ There are 2 `[CompleteSpace E]` instances; one is sufficient.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+Some required targets logged failures:
+- Poincare.FlatModelConnection
+- Poincare.Global.HeatKernelPDE
+- Poincare.Global.HeatKernelIntegral
+- Poincare.Global.RoundSphereMetric
+- Poincare.Global.SmoothInitialMetricDefinitions
+- Poincare.LeviCivitaUniqueness

@@ -1,0 +1,11 @@
+{
+  "base": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "candidate": "0d2cfb6407176a056d25c3f16e423517c8f60cff",
+  "accepted": true,
+  "independent_lean": 0,
+  "independent_build": 0,
+  "independent_frozen_probe": 0,
+  "class_alias_equivalence": 0,
+  "bundled_homeomorph_data_preserved": true,
+  "new_core_assumptions_discharged": []
+}

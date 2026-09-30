@@ -1,0 +1,34 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.ContinuousWithDensityOrder",
+    "Poincare.Global.CoveringSkeleton",
+    "Poincare.Global.DeTurckParameterJet",
+    "Poincare.Global.FiniteExtinctionIntegratingFactor",
+    "Poincare.Global.FiniteLocalSolverBounds",
+    "Poincare.Global.FiniteTriangulationStatements",
+    "Poincare.Global.FiniteUnitIntervalInterpolation",
+    "Poincare.Global.FixedChartEndpointSlices",
+    "Poincare.Global.ForwardTailIntegrability",
+    "Poincare.Global.GeodesicChart",
+    "Poincare.Global.HeatKernel",
+    "Poincare.Global.ParabolicHolderSpace",
+    "Poincare.Global.ParametrixNeumannCorrection",
+    "Poincare.Global.PullbackDifferentiate",
+    "Poincare.Global.RiemannianContext",
+    "Poincare.Global.SmoothabilityFiniteTopologicalAtlasReduction",
+    "Poincare.Global.Statement",
+    "Poincare.Global.ThreeDimensionalRicciTraceInequality",
+    "Poincare.Global.VolumeDensity",
+    "Poincare.MaximumPrinciple",
+    "Poincare.RiemannCurvatureOperator",
+    "Poincare.Statement"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:26:57.188638+00:00",
+  "source_head": "20cdd2f6d589da622d492efb509b3666ab00f8ac",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

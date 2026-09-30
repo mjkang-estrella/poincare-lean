@@ -1,0 +1,24 @@
+import Mathlib.Analysis.ODE.Gronwall
+import Mathlib.Analysis.ODE.PicardLindelof
+
+/-!
+# Chart-level geodesic ODEs
+
+This file records the first-order autonomous ODE associated to the coordinate
+geodesic equation `x'' + Γ_x(x', x') = 0`.
+-/
+
+noncomputable section
+
+open Filter Set
+open scoped Topology NNReal
+
+namespace Poincare
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+/-- The first-order vector field for the chart geodesic system. -/
+def geodesicFlowField (Γ : E → E →L[ℝ] E →L[ℝ] E) :
+    E × E → E × E :=
+  fun p ↦ (p.2, -Γ p.1 p.2 p.2)
+

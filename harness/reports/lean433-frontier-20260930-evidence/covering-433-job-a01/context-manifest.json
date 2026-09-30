@@ -1,0 +1,62 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "654760a995cc8eda4033333d2277bde4de40e06367c5e40bdea9682fb875340e",
+    "bytes": 224962
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/CoveringSkeleton.lean",
+    "sha256": "07b447bc82df5361f28d941bc34efe9bc22032f67be154d90abac2e90fc9dd90",
+    "bytes": 4379
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/blind-readback.json",
+    "sha256": "1365ea820d9c304749cf6d6aa46062c8c9cbb823740e71d68238afeb88d44507",
+    "bytes": 4869
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/FrozenMigrationProbe.lean",
+    "sha256": "8ee4f8e6ca4948fadac302135fc4a86b293ee3e15fc5181a5982a2c47f0b3620",
+    "bytes": 16173
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/definitions-for-review.txt",
+    "sha256": "ac0836f13c97e1bfb3e20aefe90c9c479412faeb0eb3d014523d2c80c89accf6",
+    "bytes": 504
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/check-scope.py",
+    "sha256": "70260f94cc752f99051a7013969ae452714c73791d47a055eedab9d4e32c5cce",
+    "bytes": 633
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/AliasEquivalenceProbe.lean",
+    "sha256": "6bfd825f9dc09f36bdbd5b09ba98b5999f18f04e7452b73b1891488cd222b913",
+    "bytes": 221
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/leaf-frontier-433-build-a01/stdout.log",
+    "sha256": "9befaa13543d38d8288a1fc0cb13c02e81a4ea1608c47614609ced30c20851b7",
+    "bytes": 103347
+  }
+]

@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.CoveringSkeleton"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{v} X] {p : E → X} [@PreconnectedSpace.{v} X inst] [Nonempty.{u + 1} E], @IsOpen.{v} X inst (@Set.range.{v, u + 1} X E p) → @IsClosed.{v} X inst (@Set.range.{v, u + 1} X E p) → @Function.Surjective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.surjective_of_isOpen_isClosed_range",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@PreconnectedSpace.{v} X inst_1] [Nonempty.{u + 1} E], @IsLocalHomeomorph.{u, v} E X inst inst_1 p → @IsClosed.{v} X inst_1 (@Set.range.{v, u + 1} X E p) → @Function.Surjective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.IsLocalHomeomorph.surjective_of_isClosed_range",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@T2Space.{u} E inst] [@T2Space.{v} X inst_1] [@CompactSpace.{u} E inst], @IsLocalHomeomorph.{u, v} E X inst inst_1 p → @IsCoveringMap.{u, v} E X inst inst_1 p",
+        "name": "Poincare.GlobalCoveringSkeleton.isCoveringMap_of_compact_isLocalHomeomorph",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@ConnectedSpace.{u} E inst] [@SimplyConnectedSpace.{v} X inst_1] [@LocallyPathConnectedSpace.{v} X inst_1], @IsCoveringMap.{u, v} E X inst inst_1 p → @Function.Bijective.{u + 1, v + 1} E X p",
+        "name": "Poincare.GlobalCoveringSkeleton.bijective_of_isCoveringMap_simplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u} {X : Type v} [inst : TopologicalSpace.{u} E] [inst_1 : TopologicalSpace.{v} X] {p : E → X} [@ConnectedSpace.{u} E inst] [@SimplyConnectedSpace.{v} X inst_1] [@LocallyPathConnectedSpace.{v} X inst_1], @IsCoveringMap.{u, v} E X inst inst_1 p → @IsHomeomorph.{u, v} E X inst inst_1 p",
+        "name": "Poincare.GlobalCoveringSkeleton.isHomeomorph_of_isCoveringMap_simplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      },
+      {
+        "lean_type": "{E : Type u} → {X : Type v} → [inst : TopologicalSpace.{u} E] → [inst_1 : TopologicalSpace.{v} X] → {p : E → X} → [@ConnectedSpace.{u} E inst] → [@SimplyConnectedSpace.{v} X inst_1] → [@LocallyPathConnectedSpace.{v} X inst_1] → @IsCoveringMap.{u, v} E X inst inst_1 p → @Homeomorph.{u, v} E X inst inst_1",
+        "name": "Poincare.GlobalCoveringSkeleton.homeomorphOfIsCoveringMapSimplyConnected",
+        "universes": [
+          "u",
+          "v"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/definitions-for-review.txt",
+        "sha256": "ac0836f13c97e1bfb3e20aefe90c9c479412faeb0eb3d014523d2c80c89accf6"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "ef5768c7f65284d0496d4d437d3536069738a3c37a82bae128e91a5791a864d7",
+      "report_path": "harness/v2/state/upstream-verification-20260930/covering-433-task-a01/blind-readback.json",
+      "report_sha256": "1365ea820d9c304749cf6d6aa46062c8c9cbb823740e71d68238afeb88d44507",
+      "verdict": "approved"
+    }
+  }
+}

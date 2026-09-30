@@ -1,0 +1,13 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.GeodesicChart"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-09-30T21:41:03.776144+00:00",
+  "source_head": "8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

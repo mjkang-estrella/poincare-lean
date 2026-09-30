@@ -1,0 +1,9 @@
+{
+  "copied_at": "2026-09-30T21:38:23.795861+00:00",
+  "source": "/Users/mjkang/.codex/worktrees/covering-433/poincare/harness/v2/state/upstream-verification-20260930/covering-433-job-a01",
+  "destination": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/covering-433-job-a01",
+  "file_count": 65,
+  "all_copied_hashes_verified": true,
+  "commit": "0d2cfb6407176a056d25c3f16e423517c8f60cff",
+  "source_sha256": "f645f0317f584c3b8a172952f956f289198ac3a5c02196f41bd40268eb6ac26c"
+}

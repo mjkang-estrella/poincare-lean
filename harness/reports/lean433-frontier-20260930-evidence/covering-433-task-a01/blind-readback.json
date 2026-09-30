@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "ef5768c7f65284d0496d4d437d3536069738a3c37a82bae128e91a5791a864d7",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.surjective_of_isOpen_isClosed_range",
+      "mathematical_statement": "For independent universes u,v and implicit E : Type u,X : Type v, assume a topology only on X, preconnectedness of X, and nonemptiness of E. For an arbitrary implicit function p : E -> X, if its range is both open and closed in X, then p is surjective. E need not carry any topology. There are no continuity, local-homeomorphism, compactness, Hausdorff, local-path-connectivity, or simple-connectivity assumptions. Nonemptiness of E ensures the range is nonempty; the statement is conditional and constructs no such map."
+    },
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.IsLocalHomeomorph.surjective_of_isClosed_range",
+      "mathematical_statement": "For independent universes u,v and implicit topological spaces E : Type u and X : Type v, with X preconnected and E nonempty, every implicit function p : E -> X that is a local homeomorphism and has closed range is surjective. Neither space is assumed compact or Hausdorff. No connectedness of E or simple-connectivity of X is stated. The local-homeomorphism hypothesis supplies the relevant openness behavior; the conclusion concerns this given map and does not construct it."
+    },
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.isCoveringMap_of_compact_isLocalHomeomorph",
+      "mathematical_statement": "For independent universes u,v and implicit topological spaces E : Type u and X : Type v, assume both spaces are Hausdorff and E is compact. Every implicit p : E -> X which is a local homeomorphism satisfies IsCoveringMap p. Neither nonemptiness of E nor preconnectedness, connectedness, local-path-connectivity or simple-connectivity of X is a hypothesis. The literal conclusion is the covering-map predicate used by the library, and does not separately assert surjectivity or construct a spherical covering. No dimensional or manifold hypothesis occurs."
+    },
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.bijective_of_isCoveringMap_simplyConnected",
+      "mathematical_statement": "For independent universes u,v and implicit topological spaces E : Type u and X : Type v, assume ConnectedSpace E, SimplyConnectedSpace X, and LocallyPathConnectedSpace X. For an implicit map p : E -> X, IsCoveringMap p implies Function.Bijective p. ConnectedSpace is the connected-space assumption on the domain rather than mere preconnectedness. The supplied LocallyPathConnectedSpace definition requires a basis of path-connected neighborhoods at every point of X; its deprecated LocPathConnectedSpace alias denotes that same class. No explicit compactness, Hausdorff, manifold, metric, dimensional, or local-path-connectivity-of-E hypothesis occurs. This recognizes the given covering map as bijective and does not construct one."
+    },
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.isHomeomorph_of_isCoveringMap_simplyConnected",
+      "mathematical_statement": "For independent universes u,v and implicit topological spaces E : Type u and X : Type v, assume ConnectedSpace E, SimplyConnectedSpace X, and LocallyPathConnectedSpace X. Every implicit map p : E -> X satisfying IsCoveringMap p also satisfies IsHomeomorph p. The conclusion is the homeomorphism property of this specific function p. The local-path-connectivity assumption means a basis of path-connected neighborhoods as supplied, unchanged by the deprecated class alias. There are no explicit compactness, Hausdorff, manifold, metric, dimensional, or domain-local-path-connectivity assumptions. The result is conditional recognition of a supplied covering map."
+    },
+    {
+      "name": "Poincare.GlobalCoveringSkeleton.homeomorphOfIsCoveringMapSimplyConnected",
+      "mathematical_statement": "For independent universes u,v and implicit topological spaces E : Type u and X : Type v, implicit p : E -> X, and implicit ConnectedSpace E, SimplyConnectedSpace X and LocallyPathConnectedSpace X instances, a supplied proof of IsCoveringMap p yields an actual Homeomorph E X. This is a data-valued function whose implicit binders and hypotheses are arguments, rather than merely a Nonempty assertion. The type does not include an equality saying the returned homeomorphism has forward function p, so that compatibility must not be inferred from this interface alone. The local-path-connectivity class has the supplied path-connected-neighborhood-basis meaning, with its deprecated alias unchanged. No explicit compactness, Hausdorff, manifold, metric or dimension assumptions occur, and existence of the covering map remains an input."
+    }
+  ],
+  "findings": []
+}
