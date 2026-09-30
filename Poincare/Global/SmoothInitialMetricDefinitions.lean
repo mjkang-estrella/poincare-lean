@@ -38,6 +38,6 @@ theorem localEuclideanInner_apply (p x : M)
           (TangentSpace (closedSmoothModelWithCorners 3)) p).continuousLinearMapAt ℝ x a)
         ((trivializationAt (ClosedSmoothModel 3)
           (TangentSpace (closedSmoothModelWithCorners 3)) p).continuousLinearMapAt ℝ x b) := by
-  simp [localEuclideanInner, ContinuousLinearMap.precomp]
+  rfl
 
 end Poincare.SmoothInitialMetricDefinitions
