@@ -1,5 +1,51 @@
 # Handoff Snapshot
 
+## 2026-09-30 Live upstream verification and isolated Lean4.33 migration
+
+The full frozen Poincare goal remains active; the reserved theorem is absent
+and neither original universal core is discharged. Upstream source reports
+are still distinct from our own compiled endpoint/axiom acceptance.
+
+Fresh pinned release checkout:
+/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification
+at7a48598d35109aa99d1cc678e2724c213cdf4ff3, Lean4.33.1/Mathlib0df444a.
+Official Mathlib master cache downloaded successfully; compiler/source
+identities and complete logs are preserved in
+harness/v2/state/upstream-verification-20260930.
+
+The exact endpoint source build is RUNNING: root exec session85355, wrapper
+PID65764/lakePID65773, command `lake --no-cache build
+DifferentialGeometry.Topology.ThreeManifold.Poincare`. It is logged by
+endpoint-build-a01/{started.json,stdout.log,stderr.log}; result.json appears
+only on terminal completion. Validate live process/command and re-poll the
+same handle; never restart because an observation expires. Public CI had no
+artifacts and needed hours, so this is a genuine fresh dependency build.
+
+Our unchanged Statement first failed on4.33. Candidate1d94e766 was then
+independently compiled and reviewed: canonical sphere/target spans are
+byte-identical, declaration names/hypotheses preserved, only tactics/API
+normalization and Prop proof fields/embedded proofs changed. It is accepted
+only on isolated codex/upstream-integration-433 at18e6d022, with4.33.1 and
+exact Mathlib pin. The actual same PoincareConjectureStatement passed a rfl
+literal-type probe. RiemannianContext also compiled unchanged on4.33.
+Production remains4.30; old root/full contract migration still needs review.
+
+Completion status contract was repaired without changing mathematical gate
+bytes: coherent achieved/0/proved or incomplete/1/absent states accepted;
+duplicates/inconsistencies rejected.21 independent regressions passed, audit
+payload equivalence passed, and the fresh negative checkpoint at14d48870
+failed only for the absent reserved theorem and exact final probe. No mocked
+positive status is theorem evidence.
+
+First action: revalidate and poll the SAME upstream build process/session,
+then once endpoint olean exists run saved UpstreamEndpointProbe.lean against
+its pinned checkout. It checks exact literal endpoint and genuine smoothing
+producer plus transitive permitted axioms/unsafe dependencies. Only then
+review/import the credited adapter on isolated4.33 branch and migrate all
+retained root/contracts honestly. No canonical extraction/root slimming,
+unproved dependency witness or removal of audit obligations is authorized
+as a shortcut. Preserve all worktrees and live/failed compiler evidence.
+
 ## 2026-09-30 Unweighted reconstruction and external proof review
 
 The frozen final goal remains active. Our reserved theorem is absent, and our
