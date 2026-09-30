@@ -145,3 +145,18 @@ versions are retained. All scoped sources and final diffs are append-only.
 Local Codex helpers are labelled honestly, not registered Pi/Leanstral Jobs.
 No historical dirty or unmerged worktree was removed. The complete goal
 remains active; no core or final statement was weakened.
+
+## Sealed integration checkpoint
+
+Clean source checkpoint: `39dae92aa256a9daddb4c6d294760b80d099ba52`.
+Source-bound evidence: `harness/v2/state/verification/checkpoints/20260930T121518Z-5f79cb02d5204e2ca8f351d8755c23ca`.
+Build and interface, mathlib, shape, theorem, semantic, root-import and axiom
+phases returned 0. Completion returned 1 with exactly reserved-name absence
+and the exact endpoint probe failure. Completion is not certified.
+
+Compressed append-only evidence is in
+`core-deturck-localization-20260930-evidence/manifest.json`. Every original and
+compressed SHA-256 hash was verified. The archive includes all failed sources/
+logs, stopped-review exposure note, independent blind readbacks, worker and
+root gates, actual joint applications and next chart-lift findings. Historical
+worktrees and branches remain preserved. No universal core is discharged.
