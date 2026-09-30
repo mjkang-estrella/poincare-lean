@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-compact-forcing",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "18aed8ddafa2585c54d8e1544461b1fc4aba8c60",
   "objective": {
     "title": "Construct actual compact coefficients and coupled forcing: forcing",
@@ -168,5 +168,6 @@
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/forcing.readback.json",
       "report_sha256": "293ad7c55a6f0440cc8059d51efd95377bfd093ae9fa9ba6e983b047fa5d9de0"
     }
-  }
+  },
+  "accepted_commit": "180bb33fdfc6998abee4cdc89943d83284a85c16"
 }
