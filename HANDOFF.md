@@ -1,5 +1,45 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed actual smooth coupled DeTurck coefficients
+
+The complete proof goal remains active. Neither universal smoothability nor
+universal Hamilton convergence is discharged. The reserved final theorem is
+absent. The frozen statements, original jet/Graph norms and all historical
+worktrees and failed attempts are preserved.
+
+The selected core remains UniversalHamiltonConvergenceStatement. The checked
+HamiltonFiniteEnergyFlowInterface reduction suffices: construct a forward
+normalized flow with finite traceless energy, compact metric realization,
+continuous mean-energy pair and positive mean-scalar floor, then use the
+existing Hamilton endpoint and Cartan recognition. Compatible smoothability
+is an independent existence obligation consumed by HamiltonPoincareReduction.
+The larger five-field HamiltonFrontInputs package is not necessary for this
+endpoint route. No universal flow or favorable-metric producer is proved.
+
+DeTurckActualSpatialCoefficients.actual_spatial_coefficients constructs the
+actual inverse, zero-order and first-order coefficient fields from smooth
+initial/background metrics on the true invertible chart zone and proves their
+smoothness and full linearization decomposition. The zero-order term retains
+inverse variation contracted with D2g0. The partial derivative bridge and
+joint partial-coefficient smoothness are independently accepted. Tensor and
+first-jet reconstruction retain all nine and 27 ordered components and prove
+both actual coefficient action identities. No supplied derivative/coefficient
+package, symmetry premise or new norm was used.
+
+First action: freeze and construct compact smooth scalar coefficient carriers
+from the ACTUAL zeroOrder/firstOrder fields on the SAME g0-adapted buffered
+atlas, with quantitative bounds fixed before time. The subsequent consumer is
+the genuine nine-entry coupled Graph forcing operator for L=dt-DQ(g0), then
+differentiated covariance and the actual bounded global L/R. Read
+harness/reports/core-deturck-coefficients-20260930.md and its accepted tasks.
+
+Still open: compact coefficient bounds and coupled Graph forcing, covariance,
+actual global L/R and signed id-R contraction (local residual is id+R_j),
+nonlinear inversion, matched initial jets, ordinary joint C3, physical Ricci
+flow, and later continuation/surgery/favorable-flow and limit production.
+Ordinary C3 at zero cannot be inferred from within-interval Graph certificates.
+See the report for exact universal obligations and preserved evidence.
+
 ## 2026-09-30 Constructed actual finite-jet DeTurck differential
 
 The full proof goal remains active. Both universal smoothability and Hamilton/
