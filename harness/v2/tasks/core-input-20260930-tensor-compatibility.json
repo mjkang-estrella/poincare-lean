@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-tensor-compatibility",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "9e25167310598977db7dd716edf4aed40f298d18",
   "objective": {
     "title": "Prove actual buffered finite tensor compatibility for Hamilton inputs",
@@ -144,5 +144,6 @@
       "report_path": "harness/v2/contracts/core-tensor-transport-20260930/compatibility.readback.json",
       "report_sha256": "676467976a68962887e3282685672dda548bb31e1c289bcf4e7f77461638b72a"
     }
-  }
+  },
+  "accepted_commit": "d002edcc5cc9b92d4377c5708cfecdd2713d594f"
 }
