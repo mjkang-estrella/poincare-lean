@@ -1,0 +1,7 @@
+# Actual scalar extraction of coupled DeTurck coefficients
+
+Core assumption helped: UniversalHamiltonConvergenceStatement through true Ricci-flow construction. Subsequent consumer: construct scalar zero/first-order coefficient arrays from ACTUAL zeroOrder/firstOrder fields and their smooth compact buffers, then true coupled Graph forcing CLM for L=dt-DQ(g0), covariance and signed L/P/R contraction.
+
+The elementary tensor basis is q_a.smulRight q_b, q_a the actual Euclidean coordinate CLM. First jet basis is q_p.smulRight tensor_a_b. Reconstruct all nine bilinear entries and all 27 first-jet slots; no symmetric-six encoding or half-offdiagonal convention is permitted. Existing FrozenEllipticHeatOperator.bilinear_expansion, EuclideanSpace.basisFun.sum_repr/basisFun_repr and map_sum/map_smul supply the finite identities. The coefficient action identities must evaluate the actual arbitrary L0/L1 on these basis elements; the subsequent actual-g0 producer already constructs concrete L0/L1, so no unconstructed coefficient package replaces it.
+
+No new norms, symmetry/realization/invertibility premise or supplied flow/limit is needed for this algebra. Canonical Jet1 binding retains original operator norm. Preserve source/compiler failures/finaldiff and run exact gates. Local helpers are not registered Pi/Leanstral Jobs; workers do not selfaccept/merge/fullbuild/manage services. Both universal cores and frozen final Poincare target remain open/unchanged.

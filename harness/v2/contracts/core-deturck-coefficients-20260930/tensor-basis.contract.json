@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckTensorBasisReconstruction"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckTensorBasis.tensor_expansion",
+        "lean_type": "∀ h : Poincare.DeTurckPrincipalSecondJet.Bilin, h = ∑ a : Fin 3, ∑ b : Fin 3, h (Poincare.DeTurckPrincipalSecondJet.basis3 a) (Poincare.DeTurckPrincipalSecondJet.basis3 b) • Poincare.DeTurckTensorBasis.tensor a b",
+        "universes": []
+      },
+      {
+        "name": "Poincare.DeTurckTensorBasis.firstJet_expansion",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\n∀ J : Poincare.DeTurckPrincipalSecondJet.Jet1, J = ∑ p : Fin 3, ∑ a : Fin 3, ∑ b : Fin 3,\n J (Poincare.DeTurckPrincipalSecondJet.basis3 p) (Poincare.DeTurckPrincipalSecondJet.basis3 a) (Poincare.DeTurckPrincipalSecondJet.basis3 b) • Poincare.DeTurckTensorBasis.firstJet p a b",
+        "universes": []
+      },
+      {
+        "name": "Poincare.DeTurckTensorBasis.coefficient_action",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\n∀ (L0 : Poincare.DeTurckPrincipalSecondJet.Bilin →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) (L1 : Poincare.DeTurckPrincipalSecondJet.Jet1 →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin)\n(h : Poincare.DeTurckPrincipalSecondJet.Bilin) (J : Poincare.DeTurckPrincipalSecondJet.Jet1) (c d : Fin 3),\nPoincare.DeTurckInverseEntryDerivative.entryCLM c d (L0 h) = ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.DeTurckInverseEntryDerivative.entryCLM c d (L0 (Poincare.DeTurckTensorBasis.tensor a b)) * h (Poincare.DeTurckPrincipalSecondJet.basis3 a) (Poincare.DeTurckPrincipalSecondJet.basis3 b) ∧\nPoincare.DeTurckInverseEntryDerivative.entryCLM c d (L1 J) = ∑ p : Fin 3, ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.DeTurckInverseEntryDerivative.entryCLM c d (L1 (Poincare.DeTurckTensorBasis.firstJet p a b)) * J (Poincare.DeTurckPrincipalSecondJet.basis3 p) (Poincare.DeTurckPrincipalSecondJet.basis3 a) (Poincare.DeTurckPrincipalSecondJet.basis3 b)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      },
+      {
+        "path": "Poincare/Global/DeTurckTensorBasisDefinitions.lean",
+        "sha256": "2ff6bdaa93268cb71c23540a38e73ed0700037df1e92ef258985a3eed0505a1e"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-coefficient-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "5ed839f194d49639d7aa10385b59bace1b1bc94ec3ce7bc9634dcf41a7ed76af",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/tensor-basis.readback.json",
+      "report_sha256": "a40b5aa187dc2653631bcd0cf94516f743223e19943b1538fe3ded4d35edeffc"
+    }
+  }
+}
