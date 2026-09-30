@@ -40,9 +40,9 @@
       "reviewer": "tensor-transport-readback",
       "method": "blind-readback",
       "snapshot_sha256": "57c702edab4d313e51c8747f3c58d7c0942453a1f69a08822d91fe5006fb4ab8",
-      "verdict": "pending",
+      "verdict": "approved",
       "report_path": "harness/v2/contracts/core-tensor-transport-20260930/operator.readback.json",
-      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      "report_sha256": "f67753365affa98aa574bd1b2aa4e8d599950be4fe17a6600417487e985df4d3"
     }
   }
 }

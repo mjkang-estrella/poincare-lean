@@ -1,0 +1,156 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-tensor-operator",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "5b2b7cd6b13584e54179377f55b3f453ef1cd45c",
+  "objective": {
+    "title": "Construct actual tensor operator toward universal Hamilton existence",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement, through genuine general Ricci-flow inputs. Subsequent proof: actual bounded destination-entry Graph transport, then global tensor compatibility and genuine signed DeTurck L/P/R contraction. Construct coefficients/operators from actual atlas/gated chart maps; no supplied operator, flow, convergence or sphere-recognition package may replace construction.",
+    "deliverables": [
+      "Poincare.BufferedTensorGraphTransport.exists_destination_entry_transport"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/BufferedTensorGraphTransportOperator.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-tensor-transport-20260930/operator.readback.json",
+      "harness/v2/contracts/core-tensor-transport-20260930/construction-context.md",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedChartTransitionExtensions.lean",
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean",
+      "Poincare/Global/BufferedTensorGraphTransportWeights.lean",
+      "Poincare/Global/BufferedTensorGraphTransportValues.lean",
+      "Poincare/Global/ParabolicSpatialGraphPullback.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "Poincare/Global/ParabolicCutoffCommutator.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean"
+    ],
+    "symbols": [
+      "Poincare.BufferedTensorGraphTransport.exists_destination_entry_transport"
+    ],
+    "depends_on": [
+      "core-input-20260930-tensor-weights",
+      "core-input-20260930-tensor-values"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/BufferedTensorGraphTransportOperator.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/BufferedTensorGraphTransportOperator.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-tensor-transport-20260930/operator.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.BufferedTensorGraphTransport.exists_destination_entry_transport"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedTensorGraphTransportOperator"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedTensorGraphTransport.exists_destination_entry_transport",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i j : Fin A.cover.chartCount) (θ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3) (c d : Fin 3),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) θ → HasCompactSupport θ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ξ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F →\ntsupport θ ⊆ ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source →\n(∀ z ∈ tsupport θ, ∀ᶠ y in nhds z, F y = Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) →\n(∀ z ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) ''\n (tsupport (A.partition i) ∩ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport ξ), θ z = 1) →\n∀ α : ℝ, 0 < α → α < 1 →\n∃ C : ℝ, 0 ≤ C ∧ ∀ T ∈ Set.Ioc (0 : ℝ) 1,\n∃ B : ((Fin 3 × Fin 3) → (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T)) →L[ℝ] (Poincare.ParabolicSolutionGraph.Graph (E := Poincare.ClosedSmoothModel 3) α T), ‖B‖ ≤ C ∧\n(∀ w p, (B w).u p = ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d p.2 *\n (w (a,b)).u (p.1, F p.2)) ∧\n(∀ w t z, z ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i →\n (B w).u (t,z) = 0) ∧\n(∀ w t (x : M), x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\n (B w).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) =\n A.partition i x * (@ite ℝ (x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source) (Classical.propDecidable _)\n   (∑ a : Fin 3, ∑ b : Fin 3,\n     ξ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j x) * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x a c * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x b d *\n     (w (a,b)).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A j x)) 0))",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+        "sha256": "1f17df2647209e28982f1aba8148570b525fbb8c6b706a9fe79686bc998b272b"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "tensor-transport-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "57c702edab4d313e51c8747f3c58d7c0942453a1f69a08822d91fe5006fb4ab8",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-tensor-transport-20260930/operator.readback.json",
+      "report_sha256": "f67753365affa98aa574bd1b2aa4e8d599950be4fe17a6600417487e985df4d3"
+    }
+  }
+}
