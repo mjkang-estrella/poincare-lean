@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricAdaptedGlobalParametrix"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricAdaptedGlobalParametrix.exists_metric_adapted_global_parametrix",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (α : ℝ), 0 < α → α < 1 →\n ∃ A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M,\n ∃ ψ ξ : Fin A.cover.chartCount → (Poincare.ClosedSmoothModel 3) → ℝ,\n (∀ i, ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ψ i) ∧ HasCompactSupport (ψ i) ∧\n   (∀ z ∈ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i, Filter.Eventually (fun y ↦ ψ i y = 1) (nhds z)) ∧\n   (∀ z, ψ i z ∈ Set.Icc 0 1) ∧\n   ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ξ i) ∧ HasCompactSupport (ξ i) ∧\n   (∀ z, ξ i z ∈ Set.Icc 0 1) ∧ (∀ z ∈ tsupport (ψ i), ξ i z = 1) ∧\n   tsupport (ξ i) ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).target ∧\n   (∀ z ∈ tsupport (ξ i), Filter.Eventually (fun y ↦ Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor i) y = 1) (nhds z))) ∧\n ∃ θ : Fin A.cover.chartCount → Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ,\n ∃ F : Fin A.cover.chartCount → Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3,\n (∀ i j,\n ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (θ i j) ∧ HasCompactSupport (θ i j) ∧\n (∀ z, θ i j z ∈ Set.Icc 0 1) ∧\n tsupport (θ i j) ⊆ ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source ∧\n (∀ z ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) '' (tsupport (A.partition i) ∩ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport (ξ j)),\n  Filter.Eventually (fun y => θ i j y = 1) (nhds z)) ∧\n ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (F i j) ∧ HasCompactSupport (F i j) ∧\n (∀ z ∈ tsupport (θ i j), Filter.Eventually (fun y => F i j y = Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) (nhds z)) ∧\n ∃ L : NNReal, LipschitzWith L (F i j)) ∧\n ∃ Cψ CP Cglobal τ : ℝ,\n ∃ CB : Fin A.cover.chartCount → Fin A.cover.chartCount → Fin 3 → Fin 3 → ℝ,\n 0 ≤ Cψ ∧ 0 ≤ CP ∧ 0 < τ ∧ τ ≤ 1 ∧ (∀ i j c d, 0 ≤ CB i j c d) ∧\n Cglobal = CP * (∑ i : Fin A.cover.chartCount, ∑ j : Fin A.cover.chartCount,\n   ∑ c : Fin 3, ∑ d : Fin 3, CB i j c d) ∧\n ∀ T ∈ Set.Ioc 0 τ,\n ∃ S : Fin A.cover.chartCount → (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.Jet α T),\n ∃ R : Fin A.cover.chartCount → (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T),\n ∃ B : Poincare.GlobalParametrixAssembly.Transports A α T,\n ∃ Pglobal : (Poincare.FiniteAtlasParabolicTensorSpace.Y_M A α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.X_M A α T),\n (∀ i, (∀ f p, p.2 ∉ tsupport (ψ i) → (S i f).u p = 0) ∧\n     ∀ f : (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) α T ℝ), (∀ p, p.2 ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i → f p = 0) →\n       (∀ p, R i f p = Poincare.BufferedFrozenParabolicSolver.chartValue\n         (fun z ↦ @Inv.inv (Matrix (Fin 3) (Fin 3) ℝ) Matrix.inv\n           (Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor i) z))\n         (S i f) p - f p) ∧\n       ‖R i f‖ ≤ Cψ * (T ^ ((1-α)/2) + T ^ (1-α/2)) * ‖f‖ ∧\n       ‖S i f‖ ≤ CP * ‖f‖) ∧\n (∀ i j c d, ‖B i j c d‖ ≤ CB i j c d ∧ (∀ w p, (B i j c d w).u p = ∑ a : Fin 3, ∑ b : Fin 3,\n Poincare.BufferedTensorGraphTransport.weight A i (θ i j) (ξ j) (F i j) a b c d p.2 *\n (w (a,b)).u (p.1,F i j p.2)) ∧ (∀ (w : Poincare.GlobalParametrixAssembly.SourceGraphs α T) t z,\nz ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i → (B i j c d w).u (t,z) = 0) ∧ (∀ (w : Poincare.GlobalParametrixAssembly.SourceGraphs α T) t (x : M),\nx ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\n(B i j c d w).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) =\nA.partition i x * (@ite ℝ (x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source) (Classical.propDecidable _)\n (∑ a : Fin 3, ∑ b : Fin 3,\n   ξ j (Poincare.FiniteAtlasParabolicTensorSpace.chart A j x) * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x a c * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x b d *\n   (w (a,b)).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A j x)) 0))) ∧\n ‖Pglobal‖ ≤ Cglobal ∧\n (∀ (f : Poincare.FiniteAtlasParabolicTensorSpace.Y_M A α T) i c d, (Pglobal f).val (i,c,d) =\n   ∑ j : Fin A.cover.chartCount, B i j c d (fun ab => S j (f.val (j,ab.1,ab.2)))) ∧\n (∀ (f : Poincare.FiniteAtlasParabolicTensorSpace.Y_M A α T) i c d t (x : M), x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\n((Pglobal f).val (i,c,d)).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) =\nPoincare.FiniteAtlasBufferedTensorValue.value A ξ (fun j a b z => (S j (f.val (j,a,b))).u (t,z)) i c d x)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+        "sha256": "964439b66a2fbae6fc1bd1e9c693919283e248e27bfb02bf55e8ef284a9f5c04"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+        "sha256": "12128cd9874e24db5aa594daee3716dd942c7fab84c6cc711777129d68f98620"
+      },
+      {
+        "path": "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+        "sha256": "1f17df2647209e28982f1aba8148570b525fbb8c6b706a9fe79686bc998b272b"
+      },
+      {
+        "path": "Poincare/Global/MetricAdaptedLocalParametrix.lean",
+        "sha256": "9df3760e04ddbfd326b80afaa4f9fc5566b7b101e3f33bb277bf785aeb812e95"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "92d484e5298e9b87c12383a3321112c9c23cb3386cc97a9a1664a51f103331c1",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/producer.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.GlobalParametrixAssemblyBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.GlobalParametrixAssembly.ambient_norm_le",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (α T : ℝ)\n(S : Fin A.cover.chartCount → (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.Jet α T))\n(B : Poincare.GlobalParametrixAssembly.Transports A α T),\n∀ (CP : ℝ) (CB : Fin A.cover.chartCount → Fin A.cover.chartCount → Fin 3 → Fin 3 → ℝ),\n0 ≤ CP → (∀ i j c d, 0 ≤ CB i j c d) →\n(∀ i j c d, ‖B i j c d‖ ≤ CB i j c d) →\n(∀ j (h : Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T), (∀ p, p.2 ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A j → h p = 0) →\n ‖S j h‖ ≤ CP * ‖h‖) →\n‖Poincare.GlobalParametrixAssembly.ambient A α T S B‖ ≤ CP *\n (∑ i : Fin A.cover.chartCount, ∑ j : Fin A.cover.chartCount,\n   ∑ c : Fin 3, ∑ d : Fin 3, CB i j c d)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+        "sha256": "964439b66a2fbae6fc1bd1e9c693919283e248e27bfb02bf55e8ef284a9f5c04"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+        "sha256": "12128cd9874e24db5aa594daee3716dd942c7fab84c6cc711777129d68f98620"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "187af175149ac69db058af0dc496aa6b0760997a538868e914091a0ff66a5c2a",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/bound.readback.json",
+      "report_sha256": "c08c682b2ddcca325eaab99176155b6bd27754fc1ca8f4e794c8e8a9ded38405"
+    }
+  }
+}

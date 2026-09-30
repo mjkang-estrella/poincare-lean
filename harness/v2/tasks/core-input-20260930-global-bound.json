@@ -1,0 +1,152 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-global-bound",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "977ffd610c60a79433cb7774fe0784f9916b5468",
+  "objective": {
+    "title": "Construct actual global parametrix bound for Hamilton inputs",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via actual general Ricci-flow inputs. Subsequent proof: actual g0 global P:Y_M ->L X_M with linked local residuals and full Graph assembly, then true full DeTurck L/P/R identity and contraction. Construct required inputs rather than assume flow/operator packages; keep canonical norms and original universal cores.",
+    "deliverables": [
+      "Poincare.GlobalParametrixAssembly.ambient_norm_le"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/GlobalParametrixAssemblyBound.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-global-parametrix-20260930/bound.readback.json",
+      "harness/v2/contracts/core-global-parametrix-20260930/construction-context.md",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean"
+    ],
+    "symbols": [
+      "Poincare.GlobalParametrixAssembly.ambient_norm_le"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/GlobalParametrixAssemblyBound.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/GlobalParametrixAssemblyBound.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-global-parametrix-20260930/bound.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.GlobalParametrixAssembly.ambient_norm_le"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.GlobalParametrixAssemblyBound"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.GlobalParametrixAssembly.ambient_norm_le",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (α T : ℝ)\n(S : Fin A.cover.chartCount → (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.Jet α T))\n(B : Poincare.GlobalParametrixAssembly.Transports A α T),\n∀ (CP : ℝ) (CB : Fin A.cover.chartCount → Fin A.cover.chartCount → Fin 3 → Fin 3 → ℝ),\n0 ≤ CP → (∀ i j c d, 0 ≤ CB i j c d) →\n(∀ i j c d, ‖B i j c d‖ ≤ CB i j c d) →\n(∀ j (h : Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T), (∀ p, p.2 ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A j → h p = 0) →\n ‖S j h‖ ≤ CP * ‖h‖) →\n‖Poincare.GlobalParametrixAssembly.ambient A α T S B‖ ≤ CP *\n (∑ i : Fin A.cover.chartCount, ∑ j : Fin A.cover.chartCount,\n   ∑ c : Fin 3, ∑ d : Fin 3, CB i j c d)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+        "sha256": "964439b66a2fbae6fc1bd1e9c693919283e248e27bfb02bf55e8ef284a9f5c04"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+        "sha256": "12128cd9874e24db5aa594daee3716dd942c7fab84c6cc711777129d68f98620"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "187af175149ac69db058af0dc496aa6b0760997a538868e914091a0ff66a5c2a",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/bound.readback.json",
+      "report_sha256": "c08c682b2ddcca325eaab99176155b6bd27754fc1ca8f4e794c8e8a9ded38405"
+    }
+  }
+}

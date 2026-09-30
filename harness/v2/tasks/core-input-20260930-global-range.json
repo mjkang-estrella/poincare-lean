@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-global-range",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "977ffd610c60a79433cb7774fe0784f9916b5468",
+  "objective": {
+    "title": "Construct actual global parametrix range for Hamilton inputs",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via actual general Ricci-flow inputs. Subsequent proof: actual g0 global P:Y_M ->L X_M with linked local residuals and full Graph assembly, then true full DeTurck L/P/R identity and contraction. Construct required inputs rather than assume flow/operator packages; keep canonical norms and original universal cores.",
+    "deliverables": [
+      "Poincare.GlobalParametrixAssembly.ambient_mem_and_chart_value"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/GlobalParametrixAssemblyRange.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-global-parametrix-20260930/range.readback.json",
+      "harness/v2/contracts/core-global-parametrix-20260930/construction-context.md",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueCompatibility.lean"
+    ],
+    "symbols": [
+      "Poincare.GlobalParametrixAssembly.ambient_mem_and_chart_value"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/GlobalParametrixAssemblyRange.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/GlobalParametrixAssemblyRange.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-global-parametrix-20260930/range.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.GlobalParametrixAssembly.ambient_mem_and_chart_value"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.GlobalParametrixAssemblyRange"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.GlobalParametrixAssembly.ambient_mem_and_chart_value",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (α T : ℝ)\n(S : Fin A.cover.chartCount → (Poincare.FiniteAtlasParabolicTensorSpace.Scalar α T) →L[ℝ] (Poincare.FiniteAtlasParabolicTensorSpace.Jet α T))\n(B : Poincare.GlobalParametrixAssembly.Transports A α T),\n∀ ξ : Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ,\n(∀ i j c d (w : Poincare.GlobalParametrixAssembly.SourceGraphs α T) t z,\nz ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i → (B i j c d w).u (t,z) = 0) → (∀ i j c d (w : Poincare.GlobalParametrixAssembly.SourceGraphs α T) t (x : M),\nx ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\n(B i j c d w).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) =\nA.partition i x * (@ite ℝ (x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source) (Classical.propDecidable _)\n (∑ a : Fin 3, ∑ b : Fin 3,\n   ξ j (Poincare.FiniteAtlasParabolicTensorSpace.chart A j x) * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x a c * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x b d *\n   (w (a,b)).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A j x)) 0)) →\n(∀ f : Poincare.FiniteAtlasParabolicTensorSpace.Y_M A α T, Poincare.GlobalParametrixAssembly.ambient A α T S B f ∈ Poincare.FiniteAtlasParabolicTensorSpace.tensorSubmodule A (Poincare.FiniteAtlasParabolicTensorSpace.evalX α T)) ∧\n(∀ (f : Poincare.FiniteAtlasParabolicTensorSpace.Y_M A α T) i c d t (x : M), x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\n((Poincare.GlobalParametrixAssembly.ambient A α T S B f) (i,c,d)).u (t,Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) =\nPoincare.FiniteAtlasBufferedTensorValue.value A ξ (fun j a b z => (S j (f.val (j,a,b))).u (t,z)) i c d x)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+        "sha256": "964439b66a2fbae6fc1bd1e9c693919283e248e27bfb02bf55e8ef284a9f5c04"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+        "sha256": "12128cd9874e24db5aa594daee3716dd942c7fab84c6cc711777129d68f98620"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "global-parametrix-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "aa0a248f2e1294966094f4a581de6460da0a208fc54a8789479223d299230969",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-global-parametrix-20260930/range.readback.json",
+      "report_sha256": "5dd45cad2491c29abf68fa3029466df68fe528007a8a57227c91dd35fa549cc6"
+    }
+  }
+}
