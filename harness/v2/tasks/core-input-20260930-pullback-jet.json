@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-pullback-jet",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "eaffa8b75c0cf7ecaf9654c91bac1d8bdf099b63",
   "objective": {
     "title": "Remove actual Hamilton covariance obstacle: pullback-jet",
@@ -143,5 +143,6 @@
       "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/pullback-jet.readback.json",
       "report_sha256": "e70bdf0e0513d87b36eafcf0d171bf3867240a5bbe872dedeb2789be03d4124f"
     }
-  }
+  },
+  "accepted_commit": "65163212c1a8726afafefda845f7df641d4633dd"
 }

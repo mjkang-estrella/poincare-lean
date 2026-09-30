@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-actual-evolution",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "c4f0c5f2a37418fe8748bb4f6b91367a417972b5",
   "objective": {
     "title": "Differentiate actual geometric DeTurck evolution from constructed metric variations",
@@ -192,5 +192,6 @@
       "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/actual-evolution.readback.json",
       "report_sha256": "b0db049b012b12ff4bdcd00945fa05ea74474ec07689af378aac9f535a6ed762"
     }
-  }
+  },
+  "accepted_commit": "3bd6504391f785d0efc7e627e747d6f84362eb38"
 }
