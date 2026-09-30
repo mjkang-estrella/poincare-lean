@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-graph-pullback",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "763b79e7de7fe8f3c6315d5e8bcf483010cdde38",
+  "status": "ready",
+  "base_commit": "536cc4bb9aec4fce4eb85cfbe8cc70b00597d4cf",
   "objective": {
     "title": "graph-pullback for actual nonlinear Graph transport",
     "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via genuine general Ricci-flow inputs. Bounded destination-only tensor Graph transport into X_M, then genuine global DeTurck L/P/R and physical Ricci flow. Construct actual operators with the original norm/derivative fields; no supplied flow, transport package, bound or recognition premise may replace construction.",
@@ -39,7 +39,9 @@
       "Poincare/Global/ParabolicHolderSpace.lean",
       "Poincare/Global/ParabolicSolutionGraph.lean",
       "Poincare/Global/ParabolicCutoffCommutator.lean",
-      "Poincare/Global/ParabolicSpatialHolderPullback.lean"
+      "Poincare/Global/ParabolicSpatialHolderPullback.lean",
+      "Poincare/Global/ParabolicSpatialPullbackChainRule.lean",
+      "Poincare/Global/ParabolicHessianCarrierPullback.lean"
     ],
     "symbols": [
       "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback"

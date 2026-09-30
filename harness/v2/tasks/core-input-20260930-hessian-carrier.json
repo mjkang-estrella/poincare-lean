@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-hessian-carrier",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "763b79e7de7fe8f3c6315d5e8bcf483010cdde38",
   "objective": {
     "title": "hessian-carrier for actual nonlinear Graph transport",
@@ -131,5 +131,6 @@
       "report_path": "harness/v2/contracts/core-graph-pullback-20260930/hessian-carrier.readback.json",
       "report_sha256": "ae14f877e103450253806e799a10994729cbc12fc112e2249dde4592ce90fa13"
     }
-  }
+  },
+  "accepted_commit": "536cc4bb9aec4fce4eb85cfbe8cc70b00597d4cf"
 }
