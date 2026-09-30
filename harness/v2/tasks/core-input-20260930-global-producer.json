@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-producer",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "41520e2d37b85dd5347b3c540d166d6af2490aa6",
   "objective": {
     "title": "Construct actual global parametrix producer for Hamilton inputs",
@@ -164,5 +164,6 @@
       "report_path": "harness/v2/contracts/core-global-parametrix-20260930/producer.readback.json",
       "report_sha256": "b3d27f76f135838a0f891750f511135892b8b3c8c7ee0abce96c01c97112b096"
     }
-  }
+  },
+  "accepted_commit": "6fee7e62cd3585a1f4ee80c0daca714c2355892d"
 }
