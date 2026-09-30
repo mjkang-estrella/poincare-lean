@@ -144,3 +144,20 @@ its original verification receipt and combined-output capture caveat. Local
 Codex helpers are labelled as such, not registered Pi/Leanstral Jobs. No dirty
 or unmerged historical worktree was removed. The complete goal remains active;
 no core/final target, scalar action or topology was weakened.
+
+## Sealed integration checkpoint
+
+Clean source checkpoint: `76f07c68eb7ce3faf3637738ced24ee1f7af7ffa`.
+Source-bound evidence: `harness/v2/state/verification/checkpoints/20260930T132636Z-0595f30e55c5452b870e50c169d6e078`.
+Build and interface, mathlib, shape, theorem, semantic, root-import and axiom
+phases returned 0. Completion returned 1 with exactly reserved-name absence
+and the exact endpoint probe failure; completion is not certified.
+
+Compressed append-only evidence is in
+`core-deturck-chartlift-20260930-evidence/manifest.json`. Original and compressed
+SHA-256 hashes were verified for every archived payload. It includes all
+failed support/typing/compiler and topology-probe sources/logs, blind reports,
+worker/root gates, genuine constructed-metric/twojet/family application and
+saved parameter-derivative prototype with its original verification identity.
+No universal core is discharged. The exact next action remains the actual
+chart2jet parameter derivative, then full linearized covariance transfer.
