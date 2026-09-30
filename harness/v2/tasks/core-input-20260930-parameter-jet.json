@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-parameter-jet",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "eaffa8b75c0cf7ecaf9654c91bac1d8bdf099b63",
   "objective": {
     "title": "Remove actual Hamilton covariance obstacle: parameter-jet",
@@ -144,5 +144,6 @@
       "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/parameter-jet.readback.json",
       "report_sha256": "a41603833c935d2af10cf0ea74d9c50d9b7d841194264d76a8e2dc09d33bbcf9"
     }
-  }
+  },
+  "accepted_commit": "c4f0c5f2a37418fe8748bb4f6b91367a417972b5"
 }

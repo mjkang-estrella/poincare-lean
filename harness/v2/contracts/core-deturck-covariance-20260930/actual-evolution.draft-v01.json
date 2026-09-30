@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckActualEvolutionDerivative"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckActualEvolutionDerivative.hasDerivAt_chartEvolution_of_affine_inner",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedAddCommGroup\n        (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedSpace\n        (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedAddCommGroup;\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedSpace;\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Variables := Prod.normedAddCommGroup;\n    letI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Variables := Prod.normedSpace;\n    letI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\n∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace Poincare.DeTurckPrincipalSecondJet.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(g0 bg : Poincare.ClosedSmoothRiemannianMetric 3 M)\n(gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M)\n(H : ∀ x : M,\n TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ]\n TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ] ℝ),\nContMDiff (Poincare.closedSmoothModelWithCorners 3)\n ((Poincare.closedSmoothModelWithCorners 3).prod\n  𝓘(ℝ, Poincare.DeTurckPrincipalSecondJet.Bilin))\n ((⊤ : ENat) : WithTop ENat)\n (fun x : M => Bundle.TotalSpace.mk' Poincare.DeTurckPrincipalSecondJet.Bilin x (H x)) →\nFilter.Eventually (fun s : ℝ => ∀ x : M,\n (gt s).inner x = g0.inner x + s • H x) (nhds (0 : ℝ)) →\n∀ (anchor : M) (z : Poincare.DeTurckPrincipalSecondJet.E),\nz ∈ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target →\nFilter.Eventually (fun y => Poincare.GeodesicTransport.cutoff (n := 3) anchor y = 1)\n (nhds z) →\nlet G0 := _root_.CovariantDerivative.chartMetric\n (I := Poincare.closedSmoothModelWithCorners 3) g0.inner anchor\nlet DG0 := fderiv ℝ G0\nlet D2G0 := fderiv ℝ DG0\nlet F := _root_.CovariantDerivative.chartMetric\n (I := Poincare.closedSmoothModelWithCorners 3) H anchor\nlet DF := fderiv ℝ F\nlet D2F := fderiv ℝ DF\nlet B := Poincare.GeodesicTransport.chartChristoffelField bg anchor\nlet DB := fderiv ℝ B\nHasDerivAt\n (fun s => Poincare.deTurckChartMetricEvolutionBilin gt bg anchor s z)\n (Poincare.DeTurckJetLinearization.differential\n  (B z) (DB z) (G0 z) (DG0 z) (D2G0 z)\n  ((F z, DF z), D2F z)) 0",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckBUCChartCovariance.lean",
+        "sha256": "209fef02e9467b997978165aadad108b123bc579539f769fe6338cfbf20abce0"
+      }
+    ],
+    "author": "root-orchestrator"
+  },
+  "snapshot_sha256": "d0a914e9dfd2cb5cf01aa85769b63ef70c9af33e325c02af7fc102f22fdfb52a"
+}

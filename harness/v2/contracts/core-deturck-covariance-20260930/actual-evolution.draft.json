@@ -1,0 +1,57 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckActualEvolutionDerivative"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckActualEvolutionDerivative.hasDerivAt_chartEvolution_of_affine_inner",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedAddCommGroup\n        (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (\u03c3\u2081\u2082 := RingHom.id \u211d);\n    letI : NormedSpace \u211d Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedSpace\n        (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (\u03c3\u2081\u2082 := RingHom.id \u211d) (\ud835\udd5c' := \u211d);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E)) (\u03c3\u2081\u2082 := RingHom.id \u211d);\n    letI : NormedSpace \u211d (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E)) (\u03c3\u2081\u2082 := RingHom.id \u211d) (\ud835\udd5c' := \u211d);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E)) (\u03c3\u2081\u2082 := RingHom.id \u211d);\n    letI : NormedSpace \u211d (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E \u2192L[\u211d] Poincare.DeTurckPrincipalSecondJet.E)) (\u03c3\u2081\u2082 := RingHom.id \u211d) (\ud835\udd5c' := \u211d);\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n     (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (\u03c3\u2081\u2082 := RingHom.id \u211d);\n    letI : NormedSpace \u211d Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n     (\ud835\udd5c := \u211d) (\ud835\udd5c\u2082 := \u211d) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (\u03c3\u2081\u2082 := RingHom.id \u211d) (\ud835\udd5c' := \u211d);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Bilin \u00d7 Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedAddCommGroup;\n    letI : NormedSpace \u211d (Poincare.DeTurckPrincipalSecondJet.Bilin \u00d7 Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedSpace;\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Variables := Prod.normedAddCommGroup;\n    letI : NormedSpace \u211d Poincare.DeTurckJetLinearization.Variables := Prod.normedSpace;\n    letI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin \u00d7 Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\n\u2200 (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace Poincare.DeTurckPrincipalSecondJet.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((\u22a4 : ENat) : WithTop ENat) M]\n(g0 bg : Poincare.ClosedSmoothRiemannianMetric 3 M)\n(gt : \u211d \u2192 Poincare.ClosedSmoothRiemannianMetric 3 M)\n(H : \u2200 x : M,\n TangentSpace (Poincare.closedSmoothModelWithCorners 3) x \u2192L[\u211d]\n TangentSpace (Poincare.closedSmoothModelWithCorners 3) x \u2192L[\u211d] \u211d),\nContMDiff (Poincare.closedSmoothModelWithCorners 3)\n ((Poincare.closedSmoothModelWithCorners 3).prod\n  \ud835\udcd8(\u211d, Poincare.DeTurckPrincipalSecondJet.Bilin))\n ((\u22a4 : ENat) : WithTop ENat)\n (fun x : M => Bundle.TotalSpace.mk' Poincare.DeTurckPrincipalSecondJet.Bilin x (H x)) \u2192\nFilter.Eventually (fun s : \u211d => \u2200 x : M,\n (gt s).inner x = g0.inner x + s \u2022 H x) (nhds (0 : \u211d)) \u2192\n\u2200 (anchor : M) (z : Poincare.DeTurckPrincipalSecondJet.E),\nz \u2208 (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target \u2192\nFilter.Eventually (fun y => Poincare.GeodesicTransport.cutoff (n := 3) anchor y = 1)\n (nhds z) \u2192\nlet G0 := _root_.CovariantDerivative.chartMetric\n (I := Poincare.closedSmoothModelWithCorners 3) g0.inner anchor\nlet DG0 := fderiv \u211d G0\nlet D2G0 := fderiv \u211d DG0\nlet F := _root_.CovariantDerivative.chartMetric\n (I := Poincare.closedSmoothModelWithCorners 3) H anchor\nlet DF := fderiv \u211d F\nlet D2F := fderiv \u211d DF\nlet B := Poincare.GeodesicTransport.chartChristoffelField bg anchor\nlet DB := fderiv \u211d B\nHasDerivAt\n (fun s => Poincare.deTurckChartMetricEvolutionBilin gt bg anchor s z)\n (Poincare.DeTurckJetLinearization.differential\n  (B z) (DB z) (G0 z) (DG0 z) (D2G0 z)\n  ((F z, DF z), D2F z)) 0",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckBUCChartCovariance.lean",
+        "sha256": "209fef02e9467b997978165aadad108b123bc579539f769fe6338cfbf20abce0"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartIndependentPullback.lean",
+        "sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      }
+    ],
+    "author": "root-orchestrator"
+  },
+  "snapshot_sha256": "4ee246e37aba74d765a3998f0ff7a8e04dea77a7025ab65350d3457185991dbe"
+}
