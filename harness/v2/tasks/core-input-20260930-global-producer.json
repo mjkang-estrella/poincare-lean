@@ -1,5 +1,113 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.1",
+  "id": "core-input-20260930-global-producer",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "decb758bcfd05b89d7d58f5f519fbba55e7dba4e",
+  "objective": {
+    "title": "Construct actual global parametrix producer for Hamilton inputs",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via actual general Ricci-flow inputs. Subsequent proof: actual g0 global P:Y_M ->L X_M with linked local residuals and full Graph assembly, then true full DeTurck L/P/R identity and contraction. Construct required inputs rather than assume flow/operator packages; keep canonical norms and original universal cores.",
+    "deliverables": [
+      "Poincare.MetricAdaptedGlobalParametrix.exists_metric_adapted_global_parametrix"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/MetricAdaptedGlobalParametrix.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-global-parametrix-20260930/producer.readback.json",
+      "harness/v2/contracts/core-global-parametrix-20260930/construction-context.md",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/GlobalParametrixAssemblyRange.lean",
+      "Poincare/Global/GlobalParametrixAssemblyBound.lean",
+      "Poincare/Global/MetricAdaptedLocalParametrix.lean",
+      "Poincare/Global/BufferedChartTransitionExtensions.lean",
+      "Poincare/Global/BufferedTensorGraphTransportOperator.lean"
+    ],
+    "symbols": [
+      "Poincare.MetricAdaptedGlobalParametrix.exists_metric_adapted_global_parametrix"
+    ],
+    "depends_on": [
+      "core-input-20260930-global-range",
+      "core-input-20260930-global-bound"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/MetricAdaptedGlobalParametrix.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/MetricAdaptedGlobalParametrix.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-global-parametrix-20260930/producer.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.MetricAdaptedGlobalParametrix.exists_metric_adapted_global_parametrix"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
   "statement_contract": {
     "imports": [
       "Poincare.Global.MetricAdaptedGlobalParametrix"
