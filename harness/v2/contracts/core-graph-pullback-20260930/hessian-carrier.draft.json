@@ -1,0 +1,28 @@
+{
+  "imports": [
+    "Poincare.Global.ParabolicHessianCarrierPullback"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.ParabolicHessianCarrierPullback.exists_hessian_carrier_pullback",
+      "lean_type": "\u2203 C : \u211d, 0 \u2264 C \u2227 \u2200 (\u03b1 T : \u211d) (dF : Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3))),\nletI : NormedSpace \u211d (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) := Submodule.normedSpace (Poincare.ParabolicHolder.holderSubmodule (E := (Poincare.ClosedSmoothModel 3)) (F := ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) \u03b1 T); \u2203 P : (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) \u2192L[\u211d] (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)), \u2016P\u2016 \u2264 C * \u2016dF\u2016 ^ 2 \u2227\n\u2200 B p (v w : (Poincare.ClosedSmoothModel 3)), P B p v w = B p (dF p v) (dF p w)",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/ParabolicHolderSpace.lean",
+      "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+    },
+    {
+      "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+      "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "1723720c37c5bc43c3938a4714091237ad43df2cf2af4ad104cf9afec219f32f"
+}
