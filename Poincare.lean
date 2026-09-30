@@ -23,6 +23,11 @@ import Poincare.Global.MetricAdaptedBufferedAtlas
 import Poincare.Global.MetricInverseCoefficientRegularity
 import Poincare.Global.FiniteLocalSolverBounds
 import Poincare.Global.MetricAdaptedLocalParametrix
+import Poincare.Global.GlobalParametrixAssemblyDefinitions
+import Poincare.Global.GlobalParametrixAssemblyRange
+import Poincare.Global.GlobalParametrixAssemblyBound
+import Poincare.Global.MetricAdaptedGlobalParametrix
+import Poincare.Global.DeTurckLowerJetSmoothness
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions

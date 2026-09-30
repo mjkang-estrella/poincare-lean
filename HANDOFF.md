@@ -1,5 +1,39 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed actual global P and smooth DeTurck lower jets
+
+The full goal remains active; both universal smoothability and Hamilton/
+positive-Einstein existence remain open. No core or frozen final target was
+weakened. The reserved Poincare.poincare_conjecture remains absent.
+
+MetricAdaptedGlobalParametrix constructs actual Pglobal:Y_M ->L X_M from g0
+and 0<alpha<1, retaining the same A/psi/xi/theta/F, local S/R residual and
+support witnesses, B maps and full Graph equality to the finite B(Sf) sum.
+Constants and positive lifespan are chosen before T. The accepted range and
+supported-input bound proofs supply actual codRestrict and uniform norm.
+Local solution bounds were not strengthened to unrestricted local opnorms.
+An application check constructs its initial metric before using this producer.
+
+DeTurckLowerJetSmoothness proves the actual Bilin-valued lowerTerm is smooth
+in (G,J) at invertible G0, with arbitrary fixed B/DB/J0. Proved canonical
+Jet1 bindings resolve scalar/hom inference and retain actual opNorm; all
+failed probes/compiler attempts and final diffs are preserved. This is not
+a full DQ, joint spatial coefficient regularity, covariance or flow theorem.
+
+First action: freeze and prove the scalar inverseEntries derivative from
+G0.IsInvertible with the actual CLM coefficient
+-(sum_k,l a(G0)_ik*a(G0)_lj smul entryCLM_kl). Retain its contraction with
+H0=D2g0 as the zero-order coefficient in full DQ(g0); do not omit it.
+Use the existing raised-coordinate left-inverse proof to derive nonzero
+determinant, then Mathlib's ring-inverse derivative, keeping matrix norm
+scope internal. Read harness/reports/core-global-parametrix-20260930.md.
+
+Next actual inputs remain full finite-jet DQ(g0), joint coefficient regularity
+and differentiated covariance, bounded global L/R and signed id-R contraction,
+then nonlinear inversion, matched initial-time jets, ordinary joint C3 and
+physical Ricci flow. Later continuation/surgery/favorable metrics and limits,
+and independent compatible smoothability, remain unproved.
+
 ## 2026-09-30 Constructed bounded tensor Graph transport
 
 The complete goal remains active. Both universal cores remain open:
