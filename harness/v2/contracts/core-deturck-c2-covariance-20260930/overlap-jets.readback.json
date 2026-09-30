@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "c2-transport-blind-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "ea0e28dc23eac10c9ca9e74d43eb53e3824aa348eefd125a3770cac75f9575b5",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckChartLiftOverlapJets.chartLift_overlap_twoJet",
+      "mathematical_statement": "All universal quantifiers range over arbitrary data, including an arbitrary universe u and manifold M. E is EuclideanSpace ℝ (Fin 3), Bilin is E →L[ℝ] E →L[ℝ] ℝ, Jet1 is E →L[ℝ] Bilin, Jet2 is E →L[ℝ] Jet1, and Variables is (Bilin × Jet1) × Jet2. The leading letI binders fix the ordinary real operator-norm additive-group and real normed-space structures on Jet1, E →L[ℝ] E →L[ℝ] E, E →L[ℝ] E →L[ℝ] E →L[ℝ] E, and Jet2, fix the ordinary product normed-group and real normed-space structures on Bilin × Jet1 and Variables, and fix the ordinary product additive commutative monoid on Bilin × Jet1. Thus these derivative and equality expressions are evaluated using those specified canonical structures; they do not quantify over an arbitrary choice of norms. Let M have a topology, be Hausdorff, carry charts modeled on E, and be a C∞ manifold for the boundaryless real 3-dimensional model 𝓡 3. For any anchors anchor₁ and anchor₂, any total map F : E → Bilin, and any z : E, assume z belongs to the anchor₁ extended-chart target and its anchor₁ inverse-chart point belongs to the anchor₂ extended-chart source. Write phi(y) = chart₂(chart₁⁻¹(y)). Define chartLift₂ F on M to be zero outside chart₂.source and, inside that source, to evaluate F(chart₂(x)) on the two forward-chart tangent derivatives. Let FA be that global tensor read in chart₁, using the inverse-chart tangent derivative in both slots, and TF(y)(v,w) = F(phi(y))(Dphi(y)v,Dphi(y)w), where Dphi is the ordinary total Fréchet derivative. The conclusion is the conjunction: phi is C³ at z; FA(y) = TF(y) eventually in an ordinary neighborhood of z; and the nested value/first derivative/second derivative tuples ((FA(z),DFA(z)),D(DFA)(z)) and ((TF(z),DTF(z)),D(DTF)(z)) are equal. The theorem requires no smoothness, symmetry, positivity, compact support, or metric property of F. Consequently it does not itself assert the differentiability of FA or TF, nor give an expanded chain rule for their jets; the total fderiv values remain meaningful even when F is irregular. Its jet identity is equality of derivatives of locally equal total functions. The overlap hypotheses are genuine domain hypotheses and do not assume local equality or jet equality. No compactness, connectedness, simple connectedness, Poincare conclusion, or covariance certificate is an input."
+    }
+  ],
+  "findings": []
+}

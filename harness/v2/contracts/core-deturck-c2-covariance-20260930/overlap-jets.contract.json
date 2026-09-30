@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckChartLiftOverlapJets"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckChartLiftOverlapJets.chartLift_overlap_twoJet",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedAddCommGroup\n        (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n      ContinuousLinearMap.toNormedSpace\n        (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n        (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ);\n    letI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n    letI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedAddCommGroup;\n    letI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedSpace;\n    letI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Variables := Prod.normedAddCommGroup;\n    letI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Variables := Prod.normedSpace;\n    letI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\n∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace Poincare.DeTurckPrincipalSecondJet.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(anchor₁ anchor₂ : M) (F : Poincare.DeTurckPrincipalSecondJet.E → Poincare.DeTurckPrincipalSecondJet.Bilin) (z : Poincare.DeTurckPrincipalSecondJet.E),\nz ∈ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor₁).target →\n(extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor₁).symm z ∈ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor₂).source →\nlet phi := Poincare.GeodesicTransport.chartTransition anchor₁ anchor₂\nlet FA := _root_.CovariantDerivative.chartMetric (I := Poincare.closedSmoothModelWithCorners 3)\n (Poincare.DeTurckChartLift.chartLift anchor₂ F) anchor₁\nlet TF := fun y => Poincare.pullbackBilinearForm (F (phi y)) (fderiv ℝ phi y)\nContDiffAt ℝ 3 phi z ∧\nFilter.Eventually (fun y => FA y = TF y) (nhds z) ∧\n((FA z, fderiv ℝ FA z), fderiv ℝ (fderiv ℝ FA) z) =\n ((TF z, fderiv ℝ TF z), fderiv ℝ (fderiv ℝ TF) z)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckBUCChartCovariance.lean",
+        "sha256": "209fef02e9467b997978165aadad108b123bc579539f769fe6338cfbf20abce0"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartIndependentPullback.lean",
+        "sha256": "f9717176c6bbe12dcfdf8b15f716d02f850cc2990051768ad377c6288a6594cd"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+        "sha256": "d5c2de34fc67b5fbc25001524cd1d711c8c1e230c5ed37853aed2405cc81d804"
+      },
+      {
+        "path": "Poincare/Global/GeodesicOverlap.lean",
+        "sha256": "2e093593b1277329bdfff1623b68963e44a66810df18e71c9d7dab5cc8e2d53c"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+        "sha256": "3b4bc4a8ea08d0f181080b1030ebba69b58575c1601b96c3b5a1e6ed77ed5086"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPullbackTwoJet.lean",
+        "sha256": "66bb3aabad874a5f45780fa0a929bc2a797731f8f8bbe14209507c8082cbefdc"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "c2-transport-blind-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "ea0e28dc23eac10c9ca9e74d43eb53e3824aa348eefd125a3770cac75f9575b5",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-c2-covariance-20260930/overlap-jets.readback.json",
+      "report_sha256": "b11e043bc27acc25355e040e543dffebc5da26ed2e4a0e0e59d51fdbbab4d1e7"
+    }
+  }
+}
