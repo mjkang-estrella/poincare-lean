@@ -30,7 +30,10 @@ Hamilton convergence quantifies over compact connected simply connected,
 Hausdorff second-countable smooth three-manifolds and requires
 `HamiltonConvergencePinchedLimit3 N`: an actual smooth metric with everywhere
 differentiable scalar curvature, zero traceless Ricci and positive scalar
-curvature somewhere.
+curvature somewhere. Scalar differentiability is already unconditional for
+closed smooth metrics, so the equivalent remaining core is precisely
+`∃ g : ClosedSmoothRiemannianMetric 3 N,
+(∀ x, g.tracelessRicciNormSqAt x = 0) ∧ (∃ x, 0 < g.scalarAt x)`.
 
 The stronger `UniversalHamiltonFrontInputsStatement.{u,v}` requires
 `Nonempty (HamiltonFrontInputs.{u,v} N)` with all five stored analytic fields;
@@ -117,3 +120,24 @@ application's default-heartbeat timeout is preserved; the final application
 uses the same proof budget as the accepted producer. Local Codex helpers are
 labelled as such, not registered Pi/Leanstral Jobs. No dirty or unmerged
 worktree was removed. Batch checkpoint evidence will be recorded below.
+
+## Sealed integration checkpoint
+
+The clean source checkpoint is `77ffad28907cce2fc9766c3814134e26f662e9eb`.
+The source-bound evidence directory is `harness/v2/state/verification/checkpoints/20260930T104551Z-e4a4f13993864f4c93defb36a83e1d97`.
+The build and interface, mathlib, shape, theorem, semantic, root-import and
+axiom phases returned 0. The completion phase returned 1, with exactly the
+reserved-name absence and exact endpoint probe failures. Completion is not
+certified. Fresh root Lean, actual constructed-initial-metric application,
+whole-module dependency scans and universal boundary probes also passed.
+
+Compressed append-only evidence is in
+`core-deturck-coefficients-20260930-evidence/manifest.json`; its manifest records
+original and compressed SHA-256 hashes. Every compressed payload was verified
+against both hashes. The evidence includes failed attempts and the read-only
+next-producer findings; those findings do not claim a constructed extension.
+
+The first next task is actual compact coefficient extension on the same
+A/psi/xi, deriving eta=1 near tsupport xi inside the true invertibility zone.
+Then construct the coupled Graph forcing using existing firstOrderForcing.
+No universal core has been discharged by this checkpoint.
