@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-compact-jet-import",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "1136e5cc687280b77d621ad2626e69b1ecc39044",
   "objective": {
     "title": "Preserve actual tensor derivative under joint forcing imports",
@@ -182,5 +182,6 @@
       "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
   },
-  "supersedes": "core-input-20260930-compact-jet"
+  "supersedes": "core-input-20260930-compact-jet",
+  "accepted_commit": "83fce3400c8cdd4bb5fc928c0bb2232325127c34"
 }
