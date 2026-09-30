@@ -67,6 +67,13 @@ def strict_task() -> tuple[dict, bytes]:
 
 
 class StatementValidationTests(unittest.TestCase):
+    def test_manifold_notation_scope_tracks_selected_frozen_literals(self):
+        contract, _ = contract_fixture()
+        contract["declarations"][0]["lean_type"] = "IsManifold 𝓘(ℝ) ∞ M"
+        self.assertIn("open scoped Manifold\n", statement_contract_probe_source(contract))
+        self.assertNotIn("open scoped Manifold\n", statement_contract_probe_source(
+            contract, ["Nat.zero_ne_one"]))
+
     def test_focused_review_uses_the_same_strict_and_legacy_probe(self):
         from harness.v2.deploy.focused_review import _declaration_source
 

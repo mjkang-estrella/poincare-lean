@@ -421,6 +421,10 @@ def statement_contract_probe_source(contract: dict[str, Any], names: list[str] |
         if {entry["name"] for entry in selected} != set(names):
             _fail("probe.names", "contains a declaration outside the frozen contract")
     source = axiom_probe_source([entry["name"] for entry in selected], contract["imports"])
+    # A frozen literal using manifold notation needs its parser scope. Opening
+    # the scope does not change the literal or the rigid type comparison.
+    if any("𝓘(" in entry["lean_type"] or "𝓡 " in entry["lean_type"] for entry in selected):
+        source += "open scoped Manifold\n"
     levels = list(dict.fromkeys(level for entry in selected for level in entry.get("universes", [])))
     if levels:
         source += "universe " + " ".join(levels) + "\n"
