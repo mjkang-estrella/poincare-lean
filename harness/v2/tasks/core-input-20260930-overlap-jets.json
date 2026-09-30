@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-overlap-jets",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "2ea5f89ea281ac1af2e30fd231aa9d504e4f5d64",
   "objective": {
     "title": "Discharge local Hamilton solver obstacle: overlap-jets",
@@ -212,5 +212,6 @@
       "report_path": "harness/v2/contracts/core-deturck-c2-covariance-20260930/overlap-jets.readback.json",
       "report_sha256": "b11e043bc27acc25355e040e543dffebc5da26ed2e4a0e0e59d51fdbbab4d1e7"
     }
-  }
+  },
+  "accepted_commit": "0f86dc9978ab147335c32a625b6ffe170510932a"
 }

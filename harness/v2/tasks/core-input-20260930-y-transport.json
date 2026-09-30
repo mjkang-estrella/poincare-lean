@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-y-transport",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "2ea5f89ea281ac1af2e30fd231aa9d504e4f5d64",
   "objective": {
     "title": "Discharge local Hamilton solver obstacle: y-transport",
@@ -183,5 +183,6 @@
       "report_path": "harness/v2/contracts/core-deturck-c2-covariance-20260930/y-transport.readback.json",
       "report_sha256": "63d4cad24665d5372e91f9a85bd5d3c03a44951264984cb07caa396f056a5da2"
     }
-  }
+  },
+  "accepted_commit": "c3bed4788afb1c82db848590cb45ee148fd5884b"
 }
