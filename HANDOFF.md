@@ -1,5 +1,39 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed actual finite-jet DeTurck differential
+
+The full proof goal remains active. Both universal smoothability and Hamilton/
+positive-Einstein existence remain open; the reserved final theorem is absent.
+The actual global P remains linked to the same local solvers/residuals.
+
+DeTurckJetLinearization.hasFDerivAt_evolution now certifies the actual
+principal-plus-explicit-lower finite-jet derivative and complete pointwise
+formula. It retains a(G0):dH, BOTH inverse factors in Da(G0)[dG]:H0, and the
+actual lower Frechet differential in (dG,dJ). No symmetry/realized-jet or
+supplied derivative package premise was added. A genuine-g0 application
+proves invertibility, equality with chart evolution and the derivative
+certificate at the same chart jets and arbitrary background.
+
+Actual matrix nonsingularity and scalar inverse-entry derivative are proved.
+Joint lowerTerm smoothness with B/DB/G/J varying supplies the next coefficient
+regularity consumer. An initial IsUnit task incorrectly inferred Pi.monoid;
+its wrong approved readback and all failed evidence/dirty WT are preserved,
+and a superseding exact Matrix monoid contract was independently checked.
+Canonical operator/product norm and dictionary pins change no norm/action
+or hypothesis. All bounded failed compiler attempts remain preserved.
+
+First action: freeze and prove the partial derivative bridge
+lowerDifferential B DB G J = (fderiv R F ((B,DB),(G,J))).comp inr, with
+F((B,DB),(G,J))=actual lowerTerm B DB G J and inr(hG,hJ)=((0,0),(hG,hJ)),
+then use joint smoothness/fderiv_right for the true spatial coefficient map.
+Read harness/reports/core-deturck-linearization-20260930.md.
+
+Still open: coefficient compact-buffer bounds, differentiated tensor
+covariance, bounded actual global L/R and signed id-R contraction, nonlinear
+inversion, matched initial jets, ordinary joint C3 and physical Ricci flow;
+later continuation/surgery/favorable metric/limit production and independent
+compatible smoothability are unproved. No ultimate target was weakened.
+
 ## 2026-09-30 Constructed actual global P and smooth DeTurck lower jets
 
 The full goal remains active; both universal smoothability and Hamilton/

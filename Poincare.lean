@@ -28,6 +28,12 @@ import Poincare.Global.GlobalParametrixAssemblyRange
 import Poincare.Global.GlobalParametrixAssemblyBound
 import Poincare.Global.MetricAdaptedGlobalParametrix
 import Poincare.Global.DeTurckLowerJetSmoothness
+import Poincare.Global.DeTurckInverseEntryDerivativeDefinitions
+import Poincare.Global.DeTurckMetricJetNonsingular
+import Poincare.Global.DeTurckInverseEntryDerivative
+import Poincare.Global.DeTurckLowerJointSmoothness
+import Poincare.Global.DeTurckJetLinearizationDefinitions
+import Poincare.Global.DeTurckJetLinearization
 import Poincare.Global.SmoothCutoffVectorExtension
 import Poincare.Global.CompactBufferedChartOverlap
 import Poincare.Global.BufferedChartTransitionExtensions
