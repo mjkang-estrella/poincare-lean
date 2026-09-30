@@ -1,12 +1,12 @@
 {
   "schema_version": "2.1",
-  "id": "core-input-20260930-compact-jet",
+  "id": "core-input-20260930-compact-jet-import",
   "revision": 1,
-  "status": "superseded",
-  "base_commit": "1d0160e1daef078ad09cd06553a36e55e24a9ab8",
+  "status": "ready",
+  "base_commit": "1136e5cc687280b77d621ad2626e69b1ecc39044",
   "objective": {
-    "title": "Construct actual compact coefficients and coupled forcing: jet",
-    "statement": "Core helped: UniversalHamiltonConvergenceStatement. Subsequent consumer: actual coupled lower forcing Z(h)+F(Dh) and true L=dt-DQ(g0). Identify the reconstructed tensorJet as the ordinary spatial derivative of the same tensorValue from actual Graph certificates, with no new alpha/time/symmetry/support/norm premise.",
+    "title": "Preserve actual tensor derivative under joint forcing imports",
+    "statement": "CoreH, consumer actual coupled forcing as Z(h)+F(Dh). Repair duplicate compiler-generated helpers when importing forcing and jet together, by naming the local instances uniquely. Preserve the exact frozen target, every actual norm/action and Graph-derived proof; no new assumptions or mathematical changes. Root preserves failed joint-import evidence.",
     "deliverables": [
       "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt"
     ]
@@ -55,12 +55,18 @@
       "Poincare/Global/DeTurckTensorBasisReconstruction.lean",
       "Poincare/Global/ParabolicCutoffCommutator.lean",
       "Poincare/Global/ParabolicSolutionGraph.lean",
-      "harness/v2/contracts/core-deturck-compact-20260930/jet-context.md"
+      "harness/v2/contracts/core-deturck-compact-20260930/jet-context.md",
+      "harness/v2/contracts/core-deturck-compact-20260930/jet-import-probe.lean",
+      "Poincare/Global/DeTurckTensorGraphJet.lean",
+      "Poincare/Global/DeTurckCoupledForcing.lean"
     ],
     "symbols": [
       "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt"
     ],
-    "depends_on": []
+    "depends_on": [
+      "core-input-20260930-compact-jet",
+      "core-input-20260930-compact-forcing"
+    ]
   },
   "acceptance": {
     "commands": [
@@ -88,6 +94,14 @@
         "scripts/frozen_contract_audit.py",
         "--manifest",
         "harness/v2/contracts/core-deturck-compact-20260930/jet.contract.json"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/contracts/core-deturck-compact-20260930/jet-import-probe.lean"
       ]
     ],
     "required_declarations": [
@@ -167,7 +181,5 @@
       "report_path": "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
       "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
     }
-  },
-  "accepted_commit": "2c3c4da737132b5a8476ae41bbbd45e56d092648",
-  "superseded_by": "core-input-20260930-compact-jet-import"
+  }
 }
