@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-dq-unit-matrix",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "71fc1381fd7963cf8773abbc8e93071f00a7f014",
   "objective": {
     "title": "Construct actual DeTurck unit-matrix coefficient toward Hamilton existence",
@@ -136,5 +136,6 @@
       "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.readback.json",
       "report_sha256": "f8bdbf29a610d8f8c7be28b90d6bce0c1fa08b9be40718cad8f0af90bfe11f6e"
     }
-  }
+  },
+  "accepted_commit": "f5223012961b0ed41ed3a2c8a1124bd74e6af8d4"
 }
