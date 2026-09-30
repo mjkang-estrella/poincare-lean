@@ -1,0 +1,176 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-chartlift-metric-variation",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "2606a24d7633ebaefbe4c0352dd4a18706acde7e",
+  "objective": {
+    "title": "Construct actual global tensor/variation input: metric-variation",
+    "statement": "CoreH; consumer differentiating actual nonlinear DeTurck covariance and transferring exact symmetric C2 two-jets to construct global L/R. Construct actual smooth Riemannian metrics gt(s) with common signed epsilon, gt0=g0, exact g0.inner+s*chartLift in all fibers and whole-target affine chartMetric. Consume independently proved global smoothness/symmetry/coordinate recovery and derived radius; no supplied positivity margin, candidate metric/flow/limit or coordinate package. Fill actual positivity/symmetry/smoothness and bounded unit balls. Any temporary finite-dimensional fiber norm bindings must agree with original model topology/scalar actions as in verified initial metric existence; never change public norms or add tangent seminorm assumptions.",
+    "deliverables": [
+      "Poincare.DeTurckChartLift.exists_actual_metric_variation"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckMetricVariation.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+      "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+      "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-deturck-chartlift-20260930/metric-variation.readback.json",
+      "harness/v2/contracts/core-deturck-chartlift-20260930/context.md",
+      "harness/reports/core-deturck-localization-20260930.md",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/DeTurckChartLiftCoordinates.lean",
+      "Poincare/Global/DeTurckChartLiftSmoothness.lean",
+      "Poincare/Global/DeTurckCompactCoordinateVariation.lean",
+      "Poincare/Global/SmoothInitialMetricPositiveCone.lean",
+      "Poincare/Global/SmoothInitialMetricExistence.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckChartLift.exists_actual_metric_variation"
+    ],
+    "depends_on": [
+      "core-input-20260930-chartlift-coordinates",
+      "core-input-20260930-chartlift-smoothness",
+      "core-input-20260930-chartlift-positivity"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckMetricVariation.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckMetricVariation.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-chartlift-20260930/metric-variation.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckChartLift.exists_actual_metric_variation"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckMetricVariation"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckChartLift.exists_actual_metric_variation",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace Poincare.DeTurckChartLift.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (anchor : M)\n(F : Poincare.DeTurckChartLift.E → Poincare.DeTurckChartLift.Bilin),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F →\ntsupport F ⊆ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target →\n(∀ z v w : Poincare.DeTurckChartLift.E, F z v w = F z w v) →\n∃ ε : ℝ, 0 < ε ∧ ∃ gt : ℝ → Poincare.ClosedSmoothRiemannianMetric 3 M,\ngt 0 = g0 ∧\n(∀ s : ℝ, |s| < ε → ∀ x : M,\n (gt s).inner x = g0.inner x + s • Poincare.DeTurckChartLift.chartLift anchor F x) ∧\n∀ s : ℝ, |s| < ε → ∀ z ∈ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target,\n_root_.CovariantDerivative.chartMetric (I := Poincare.closedSmoothModelWithCorners 3) (gt s).inner anchor z =\n_root_.CovariantDerivative.chartMetric (I := Poincare.closedSmoothModelWithCorners 3) g0.inner anchor z + s • F z",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+        "sha256": "d5c2de34fc67b5fbc25001524cd1d711c8c1e230c5ed37853aed2405cc81d804"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricLocalPullback.lean",
+        "sha256": "43d4c85596102b2e06e4688ddee19b1d5dd830aa4e5c83409cc5dad4158727bd"
+      },
+      {
+        "path": "Poincare/Global/CompactCoefficientEllipticity.lean",
+        "sha256": "1bc0177f10b1d866d78ef36692f1e0641bdfbbd766ace80c83ee99c5b6226e1b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-chartlift-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "46a1ffb6ac77543cbd1a75b6f1dd914b48b69ace48bbac26b9e8a4ce7b2dfeaa",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/metric-variation.readback.json",
+      "report_sha256": "d27584d672f2982f7051605575e94fbccedb71cba8bcc25ffe42d150916250d8"
+    }
+  }
+}
