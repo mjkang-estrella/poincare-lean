@@ -1,0 +1,170 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-chartlift-positivity",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "165c6fe285d86ee4358aa8d817a09d871f470fd6",
+  "objective": {
+    "title": "Construct actual global tensor/variation input: positivity",
+    "statement": "Core helped: UniversalHamiltonConvergenceStatement via real smooth metric variations, full linearized coordinate covariance, actual global L/R and physical flow. Support constructs actual compact source support and neighborhood zero for the dependent tensor; coordinates proves exact whole-target recovery, fiber symmetry and nested Hom identity; positivity derives common signed variation radius from actual g0 with no supplied margin. Smoothness combines accepted source coordinates/support with original smooth F. Preserve all core targets/norms; do not supply unproved coordinate/metric/curvature/flow/bound packages.",
+    "deliverables": [
+      "Poincare.DeTurckChartLift.exists_coordinate_variation_radius"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckCompactCoordinateVariation.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckLocalizationDefinitions.lean",
+      "Poincare/Global/DeTurckTensorSecondJetDefinitions.lean",
+      "Poincare/Global/DeTurckJetRealizationDefinitions.lean",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-deturck-chartlift-20260930/positivity.readback.json",
+      "harness/v2/contracts/core-deturck-chartlift-20260930/context.md",
+      "harness/reports/core-deturck-localization-20260930.md",
+      "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+      "Poincare/ChartTransport.lean",
+      "Poincare/Global/CompactCoefficientEllipticity.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/MetricInverseCoefficientRegularity.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckChartLift.exists_coordinate_variation_radius"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckCompactCoordinateVariation.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckCompactCoordinateVariation.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-chartlift-20260930/positivity.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckChartLift.exists_coordinate_variation_radius"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckCompactCoordinateVariation"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckChartLift.exists_coordinate_variation_radius",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M] [ChartedSpace Poincare.DeTurckChartLift.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (anchor : M) (F : Poincare.DeTurckChartLift.E → Poincare.DeTurckChartLift.Bilin),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F → tsupport F ⊆ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target →\n∃ ε : ℝ, 0 < ε ∧ ∀ s : ℝ, |s| < ε → ∀ z ∈ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target,\n∀ v : Poincare.DeTurckChartLift.E, v ≠ 0 → 0 < (_root_.CovariantDerivative.chartMetric (I := Poincare.closedSmoothModelWithCorners 3) g0.inner anchor z + s • F z) v v",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+        "sha256": "d5c2de34fc67b5fbc25001524cd1d711c8c1e230c5ed37853aed2405cc81d804"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricLocalPullback.lean",
+        "sha256": "43d4c85596102b2e06e4688ddee19b1d5dd830aa4e5c83409cc5dad4158727bd"
+      },
+      {
+        "path": "Poincare/Global/CompactCoefficientEllipticity.lean",
+        "sha256": "1bc0177f10b1d866d78ef36692f1e0641bdfbbd766ace80c83ee99c5b6226e1b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-chartlift-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "d13e1e92b824dc0ef7a6bd1ca6e5739dfbed7049dd1723ea9505465e7b62a202",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/positivity.readback.json",
+      "report_sha256": "18735825d4bb402a55094014bf5f6ce4f43bde8ed26e45d134fb5bc7d1eb5343"
+    }
+  }
+}
