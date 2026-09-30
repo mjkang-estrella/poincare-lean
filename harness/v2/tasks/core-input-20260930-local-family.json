@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-local-family",
   "revision": 1,
-  "status": "ready",
+  "status": "superseded",
   "base_commit": "127725fb499b88b5b35654479d8859afeb8f4448",
   "objective": {
     "title": "Construct actual local parametrix operators from the initial metric",
