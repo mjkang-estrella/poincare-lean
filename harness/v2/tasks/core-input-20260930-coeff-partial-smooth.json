@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-coeff-partial-smooth",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "269036f922f35254e14740e348745afd60f7c872",
   "objective": {
     "title": "Construct actual spatial DeTurck coefficients: partial-smooth",
@@ -152,5 +152,6 @@
       "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/partial-smooth.readback.json",
       "report_sha256": "7eb58725d29a3197463b81c9c4959e4195d9b844f50cf2130a6aff1801d2bd06"
     }
-  }
+  },
+  "accepted_commit": "4f6fd972fa1d645c6332cd7f3186a882ea2ee096"
 }
