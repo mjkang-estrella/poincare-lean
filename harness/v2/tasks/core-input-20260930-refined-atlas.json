@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-refined-atlas",
   "revision": 1,
-  "status": "active",
+  "status": "accepted",
   "base_commit": "8c18065332dec0c59d1c5f5aebe6e64abcb36c3e",
   "objective": {
     "title": "refined-atlas for constructed Ricci-flow geometry",
@@ -127,5 +127,6 @@
       "report_sha256": "389e1f83fa483d2dff2b14fe210dff95b94aad8b0a25e87d0f95150909da5209",
       "verdict": "approved"
     }
-  }
+  },
+  "accepted_commit": "863883708cc3a621cf334091c8001ce51ddfc08b"
 }
