@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-bound",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "a372e7b4e21394b33131a6de54cf9789151cf259",
   "objective": {
     "title": "Construct actual global parametrix bound for Hamilton inputs",
@@ -148,5 +148,6 @@
       "report_path": "harness/v2/contracts/core-global-parametrix-20260930/bound.readback.json",
       "report_sha256": "c08c682b2ddcca325eaab99176155b6bd27754fc1ca8f4e794c8e8a9ded38405"
     }
-  }
+  },
+  "accepted_commit": "0054c32db25df03631d1d252758ba39c824cb25f"
 }
