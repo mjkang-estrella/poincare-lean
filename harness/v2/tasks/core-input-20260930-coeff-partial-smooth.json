@@ -1,5 +1,115 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.1",
+  "id": "core-input-20260930-coeff-partial-smooth",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "4e46b34bff9226a4dcaa215c04f72dc5d9251c24",
+  "objective": {
+    "title": "Construct actual spatial DeTurck coefficients: partial-smooth",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via genuine Ricci-flow input construction. Subsequent proof: actual-g0 zero/first-order coefficient fields, smooth compact extensions/bounds, true covariant bounded global L=dt-DQ(g0) and signed L/P/R contraction. Construct actual partial/spatial derivatives, not unproved coefficient/flow packages; preserve frozen core statements and canonical norms.",
+    "deliverables": [
+      "Poincare.DeTurckPartialCoefficientSmoothness.contDiffAt_partialLower"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckPartialCoefficientSmoothness.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-deturck-coefficients-20260930/partial-smooth.readback.json",
+      "harness/v2/contracts/core-deturck-coefficients-20260930/construction-context.md",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckLowerJointSmoothness.lean",
+      "Poincare/Global/DeTurckPartialDerivativeBridge.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckPartialCoefficientSmoothness.contDiffAt_partialLower"
+    ],
+    "depends_on": [
+      "core-input-20260930-coeff-bridge"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckPartialCoefficientSmoothness.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckPartialCoefficientSmoothness.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-coefficients-20260930/partial-smooth.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckPartialCoefficientSmoothness.contDiffAt_partialLower"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
   "statement_contract": {
     "imports": [
       "Poincare.Global.DeTurckPartialCoefficientSmoothness"
