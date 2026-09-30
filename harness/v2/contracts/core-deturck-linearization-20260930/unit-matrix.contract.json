@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckMetricJetNonsingular"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit",
+        "lean_type": "∀ G0 : Poincare.DeTurckPrincipalSecondJet.Bilin, G0.IsInvertible →\n@IsUnit (Matrix (Fin 3) (Fin 3) ℝ) Matrix.semiring.toMonoidWithZero.toMonoid\n(fun i j : Fin 3 => G0 (Poincare.DeTurckPrincipalSecondJet.basis3 i) (Poincare.DeTurckPrincipalSecondJet.basis3 j))",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-linearization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "1913941322e01fa05950fae3c676ec9c380f1eb803f48d7685e5073f54bbce4f",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/unit-matrix.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}
