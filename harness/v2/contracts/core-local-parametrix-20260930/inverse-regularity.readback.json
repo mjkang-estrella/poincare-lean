@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "readback-local-solver-helpers",
+  "method": "blind-readback",
+  "snapshot_sha256": "aef9e8e7d45a4a0db76b4b6a55cd7d287307e7518501e7915397d711045be58e",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.MetricInverseCoefficientRegularity.inverse_metric_field_posDef",
+      "mathematical_statement": "For every type M in universe u equipped with a topology, a Hausdorff (T2) instance, a compactness instance, a charted-space instance modeled on real Euclidean three-space, and a smooth manifold instance for the real identity model with corners at exponent smooth infinity (the coerced top of ENat in WithTop ENat), for every supplied smooth positive-definite Riemannian metric g0 and anchor p in M, and every Euclidean coordinate z belonging to the genuine target of the extended chart at p, the inverse of the actual inverse-chart pullback Gram matrix field of g0 at p evaluated at z is positive definite. The field entries are g0 evaluated on inverse-chart derivatives of the canonical Euclidean basis; hence on the target this is the true coordinate Gram matrix, not a free coefficient matrix. Over the reals PosDef requires symmetry and strictly positive quadratic form on every nonzero vector. The conclusion is local to the chart target and supplies pointwise positivity without a numerical ellipticity constant. No connectedness, simple connectedness, second countability, measurable-space or Borel instance, finite atlas, flow, curvature, or sphere-recognition premise is present. The metric g0 is supplied, not constructed by this theorem, and no positivity of the globally defined field outside the chart target is asserted."
+    },
+    {
+      "name": "Poincare.MetricInverseCoefficientRegularity.inverse_metric_entry_contDiffOn",
+      "mathematical_statement": "Under the same universal quantification over M and the same topology, Hausdorff, compactness, Euclidean-three-dimensional charted-space and smooth manifold instances, for every supplied smooth Riemannian metric g0, anchor p, and pair i,j in Fin 3, the scalar function z mapping to the (i,j) entry of the inverse of the actual inverse-chart Gram matrix field is smooth on the target of the extended chart at p. ContDiffOn has scalar field real and smooth-infinity exponent, the coerced top of ENat rather than the analytic top of WithTop ENat. Thus the assertion concerns every one of the nine actual inverse-metric entries on the true coordinate target. No connectedness, simple connectedness, second countability, measurable-space or Borel, supplied ellipticity, flow, curvature, or recognition hypothesis is included. This is spatial smoothness on that target only; it does not assert global smoothness across arbitrary off-target values, bounds on derivatives, a common quantitative ellipticity bound, time regularity, or construction of g0."
+    }
+  ],
+  "findings": []
+}

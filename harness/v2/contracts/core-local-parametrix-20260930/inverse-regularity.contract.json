@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricInverseCoefficientRegularity"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricInverseCoefficientRegularity.inverse_metric_field_posDef",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (p : M), \u2200 z \u2208 (extChartAt (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) p).target, (Poincare.inverseChartPullbackGramMatrixField g0 p z)\u207b\u00b9 |>.PosDef",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "name": "Poincare.MetricInverseCoefficientRegularity.inverse_metric_entry_contDiffOn",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (p : M) (i j : Fin 3), ContDiffOn \u211d ((\u22a4 : ENat) : WithTop ENat) (fun z \u21a6 (Poincare.inverseChartPullbackGramMatrixField g0 p z)\u207b\u00b9 i j) (extChartAt (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) p).target",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "readback-local-solver-helpers",
+      "method": "blind-readback",
+      "snapshot_sha256": "aef9e8e7d45a4a0db76b4b6a55cd7d287307e7518501e7915397d711045be58e",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-local-parametrix-20260930/inverse-regularity.readback.json",
+      "report_sha256": "87c0272471ac9b19e52cc89d34f917a23b0679be0caea59c5b1eaa753cffea93"
+    }
+  }
+}

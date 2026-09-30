@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "readback-local-solver-helpers",
+  "method": "blind-readback",
+  "snapshot_sha256": "c31fadfc42b02a0833acb178f306890352418e167f8583688bf3946cc5dda215",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.FiniteLocalSolverBounds.exists_common_bounds_and_lifespan",
+      "mathematical_statement": "For every natural number n, including zero, and every three real-valued functions C,D,tau indexed by Fin n, if C and D are pointwise nonnegative and every tau i is strictly positive, there exist real numbers C0,D0,delta such that C0 and D0 are nonnegative, delta is strictly positive and at most one, and for every index i simultaneously C i is at most C0, D i is at most D0, and delta is at most tau i. The bounds and lifespan are chosen once for the entire finite family. No uniform lower bound on the input lifespans is a premise; only finite indexing and their individual strict positivity are required. With n=0 the indexwise requirements and premises are vacuous, while the conclusion still requires an actual positive delta at most one. The conclusion contains neither operator estimates nor any manifold, coefficient, flow or convergence data; those would require application to separately constructed objects."
+    }
+  ],
+  "findings": []
+}
