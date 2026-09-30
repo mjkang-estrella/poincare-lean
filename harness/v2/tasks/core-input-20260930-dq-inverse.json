@@ -1,0 +1,148 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-dq-inverse",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "f993ae914f2c705a1e89e12923860772e021f32c",
+  "objective": {
+    "title": "Construct actual DeTurck inverse coefficient toward Hamilton existence",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via true general Ricci flow. Subsequent proof: full finite-jet Q/DQ identification retaining Da(G0)[h]:H0, then joint spatial coefficient regularity, differentiated covariance, true bounded L=dt-DQ(g0) and signed global L/P/R contraction. Construct actual coefficient/derivative inputs rather than assume operator or limit packages.",
+    "deliverables": [
+      "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckInverseEntryDerivative.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-deturck-linearization-20260930/inverse.readback.json",
+      "harness/v2/contracts/core-deturck-linearization-20260930/construction-context.md",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckMetricJetNonsingular.lean"
+    ],
+    "symbols": [
+      "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry"
+    ],
+    "depends_on": [
+      "core-input-20260930-dq-unit"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckInverseEntryDerivative.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckInverseEntryDerivative.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-linearization-20260930/inverse.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckInverseEntryDerivative"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry",
+        "lean_type": "∀ (G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (i j : Fin 3), G0.IsInvertible →\nHasFDerivAt (fun G : Poincare.DeTurckPrincipalSecondJet.Bilin => Poincare.DeTurckPrincipalSecondJet.inverseEntries G i j) (Poincare.DeTurckInverseEntryDerivative.inverseEntryDerivative G0 i j) G0",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-linearization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "84d55caf433685d119ea98a5a8e1c977eb915bd1df3b2609449fa2d9b86c486b",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/inverse.readback.json",
+      "report_sha256": "4ecf0722dbfd8632c83873307993e9f76e9bd1a97d7f8852c049ccea6e090129"
+    }
+  }
+}

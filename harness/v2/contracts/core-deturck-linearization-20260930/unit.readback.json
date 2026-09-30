@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-linearization-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "d5b3423a28b4cd9d9e46452b93f4658e66ce947317e7c9b91dea13045b25f1b7",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckMetricJetNonsingular.coordinate_matrix_isUnit",
+      "mathematical_statement": "E is the fixed real three-dimensional Euclidean space ClosedSmoothModel 3. Bilin is E ->L[R] E ->L[R] R, a continuous real bilinear form regarded as a continuous real-linear map from E into its real continuous dual. basis3 i is the standard EuclideanSpace.basisFun vector e_i, for i : Fin 3. For every G0 in Bilin, if G0.IsInvertible, then the actual matrix K0 : Matrix (Fin 3) (Fin 3) R with entry K0_(i,j) = G0(e_i)(e_j) is IsUnit in the ordinary real matrix ring. CLM.IsInvertible means G0 is the forward map of a continuous linear equivalence E -> E dual. IsUnit K0 means K0 is the value of a multiplicative unit of the matrix ring, hence has a two-sided multiplicative matrix inverse. The conclusion constructs this nonsingularity property from the sole CLM-invertibility premise. No matrix-unit, nonzero-determinant, left-inverse, symmetry, positive-definiteness, curvature, or metric-realization hypothesis is supplied. The first matrix index is the first bilinear argument and the second matrix index is the covector evaluation argument; the statement refers to exactly this coordinate matrix and does not silently transpose or replace it with an unrelated matrix. The declaration has no universe parameters, manifold, spatial point, time, Hoelder exponent, background data, or first/second-jet variable. It asserts algebraic nonsingularity, with no Matrix norm choice or quantitative inverse bound and no scalar derivative, full DeTurck differential, global L, residual, or flow conclusion."
+    }
+  ],
+  "findings": []
+}

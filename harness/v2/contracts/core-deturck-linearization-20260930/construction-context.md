@@ -1,0 +1,13 @@
+# Actual finite-jet DeTurck differential toward core Hamilton existence
+
+Every task helps UniversalHamiltonConvergenceStatement through true general Ricci-flow construction. The metric-jet unit task is consumed immediately by the inverse-entry derivative. That derivative and joint lower smoothness are consumed by the full finite-jet Q/DQ constructor, then coefficient spatial regularity, differentiated tensor covariance and actual bounded L=dt-DQ(g0), signed L/P/R contraction. Core smoothability and universal Hamilton existence remain open.
+
+Metric jet nonsingularity must be constructed from actual G0.IsInvertible, with no symmetry or det/nonzero/unit premise added. The existing inverseEntries_eq_coordinates proof gives the raised-coordinate left inverse N*M=1 via G(G.inverse covector)=covector and basis.sum_repr. Use Matrix.isUnit_iff_isUnit_det + isUnit_det_of_left_inverse, not a circular coordinate-unit assumption.
+
+The inverse-entry task constructs the actual CLM derivative, retaining both inverse factors and all k,l summands. Mathlib hasFDerivAt_ringInverse gives H->-a*H*a; Matrix.nonsing_inv_eq_ringInverse identifies actual Matrix.inv. Keep Matrix.Norms.Operator scoped internally; public scalar derivative has the unchanged Bilin domain norm and real codomain norm. Its metric-matrix unit input is supplied by the independent unit proof.
+
+Joint lower smoothness targets actual Bilin-valued lowerTerm with B,DB,G,J all varying; fixed-background smoothness alone does not supply coefficient spatial regularity. The canonical Jet1 bindings are already verified to retain actual operator norm. Further canonical background map instance pins, if needed, must be proved norm-preserving before a revised type is frozen. No alternative norms or new supplied hypotheses are allowed. Reuse actual finite-dimensional CLM reconstruction and rational expressions from DeTurckLowerJetSmoothness.
+
+The subsequent full differential must include a(G0):dH + Da(G0)[dG]:H0 + Dlower(B,DB,G0,J0)[dG,dJ]. The Da:H0 term is a required zero-order coefficient. The real nonlinear expression is the actual inverseEntries principal contraction plus explicit lowerTerm, not an unconstrained lower chosen from the existential principalIdentity and not Appendix/survey probes or assumed CLM packages. The actual chart-evolution identification follows the existing ricci/lie second-jet identities and cancellation.
+
+Preserve all failed compiler/source attempts and final diffs. Local Codex helpers are not registered Pi/Leanstral runtime Jobs. Workers never full-build, self-accept, merge or alter services. The final theorem and both core statements are frozen.

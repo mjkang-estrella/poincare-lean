@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckInverseEntryDerivative"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry",
+        "lean_type": "∀ (G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (i j : Fin 3), G0.IsInvertible →\nHasFDerivAt (fun G : Poincare.DeTurckPrincipalSecondJet.Bilin => Poincare.DeTurckPrincipalSecondJet.inverseEntries G i j) (Poincare.DeTurckInverseEntryDerivative.inverseEntryDerivative G0 i j) G0",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-linearization-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "84d55caf433685d119ea98a5a8e1c977eb915bd1df3b2609449fa2d9b86c486b",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-linearization-20260930/inverse.readback.json",
+      "report_sha256": "4ecf0722dbfd8632c83873307993e9f76e9bd1a97d7f8852c049ccea6e090129"
+    }
+  }
+}

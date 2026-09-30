@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-linearization-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "84d55caf433685d119ea98a5a8e1c977eb915bd1df3b2609449fa2d9b86c486b",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry",
+      "mathematical_statement": "E is the fixed real three-dimensional Euclidean space ClosedSmoothModel 3, Bilin is E ->L[R] E ->L[R] R, and e_k = basis3 k is the standard Euclidean basis vector for k : Fin 3. For every G0 in Bilin and every matrix-entry indices i,j : Fin 3, assume only G0.IsInvertible, meaning the continuous real-linear map G0 : E -> E dual is the forward map of a continuous linear equivalence. Set K(G)_(k,l) = G(e_k)(e_l). The pinned inverseEntries G is the full ordinary Matrix.inv of this 3 by 3 real coordinate matrix, not entrywise reciprocal or pointwise inversion of a function. Set A0 = inverseEntries G0. Then the scalar function G |-> inverseEntries G i j has an ordinary real Frechet derivative at G0 equal to the actual pinned continuous linear map inverseEntryDerivative G0 i j : Bilin ->L[R] R. The pinned entryCLM k l evaluates a variation H first on e_k and then on e_l, so entryCLM k l H = H(e_k)(e_l). The derivative map is the negative double finite sum over k,l : Fin 3 of (A0_(i,k) * A0_(l,j)) smul entryCLM k l. Consequently, applied to any variation H in Bilin, it is -sum_(k,l) A0_(i,k) * H(e_k)(e_l) * A0_(l,j), the (i,j) entry of -A0 * K(H) * A0. Both inverse factors, all k,l summands, and the minus sign are retained. No symmetry is assumed for G0 or H; positive-definiteness, an actual Riemannian metric, or a realized metric variation is not required. No additional matrix-unit or determinant premise is present in this type. The domain uses the existing Bilin norm from the curried CLM operator-norm structure, the output is the usual real norm, and the stated derivative is a bounded real-linear functional on that same domain. The public scalar derivative does not choose, export, or replace a Matrix norm; a proof may select a Matrix norm internally without changing this assertion. The matrix inverse is a total operation, but the differentiability conclusion is local at invertible G0 and does not assert differentiability at singular matrices, global smoothness, or an inverse bound. The declaration has no universe parameters, manifold, chart point, time, Hoelder exponent, background connection, first-jet or second-jet variable. It supplies the scalar inverse-coefficient variation needed by a later principal-coefficient derivative, but does not itself state the full finite-jet Q/DQ formula, its contraction with a second jet, spatial covariance or coefficient regularity, a global L, a signed residual/contraction, or physical flow existence."
+    }
+  ],
+  "findings": []
+}
