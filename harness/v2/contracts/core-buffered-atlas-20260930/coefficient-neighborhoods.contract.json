@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricCoefficientNeighborhoods"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricCoefficientNeighborhoods.exists_coefficient_neighborhoods",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (ε : M → ℝ), (∀ p, 0 < ε p) → ∃ V : M → Set (Poincare.ClosedSmoothModel 3), (∀ p, IsOpen (V p) ∧ extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p) p ∈ V p ∧ V p ⊆ (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)).target ∧ ∀ z ∈ V p, Filter.Eventually (fun y ↦ Poincare.GeodesicTransport.cutoff (n := 3) (p) y = 1) (nhds (z))) ∧ ∀ p (ξ : Poincare.ClosedSmoothModel 3 → ℝ), tsupport ξ ⊆ V p → ∀ z ∈ tsupport ξ, ∀ a b : Fin 3, |(Poincare.inverseChartPullbackGramMatrixField g0 (p) (z))⁻¹ a b - (Poincare.inverseChartPullbackGramMatrixField g0 (p) (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p) (p)))⁻¹ a b| ≤ ε (p)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "buffered-atlas-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "83f4672ce379e7974e624ff873d0100474243cbda2fa0511835e3f0b5cf5b814",
+      "report_path": "harness/v2/contracts/core-buffered-atlas-20260930/coefficient-neighborhoods.readback.json",
+      "report_sha256": "661950f3cd592613a9db59fa5db78571b4198aad8298e72958128a577fd2509a",
+      "verdict": "approved"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "imports": [
+    "Poincare.Global.CenteredCoordinateNeighborhoodShrinking"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking",
+      "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ (p : M) (V : Set (Poincare.ClosedSmoothModel 3)), IsOpen V → extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p) p ∈ V → ∃ U : Set M, IsOpen U ∧ p ∈ U ∧ closure U ⊆ (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)).source ∧ IsCompact ((extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)) '' closure U) ∧ (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p)) '' closure U ⊆ V",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "0848497cd303eb3378139c2cac37fad917dc1f19b7b64ea815525d2ace0db214"
+}

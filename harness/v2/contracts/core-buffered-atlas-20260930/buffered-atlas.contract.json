@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.MetricAdaptedBufferedAtlas"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (g0 : Poincare.ClosedSmoothRiemannianMetric 3 M) (ε : M → ℝ), (∀ p, 0 < ε p) → ∃ A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M, ∃ ψ ξ : Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ, ∀ k, ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ψ k) ∧ HasCompactSupport (ψ k) ∧ (∀ z ∈ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A k, Filter.Eventually (fun y ↦ ψ k y = 1) (nhds z)) ∧ (∀ z, ψ k z ∈ Set.Icc 0 1) ∧ ContDiff ℝ ((⊤ : ENat) : WithTop ENat) (ξ k) ∧ HasCompactSupport (ξ k) ∧ (∀ z, ξ k z ∈ Set.Icc 0 1) ∧ (∀ z ∈ tsupport (ψ k), ξ k z = 1) ∧ tsupport (ξ k) ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).target ∧ (∀ z ∈ tsupport (ξ k), Filter.Eventually (fun y ↦ Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds (z))) ∧ (∀ z ∈ tsupport (ξ k), ∀ a b : Fin 3, |(Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor k) (z))⁻¹ a b - (Poincare.inverseChartPullbackGramMatrixField g0 (A.cover.anchor k) (extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (A.cover.anchor k) (A.cover.anchor k)))⁻¹ a b| ≤ ε (A.cover.anchor k))",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/HausdorffInverseChartGramContinuity.lean",
+        "sha256": "6905d06427b2299805800a11c706843ba5bbc5eec4b9838a67e47c9811f5a7cf"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "buffered-atlas-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "630438246c81d196a00388d04eb3455e8ade267c3cea14fa0cc38ac1d2f8a050",
+      "report_path": "harness/v2/contracts/core-buffered-atlas-20260930/buffered-atlas.readback.json",
+      "report_sha256": "180b6b6ac905e1ac63f21b45694c3ae70881ef5f9b0808f7baab347e93a03a82",
+      "verdict": "approved"
+    }
+  }
+}

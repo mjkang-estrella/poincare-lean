@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "buffered-atlas-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "83f4672ce379e7974e624ff873d0100474243cbda2fa0511835e3f0b5cf5b814",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.MetricCoefficientNeighborhoods.exists_coefficient_neighborhoods",
+      "mathematical_statement": "For every universe-u compact Hausdorff smooth manifold M charted over E = EuclideanSpace real (Fin 3), every given smooth positive-definite Riemannian metric g0, and every function epsilon: M -> real that is strictly positive at every point, there exists a family p -> V(p) of open subsets of E. For each p, V(p) contains c_p(p), lies in the genuine target of c_p, and every z in V(p) has an ambient-coordinate neighborhood on which GeodesicTransport.cutoff p is identically 1. After this family is chosen, for every p and every real-valued function xi on E, without any regularity or compact-support assumption on xi, if tsupport xi is contained in V(p), then every z in tsupport xi and every pair a,b in Fin 3 obey abs((G_p(z) inverse)[a,b] - (G_p(c_p(p)) inverse)[a,b]) <= epsilon(p). Here G_p(z) is inverseChartPullbackGramMatrixField g0 p z: the covariant Gram matrix obtained by pulling g0 back through the inverse extended-chart derivative and evaluating on the Euclidean basis. The superscript inverse applies to the whole matrix through Mathlib Matrix.inv, the determinant reciprocal times the adjugate, not to each scalar entry. These matrices are positive definite and hence nonsingular on the chart target where all compared points lie. Epsilon need not be continuous and need not have a global positive lower bound. The neighborhood-one requirement is a germ at every tested point, stronger than pointwise cutoff equality. No finite atlas, curvature condition, evolution, or analytic operator is assumed or constructed."
+    }
+  ],
+  "findings": []
+}

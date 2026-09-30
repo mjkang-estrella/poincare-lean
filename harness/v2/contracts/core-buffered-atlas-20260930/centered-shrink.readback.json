@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "buffered-atlas-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "0848497cd303eb3378139c2cac37fad917dc1f19b7b64ea815525d2ace0db214",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.CenteredCoordinateNeighborhoodShrinking.exists_centered_chart_shrinking",
+      "mathematical_statement": "For every universe-u type M with a topology, a Hausdorff instance, a compact-space instance, and a charted-space structure with model E = EuclideanSpace real (Fin 3), take any p in M and any open subset V of E containing c_p(p), where c_p is the extended chart at p for the self model with corners. There exists an open subset U of M containing p such that closure U lies in the source of c_p, the coordinate image c_p '' closure U is compact in E, and that entire coordinate image lies in V. Here the coordinate image means c_p '' closure U, not a preimage or the closure of c_p '' U. No smooth-manifold instance, metric, finite atlas, curvature hypothesis, or analytic operator is supplied or concluded. This is a centered topological shrinking assertion with explicit compactness of the image of the closed manifold region."
+    }
+  ],
+  "findings": []
+}

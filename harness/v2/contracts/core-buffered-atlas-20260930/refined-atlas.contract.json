@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.RefinedFiniteAtlasExistence"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.RefinedFiniteAtlasExistence.exists_refined_atlasData",
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], ∀ [IsManifold (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) ((⊤ : ENat) : WithTop ENat) M], ∀ (V : M → Set (Poincare.ClosedSmoothModel 3)), (∀ p, IsOpen (V p)) → (∀ p, extChartAt (modelWithCornersSelf ℝ (Poincare.ClosedSmoothModel 3)) (p) p ∈ V p) → ∃ A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M, (∀ i, A.cover.anchor i ∈ A.region i) ∧ ∀ i, Poincare.FiniteAtlasParabolicTensorSpace.chart A i '' closure (A.region i) ⊆ V (A.cover.anchor i)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "buffered-atlas-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "54294863b35a5b777995e47bf354933cdae194de83277925e617d86588e769b6",
+      "report_path": "harness/v2/contracts/core-buffered-atlas-20260930/refined-atlas.readback.json",
+      "report_sha256": "389e1f83fa483d2dff2b14fe210dff95b94aad8b0a25e87d0f95150909da5209",
+      "verdict": "approved"
+    }
+  }
+}

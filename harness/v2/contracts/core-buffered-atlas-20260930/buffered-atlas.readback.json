@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "buffered-atlas-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "630438246c81d196a00388d04eb3455e8ade267c3cea14fa0cc38ac1d2f8a050",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.MetricAdaptedBufferedAtlas.exists_metric_adapted_buffered_atlas",
+      "mathematical_statement": "For every universe-u compact Hausdorff smooth manifold M charted over E = EuclideanSpace real (Fin 3), every given smooth positive-definite Riemannian metric g0, and every pointwise strictly positive epsilon: M -> real, there exist an AtlasData A and two families psi and xi of real-valued functions on E, indexed by Fin A.cover.chartCount. Thus A includes finitely many genuine extended charts with covering sources, open regions covering M, closures contained in the corresponding chart sources, compact images of those closures, and a smooth nonnegative partition of unity whose topological supports lie in those regions. For every index k, psi_k is smooth on all of E, has compact topological support, takes values in [0,1], and is identically 1 on some ambient-coordinate neighborhood of each point of coordSupport A k. That coordinate support is the image under chart c_k of tsupport(A.partition k), and is compact by the AtlasData fields. The function xi_k is smooth on all of E, has compact topological support, takes values in [0,1], and equals 1 pointwise on tsupport psi_k. Its topological support lies in the genuine target of c_k. At every point of tsupport xi_k, GeodesicTransport.cutoff at A.cover.anchor k is identically 1 on a neighborhood. At every such point z, and for every a,b in Fin 3, abs((G_k(z) inverse)[a,b] - (G_k(c_k(A.cover.anchor k)) inverse)[a,b]) <= epsilon(A.cover.anchor k), where G_k is the covariant pullback Gram matrix of g0 in that inverse chart. Inverse means the whole-matrix nonsingular inverse, not entrywise reciprocation, and the support restriction keeps the comparison inside the chart target where G_k is positive definite. The xi-one condition on tsupport psi is only pointwise; a xi-one neighborhood there is not an explicit conclusion. Anchor membership in its own region is also not an extra conclusion of this literal type. No preconstructed finite atlas, cutoff family, curvature restriction, flow, parametrix, operator bound, or time regularity is supplied. The theorem would construct these local spatial atlas and cutoff data for the given metric, without asserting Hamilton convergence, general flow existence, or topological smoothability."
+    }
+  ],
+  "findings": []
+}

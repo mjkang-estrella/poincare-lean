@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "buffered-atlas-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "54294863b35a5b777995e47bf354933cdae194de83277925e617d86588e769b6",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.RefinedFiniteAtlasExistence.exists_refined_atlasData",
+      "mathematical_statement": "For every universe-u compact Hausdorff type M charted over E = EuclideanSpace real (Fin 3) and smooth for the self model with corners, and every family p -> V(p) of open coordinate subsets with c_p(p) in V(p), there exists an AtlasData A on M. Its cover contains finitely many anchors indexed by Fin A.cover.chartCount, and the genuine extended-chart sources at those anchors cover M. Its regions U_i are open, their union is all of M, closure U_i is contained in the source of the chart c_i at the corresponding anchor, and c_i '' closure U_i is compact. A also contains a smooth nonnegative partition of unity on M whose topological supports are contained in the corresponding U_i. In addition to those AtlasData fields, each anchor belongs to its own region and c_i '' closure U_i is contained in V evaluated at that anchor. The family V is chosen before A, and no preexisting finite atlas or partition is supplied. The assertion does not impose connectedness, a metric, favorable curvature, or an operator estimate. The coordinate support defined by this A is c_i '' tsupport(A.partition i), so it has the compactness and genuine-target containment supplied by the stated AtlasData fields."
+    }
+  ],
+  "findings": []
+}
