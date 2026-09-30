@@ -85,3 +85,18 @@ include helpers. Compiler failures, fixed preflight syntax, final diffs,
 worker and independent gates and joint application sources/logs are retained
 append-only. Local Codex helpers are not registered Pi/Leanstral Jobs. No model
 server, GPU process or dirty/unmerged historical worktree was changed.
+
+## Sealed integration checkpoint
+
+Clean checked source: `d7fa0fa86cd8fc094d0fddf25269d183e26d42df`.
+
+Source SHA256: `b94aa1f9fed96aca573fbe546b356254d5fa252fffa0638985e019c0f756e38f`.
+
+Full build and every integration audit passed. Completion exited 1 only
+for the absent reserved theorem and the failed exact final-declaration probe.
+Poincare.poincare_conjecture : Poincare.PoincareConjectureStatement remains
+absent. Both universal cores remain open.
+
+All compiler attempts and checkpoint artifacts are sealed in the adjacent
+evidence archive. Original/gzip hashes were independently checked against
+retained originals. Final evidence/status changes preserve the checked source.
