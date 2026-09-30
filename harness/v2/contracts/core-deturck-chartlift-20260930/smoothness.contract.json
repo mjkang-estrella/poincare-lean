@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckChartLiftSmoothness"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckChartLift.chartLift_contMDiff",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace Poincare.DeTurckChartLift.E M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(anchor : M) (F : Poincare.DeTurckChartLift.E → Poincare.DeTurckChartLift.Bilin),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F → HasCompactSupport F →\ntsupport F ⊆ (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target →\nContMDiff (Poincare.closedSmoothModelWithCorners 3)\n ((Poincare.closedSmoothModelWithCorners 3).prod (modelWithCornersSelf ℝ Poincare.DeTurckChartLift.Bilin))\n ((⊤ : ENat) : WithTop ENat)\n (fun x : M => Bundle.TotalSpace.mk' Poincare.DeTurckChartLift.Bilin x (Poincare.DeTurckChartLift.chartLift anchor F x))",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/DeTurckChartLiftDefinitions.lean",
+        "sha256": "d5c2de34fc67b5fbc25001524cd1d711c8c1e230c5ed37853aed2405cc81d804"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricLocalPullback.lean",
+        "sha256": "43d4c85596102b2e06e4688ddee19b1d5dd830aa4e5c83409cc5dad4158727bd"
+      },
+      {
+        "path": "Poincare/Global/CompactCoefficientEllipticity.lean",
+        "sha256": "1bc0177f10b1d866d78ef36692f1e0641bdfbbd766ace80c83ee99c5b6226e1b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-chartlift-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "5fab86beb5e2cd4449de0e171d6fdd79d3fbf036064fef0be77a2f952481b44a",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/smoothness.readback.json",
+      "report_sha256": "73805cec99900e22c9305bdec8b1f47617c1b198404154420780d556c0cb8c21"
+    }
+  }
+}
