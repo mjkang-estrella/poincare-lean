@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckPartialCoefficientSmoothness"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckPartialCoefficientSmoothness.contDiffAt_partialLower",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\nletI : NormedAddCommGroup (Poincare.DeTurckCoefficients.MetricJet →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedAddCommGroup\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckCoefficients.MetricJet) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckCoefficients.MetricJet →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedSpace\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckCoefficients.MetricJet) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (B : Poincare.DeTurckCoefficients.Background) (DB : Poincare.DeTurckCoefficients.BackgroundDerivative) (G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (J0 : Poincare.DeTurckPrincipalSecondJet.Jet1),\nG0.IsInvertible → ContDiffAt ℝ ((⊤ : ENat) : WithTop ENat)\n Poincare.DeTurckCoefficients.partialLower ((B,DB),(G0,J0))",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+        "sha256": "1afc193c3d4223adb004340618b58f0f705d0b6abb007488568102460a457a11"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-coefficient-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "47391a34beb6bc9e56f9f0c4cf603533f3b1fbfc452d7afdefe567e2ec795562",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/partial-smooth.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}

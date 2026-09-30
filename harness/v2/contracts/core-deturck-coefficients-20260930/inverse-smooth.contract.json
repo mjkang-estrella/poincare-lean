@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckInverseEntrySmoothness"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckInverseEntrySmoothness.contDiffAt_inverseEntry",
+        "lean_type": "∀ (G0 : Poincare.DeTurckPrincipalSecondJet.Bilin) (i j : Fin 3), G0.IsInvertible →\nContDiffAt ℝ ((⊤ : ENat) : WithTop ENat) (fun G : Poincare.DeTurckPrincipalSecondJet.Bilin => Poincare.DeTurckPrincipalSecondJet.inverseEntries G i j) G0",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-coefficient-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "43bfe7b1c24ce1618c1a900669221472cf2f62be25ec820e7a637bb629cfa63a",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/inverse-smooth.readback.json",
+      "report_sha256": "83bcf6a0ef58bb32160c4d67c51174710b8dce2544d67e110361ec966daa8f23"
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckActualSpatialCoefficients"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckActualSpatialCoefficients.actual_spatial_coefficients",
+        "lean_type": "letI : NormedAddCommGroup Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedAddCommGroup\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckPrincipalSecondJet.Jet1 :=\n  ContinuousLinearMap.toNormedSpace\n    (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Bilin)\n    (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedAddCommGroup (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E) := ContinuousLinearMap.toNormedSpace (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := (Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E →L[ℝ] Poincare.DeTurckPrincipalSecondJet.E)) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedAddCommGroup\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Jet2 := ContinuousLinearMap.toNormedSpace\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.E) (F := Poincare.DeTurckPrincipalSecondJet.Jet1) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedAddCommGroup;\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.normedSpace;\nletI : NormedAddCommGroup Poincare.DeTurckJetLinearization.Variables := Prod.normedAddCommGroup;\nletI : NormedSpace ℝ Poincare.DeTurckJetLinearization.Variables := Prod.normedSpace;\nletI : AddCommMonoid (Poincare.DeTurckPrincipalSecondJet.Bilin × Poincare.DeTurckPrincipalSecondJet.Jet1) := Prod.instAddCommMonoid;\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Bilin →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedAddCommGroup\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.Bilin) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.Bilin →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedSpace\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.Bilin) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\nletI : NormedAddCommGroup (Poincare.DeTurckPrincipalSecondJet.Jet1 →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedAddCommGroup\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.Jet1) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ);\nletI : NormedSpace ℝ (Poincare.DeTurckPrincipalSecondJet.Jet1 →L[ℝ] Poincare.DeTurckPrincipalSecondJet.Bilin) := ContinuousLinearMap.toNormedSpace\n (𝕜 := ℝ) (𝕜₂ := ℝ) (E := Poincare.DeTurckPrincipalSecondJet.Jet1) (F := Poincare.DeTurckPrincipalSecondJet.Bilin) (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ);\n∀ (M : Type u) [TopologicalSpace M] [T2Space M]\n[ChartedSpace (Poincare.DeTurckPrincipalSecondJet.E) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(g0 bg : Poincare.ClosedSmoothRiemannianMetric 3 M) (anchor : M),\nlet G0 := _root_.CovariantDerivative.chartMetric g0.inner anchor\nlet B := Poincare.GeodesicTransport.chartChristoffelField bg anchor\nlet U := (extChartAt (Poincare.closedSmoothModelWithCorners 3) anchor).target ∩\n (fun z : Poincare.DeTurckPrincipalSecondJet.E => Filter.Eventually (fun y => Poincare.GeodesicTransport.cutoff (n := 3) anchor y = 1) (nhds z))\nIsOpen U ∧ (∀ z ∈ U, (G0 z).IsInvertible) ∧\n(∀ i j : Fin 3, ContDiffOn ℝ ((⊤ : ENat) : WithTop ENat) (fun z => Poincare.DeTurckPrincipalSecondJet.inverseEntries (G0 z) i j) U) ∧\nContDiffOn ℝ ((⊤ : ENat) : WithTop ENat) (fun z => Poincare.DeTurckSpatialCoefficients.zeroOrder (B z) (fderiv ℝ B z) (G0 z) (fderiv ℝ G0 z) (fderiv ℝ (fderiv ℝ G0) z)) U ∧\nContDiffOn ℝ ((⊤ : ENat) : WithTop ENat) (fun z => Poincare.DeTurckSpatialCoefficients.firstOrder (B z) (fderiv ℝ B z) (G0 z) (fderiv ℝ G0 z)) U ∧\n∀ z ∈ U, ∀ h : Poincare.DeTurckJetLinearization.Variables,\nPoincare.DeTurckJetLinearization.differential (B z) (fderiv ℝ B z) (G0 z) (fderiv ℝ G0 z)\n (fderiv ℝ (fderiv ℝ G0) z) h =\nPoincare.DeTurckJetLinearization.principal (G0 z) h.2 + Poincare.DeTurckSpatialCoefficients.zeroOrder (B z) (fderiv ℝ B z) (G0 z) (fderiv ℝ G0 z) (fderiv ℝ (fderiv ℝ G0) z) h.1.1 + Poincare.DeTurckSpatialCoefficients.firstOrder (B z) (fderiv ℝ B z) (G0 z) (fderiv ℝ G0 z) h.1.2",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/ChartTransport.lean",
+        "sha256": "ff55eed27be5e91a048ccc09d4bbb502e13177e0f15be074bb158506404a86dd"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalIdentity.lean",
+        "sha256": "7afc1d7d2a65d3b401216755986531c6c4e4161cc98d943f884ce264a063e641"
+      },
+      {
+        "path": "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+        "sha256": "0e6e91b0793e8774a7a7abcb227dd80ac0c04810ea9def61b6a7e3c6d04f5516"
+      },
+      {
+        "path": "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+        "sha256": "ced671cc86a9b96a69845b2aee12124fbea5fe7f1ebc4ae6ce847b049e00993a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+        "sha256": "1afc193c3d4223adb004340618b58f0f705d0b6abb007488568102460a457a11"
+      },
+      {
+        "path": "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+        "sha256": "4e3c86cc24337bd3c130d24db1a80b47e691ab36f9ad0066c539402d0f04b094"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-coefficient-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "d46370e31b50ffad76f77afff7e11147201a4648288a62a9bc9c843dec10ad5b",
+      "verdict": "pending",
+      "report_path": "harness/v2/contracts/core-deturck-coefficients-20260930/actual.readback.json",
+      "report_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  }
+}

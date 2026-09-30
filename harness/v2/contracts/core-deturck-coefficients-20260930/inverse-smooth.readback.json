@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-coefficient-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "43bfe7b1c24ce1618c1a900669221472cf2f62be25ec820e7a637bb629cfa63a",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckInverseEntrySmoothness.contDiffAt_inverseEntry",
+      "mathematical_statement": "E is the fixed real three-dimensional Euclidean space ClosedSmoothModel 3 and Bilin is E ->L[R] E ->L[R] R. For every G0 in Bilin and every i,j : Fin 3, assume only G0.IsInvertible, meaning G0 : E -> E dual is the forward map of a continuous real-linear equivalence. Let e_k=basis3 k be the standard Euclidean basis and let K(G)_(k,l)=G(e_k)(e_l). The pinned inverseEntries G is the actual full Matrix.inv of K(G), verified as the matrix inverse rather than entrywise reciprocal or pointwise inverse of a function. Then the scalar function G |-> inverseEntries G i j is C-infinity at G0 in the existing Bilin normed space, with values in the usual real normed space. C-infinity is ContDiffAt R at the ENat top injected into WithTop ENat, rather than the outer top regularity value. The domain norm is the original curried CLM operator norm. No Matrix norm is chosen or exported by this public scalar assertion; matrix or inverse-operator norms used internally in a proof do not replace its Bilin-to-real structures. There is no symmetry, positive-definiteness, realized metric, determinant, coordinate-unit, or extra smoothness premise. The assertion is local at each CLM-invertible G0 and does not claim global smoothness across singular bilinear forms or a quantitative inverse bound. There are no universe parameters, background maps, manifold, chart point, time, Hoelder exponent, first/second-jet field, or supplied operator package. The statement gives scalar inverse-coefficient smoothness only; it does not itself state its Frechet derivative formula, construct actual spatial coefficient fields, establish covariance or global bounds, define real global L, or supply residual/contraction or physical flow."
+    }
+  ],
+  "findings": []
+}
