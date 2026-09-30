@@ -1,5 +1,38 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed full linearized covariance
+
+The selected core remains UniversalHamiltonConvergenceStatement. Neither
+universal Hamilton existence nor compatible smoothability is discharged.
+The final Poincare proof is still the ultimate goal; no target or norm changed.
+
+DeTurckParameterJet proves actual parameter differentiation of value/D/D2
+from a common open-domain affine identity, using neighborhood derivative
+transport. DeTurckPullbackTwoJet proves exact matched2jet transfer under
+actual tensor pullback in both slots, retaining coordinate derivatives
+through D3phi. No smooth-density or germ-equality premise is used.
+
+DeTurckActualEvolutionDerivative identifies actual geometric -2Ric+Lie
+with the full finite-jet expression and differentiates it in every anchor
+from smooth global H and a common all-fiber affine inner germ. The full
+inverse-variation term against D2g0 is retained. ConstructedCovariance now
+constructs gt from chartLift/metricVariation internally, differentiates
+nonlinear covariance twice and proves whole Bilin linearized covariance
+for the constructed smooth compact symmetric lift, on true overlap with
+both cutoff-one germs. Root independently accepted the scoped exact gates.
+The actual-evolution audit notation-scope failure and repair are preserved.
+
+First action: freeze and prove full DQ covariance for an arbitrary symmetric
+C2 germ q at chart2(phi z), as stated in
+harness/reports/core-deturck-covariance-20260930.md. Use constructed compact
+realization/lift covariance and pullback_twoJet_congr; derive actual chart
+transition C3/Jacobian/neighborhood identities instead of supplying them.
+The subsequent consumer is actual global L/R with the original Graph norms
+and signed id-R contraction. This C2 covariance generalization, global L/R,
+nonlinear inversion/ordinary initial regularity, physical flow and universal
+continuation/surgery/favorable-flow/finite-energy/limit production remain
+open. Existing verified producers and all failed work/evidence are retained.
+
 ## 2026-09-30 Constructed genuine smooth metric variations
 
 The complete proof goal remains active. Both universal smoothability and

@@ -1024,3 +1024,11 @@ import Poincare.Dependencies
 import Poincare.DependencyProjections
 import Poincare.DependencyCrosswalk
 import Poincare.CompletionTarget
+
+import Poincare.Global.DeTurckParameterJet
+
+import Poincare.Global.DeTurckPullbackTwoJet
+
+import Poincare.Global.DeTurckActualEvolutionDerivative
+
+import Poincare.Global.DeTurckConstructedCovariance

@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-constructed-covariance",
   "revision": 1,
-  "status": "proposed",
+  "status": "accepted",
   "base_commit": "3bd6504391f785d0efc7e627e747d6f84362eb38",
   "objective": {
     "title": "Construct full linearized covariance from actual metric variations",
@@ -203,5 +203,6 @@
       "report_path": "harness/v2/contracts/core-deturck-covariance-20260930/constructed-covariance.readback.json",
       "report_sha256": "63b660a1a6a4cd468f3f120071cb7c5263d8d4b76416edca7c8e79fc802a1f15"
     }
-  }
+  },
+  "accepted_commit": "dc0ad82803e2872750904f051677fa4eb2f37816"
 }
