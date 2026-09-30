@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-tensor-values",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "2e570df57c50115609daac68aa938770afcb7d98",
   "objective": {
     "title": "Construct actual tensor values toward universal Hamilton existence",
@@ -144,5 +144,6 @@
       "report_path": "harness/v2/contracts/core-tensor-transport-20260930/values.readback.json",
       "report_sha256": "c10c29ac963a756fcc9f46f710ae9527545849d51a2d58b2c70ef059846a1f4a"
     }
-  }
+  },
+  "accepted_commit": "fe6abd7a100be35694b67407946dc2dfcafbc51e"
 }
