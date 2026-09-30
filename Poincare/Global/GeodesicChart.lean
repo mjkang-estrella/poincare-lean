@@ -1,3 +1,4 @@
+import Mathlib.Analysis.ODE.ExistUnique
 import Mathlib.Analysis.ODE.Gronwall
 import Mathlib.Analysis.ODE.PicardLindelof
 
@@ -41,7 +42,8 @@ theorem contDiffAt_geodesicFlowField
     hΓp.clm_apply hv
   have hΓpvv : ContDiffAt ℝ 1 (fun p : E × E ↦ Γ p.1 p.2 p.2) p₀ :=
     hΓpv.clm_apply hv
-  simpa [geodesicFlowField] using hv.prodMk hΓpvv.neg
+  change ContDiffAt ℝ 1 (fun p : E × E ↦ (p.2, -Γ p.1 p.2 p.2)) p₀
+  exact hv.prodMk hΓpvv.neg
 
 /-- Global `C¹` regularity of the Christoffel field gives global `C¹` regularity of the flow. -/
 theorem contDiff_geodesicFlowField
