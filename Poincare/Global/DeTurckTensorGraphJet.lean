@@ -7,12 +7,12 @@ open scoped BigOperators
 namespace Poincare.DeTurckCoupledForcing
 open DeTurckPrincipalSecondJet
 
-local instance : IsBoundedSMul ℝ Bilin :=
+local instance tensorGraphJetBoundedSMul : IsBoundedSMul ℝ Bilin :=
   .of_norm_smul_le (fun c A => ContinuousLinearMap.opNorm_smul_le c A)
-local instance : NormedAddCommGroup Jet1 :=
+local instance tensorGraphJetNormedAddCommGroup : NormedAddCommGroup Jet1 :=
   ContinuousLinearMap.toNormedAddCommGroup
     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := E) (F := Bilin) (σ₁₂ := RingHom.id ℝ)
-local instance : NormedSpace ℝ Jet1 :=
+local instance tensorGraphJetNormedSpace : NormedSpace ℝ Jet1 :=
   ContinuousLinearMap.toNormedSpace
     (𝕜 := ℝ) (𝕜₂ := ℝ) (E := E) (F := Bilin)
     (σ₁₂ := RingHom.id ℝ) (𝕜' := ℝ)
