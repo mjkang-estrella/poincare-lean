@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-dq-inverse",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "f993ae914f2c705a1e89e12923860772e021f32c",
+  "status": "ready",
+  "base_commit": "8ac9c394f8e04651e2e98c0966746b6a9f82fc69",
   "objective": {
     "title": "Construct actual DeTurck inverse coefficient toward Hamilton existence",
     "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via true general Ricci flow. Subsequent proof: full finite-jet Q/DQ identification retaining Da(G0)[h]:H0, then joint spatial coefficient regularity, differentiated covariance, true bounded L=dt-DQ(g0) and signed global L/P/R contraction. Construct actual coefficient/derivative inputs rather than assume operator or limit packages.",
@@ -52,7 +52,7 @@
       "Poincare.DeTurckInverseEntryDerivative.hasFDerivAt_inverseEntry"
     ],
     "depends_on": [
-      "core-input-20260930-dq-unit"
+      "core-input-20260930-dq-unit-matrix"
     ]
   },
   "acceptance": {
