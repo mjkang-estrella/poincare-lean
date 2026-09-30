@@ -2,8 +2,8 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-global-lower-smooth",
   "revision": 1,
-  "status": "proposed",
-  "base_commit": "b3ae48a518c9679aa5c21bfbf18998e316491742",
+  "status": "ready",
+  "base_commit": "b34ec6e855538f4cb972d28507cce64553309530",
   "objective": {
     "title": "Construct actual global parametrix lower-smooth for Hamilton inputs",
     "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement through genuine general Ricci flow. Subsequent proof: explicit finite-jet derivative of actual DeTurck Q, then true L=dt-DQ(g0), covariance and bounded global L/P/R contraction. Prove actual lowerTerm smoothness, not an unspecified existential remainder or supplied operator package.",
