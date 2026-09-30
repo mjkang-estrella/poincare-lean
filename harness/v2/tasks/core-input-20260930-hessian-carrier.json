@@ -1,0 +1,135 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-hessian-carrier",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "763b79e7de7fe8f3c6315d5e8bcf483010cdde38",
+  "objective": {
+    "title": "hessian-carrier for actual nonlinear Graph transport",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via genuine general Ricci-flow inputs. ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback uses the actual dF carrier constructed from compact smooth F. Construct actual operators with the original norm/derivative fields; no supplied flow, transport package, bound or recognition premise may replace construction.",
+    "deliverables": [
+      "Poincare.ParabolicHessianCarrierPullback.exists_hessian_carrier_pullback"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/ParabolicHessianCarrierPullback.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-graph-pullback-20260930/hessian-carrier.readback.json",
+      "harness/v2/contracts/core-graph-pullback-20260930/construction-context.md",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicCutoffCommutator.lean",
+      "Poincare/Global/ParabolicSpatialHolderPullback.lean"
+    ],
+    "symbols": [
+      "Poincare.ParabolicHessianCarrierPullback.exists_hessian_carrier_pullback"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHessianCarrierPullback.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/ParabolicHessianCarrierPullback.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-graph-pullback-20260930/hessian-carrier.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.ParabolicHessianCarrierPullback.exists_hessian_carrier_pullback"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicHessianCarrierPullback"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicHessianCarrierPullback.exists_hessian_carrier_pullback",
+        "lean_type": "\u2203 C : \u211d, 0 \u2264 C \u2227 \u2200 (\u03b1 T : \u211d) (dF : Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3))),\nletI : NormedSpace \u211d (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) := Submodule.normedSpace (Poincare.ParabolicHolder.holderSubmodule (E := (Poincare.ClosedSmoothModel 3)) (F := ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) \u03b1 T); \u2203 P : (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)) \u2192L[\u211d] (Poincare.ParabolicHolder.Y (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T ((Poincare.ClosedSmoothModel 3) \u2192L[\u211d] (Poincare.ClosedSmoothModel 3) \u2192L[\u211d] \u211d)), \u2016P\u2016 \u2264 C * \u2016dF\u2016 ^ 2 \u2227\n\u2200 B p (v w : (Poincare.ClosedSmoothModel 3)), P B p v w = B p (dF p v) (dF p w)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "graph-pullback-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "1723720c37c5bc43c3938a4714091237ad43df2cf2af4ad104cf9afec219f32f",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-graph-pullback-20260930/hessian-carrier.readback.json",
+      "report_sha256": "ae14f877e103450253806e799a10994729cbc12fc112e2249dde4592ce90fa13"
+    }
+  }
+}

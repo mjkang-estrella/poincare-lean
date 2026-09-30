@@ -1,0 +1,138 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-graph-pullback",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "763b79e7de7fe8f3c6315d5e8bcf483010cdde38",
+  "objective": {
+    "title": "graph-pullback for actual nonlinear Graph transport",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement via genuine general Ricci-flow inputs. Bounded destination-only tensor Graph transport into X_M, then genuine global DeTurck L/P/R and physical Ricci flow. Construct actual operators with the original norm/derivative fields; no supplied flow, transport package, bound or recognition premise may replace construction.",
+    "deliverables": [
+      "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/ParabolicSpatialGraphPullback.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-graph-pullback-20260930/graph-pullback.readback.json",
+      "harness/v2/contracts/core-graph-pullback-20260930/construction-context.md",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicCutoffCommutator.lean",
+      "Poincare/Global/ParabolicSpatialHolderPullback.lean"
+    ],
+    "symbols": [
+      "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback"
+    ],
+    "depends_on": [
+      "core-input-20260930-graph-chain-rule",
+      "core-input-20260930-hessian-carrier"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicSpatialGraphPullback.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/ParabolicSpatialGraphPullback.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-graph-pullback-20260930/graph-pullback.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicSpatialGraphPullback"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicSpatialGraphPullback.exists_spatial_Graph_pullback",
+        "lean_type": "\u2200 (F : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) F \u2192 HasCompactSupport F \u2192\n\u2200 (\u03b1 : \u211d), 0 < \u03b1 \u2192 \u03b1 < 1 \u2192 \u2203 C : \u211d, 0 \u2264 C \u2227 \u2200 T \u2208 Set.Ioc (0 : \u211d) 1,\n\u2203 Q : (Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T) \u2192L[\u211d] (Poincare.ParabolicSolutionGraph.Graph (E := (Poincare.ClosedSmoothModel 3)) \u03b1 T), \u2016Q\u2016 \u2264 C \u2227 \u2200 G p,\n (Q G).u p = G.u (p.1, F p.2) \u2227\n (Q G).ut p = G.ut (p.1, F p.2) \u2227\n (\u2200 v : (Poincare.ClosedSmoothModel 3), (Q G).du p v = G.du (p.1, F p.2) (fderiv \u211d F p.2 v)) \u2227\n (\u2200 v w : (Poincare.ClosedSmoothModel 3), (Q G).ddu p v w =\n   G.ddu (p.1, F p.2) (fderiv \u211d F p.2 v) (fderiv \u211d F p.2 w) +\n   G.du (p.1, F p.2) (fderiv \u211d (fderiv \u211d F) p.2 v w))",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "graph-pullback-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "52ca233c33403e13cdebc93ff464783f4637b2611705550dc71c5dfce80d5181",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-graph-pullback-20260930/graph-pullback.readback.json",
+      "report_sha256": "21e409e1c6f1dfa909b5c3d7a641aa8011e5c14bf96471e36e2925cc6f230126"
+    }
+  }
+}

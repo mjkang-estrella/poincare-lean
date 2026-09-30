@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-graph-chain-rule",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "b6798a4cbeec42132da1a4fff8ce83f167add31e",
   "objective": {
     "title": "Prove the actual nonlinear covector chain rule",
@@ -128,5 +128,6 @@
       "report_path": "harness/v2/contracts/core-graph-pullback-20260930/chain-rule.readback.json",
       "report_sha256": "9b409449e28efabcc3e9938deb32777d35821646b2841fd98ee1c10d938f492b"
     }
-  }
+  },
+  "accepted_commit": "763b79e7de7fe8f3c6315d5e8bcf483010cdde38"
 }
