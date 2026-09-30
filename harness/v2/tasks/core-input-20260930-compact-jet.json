@@ -1,0 +1,171 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-compact-jet",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "1d0160e1daef078ad09cd06553a36e55e24a9ab8",
+  "objective": {
+    "title": "Construct actual compact coefficients and coupled forcing: jet",
+    "statement": "Core helped: UniversalHamiltonConvergenceStatement. Subsequent consumer: actual coupled lower forcing Z(h)+F(Dh) and true L=dt-DQ(g0). Identify the reconstructed tensorJet as the ordinary spatial derivative of the same tensorValue from actual Graph certificates, with no new alpha/time/symmetry/support/norm premise.",
+    "deliverables": [
+      "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/DeTurckTensorGraphJet.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+      "Poincare/Global/GlobalParametrixAssemblyDefinitions.lean",
+      "Poincare/Global/DeTurckPrincipalIdentity.lean",
+      "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+      "Poincare/Global/DeTurckInverseEntryDerivativeDefinitions.lean",
+      "Poincare/Global/DeTurckJetLinearizationDefinitions.lean",
+      "Poincare/Global/DeTurckCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
+      "harness/v2/contracts/core-deturck-compact-20260930/context.md",
+      "harness/reports/core-deturck-coefficients-20260930.md",
+      "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+      "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+      "Poincare/Global/DeTurckActualSpatialCoefficients.lean",
+      "Poincare/Global/DeTurckTensorBasisReconstruction.lean",
+      "Poincare/Global/ParabolicCutoffCommutator.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "harness/v2/contracts/core-deturck-compact-20260930/jet-context.md"
+    ],
+    "symbols": [
+      "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/DeTurckTensorGraphJet.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/DeTurckTensorGraphJet.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-deturck-compact-20260930/jet.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.DeTurckTensorGraphJet"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.DeTurckCoupledForcing.tensorJet_hasFDerivAt",
+        "lean_type": "∀ (α T : ℝ) (W : Poincare.DeTurckCoupledForcing.Inputs α T) (t : ℝ)\n(z : Poincare.DeTurckPrincipalSecondJet.E), t ∈ Set.Icc 0 T →\nHasFDerivAt (fun y : Poincare.DeTurckPrincipalSecondJet.E => Poincare.DeTurckCoupledForcing.tensorValue W (t,y))\n (Poincare.DeTurckCoupledForcing.tensorJet W (t,z)) z",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/DeTurckPrincipalSecondJet.lean",
+        "sha256": "e8f0fc4905cebf4751b3ef7086cc86c2e1e3424480fe2631f299cacc33cd7b07"
+      },
+      {
+        "path": "Poincare/Global/DeTurckSpatialCoefficientDefinitions.lean",
+        "sha256": "4e3c86cc24337bd3c130d24db1a80b47e691ab36f9ad0066c539402d0f04b094"
+      },
+      {
+        "path": "Poincare/Global/DeTurckTensorBasisDefinitions.lean",
+        "sha256": "2ff6bdaa93268cb71c23540a38e73ed0700037df1e92ef258985a3eed0505a1e"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCompactCoefficientDefinitions.lean",
+        "sha256": "31c1e8c60e8f85dd55f84a04b5f6fbd10ab6db7bc7827587459d94f232e83fd6"
+      },
+      {
+        "path": "Poincare/Global/DeTurckCoupledForcingDefinitions.lean",
+        "sha256": "89a616a3273254afc2114d4232241cdccd4153d47cc31ee97e92c275517ab365"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "0e60ecea8e5a50a97149a989bf5e262ecb27274a60a40dbd64ee0af9ee05d192"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "deturck-jet-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "c41541b3377fb68efeba0bfc8d4c03067bb693e182381d28a01927e1c265765e",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-deturck-compact-20260930/jet.readback.json",
+      "report_sha256": "194ed9d88ce0e8c5c6f61008b2c75ae20cde6801f9622a7d213a1f09611879b2"
+    }
+  }
+}
