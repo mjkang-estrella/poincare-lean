@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.FiniteAtlasBufferedTensorValueCompatibility"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.FiniteAtlasBufferedTensorValue.weighted_transition",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(ξ : Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ)\n(W : Fin A.cover.chartCount → Fin 3 → Fin 3 → Poincare.ClosedSmoothModel 3 → ℝ),\n∀ (i k : Fin A.cover.chartCount) (a b : Fin 3) (x : M),\nx ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source → x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).source →\nA.partition k x * Poincare.FiniteAtlasBufferedTensorValue.value A ξ W i a b x =\nA.partition i x * ∑ p : Fin 3, ∑ q : Fin 3,\n (Poincare.FiniteAtlasParabolicTensorSpace.jac A i k x p a * Poincare.FiniteAtlasParabolicTensorSpace.jac A i k x q b) * Poincare.FiniteAtlasBufferedTensorValue.value A ξ W k p q x",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "name": "Poincare.FiniteAtlasBufferedTensorValue.symmetric",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(ξ : Fin A.cover.chartCount → Poincare.ClosedSmoothModel 3 → ℝ)\n(W : Fin A.cover.chartCount → Fin 3 → Fin 3 → Poincare.ClosedSmoothModel 3 → ℝ),\n(∀ j a b z, W j a b z = W j b a z) →\n∀ i a b x, Poincare.FiniteAtlasBufferedTensorValue.value A ξ W i a b x = Poincare.FiniteAtlasBufferedTensorValue.value A ξ W i b a x",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasBufferedTensorValueDefinitions.lean",
+        "sha256": "12128cd9874e24db5aa594daee3716dd942c7fab84c6cc711777129d68f98620"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "tensor-transport-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "951ceee7cb3d903c781e628e8cbebad3d0504d696a6cb13e62d538aec724bf86",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-tensor-transport-20260930/compatibility.readback.json",
+      "report_sha256": "676467976a68962887e3282685672dda548bb31e1c289bcf4e7f77461638b72a"
+    }
+  }
+}
