@@ -2,7 +2,7 @@
   "schema_version": "2.1",
   "id": "core-input-20260930-chartlift-positivity",
   "revision": 1,
-  "status": "ready",
+  "status": "accepted",
   "base_commit": "165c6fe285d86ee4358aa8d817a09d871f470fd6",
   "objective": {
     "title": "Construct actual global tensor/variation input: positivity",
@@ -166,5 +166,6 @@
       "report_path": "harness/v2/contracts/core-deturck-chartlift-20260930/positivity.readback.json",
       "report_sha256": "18735825d4bb402a55094014bf5f6ce4f43bde8ed26e45d134fb5bc7d1eb5343"
     }
-  }
+  },
+  "accepted_commit": "9ba19beddbf409aa59744be045419dd67275b1c3"
 }
