@@ -1,0 +1,141 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-compact-overlap",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
+  "objective": {
+    "title": "compact-overlap for actual global tensor transport",
+    "statement": "Core assumption addressed: UniversalHamiltonConvergenceStatement through genuine general Ricci-flow input construction. BufferedChartTransitionExtensions.exists_gated_chart_extensions uses this actual compact set and open good overlap. The geometric A/xi inputs are already constructed by MetricAdaptedLocalParametrix; no supplied curvature, flow, operator-existence, limit or sphere recognition premise may be added.",
+    "deliverables": [
+      "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/CompactBufferedChartOverlap.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-chart-transport-20260930/compact-overlap.readback.json",
+      "harness/v2/contracts/core-chart-transport-20260930/construction-context.md",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean"
+    ],
+    "symbols": [
+      "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/CompactBufferedChartOverlap.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/CompactBufferedChartOverlap.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-chart-transport-20260930/compact-overlap.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.CompactBufferedChartOverlap"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.CompactBufferedChartOverlap.isCompact_subset_good_overlap",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (\u03be : Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 \u211d),\n (\u2200 k, HasCompactSupport (\u03be k)) \u2192\n (\u2200 k, tsupport (\u03be k) \u2286 (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).target) \u2192\n (\u2200 k, \u2200 z \u2208 tsupport (\u03be k), Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192\n (\u2200 k, \u2200 z \u2208 Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A k, Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192 \u2200 i j, let K := (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) '' (tsupport (A.partition i) \u2229 (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport (\u03be j)); let O := ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source \u2229\n (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor i) y = 1) (nhds z)) \u2229\n (Poincare.FiniteAtlasParabolicTensorSpace.change A i j) \u207b\u00b9' (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor j) y = 1) (nhds z)); IsCompact K \u2227 IsOpen O \u2227 K \u2286 O",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "chart-extension-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "c163e2d5f04e2a1dbce0ec9b2d0c8888592660a6d1f107843dcbd0980c9a9fdf",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-chart-transport-20260930/compact-overlap.readback.json",
+      "report_sha256": "3cf7e9b8a29193453813520b8c7c558af9d9c0400d6e7bea9fc3512614d2c73d"
+    }
+  }
+}

@@ -1,0 +1,144 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-gated-transitions",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
+  "objective": {
+    "title": "gated-transitions for actual global tensor transport",
+    "statement": "Core assumption addressed: UniversalHamiltonConvergenceStatement through genuine general Ricci-flow input construction. Bounded destination-only Graph/tensor transport consumes the constructed theta/F maps, followed by actual global DeTurck L/P/R assembly. The geometric A/xi inputs are already constructed by MetricAdaptedLocalParametrix; no supplied curvature, flow, operator-existence, limit or sphere recognition premise may be added.",
+    "deliverables": [
+      "Poincare.BufferedChartTransitionExtensions.exists_gated_chart_extensions"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/BufferedChartTransitionExtensions.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-chart-transport-20260930/gated-transitions.readback.json",
+      "harness/v2/contracts/core-chart-transport-20260930/construction-context.md",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean"
+    ],
+    "symbols": [
+      "Poincare.BufferedChartTransitionExtensions.exists_gated_chart_extensions"
+    ],
+    "depends_on": [
+      "core-input-20260930-compact-overlap",
+      "core-input-20260930-vector-extension"
+    ]
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/BufferedChartTransitionExtensions.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/BufferedChartTransitionExtensions.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-chart-transport-20260930/gated-transitions.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.BufferedChartTransitionExtensions.exists_gated_chart_extensions"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedChartTransitionExtensions"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedChartTransitionExtensions.exists_gated_chart_extensions",
+        "lean_type": "\u2200 {M : Type u} [TopologicalSpace M] [T2Space M] [CompactSpace M] [ChartedSpace (Poincare.ClosedSmoothModel 3) M], \u2200 [IsManifold (modelWithCornersSelf \u211d (Poincare.ClosedSmoothModel 3)) ((\u22a4 : ENat) : WithTop ENat) M], \u2200 (A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M) (\u03be : Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 \u211d),\n (\u2200 k, HasCompactSupport (\u03be k)) \u2192\n (\u2200 k, tsupport (\u03be k) \u2286 (Poincare.FiniteAtlasParabolicTensorSpace.chart A k).target) \u2192\n (\u2200 k, \u2200 z \u2208 tsupport (\u03be k), Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192\n (\u2200 k, \u2200 z \u2208 Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A k, Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor k) y = 1) (nhds z)) \u2192 \u2203 \u03b8 : Fin A.cover.chartCount \u2192 Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 \u211d,\n \u2203 F : Fin A.cover.chartCount \u2192 Fin A.cover.chartCount \u2192 (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3),\n \u2200 i j, let K := (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) '' (tsupport (A.partition i) \u2229 (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport (\u03be j)); let O := ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source \u2229\n (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor i) y = 1) (nhds z)) \u2229\n (Poincare.FiniteAtlasParabolicTensorSpace.change A i j) \u207b\u00b9' (fun z : (Poincare.ClosedSmoothModel 3) => Filter.Eventually (fun y \u21a6 Poincare.GeodesicTransport.cutoff (n := 3) (A.cover.anchor j) y = 1) (nhds z));\n   ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (\u03b8 i j) \u2227 HasCompactSupport (\u03b8 i j) \u2227\n   (\u2200 z, \u03b8 i j z \u2208 Set.Icc 0 1) \u2227 tsupport (\u03b8 i j) \u2286 O \u2227\n   (\u2200 z \u2208 K, Filter.Eventually (fun y \u21a6 \u03b8 i j y = 1) (nhds z)) \u2227\n   ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (F i j) \u2227 HasCompactSupport (F i j) \u2227\n   (\u2200 z \u2208 tsupport (\u03b8 i j), Filter.Eventually (fun y \u21a6 F i j y = Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) (nhds z)) \u2227\n   \u2203 L : NNReal, LipschitzWith L (F i j)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "chart-extension-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "45100258a78df558dc603d62987be5ce868754fa830bd782bb224f520d8776c8",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-chart-transport-20260930/gated-transitions.readback.json",
+      "report_sha256": "b251e036f7e513bace4a225319343b68c8552c4d8762d8c15aa0a69cb9993df5"
+    }
+  }
+}

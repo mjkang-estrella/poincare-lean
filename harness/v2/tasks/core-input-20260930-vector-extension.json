@@ -1,0 +1,139 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-vector-extension",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "c1cdb3e721143bf8e021ec01b2af29409d312a5c",
+  "objective": {
+    "title": "vector-extension for actual global tensor transport",
+    "statement": "Core assumption addressed: UniversalHamiltonConvergenceStatement through genuine general Ricci-flow input construction. BufferedChartTransitionExtensions.exists_gated_chart_extensions uses the true chart change and a constructed cutoff eta. The geometric A/xi inputs are already constructed by MetricAdaptedLocalParametrix; no supplied curvature, flow, operator-existence, limit or sphere recognition premise may be added.",
+    "deliverables": [
+      "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/SmoothCutoffVectorExtension.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/GeodesicTransport.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-chart-transport-20260930/vector-extension.readback.json",
+      "harness/v2/contracts/core-chart-transport-20260930/construction-context.md",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean"
+    ],
+    "symbols": [
+      "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/SmoothCutoffVectorExtension.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/SmoothCutoffVectorExtension.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-chart-transport-20260930/vector-extension.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.SmoothCutoffVectorExtension"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul",
+        "lean_type": "\u2200 (U : Set (Poincare.ClosedSmoothModel 3)), IsOpen U \u2192 \u2200 (f : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiffOn \u211d ((\u22a4 : ENat) : WithTop ENat) f U \u2192\n \u2200 (\u03b7 : (Poincare.ClosedSmoothModel 3) \u2192 \u211d), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) \u03b7 \u2192 HasCompactSupport \u03b7 \u2192 tsupport \u03b7 \u2286 U \u2192\n ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (fun z \u21a6 \u03b7 z \u2022 f z) \u2227 HasCompactSupport (fun z \u21a6 \u03b7 z \u2022 f z)",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/GeodesicTransport.lean",
+        "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+      },
+      {
+        "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+        "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "chart-extension-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "6fc48587cd127804b5fa9e7a45f85ab66cb05952a5862817cf2191eac8e707fc",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-chart-transport-20260930/vector-extension.readback.json",
+      "report_sha256": "d7c3b9c211cbe9e4da876cab02b1de4b4b638871d6907d7461679d0b6704ad6c"
+    }
+  }
+}
