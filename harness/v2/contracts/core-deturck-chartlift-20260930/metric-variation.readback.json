@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "deturck-chartlift-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "46a1ffb6ac77543cbd1a75b6f1dd914b48b69ace48bbac26b9e8a4ce7b2dfeaa",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.DeTurckChartLift.exists_actual_metric_variation",
+      "mathematical_statement": "Let M be a Hausdorff smooth manifold modeled on E = EuclideanSpace ℝ (Fin 3), with the boundaryless model closedSmoothModelWithCorners 3. Let g0 be an actual smooth Riemannian metric on its tangent bundle, anchor a point of M, and F : E → Bilin a globally smooth map into the existing continuous bilinear forms E →L[ℝ] E →L[ℝ] ℝ. Assume F has compact support, its topological support lies in the actual target of extChartAt I anchor, and each F z is symmetric.\n\nThere exists one real ε > 0 and a total family gt : ℝ → ClosedSmoothRiemannianMetric 3 M such that gt 0 = g0 as metric objects. Every gt s is a symmetric positive definite smooth tangent-bundle metric, with the bounded-unit-ball condition of ContMDiffRiemannianMetric in the existing fiber topology. For every signed real s with |s| < ε, simultaneously for every x : M, the actual fiber bilinear form satisfies (gt s).inner x = g0.inner x + s • chartLift anchor F x.\n\nThe chartLift here is the pinned actual tensor. Inside the genuine preferred-chart source, it evaluates F at the forward chart coordinate and precomposes both tensor slots with mfderiv I 𝓘(ℝ,E) of the forward chart at x. Outside that source it is zero. It is not an arbitrary supplied section or a replacement coordinate tensor.\n\nFor the same ε and every such s, at every z in the entire genuine preferred-chart target, CovariantDerivative.chartMetric of (gt s).inner equals chartMetric of g0.inner plus s • F z as continuous bilinear forms. The pinned chartMetric pulls the metric back through mfderivWithin of the inverse chart on Set.range I. The equality includes target points outside the support of F and uses the actual forward and inverse chart differentials.\n\nThe ε precedes all signed parameters, manifold points and target coordinates. No positivity margin, candidate perturbed metric, smooth chartLift, forward/inverse differential identity, coordinate recovery identity or modified norm is supplied as a hypothesis. Compactness, connectedness and second countability of M are not hypotheses. Smoothness of each metric concerns its base point x; the type requires no continuity or smoothness of s ↦ gt s, and no flow equation or flow existence. The affine constraints apply only when |s| < ε; the codomain still requires actual smooth Riemannian metrics for every real s."
+    }
+  ],
+  "findings": []
+}
