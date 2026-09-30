@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "chart-extension-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "6fc48587cd127804b5fa9e7a45f85ab66cb05952a5862817cf2191eac8e707fc",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul",
+      "mathematical_statement": "Let E3 be EuclideanSpace R (Fin 3), the real three-dimensional Euclidean vector space. For every open subset U of E3 and every total function f : E3 -> E3 that is C-infinity on U, and for every total scalar function eta : E3 -> R that is globally C-infinity, has compact topological support, and has its topological support contained in U, the total vector-valued function z |-> eta(z) smul f(z) is globally C-infinity and has compact topological support. Here smul is the real scalar action on E3, with eta(z) as scalar and f(z) as vector; it is not composition or multiplication of linear maps. Topological support means the closure in E3 of the set where the function is nonzero, and compact support means this closed support is compact. C-infinity is ContDiff at the ENat top injected into WithTop ENat. The hypotheses require no regularity of f outside U, no compact support for f, no interval bound or cutoff-one germ for eta, and no assumption that eta equals one anywhere. The conclusion concerns eta smul f itself and does not assert that it agrees with f on U or on the support of eta. E3 is in Type 0, and the declaration has no universe parameters, manifold, atlas, metric, or time variables."
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,32 @@
+{
+  "imports": [
+    "Poincare.Global.SmoothCutoffVectorExtension"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.SmoothCutoffVectorExtension.contDiff_hasCompactSupport_cutoff_smul",
+      "lean_type": "\u2200 (U : Set (Poincare.ClosedSmoothModel 3)), IsOpen U \u2192 \u2200 (f : (Poincare.ClosedSmoothModel 3) \u2192 (Poincare.ClosedSmoothModel 3)), ContDiffOn \u211d ((\u22a4 : ENat) : WithTop ENat) f U \u2192\n \u2200 (\u03b7 : (Poincare.ClosedSmoothModel 3) \u2192 \u211d), ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) \u03b7 \u2192 HasCompactSupport \u03b7 \u2192 tsupport \u03b7 \u2286 U \u2192\n ContDiff \u211d ((\u22a4 : ENat) : WithTop ENat) (fun z \u21a6 \u03b7 z \u2022 f z) \u2227 HasCompactSupport (fun z \u21a6 \u03b7 z \u2022 f z)",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+    },
+    {
+      "path": "Poincare/Global/GeodesicTransport.lean",
+      "sha256": "a9ed544a2a0f0ebf7b6e5f95dc95a1d4b592597f7f442c43a0020b6f762eb65f"
+    },
+    {
+      "path": "Poincare/Global/BufferedFrozenParabolicSolver.lean",
+      "sha256": "ba3c3adb050f0fac205f6993fb38ac8e087c49d48798a5e0f8bb390450b0732a"
+    }
+  ],
+  "author": "root-orchestrator",
+  "snapshot_sha256": "6fc48587cd127804b5fa9e7a45f85ab66cb05952a5862817cf2191eac8e707fc"
+}
