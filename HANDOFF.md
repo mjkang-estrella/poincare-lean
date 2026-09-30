@@ -1,5 +1,47 @@
 # Handoff Snapshot
 
+## 2026-09-30 Constructed genuine smooth metric variations
+
+The complete proof goal remains active. Both universal smoothability and
+Hamilton convergence remain open; Poincare.poincare_conjecture is absent.
+The frozen targets, original topologies/norms and prior failed work are intact.
+
+DeTurckChartLift now constructs the actual compact smooth symmetric tangent-
+bilinear section from a smooth compact symmetric coefficient F in the true
+chart target. Whole-target chartMetric recovery and nested Hom coordinates
+are proved from actual chart differentials. Transported K=c.symm''tsupportF
+is compact inside the source, and the closure of nonzero DEPENDENT fibers is
+compact/containedK, with neighborhood zero outsideK. Global smoothness glues
+the source with K-complement; no point-bump shortcut or coordinate package.
+
+Actual g0 coercivity on compact F support and F operator bounds choose one
+positive epsilon for BOTH parameter signs. exists_actual_metric_variation
+fills genuine smooth Riemannian metrics gt(s), gt0=g0, with inner=g0.inner+sH
+in every fiber for |s|<epsilon and whole-target affine chartMetric=G0+sF.
+Symmetry, positivity, smoothness and bounded unit balls are constructed.
+Temporary fiber model bindings agree definitionally with original topology,
+scalar module and dual topology. This is a metric variation for covariance,
+not a Ricci flow or positive scalar-curvature producer.
+
+A joint kernel application first constructs g0, then a compact smooth
+symmetric realization of a C2 germ's exact2jet and the actual metric family.
+The root import and all-new-constant dependency scan pass together.
+
+First action: freeze and prove the actual chart2jet parameter derivative at
+zero from the common open-target affine identity, using the saved verified
+prototype in state/core-deturck-chartlift-20260930/parameter-jet-api-probe.
+Prove HasDerivAt(s -> ((G_s(z),DG_s(z)),D2G_s(z)))
+((F(z),DF(z)),D2F(z))0; use neighborhood equality BEFORE spatial fderiv.
+Then compose the full finite-jet differential and differentiate the existing
+nonlinear covariance. Read harness/reports/core-deturck-chartlift-20260930.md.
+
+Full linearized covariance for symmetric C2 Graph germs still needs this
+parameter derivative and exact2jet pullback transfer (Jacobians throughD3phi).
+Actual global L/R and signed id-R contraction, nonlinear inversion, ordinary
+jointC3/matched initial jets, physical Ricci flow, continuation/surgery and
+universal favorable-flow/finite-energy/compact-limit production remain open.
+Compatible smoothability is independent. No universal core was discharged.
+
 ## 2026-09-30 Proved full localization and compact symmetric two-jets
 
 The complete proof goal remains active. Universal smoothability and Hamilton
