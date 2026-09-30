@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedTensorGraphTransportValues"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedTensorGraphTransport.weight_zero_off_coordSupport",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i : Fin A.cover.chartCount) (θ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(a b c d : Fin 3),\ntsupport θ ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).target →\n∀ z : Poincare.ClosedSmoothModel 3,\nz ∉ Poincare.FiniteAtlasParabolicTensorSpace.coordSupport A i →\nPoincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d z = 0",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "name": "Poincare.BufferedTensorGraphTransport.weight_pullback_chart",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i : Fin A.cover.chartCount) (θ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(a b c d : Fin 3),\n∀ j : Fin A.cover.chartCount,\ntsupport θ ⊆ ((Poincare.FiniteAtlasParabolicTensorSpace.chart A i).symm.trans (Poincare.FiniteAtlasParabolicTensorSpace.chart A j)).source →\n(∀ z ∈ tsupport θ, ∀ᶠ y in nhds z, F y = Poincare.FiniteAtlasParabolicTensorSpace.change A i j y) →\n(∀ z ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i) ''\n  (tsupport (A.partition i) ∩ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).symm '' tsupport ξ), θ z = 1) →\n∀ (f : Poincare.ClosedSmoothModel 3 → ℝ) (x : M), x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).source →\nPoincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d (Poincare.FiniteAtlasParabolicTensorSpace.chart A i x) * f (F (Poincare.FiniteAtlasParabolicTensorSpace.chart A i x)) =\nA.partition i x * (@ite ℝ (x ∈ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j).source) (Classical.propDecidable _)\n  (ξ (Poincare.FiniteAtlasParabolicTensorSpace.chart A j x) * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x a c * Poincare.FiniteAtlasParabolicTensorSpace.jac A i j x b d * f (Poincare.FiniteAtlasParabolicTensorSpace.chart A j x)) 0)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+        "sha256": "1f17df2647209e28982f1aba8148570b525fbb8c6b706a9fe79686bc998b272b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "tensor-transport-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "70acfe0f2be667483f88a2231975d325a5889fd14ff7cb666a115131cebe5837",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-tensor-transport-20260930/values.readback.json",
+      "report_sha256": "c10c29ac963a756fcc9f46f710ae9527545849d51a2d58b2c70ef059846a1f4a"
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedTensorGraphTransportWeights"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i : Fin A.cover.chartCount) (θ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(a b c d : Fin 3),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) θ → HasCompactSupport θ →\ntsupport θ ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).target →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ξ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) (Poincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d) ∧\nHasCompactSupport (Poincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+        "sha256": "1f17df2647209e28982f1aba8148570b525fbb8c6b706a9fe79686bc998b272b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "tensor-transport-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "a7e314adb947dc3f840a3e3b0b26df35ced9f36b2da0d7cf2785da671dd7e9f9",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-tensor-transport-20260930/weights.readback.json",
+      "report_sha256": "c751184a768827c3aeb98d66892f0c2460183a0ac9d38439687e087c11bfb8d9"
+    }
+  }
+}

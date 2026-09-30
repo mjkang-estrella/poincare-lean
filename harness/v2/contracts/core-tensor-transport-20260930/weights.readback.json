@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "tensor-transport-readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "a7e314adb947dc3f840a3e3b0b26df35ced9f36b2da0d7cf2785da671dd7e9f9",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight",
+      "mathematical_statement": "Let E3 be EuclideanSpace R (Fin 3), the real three-dimensional Euclidean vector space. For every universe u, let M : Type u have a topology, an E3 charted-space structure, and the C-infinity IsManifold structure for the boundaryless closedSmoothModelWithCorners 3. Let A : AtlasData M. The atlas data includes finitely many genuine extended charts C_k at anchors a_k, open regions covering M with their closures in the corresponding chart sources and compact coordinate images, and a smooth partition of unity p_k on M subordinate to those regions. No Hausdorff, CompactSpace, connectedness, metric, or time typeclass or variable is explicitly assumed in these declarations. Let i index one chart, theta,xi : E3 -> R be total scalar functions, F : E3 -> E3 a total map, and a,b,c,d : Fin 3 coordinate indices. The pinned weight is W(z) = theta(z) * (p_i(C_i.symm(z)) * xi(F(z)) * (DF_z(e_c))_a * (DF_z(e_d))_b), where e_c and e_d are the EuclideanSpace.basisFun vectors and DF_z = fderiv R F z. All factors are real numbers and the products are ordinary real multiplication. The derivatives are actual Frechet derivatives of F; there is no matrix inverse or pointwise reciprocal. If theta is globally C-infinity, has compact topological support, and that support lies in the actual target of C_i, and xi and F are globally C-infinity, then W is globally C-infinity and has compact topological support. Topological support is the closure of the nonzero set. C-infinity is the ENat top injected into WithTop ENat, rather than the outer top regularity value. The localization premise concerns theta, while xi and F need no compact-support assumption, range bound, or prescribed values. No hypothesis requires theta or xi to be between zero and one or to equal one anywhere. F need not be a chart transition, linear, affine, injective, or invertible. The conclusion establishes the regularity and compact support of this specific scalar weight for every index tuple. It asserts no operator, norm bound, tensor symmetry or compatibility, time interval, or parabolic derivative certificate. Only the destination partition p_i occurs in W; there is no second partition p_j factor."
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,138 @@
+{
+  "schema_version": "2.1",
+  "id": "core-input-20260930-tensor-weights",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "233be1e425f51d9e6c4a21990b2f25f82ade253d",
+  "objective": {
+    "title": "Construct actual tensor weights toward universal Hamilton existence",
+    "statement": "Core assumption helped: UniversalHamiltonConvergenceStatement, through genuine general Ricci-flow inputs. Subsequent proof: actual bounded destination-entry Graph transport, then global tensor compatibility and genuine signed DeTurck L/P/R contraction. Construct coefficients/operators from actual atlas/gated chart maps; no supplied operator, flow, convergence or sphere-recognition package may replace construction.",
+    "deliverables": [
+      "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight"
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/BufferedTensorGraphTransportWeights.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "HANDOFF.md",
+      "Poincare/Statement.lean",
+      "Poincare/Global/Statement.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "harness/v2/contracts/**",
+      "Poincare/Global/RiemannianContext.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/contracts/core-tensor-transport-20260930/weights.readback.json",
+      "harness/v2/contracts/core-tensor-transport-20260930/construction-context.md",
+      "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+      "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+      "Poincare/Global/BufferedChartTransitionExtensions.lean",
+      "Poincare/Global/ClosedLaplacianStokesGlobalCoefficients.lean"
+    ],
+    "symbols": [
+      "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/BufferedTensorGraphTransportWeights.lean"
+      ],
+      [
+        "rg",
+        "--files-without-match",
+        "\\b(sorry|admit|axiom|opaque|postulate)\\b|native_decide",
+        "Poincare/Global/BufferedTensorGraphTransportWeights.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ],
+      [
+        "python3",
+        "scripts/frozen_contract_audit.py",
+        "--manifest",
+        "harness/v2/contracts/core-tensor-transport-20260930/weights.contract.json"
+      ]
+    ],
+    "required_declarations": [
+      "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight"
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "opaque",
+      "postulate",
+      "native_decide"
+    ]
+  },
+  "stop_conditions": [
+    "Complete only when exact frozen target and all scoped gates pass.",
+    "If blocked preserve exact resisting type and every compiler attempt; no unfinished committed proof or weakened target.",
+    "Do not supply fake atlas/metric/curvature/sphere/operator/limit witnesses, edit frozen definitions/root or perform full builds, acceptance, merges or service operations."
+  ],
+  "budget": {
+    "max_attempts": 3,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 30000,
+    "disk_mb": 4096
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.BufferedTensorGraphTransportWeights"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.BufferedTensorGraphTransport.contDiff_hasCompactSupport_weight",
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M]\n[ChartedSpace (Poincare.ClosedSmoothModel 3) M]\n[IsManifold (Poincare.closedSmoothModelWithCorners 3) ((⊤ : ENat) : WithTop ENat) M]\n(A : Poincare.FiniteAtlasParabolicTensorSpace.AtlasData M)\n(i : Fin A.cover.chartCount) (θ ξ : Poincare.ClosedSmoothModel 3 → ℝ)\n(F : Poincare.ClosedSmoothModel 3 → Poincare.ClosedSmoothModel 3)\n(a b c d : Fin 3),\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) θ → HasCompactSupport θ →\ntsupport θ ⊆ (Poincare.FiniteAtlasParabolicTensorSpace.chart A i).target →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) ξ →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) F →\nContDiff ℝ ((⊤ : ENat) : WithTop ENat) (Poincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d) ∧\nHasCompactSupport (Poincare.BufferedTensorGraphTransport.weight A i θ ξ F a b c d)",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/FiniteAtlasParabolicTensorSpace.lean",
+        "sha256": "e195bfe093f55144464814758b32bd5d266639e41bf9581401e9b9087dcd8f7c"
+      },
+      {
+        "path": "Poincare/Global/BufferedTensorGraphTransportDefinitions.lean",
+        "sha256": "1f17df2647209e28982f1aba8148570b525fbb8c6b706a9fe79686bc998b272b"
+      }
+    ],
+    "author": "root-orchestrator",
+    "review": {
+      "reviewer": "tensor-transport-readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "a7e314adb947dc3f840a3e3b0b26df35ced9f36b2da0d7cf2785da671dd7e9f9",
+      "verdict": "approved",
+      "report_path": "harness/v2/contracts/core-tensor-transport-20260930/weights.readback.json",
+      "report_sha256": "c751184a768827c3aeb98d66892f0c2460183a0ac9d38439687e087c11bfb8d9"
+    }
+  }
+}
