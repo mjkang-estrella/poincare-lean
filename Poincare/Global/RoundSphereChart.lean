@@ -55,19 +55,19 @@ theorem hasFDerivAt_stereoInvFunAuxFDeriv (v z : E) :
     have hsum :
         HasFDerivAt (fun y : E => ‖y‖ ^ 2 + 4) (2 • innerSL ℝ z) z := by
       exact hnorm.add_const 4
-    simpa [r] using (hasFDerivAt_inv hrpos.ne').comp z hsum
+    simpa [r] using! (hasFDerivAt_inv hrpos.ne').comp z hsum
   have hvec :
       HasFDerivAt
         (fun y : E => (4 : ℝ) • y + (‖y‖ ^ 2 - 4) • v)
         ((4 : ℝ) • ContinuousLinearMap.id ℝ E + (2 • innerSL ℝ z).smulRight v) z := by
-    convert
+    convert!
       ((hasFDerivAt_const (4 : ℝ) z).smul (hasFDerivAt_id z)).add
         ((hnorm.sub (hasFDerivAt_const (4 : ℝ) z)).smul
           (hasFDerivAt_const v z)) using 1
     · ext y
       simp
   have hprod := hinv.smul hvec
-  convert hprod using 1
+  convert! hprod using 1
   ext u
   have hden : ‖z‖ ^ 2 + 4 ≠ 0 := by positivity
   have hvcoeff :
