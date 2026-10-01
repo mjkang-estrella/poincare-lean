@@ -1,0 +1,11 @@
+{
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-pde-433/poincare",
+  "started_at": "2026-10-01T01:17:01.651941+00:00",
+  "branch": "codex/heat-pde-433-a01",
+  "status": "## codex/heat-pde-433-a01\n",
+  "scope": "Only existing public/private proof bodies in Poincare/Global/HeatKernelPDE.lean",
+  "acceptance_authority": "root orchestrator",
+  "helper_agents": "forbidden by Task dispatch",
+  "referenced_frozen_base_matches_actual_source": true
+}

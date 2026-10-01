@@ -1,0 +1,14 @@
+Preserve Gaussian heat PDE identities on Lean 4.33
+
+Use convert! and using! to unfold definitionally equal real scalar instances
+in the existing derivative certificates. Preserve all public/private
+headers, the Gaussian formula, imported kernel data, time assumptions,
+norms and the one-dimensional PDE scope.
+
+Tested: Scoped Lean 4.33.1 compilation and HeatKernelPDE build
+Tested: Seven frozen exact type/universe and permitted axiom/safety checks
+Tested: Public/private header and Gaussian data/import guards
+Tested: Scoped forbidden-token scan and git diff --check
+Not-tested: Full retained-root and completion audits, owned by orchestrator
+Scope-risk: narrow
+Reversibility: clean

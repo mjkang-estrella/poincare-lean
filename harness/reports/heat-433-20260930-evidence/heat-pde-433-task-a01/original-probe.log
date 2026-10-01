@@ -1,0 +1,14 @@
+AXIOM_CONTRACT_OK: Poincare.hasDerivAt_heatKernel_time
+AXIOM_CONTRACT_OK: Poincare.deriv_heatKernel_time
+AXIOM_CONTRACT_OK: Poincare.heatKernelReal
+AXIOM_CONTRACT_OK: Poincare.heatKernel_real_eq
+AXIOM_CONTRACT_OK: Poincare.heatKernelReal_heatEquation
+AXIOM_CONTRACT_OK: Poincare.heatKernel_real_heatEquation
+AXIOM_CONTRACT_OK: Poincare.heatKernel_real_heatEquation_laplacian
+FROZEN_CONTRACT_OK: Poincare.hasDerivAt_heatKernel_time
+FROZEN_CONTRACT_OK: Poincare.deriv_heatKernel_time
+FROZEN_CONTRACT_OK: Poincare.heatKernelReal
+FROZEN_CONTRACT_OK: Poincare.heatKernel_real_eq
+FROZEN_CONTRACT_OK: Poincare.heatKernelReal_heatEquation
+FROZEN_CONTRACT_OK: Poincare.heatKernel_real_heatEquation
+FROZEN_CONTRACT_OK: Poincare.heatKernel_real_heatEquation_laplacian

@@ -1,0 +1,9 @@
+{
+  "copied_at": "2026-10-01T01:19:42.671528+00:00",
+  "source": "/Users/mjkang/.codex/worktrees/heat-pde-433/poincare/harness/v2/state/upstream-verification-20260930/heat-pde-433-job-a01",
+  "destination": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-pde-433-job-a01",
+  "file_count": 64,
+  "all_copied_hashes_verified": true,
+  "commit": "6bb85b1f72d2cf603cae7f97f2d106b9fc558c6f",
+  "source_sha256": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7"
+}

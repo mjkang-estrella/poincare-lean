@@ -1,0 +1,13 @@
+Preserve the complex Gaussian limit on Lean 4.33
+
+Use simpa's expected-type elaboration when composing the existing Gaussian
+limit with its heat-time scaling. The complex normalization, canonical volume,
+all hypotheses and all surrounding source remain unchanged.
+
+Constraint: only gaussianApproxIdentity_heatTimeScale_complex proof may change
+Tested: scoped Lean; module build; frozen type and axiom probe; byte guard
+Tested: forbidden-token scan; git diff --check
+Not-tested: full root build and final completion audits
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean

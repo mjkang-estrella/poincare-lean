@@ -1,0 +1,10 @@
+{
+  "accepted": true,
+  "base": "88f9d463817418be93153be8a137570854b9dad4",
+  "direct_lean": 0,
+  "scoped_build": 0,
+  "rigid_type_axiom_safety": 0,
+  "all_existing_types_and_data_guard_preserved": true,
+  "new_original_core_assumptions_discharged": [],
+  "core_S_still_discharged": true
+}

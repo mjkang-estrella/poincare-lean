@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "23deb1304c9981561e564c5f6cb5bcb9e2079ea1e0889a0c0371375c73de6f95",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.hasDerivAt_heatKernel_time",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1, with implicit NormedAddCommGroup E, InnerProductSpace R E and FiniteDimensional R E instances, an implicit real t > 0, and every explicit x : E, the function tau |-> heatKernel(tau,x) has ordinary real derivative at t equal to 4*pi*(-n/2)*(4*pi*t)^(-n/2-1)*exp(-norm(x)^2/(4*t)) + (4*pi*t)^(-n/2)*exp(-norm(x)^2/(4*t))*norm(x)^2/(4*t^2), where n is finrank R E coerced to R. The Gaussian is exactly (4*pi*t)^(-n/2)*exp(-norm(x)^2/(4*t)); the powers of its positive time base have real exponents, while the squares are natural-number powers. The sole declaration universe is u_1. No separate completeness or positive-dimension assumption is present, so dimension zero is included. This is a time-derivative formula at any strictly positive time, not at time zero or negative time, and not a spatial Laplacian identity in arbitrary dimension, initial-data theorem, integral normalization or manifold-flow existence theorem."
+    },
+    {
+      "name": "Poincare.deriv_heatKernel_time",
+      "mathematical_statement": "Under the same implicit finite-dimensional real inner-product-space assumptions on E : Type u_1, implicit real t > 0 and every explicit x : E, deriv(tau |-> heatKernel(tau,x),t) equals 4*pi*(-n/2)*(4*pi*t)^(-n/2-1)*exp(-norm(x)^2/(4*t)) + (4*pi*t)^(-n/2)*exp(-norm(x)^2/(4*t))*norm(x)^2/(4*t^2), with n = (finrank R E : R). This states equality of the real derivative value to the displayed Gaussian derivative formula. It is valid for every positive t and includes zero-dimensional E; no separate completeness assumption occurs. It does not assert the heat PDE for arbitrary E, a time-zero extension, limits, convolution solution existence or a geometric flow. The single universe parameter is u_1."
+    },
+    {
+      "name": "Poincare.heatKernelReal",
+      "mathematical_statement": "heatKernelReal is a total function R -> R -> R of time t and spatial coordinate x, defined by (4*pi*t)^(-(1:R)/2)*exp(-(x^2)/(4*t)). The exponent -1/2 is real and the square is a natural-number power. This is the one-dimensional scalar Gaussian expression, with no declaration universe parameters, normed-space instances, positivity premise or initial condition in the definition. Values at nonpositive times use the total real power and division operations; the declaration makes no PDE, positivity, normalization, limit or solution-existence claim there."
+    },
+    {
+      "name": "Poincare.heatKernel_real_eq",
+      "mathematical_statement": "For every explicit real t and x, heatKernel specialized to E=R equals heatKernelReal(t,x). The equality has no t>0 premise and therefore concerns the two total displayed formula functions for all real times, rather than an assertion of heat-equation behavior at nonpositive time. This is a substantive equality of the dimension-one specialization with the real Gaussian formula, not reflexive proof-function equality. There are no declaration universe parameters and no general manifold or arbitrary-dimensional PDE conclusion."
+    },
+    {
+      "name": "Poincare.heatKernelReal_heatEquation",
+      "mathematical_statement": "For implicit real t,x with t>0, the ordinary time derivative of tau |-> heatKernelReal(tau,x) at t equals iteratedDeriv 2 of the spatial function y |-> heatKernelReal(t,y) at x. The 2 is a natural-number second-derivative order. This is the one-dimensional Euclidean heat equation for the explicit Gaussian, valid at any strictly positive time and every real spatial point. It states no equality at time zero, boundary or initial condition, mass normalization, integrability, uniqueness, asymptotic limit, arbitrary-dimensional Laplacian identity or heat-flow existence on a general manifold. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.heatKernel_real_heatEquation",
+      "mathematical_statement": "For implicit real t,x with t>0, the ordinary time derivative of tau |-> heatKernel(tau,x), with E specialized to R, equals the second iterated spatial derivative of y |-> heatKernel(t,y) at x. This is again a one-dimensional Euclidean Gaussian heat-equation identity. The variables are real rather than points in arbitrary E; the second derivative order is the natural number 2. It has no time-zero, initial-condition, boundary, limit, integral or uniqueness conclusion and constructs no manifold heat flow or Ricci flow. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.heatKernel_real_heatEquation_laplacian",
+      "mathematical_statement": "For implicit real t,x with t>0, deriv(tau |-> heatKernel(tau,x),t), specialized to E=R, equals Laplacian.laplacian(y |-> heatKernel(t,y),x). This expresses the same explicit Gaussian heat equation using the Euclidean real-line Laplacian. The type is one-dimensional: its space and codomain are R, with the usual fixed real inner-product structure, and it is not a Laplacian equation on arbitrary finite-dimensional E or a curved manifold. There are no declaration universe parameters, initial or boundary conditions, assertions at t=0, asymptotic limits, integral normalizations, uniqueness claims or general flow-existence conclusions."
+    }
+  ],
+  "findings": []
+}

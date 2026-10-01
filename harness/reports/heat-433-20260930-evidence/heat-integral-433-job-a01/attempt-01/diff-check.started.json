@@ -1,0 +1,12 @@
+{
+  "name": "diff-check",
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+  "started_utc": "2026-10-01T01:18:43.623602+00:00"
+}

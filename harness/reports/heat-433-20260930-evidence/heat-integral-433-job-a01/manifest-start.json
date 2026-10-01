@@ -1,0 +1,60 @@
+{
+  "label": "heat-integral-433-job-a01",
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "branch": "codex/heat-integral-433-a01",
+  "started_utc": "2026-10-01T01:17:52.763178+00:00",
+  "ownership": "Only gaussianApproxIdentity_heatTimeScale_complex proof body in Poincare/Global/HeatKernelIntegral.lean",
+  "acceptance_authority": "/root",
+  "task_sha256": "b8708ab437e0bf3931fc3f315db1e089bcae8fbd36876bccc83a430060a1f4b1",
+  "context": [
+    {
+      "path": "README.md",
+      "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a"
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256": "1965d9d223cc88c4d116b0ad34f319628e06992c8d8c5ef04a71a34737769574"
+    },
+    {
+      "path": "docs/PROJECT_MAP.md",
+      "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69"
+    },
+    {
+      "path": "harness/v2/SPEC.md",
+      "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3"
+    },
+    {
+      "path": "Poincare/Global/HeatKernelIntegral.lean",
+      "sha256": "245da18aca0b19f0178d06de2606d99b1567ef96e3e94f4a1e2411b20694141c"
+    },
+    {
+      "path": "Poincare/Global/HeatKernel.lean",
+      "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/blind-readback-a02.json",
+      "sha256": "cce3eee4271eec254cb8b65c5303dc9d6497947892f3aa1be8e9cbc8ebb89396"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/FrozenMigrationProbe-a02.lean",
+      "sha256": "2178282acb8dde17c8c96f6280bc7d4f999284fe572f5766d29e40f21bb794b9"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/definitions-for-review.txt",
+      "sha256": "d82d8c90928f78e95de3a2432068772927c23cb1e42cb099de228d03f9d0eea9"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/check-scope.py",
+      "sha256": "d025aa2e2e0ca1d9e87c5b762faaa0837adbe6a33a1ee175cadbe8462b83f8a6"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/second-layer-433-build-a01/stdout.log",
+      "sha256": "87a8e3bdd5df54e0b104b3508b4b1033e1613a5bbe513cd6d2a5a265d08ba359"
+    }
+  ]
+}

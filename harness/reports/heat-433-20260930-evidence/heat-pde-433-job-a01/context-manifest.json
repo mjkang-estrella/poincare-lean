@@ -1,0 +1,62 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "1965d9d223cc88c4d116b0ad34f319628e06992c8d8c5ef04a71a34737769574",
+    "bytes": 232007
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/HeatKernelPDE.lean",
+    "sha256": "b885ae54e8ddb36814b7c59ee95a5fa003dbb38a7c738f114eb5345ddca806bc",
+    "bytes": 7742
+  },
+  {
+    "path": "Poincare/Global/HeatKernel.lean",
+    "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a",
+    "bytes": 2275
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/blind-readback.json",
+    "sha256": "d675118307935e656769896b853a3d9302776e4a1e33d2391497619ad2aa80a5",
+    "bytes": 5570
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/FrozenMigrationProbe.lean",
+    "sha256": "6ad2ffb576153a762a264248d155ef57a08ba0a8f853393aa207030d16f4f41b",
+    "bytes": 18681
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/definitions-for-review.txt",
+    "sha256": "17f77bbd012c49010c17b778cee37964cfdf4f9af290c4e9124cfaf5f3bf15ff",
+    "bytes": 2387
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/check-scope.py",
+    "sha256": "579e653f3e129228b8ea4cbfc27903ec83aaf7a27fca4e011805267ecc57c580",
+    "bytes": 686
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/second-layer-433-build-a01/stdout.log",
+    "sha256": "87a8e3bdd5df54e0b104b3508b4b1033e1613a5bbe513cd6d2a5a265d08ba359",
+    "bytes": 152819
+  }
+]

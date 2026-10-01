@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T01:21:06.668766+00:00",
+  "source_head": "c556cb33b05be305e6b93ad946b1f15881c4bbb2",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 10.14241623878479,
+  "completed_at": "2026-10-01T01:21:16.825826+00:00",
+  "log_hashes": {
+    "stdout.log": "0018868371b4d1144477439bbf144ed98b069429110d867740aeaabcf52ddd67",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

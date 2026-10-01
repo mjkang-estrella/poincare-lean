@@ -1,0 +1,6 @@
+[codex/upstream-integration-433 64218310] Preserve Gaussian heat PDE identities on Lean 4.33
+ Date: Wed Sep 30 18:19:05 2026 -0700
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+[codex/upstream-integration-433 c556cb33] Preserve the complex Gaussian limit on Lean 4.33
+ Date: Wed Sep 30 18:19:07 2026 -0700
+ 1 file changed, 1 insertion(+), 1 deletion(-)

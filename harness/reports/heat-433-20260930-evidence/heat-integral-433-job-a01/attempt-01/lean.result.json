@@ -1,0 +1,19 @@
+{
+  "name": "lean",
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatKernelIntegral.lean"
+  ],
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+  "started_utc": "2026-10-01T01:17:59.891122+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 18.41935341700446,
+  "completed_utc": "2026-10-01T01:18:18.310400+00:00",
+  "passed": true
+}

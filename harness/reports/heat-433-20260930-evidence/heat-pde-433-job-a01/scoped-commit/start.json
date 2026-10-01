@@ -1,0 +1,19 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-pde-433/poincare",
+  "argv": [
+    "git",
+    "commit",
+    "--only",
+    "-F",
+    "harness/v2/state/upstream-verification-20260930/heat-pde-433-job-a01/commit-message.txt",
+    "--",
+    "Poincare/Global/HeatKernelPDE.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "88f9d463817418be93153be8a137570854b9dad4",
+  "status": "## codex/heat-pde-433-a01\n M Poincare/Global/HeatKernelPDE.lean\n",
+  "source_sha256": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7",
+  "started_at": "2026-10-01T01:19:05.341734+00:00"
+}

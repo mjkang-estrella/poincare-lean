@@ -1,0 +1,198 @@
+{
+  "schema_version": "2.1",
+  "id": "heat-pde-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+  "objective": {
+    "title": "Preserve explicit heat-kernel PDE proofs on Lean 4.33",
+    "statement": "Repair only proof bodies, including private derivative certificates, while retaining every public/private signature, actual heatKernelReal formula, original hypotheses/norms/time domains/dimension1 scope and imports. Existing scalar heat/fundamental-solution consumers reuse the identities; retained full-root final integration needs compatibility. Core S remains discharged; no independent Hamilton input/convergence is constructed here.",
+    "deliverables": [
+      "Original heat-kernel PDE API compiles with exact frozen public types and surrounding data/header/axiom/safety guards."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/HeatKernelPDE.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/HeatKernel.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.lean",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/HeatKernelPDE.lean",
+      "Poincare/Global/HeatKernel.lean",
+      "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/blind-readback.json",
+      "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/FrozenMigrationProbe.lean",
+      "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/check-scope.py",
+      "harness/v2/state/upstream-verification-20260930/second-layer-433-build-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.hasDerivAt_heatKernel_time",
+      "Poincare.deriv_heatKernel_time",
+      "Poincare.heatKernelReal",
+      "Poincare.heatKernel_real_eq",
+      "Poincare.heatKernelReal_heatEquation",
+      "Poincare.heatKernel_real_heatEquation",
+      "Poincare.heatKernel_real_heatEquation_laplacian"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HeatKernelPDE.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.HeatKernelPDE"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/check-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/HeatKernelPDE.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.hasDerivAt_heatKernel_time",
+      "Poincare.deriv_heatKernel_time",
+      "Poincare.heatKernelReal",
+      "Poincare.heatKernel_real_eq",
+      "Poincare.heatKernelReal_heatEquation",
+      "Poincare.heatKernel_real_heatEquation",
+      "Poincare.heatKernel_real_heatEquation_laplacian"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HeatKernelPDE"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ (x : E), HasDerivAt.{0, 0} (fun (τ : Real) => Poincare.heatKernel.{u_1} τ x) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real))) (HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) t) (HSub.hSub.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real)) (1 : Real)))) (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t)))) (HMul.hMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) t) (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real))) (HMul.hMul.{0, 0, 0} (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HDiv.hDiv.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat)) (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} t (2 : Nat))))))) t",
+        "name": "Poincare.hasDerivAt_heatKernel_time",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ (x : E), Eq.{1} (deriv.{0, 0} (fun (τ : Real) => Poincare.heatKernel.{u_1} τ x) t) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real))) (HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) t) (HSub.hSub.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real)) (1 : Real)))) (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t)))) (HMul.hMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) Real.pi) t) (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} ↑(Module.finrank.{0, u_1} Real E)) (2 : Real))) (HMul.hMul.{0, 0, 0} (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HDiv.hDiv.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat)) (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} t (2 : Nat)))))))",
+        "name": "Poincare.deriv_heatKernel_time",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "Real → Real → Real",
+        "name": "Poincare.heatKernelReal",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (t x : Real), Eq.{1} (Poincare.heatKernel.{0} t x) (Poincare.heatKernelReal t x)",
+        "name": "Poincare.heatKernel_real_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {t x : Real}, LT.lt.{0} (0 : Real) t → Eq.{1} (deriv.{0, 0} (fun (τ : Real) => Poincare.heatKernelReal τ x) t) (iteratedDeriv.{0, 0} (2 : Nat) (fun (y : Real) => Poincare.heatKernelReal t y) x)",
+        "name": "Poincare.heatKernelReal_heatEquation",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {t x : Real}, LT.lt.{0} (0 : Real) t → Eq.{1} (deriv.{0, 0} (fun (τ : Real) => Poincare.heatKernel.{0} τ x) t) (iteratedDeriv.{0, 0} (2 : Nat) (fun (y : Real) => Poincare.heatKernel.{0} t y) x)",
+        "name": "Poincare.heatKernel_real_heatEquation",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ {t x : Real}, LT.lt.{0} (0 : Real) t → Eq.{1} (deriv.{0, 0} (fun (τ : Real) => Poincare.heatKernel.{0} τ x) t) (Laplacian.laplacian.{0, 0} (fun (y : Real) => Poincare.heatKernel.{0} t y) x)",
+        "name": "Poincare.heatKernel_real_heatEquation_laplacian",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/Global/HeatKernel.lean",
+        "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/definitions-for-review.txt",
+        "sha256": "17f77bbd012c49010c17b778cee37964cfdf4f9af290c4e9124cfaf5f3bf15ff"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "23deb1304c9981561e564c5f6cb5bcb9e2079ea1e0889a0c0371375c73de6f95",
+      "report_path": "harness/v2/state/upstream-verification-20260930/heat-pde-433-task-a01/blind-readback.json",
+      "report_sha256": "d675118307935e656769896b853a3d9302776e4a1e33d2391497619ad2aa80a5",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "Any repair needs data, import, definition, type/header/hypothesis/norm/time-domain changes beyond the proof-only scope.",
+    "The same genuine blocker repeats after three distinct proof attempts.",
+    "All scoped gates pass; preserve evidence and commit without accepting or merging."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 26000,
+    "disk_mb": 2048
+  }
+}

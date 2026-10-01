@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HeatKernelIntegral"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {t : Real}, LT.lt.{0} (0 : Real) t → MeasureTheory.Integrable.{0, u_1} (fun (x : E) => Poincare.heatKernel.{u_1} t x) MeasureTheory.MeasureSpace.volume.{u_1}",
+        "name": "Poincare.heatKernel_integrable",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {t : Real}, LT.lt.{0} (0 : Real) t → Eq.{1} (∫ (x : E), Poincare.heatKernel.{u_1} t x) (1 : Real)",
+        "name": "Poincare.integral_heatKernel_eq_one",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "{E : Type u_1} → [inst : NormedAddCommGroup.{u_1} E] → [inst_1 : InnerProductSpace.{0, u_1} Real E] → [FiniteDimensional.{0, u_1} Real E] → [inst_3 : MeasurableSpace.{u_1} E] → [BorelSpace.{u_1} E] → Real → (E → Real) → E → Real",
+        "name": "Poincare.heatSolution",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] (t : Real) (f : E → Real) (x : E), Eq.{1} (Poincare.heatSolution.{u_1} t f x) (∫ (y : E), HMul.hMul.{0, 0, 0} (Poincare.heatKernel.{u_1} t y) (f (HSub.hSub.{u_1, u_1, u_1} x y)))",
+        "name": "Poincare.heatSolution_apply",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ {f : E → Real}, Continuous.{u_1, 0} f → ∀ {C : Real}, (∀ (x : E), LE.le.{0} (Norm.norm.{0} (f x)) C) → ∀ (x : E), MeasureTheory.ConvolutionExistsAt.{0, u_1, 0, 0, 0} (fun (y : E) => Poincare.heatKernel.{u_1} t y) f x (ContinuousLinearMap.lsmul.{0, 0, 0} Real Real) MeasureTheory.MeasureSpace.volume.{u_1}",
+        "name": "Poincare.heatKernel_convolutionExistsAt_of_bounded_continuous",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ {f : E → Real}, Continuous.{u_1, 0} f → ∀ {C : Real}, (∀ (x : E), LE.le.{0} (Norm.norm.{0} (f x)) C) → MeasureTheory.ConvolutionExists.{0, u_1, 0, 0, 0} (fun (y : E) => Poincare.heatKernel.{u_1} t y) f (ContinuousLinearMap.lsmul.{0, 0, 0} Real Real) MeasureTheory.MeasureSpace.volume.{u_1}",
+        "name": "Poincare.heatKernel_convolutionExists_of_bounded_continuous",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ {f : E → Real}, Continuous.{u_1, 0} f → BddAbove.{0} (Set.range.{0, u_1 + 1} fun (x : E) => Norm.norm.{0} (f x)) → Continuous.{u_1, 0} (Poincare.heatSolution.{u_1} t f)",
+        "name": "Poincare.continuous_heatSolution_of_bounded_continuous",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "∀ {E : Type u_1} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] {f : E → ℂ}, MeasureTheory.Integrable f → ∀ {x : E}, ContinuousAt f x → Filter.Tendsto (fun t : ℝ => ∫ y : E, (((Real.pi : ℂ) * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ)) ^ ((Module.finrank ℝ E : ℂ) / 2) * Complex.exp (-(Real.pi : ℂ) ^ 2 * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ) * (‖x - y‖ ^ 2 : ℂ))) • f y) (nhdsWithin (0 : ℝ) (Set.Ioi (0 : ℝ))) (nhds (f x))",
+        "name": "Poincare.gaussianApproxIdentity_heatTimeScale_complex",
+        "universes": [
+          "u_1"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/Global/HeatKernel.lean",
+        "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/definitions-for-review.txt",
+        "sha256": "d82d8c90928f78e95de3a2432068772927c23cb1e42cb099de228d03f9d0eea9"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "b15ea121cf39098ec374181b97e86c340608ea64971cefc989af3d2f4f04b6aa",
+      "report_path": "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "cce3eee4271eec254cb8b65c5303dc9d6497947892f3aa1be8e9cbc8ebb89396",
+      "verdict": "approved"
+    }
+  }
+}

@@ -1,5 +1,37 @@
 # Handoff Snapshot
 
+## 2026-09-30 Heat proof compatibility independently accepted
+
+At mathematical-sourcec556cb33b05be305e6b93ad946b1f15881c4bbb2, root independently
+accepted proof-only HeatKernelPDE and HeatKernelIntegral repairs. Public/private
+headers, actual Gaussian/heatSolution data, canonical measures, original norms,
+hypotheses and time/dimension scope are retained. Fresh direct Lean, scoped
+build, exact rigid public types/universes, allowed-axiom/unsafe/partial checks,
+data/body guards, token scan and diff checks passed. Evidence is archived in
+harness/reports/heat-433-20260930-evidence, including failed serialization.
+
+The verified compatible smoothability core S remains discharged. Original
+UniversalHamiltonFrontInputsStatement.{u,v} and
+UniversalHamiltonConvergenceStatement.{u} remain unconstructed independently.
+The reserved final theorem remains absent, and the same upstream PC source
+build is live at root85355, wrapper65764/lake65773. No final acceptance is claimed.
+
+LeviCivitaUniqueness is the remaining resisting immediate-consumer scope.
+Old/current scalar derivative operators have the same formula by checked rfl;
+its exact ten normalized original types passed rigid checks and fresh blind
+readback. A separately leased Task permits only six extDerivFun f -> mvfderiv I f
+substitutions, retaining the original model and every other source byte. If the
+normalization reveals actual proof errors, preserve diagnostics and freeze a
+successor proof-only scope before editing those bodies.
+
+Exact first action: revalidate the same live upstream handle/terminal result
+and inspect the Levi normalization job under ignored oldintegration state
+levi-civita-433-job-a01. Accept only fresh exact gates, preserve all failed work,
+then advance the retained-root compiler frontier and review the successor strict
+context contract. The complete final goal still needs separately verified smooth
+Poincare input, its unconditional adapter using the proved S, every retained
+root module, and every exact completion gate at one clean stable HEAD.
+
 ## 2026-09-30 Actual compatible smoothability obligation discharged
 
 At clean mathematical-source8c5cc915fc0b59614fbc0af6fe38b3f8f431ded6,

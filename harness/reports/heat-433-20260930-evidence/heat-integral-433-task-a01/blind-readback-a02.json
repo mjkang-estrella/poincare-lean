@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "b15ea121cf39098ec374181b97e86c340608ea64971cefc989af3d2f4f04b6aa",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.heatKernel_integrable",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with NormedAddCommGroup E, InnerProductSpace R E, FiniteDimensional R E, MeasurableSpace E and BorelSpace E instances, and implicit real t>0, the function x |-> heatKernel(t,x) is integrable with respect to the canonical volume on E. The measurable structure is Borel for the norm topology; no arbitrary measure is a parameter. The Gaussian is (4*pi*t)^(-(finrank R E : R)/2)*exp(-norm(x)^2/(4*t)). No separate completeness or positive-dimension hypothesis occurs. The statement concerns a positive-time Euclidean Gaussian, not integrability at t=0, a manifold heat kernel or a geometric flow. The sole declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.integral_heatKernel_eq_one",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with the normed-group, real-inner-product, finite-dimensional, measurable-space and Borel-space instances, and implicit real t>0, the integral of heatKernel(t,x) over all x in E with respect to its canonical volume equals the real number 1. Thus the explicit positive-time Euclidean Gaussian has unit mass in the specified canonical measure. No arbitrary volume normalization or general manifold measure is an input. There is no dimension-positivity restriction and no assertion at t=0, limit theorem, semigroup identity or flow existence. The sole universe is u_1."
+    },
+    {
+      "name": "Poincare.heatSolution",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 carrying a measurable-space instance compatible with its Borel topology, heatSolution takes an explicit real t and explicit real-valued function f : E -> R and returns a function E -> R. Its supplied definition is convolution of heatKernel(t,.) with f using real scalar multiplication and canonical volume. The declaration imposes no t>0, continuity, boundedness or integrability premise on f. It is a total integral-defined function, so its type alone does not certify that a convolution integral is integrable, that it solves a PDE, or that it attains initial data. The sole universe is u_1; there is no manifold or evolving-metric parameter."
+    },
+    {
+      "name": "Poincare.heatSolution_apply",
+      "mathematical_statement": "For the same implicit finite-dimensional real inner-product-space and Borel measurable assumptions on E : Type u_1, every explicit real t, explicit f : E -> R and explicit x : E satisfy heatSolution(t,f,x)=the integral over y in E of heatKernel(t,y)*f(x-y), with respect to canonical volume. No time positivity or regularity/integrability assumptions are stated. This identifies the total convolution definition, not its existence as an integrable convolution or a heat-equation solution. The integrand uses subtraction in E and ordinary multiplication in R. The single universe is u_1."
+    },
+    {
+      "name": "Poincare.heatKernel_convolutionExistsAt_of_bounded_continuous",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with a Borel measurable structure, implicit real t>0, implicit f : E -> R that is globally continuous, and implicit real C with norm(f(x))<=C for every x : E, the convolution of heatKernel(t,.) and f with real scalar multiplication and canonical volume exists at each explicit x : E. This is ConvolutionExistsAt, namely integrability of the convolution integrand at that spatial point. There is no independent positivity requirement on C and no integrability premise on f itself; a global norm bound and continuity are the assumptions. It is not a PDE, derivative, initial-limit or general manifold-flow statement. The sole universe is u_1."
+    },
+    {
+      "name": "Poincare.heatKernel_convolutionExists_of_bounded_continuous",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with Borel measurable structure, implicit real t>0, globally continuous implicit f : E -> R, and implicit real C bounding norm(f(x)) for every x, the convolution of heatKernel(t,.) and f exists on E with the real scalar-multiplication bilinear map and canonical volume. ConvolutionExists is the whole-space version of existence at every spatial point. No integrability assumption on f itself or separate sign assumption on C is imposed. The conclusion does not state differentiability, a PDE, initial-data convergence, a uniform numerical bound or any geometric flow. The sole declaration universe is u_1."
+    },
+    {
+      "name": "Poincare.continuous_heatSolution_of_bounded_continuous",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with Borel measurable structure, implicit real t>0 and implicit globally continuous f : E -> R, assume BddAbove of the range of x |-> norm(f(x)). Then heatSolution(t,f,.) is globally continuous as a function E -> R. The bound is global over all E, not merely local, and no integrability of f is required. Time is fixed; the conclusion is spatial continuity, not joint continuity in time and space, differentiability, satisfaction of the heat PDE, convergence to initial data or a general manifold-flow theorem. The sole universe is u_1."
+    },
+    {
+      "name": "Poincare.gaussianApproxIdentity_heatTimeScale_complex",
+      "mathematical_statement": "For an implicit finite-dimensional real inner-product space E : Type u_1 with NormedAddCommGroup, InnerProductSpace R, FiniteDimensional R, MeasurableSpace and BorelSpace instances, let implicit f : E -> C be integrable with respect to canonical volume. At each implicit x : E where f is continuous, the complex integral over y of W(t,x-y) times f(y) tends to f(x) as real t tends to 0 from above, using nhdsWithin 0 (Ioi 0) as the source filter and the ordinary complex neighborhood filter at f(x) as target. Define d=finrank R E and real a_t=((4*pi^2)*t)^(-1), whose coercion to C is explicit. The displayed weight is W(t,z)=((pi:C)*(a_t:C))^((d:C)/2)*Complex.exp(-((pi:C)^2)*(a_t:C)*(norm(z)^2:C)); its power and exponential are complex and the displayed scalar action on f(y) is complex multiplication. This is the Fourier-normalized complex Gaussian with the stated real heat-time scaling. The assumptions are integrability of the complex-valued f and continuity at this x, not global continuity or boundedness. The result is a pointwise approximate-identity limit, not uniform or norm convergence. It does not itself identify W with the real heatKernel, assert an initial-limit theorem for the real-valued heatSolution definition, solve a PDE, or construct a manifold/Ricci flow. The time filter excludes 0, and no claim about the value of the integral at 0 or negative time is made. The sole declaration universe is u_1."
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,113 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "head_after": "88f9d463817418be93153be8a137570854b9dad4",
+  "status_after": "## codex/heat-integral-433-a01\n M Poincare/Global/HeatKernelIntegral.lean\n",
+  "all_scoped_gates_passed": true,
+  "results": [
+    {
+      "name": "lean",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HeatKernelIntegral.lean"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:17:59.891122+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 18.41935341700446,
+      "completed_utc": "2026-10-01T01:18:18.310400+00:00",
+      "passed": true
+    },
+    {
+      "name": "scoped-build",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.HeatKernelIntegral"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:18:18.310850+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 8.348811832955107,
+      "completed_utc": "2026-10-01T01:18:26.659595+00:00",
+      "passed": true
+    },
+    {
+      "name": "frozen-probe",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/FrozenMigrationProbe-a02.lean"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:18:26.659993+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 16.89981958293356,
+      "completed_utc": "2026-10-01T01:18:43.559745+00:00",
+      "passed": true
+    },
+    {
+      "name": "scopeguard",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/check-scope.py"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:18:43.560482+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.04943091596942395,
+      "completed_utc": "2026-10-01T01:18:43.609645+00:00",
+      "passed": true
+    },
+    {
+      "name": "token-scan",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/HeatKernelIntegral.lean"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:18:43.610153+00:00",
+      "exit_code": 1,
+      "elapsed_seconds": 0.013080791919492185,
+      "completed_utc": "2026-10-01T01:18:43.623197+00:00",
+      "passed": true
+    },
+    {
+      "name": "diff-check",
+      "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+      "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "started_utc": "2026-10-01T01:18:43.623602+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.04739433410577476,
+      "completed_utc": "2026-10-01T01:18:43.670949+00:00",
+      "passed": true
+    }
+  ]
+}

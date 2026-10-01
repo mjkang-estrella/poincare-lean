@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatKernelPDE.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-pde-433/poincare",
+  "started_at": "2026-10-01T01:19:57.321133+00:00",
+  "source_head": "6bb85b1f72d2cf603cae7f97f2d106b9fc558c6f",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 14.41212797164917,
+  "completed_at": "2026-10-01T01:20:11.748964+00:00",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

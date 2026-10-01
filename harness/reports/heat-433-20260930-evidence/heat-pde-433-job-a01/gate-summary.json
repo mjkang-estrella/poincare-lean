@@ -1,0 +1,17 @@
+{
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "source_sha256": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7",
+  "frozen_public_type_universe_checks": 7,
+  "permitted_axiom_safety_checks": 7,
+  "public_private_headers_preserved": true,
+  "header_count": 14,
+  "Gaussian_data_imports_section_context_preserved": true,
+  "imported_HeatKernel_pinned_bytes_unchanged": true,
+  "hypotheses_norms_time_domain_dim1_scope_preserved": true,
+  "forbidden_scan": "no matches, exit1",
+  "diff_check_exit": 0,
+  "changed_files": [
+    "Poincare/Global/HeatKernelPDE.lean"
+  ],
+  "acceptance": "worker gates passed; root independent acceptance pending"
+}

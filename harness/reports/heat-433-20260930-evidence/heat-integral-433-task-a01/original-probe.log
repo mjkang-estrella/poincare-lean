@@ -1,0 +1,33 @@
+AXIOM_CONTRACT_OK: Poincare.heatKernel_integrable
+AXIOM_CONTRACT_OK: Poincare.integral_heatKernel_eq_one
+AXIOM_CONTRACT_OK: Poincare.heatSolution
+AXIOM_CONTRACT_OK: Poincare.heatSolution_apply
+AXIOM_CONTRACT_OK: Poincare.heatKernel_convolutionExistsAt_of_bounded_continuous
+AXIOM_CONTRACT_OK: Poincare.heatKernel_convolutionExists_of_bounded_continuous
+AXIOM_CONTRACT_OK: Poincare.continuous_heatSolution_of_bounded_continuous
+AXIOM_CONTRACT_OK: Poincare.gaussianApproxIdentity_heatTimeScale_complex
+FROZEN_CONTRACT_OK: Poincare.heatKernel_integrable
+FROZEN_CONTRACT_OK: Poincare.integral_heatKernel_eq_one
+FROZEN_CONTRACT_OK: Poincare.heatSolution
+FROZEN_CONTRACT_OK: Poincare.heatSolution_apply
+FROZEN_CONTRACT_OK: Poincare.heatKernel_convolutionExistsAt_of_bounded_continuous
+FROZEN_CONTRACT_OK: Poincare.heatKernel_convolutionExists_of_bounded_continuous
+FROZEN_CONTRACT_OK: Poincare.continuous_heatSolution_of_bounded_continuous
+harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/FrozenMigrationProbe.lean:21:1: error: Type mismatch
+  Real.pi
+has type
+  ℝ
+but is expected to have type
+  ℤ
+harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/FrozenMigrationProbe.lean:22:2: error: Type mismatch
+  (4 * Real.pi ^ 2 * t)⁻¹
+has type
+  ℝ
+but is expected to have type
+  ℤ
+harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/FrozenMigrationProbe.lean:25:12: error: Type mismatch
+  ‖x - y‖
+has type
+  ℝ
+but is expected to have type
+  ℤ

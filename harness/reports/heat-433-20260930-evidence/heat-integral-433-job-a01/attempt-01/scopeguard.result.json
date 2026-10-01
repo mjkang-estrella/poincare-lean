@@ -1,0 +1,15 @@
+{
+  "name": "scopeguard",
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-integral-433/poincare",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/heat-integral-433-task-a01/check-scope.py"
+  ],
+  "base_sha": "88f9d463817418be93153be8a137570854b9dad4",
+  "source_sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+  "started_utc": "2026-10-01T01:18:43.560482+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 0.04943091596942395,
+  "completed_utc": "2026-10-01T01:18:43.609645+00:00",
+  "passed": true
+}
