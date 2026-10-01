@@ -1,0 +1,9 @@
+error: Poincare/Global/HeatApproxIdentity.lean:129:2: Type mismatch: After simplification, term
+  hreal
+ has type
+  @Tendsto ℝ ℝ (Complex.re ∘ fun t => ↑(∫ (y : E), heatKernel t y * f (x - y))) (𝓝[>] 0) (𝓝 (f x))
+but is expected to have type
+  @Tendsto ℝ ℝ (fun t => ∫ (y : E), heatKernel t y * f (x - y)) (𝓝[>] 0) (𝓝 (f x))
+error: Lean exited with code 1
+⚠ [2895/2897] Replayed Poincare.Global.ParabolicSolutionGraph
+warning: Poincare/Global/ParabolicSolutionGraph.lean:298:2: Try this: 

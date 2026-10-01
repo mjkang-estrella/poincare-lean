@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.HeatApproxIdentity"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 5.921199083328247,
+  "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "log_hashes": {
+    "stdout.log": "a50ee7dd7ee843b4423b80330b7367eb167a08af2c67a4bcabd425f179d7dc6e",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,13 @@
+Preserve the real heat limit through explicit composition reduction
+
+Rewrite the bare composed limit map with Function.comp_def and reduce
+Complex.re of a real coercion with Complex.ofReal_re. This closes the
+existing real-valued limit without unfolding the heatSolution data.
+
+Constraint: Edit only the frozen final proof body; preserve every other byte
+Tested: Fresh direct Lean and scoped HeatApproxIdentity Lake build
+Tested: Three frozen type/universe and allowed-axiom/safety probes
+Tested: Whole surrounding-source guard, no-hit token scan, git diff --check
+Not-tested: Full root and completion gates, owned by the orchestrator
+Scope-risk: narrow
+Confidence: high

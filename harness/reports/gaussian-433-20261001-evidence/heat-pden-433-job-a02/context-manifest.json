@@ -1,0 +1,62 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "5101630ada3d9dbf7a527e4d0a9c95fd6df694afc76d08581edeed849d46c534",
+    "bytes": 238785
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/HeatKernelPDEn.lean",
+    "sha256": "cd9e3cc7dad0f1860a422db03707831398ba668af29e6ecb01730231874b4123",
+    "bytes": 6572
+  },
+  {
+    "path": "Poincare/Global/HeatKernelPDE.lean",
+    "sha256": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7",
+    "bytes": 7749
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a01/blind-readback-a01.json",
+    "sha256": "dde4a37a75360f14e2e453354967b0721fa2462ade5c3a6a1961dd5f87b3e654",
+    "bytes": 3502
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a01/FrozenMigrationProbe.lean",
+    "sha256": "bc7f31ba7eb804e1ff753af5f19afabb5d117678e9cd5ba622974022d642ffef",
+    "bytes": 16938
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a01/check-scope.py",
+    "sha256": "4d0c9b65237b028a1eaa9d16841d986ded37dcb43db28f22879e2f953162a17c",
+    "bytes": 681
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/stdout.log",
+    "sha256": "cdc25cce332d2be2d983f7ce5c16637e0e393730b3205886c767b8690b247330",
+    "bytes": 178049
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a02/successor-route.md",
+    "sha256": "bd87306b293349d406c7b1eb1f162c27273b2a794f29c9e65a137928a2844e1d",
+    "bytes": 779
+  }
+]

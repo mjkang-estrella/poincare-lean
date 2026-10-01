@@ -1,0 +1,18 @@
+{
+  "old_original": {
+    "root": "/Users/mjkang/Develop/poincare",
+    "project_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+    "project_status": "## main...origin/main\n",
+    "toolchain": "leanprover/lean4:v4.30.0-rc2",
+    "mathlib_head": "7175569c842f9164564bd76ff8b207e7b4705522",
+    "mathlib_tracked_status": ""
+  },
+  "current_433": {
+    "root": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+    "project_head": "681e24e8fedf59c21b71747e90835567dc790e43",
+    "project_status": "## codex/upstream-integration-433\n",
+    "toolchain": "leanprover/lean4:v4.33.1",
+    "mathlib_head": "0df444a360eaa60ab8c11dca51a86af692955474",
+    "mathlib_tracked_status": ""
+  }
+}

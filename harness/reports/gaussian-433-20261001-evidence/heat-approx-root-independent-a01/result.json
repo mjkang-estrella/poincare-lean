@@ -1,0 +1,105 @@
+{
+  "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "exit_code": 0,
+  "results": [
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HeatApproxIdentity.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 7.628438234329224,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.HeatApproxIdentity"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 5.921199083328247,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "a50ee7dd7ee843b4423b80330b7367eb167a08af2c67a4bcabd425f179d7dc6e",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 7.803956031799316,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "d9354f760449060fde7e63a74081225b9ae393a1854fcbecd0fd0eb2c702b9bd",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/check-scope.py"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.023211002349853516,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "d57cd3b4d61369d981fe2ff838ae23d31b498833b0e55a9d2a198e120de1c5a7",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/HeatApproxIdentity.lean"
+      ],
+      "exit_code": 1,
+      "pass": true,
+      "seconds": 0.0045108795166015625,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.02152109146118164,
+      "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ]
+}

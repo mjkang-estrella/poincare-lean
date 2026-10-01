@@ -1,0 +1,156 @@
+{
+  "unchanged_prior_files": [
+    {
+      "path": "attempt-a01/diff-check.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a01/result.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a01/source.lean",
+      "passed": true
+    },
+    {
+      "path": "attempt-a01/stderr.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a01/stdout.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a01/token-scan.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/diff-check.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/result.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/source.lean",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/stderr.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/stdout.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a02/token-scan.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/diff-check.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/result.json",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/source.lean",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/stderr.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/stdout.log",
+      "passed": true
+    },
+    {
+      "path": "attempt-a03/token-scan.json",
+      "passed": true
+    },
+    {
+      "path": "baseline-a00/result.json",
+      "passed": true
+    },
+    {
+      "path": "baseline-a00/stderr.log",
+      "passed": true
+    },
+    {
+      "path": "baseline-a00/stdout.log",
+      "passed": true
+    },
+    {
+      "path": "final-diff-check-result.json",
+      "passed": true
+    },
+    {
+      "path": "final-diff-check-stderr.log",
+      "passed": true
+    },
+    {
+      "path": "final-diff-check-stdout.log",
+      "passed": true
+    },
+    {
+      "path": "final-report.md",
+      "passed": true
+    },
+    {
+      "path": "final-token-scan-result.json",
+      "passed": true
+    },
+    {
+      "path": "final-token-scan-stderr.log",
+      "passed": true
+    },
+    {
+      "path": "final-token-scan-stdout.log",
+      "passed": true
+    },
+    {
+      "path": "final-worker.patch",
+      "passed": true
+    },
+    {
+      "path": "job-start.json",
+      "passed": true
+    },
+    {
+      "path": "scope-check-result.json",
+      "passed": true
+    },
+    {
+      "path": "scope-check-stderr.log",
+      "passed": true
+    },
+    {
+      "path": "scope-check-stdout.log",
+      "passed": true
+    },
+    {
+      "path": "strongest-partial-result.json",
+      "passed": true
+    },
+    {
+      "path": "strongest-partial-stderr.log",
+      "passed": true
+    },
+    {
+      "path": "strongest-partial-stdout.log",
+      "passed": true
+    },
+    {
+      "path": "strongest-partial.lean",
+      "passed": true
+    },
+    {
+      "path": "worker-result.json",
+      "passed": true
+    }
+  ]
+}

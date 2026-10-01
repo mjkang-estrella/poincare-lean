@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.VerifiedPoincare"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.poincare_conjecture",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "\u2200 (M : Type u) [TopologicalSpace M] [T2Space M] [ChartedSpace (EuclideanSpace \u211d (Fin 3)) M] [SimplyConnectedSpace M] [CompactSpace M], Nonempty (M \u2243\u209c Metric.sphere (0 : EuclideanSpace \u211d (Fin 4)) (1 : \u211d))"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+      },
+      {
+        "path": "Poincare/Global/SmoothabilityExistenceStatement.lean",
+        "sha256": "6818f06a3df1ab8a46eaf6612c8a70d5c2070c2e87180e76474a905903573935"
+      },
+      {
+        "path": "Poincare/Global/VerifiedSmoothability.lean",
+        "sha256": "3e392581041df9dc56c3c9e5247a4bdbfc49b8a42a1b8eb8cb3cc021556bba99"
+      },
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/final_target_readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "741ef30f0527a18b7a554ad90217631d23ab4eb5afa3ed30f0f4ffa009070aac",
+      "report_path": "harness/v2/state/upstream-verification-20260930/final-endpoint-task-a01/blind-readback-a01.json",
+      "report_sha256": "037682a03f8da7204aa6b5f6463d46f3cc1639538a74b4d70aff41d1ac62e643",
+      "verdict": "approved"
+    }
+  }
+}

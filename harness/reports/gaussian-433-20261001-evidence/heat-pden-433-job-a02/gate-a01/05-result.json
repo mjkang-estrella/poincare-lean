@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/Global/HeatKernelPDEn.lean"
+  ],
+  "exit_code": 1,
+  "passed": true,
+  "duration_seconds": 0.005317625007592142
+}

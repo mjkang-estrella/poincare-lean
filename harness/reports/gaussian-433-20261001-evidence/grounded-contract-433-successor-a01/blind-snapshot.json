@@ -1,0 +1,77 @@
+{
+    "imports": [
+      "Poincare.ProofProgress.GroundedTopologyAssembly"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.GroundedTopologyUniversalSourceStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Prop"
+      },
+      {
+        "name": "Poincare.GroundedTopologyThreeSphereCoveringStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Prop"
+      },
+      {
+        "name": "Poincare.GroundedTopologySource.active_components_cover",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace Poincare.ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M] (source : Poincare.GroundedTopologySource M) (stage : source.traceStage), (⋃ component, source.trace.activeComponentSet stage component) = Set.univ"
+      },
+      {
+        "name": "Poincare.GroundedTopologySource.unique_active_component",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace Poincare.ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M] (source : Poincare.GroundedTopologySource M) (stage : source.traceStage) (x : M), ∃! component, x ∈ source.trace.activeComponentSet stage component"
+      },
+      {
+        "name": "Poincare.poincare_statement_of_groundedTopologySources_and_covering",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Poincare.GroundedTopologyUniversalSourceStatement.{u} → Poincare.GroundedTopologyThreeSphereCoveringStatement.{u} → Poincare.PoincareConjectureStatement.{u}"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/ProofProgress/GroundedTopologyStatements.lean",
+        "sha256": "056694dbdc457ca426f15237dc2c71c24f48dc3ee06a34f06632be5ce0615e17"
+      },
+      {
+        "path": "Poincare/ProofProgress/GroundedPerelmanSingularityControl.lean",
+        "sha256": "e7d191a05af0a1c6176351e57f8c05d94505c94df37f6a468531b507561d7b89"
+      },
+      {
+        "path": "Poincare/TopologyExtraction.lean",
+        "sha256": "f035a1497ec60ed56a5167cdd8fa84c3bf730b3c8d9004b5b4d84d60d64ea3a9"
+      },
+      {
+        "path": "Poincare/Surgery.lean",
+        "sha256": "57ac51671032c99f31b85c97c17f280fc52d11429dd7fb943a93525790b098ff"
+      },
+      {
+        "path": "Poincare/RicciFlowInterface.lean",
+        "sha256": "59f8d8327ebd16e3fef15374da462887ed14813472ae06998f3e93073239e907"
+      },
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+      },
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      }
+    ],
+    "snapshot_sha256": "1e93dc8a14d5f250123d605b06b77a7a26343d6e9e0c271b88d44b2e83f22f1c"
+}

@@ -1,0 +1,9 @@
+{
+  "accepted_commit": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "independent_gates": "harness/v2/state/upstream-verification-20260930/heat-approx-root-independent-a01/result.json",
+  "source_sha256": "e156d8408d09a16e83a91cc87597022b0565755a19587e59249b1cc296919738",
+  "scope": "One proof-only real-part composition simplification; all three literal types/universes and every other byte unchanged.",
+  "core_assumption_effect": "Retained-root compiler compatibility only. Compatible smoothability S already discharged; independent universal Hamilton inputs/convergence remain open; final theorem not constructed.",
+  "completion_certified": false
+}

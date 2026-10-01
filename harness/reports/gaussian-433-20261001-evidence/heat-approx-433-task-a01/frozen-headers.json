@@ -1,0 +1,32 @@
+[
+  {
+    "name": "heatKernel_fourier_prefactor_real",
+    "kind": "private lemma",
+    "source_header_through_by": "private lemma heatKernel_fourier_prefactor_real {t : ℝ} (ht : 0 < t) :\n    (Real.pi * (((4 * Real.pi ^ 2) * t)⁻¹)) ^ ((Module.finrank ℝ E : ℝ) / 2) =\n      (4 * Real.pi * t) ^ (-(Module.finrank ℝ E : ℝ) / 2) := by"
+  },
+  {
+    "name": "heatKernel_fourier_exponent_real",
+    "kind": "private lemma",
+    "source_header_through_by": "private lemma heatKernel_fourier_exponent_real {t : ℝ} (ht : 0 < t) (z : E) :\n    -(Real.pi ^ 2) * (((4 * Real.pi ^ 2) * t)⁻¹) * ‖z‖ ^ 2 =\n      -(‖z‖ ^ 2) / (4 * t) := by"
+  },
+  {
+    "name": "heatKernel_fourier_complex_eq_ofReal",
+    "kind": "theorem",
+    "source_header_through_by": "theorem heatKernel_fourier_complex_eq_ofReal {t : ℝ} (ht : 0 < t) (x y : E) :\n    (((Real.pi : ℂ) * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ)) ^\n          ((Module.finrank ℝ E : ℂ) / 2) *\n        Complex.exp\n          (-(Real.pi : ℂ) ^ 2 * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ) *\n            (‖x - y‖ ^ 2 : ℂ))) =\n      (heatKernel (E := E) t (x - y) : ℂ) := by"
+  },
+  {
+    "name": "heatSolution_apply_swap",
+    "kind": "theorem",
+    "source_header_through_by": "theorem heatSolution_apply_swap (t : ℝ) (f : E → ℝ) (x : E) :\n    heatSolution (E := E) t f x = ∫ y : E, heatKernel (E := E) t (x - y) * f y := by"
+  },
+  {
+    "name": "gaussian_heat_integral_eq_heatSolution_of_pos",
+    "kind": "private lemma",
+    "source_header_through_by": "private lemma gaussian_heat_integral_eq_heatSolution_of_pos {t : ℝ} (ht : 0 < t)\n    (f : E → ℝ) (x : E) :\n    (∫ y : E,\n      (((Real.pi : ℂ) * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ)) ^\n            ((Module.finrank ℝ E : ℂ) / 2) *\n          Complex.exp\n            (-(Real.pi : ℂ) ^ 2 * ((((4 * Real.pi ^ 2) * t)⁻¹ : ℝ) : ℂ) *\n              (‖x - y‖ ^ 2 : ℂ))) •\n        (f y : ℂ)) =\n      (heatSolution (E := E) t f x : ℂ) := by"
+  },
+  {
+    "name": "tendsto_heatSolution_nhdsGT_zero",
+    "kind": "theorem",
+    "source_header_through_by": "theorem tendsto_heatSolution_nhdsGT_zero {f : E → ℝ} (hf : Integrable f)\n    {x : E} (hcf : ContinuousAt f x) :\n    Tendsto (fun t : ℝ => heatSolution (E := E) t f x) (𝓝[>] (0 : ℝ)) (𝓝 (f x)) := by"
+  }
+]

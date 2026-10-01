@@ -1,0 +1,13 @@
+Preserve Gaussian PDE identities across Lean 4.33
+
+Normalize the derivative conversion instances and evaluate continuous
+linear-map applications before reducing innerSL to the original scalar
+inner product. This keeps the Gaussian and all six public declarations
+unchanged while restoring the spatial Hessian calculation.
+
+Constraint: Only the two frozen proof bodies may change
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Direct Lean; scoped Lake build; six frozen type and axiom/safety probes
+Tested: Full surrounding-source guard; frozen definition hashes; token scan; diff check

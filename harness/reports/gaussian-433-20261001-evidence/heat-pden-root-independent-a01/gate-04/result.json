@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a02/check-scope.py"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 0.026468276977539062,
+  "source_head": "eae832136f97f5aa34a4fd7484d203b55503dd6e",
+  "log_hashes": {
+    "stdout.log": "271a225a3b217edadd20caebf5559782127ff4330c676beb922d920f7a4bcb5d",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

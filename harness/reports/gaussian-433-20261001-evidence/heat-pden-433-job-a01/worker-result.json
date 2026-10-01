@@ -1,0 +1,58 @@
+{
+  "state": "blocked",
+  "reason": "Three distinct proof-body attempts leave innerSL evaluation opaque to simp/rw. Frozen stop condition reached.",
+  "strongest_verified_partial": "The first derivative body with convert! compiles in a separately checked prefix containing identical import/header/body.",
+  "source_sha256": "cd9e3cc7dad0f1860a422db03707831398ba668af29e6ecb01730231874b4123",
+  "patch_sha256": "d4d8f6338b27b7361bd724f64a32b3a8d1e593fa092353c6ff6856f6cdc3276e",
+  "recorded_utc": "2026-10-01T03:17:50.542176+00:00",
+  "verification": [
+    {
+      "name": "strongest-partial",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/heat-pden-433-job-a01/strongest-partial.lean"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 10.593362458981574
+    },
+    {
+      "name": "scope-check",
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a01/check-scope.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.031635832972824574
+    },
+    {
+      "name": "final-token-scan",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/HeatKernelPDEn.lean"
+      ],
+      "exit_code": 1,
+      "duration_seconds": 0.005250208894722164
+    },
+    {
+      "name": "final-diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.04239737498573959
+    }
+  ],
+  "not_run": [
+    "Scoped lake build and frozen probe because direct full-module elaboration fails; running the probe would use stale compiled output."
+  ],
+  "commit": null,
+  "accepted": false
+}

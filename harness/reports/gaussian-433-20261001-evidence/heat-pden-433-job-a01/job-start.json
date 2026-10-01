@@ -1,0 +1,15 @@
+{
+  "job_id": "heat-pden-433-job-a01",
+  "task_id": "heat-pden-433-preserve",
+  "revision": 1,
+  "worker": "/root/heat_pden_worker",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "branch": "codex/heat-pden-433-a01",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-pden-433/poincare",
+  "start_utc": "2026-10-01T03:15:21.028178+00:00",
+  "allowed_source": "Poincare/Global/HeatKernelPDEn.lean",
+  "allowed_proof_bodies": [
+    "hasFDerivAt_neg_norm_sq_div",
+    "iteratedFDeriv_two_exp_neg_norm_sq_div_apply"
+  ]
+}

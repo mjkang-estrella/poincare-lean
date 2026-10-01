@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatKernelPDEn.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:23:25.632353+00:00",
+  "source_head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 3.47668194770813,
+  "completed_at": "2026-10-01T03:23:29.121702+00:00",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

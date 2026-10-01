@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.HeatKernelPDEn"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 6.942569971084595,
+  "source_head": "eae832136f97f5aa34a4fd7484d203b55503dd6e",
+  "log_hashes": {
+    "stdout.log": "458acd96ad166a9d4355a0c5978bc7629318c8c125589c7f7ea56fcfe4629937",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

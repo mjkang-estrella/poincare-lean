@@ -1,0 +1,26 @@
+[
+  {
+    "path": "lean-toolchain",
+    "expected": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+    "actual": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+    "passed": true
+  },
+  {
+    "path": "lake-manifest.json",
+    "expected": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+    "actual": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+    "passed": true
+  },
+  {
+    "path": "Poincare/Global/HeatKernel.lean",
+    "expected": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a",
+    "actual": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a",
+    "passed": true
+  },
+  {
+    "path": "Poincare/Global/HeatKernelPDE.lean",
+    "expected": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7",
+    "actual": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7",
+    "passed": true
+  }
+]

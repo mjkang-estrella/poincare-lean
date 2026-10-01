@@ -1,0 +1,42 @@
+{
+  "frozen_definitions_and_readback": [
+    {
+      "path": "lean-toolchain",
+      "expected": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+      "actual": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+      "matches": true
+    },
+    {
+      "path": "lake-manifest.json",
+      "expected": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "actual": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "matches": true
+    },
+    {
+      "path": "lakefile.lean",
+      "expected": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398",
+      "actual": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398",
+      "matches": true
+    },
+    {
+      "path": "Poincare/Global/HeatKernel.lean",
+      "expected": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a",
+      "actual": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a",
+      "matches": true
+    },
+    {
+      "path": "Poincare/Global/HeatKernelIntegral.lean",
+      "expected": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "actual": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+      "matches": true
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/blind-readback-a01.json",
+      "expected": "e66844e5101b863f9645aa18d0a6a7ba4afc1076578cdfcacf75dc30b2473fc6",
+      "actual": "e66844e5101b863f9645aa18d0a6a7ba4afc1076578cdfcacf75dc30b2473fc6",
+      "matches": true
+    }
+  ],
+  "all_match": true,
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43"
+}

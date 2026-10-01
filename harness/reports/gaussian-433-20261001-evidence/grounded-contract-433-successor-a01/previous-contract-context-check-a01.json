@@ -1,0 +1,16 @@
+{
+  "command": [
+    "python3",
+    "/Users/mjkang/Develop/poincare/scripts/frozen_contract_audit.py",
+    "--repo",
+    "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+    "--manifest",
+    "/Users/mjkang/Develop/poincare/harness/v2/contracts/grounded-topology.contract.json",
+    "--check-context-only"
+  ],
+  "exit_code": 1,
+  "stdout": "",
+  "stderr": "FAIL: frozen statement definition changed: Poincare/Statement.lean\n",
+  "lean_run": false,
+  "build_run": false
+}

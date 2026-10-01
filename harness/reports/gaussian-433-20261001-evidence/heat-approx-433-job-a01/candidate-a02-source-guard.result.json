@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/check-scope.py"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "started_utc": "2026-10-01T03:23:18.915071+00:00",
+  "finished_utc": "2026-10-01T03:23:18.939286+00:00",
+  "elapsed_seconds": 0.02406716695986688,
+  "exit_code": 0,
+  "stdout_sha256": "d57cd3b4d61369d981fe2ff838ae23d31b498833b0e55a9d2a198e120de1c5a7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

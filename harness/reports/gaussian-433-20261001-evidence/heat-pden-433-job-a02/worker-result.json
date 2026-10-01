@@ -1,0 +1,9 @@
+{
+  "state": "worker_complete_ready_for_review",
+  "commit": "eae832136f97f5aa34a4fd7484d203b55503dd6e",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "gate_passed": true,
+  "accepted": false,
+  "merged": false,
+  "completed_utc": "2026-10-01T03:21:08.904379+00:00"
+}

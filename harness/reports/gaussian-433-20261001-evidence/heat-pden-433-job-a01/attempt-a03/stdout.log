@@ -1,0 +1,16 @@
+Poincare/Global/HeatKernelPDEn.lean:76:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ⟪?x, ?x⟫_ℝ
+in the target expression
+  Real.exp (-‖x‖ ^ 2 / (4 * t)) * (-(1 / (2 * t)) * ((innerSL ℝ) v) v) +
+      Real.exp (-‖x‖ ^ 2 / (4 * t)) * (-(1 / (2 * t)) * ((innerSL ℝ) x) v) * (-(1 / (2 * t)) * ((innerSL ℝ) x) v) =
+    Real.exp (-‖x‖ ^ 2 / (4 * t)) * (⟪x, v⟫_ℝ ^ 2 / (4 * t ^ 2) - ‖v‖ ^ 2 / (2 * t))
+
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+inst✝ : InnerProductSpace ℝ E
+t : ℝ
+ht : t ≠ 0
+x v : E
+⊢ Real.exp (-‖x‖ ^ 2 / (4 * t)) * (-(1 / (2 * t)) * ((innerSL ℝ) v) v) +
+      Real.exp (-‖x‖ ^ 2 / (4 * t)) * (-(1 / (2 * t)) * ((innerSL ℝ) x) v) * (-(1 / (2 * t)) * ((innerSL ℝ) x) v) =
+    Real.exp (-‖x‖ ^ 2 / (4 * t)) * (⟪x, v⟫_ℝ ^ 2 / (4 * t ^ 2) - ‖v‖ ^ 2 / (2 * t))

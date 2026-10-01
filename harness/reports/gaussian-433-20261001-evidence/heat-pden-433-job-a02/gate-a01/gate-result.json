@@ -1,0 +1,73 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/HeatKernelPDEn.lean"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 7.824176916969009
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.HeatKernelPDEn"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 8.74843666702509
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a02/FrozenMigrationProbe.lean"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 8.444973584031686
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a02/check-scope.py"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 0.02703358407597989
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/HeatKernelPDEn.lean"
+      ],
+      "exit_code": 1,
+      "passed": true,
+      "duration_seconds": 0.005317625007592142
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "duration_seconds": 0.02568654203787446
+    }
+  ]
+}

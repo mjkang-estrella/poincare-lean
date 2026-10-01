@@ -1,0 +1,12 @@
+{
+  "commit": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "branch": "codex/heat-approx-433-a01",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "clean": true,
+  "source_sha256": "e156d8408d09a16e83a91cc87597022b0565755a19587e59249b1cc296919738",
+  "fresh_olean_sha256": "ec5717bbe93bdc43c40382ff8ebe2b1b0794314f617d6f8cb1c59223a801f8c3",
+  "final_patch_sha256": "6eeb564a238cee1afbe835f8f7d0dade5a00698f9fb37d9d75609c1eb5455b85",
+  "task_acceptance": "pending independent orchestrator review",
+  "recorded_utc": "2026-10-01T03:24:13.146387+00:00"
+}

@@ -1,0 +1,23 @@
+AXIOM_CONTRACT_OK: Poincare.heatKernel_fourier_complex_eq_ofReal
+AXIOM_CONTRACT_OK: Poincare.heatSolution_apply_swap
+AXIOM_CONTRACT_OK: Poincare.tendsto_heatSolution_nhdsGT_zero
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe-a01.lean:17:1: error: Type mismatch
+  Real.pi
+has type
+  ℝ
+but is expected to have type
+  ℤ
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe-a01.lean:17:24: error: Type mismatch
+  (4 * Real.pi ^ 2 * t)⁻¹
+has type
+  ℝ
+but is expected to have type
+  ℤ
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe-a01.lean:19:54: error: Type mismatch
+  ‖x - y‖
+has type
+  ℝ
+but is expected to have type
+  ℤ
+FROZEN_CONTRACT_OK: Poincare.heatSolution_apply_swap
+FROZEN_CONTRACT_OK: Poincare.tendsto_heatSolution_nhdsGT_zero

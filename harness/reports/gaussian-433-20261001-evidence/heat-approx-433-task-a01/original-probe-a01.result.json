@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "source_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "started_at": "2026-10-01T03:15:49.636055+00:00",
+  "exit_code": 1,
+  "seconds": 6.552318166941404,
+  "completed_at": "2026-10-01T03:15:56.188617+00:00",
+  "stdout_sha256": "7198b74853857f3b3016c1e0514bac8ce1ff1bff200ca993ebc56317e7561e8e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,8 @@
+{
+  "owner": "/root/heat_pden_worker",
+  "task_revision": 2,
+  "base": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-pden-433/poincare",
+  "allowed_file": "Poincare/Global/HeatKernelPDEn.lean",
+  "status": "allocated"
+}

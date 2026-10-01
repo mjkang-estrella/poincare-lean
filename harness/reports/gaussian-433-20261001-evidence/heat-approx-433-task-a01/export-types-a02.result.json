@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/export-types-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "source_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "started_at": "2026-10-01T03:15:06.820393+00:00",
+  "exit_code": 0,
+  "seconds": 2.4640434999018908,
+  "completed_at": "2026-10-01T03:15:09.284724+00:00",
+  "stdout_sha256": "f8ac160c97d604ca53e8aeef1723953cfa25f8de9f68d5005cca3c5af682693f",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,12 @@
+{
+  "job_id": "heat-pden-433-job-a02",
+  "task_id": "heat-pden-433-preserve",
+  "task_revision": 2,
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "worker": "/root/heat_pden_worker",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-pden-433/poincare",
+  "branch": "codex/heat-pden-433-a01",
+  "start_utc": "2026-10-01T03:19:16.865178+00:00",
+  "prior_job": "heat-pden-433-job-a01",
+  "route": "Explicit definitional scalar change after complete CLM application evaluation"
+}

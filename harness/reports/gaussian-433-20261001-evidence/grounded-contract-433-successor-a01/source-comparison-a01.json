@@ -1,0 +1,220 @@
+{
+  "schema_version": "1.0",
+  "author": "/root/final_target_readback",
+  "prepared_at_utc": "2026-10-01T03:20:06.294029+00:00",
+  "status": "preparation-only; pending distinct blind readback and compiler verification",
+  "previous_base_commit": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "successor_base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "previous_production_manifest": "harness/v2/contracts/grounded-topology.contract.json",
+  "previous_production_manifest_sha256": "ec12452d1cd82a20b3e34c941c768f9edc4ad6700c9e80459ae5548795bce1cb",
+  "previous_production_readback": "harness/v2/contracts/grounded-topology.readback.json",
+  "previous_production_readback_sha256": "bc22fc4c8c71ad66f6b8c1cc04ba81b0b3efde98b9b05a7828257f5f5b0f1743",
+  "previous_snapshot_sha256": "1707c1441501bbf94ef0edb52bd71df344aebd7bf2fa66be5b71d4af21975aa2",
+  "successor_snapshot_sha256": "1e93dc8a14d5f250123d605b06b77a7a26343d6e9e0c271b88d44b2e83f22f1c",
+  "successor_snapshot_file_sha256": "3e5ffbbcc54fd145190d7dcf0af700a9b2df162335ae132f9dd52fe23eb4223b",
+  "frozen_contract_record_retention": {
+    "imports": [
+      "Poincare.ProofProgress.GroundedTopologyAssembly"
+    ],
+    "declaration_names_in_unchanged_order": [
+      "Poincare.GroundedTopologyUniversalSourceStatement",
+      "Poincare.GroundedTopologyThreeSphereCoveringStatement",
+      "Poincare.GroundedTopologySource.active_components_cover",
+      "Poincare.GroundedTopologySource.unique_active_component",
+      "Poincare.poincare_statement_of_groundedTopologySources_and_covering"
+    ],
+    "all_five_raw_declaration_records_verbatim": true,
+    "all_five_lean_type_strings_verbatim": true,
+    "all_five_universe_lists_verbatim": true,
+    "raw_import_array_verbatim": true,
+    "definition_file_paths_and_order_unchanged": true,
+    "production_manifest_and_readback_untouched": true,
+    "successor_review_metadata_created": false,
+    "author_has_not_approved_successor": true
+  },
+  "definition_pin_comparison": [
+    {
+      "path": "Poincare/ProofProgress/GroundedTopologyStatements.lean",
+      "previous_sha256": "056694dbdc457ca426f15237dc2c71c24f48dc3ee06a34f06632be5ce0615e17",
+      "successor_sha256": "056694dbdc457ca426f15237dc2c71c24f48dc3ee06a34f06632be5ce0615e17",
+      "changed": false
+    },
+    {
+      "path": "Poincare/ProofProgress/GroundedPerelmanSingularityControl.lean",
+      "previous_sha256": "e7d191a05af0a1c6176351e57f8c05d94505c94df37f6a468531b507561d7b89",
+      "successor_sha256": "e7d191a05af0a1c6176351e57f8c05d94505c94df37f6a468531b507561d7b89",
+      "changed": false
+    },
+    {
+      "path": "Poincare/TopologyExtraction.lean",
+      "previous_sha256": "f035a1497ec60ed56a5167cdd8fa84c3bf730b3c8d9004b5b4d84d60d64ea3a9",
+      "successor_sha256": "f035a1497ec60ed56a5167cdd8fa84c3bf730b3c8d9004b5b4d84d60d64ea3a9",
+      "changed": false
+    },
+    {
+      "path": "Poincare/Surgery.lean",
+      "previous_sha256": "57ac51671032c99f31b85c97c17f280fc52d11429dd7fb943a93525790b098ff",
+      "successor_sha256": "57ac51671032c99f31b85c97c17f280fc52d11429dd7fb943a93525790b098ff",
+      "changed": false
+    },
+    {
+      "path": "Poincare/RicciFlowInterface.lean",
+      "previous_sha256": "59f8d8327ebd16e3fef15374da462887ed14813472ae06998f3e93073239e907",
+      "successor_sha256": "59f8d8327ebd16e3fef15374da462887ed14813472ae06998f3e93073239e907",
+      "changed": false
+    },
+    {
+      "path": "Poincare/Statement.lean",
+      "previous_sha256": "55c32a8accda33a329bdc139270ecc2b1d8fafc0ec6f90dcdf01e76a48368b8e",
+      "successor_sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7",
+      "changed": true
+    },
+    {
+      "path": "lean-toolchain",
+      "previous_sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61",
+      "successor_sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+      "changed": true
+    },
+    {
+      "path": "lake-manifest.json",
+      "previous_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "successor_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "changed": true
+    }
+  ],
+  "actual_source_changes": [
+    {
+      "path": "Poincare/Statement.lean",
+      "added_lines": 129,
+      "deleted_lines": 252,
+      "description": "212 proof/API compatibility diff hunks include current path homotopy/cast and Fin simplification handling, removal of proof steps closed by current rewriting, and file-scoped backward.isDefEq.respectTransparency false. Canonical topological target block and smooth target block are literally identical on the two bases.",
+      "canonical_target_locations": {
+        "previous_line": 48061,
+        "successor_line": 47938
+      },
+      "smooth_target_locations": {
+        "previous_line": 48154,
+        "successor_line": 48031
+      },
+      "source_comparison_only": true
+    },
+    {
+      "path": "lean-toolchain",
+      "previous": "leanprover/lean4:v4.30.0-rc2",
+      "successor": "leanprover/lean4:v4.33.1"
+    },
+    {
+      "path": "lake-manifest.json",
+      "description": "Manifest version 1.1.0 to 1.2.0; mathlib pin changed; DifferentialGeometry dependency added; inherited dependency pins/inputRev fields changed; fixedToolchain false added. Every changed field and package ordering is preserved in package-manifest-field-comparison.json."
+    }
+  ],
+  "unchanged_pinned_lean_sources": [
+    "Poincare/ProofProgress/GroundedTopologyStatements.lean",
+    "Poincare/ProofProgress/GroundedPerelmanSingularityControl.lean",
+    "Poincare/TopologyExtraction.lean",
+    "Poincare/Surgery.lean",
+    "Poincare/RicciFlowInterface.lean"
+  ],
+  "immediate_import_context": {
+    "assembly_source_unchanged": true,
+    "extinction_trace_ancestry_source_unchanged": true,
+    "changed_unpinned_direct_context": "Poincare/Global/CoveringSkeleton.lean",
+    "covering_skeleton_source_changes": [
+      "line64: IsCoveringMapOn.of_openPartialHomeomorph to IsCoveringMapOn.of_isLocalHomeomorphOn",
+      "line67: equality witness hφ_eq.symm to hφ_eq",
+      "lines78,109,119: LocPathConnectedSpace X binder spelling to LocallyPathConnectedSpace X"
+    ],
+    "covering_skeleton_source_quantifiers_hypotheses_and_conclusions_preserved": true,
+    "source_API_comparison_does_not_establish_elaboration_or_equivalence": true
+  },
+  "frozen_policy_differences": [],
+  "checked_policy_sources": [
+    {
+      "path": "scripts/frozen_contract_audit.py",
+      "previous_sha256": "0a9fc1aac115d0e5d30c9e2221ac2eeb70ed5dc8512c2b8246b5707ccd301e2b",
+      "successor_sha256": "0a9fc1aac115d0e5d30c9e2221ac2eeb70ed5dc8512c2b8246b5707ccd301e2b",
+      "byte_identical": true
+    },
+    {
+      "path": "scripts/theorem_contract_audit.sh",
+      "previous_sha256": "3f3d531399d91b43074adbd7eb522a783801a2b5f00049d1451253bbe312d8e9",
+      "successor_sha256": "3f3d531399d91b43074adbd7eb522a783801a2b5f00049d1451253bbe312d8e9",
+      "byte_identical": true
+    },
+    {
+      "path": "harness/v2/runtime/validation.py",
+      "previous_sha256": "0b01596ee85c6f5567774c563da7f1e812713cba8b87234acffe49eced2acda5",
+      "successor_sha256": "0b01596ee85c6f5567774c563da7f1e812713cba8b87234acffe49eced2acda5",
+      "byte_identical": true
+    },
+    {
+      "path": "docs/PROOF_WORKFLOW.md",
+      "previous_sha256": "b6b25f90e2dfbdf6089ea23bd2c064bc2ea9db277dc5de6eca744e28b880ed14",
+      "successor_sha256": "b6b25f90e2dfbdf6089ea23bd2c064bc2ea9db277dc5de6eca744e28b880ed14",
+      "byte_identical": true
+    },
+    {
+      "path": "harness/v2/SPEC.md",
+      "previous_sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+      "successor_sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+      "byte_identical": true
+    }
+  ],
+  "retained_policy": {
+    "curated_declaration_count": 5,
+    "curated_import_count": 1,
+    "definition_pin_count": 8,
+    "allowed_axioms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "universe_arity_and_rigid_named_universe_parameters_checked": true,
+    "unapplied_actual_constant_type_compared_with_frozen_literal_by_isDefEq": true,
+    "unresolved_term_or_universe_metavariables_rejected": true,
+    "transitive_unsafe_and_partial_declarations_rejected": true,
+    "missing_dependencies_and_unlisted_axioms_rejected": true,
+    "reviewer_must_differ_from_statement_author": true,
+    "approved_readback_must_bind_all_declarations_and_definition_pins": true,
+    "report_hash_and_empty_unresolved_findings_required": true,
+    "no_policy_source_edited": true
+  },
+  "read_only_context_check": {
+    "artifact": "previous-contract-context-check-a01.json",
+    "exit_code": 1,
+    "diagnostic": "FAIL: frozen statement definition changed: Poincare/Statement.lean",
+    "interpretation": "The unchanged old production contract correctly rejects the new source bytes. The old readback digest is not successor approval."
+  },
+  "compiler_verification": {
+    "status": "needs-build",
+    "reason": "Required actual imported module has no cached olean at the successor base.",
+    "missing_cached_import": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/ProofProgress/GroundedTopologyAssembly.olean",
+    "direct_lean_probe_run": false,
+    "build_run": false,
+    "expected_five_declarations_elaboration_and_axiom_status": "unverified on successor base by this preparation task"
+  },
+  "actual_dependency_identity": [
+    {
+      "name": "mathlib",
+      "head": "0df444a360eaa60ab8c11dca51a86af692955474",
+      "manifest_match": true,
+      "working_tree_clean": true
+    },
+    {
+      "name": "DifferentialGeometry",
+      "head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+      "manifest_match": true,
+      "working_tree_clean": true
+    }
+  ],
+  "limitations": [
+    "The snapshot retains the old curated five-declaration scope and eight-file pin scope. It does not freeze or review the entire imported dependency closure.",
+    "The two obligation constants remain recorded with literal type Prop. Their mathematical meaning requires reading their retained definitions and dependent source data.",
+    "A new snapshot digest invalidates the prior review for successor use even when only proof/API context bytes changed.",
+    "Current upstream mathlib definitions and the changed unpinned covering consumer still require distinct semantic readback and fresh compiler/type/universe/axiom/safety checks.",
+    "This preparation proves no universal source construction, spherical covering construction, Hamilton obligation, smoothability obligation, or final Poincare endpoint.",
+    "No final/root/full-completion audit has been run in this task."
+  ],
+  "next_exact_action": "Give a distinct blind reviewer only blind-snapshot.json and its pinned actual successor definition files at commit681e24e8fedf59c21b71747e90835567dc790e43. Preserve all five ordered records, all universe lists and all eight pins. After the orchestrator resolves that readback, independently build the exact assembly import and run the unchanged frozen type/universe/axiom/safety gate before controlled production contract integration and the full completion checkpoint.",
+  "owned_artifact_directory": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/grounded-contract-433-successor-a01"
+}

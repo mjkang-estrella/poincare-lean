@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatApproxIdentity.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "started_utc": "2026-10-01T03:21:27.943365+00:00",
+  "finished_utc": "2026-10-01T03:21:49.420143+00:00",
+  "elapsed_seconds": 21.476273334003054,
+  "exit_code": 1,
+  "stdout_sha256": "81aa6e418699559ab51a794c6174e01a238e4d8f25b6b9d4f0d542f3830a9c11",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

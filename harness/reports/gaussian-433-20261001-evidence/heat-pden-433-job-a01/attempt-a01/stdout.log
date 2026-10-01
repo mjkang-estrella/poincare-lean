@@ -1,0 +1,17 @@
+Poincare/Global/HeatKernelPDEn.lean:77:2: error: 'change' tactic failed, pattern
+  Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * (t⁻¹ * (-1 / 2) * ⟪v, v⟫_ℝ) +
+      Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * (t⁻¹ * (-1 / 2) * ⟪x, v⟫_ℝ) ^ 2 =
+    t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ‖v‖ ^ 2 * (-1 / 2) +
+      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ⟪x, v⟫_ℝ ^ 2 * (1 / 4)
+is not definitionally equal to target
+  t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ((innerSL ℝ) v) v * (-1 / 2) +
+      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ((innerSL ℝ) x) v ^ 2 * (1 / 4) =
+    t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ‖v‖ ^ 2 * (-1 / 2) +
+      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ⟪x, v⟫_ℝ ^ 2 * (1 / 4)
+Poincare/Global/HeatKernelPDEn.lean:75:4: warning: This simp argument is unused:
+  innerSL_apply_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [add_apply, smul_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

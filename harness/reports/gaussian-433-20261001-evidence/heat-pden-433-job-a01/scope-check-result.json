@@ -1,0 +1,9 @@
+{
+  "name": "scope-check",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a01/check-scope.py"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 0.031635832972824574
+}

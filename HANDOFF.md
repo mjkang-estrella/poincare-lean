@@ -1,5 +1,44 @@
 # Handoff Snapshot
 
+## 2026-10-01 UTC Gaussian proofs independently accepted; endpoint resumed
+
+At mathematical-source 338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f, root independently accepted and integrated
+HeatKernelPDEn's two proof-body repairs and HeatApproxIdentity's one proof-body
+repair. The explicit Gaussian, true inner product/derivative/Laplacian,
+canonical volume, positive-time limit, original hypotheses, all public and
+private headers, and every surrounding source byte remain. Fresh direct Lean,
+scoped builds, rigid frozen types/universes, allowed axioms and transitive
+unsafe/partial checks, source guards and scans passed. Both files also passed
+fresh Lean in this integration tree. Failed attempts and verified partial
+results are preserved in harness/reports/gaussian-433-20261001-evidence.
+
+This preserves retained-root compiler compatibility. It does not discharge
+UniversalHamiltonFrontInputsStatement or UniversalHamiltonConvergenceStatement.
+Compatible smoothability ExistsSmoothabilitySmoothManifoldStatement remains
+proved through credited upstream reuse; the final reserved theorem remains
+unconstructed and no full root or positive completion audit has passed.
+
+The interrupted upstream a03 build has no terminal receipt; session51963 is
+unknown and no wrapper/Lake process remained. Its exit is unavailable, not
+invented. Observation and log hashes are preserved. Same clean pinned7a48598
+source/cache resumed at endpoint-build-a04, root session6188. Verify its live
+identity before any further resume; never restart because observation expires.
+
+Chart revision3's authorized API/h2 patch exposed additional proof-body
+instance mismatches and has not been accepted. Its dirty isolated worktree
+and diagnostics are preserved. A successor scope is under read-only review.
+RoundSphereChart's isolated one-body job is being resumed after interruption.
+Holder-multiplier original types and metric-transport scope evidence remain
+preparation work. Exact final target and successor grounded context have
+independent meaning readbacks, not final compiler acceptance.
+
+Exact first action: inspect same a04 handle/process and its terminal receipt;
+when genuine PoincareEndgame artifacts are ready, run the exact smooth/endgame
+producer type/axiom/safety probe, independently rerun it, then construct the
+unconditional final adapter using proved S. In parallel accept only reviewed
+retained-root repairs; finish every old root import, reviewed context migration
+and all full completion gates at one clean stable HEAD before claiming success.
+
 ## 2026-10-01 Metric coordinate and scalar barrier repairs accepted
 
 At mathematical-source590bbe48c99002319cf0417cc3f8ef0f2e7282cd, root independently

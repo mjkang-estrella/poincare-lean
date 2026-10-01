@@ -1,0 +1,14 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "started_utc": "2026-10-01T03:23:19.094313+00:00",
+  "finished_utc": "2026-10-01T03:23:19.135697+00:00",
+  "elapsed_seconds": 0.041243250016123056,
+  "exit_code": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

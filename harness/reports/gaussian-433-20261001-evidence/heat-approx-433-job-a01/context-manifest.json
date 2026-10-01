@@ -1,0 +1,14 @@
+{
+  "README.md": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+  "HANDOFF.md": "5101630ada3d9dbf7a527e4d0a9c95fd6df694afc76d08581edeed849d46c534",
+  "docs/PROJECT_MAP.md": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+  "AGENTS.md": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+  "harness/v2/SPEC.md": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+  "Poincare/Global/HeatApproxIdentity.lean": "adecfd2ab9b549ea8108c9696a5fec725c96d1f51a822c822ed1b5690b33f36e",
+  "Poincare/Global/HeatKernelIntegral.lean": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7",
+  "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/blind-readback-a01.json": "e66844e5101b863f9645aa18d0a6a7ba4afc1076578cdfcacf75dc30b2473fc6",
+  "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe.lean": "9f622f10d8f3a8eb1f2f0936dd379b79a804668e3244cf81f8848b73a1faf541",
+  "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/check-scope.py": "4169c144bfd788c2f90ca950532309b8b23f87d28589c6686bfab24740b8edd1",
+  "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/freeze-report.md": "95ce14590720bdb91eb521cd022624b16ac82329267250e1d063be01cc1be42e",
+  "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/original-433-diagnostic.txt": "04a3151b2696944e1f97da8a06eb2acd92afcedc7b0cbdeb7e2ad9fa250195b6"
+}

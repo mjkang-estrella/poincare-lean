@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.ProofProgress.GroundedTopologyAssembly"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.GroundedTopologyUniversalSourceStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Prop"
+      },
+      {
+        "name": "Poincare.GroundedTopologyThreeSphereCoveringStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Prop"
+      },
+      {
+        "name": "Poincare.GroundedTopologySource.active_components_cover",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace Poincare.ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M] (source : Poincare.GroundedTopologySource M) (stage : source.traceStage), (⋃ component, source.trace.activeComponentSet stage component) = Set.univ"
+      },
+      {
+        "name": "Poincare.GroundedTopologySource.unique_active_component",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ {M : Type u} [TopologicalSpace M] [T2Space M] [ChartedSpace Poincare.ThreeManifoldModel M] [SimplyConnectedSpace M] [CompactSpace M] (source : Poincare.GroundedTopologySource M) (stage : source.traceStage) (x : M), ∃! component, x ∈ source.trace.activeComponentSet stage component"
+      },
+      {
+        "name": "Poincare.poincare_statement_of_groundedTopologySources_and_covering",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "Poincare.GroundedTopologyUniversalSourceStatement.{u} → Poincare.GroundedTopologyThreeSphereCoveringStatement.{u} → Poincare.PoincareConjectureStatement.{u}"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/ProofProgress/GroundedTopologyStatements.lean",
+        "sha256": "056694dbdc457ca426f15237dc2c71c24f48dc3ee06a34f06632be5ce0615e17"
+      },
+      {
+        "path": "Poincare/ProofProgress/GroundedPerelmanSingularityControl.lean",
+        "sha256": "e7d191a05af0a1c6176351e57f8c05d94505c94df37f6a468531b507561d7b89"
+      },
+      {
+        "path": "Poincare/TopologyExtraction.lean",
+        "sha256": "f035a1497ec60ed56a5167cdd8fa84c3bf730b3c8d9004b5b4d84d60d64ea3a9"
+      },
+      {
+        "path": "Poincare/Surgery.lean",
+        "sha256": "57ac51671032c99f31b85c97c17f280fc52d11429dd7fb943a93525790b098ff"
+      },
+      {
+        "path": "Poincare/RicciFlowInterface.lean",
+        "sha256": "59f8d8327ebd16e3fef15374da462887ed14813472ae06998f3e93073239e907"
+      },
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "55c32a8accda33a329bdc139270ecc2b1d8fafc0ec6f90dcdf01e76a48368b8e"
+      },
+      {
+        "path": "lean-toolchain",
+        "sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1"
+      }
+    ],
+    "author": "implement_grounded_topology",
+    "review": {
+      "reviewer": "/root/blind_topology_readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "1707c1441501bbf94ef0edb52bd71df344aebd7bf2fa66be5b71d4af21975aa2",
+      "report_path": "harness/v2/contracts/grounded-topology.readback.json",
+      "report_sha256": "bc22fc4c8c71ad66f6b8c1cc04ba81b0b3efde98b9b05a7828257f5f5b0f1743",
+      "verdict": "approved"
+    }
+  }
+}

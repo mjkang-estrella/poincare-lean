@@ -1,0 +1,6 @@
+Poincare/Global/HeatApproxIdentity.lean:129:2: error: Type mismatch: After simplification, term
+  hreal
+ has type
+  @Tendsto ℝ ℝ (Complex.re ∘ fun t => ↑(heatSolution t f x)) (𝓝[>] 0) (𝓝 (f x))
+but is expected to have type
+  @Tendsto ℝ ℝ (fun t => heatSolution t f x) (𝓝[>] 0) (𝓝 (f x))

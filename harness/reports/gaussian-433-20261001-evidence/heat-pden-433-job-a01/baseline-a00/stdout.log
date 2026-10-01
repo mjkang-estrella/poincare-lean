@@ -1,0 +1,40 @@
+Poincare/Global/HeatKernelPDEn.lean:27:4: error: No applicable extensionality theorem found for type
+  AddCommGroup ℝ
+
+Note: Extensionality theorems can be registered by marking them with the `[ext]` attribute
+Poincare/Global/HeatKernelPDEn.lean:31:4: error: No goals to be solved
+Poincare/Global/HeatKernelPDEn.lean:24:46: error: unsolved goals
+case e'_11
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+inst✝ : InnerProductSpace ℝ E
+t : ℝ
+ht : t ≠ 0
+x : E
+h : HasFDerivAt (fun y => -(1 / (4 * t)) * ‖y‖ ^ 2) (-(1 / (4 * t)) • 2 • (innerSL ℝ) x) x
+⊢ (fun y => -‖y‖ ^ 2 / (4 * t)) = fun y => -(1 / (4 * t)) * ‖y‖ ^ 2
+
+case e'_12
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+inst✝ : InnerProductSpace ℝ E
+t : ℝ
+ht : t ≠ 0
+x : E
+h : HasFDerivAt (fun y => -(1 / (4 * t)) * ‖y‖ ^ 2) (-(1 / (4 * t)) • 2 • (innerSL ℝ) x) x
+e_8✝ : Real.instAddCommGroup = Real.normedCommRing.toAddCommGroup
+he✝ : Semiring.toModule = (NormedAlgebra.toNormedSpace ℝ).toModule
+⊢ -(1 / (2 * t)) • (innerSL ℝ) x = -(1 / (4 * t)) • 2 • (innerSL ℝ) x
+Poincare/Global/HeatKernelPDEn.lean:75:2: error: 'change' tactic failed, pattern
+  Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * (t⁻¹ * (-1 / 2) * ⟪v, v⟫_ℝ) +
+      Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * (t⁻¹ * (-1 / 2) * ⟪x, v⟫_ℝ) ^ 2 =
+    t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ‖v‖ ^ 2 * (-1 / 2) +
+      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ⟪x, v⟫_ℝ ^ 2 * (1 / 4)
+is not definitionally equal to target
+  ((Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) • (t⁻¹ * (-1 / 2)) • innerSL ℝ +
+          (Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) • ((t⁻¹ * (-1 / 2)) • innerSL ℝ) x).smulRight
+            (((t⁻¹ * (-1 / 2)) • innerSL ℝ) x))
+        v)
+      v =
+    t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ‖v‖ ^ 2 * (-1 / 2) +
+      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ⟪x, v⟫_ℝ ^ 2 * (1 / 4)

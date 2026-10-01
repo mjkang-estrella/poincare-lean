@@ -1,0 +1,9 @@
+{
+  "accepted_commit": "eae832136f97f5aa34a4fd7484d203b55503dd6e",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "independent_gates": "harness/v2/state/upstream-verification-20260930/heat-pden-root-independent-a01/result.json",
+  "source_sha256": "f27fd01db68ab2c7690b8516fdef504bba91fb9c4074514d55a0c29f77831a35",
+  "scope": "Exactly two existing Gaussian derivative proof bodies; every other source byte and all six literal types/universes preserved.",
+  "core_assumption_effect": "Retained-root compiler compatibility only. Compatible smoothability S already discharged; independent universal Hamilton inputs/convergence remain open; final theorem absent.",
+  "completion_certified": false
+}

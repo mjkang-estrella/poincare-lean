@@ -1,0 +1,11 @@
+{
+  "observed_at": "2026-10-01T03:34:28.867988+00:00",
+  "source_head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+  "terminal_result_present": false,
+  "exit_code": null,
+  "authority": "Session51963 unknown; pgrep found no wrapper/Lake endpoint process. Exit unavailable; no terminal status invented.",
+  "log_hashes": {
+    "stdout.log": "00a368c34db25f94aafc6d09dfffb7b80f05a26b4b109b63e13cf750e0719aa3",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

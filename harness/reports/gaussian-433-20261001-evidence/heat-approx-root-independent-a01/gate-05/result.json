@@ -1,0 +1,16 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/Global/HeatApproxIdentity.lean"
+  ],
+  "exit_code": 1,
+  "pass": true,
+  "seconds": 0.0045108795166015625,
+  "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

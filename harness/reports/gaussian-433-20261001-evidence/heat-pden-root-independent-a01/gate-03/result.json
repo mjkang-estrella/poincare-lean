@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/heat-pden-433-task-a02/FrozenMigrationProbe.lean"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 9.474537134170532,
+  "source_head": "eae832136f97f5aa34a4fd7484d203b55503dd6e",
+  "log_hashes": {
+    "stdout.log": "01a2b9db642abf3912b494858f675a0f8430885436aa3f5b6afa1dd410af8d59",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

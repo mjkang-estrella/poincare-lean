@@ -1,0 +1,113 @@
+{
+  "schema_version": "1.0",
+  "author": "/root/final_target_readback",
+  "status": "source-only; no semantic or compiler approval",
+  "source_report": "source-comparison-a01.json",
+  "source_report_sha256": "af415375779d5854233f207b47322612c9ca631d3afefaaf799050aa7ac66c4f",
+  "statement_hunk_count_context": "git diff --unified=0 between the two recorded bases",
+  "statement_zero_context_hunk_count": 212,
+  "statement_hunk_categories": [
+    {
+      "description": "file-wide backward elaboration transparency option",
+      "count": 1
+    },
+    {
+      "description": "explicit subset change and hkcast rewrite",
+      "count": 1
+    },
+    {
+      "description": "Set.Icc.convexCombo to convexComb",
+      "count": 1
+    },
+    {
+      "description": "block-index Nat.add_assoc simplification",
+      "count": 1
+    },
+    {
+      "description": "countability explicit subtype-preimage targets",
+      "count": 2
+    },
+    {
+      "description": "local-path-connectivity instance, constructor and open-subspace API names",
+      "count": 2
+    },
+    {
+      "description": "diffeomorphism proof exact contMDiff_isOpenEmbedding with infinity retained",
+      "count": 8
+    },
+    {
+      "description": "direct mapped homotopy instead of simpa",
+      "count": 1
+    },
+    {
+      "description": "existing path range subset proof and path-symmetry simplification",
+      "count": 1
+    },
+    {
+      "description": "explicit Fin.castSucc, Fin.castAdd and Fin.castLE simplification",
+      "count": 3
+    },
+    {
+      "description": "explicit open-preimage targets",
+      "count": 2
+    },
+    {
+      "description": "explicit cast-back based-loop homotopy target",
+      "count": 1
+    },
+    {
+      "description": "endpoint simplification adds Fin.last",
+      "count": 22
+    },
+    {
+      "description": "tail-segment simplification adds Path.subpath and Nat.add_assoc",
+      "count": 18
+    },
+    {
+      "description": "block/subpath simplification adds Fin.castAdd and Fin.cast",
+      "count": 28
+    },
+    {
+      "description": "trailing rfl removed after current rewrites close the goal",
+      "count": 90
+    },
+    {
+      "description": "trailing path_trans_cast_eq_trans_cast_target application removed",
+      "count": 18
+    },
+    {
+      "description": "trailing Path.Homotopic.refl application removed after rewriting",
+      "count": 10
+    },
+    {
+      "description": "explicit quotient-homotopy pathCast and matching displayed proof lambda",
+      "count": 2
+    }
+  ],
+  "local_path_connectivity_hunks": [
+    {
+      "previous_lines": [
+        3622,
+        3623
+      ],
+      "successor_lines": [
+        3626,
+        3627
+      ],
+      "change": "local instance and ChartedSpace constructor name"
+    },
+    {
+      "previous_lines": [
+        3625
+      ],
+      "successor_lines": [
+        3629
+      ],
+      "change": "open-subspace method name"
+    }
+  ],
+  "source_type_limit": "Some non-curated _eq declarations in Statement.lean display changed proof expressions. Only the five curated contract records, their literal type strings and universe lists are claimed verbatim. Both canonical target definition blocks are also literally identical.",
+  "retained_policy_boolean_interpretation": "The retained_policy booleans in source-comparison-a01.json describe checks enabled by unchanged checker source code. They do not record executed compiler gates. Direct Lean probe and build were not run; successor five-declaration type/universe/axiom/safety status remains needs-build.",
+  "approval_status": "pending distinct blind readback",
+  "compiler_status": "needs-build"
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/check-scope.py"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 0.023211002349853516,
+  "source_head": "ee6da76072f638d189fe6680cd78d320b8542b58",
+  "log_hashes": {
+    "stdout.log": "d57cd3b4d61369d981fe2ff838ae23d31b498833b0e55a9d2a198e120de1c5a7",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

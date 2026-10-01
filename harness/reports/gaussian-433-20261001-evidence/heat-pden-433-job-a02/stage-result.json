@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "add",
+    "--",
+    "Poincare/Global/HeatKernelPDEn.lean"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": ""
+}

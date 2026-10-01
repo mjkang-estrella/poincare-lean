@@ -1,0 +1,11 @@
+{
+  "id": "heat-approx-433-job-a01",
+  "task_id": "heat-approx-433-preserve",
+  "task_revision": 1,
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "branch": "codex/heat-approx-433-a01",
+  "worker": "/root/heat_approx_worker",
+  "started_utc": "2026-10-01T03:20:55.843527+00:00",
+  "ownership": "Only tendsto_heatSolution_nhdsGT_zero proof body; no acceptance or merge authority"
+}

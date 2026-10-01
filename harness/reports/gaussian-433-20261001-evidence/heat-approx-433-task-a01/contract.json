@@ -1,0 +1,62 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.HeatApproxIdentity"
+    ],
+    "declarations": [
+      {
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] {t : Real}, LT.lt.{0} (0 : Real) t \u2192 \u2200 (x y : E), Eq.{1} (HMul.hMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} (HMul.hMul.{0, 0, 0} (Complex.ofReal Real.pi) (Complex.ofReal (Inv.inv.{0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} Real.pi (2 : Nat))) t)))) (HDiv.hDiv.{0, 0, 0} ((Nat.cast (Module.finrank.{0, u_1} Real E)) : Complex) (2 : Complex))) (Complex.exp (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Complex.ofReal Real.pi) (2 : Nat))) (Complex.ofReal (Inv.inv.{0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} Real.pi (2 : Nat))) t)))) (HPow.hPow.{0, 0, 0} (Complex.ofReal (Norm.norm.{u_1} (HSub.hSub.{u_1, u_1, u_1} x y))) (2 : Nat))))) (Complex.ofReal (Poincare.heatKernel.{u_1} t (HSub.hSub.{u_1, u_1, u_1} x y)))",
+        "name": "Poincare.heatKernel_fourier_complex_eq_ofReal",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] (t : Real) (f : E \u2192 Real) (x : E), Eq.{1} (Poincare.heatSolution.{u_1} t f x) (MeasureTheory.integral.{u_1, 0} MeasureTheory.MeasureSpace.volume.{u_1} fun (y : E) => HMul.hMul.{0, 0, 0} (Poincare.heatKernel.{u_1} t (HSub.hSub.{u_1, u_1, u_1} x y)) (f y))",
+        "name": "Poincare.heatSolution_apply_swap",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] [inst_3 : MeasurableSpace.{u_1} E] [inst_4 : BorelSpace.{u_1} E] {f : E \u2192 Real}, MeasureTheory.Integrable.{0, u_1} f MeasureTheory.MeasureSpace.volume.{u_1} \u2192 \u2200 {x : E}, ContinuousAt.{u_1, 0} f x \u2192 Filter.Tendsto.{0, 0} (fun (t : Real) => Poincare.heatSolution.{u_1} t f x) (nhdsWithin.{0} (0 : Real) (Set.Ioi.{0} (0 : Real))) (nhds.{0} (f x))",
+        "name": "Poincare.tendsto_heatSolution_nhdsGT_zero",
+        "universes": [
+          "u_1"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      },
+      {
+        "path": "Poincare/Global/HeatKernel.lean",
+        "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a"
+      },
+      {
+        "path": "Poincare/Global/HeatKernelIntegral.lean",
+        "sha256": "a520b63c3591d4a6fe5802a087e681f219045690c25aa6f390c8ccf1e82ce4e7"
+      }
+    ],
+    "author": "/root/workflow_bottlenecks",
+    "review": {
+      "reviewer": "/root/heat_approx_readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "37f5e40c413129e6563a62e0dc5d67915a126dd9c7811816eeb7c42058a2fa10",
+      "report_path": "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/blind-readback-a01.json",
+      "report_sha256": "e66844e5101b863f9645aa18d0a6a7ba4afc1076578cdfcacf75dc30b2473fc6",
+      "verdict": "approved"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+diff --git a/Poincare/Global/HeatKernelPDEn.lean b/Poincare/Global/HeatKernelPDEn.lean
+index ea039770..1f8052ef 100644
+--- a/Poincare/Global/HeatKernelPDEn.lean
++++ b/Poincare/Global/HeatKernelPDEn.lean
+@@ -23,7 +23,7 @@ theorem hasFDerivAt_neg_norm_sq_div (t : ℝ) (ht : t ≠ 0) (x : E) :
+     HasFDerivAt (fun y : E ↦ -(‖y‖ ^ 2) / (4 * t))
+       ((-(1 / (2 * t))) • (innerSL ℝ x)) x := by
+   have h := (hasStrictFDerivAt_norm_sq x).hasFDerivAt.const_mul (-(1 / (4 * t)))
+-  convert h using 1
++  convert! h using 1
+   · ext y
+     field_simp [ht]
+   · ext y
+@@ -71,13 +71,11 @@ theorem iteratedFDeriv_two_exp_neg_norm_sq_div_apply (t : ℝ) (ht : t ≠ 0)
+   rw [iteratedFDeriv_two_apply]
+   rw [(hasFDerivAt_fderiv_exp_neg_norm_sq_div (E := E) t ht x).fderiv]
+   dsimp
+-  ring_nf
+-  change Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ((t⁻¹ * (-1 / 2)) * ⟪v, v⟫_ℝ) +
+-      Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ((t⁻¹ * (-1 / 2)) * ⟪x, v⟫_ℝ) ^ 2 =
+-    t⁻¹ * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ‖v‖ ^ 2 * (-1 / 2) +
+-      t⁻¹ ^ 2 * Real.exp (‖x‖ ^ 2 * t⁻¹ * (-1 / 4)) * ⟪x, v⟫_ℝ ^ 2 * (1 / 4)
++  simp! only [add_apply, smul_apply, ContinuousLinearMap.smulRight_apply,
++    innerSL_apply_apply, smul_eq_mul]
+   rw [real_inner_self_eq_norm_sq]
+-  ring_nf
++  field_simp [ht]
++  ring
+ 
+ /-- Parseval's identity for the standard finite-dimensional orthonormal basis. -/
+ theorem sum_sq_inner_stdOrthonormalBasis [FiniteDimensional ℝ E] (x : E) :

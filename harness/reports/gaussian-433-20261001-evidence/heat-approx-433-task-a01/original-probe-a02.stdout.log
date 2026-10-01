@@ -1,0 +1,6 @@
+AXIOM_CONTRACT_OK: Poincare.heatKernel_fourier_complex_eq_ofReal
+AXIOM_CONTRACT_OK: Poincare.heatSolution_apply_swap
+AXIOM_CONTRACT_OK: Poincare.tendsto_heatSolution_nhdsGT_zero
+FROZEN_CONTRACT_OK: Poincare.heatKernel_fourier_complex_eq_ofReal
+FROZEN_CONTRACT_OK: Poincare.heatSolution_apply_swap
+FROZEN_CONTRACT_OK: Poincare.tendsto_heatSolution_nhdsGT_zero

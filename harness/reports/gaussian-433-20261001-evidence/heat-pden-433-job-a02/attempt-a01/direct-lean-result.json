@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatKernelPDEn.lean"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 11.088923875009641
+}

@@ -1,0 +1,68 @@
+{
+  "imports": [
+    "Poincare.Global.HeatKernelPDEn"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (t : Real), Ne.{1} t (0 : Real) → ∀ (x : E), HasFDerivAt.{0, u_1, 0} (fun (y : E) => HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} y) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t)) (HSMul.hSMul.{0, u_1, u_1} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) t))) ((innerSL.{0, u_1} Real) x)) x",
+      "name": "Poincare.hasFDerivAt_neg_norm_sq_div",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (t : Real), Ne.{1} t (0 : Real) → ∀ (x : E), HasFDerivAt.{0, u_1, 0} (fun (y : E) => Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} y) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HSMul.hSMul.{0, u_1, u_1} (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HSMul.hSMul.{0, u_1, u_1} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (1 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) t))) ((innerSL.{0, u_1} Real) x))) x",
+      "name": "Poincare.hasFDerivAt_exp_neg_norm_sq_div",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (t : Real), Ne.{1} t (0 : Real) → ∀ (x v : E), Eq.{1} ((iteratedFDeriv.{0, u_1, 0} Real (2 : Nat) (fun (y : E) => Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} y) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) x) (Matrix.vecCons.{u_1} v (Matrix.vecCons.{u_1} v Matrix.vecEmpty.{u_1}))) (HMul.hMul.{0, 0, 0} (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HSub.hSub.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Inner.inner.{0, u_1} Real x v) (2 : Nat)) (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} t (2 : Nat)))) (HDiv.hDiv.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} v) (2 : Nat)) (HMul.hMul.{0, 0, 0} (2 : Real) t))))",
+      "name": "Poincare.iteratedFDeriv_two_exp_neg_norm_sq_div_apply",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] (x : E), Eq.{1} (∑ i : Fin (Module.finrank.{0, u_1} Real E), HPow.hPow.{0, 0, 0} (Inner.inner.{0, u_1} Real x ((stdOrthonormalBasis.{0, u_1} Real E) i)) (2 : Nat)) (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))",
+      "name": "Poincare.sum_sq_inner_stdOrthonormalBasis",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] [inst_2 : FiniteDimensional.{0, u_1} Real E] (t : Real), Ne.{1} t (0 : Real) → ∀ (x : E), Eq.{1} (Laplacian.laplacian.{u_1, u_1} (fun (y : E) => Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} y) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) x) (HMul.hMul.{0, 0, 0} (Real.exp (HDiv.hDiv.{0, 0, 0} (Neg.neg.{0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat))) (HMul.hMul.{0, 0, 0} (4 : Real) t))) (HSub.hSub.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} x) (2 : Nat)) (HMul.hMul.{0, 0, 0} (4 : Real) (HPow.hPow.{0, 0, 0} t (2 : Nat)))) (HDiv.hDiv.{0, 0, 0} (↑(Module.finrank.{0, u_1} Real E)) (HMul.hMul.{0, 0, 0} (2 : Real) t))))",
+      "name": "Poincare.laplacian_exp_neg_norm_sq_div",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "lean_type": "∀ {E : Type u_2} [inst : NormedAddCommGroup.{u_2} E] [inst_1 : InnerProductSpace.{0, u_2} Real E] [inst_2 : FiniteDimensional.{0, u_2} Real E] {t : Real}, LT.lt.{0} (0 : Real) t → ∀ (x : E), Eq.{1} (deriv.{0, 0} (fun (τ : Real) => Poincare.heatKernel.{u_2} τ x) t) (Laplacian.laplacian.{u_2, u_2} (fun (y : E) => Poincare.heatKernel.{u_2} t y) x)",
+      "name": "Poincare.heatKernel_heatEquation_laplacian",
+      "universes": [
+        "u_2"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Global/HeatKernel.lean",
+      "sha256": "719c7249148724e351cfd069d4235387fb8b37c53a04e190af6ed2cd1133099a"
+    },
+    {
+      "path": "Poincare/Global/HeatKernelPDE.lean",
+      "sha256": "888f20603ac61654678f2e7c54b6adf821e5ef81db39fde46fb1fa82672877e7"
+    }
+  ],
+  "snapshot_sha256": "00653a6fedf1d8c7319ace7e7d58e051d67dd309f1bd0d517df64bcb804a6ead"
+}

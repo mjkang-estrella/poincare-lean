@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/HeatApproxIdentity.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:25:57.464012+00:00",
+  "source_head": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

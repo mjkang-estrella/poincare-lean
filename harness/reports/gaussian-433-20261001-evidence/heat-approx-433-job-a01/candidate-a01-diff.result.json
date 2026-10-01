@@ -1,0 +1,15 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--",
+    "Poincare/Global/HeatApproxIdentity.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "started_utc": "2026-10-01T03:22:05.632964+00:00",
+  "finished_utc": "2026-10-01T03:22:05.723016+00:00",
+  "elapsed_seconds": 0.0899334589485079,
+  "exit_code": 0,
+  "stdout_sha256": "94e846d428d2eb0fcfb93935b7d5af24a072379b9682639f717bfbd48dc6481a",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

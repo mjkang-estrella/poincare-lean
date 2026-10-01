@@ -1,0 +1,10 @@
+{
+  "owner": "/root/heat_approx_worker",
+  "base": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "worktree": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "allowed_file": "Poincare/Global/HeatApproxIdentity.lean",
+  "allowed_proofs": [
+    "tendsto_heatSolution_nhdsGT_zero"
+  ],
+  "status": "allocated"
+}

@@ -1,0 +1,49 @@
+{
+  "worker_gate_passed": true,
+  "task_acceptance": "pending independent orchestrator review",
+  "gates": [
+    {
+      "label": "candidate-a02-lean",
+      "passed": true,
+      "receipt": "candidate-a02-lean.result.json",
+      "exit_code": 0
+    },
+    {
+      "label": "candidate-a02-build",
+      "passed": true,
+      "receipt": "candidate-a02-build.result.json",
+      "exit_code": 0
+    },
+    {
+      "label": "candidate-a02-frozen-probe",
+      "passed": true,
+      "receipt": "candidate-a02-frozen-probe.result.json",
+      "exit_code": 0
+    },
+    {
+      "label": "candidate-a02-source-guard",
+      "passed": true,
+      "receipt": "candidate-a02-source-guard.result.json",
+      "exit_code": 0
+    },
+    {
+      "label": "candidate-a02-token-scan",
+      "passed": true,
+      "receipt": "candidate-a02-token-scan.result.json",
+      "exit_code": 1
+    },
+    {
+      "label": "candidate-a02-diff-check",
+      "passed": true,
+      "receipt": "candidate-a02-diff-check.result.json",
+      "exit_code": 0
+    }
+  ],
+  "frozen_definition_identities": "frozen-input-identities.json",
+  "changed_paths": [
+    "Poincare/Global/HeatApproxIdentity.lean"
+  ],
+  "source_sha256": "e156d8408d09a16e83a91cc87597022b0565755a19587e59249b1cc296919738",
+  "patch_sha256": "6eeb564a238cee1afbe835f8f7d0dade5a00698f9fb37d9d75609c1eb5455b85",
+  "recorded_utc": "2026-10-01T03:23:45.268819+00:00"
+}

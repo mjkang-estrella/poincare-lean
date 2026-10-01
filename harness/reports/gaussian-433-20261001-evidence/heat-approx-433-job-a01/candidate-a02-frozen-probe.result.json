@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/heat-approx-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/heat-approx-433/poincare",
+  "started_utc": "2026-10-01T03:23:00.482651+00:00",
+  "finished_utc": "2026-10-01T03:23:07.247228+00:00",
+  "elapsed_seconds": 6.76442158408463,
+  "exit_code": 0,
+  "stdout_sha256": "d9354f760449060fde7e63a74081225b9ae393a1854fcbecd0fd0eb2c702b9bd",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
