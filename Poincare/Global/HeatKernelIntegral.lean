@@ -168,7 +168,7 @@ theorem gaussianApproxIdentity_heatTimeScale_complex {f : E → ℂ} (hf : Integ
                   (‖x - y‖ ^ 2 : ℂ))) •
             f y)
       (𝓝[>] (0 : ℝ)) (𝓝 (f x)) := by
-  simpa only [Function.comp_apply] using
+  simpa only [Function.comp_apply] using!
     (Real.tendsto_integral_gaussian_smul' (V := E) hf hcf).comp
       heatTimeFourierScale_tendsto_atTop
 
