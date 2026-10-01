@@ -1,0 +1,36 @@
+{
+  "created_at": "2026-10-01T03:16:40.787147+00:00",
+  "old_root": "/Users/mjkang/Develop/poincare",
+  "old_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "base_root": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "module": "Poincare.Global.ParabolicHolderMultiplier",
+  "old_olean_sha256": "db35360e6c24f6e690ea60b91c7bce1dc0e6a206c837ece1e6d6e3c421b6d210",
+  "source_sha256": "03321155abd7bc60ffebb120ac692e270fe30e6f6918c2bc4c9aa485eddd17a6",
+  "new_definition_pins": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lakefile.lean",
+      "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+      "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+    },
+    {
+      "path": "Poincare/Global/ParabolicHolderSpace.lean",
+      "sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    }
+  ]
+}

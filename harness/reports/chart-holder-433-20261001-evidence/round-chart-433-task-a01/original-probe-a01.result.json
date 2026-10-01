@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825090.6817951,
+  "ended_epoch": 1790825096.064867,
+  "elapsed_seconds": 5.3830718994140625,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "stdout_sha256": "e58ee42bee6c196718630517df79bca47373f99179e782e12f743bb0a0d14645",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "source_sha256": "8eb7acd36c2c627b41a5cc5807ed6755f861bbd193c0720ed883e42033e808c0",
+  "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+  "started_at": "2026-10-01T03:20:41.115492+00:00",
+  "invocation_kind": "cached direct Lean; no build"
+}

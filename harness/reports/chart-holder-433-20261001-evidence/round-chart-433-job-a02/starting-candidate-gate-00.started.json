@@ -1,0 +1,11 @@
+{
+  "started_epoch": 1790825747.6259918,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

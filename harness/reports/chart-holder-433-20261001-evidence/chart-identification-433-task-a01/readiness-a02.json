@@ -1,0 +1,25 @@
+{
+  "recorded_at": "2026-10-01T03:28:50.803820+00:00",
+  "status": "pass",
+  "checks": [
+    "runtime.validate_task",
+    "runtime.validate_statement_contract",
+    "runtime.validate_statement_readback",
+    "runtime.validate_statement_context_bytes with all six definition files plus strict report"
+  ],
+  "task_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/task-a02.json",
+  "task_sha256": "df5ede1dfa88453a50bc0359f738d47eb39034c8626cdccc43f8b14c24998f79",
+  "contract_sha256": "6c2a83dc610cfc98ec299f6b970a7eda69a40c596fb5bb29edbc12c591e65d79",
+  "strict_review_sha256": "4bdb4645e5102378c43b86040502cfad83ce5dfc19935fc9f1cdceee2a42b38c",
+  "frozen_snapshot_sha256": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+  "all_definition_source_hashes_match_current": true,
+  "integration_head_observed": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "worker_acceptance_status": "not run; root dispatch and independent gate pending",
+  "supersedes_for_dispatch": [
+    "task.json",
+    "contract.json",
+    "readiness-a01.json"
+  ],
+  "prior_artifacts_preserved": true
+}

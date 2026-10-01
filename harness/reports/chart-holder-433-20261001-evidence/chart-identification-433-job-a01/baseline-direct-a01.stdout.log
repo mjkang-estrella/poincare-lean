@@ -1,0 +1,134 @@
+Poincare/ChartIdentification.lean:65:4: error: Type mismatch: After simplification, term
+  hcomp
+ has type
+  @Eq (TangentSpace I x →L[𝕜] TangentSpace I (↑(chartAt H x).symm (↑I.symm (↑I (↑(chartAt H x) x)))))
+    (mfderiv[range ↑I] (↑(chartAt H x).symm ∘ ↑I.symm) (↑I (↑(chartAt H x) x)) ∘SL
+      ContinuousLinearMap.id 𝕜 (TangentSpace I x))
+    (ContinuousLinearMap.id 𝕜 (TangentSpace I x))
+but is expected to have type
+  @Eq
+    (TangentSpace 𝓘(𝕜, E) (↑I (↑(chartAt H x) x)) →L[𝕜]
+      TangentSpace I (↑(chartAt H x).symm (↑I.symm (↑I (↑(chartAt H x) x)))))
+    (mfderiv[range ↑I] (↑(chartAt H x).symm ∘ ↑I.symm) (↑I (↑(chartAt H x) x))) (ContinuousLinearMap.id 𝕜 E)
+Poincare/ChartIdentification.lean:88:4: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:88:16: error: Application type mismatch: The argument
+  f
+has type
+  M → 𝕜
+but is expected to have type
+  ModelWithCorners ?m.37 ?m.39 ?m.42
+in the application
+  @extDerivFun ?m.37 ?m.38 ?m.39 ?m.40 ?m.41 ?m.42 ?m.43 f
+Poincare/ChartIdentification.lean:110:4: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:110:16: error: Application type mismatch: The argument
+  f
+has type
+  M → 𝕜
+but is expected to have type
+  ModelWithCorners ?m.52 ?m.54 ?m.57
+in the application
+  @extDerivFun ?m.52 ?m.53 ?m.54 ?m.55 ?m.56 ?m.57 ?m.58 f
+Poincare/ChartIdentification.lean:170:46: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:170:58: error: Application type mismatch: The argument
+  f
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.84 ?m.86 ?m.89
+in the application
+  @extDerivFun ?m.84 ?m.85 ?m.86 ?m.87 ?m.88 ?m.89 ?m.90 f
+Poincare/ChartIdentification.lean:259:4: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:259:16: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.69 ?m.71 ?m.74
+in the application
+  @extDerivFun ?m.69 ?m.70 ?m.71 ?m.72 ?m.73 ?m.74 ?m.75 f
+Poincare/ChartIdentification.lean:317:0: warning: automatically included section variable(s) unused in theorem `mpullback_extChartAt_symm_apply`:
+  [CompleteSpace E']
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E'] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Poincare/ChartIdentification.lean:342:17: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:342:29: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.61 ?m.63 ?m.66
+in the application
+  @extDerivFun ?m.61 ?m.62 ?m.63 ?m.64 ?m.65 ?m.66 ?m.67 f
+Poincare/ChartIdentification.lean:342:36: error: Application type mismatch: The argument
+  y
+has type
+  ?m.74 → ?m.75
+but is expected to have type
+  N
+in the application
+  U y
+Poincare/ChartIdentification.lean:396:4: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:396:25: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:396:37: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.77 ?m.79 ?m.82
+in the application
+  @extDerivFun ?m.77 ?m.78 ?m.79 ?m.80 ?m.81 ?m.82 ?m.83 f
+Poincare/ChartIdentification.lean:396:44: error: Application type mismatch: The argument
+  y
+has type
+  ?m.90 → ?m.91
+but is expected to have type
+  N
+in the application
+  U y
+Poincare/ChartIdentification.lean:474:4: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:474:16: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.69 ?m.71 ?m.74
+in the application
+  @extDerivFun ?m.69 ?m.70 ?m.71 ?m.72 ?m.73 ?m.74 ?m.75 f
+Poincare/ChartIdentification.lean:475:6: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:475:27: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:475:39: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.103 ?m.105 ?m.108
+in the application
+  @extDerivFun ?m.103 ?m.104 ?m.105 ?m.106 ?m.107 ?m.108 ?m.109 f
+Poincare/ChartIdentification.lean:475:46: error: Application type mismatch: The argument
+  y
+has type
+  ?m.116 → ?m.117
+but is expected to have type
+  N
+in the application
+  Y y
+Poincare/ChartIdentification.lean:476:10: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:476:31: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/ChartIdentification.lean:476:43: error: Application type mismatch: The argument
+  f
+has type
+  N → ℝ
+but is expected to have type
+  ModelWithCorners ?m.144 ?m.146 ?m.149
+in the application
+  @extDerivFun ?m.144 ?m.145 ?m.146 ?m.147 ?m.148 ?m.149 ?m.150 f
+Poincare/ChartIdentification.lean:476:50: error: Application type mismatch: The argument
+  y
+has type
+  ?m.157 → ?m.158
+but is expected to have type
+  N
+in the application
+  X y

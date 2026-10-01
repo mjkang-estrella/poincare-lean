@@ -1,0 +1,102 @@
+
+Source Poincare/Global/ParabolicHolderSpace.lean:26-30
+variable {E F : Type*} [NormedAddCommGroup E]
+  [NormedAddCommGroup F] [NormedSpace ℝ F]
+
+def parabolicDist (p q : ℝ × E) : ℝ :=
+  ‖p.2 - q.2‖ + Real.sqrt |p.1 - q.1|
+
+Source Poincare/Global/ParabolicHolderSpace.lean:47-72
+def cylinder (T : ℝ) : Set (ℝ × E) := Icc 0 T ×ˢ univ
+
+def HasHolderBound (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) (K : ℝ) : Prop :=
+  ∀ p ∈ S, ∀ q ∈ S, ‖f p - f q‖ ≤ K * parabolicDist p q ^ α
+
+/-- Distinct ordered pairs in the set; the diagonal contributes zero. -/
+def Pairs (S : Set (ℝ × E)) :=
+  {pq : (ℝ × E) × (ℝ × E) // pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2}
+
+/-- Inserting zero also specifies the seminorm on the empty set. -/
+def holderSeminorm (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun i : Pairs S =>
+    ‖f i.1.1 - f i.1.2‖ / parabolicDist i.1.1 i.1.2 ^ α))
+
+def supNorm (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun p : S => ‖f p‖))
+
+/-- The first factor stores values and the second stores scaled differences. -/
+abbrev Ambient (T : ℝ) (E F : Type*) [NormedAddCommGroup E] [NormedAddCommGroup F] :=
+  WithLp 1 (lp (fun _ : ℝ × E => F) ∞ × lp (fun _ : Pairs (cylinder (E := E) T) => F) ∞)
+
+def holderSubmodule (α T : ℝ) : Submodule ℝ (Ambient T E F) where
+  carrier := {v | (∀ p, p ∉ cylinder T → v.fst p = 0) ∧
+    ∀ i : Pairs (cylinder (E := E) T), v.snd i =
+      (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (v.fst i.1.1 - v.fst i.1.2)}
+  zero_mem' := by
+
+Source Poincare/Global/ParabolicHolderSpace.lean:105-110
+abbrev Y (α T : ℝ) (F : Type*) [NormedAddCommGroup F] [NormedSpace ℝ F] :=
+  ↥(holderSubmodule (E := E) (F := F) α T)
+
+variable {α T : ℝ}
+
+instance instCoeFun : CoeFun (Y (E := E) α T F) (fun _ => ℝ × E → F) := ⟨fun f => f.val.fst⟩
+
+Source Poincare/Global/ParabolicSolutionGraph.lean:14-36
+open Set Filter
+open scoped Topology
+open ParabolicHolder
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+structure Graph (α T : ℝ) where
+  u : Y (E := E) α T ℝ
+  ut : Y (E := E) α T ℝ
+  du : Y (E := E) α T (E →L[ℝ] ℝ)
+  ddu : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ)
+  zero_trace : ∀ x : E, u (0, x) = 0
+  hasFDeriv : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasFDerivAt (fun z : E => u (t, z)) (du (t, x)) x
+  hasFDeriv_du : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasFDerivAt (fun z : E => du (t, z)) (ddu (t, x)) x
+  hasDeriv_time : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasDerivWithinAt (fun s : ℝ => u (s, x)) (ut (t, x)) (Icc 0 T) t
+
+abbrev Ambient (α T : ℝ) :=
+  WithLp 1 (WithLp 1 (Y (E := E) α T ℝ × Y (E := E) α T ℝ) ×
+    WithLp 1 (Y (E := E) α T (E →L[ℝ] ℝ) ×
+      Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ)))
+
+Source Poincare/Global/ParabolicSolutionGraph.lean:66-71
+def graphEquiv : Graph (E := E) α T ≃ ↥(graphSubmodule (E := E) α T) where
+  toFun g := ⟨WithLp.toLp 1 (WithLp.toLp 1 (g.u, g.ut), WithLp.toLp 1 (g.du, g.ddu)),
+    g.zero_trace, g.hasFDeriv, g.hasFDeriv_du, g.hasDeriv_time⟩
+  invFun v := ⟨v.val.fst.fst, v.val.fst.snd, v.val.snd.fst, v.val.snd.snd,
+    v.property.1, v.property.2.1, v.property.2.2.1, v.property.2.2.2⟩
+  left_inv _ := rfl
+
+Source Poincare/Global/ParabolicSolutionGraph.lean:74-77
+instance instNormedAddCommGroup : NormedAddCommGroup (Graph (E := E) α T) :=
+  graphEquiv.normedAddCommGroup
+
+instance instModule : Module ℝ (Graph (E := E) α T) := graphEquiv.module ℝ
+
+Source Poincare/Global/RiemannianContext.lean:30-36
+abbrev ClosedSmoothModel (n : ℕ) : Type :=
+  EuclideanSpace ℝ (Fin n)
+
+/-- The model-with-corners used for boundaryless smooth `n`-manifolds. -/
+abbrev closedSmoothModelWithCorners (n : ℕ) :
+    ModelWithCorners ℝ (ClosedSmoothModel n) (ClosedSmoothModel n) :=
+  𝓡 n
+
+Source Poincare/Global/ParabolicHolderMultiplier.lean:7-13
+
+open Set ParabolicHolder ParabolicSolutionGraph
+
+local notation "E" => ClosedSmoothModel 3
+local notation "Bilin" => E →L[ℝ] E →L[ℝ] ℝ
+local notation "e" => EuclideanSpace.basisFun (Fin 3) ℝ
+
+
+The entry and forcing computational values are exactly stated by the frozen public entry_apply and forcing_apply declarations. Consult those literals. Proof implementation is excluded from this context.

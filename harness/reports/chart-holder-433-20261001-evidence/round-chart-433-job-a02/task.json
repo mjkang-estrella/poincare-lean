@@ -1,0 +1,245 @@
+{
+  "schema_version": "2.1",
+  "id": "round-chart-433-preserve",
+  "revision": 3,
+  "status": "ready",
+  "base_commit": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "objective": {
+    "title": "Preserve stereographic derivative and metric identities under Lean 4.33",
+    "statement": "Repair only the proof body of Poincare.hasFDerivAt_stereoInvFunAuxFDeriv so the unchanged RoundSphereChart public declarations compile on the pinned 4.33 base. Preserve stereoInvFunAuxConformalFactor and stereoInvFunAuxFDeriv data byte-for-byte, all other proofs, imports, declaration types, universes, instances and hypotheses. Consumer: retained full-root final PoincareConjectureStatement with proved compatible smoothability S and a verified upstream smoothPC adapter. This task does not construct or claim independent Hamilton closure. Dispatch base explicitly advanced from prepared681e to338bd65f after two disjoint Gaussian proof acceptances; every pinned definition, scope script and target root/data source remains byte-identical.",
+    "deliverables": [
+      "All eight original interfaces compile with exact rigid type/Prop/no-metavariable/universe checks, permitted axioms and transitive safe/total dependencies."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/RoundSphereChart.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/RoundSphereMetric.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "lean-toolchain",
+      "lakefile.lean",
+      "lake-manifest.json",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/RoundSphereChart.lean",
+      "Poincare/Global/RoundSphereMetric.lean",
+      "Poincare/Global/RoundSphereChartMetric.lean",
+      "Poincare/Global/ConformalChristoffel.lean",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/blind-snapshot-a02.json",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/original-433-diagnostic.txt",
+      "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/blind-readback-a02.json"
+    ],
+    "symbols": [
+      "Poincare.stereoInvFunAuxConformalFactor",
+      "Poincare.stereoInvFunAuxFDeriv",
+      "Poincare.stereoInvFunAuxFDeriv_apply",
+      "Poincare.hasFDerivAt_stereoInvFunAuxFDeriv",
+      "Poincare.fderiv_stereoInvFunAux",
+      "Poincare.fderiv_stereoInvFunAux_comp_subtype",
+      "Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal",
+      "Poincare.inner_fderiv_stereoInvFunAux_comp_subtype"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/RoundSphereChart.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.RoundSphereChart"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/RoundSphereChart.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.stereoInvFunAuxConformalFactor",
+      "Poincare.stereoInvFunAuxFDeriv",
+      "Poincare.stereoInvFunAuxFDeriv_apply",
+      "Poincare.hasFDerivAt_stereoInvFunAuxFDeriv",
+      "Poincare.fderiv_stereoInvFunAux",
+      "Poincare.fderiv_stereoInvFunAux_comp_subtype",
+      "Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal",
+      "Poincare.inner_fderiv_stereoInvFunAux_comp_subtype"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.RoundSphereChart"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.stereoInvFunAuxConformalFactor",
+        "lean_type": "{E : Type u_1} \u2192 [NormedAddCommGroup.{u_1} E] \u2192 E \u2192 Real",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.stereoInvFunAuxFDeriv",
+        "lean_type": "{E : Type u_1} \u2192 [inst : NormedAddCommGroup.{u_1} E] \u2192 [inst_1 : InnerProductSpace.{0, u_1} Real E] \u2192 E \u2192 E \u2192 ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.stereoInvFunAuxFDeriv_apply",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z u : E), Eq.{u_1 + 1} ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) (HAdd.hAdd.{u_1, u_1, u_1} (HSub.hSub.{u_1, u_1, u_1} (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (4 : Real) (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real)))) u) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (8 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) z)) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (16 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) v))",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.hasFDerivAt_stereoInvFunAuxFDeriv",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), HasFDerivAt.{0, u_1, u_1} (stereoInvFunAux.{u_1} v) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z) z",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.fderiv_stereoInvFunAux",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (stereoInvFunAux.{u_1} v) z) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z)",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.fderiv_stereoInvFunAux_comp_subtype",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E) (z : \u21a5(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) (ContinuousLinearMap.comp.{0, 0, 0, u_1, u_1, u_1} (Poincare.stereoInvFunAuxFDeriv.{u_1} v \u2191z) (Submodule.subtypeL.{0, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))))",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] {v z u w : E}, Eq.{1} (Norm.norm.{u_1} v) (1 : Real) \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) z \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) u \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) w \u2192 Eq.{1} (Inner.inner.{0, u_1} Real ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} z) (Inner.inner.{0, u_1} Real u w))",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.inner_fderiv_stereoInvFunAux_comp_subtype",
+        "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E), Eq.{1} (Norm.norm.{u_1} v) (1 : Real) \u2192 \u2200 (z u w : \u21a5(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{1} (Inner.inner.{0, u_1} Real ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) u) ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} \u2191z) (Inner.inner.{0, u_1} Real u w))",
+        "universes": [
+          "u_1"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "Poincare/Global/RoundSphereMetric.lean",
+        "sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541"
+      },
+      {
+        "path": "Poincare.lean",
+        "sha256": "4bde26abfe162616f63c805d01522d357fcec811447103db17c68c10a6e5f224"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/frozen-base.lean",
+        "sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/definitions-for-review.txt",
+        "sha256": "d1814907f5ba2863f5a9983247452512a786370c219830d1a61bf17c75f74fcf"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py",
+        "sha256": "43a2cd6e874071e9b7b900aa594e6ce7801f3fbdea4d8b7ea9f3a53d457fe26d"
+      }
+    ],
+    "author": "/root/round_chart_freeze",
+    "review": {
+      "reviewer": "/root/heat_approx_readback",
+      "method": "blind-readback",
+      "snapshot_sha256": "63070a6841f7c96c909d5fbdeff502112480698ee1c9d26c2b1592734a2c489c",
+      "report_path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "a46f3570e66e25384d219edf938979a948cfd9bb16826e8f5b5c03bfeea98743",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "Any repair needs a change outside the sole permitted proof body or changes computational data, models, hypotheses, public types or universes.",
+    "The exact resisting Lean shape persists after three distinct attempts without new mathematical/API evidence.",
+    "All scoped gates pass; preserve compiler output and final diff for independent orchestrator review. Workers never merge or mark the task accepted."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 26000,
+    "disk_mb": 2048
+  }
+}

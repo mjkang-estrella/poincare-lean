@@ -1,0 +1,77 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "5101630ada3d9dbf7a527e4d0a9c95fd6df694afc76d08581edeed849d46c534",
+    "bytes": 238785
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/RoundSphereChart.lean",
+    "sha256": "d35fe3d3398e796af25d920b568b98c73cbfd9b21d45eb5433bbb9d88018e67f",
+    "bytes": 5665
+  },
+  {
+    "path": "Poincare/Global/RoundSphereMetric.lean",
+    "sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541",
+    "bytes": 10242
+  },
+  {
+    "path": "Poincare/Global/RoundSphereChartMetric.lean",
+    "sha256": "df1069e4f648bb1e9ef2595d63a2d1dd61e88b04654940b3211ebdc6b363af8d",
+    "bytes": 9656
+  },
+  {
+    "path": "Poincare/Global/ConformalChristoffel.lean",
+    "sha256": "130f33677952fdae63933f6240e2344985ac710a2aa91aa469d3020286012cb4",
+    "bytes": 8377
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/definitions-for-review.txt",
+    "sha256": "d1814907f5ba2863f5a9983247452512a786370c219830d1a61bf17c75f74fcf",
+    "bytes": 539
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/blind-snapshot-a02.json",
+    "sha256": "2cbf5ec0e2481f78c0187c32b38e6763b9aa4cfe256411f5fd7d98626f543942",
+    "bytes": 6456
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean",
+    "sha256": "f680bf977d67c605ec29112e7eacff0eeb810e7e47ebd3e99e9b6ff8579906c6",
+    "bytes": 16862
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py",
+    "sha256": "43a2cd6e874071e9b7b900aa594e6ce7801f3fbdea4d8b7ea9f3a53d457fe26d",
+    "bytes": 2365
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/original-433-diagnostic.txt",
+    "sha256": "392fa60cd637434259eb148770b97163ebb96a39e1c46283db504d16e69547f8",
+    "bytes": 3559
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/blind-readback-a02.json",
+    "sha256": "a46f3570e66e25384d219edf938979a948cfd9bb16826e8f5b5c03bfeea98743",
+    "bytes": 10118
+  }
+]

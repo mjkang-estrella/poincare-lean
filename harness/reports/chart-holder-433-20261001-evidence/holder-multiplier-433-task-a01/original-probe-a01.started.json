@@ -1,0 +1,13 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "started_at": "2026-10-01T03:23:37.396451+00:00",
+  "contract_snapshot_sha256": "9d344ce8e879f1668a8bf9dc9b925908c16859cf0d5591cb65d4f9e12ce224e8"
+}

@@ -1,0 +1,54 @@
+{
+  "command_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/scopeguard-selftest-a02-3087a8e4-command.json",
+  "head_after": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "head_before": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "head_unchanged": true,
+  "lean_invoked": false,
+  "passed": true,
+  "results": [
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+        "--self-test"
+      ],
+      "case_count": 12,
+      "completed_at": "2026-10-01T03:25:16.488593+00:00",
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "elapsed_seconds": 0.1070146249840036,
+      "exit_code": 0,
+      "label": "default-root",
+      "reported_passed": true,
+      "started_at": "2026-10-01T03:25:16.381083+00:00",
+      "stderr_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/scopeguard-selftest-a02-3087a8e4-default-root-stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/scopeguard-selftest-a02-3087a8e4-default-root-stdout.log",
+      "stdout_sha256": "43a17b9572dbbf468eba5f190d3d26555f6af2c165b3cd17c2f8b06575b816ee"
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+        "--self-test",
+        "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare"
+      ],
+      "case_count": 12,
+      "completed_at": "2026-10-01T03:25:16.561185+00:00",
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "elapsed_seconds": 0.07199475006200373,
+      "exit_code": 0,
+      "label": "explicit-root",
+      "reported_passed": true,
+      "started_at": "2026-10-01T03:25:16.488618+00:00",
+      "stderr_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/scopeguard-selftest-a02-3087a8e4-explicit-root-stderr.log",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/scopeguard-selftest-a02-3087a8e4-explicit-root-stdout.log",
+      "stdout_sha256": "43a17b9572dbbf468eba5f190d3d26555f6af2c165b3cd17c2f8b06575b816ee"
+    }
+  ],
+  "script_path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+  "script_sha256": "a826e3ac26da479da10e203ada73a6db23a5054c499696319b002af321a3166b",
+  "source_sha256_after": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "source_sha256_before": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "source_unchanged": true
+}

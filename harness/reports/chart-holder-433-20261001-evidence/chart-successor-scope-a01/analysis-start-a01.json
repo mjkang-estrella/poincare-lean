@@ -1,0 +1,7 @@
+{
+  "created_at": "2026-10-01T03:36:19.730829+00:00",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "retained_gate_sha256": "8ccbcf9c8f401653d6e566a08de0bcac67ffb0b4ad1ef816fea6f2e042e5f042",
+  "scope": "read-only source analysis; new ignored scratch probes only"
+}

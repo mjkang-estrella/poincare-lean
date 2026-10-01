@@ -1,0 +1,8 @@
+{
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/check-scope.py"
+  ],
+  "exit_code": 1,
+  "guard_sha256": "5730c0778c55d9fac799eda9fc75bf9a395bc4fc5abf731adb187ef06fa5b3bc"
+}

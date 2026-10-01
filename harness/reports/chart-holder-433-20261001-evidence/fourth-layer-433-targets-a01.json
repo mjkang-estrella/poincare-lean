@@ -1,0 +1,18 @@
+{
+  "source_head": "c4936ee4692da0123ec7b80b4a6c5ea8f208edfc",
+  "roots": [
+    "Poincare.ChartIdentification",
+    "Poincare.Global.HeatApproxIdentity",
+    "Poincare.Global.HeatKernelPDEn",
+    "Poincare.Global.RoundSphereChart"
+  ],
+  "targets": [
+    "Poincare.CurvatureTensoriality",
+    "Poincare.Global.ConformalChristoffel",
+    "Poincare.Global.HeatCauchy",
+    "Poincare.Global.LeviCivitaTransport",
+    "Poincare.Global.RoundSphereChartMetric",
+    "Poincare.Global.ScalarVariation"
+  ],
+  "purpose": "Read-only scoped immediate consumers of accepted proofs; no full root or new core closure claim."
+}

@@ -1,0 +1,10 @@
+/-- The rational conformal factor for Mathlib's `stereoInvFunAux` normalization. -/
+def stereoInvFunAuxConformalFactor (z : E) : ℝ :=
+  16 / (‖z‖ ^ 2 + 4) ^ 2
+
+/-- The simplified Fréchet derivative of Mathlib's stereographic inverse auxiliary map. -/
+noncomputable def stereoInvFunAuxFDeriv (v z : E) : E →L[ℝ] E :=
+  (4 * (‖z‖ ^ 2 + 4)⁻¹) • ContinuousLinearMap.id ℝ E
+    - (8 * ((‖z‖ ^ 2 + 4)⁻¹) ^ 2) • (innerSL ℝ z).smulRight z
+    + (16 * ((‖z‖ ^ 2 + 4)⁻¹) ^ 2) • (innerSL ℝ z).smulRight v
+

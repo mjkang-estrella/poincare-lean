@@ -1,0 +1,9 @@
+{
+  "before_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "after_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "guard_sha256": "76446e1f837785b3d9b60e7d8ceacd4956441c217a28dc5ea505e6246024d82a",
+  "method": "exact replacement terms frozen in check-scope-a02.py in all nine regions; prior API+h2 edits preserved",
+  "only_changed_tracked_file": [
+    "Poincare/ChartIdentification.lean"
+  ]
+}

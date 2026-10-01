@@ -1,0 +1,19 @@
+{
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "candidate_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "final_diff_sha256": "9dc64b77d04e13250f8bca6920b71a06a041efcef7f00b5771ed151e4ab6bfe3",
+  "compiled_olean_sha256": "b5a159d71844a23e194b776f417c61537912bac22dd06983beafa0b71a2cf20d",
+  "all_frozen_gates_passed": true,
+  "probe_type_counts": [
+    20,
+    20
+  ],
+  "parent_acceptance_pending": true,
+  "source_settings_added": false,
+  "only_changed_tracked_path": [
+    "Poincare/ChartIdentification.lean"
+  ],
+  "attempts": 1,
+  "prior_failed_job_preserved": true,
+  "prior_failed_direct_log_sha256": "8ccbcf9c8f401653d6e566a08de0bcac67ffb0b4ad1ef816fea6f2e042e5f042"
+}

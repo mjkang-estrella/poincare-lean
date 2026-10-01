@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:39:45.550618+00:00",
+  "source_head": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 11.801949977874756,
+  "completed_at": "2026-10-01T03:39:57.366940+00:00",
+  "log_hashes": {
+    "stdout.log": "ad426f06ca63e30715b8d7de95cf643d41d520d16363fc4a7347bd80cdd3ba09",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

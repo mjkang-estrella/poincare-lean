@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "source_sha256": "9d60433541d27336bf18e4deeb167d9602488f7952ddd836f9f97a61bc8d5506",
+  "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+  "started_at": "2026-10-01T03:37:17.780848+00:00",
+  "invocation_kind": "cached direct Lean; no build",
+  "exit_code": 1,
+  "seconds": 2.8491786250378937,
+  "finished_at": "2026-10-01T03:37:20.630494+00:00",
+  "log_hashes": {
+    "bracket-replay-a01.stdout.log": "956442eb7655a4374ac13553cfd6abd6598fc7b7f931552a3bab6ec8114a9797",
+    "bracket-replay-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

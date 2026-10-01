@@ -1,0 +1,74 @@
+{
+  "old_checkout": "/Users/mjkang/Develop/poincare",
+  "old_commit": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "target_checkout": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "target_base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "source_path": "Poincare/Global/RoundSphereChart.lean",
+  "source_sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103",
+  "target_toolchain": "leanprover/lean4:v4.33.1",
+  "original_toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "pins_target": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lakefile.lean",
+      "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Statement.lean",
+      "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/RoundSphereMetric.lean",
+      "sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541"
+    },
+    {
+      "path": "Poincare/Global/RoundSphereChart.lean",
+      "sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103"
+    }
+  ],
+  "pins_original": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
+    },
+    {
+      "path": "lakefile.lean",
+      "sha256": "21244e82dba5c063781882a2e182f75b66a549a3293a708fca28540002b6d256"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1"
+    },
+    {
+      "path": "Poincare/Statement.lean",
+      "sha256": "55c32a8accda33a329bdc139270ecc2b1d8fafc0ec6f90dcdf01e76a48368b8e"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/RoundSphereMetric.lean",
+      "sha256": "db0348dda2abdbc511df11a1f33047266e8911768abd1edf98de5bba2e9d1359"
+    },
+    {
+      "path": "Poincare/Global/RoundSphereChart.lean",
+      "sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103"
+    }
+  ],
+  "original_cached_artifact": {
+    "path": "/Users/mjkang/Develop/poincare/.lake/build/lib/lean/Poincare/Global/RoundSphereChart.olean",
+    "sha256": "658cfb95d2dcddd35617f51b22fd9f75548f9c5b4b6f9d966900c5ef3201a933"
+  }
+}

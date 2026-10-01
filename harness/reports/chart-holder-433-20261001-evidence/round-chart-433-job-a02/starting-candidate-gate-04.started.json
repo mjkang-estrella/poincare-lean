@@ -1,0 +1,13 @@
+{
+  "started_epoch": 1790825772.376651,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

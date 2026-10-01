@@ -1,0 +1,74 @@
+[
+  {
+    "is_prop": false,
+    "is_theorem": false,
+    "lean_type": "{E : Type u_1} \u2192 [NormedAddCommGroup.{u_1} E] \u2192 E \u2192 Real",
+    "name": "Poincare.stereoInvFunAuxConformalFactor",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": false,
+    "is_theorem": false,
+    "lean_type": "{E : Type u_1} \u2192 [inst : NormedAddCommGroup.{u_1} E] \u2192 [inst_1 : InnerProductSpace.{0, u_1} Real E] \u2192 E \u2192 E \u2192 ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E",
+    "name": "Poincare.stereoInvFunAuxFDeriv",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z u : E), Eq.{u_1 + 1} ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) (HAdd.hAdd.{u_1, u_1, u_1} (HSub.hSub.{u_1, u_1, u_1} (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (4 : Real) (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real)))) u) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (8 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) z)) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (16 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) v))",
+    "name": "Poincare.stereoInvFunAuxFDeriv_apply",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), HasFDerivAt.{0, u_1, u_1} (stereoInvFunAux.{u_1} v) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z) z",
+    "name": "Poincare.hasFDerivAt_stereoInvFunAuxFDeriv",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (stereoInvFunAux.{u_1} v) z) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z)",
+    "name": "Poincare.fderiv_stereoInvFunAux",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E) (z : \u21a5(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) (ContinuousLinearMap.comp.{0, 0, 0, u_1, u_1, u_1} (Poincare.stereoInvFunAuxFDeriv.{u_1} v \u2191z) (Submodule.subtypeL.{0, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))))",
+    "name": "Poincare.fderiv_stereoInvFunAux_comp_subtype",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] {v z u w : E}, Eq.{1} (Norm.norm.{u_1} v) (1 : Real) \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) z \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) u \u2192 Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) w \u2192 Eq.{1} (Inner.inner.{0, u_1} Real ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} z) (Inner.inner.{0, u_1} Real u w))",
+    "name": "Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal",
+    "universes": [
+      "u_1"
+    ]
+  },
+  {
+    "is_prop": true,
+    "is_theorem": true,
+    "lean_type": "\u2200 {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E), Eq.{1} (Norm.norm.{u_1} v) (1 : Real) \u2192 \u2200 (z u w : \u21a5(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{1} (Inner.inner.{0, u_1} Real ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) u) ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} \u2191z) (Inner.inner.{0, u_1} Real u w))",
+    "name": "Poincare.inner_fderiv_stereoInvFunAux_comp_subtype",
+    "universes": [
+      "u_1"
+    ]
+  }
+]

@@ -1,0 +1,321 @@
+{
+  "created_at": "2026-10-01T03:24:45.029093+00:00",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "original_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "scope_status": "proposed until distinct blind readback and root dispatch",
+  "probe_results": {
+    "export-original-types-a01": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/export-original-types-a01.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "25ce2208793c63a4bf207e1d76e674911a79808d01546afef62d0f9eab310880",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:16:49.610386+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 0,
+      "seconds": 2.772069582948461,
+      "finished_at": "2026-10-01T03:16:52.382752+00:00",
+      "log_hashes": {
+        "export-original-types-a01.stdout.log": "7bafca1f47af5988235dd5a7ebb0e0ba153c3cab1ab106a15fcdd6b0b0bcbe14",
+        "export-original-types-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-raw-rigid-a01": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalRawFrozenProbe-a01.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "46b2a3969cbea8030484e7c13d54f1428c8464e2c010c4676c51a3bb470df735",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:18:18.725202+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 20.147848874912597,
+      "finished_at": "2026-10-01T03:18:38.873543+00:00",
+      "log_hashes": {
+        "original-raw-rigid-a01.stdout.log": "186d1cddb4a8d4a002d52466f9d75af8a8832e84dc24fa6d10df4b90e8db2614",
+        "original-raw-rigid-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-formula-rigid-a01": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "9280a6d87a08b1596e1327486699fdf7dec731d76a61bff2da4453055497d936",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:18:18.725201+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 20.364725542021915,
+      "finished_at": "2026-10-01T03:18:39.090419+00:00",
+      "log_hashes": {
+        "original-formula-rigid-a01.stdout.log": "f638958945b14c47ae15be6b432f77440e5a5102a4b73031dc5fe6796adc5599",
+        "original-formula-rigid-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-formula-literal-a01": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "e551405464027602eb5842c95b312e05d0950fd39aceaf2efa4251335ed2599c",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:18:18.725186+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 12.546927666990086,
+      "finished_at": "2026-10-01T03:18:31.272593+00:00",
+      "log_hashes": {
+        "current-formula-literal-a01.stdout.log": "f72eb9c24f7effa10a7a6213245308d391aafbb4859ce394e4666c225183c271",
+        "current-formula-literal-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-explicit-literal-a01": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a01.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "cb8714920e56e8b40b41a46f6b794fca7738dafd8dd406ea3d70d56ed486ef36",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:18:18.725195+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 12.381652625044808,
+      "finished_at": "2026-10-01T03:18:31.107323+00:00",
+      "log_hashes": {
+        "current-explicit-literal-a01.stdout.log": "1c637170c5bff62d7d159a1e3be340fd5ef628e964a772bb8b0bef18e5b19f76",
+        "current-explicit-literal-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-raw-rigid-a02": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalRawFrozenProbe-a02.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "7eff2f0d85e4ec00e1b3f3e1daffb2cf5a32ff7ff281ba5e71b8662c4cb80a84",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:20:41.114729+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 35.71999137511011,
+      "finished_at": "2026-10-01T03:21:16.835247+00:00",
+      "log_hashes": {
+        "original-raw-rigid-a02.stdout.log": "03b300cfda5d62097cec48caba7454a8c1cd6db23a53289f4e2f9aca0ddb54ad",
+        "original-raw-rigid-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-formula-rigid-a02": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "a95dba4cd42ee4e5dcdd38c61e4a24f6511899ed56f6463c95aabb4a3f0b09cc",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:20:41.114730+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 35.98090816591866,
+      "finished_at": "2026-10-01T03:21:17.096175+00:00",
+      "log_hashes": {
+        "original-formula-rigid-a02.stdout.log": "7355941135bbca71cfe352834f010d5f718c5a1b9270a07e268a7ff02bf7ab85",
+        "original-formula-rigid-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-formula-literal-a02": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a02.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "c88fe3792d91dabddf918c8d182ab73c47ce40df0979a5a674884ea018c3eb47",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:20:41.115491+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 18.252380541991442,
+      "finished_at": "2026-10-01T03:20:59.368408+00:00",
+      "log_hashes": {
+        "current-formula-literal-a02.stdout.log": "bea4995f48ec1c03f0b866644339ef1f0ac5ef01fcebea0bbefc0dbcaa9fbee4",
+        "current-formula-literal-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-explicit-literal-a02": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "8eb7acd36c2c627b41a5cc5807ed6755f861bbd193c0720ed883e42033e808c0",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:20:41.115492+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 1,
+      "seconds": 18.08969958301168,
+      "finished_at": "2026-10-01T03:20:59.205741+00:00",
+      "log_hashes": {
+        "current-explicit-literal-a02.stdout.log": "96f188137eb26f1aca14084551cb1581a6afa29e6cfa4ff276feab1cf04c5bce",
+        "current-explicit-literal-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-raw-rigid-a03": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalRawFrozenProbe-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "4749bdb87c92bb92ea73c4f4b8bec3973cd4a9716ba402de6312d66b8a5d217e",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:23:02.979733+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 0,
+      "seconds": 19.985120208002627,
+      "finished_at": "2026-10-01T03:23:22.965312+00:00",
+      "log_hashes": {
+        "original-raw-rigid-a03.stdout.log": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+        "original-raw-rigid-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "original-formula-rigid-a03": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "toolchain": "leanprover/lean4:v4.30.0-rc2",
+      "source_sha256": "b7437b5903e583f1f210141b287fa273d49db690e7514f617e03f6423ccb500d",
+      "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "started_at": "2026-10-01T03:23:02.979757+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 0,
+      "seconds": 20.191839374951087,
+      "finished_at": "2026-10-01T03:23:23.172054+00:00",
+      "log_hashes": {
+        "original-formula-rigid-a03.stdout.log": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+        "original-formula-rigid-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-formula-literal-a03": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "84de023d52462efc4e5c15506d6958d03223772ce59b01398dc13cb7cca4bc30",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:21:43.826547+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 0,
+      "seconds": 47.60269662505016,
+      "finished_at": "2026-10-01T03:22:31.431434+00:00",
+      "log_hashes": {
+        "current-formula-literal-a03.stdout.log": "57cc3574a7799bb2ace0a059057eea39ad1bef295c2c78176754822f104ad3b1",
+        "current-formula-literal-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "current-explicit-literal-a03": {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "681e24e8fedf59c21b71747e90835567dc790e43",
+      "toolchain": "leanprover/lean4:v4.33.1",
+      "source_sha256": "f2d04d9e26e2f0fb099f6232e8f429dcceffa5cc31c687c18abf0d6dca16a7fd",
+      "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "started_at": "2026-10-01T03:23:02.979992+00:00",
+      "invocation_kind": "cached direct Lean; no build",
+      "exit_code": 0,
+      "seconds": 10.211234499933198,
+      "finished_at": "2026-10-01T03:23:13.191762+00:00",
+      "log_hashes": {
+        "current-explicit-literal-a03.stdout.log": "57cc3574a7799bb2ace0a059057eea39ad1bef295c2c78176754822f104ad3b1",
+        "current-explicit-literal-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "semantic_probe_directory": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-api-generic-readonly-20261001-a01"
+}

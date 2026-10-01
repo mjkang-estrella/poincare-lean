@@ -1,0 +1,4 @@
+  File "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py", line 142
+    ("extra_operator_in_proof", prefix + b"    have hm := mvfderiv I (fun _ : M => (0 : 𝕜))\n" + lemma + suffix, False),
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: bytes can only contain ASCII literal characters

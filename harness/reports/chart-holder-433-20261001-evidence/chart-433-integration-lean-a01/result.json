@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:50:14.047933+00:00",
+  "source_head": "c4936ee4692da0123ec7b80b4a6c5ea8f208edfc",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 3.182335138320923,
+  "completed_at": "2026-10-01T03:50:17.245680+00:00",
+  "log_hashes": {
+    "stdout.log": "5de99b5bac716225694000fe35039109401e5e5853463dd473692b60d451aaa7",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

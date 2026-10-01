@@ -1,0 +1,364 @@
+AXIOM_SAFETY_CONTRACT_OK:mlieBracket_apply_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_fixed_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullback_extChartAt_symm_apply:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_section_eventually_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_extDerivFun_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mlieBracket_apply_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_fixed_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullback_extChartAt_symm_apply_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_section_eventually_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_extDerivFun_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_eq:[propext, Classical.choice, Quot.sound]
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:610:598: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:610:808: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:610:555: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:610:1090: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:610:1048: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:632:25: error: Type mismatch
+  ∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup E]
+    [inst_2 : NormedSpace 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace H] {I : ModelWithCorners 𝕜 E H} {M : Type u_4}
+    [inst_4 : TopologicalSpace M] [inst_5 : ChartedSpace H M] [inst_6 : IsManifold I 1 M]
+    (X : (y : M) → TangentSpace I y) (x : M),
+    VectorField.mpullbackWithin 𝓘(𝕜, E) I (↑(extChartAt I x).symm) X (Set.range ↑I) ?m.407 = X x
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:632:755: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:632:707: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:654:25: error: Type mismatch
+  ∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup E]
+    [inst_2 : NormedSpace 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace H] {I : ModelWithCorners 𝕜 E H} {M : Type u_4}
+    [inst_4 : TopologicalSpace M] [inst_5 : ChartedSpace H M] [inst_6 : I.Boundaryless] {f : M → 𝕜} {x : M},
+    MDiffAt f x →
+      ∀ (v : TangentSpace I x),
+        ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f x) v =
+          (fderiv 𝕜 (f ∘ ↑(extChartAt I x).symm) ?m.477) v
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:654:926: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:654:881: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:676:25: error: Type mismatch
+  ∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup E]
+    [inst_2 : NormedSpace 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace H] {I : ModelWithCorners 𝕜 E H} {M : Type u_4}
+    [inst_4 : TopologicalSpace M] [inst_5 : ChartedSpace H M] [inst_6 : IsManifold I 1 M] [inst_7 : I.Boundaryless]
+    {f : M → 𝕜} {x₀ y : M},
+    y ∈ (extChartAt I x₀).source →
+      MDiffAt f y →
+        ∀ (v : TangentSpace I y),
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f y) v =
+            (fderiv 𝕜 (f ∘ ↑(extChartAt I x₀).symm) ?m.503) ((mfderiv% ↑(extChartAt I x₀) y) v)
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:676:1226: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:676:1048: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:698:25: error: Type mismatch
+  ∀ {E : Type u_5} [inst : NormedAddCommGroup E] [inst_1 : NormedSpace ℝ E] {H : Type u_6} [inst_2 : TopologicalSpace H]
+    {I : ModelWithCorners ℝ E H} {M : Type u_7} [inst_3 : TopologicalSpace M] [inst_4 : ChartedSpace H M]
+    [IsManifold I 1 M] [I.Boundaryless] {f : M → ℝ},
+    (∀ (x : M), MDiffAt f x) →
+      (∀ (x : M) (w : TangentSpace I x),
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f x) w = 0) →
+        IsLocallyConstant f
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:698:792: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:720:25: error: Type mismatch
+  ∀ {E' : Type u_5} [inst : NormedAddCommGroup E'] [inst_1 : NormedSpace ℝ E'] {H' : Type u_6}
+    [inst_2 : TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'} {N : Type u_7} [inst_3 : TopologicalSpace N]
+    [inst_4 : ChartedSpace H' N] [inst_5 : IsManifold I' 2 N] [inst_6 : I'.Boundaryless] [inst_7 : CompleteSpace E']
+    {f : N → ℝ} {X Y : (y : N) → TangentSpace I' y} {x : N},
+    ContMDiffAt I' 𝓘(ℝ, ℝ) 2 f x →
+      MDiffAt (T% X) x →
+        MDiffAt (T% Y) x →
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f x)
+              (VectorField.mlieBracket I' X Y x) =
+            (fderiv ℝ
+                  (fun z =>
+                    (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) z)
+                      (VectorField.mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) Y z))
+                  ?m.632)
+                (X x) -
+              (fderiv ℝ
+                  (fun z =>
+                    (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) z)
+                      (VectorField.mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) X z))
+                  ?m.703)
+                (Y x)
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:720:2161: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:720:1705: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:720:2112: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:742:25: error: Type mismatch
+  ∀ {E' : Type u_5} [inst : NormedAddCommGroup E'] [inst_1 : NormedSpace ℝ E'] {H' : Type u_6}
+    [inst_2 : TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'} {N : Type u_7} [inst_3 : TopologicalSpace N]
+    [inst_4 : ChartedSpace H' N] [inst_5 : IsManifold I' 2 N] [inst_6 : I'.Boundaryless] [inst_7 : CompleteSpace E']
+    {x y : N},
+    y ∈ (extChartAt I' x).source →
+      ∀ (U : (z : N) → TangentSpace I' z),
+        VectorField.mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) U ?m.426 = (mfderiv% ↑(extChartAt I' x) y) (U y)
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:742:979: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:742:801: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:764:25: error: Type mismatch
+  ∀ {E' : Type u_5} [inst : NormedAddCommGroup E'] [inst_1 : NormedSpace ℝ E'] {H' : Type u_6}
+    [inst_2 : TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'} {N : Type u_7} [inst_3 : TopologicalSpace N]
+    [inst_4 : ChartedSpace H' N] [inst_5 : IsManifold I' 2 N] [inst_6 : I'.Boundaryless] [inst_7 : CompleteSpace E']
+    {f : N → ℝ} {x : N},
+    ContMDiffAt I' 𝓘(ℝ, ℝ) 2 f x →
+      ∀ (U : (z : N) → TangentSpace I' z),
+        ∀ᶠ (y : N) in nhds x,
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f y) (U y) =
+            (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) ?m.491)
+              (VectorField.mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) U ?m.527)
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:764:1256: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:764:982: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:764:1198: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:786:25: error: Type mismatch
+  ∀ {E' : Type u_5} [inst : NormedAddCommGroup E'] [inst_1 : NormedSpace ℝ E'] {H' : Type u_6}
+    [inst_2 : TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'} {N : Type u_7} [inst_3 : TopologicalSpace N]
+    [inst_4 : ChartedSpace H' N] [inst_5 : IsManifold I' 2 N] [inst_6 : I'.Boundaryless] [inst_7 : CompleteSpace E']
+    {f : N → ℝ} {U : (y : N) → TangentSpace I' y} {x : N},
+    ContMDiffAt I' 𝓘(ℝ, ℝ) 2 f x →
+      MDiffAt (T% U) x →
+        ∀ (v : TangentSpace I' x),
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z))
+                (fun y => ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f y) (U y)) x)
+              v =
+            (fderiv ℝ
+                (fun z =>
+                  (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) z)
+                    (VectorField.mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) U z))
+                ?m.646)
+              v
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:786:1661: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:786:1617: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:808:25: error: Type mismatch
+  ∀ {E' : Type u_5} [inst : NormedAddCommGroup E'] [inst_1 : NormedSpace ℝ E'] {H' : Type u_6}
+    [inst_2 : TopologicalSpace H'] {I' : ModelWithCorners ℝ E' H'} {N : Type u_7} [inst_3 : TopologicalSpace N]
+    [inst_4 : ChartedSpace H' N] [inst_5 : IsManifold I' 2 N] [I'.Boundaryless] [CompleteSpace E'] {f : N → ℝ}
+    {X Y : (y : N) → TangentSpace I' y} {x : N},
+    ContMDiffAt I' 𝓘(ℝ, ℝ) 2 f x →
+      MDiffAt (T% X) x →
+        MDiffAt (T% Y) x →
+          ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f x)
+              (VectorField.mlieBracket I' X Y x) =
+            ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z))
+                  (fun y => ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f y) (Y y)) x)
+                (X x) -
+              ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z))
+                  (fun y => ((fun g z => (↑(NormedSpace.fromTangentSpace (g z))).comp (mfderiv% g z)) f y) (X y)) x)
+                (Y x)
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:808:2013: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:830:25: error: Type mismatch
+  @mlieBracket_apply_chart = @mlieBracket_apply_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:830:123: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:852:25: error: Type mismatch
+  @mpullbackWithin_extChartAt_symm_self = @mpullbackWithin_extChartAt_symm_self
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:852:149: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:874:25: error: Type mismatch
+  @extDerivFun_apply_chart = @extDerivFun_apply_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:874:123: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:896:25: error: Type mismatch
+  @extDerivFun_apply_fixed_chart = @extDerivFun_apply_fixed_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:896:135: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.282
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:918:25: error: Type mismatch
+  @isLocallyConstant_of_extDerivFun_eq_zero = @isLocallyConstant_of_extDerivFun_eq_zero
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:918:147: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:940:25: error: Type mismatch
+  @extDerivFun_apply_mlieBracket_chart = @extDerivFun_apply_mlieBracket_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:940:137: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:962:25: error: Type mismatch
+  @mpullback_extChartAt_symm_apply = @mpullback_extChartAt_symm_apply
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:962:129: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:984:25: error: Type mismatch
+  @extDerivFun_section_eventually_chart = @extDerivFun_section_eventually_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:984:139: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:1006:25: error: Type mismatch
+  @extDerivFun_extDerivFun_chart = @extDerivFun_extDerivFun_chart
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:1006:125: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:1028:25: error: Type mismatch
+  @extDerivFun_apply_mlieBracket = @extDerivFun_apply_mlieBracket
+has type
+  Prop
+but is expected to have type
+  TermElabM PUnit.{1}
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a01.lean:1028:125: error: Type mismatch
+  "_CONTRACT_OK:{info.name}:{info.levelParams}"
+has type
+  String
+but is expected to have type
+  TermElabM ?m.281

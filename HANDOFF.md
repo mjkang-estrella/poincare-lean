@@ -1,5 +1,47 @@
 # Handoff Snapshot
 
+## 2026-10-01 UTC Chart and Hessian identities independently preserved
+
+At mathematical-source eee0cd4b5cf35680d0b5db3ac8062eaa5de11895, root independently accepted and integrated
+the original stereographic derivative, chart scalar-derivative/bracket
+identities and Holder Hessian multiplier. Repairs preserve actual maps, both
+tensor slots, all original models/domains/directions/hypotheses and canonical
+norms; exact original types/universes, computational guards, allowed axioms
+and transitive safety passed fresh scoped checks. Chart scalar API names now
+use explicit mvfderiv with the same original model, whose generic old/current
+formula equality was checked by rfl. No replacement instance or option was
+needed in ChartIdentification. Failed attempts, rejected readback exposure,
+corrected proof-free review and accepted evidence are sealed in
+harness/reports/chart-holder-433-20261001-evidence. The oversized failed type
+printer transcript is retained in central ignored state, with external path
+and size recorded rather than copied into Git.
+
+These are retained-root compatibility repairs, not a new core discharge.
+ExistsSmoothabilitySmoothManifoldStatement remains genuinely proved earlier.
+UniversalHamiltonFrontInputsStatement and UniversalHamiltonConvergenceStatement
+remain independently unconstructed, and Poincare.poincare_conjecture has not
+been constructed. No full retained root or positive completion gate passed.
+
+Read-only immediate consumer build at c4936ee ended with exact errors in
+CurvatureTensoriality, RoundSphereChartMetric, HeatCauchy and the already known
+RicciFlowEquation; its terminal receipt and diagnostics are archived. Metric
+transport has reviewed original kernel payload/types and a distinct blind
+readback; its isolated revision2 corrects only a missing source argv in the
+immutable guard command. Ricci's three-body route is scratch-proved and is
+being frozen for distinct statement review. Neither is accepted yet.
+
+The same pinned upstream source build a04 remains root-owned at session6188,
+wrapper32187/Lake32190. Revalidate that exact process before any resume. Exact
+smooth/endgame producer probe a03 is prepared with explicit smooth ENat.top,
+rigid types/universes and projection/recursor-aware safety; actual producer
+acceptance awaits its real PoincareEndgame artifact.
+
+Exact first action: revalidate a04 and run its prepared exact producer probe
+when the genuine artifact is ready. Independently rerun successful producer
+evidence before constructing the final adapter using proved S. Continue
+only reviewed root compatibility steps, preserve every old import and target,
+and finish full completion gates at one clean stable HEAD.
+
 ## 2026-10-01 UTC Gaussian proofs independently accepted; endpoint resumed
 
 At mathematical-source 338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f, root independently accepted and integrated

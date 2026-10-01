@@ -1,0 +1,11 @@
+{
+  "owner": "/root/round_chart_freeze",
+  "kind": "read-only-freeze-preparation",
+  "owned_artifact_directory": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01",
+  "source_scope_reserved_for_future_worker": [
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "source_edits_authorized": false,
+  "review_status": "pending",
+  "target_base_commit": "681e24e8fedf59c21b71747e90835567dc790e43"
+}

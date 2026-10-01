@@ -1,0 +1,22 @@
+{
+  "name": "gate-explicit-frozen-a01",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:46:40.763808+00:00",
+  "finished_at": "2026-10-01T03:47:01.728264+00:00",
+  "exit_code": 0,
+  "duration_seconds": 20.964373250026256,
+  "expected_exit": 0,
+  "passed": true,
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "stdout_sha256": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

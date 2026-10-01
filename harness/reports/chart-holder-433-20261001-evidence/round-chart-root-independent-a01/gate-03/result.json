@@ -1,0 +1,17 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.RoundSphereChart"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 2.401888847351074,
+  "source_head": "5a7588e26ad2defcca3688c1a5e811b2471342a3",
+  "log_hashes": {
+    "stdout.log": "5c06cd5a6bab211b994ca4fde36c65542a780831b63d4d0dc2013f062de56b2b",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

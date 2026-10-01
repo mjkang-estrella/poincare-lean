@@ -1,0 +1,19 @@
+FROZEN_CONTRACT_OK: Poincare.stereoInvFunAuxConformalFactor
+FROZEN_CONTRACT_OK: Poincare.stereoInvFunAuxFDeriv
+FROZEN_CONTRACT_OK: Poincare.stereoInvFunAuxFDeriv_apply
+FROZEN_CONTRACT_OK: Poincare.hasFDerivAt_stereoInvFunAuxFDeriv
+FROZEN_CONTRACT_OK: Poincare.fderiv_stereoInvFunAux
+FROZEN_CONTRACT_OK: Poincare.fderiv_stereoInvFunAux_comp_subtype
+FROZEN_CONTRACT_OK: Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal
+FROZEN_CONTRACT_OK: Poincare.inner_fderiv_stereoInvFunAux_comp_subtype
+TRANSITIVE_SAFETY_OK: visited=17398, recursor_rules=190, inductive_constructors=634, axioms=[Quot.sound,
+ Classical.choice,
+ propext]
+AXIOM_CONTRACT_OK: Poincare.stereoInvFunAuxConformalFactor [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.stereoInvFunAuxFDeriv [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.stereoInvFunAuxFDeriv_apply [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.hasFDerivAt_stereoInvFunAuxFDeriv [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.fderiv_stereoInvFunAux [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.fderiv_stereoInvFunAux_comp_subtype [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal [propext, Classical.choice, Quot.sound]
+AXIOM_CONTRACT_OK: Poincare.inner_fderiv_stereoInvFunAux_comp_subtype [propext, Classical.choice, Quot.sound]

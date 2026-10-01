@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "source_sha256": "a95dba4cd42ee4e5dcdd38c61e4a24f6511899ed56f6463c95aabb4a3f0b09cc",
+  "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+  "started_at": "2026-10-01T03:20:41.114730+00:00",
+  "invocation_kind": "cached direct Lean; no build",
+  "exit_code": 1,
+  "seconds": 35.98090816591866,
+  "finished_at": "2026-10-01T03:21:17.096175+00:00",
+  "log_hashes": {
+    "original-formula-rigid-a02.stdout.log": "7355941135bbca71cfe352834f010d5f718c5a1b9270a07e268a7ff02bf7ab85",
+    "original-formula-rigid-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

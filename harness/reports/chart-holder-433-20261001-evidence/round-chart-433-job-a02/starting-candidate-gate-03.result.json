@@ -1,0 +1,17 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825788.0623329,
+  "ended_epoch": 1790825794.6585312,
+  "elapsed_seconds": 6.596198320388794,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "stdout_sha256": "50bef188728373ca1b7b0542f8da38ce4f1f6ae833295bb04cc84a67fedc5075",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

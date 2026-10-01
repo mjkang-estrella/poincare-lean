@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/started.json",
+    "sha256": "db624ff2232d9a4a8a4626a46fa1e78478fd50b9270f60c208d21a1faf1f9b9d"
+  },
+  {
+    "path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/result.json",
+    "sha256": "daa0a48cf18a0b460c45117fa148d3e4f2d99ac4390e0aa95d209dd0ff4f8431"
+  },
+  {
+    "path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/stdout.log",
+    "sha256": "cdc25cce332d2be2d983f7ce5c16637e0e393730b3205886c767b8690b247330"
+  },
+  {
+    "path": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/stderr.log",
+    "sha256": "c4a27db198c4d8632369ee6102944ef46e83c20d685f7c17a6aaff9cfcfc710f"
+  }
+]

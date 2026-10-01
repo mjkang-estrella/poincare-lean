@@ -1,0 +1,6 @@
+{
+  "owner": "/root/holder_worker",
+  "allowed_file": "Poincare/Global/ParabolicHolderMultiplier.lean",
+  "base_commit": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "status": "allocated"
+}

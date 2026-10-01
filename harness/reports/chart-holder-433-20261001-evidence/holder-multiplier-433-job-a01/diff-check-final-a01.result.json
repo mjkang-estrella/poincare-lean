@@ -1,0 +1,14 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "started_at": "2026-10-01T03:50:49.195719+00:00",
+  "finished_at": "2026-10-01T03:50:49.220139+00:00",
+  "elapsed_seconds": 0.024431999889202416,
+  "exit_code": 0,
+  "passed": true,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

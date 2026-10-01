@@ -1,0 +1,105 @@
+{
+  "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+  "base_commit": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "exit_code": 0,
+  "results": [
+    {
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.11501812934875488,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "4c3862ebccbece34dc70258389c10e63a597c840ef7e26d5af7660bfe8dc3ef1",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 7.697927951812744,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "5ecdeba59adb00b65d2a3294be63cd25104c09ce4be9cde8c00aa8f6280f823e",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ParabolicHolderMultiplier"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 2.0480527877807617,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "31e87606b8ecb9ead5bab3d9b44c778c94479b221fc4d7cbbcc7db5fd2b1d978",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 16.515482664108276,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "7944a2237a81b2eb93bf9d67a2d0c7bd39dc58ee0640d6a8ad8ead54251e7f17",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      "exit_code": 1,
+      "pass": true,
+      "seconds": 0.005370140075683594,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.023144960403442383,
+      "source_head": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ]
+}

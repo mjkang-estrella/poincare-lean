@@ -1,0 +1,39 @@
+{
+  "prepared_at_utc": "2026-10-01T03:28:28.767406+00:00",
+  "status": "frozen-original-gates-passed-awaiting-independent-blind-review",
+  "snapshot": "blind-snapshot-a02.json",
+  "snapshot_sha256": "63070a6841f7c96c909d5fbdeff502112480698ee1c9d26c2b1592734a2c489c",
+  "target_base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "original_base_commit": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "original_toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "target_toolchain": "leanprover/lean4:v4.33.1",
+  "original_cached_module_sha256": "658cfb95d2dcddd35617f51b22fd9f75548f9c5b4b6f9d966900c5ef3201a933",
+  "source_sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103",
+  "source_edits": false,
+  "full_builds": false,
+  "review_claimed": false,
+  "original_gate_counts": {
+    "rigid_type_prop_no_metavariable_universe": 8,
+    "standard_axiom": 8,
+    "transitive_safety_declarations": 17398,
+    "recursor_rules": 190,
+    "inductive_constructors": 634
+  },
+  "allowed_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "current_checkouts": [
+    {
+      "path": "/Users/mjkang/Develop/poincare",
+      "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+      "git_status": "## main...origin/main"
+    },
+    {
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "head": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+      "git_status": "## codex/upstream-integration-433"
+    }
+  ]
+}

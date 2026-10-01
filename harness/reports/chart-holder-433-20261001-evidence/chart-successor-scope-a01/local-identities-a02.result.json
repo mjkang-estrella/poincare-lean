@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/LocalIdentities-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "source_sha256": "6b45e7984b3f9324846700c0243fc6baf85d176ff1e428bf0f573c04cc792885",
+  "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+  "started_at": "2026-10-01T03:36:43.207018+00:00",
+  "invocation_kind": "cached direct Lean; no build",
+  "exit_code": 0,
+  "seconds": 2.7569242499303073,
+  "finished_at": "2026-10-01T03:36:45.964354+00:00",
+  "log_hashes": {
+    "local-identities-a02.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local-identities-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

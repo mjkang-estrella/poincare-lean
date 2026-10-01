@@ -1,0 +1,10 @@
+{
+  "owner": "/root/round_chart_worker",
+  "base": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "worktree": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "allowed_file": "Poincare/Global/RoundSphereChart.lean",
+  "allowed_proofs": [
+    "hasFDerivAt_stereoInvFunAuxFDeriv"
+  ],
+  "status": "allocated"
+}

@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-01T03:27:03.695840+00:00",
+  "task_id": "chart-identification-433-preserve",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "task_status": "ready",
+  "acceptance_status": "not run; root owns worker acceptance",
+  "task_sha256": "444e28ce90b9b345856bddf30189978714b2f1249efb6d60a1740cbca23cf320",
+  "contract_sha256": "093b3a39456f558fecb51e50a5c9a5df24954a1f34a6839623be101cd79527e6",
+  "blind_snapshot_sha256": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+  "review_sha256": "026566c238d2f624894fec85eb912fd183127907f7951eeb08e8b086e27ede10",
+  "source_guard_sha256": "a826e3ac26da479da10e203ada73a6db23a5054c499696319b002af321a3166b",
+  "worker_branch_and_lease": "not allocated by this preparation; root owns dispatch",
+  "project_source_edits": false,
+  "project_builds_started": false,
+  "exact_first_action": "Root allocate an isolated worker at the frozen base or explicitly revise the base before dispatch, with sole ChartIdentification lease; apply only the20 reviewed API tokens plus h2 proof repair and run the ordered frozen gates."
+}

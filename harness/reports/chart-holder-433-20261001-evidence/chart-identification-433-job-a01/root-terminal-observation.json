@@ -1,0 +1,6 @@
+{
+  "state": "blocked",
+  "reason": "Fresh direct Lean found six extra proof bodies outside prior frozen scope; source preserved and reviewed successor prepared. No prior worker active now.",
+  "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "observed_at": "2026-10-01T03:43:40.489581+00:00"
+}

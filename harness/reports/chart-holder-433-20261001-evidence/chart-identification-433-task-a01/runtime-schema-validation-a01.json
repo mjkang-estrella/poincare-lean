@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-01T03:28:09.009255+00:00",
+  "artifact_status": "superseded readiness; rich report retained; dispatch forbidden pending strict a02",
+  "results": {
+    "task_schema": {
+      "status": "pass"
+    },
+    "contract_schema": {
+      "status": "pass"
+    },
+    "readback_schema": {
+      "status": "fail",
+      "error_type": "RecordValidationError",
+      "error": "statement_readback: unknown fields: inputs_not_read, inputs_read, notation, verdict_scope, verification"
+    }
+  }
+}

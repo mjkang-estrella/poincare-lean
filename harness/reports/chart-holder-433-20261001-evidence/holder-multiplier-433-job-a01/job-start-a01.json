@@ -1,0 +1,20 @@
+{
+  "id": "holder-multiplier-433-job-a01",
+  "task_id": "holder-multiplier-433-preserve",
+  "task_revision": 3,
+  "backend": "Codex delegated agent",
+  "worker": "/root/holder_worker",
+  "base_commit": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "worktree": "/Users/mjkang/.codex/worktrees/holder-multiplier-433/poincare",
+  "branch": "codex/holder-multiplier-433-a01",
+  "started_at": "2026-10-01T03:48:30.739804+00:00",
+  "status": "running",
+  "lease": "/Users/mjkang/.codex/worktrees/holder-multiplier-433/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/lease-dispatch-a03.json",
+  "budget": {
+    "max_attempts": 8,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 22000,
+    "disk_mb": 1024
+  },
+  "scope": "Only ddu_time_bound and sum_apply proof bodies; no task acceptance or integration."
+}

@@ -1,0 +1,97 @@
+[
+  {
+    "path": "README.md",
+    "bytes": 6731,
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a"
+  },
+  {
+    "path": "HANDOFF.md",
+    "bytes": 241325,
+    "sha256": "a523f475e9d9cd7cdaeb8801969baaf286e42c131339c9d6f69ebfd6fb75c8e9"
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "bytes": 6906,
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f"
+  },
+  {
+    "path": "AGENTS.md",
+    "bytes": 4621,
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69"
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "bytes": 22137,
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3"
+  },
+  {
+    "path": "Poincare/Global/ParabolicHolderMultiplier.lean",
+    "bytes": 12580,
+    "sha256": "03321155abd7bc60ffebb120ac692e270fe30e6f6918c2bc4c9aa485eddd17a6"
+  },
+  {
+    "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+    "bytes": 13634,
+    "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+  },
+  {
+    "path": "Poincare/Global/ParabolicHolderSpace.lean",
+    "bytes": 18716,
+    "sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b"
+  },
+  {
+    "path": "Poincare/Global/RiemannianContext.lean",
+    "bytes": 9303,
+    "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/blind-snapshot-production-a03.json",
+    "bytes": 21015,
+    "sha256": "19894275ae72e058d3771bece82bfe123be45b31423c2b28dab3842d89636fdb"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean",
+    "bytes": 73278,
+    "sha256": "a7db5ed5dcdd77327ced94e68ea0763776699665edfa99738ea802dc7d799b57"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/semantic-context-proof-free-a03.txt",
+    "bytes": 4339,
+    "sha256": "1cabe701d86ba8fd95253ad69bc73ffbee0670115b7bbee6621fbb60e5c27c7a"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/frozen-base.lean",
+    "bytes": 12580,
+    "sha256": "03321155abd7bc60ffebb120ac692e270fe30e6f6918c2bc4c9aa485eddd17a6"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py",
+    "bytes": 2231,
+    "sha256": "65ea5983607278181dc6a8fd7b9574d41aa1d0860e897fe71cacb28037d6aab7"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/allowed-proof-spans-a01.json",
+    "bytes": 853,
+    "sha256": "157243f5e59a3a2e386c6ba08560c2fba8ca2298b5de9af822e94e44f0f69d17"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/production-interface-metadata-a01.json",
+    "bytes": 19577,
+    "sha256": "0e4b8613148c2fd17e07870bd85388190baef68bf84fbd5d07fc77b2f73b2b8f"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/diagnostic-excerpt-a01.txt",
+    "bytes": 3663,
+    "sha256": "54a159271d855efe89697847d3d75418ad6afd8a2c358ad1a1e86e82fed04399"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/contract-brief-a01.md",
+    "bytes": 1524,
+    "sha256": "bdda409d0be1e6e63b02a61c8f6ffdaaf0829df2504af912d29bd1bd7521e801"
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/blind-readback-production-a03.json",
+    "bytes": 9835,
+    "sha256": "0dbf38a4d907c84a5f46d01210cffc4366cb58b020b930db3c52d4ed1beb3f44"
+  }
+]

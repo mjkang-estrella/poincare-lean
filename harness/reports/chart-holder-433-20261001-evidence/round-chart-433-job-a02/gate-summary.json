@@ -1,0 +1,108 @@
+{
+  "passed_worker_gates": true,
+  "raw_results": [
+    {
+      "exit_code": 0,
+      "started_epoch": 1790825747.6259918,
+      "ended_epoch": 1790825747.657365,
+      "elapsed_seconds": 0.03137326240539551,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py"
+      ],
+      "stdout_sha256": "c2e40461601768c4001652953839ab81fe37051bd9100a2bdbe9fc51cb138f20",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "exit_code": 0,
+      "started_epoch": 1790825747.728426,
+      "ended_epoch": 1790825759.6704168,
+      "elapsed_seconds": 11.941990852355957,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/RoundSphereChart.lean"
+      ],
+      "stdout_sha256": "ad426f06ca63e30715b8d7de95cf643d41d520d16363fc4a7347bd80cdd3ba09",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "exit_code": 0,
+      "started_epoch": 1790825771.219297,
+      "ended_epoch": 1790825781.0021892,
+      "elapsed_seconds": 9.782892227172852,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.RoundSphereChart"
+      ],
+      "stdout_sha256": "f1319d0dc034ad5b1600263f75891af2de083d12ae0300146fc492f344c960c2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "exit_code": 0,
+      "started_epoch": 1790825788.0623329,
+      "ended_epoch": 1790825794.6585312,
+      "elapsed_seconds": 6.596198320388794,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      "stdout_sha256": "50bef188728373ca1b7b0542f8da38ce4f1f6ae833295bb04cc84a67fedc5075",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "exit_code": 1,
+      "started_epoch": 1790825772.376651,
+      "ended_epoch": 1790825772.382512,
+      "elapsed_seconds": 0.005861043930053711,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/RoundSphereChart.lean"
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "exit_code": 0,
+      "started_epoch": 1790825772.459999,
+      "ended_epoch": 1790825772.483378,
+      "elapsed_seconds": 0.023379802703857422,
+      "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "scan_interpretation": "rg exit1 with empty stdout/stderr means no forbidden tokens matched",
+  "candidate_source_sha256": "d35fe3d3398e796af25d920b568b98c73cbfd9b21d45eb5433bbb9d88018e67f",
+  "patch_sha256": "4487fbbf42dec000a1316a64bf0c853720daccb394d5b0d7fc10a6c5d35e58d3",
+  "required_declarations": 8,
+  "transitive_dependencies_visited": 17447,
+  "permitted_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "root_acceptance": "pending independent rerun"
+}

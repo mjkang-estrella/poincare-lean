@@ -1,0 +1,62 @@
+{
+  "applied_operator_changes": 17,
+  "base": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "candidate_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "file": "Poincare/ChartIdentification.lean",
+  "lean_invoked": false,
+  "mode": "source-check",
+  "original": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "original_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "passed": true,
+  "prior_h2_body": "exact mfderivWithin_range_extChartAt_symm (I := I) (x := x)",
+  "regions": [
+    {
+      "first": 90,
+      "last": 90,
+      "owner": "extDerivFun_apply_chart.h1"
+    },
+    {
+      "first": 93,
+      "last": 94,
+      "owner": "extDerivFun_apply_chart.h2"
+    },
+    {
+      "first": 198,
+      "last": 201,
+      "owner": "isLocallyConstant_of_extDerivFun_eq_zero.hInv"
+    },
+    {
+      "first": 211,
+      "last": 211,
+      "owner": "isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime"
+    },
+    {
+      "first": 269,
+      "last": 270,
+      "owner": "extDerivFun_apply_mlieBracket_chart.heq"
+    },
+    {
+      "first": 306,
+      "last": 308,
+      "owner": "extDerivFun_apply_mlieBracket_chart.model_reduction"
+    },
+    {
+      "first": 349,
+      "last": 350,
+      "owner": "extDerivFun_section_eventually_chart.heq"
+    },
+    {
+      "first": 403,
+      "last": 404,
+      "owner": "extDerivFun_extDerivFun_chart.heq"
+    },
+    {
+      "first": 480,
+      "last": 481,
+      "owner": "extDerivFun_apply_mlieBracket.heq"
+    }
+  ],
+  "root": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "starting_dirty_source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "unfolding_changes": 3
+}

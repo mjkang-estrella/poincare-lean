@@ -1,0 +1,13 @@
+Preserve the stereographic derivative under Lean 4.33
+
+Use stronger definitional comparison in the existing derivative proof so
+real module instances and function wrappers normalize during elaboration.
+Retain every definition, theorem type and surrounding proof unchanged.
+
+Constraint: Sole frozen hasFDerivAt_stereoInvFunAuxFDeriv proof body
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Direct Lean; scoped Lake build; eight frozen types and safety checks
+Tested: Source/data/root byte guards; forbidden scan; git diff --check
+Not-tested: Full root integration and completion audits

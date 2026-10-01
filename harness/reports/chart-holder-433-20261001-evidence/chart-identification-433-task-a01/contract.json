@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.ChartIdentification"
+    ],
+    "declarations": [
+      {
+        "name": "mlieBracket_apply_chart",
+        "universes": [
+          "u_1",
+          "u_2",
+          "u_3",
+          "u_4"
+        ],
+        "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace.{u_3} H] {I : ModelWithCorners.{u_1, u_2, u_3} 𝕜 E H} {M : Type u_4} [inst_4 : TopologicalSpace.{u_4} M] [inst_5 : ChartedSpace.{u_3, u_4} H M] [IsManifold.{u_1, u_2, u_3, u_4} I (1 : WithTop.{0} ENat) M] (X Y : (y : M) → TangentSpace.{u_2, u_1, u_3, u_4} I y) (x : M), Eq.{u_2 + 1} (VectorField.mlieBracket.{u_1, u_3, u_2, u_4} I X Y x) (VectorField.lieBracketWithin.{u_1, u_2} (E := E) 𝕜 (VectorField.mpullbackWithin.{u_1, u_2, u_2, u_2, u_3, u_2, u_4} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) I ((PartialEquiv.toFun (PartialEquiv.symm.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x)))) X (Set.range.{u_2, u_3 + 1} (ModelWithCorners.toFun' I))) (VectorField.mpullbackWithin.{u_1, u_2, u_2, u_2, u_3, u_2, u_4} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) I ((PartialEquiv.toFun (PartialEquiv.symm.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x)))) Y (Set.range.{u_2, u_3 + 1} (ModelWithCorners.toFun' I))) (Set.range.{u_2, u_3 + 1} (ModelWithCorners.toFun' I)) ((PartialEquiv.toFun (extChartAt.{u_1, u_2, u_4, u_3} I x)) x))"
+      },
+      {
+        "name": "mpullbackWithin_extChartAt_symm_self",
+        "universes": [
+          "u_1",
+          "u_2",
+          "u_3",
+          "u_4"
+        ],
+        "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace.{u_3} H] {I : ModelWithCorners.{u_1, u_2, u_3} 𝕜 E H} {M : Type u_4} [inst_4 : TopologicalSpace.{u_4} M] [inst_5 : ChartedSpace.{u_3, u_4} H M] [IsManifold.{u_1, u_2, u_3, u_4} I (1 : WithTop.{0} ENat) M] (X : (y : M) → TangentSpace.{u_2, u_1, u_3, u_4} I y) (x : M), Eq.{u_2 + 1} (VectorField.mpullbackWithin.{u_1, u_2, u_2, u_2, u_3, u_2, u_4} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) I ((PartialEquiv.toFun (PartialEquiv.symm.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x)))) X (Set.range.{u_2, u_3 + 1} (ModelWithCorners.toFun' I)) ((PartialEquiv.toFun (extChartAt.{u_1, u_2, u_4, u_3} I x)) x)) (X x)"
+      },
+      {
+        "name": "extDerivFun_apply_chart",
+        "universes": [
+          "u_1",
+          "u_2",
+          "u_3",
+          "u_4"
+        ],
+        "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace.{u_3} H] {I : ModelWithCorners.{u_1, u_2, u_3} 𝕜 E H} {M : Type u_4} [inst_4 : TopologicalSpace.{u_4} M] [inst_5 : ChartedSpace.{u_3, u_4} H M] [ModelWithCorners.Boundaryless.{u_1, u_2, u_3} I] {f : M → 𝕜} {x : M}, MDifferentiableAt.{u_1, u_2, u_3, u_4, u_1, u_1, u_1} I (modelWithCornersSelf.{u_1, u_1} 𝕜 𝕜) f x → ∀ (v : TangentSpace.{u_2, u_1, u_3, u_4} I x), Eq.{u_1 + 1} (((fun (g : M → 𝕜) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf 𝕜 𝕜) g z)) f x) v) ((fderiv.{u_1, u_2, u_1} 𝕜 (Function.comp.{u_2 + 1, u_4 + 1, u_1 + 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x)))) ((PartialEquiv.toFun (extChartAt.{u_1, u_2, u_4, u_3} I x)) x)) v)"
+      },
+      {
+        "name": "extDerivFun_apply_fixed_chart",
+        "universes": [
+          "u_1",
+          "u_2",
+          "u_3",
+          "u_4"
+        ],
+        "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {H : Type u_3} [inst_3 : TopologicalSpace.{u_3} H] {I : ModelWithCorners.{u_1, u_2, u_3} 𝕜 E H} {M : Type u_4} [inst_4 : TopologicalSpace.{u_4} M] [inst_5 : ChartedSpace.{u_3, u_4} H M] [IsManifold.{u_1, u_2, u_3, u_4} I (1 : WithTop.{0} ENat) M] [ModelWithCorners.Boundaryless.{u_1, u_2, u_3} I] {f : M → 𝕜} {x₀ y : M}, Membership.mem.{u_4, u_4} (PartialEquiv.source.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x₀)) y → MDifferentiableAt.{u_1, u_2, u_3, u_4, u_1, u_1, u_1} I (modelWithCornersSelf.{u_1, u_1} 𝕜 𝕜) f y → ∀ (v : TangentSpace.{u_2, u_1, u_3, u_4} I y), Eq.{u_1 + 1} (((fun (g : M → 𝕜) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf 𝕜 𝕜) g z)) f y) v) ((fderiv.{u_1, u_2, u_1} 𝕜 (Function.comp.{u_2 + 1, u_4 + 1, u_1 + 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_4, u_2} (extChartAt.{u_1, u_2, u_4, u_3} I x₀)))) ((PartialEquiv.toFun (extChartAt.{u_1, u_2, u_4, u_3} I x₀)) y)) ((mfderiv.{u_1, u_2, u_3, u_4, u_2, u_2, u_2} I (modelWithCornersSelf.{u_1, u_2} 𝕜 E) ((PartialEquiv.toFun (extChartAt.{u_1, u_2, u_4, u_3} I x₀))) y) v))"
+      },
+      {
+        "name": "isLocallyConstant_of_extDerivFun_eq_zero",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E : Type u_5} [inst : NormedAddCommGroup.{u_5} E] [inst_1 : NormedSpace.{0, u_5} Real E] {H : Type u_6} [inst_2 : TopologicalSpace.{u_6} H] {I : ModelWithCorners.{0, u_5, u_6} Real E H} {M : Type u_7} [inst_3 : TopologicalSpace.{u_7} M] [inst_4 : ChartedSpace.{u_6, u_7} H M] [IsManifold.{0, u_5, u_6, u_7} I (1 : WithTop.{0} ENat) M] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I] {f : M → Real}, (∀ (x : M), MDifferentiableAt.{0, u_5, u_6, u_7, 0, 0, 0} I (modelWithCornersSelf.{0, 0} Real Real) f x) → (∀ (x : M) (w : TangentSpace.{u_5, 0, u_6, u_7} I x), Eq.{1} (((fun (g : M → Real) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf Real Real) g z)) f x) w) (0 : Real)) → IsLocallyConstant.{u_7, 0} f"
+      },
+      {
+        "name": "extDerivFun_apply_mlieBracket_chart",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E' : Type u_5} [inst : NormedAddCommGroup.{u_5} E'] [inst_1 : NormedSpace.{0, u_5} Real E'] {H' : Type u_6} [inst_2 : TopologicalSpace.{u_6} H'] {I' : ModelWithCorners.{0, u_5, u_6} Real E' H'} {N : Type u_7} [inst_3 : TopologicalSpace.{u_7} N] [inst_4 : ChartedSpace.{u_6, u_7} H' N] [inst_5 : IsManifold.{0, u_5, u_6, u_7} I' (2 : WithTop.{0} ENat) N] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I'] [CompleteSpace.{u_5} E'] {f : N → Real} {X Y : (y : N) → TangentSpace.{u_5, 0, u_6, u_7} I' y} {x : N}, ContMDiffAt.{0, u_5, u_6, u_7, 0, 0, 0} I' (modelWithCornersSelf.{0, 0} Real Real) (2 : WithTop.{0} ENat) f x → MDifferentiableAt.{0, u_5, u_6, u_7, u_5, max u_5 u_6, max u_5 u_7} I' (ModelWithCorners.prod.{0, u_5, u_6, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E')) (fun (y : N) => Bundle.TotalSpace.mk'.{u_7, u_5, u_5} E' y (X y)) x → MDifferentiableAt.{0, u_5, u_6, u_7, u_5, max u_5 u_6, max u_5 u_7} I' (ModelWithCorners.prod.{0, u_5, u_6, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E')) (fun (y : N) => Bundle.TotalSpace.mk'.{u_7, u_5, u_5} E' y (Y y)) x → Eq.{1} (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f x) (VectorField.mlieBracket.{0, u_6, u_5, u_7} I' X Y x)) (HSub.hSub.{0, 0, 0} ((fderiv.{0, u_5, 0} Real (fun (z : E') => (fderiv.{0, u_5, 0} Real (Function.comp.{u_5 + 1, u_7 + 1, 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) z) (VectorField.mpullback.{0, u_5, u_5, u_5, u_6, u_5, u_7} (modelWithCornersSelf.{0, u_5} Real E') I' ((PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) Y z)) ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) x)) (X x)) ((fderiv.{0, u_5, 0} Real (fun (z : E') => (fderiv.{0, u_5, 0} Real (Function.comp.{u_5 + 1, u_7 + 1, 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) z) (VectorField.mpullback.{0, u_5, u_5, u_5, u_6, u_5, u_7} (modelWithCornersSelf.{0, u_5} Real E') I' ((PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) X z)) ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) x)) (Y x)))"
+      },
+      {
+        "name": "mpullback_extChartAt_symm_apply",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E' : Type u_5} [inst : NormedAddCommGroup.{u_5} E'] [inst_1 : NormedSpace.{0, u_5} Real E'] {H' : Type u_6} [inst_2 : TopologicalSpace.{u_6} H'] {I' : ModelWithCorners.{0, u_5, u_6} Real E' H'} {N : Type u_7} [inst_3 : TopologicalSpace.{u_7} N] [inst_4 : ChartedSpace.{u_6, u_7} H' N] [IsManifold.{0, u_5, u_6, u_7} I' (2 : WithTop.{0} ENat) N] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I'] [CompleteSpace.{u_5} E'] {x y : N}, Membership.mem.{u_7, u_7} (PartialEquiv.source.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)) y → ∀ (U : (z : N) → TangentSpace.{u_5, 0, u_6, u_7} I' z), Eq.{u_5 + 1} (VectorField.mpullback.{0, u_5, u_5, u_5, u_6, u_5, u_7} (modelWithCornersSelf.{0, u_5} Real E') I' ((PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) U ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) y)) ((mfderiv.{0, u_5, u_6, u_7, u_5, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E') ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x))) y) (U y))"
+      },
+      {
+        "name": "extDerivFun_section_eventually_chart",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E' : Type u_5} [inst : NormedAddCommGroup.{u_5} E'] [inst_1 : NormedSpace.{0, u_5} Real E'] {H' : Type u_6} [inst_2 : TopologicalSpace.{u_6} H'] {I' : ModelWithCorners.{0, u_5, u_6} Real E' H'} {N : Type u_7} [inst_3 : TopologicalSpace.{u_7} N] [inst_4 : ChartedSpace.{u_6, u_7} H' N] [IsManifold.{0, u_5, u_6, u_7} I' (2 : WithTop.{0} ENat) N] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I'] [CompleteSpace.{u_5} E'] {f : N → Real} {x : N}, ContMDiffAt.{0, u_5, u_6, u_7, 0, 0, 0} I' (modelWithCornersSelf.{0, 0} Real Real) (2 : WithTop.{0} ENat) f x → ∀ (U : (z : N) → TangentSpace.{u_5, 0, u_6, u_7} I' z), Filter.Eventually.{u_7} (fun (y : N) => Eq.{1} (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f y) (U y)) ((fderiv.{0, u_5, 0} Real (Function.comp.{u_5 + 1, u_7 + 1, 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) y)) (VectorField.mpullback.{0, u_5, u_5, u_5, u_6, u_5, u_7} (modelWithCornersSelf.{0, u_5} Real E') I' ((PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) U ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) y)))) (nhds.{u_7} x)"
+      },
+      {
+        "name": "extDerivFun_extDerivFun_chart",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E' : Type u_5} [inst : NormedAddCommGroup.{u_5} E'] [inst_1 : NormedSpace.{0, u_5} Real E'] {H' : Type u_6} [inst_2 : TopologicalSpace.{u_6} H'] {I' : ModelWithCorners.{0, u_5, u_6} Real E' H'} {N : Type u_7} [inst_3 : TopologicalSpace.{u_7} N] [inst_4 : ChartedSpace.{u_6, u_7} H' N] [inst_5 : IsManifold.{0, u_5, u_6, u_7} I' (2 : WithTop.{0} ENat) N] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I'] [CompleteSpace.{u_5} E'] {f : N → Real} {U : (y : N) → TangentSpace.{u_5, 0, u_6, u_7} I' y} {x : N}, ContMDiffAt.{0, u_5, u_6, u_7, 0, 0, 0} I' (modelWithCornersSelf.{0, 0} Real Real) (2 : WithTop.{0} ENat) f x → MDifferentiableAt.{0, u_5, u_6, u_7, u_5, max u_5 u_6, max u_5 u_7} I' (ModelWithCorners.prod.{0, u_5, u_6, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E')) (fun (y : N) => Bundle.TotalSpace.mk'.{u_7, u_5, u_5} E' y (U y)) x → ∀ (v : TangentSpace.{u_5, 0, u_6, u_7} I' x), Eq.{1} (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) (fun (y : N) => ((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f y) (U y)) x) v) ((fderiv.{0, u_5, 0} Real (fun (z : E') => (fderiv.{0, u_5, 0} Real (Function.comp.{u_5 + 1, u_7 + 1, 1} f (PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) z) (VectorField.mpullback.{0, u_5, u_5, u_5, u_6, u_5, u_7} (modelWithCornersSelf.{0, u_5} Real E') I' ((PartialEquiv.toFun (PartialEquiv.symm.{u_7, u_5} (extChartAt.{0, u_5, u_7, u_6} I' x)))) U z)) ((PartialEquiv.toFun (extChartAt.{0, u_5, u_7, u_6} I' x)) x)) v)"
+      },
+      {
+        "name": "extDerivFun_apply_mlieBracket",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "∀ {E' : Type u_5} [inst : NormedAddCommGroup.{u_5} E'] [inst_1 : NormedSpace.{0, u_5} Real E'] {H' : Type u_6} [inst_2 : TopologicalSpace.{u_6} H'] {I' : ModelWithCorners.{0, u_5, u_6} Real E' H'} {N : Type u_7} [inst_3 : TopologicalSpace.{u_7} N] [inst_4 : ChartedSpace.{u_6, u_7} H' N] [inst_5 : IsManifold.{0, u_5, u_6, u_7} I' (2 : WithTop.{0} ENat) N] [ModelWithCorners.Boundaryless.{0, u_5, u_6} I'] [CompleteSpace.{u_5} E'] {f : N → Real} {X Y : (y : N) → TangentSpace.{u_5, 0, u_6, u_7} I' y} {x : N}, ContMDiffAt.{0, u_5, u_6, u_7, 0, 0, 0} I' (modelWithCornersSelf.{0, 0} Real Real) (2 : WithTop.{0} ENat) f x → MDifferentiableAt.{0, u_5, u_6, u_7, u_5, max u_5 u_6, max u_5 u_7} I' (ModelWithCorners.prod.{0, u_5, u_6, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E')) (fun (y : N) => Bundle.TotalSpace.mk'.{u_7, u_5, u_5} E' y (X y)) x → MDifferentiableAt.{0, u_5, u_6, u_7, u_5, max u_5 u_6, max u_5 u_7} I' (ModelWithCorners.prod.{0, u_5, u_6, u_5, u_5} I' (modelWithCornersSelf.{0, u_5} Real E')) (fun (y : N) => Bundle.TotalSpace.mk'.{u_7, u_5, u_5} E' y (Y y)) x → Eq.{1} (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f x) (VectorField.mlieBracket.{0, u_6, u_5, u_7} I' X Y x)) (HSub.hSub.{0, 0, 0} (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) (fun (y : N) => ((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f y) (Y y)) x) (X x)) (((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) (fun (y : N) => ((fun (g : N → Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z)) f y) (X y)) x) (Y x)))"
+      },
+      {
+        "name": "mlieBracket_apply_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7",
+          "u_8"
+        ],
+        "lean_type": "Eq.{0} @mlieBracket_apply_chart.{u_5, u_6, u_7, u_8} @mlieBracket_apply_chart.{u_5, u_6, u_7, u_8}"
+      },
+      {
+        "name": "mpullbackWithin_extChartAt_symm_self_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7",
+          "u_8"
+        ],
+        "lean_type": "Eq.{0} @mpullbackWithin_extChartAt_symm_self.{u_5, u_6, u_7, u_8} @mpullbackWithin_extChartAt_symm_self.{u_5, u_6, u_7, u_8}"
+      },
+      {
+        "name": "extDerivFun_apply_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7",
+          "u_8"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_apply_chart.{u_5, u_6, u_7, u_8} @extDerivFun_apply_chart.{u_5, u_6, u_7, u_8}"
+      },
+      {
+        "name": "extDerivFun_apply_fixed_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7",
+          "u_8"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_apply_fixed_chart.{u_5, u_6, u_7, u_8} @extDerivFun_apply_fixed_chart.{u_5, u_6, u_7, u_8}"
+      },
+      {
+        "name": "isLocallyConstant_of_extDerivFun_eq_zero_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @isLocallyConstant_of_extDerivFun_eq_zero.{u_5, u_6, u_7} @isLocallyConstant_of_extDerivFun_eq_zero.{u_5, u_6, u_7}"
+      },
+      {
+        "name": "extDerivFun_apply_mlieBracket_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_apply_mlieBracket_chart.{u_5, u_6, u_7} @extDerivFun_apply_mlieBracket_chart.{u_5, u_6, u_7}"
+      },
+      {
+        "name": "mpullback_extChartAt_symm_apply_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @mpullback_extChartAt_symm_apply.{u_5, u_6, u_7} @mpullback_extChartAt_symm_apply.{u_5, u_6, u_7}"
+      },
+      {
+        "name": "extDerivFun_section_eventually_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_section_eventually_chart.{u_5, u_6, u_7} @extDerivFun_section_eventually_chart.{u_5, u_6, u_7}"
+      },
+      {
+        "name": "extDerivFun_extDerivFun_chart_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_extDerivFun_chart.{u_5, u_6, u_7} @extDerivFun_extDerivFun_chart.{u_5, u_6, u_7}"
+      },
+      {
+        "name": "extDerivFun_apply_mlieBracket_eq",
+        "universes": [
+          "u_5",
+          "u_6",
+          "u_7"
+        ],
+        "lean_type": "Eq.{0} @extDerivFun_apply_mlieBracket.{u_5, u_6, u_7} @extDerivFun_apply_mlieBracket.{u_5, u_6, u_7}"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/FlatModelConnection.lean",
+        "sha256": "6e44b9fea45a9d131f0fb33280e3765a86f85d1f876a37d85ac2f8fad93f864e"
+      },
+      {
+        "path": "Poincare/RiemannCurvatureOperator.lean",
+        "sha256": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/frozen-base.lean",
+        "sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/definitions-for-review.txt",
+        "sha256": "c4f1567e0fa1838920a498595d11edee80e4d754bd5ef52c2b93437f25af2ef4"
+      }
+    ],
+    "author": "/root/chart_api_route",
+    "review": {
+      "reviewer": "/root/chart_api_route/chart_blind_review",
+      "method": "blind-readback",
+      "snapshot_sha256": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+      "report_path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/blind-readback-a01.json",
+      "report_sha256": "026566c238d2f624894fec85eb912fd183127907f7951eeb08e8b086e27ede10",
+      "verdict": "approved"
+    }
+  }
+}

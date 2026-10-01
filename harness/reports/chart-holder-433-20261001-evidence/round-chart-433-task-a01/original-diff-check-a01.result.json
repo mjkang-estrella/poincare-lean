@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825130.944194,
+  "ended_epoch": 1790825130.964651,
+  "elapsed_seconds": 0.020457029342651367,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

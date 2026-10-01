@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-10-01T03:48:01.018476+00:00",
+  "commit": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "final_diff_sha256": "9dc64b77d04e13250f8bca6920b71a06a041efcef7f00b5771ed151e4ab6bfe3",
+  "snapshot_sha256": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+  "changed_paths": [
+    "Poincare/ChartIdentification.lean"
+  ],
+  "worktree_clean": true,
+  "all_frozen_gates_passed": true,
+  "parent_acceptance_pending": true,
+  "task_marked_accepted": false,
+  "merged": false
+}

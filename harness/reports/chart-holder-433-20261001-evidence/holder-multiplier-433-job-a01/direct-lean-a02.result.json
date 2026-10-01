@@ -1,0 +1,13 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/ParabolicHolderMultiplier.lean"
+  ],
+  "started_at": "2026-10-01T03:49:26.310589+00:00",
+  "elapsed_seconds": 8.190638750093058,
+  "exit_code": 1
+}

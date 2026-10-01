@@ -1,0 +1,14 @@
+/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a02.lean:95:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, h1, h2, I.range_eq_univ, fderivWithin_univ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a02.lean:147:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

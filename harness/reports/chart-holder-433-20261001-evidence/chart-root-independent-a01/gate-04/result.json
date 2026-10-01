@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 19.042470932006836,
+  "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "log_hashes": {
+    "stdout.log": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

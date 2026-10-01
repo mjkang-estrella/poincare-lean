@@ -1,0 +1,22 @@
+{
+  "name": "gate-formula-types-a01",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaFrozenProbe-a03.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:33:17.845596+00:00",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "finished_at": "2026-10-01T03:33:19.490663+00:00",
+  "exit_code": 1,
+  "duration_seconds": 1.6312808750662953,
+  "expected_exit": 0,
+  "passed": false,
+  "stdout_sha256": "b8b0fd5553334c04f370d9d13d90f4a11e24660c5b276d64a848246dbe6bfd56",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

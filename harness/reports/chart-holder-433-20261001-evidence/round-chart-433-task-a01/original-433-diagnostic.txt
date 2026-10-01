@@ -1,0 +1,60 @@
+error: Poincare/Global/RoundSphereChart.lean:58:4: Type mismatch: After simplification, term
+  HasFDerivAt.comp z (hasFDerivAt_inv (LT.lt.ne' hrpos)) hsum
+ has type
+  @HasFDerivAt ℝ DenselyNormedField.toNontriviallyNormedField E inst✝¹.toAddCommGroup inst✝.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ℝ Real.normedAddCommGroup.toAddCommGroup
+    RCLike.toInnerProductSpaceReal.toModule PseudoMetricSpace.toUniformSpace.toTopologicalSpace
+    ((fun x => x⁻¹) ∘ fun y => ‖y‖ ^ 2 + 4)
+    (2 • ContinuousLinearMap.toSpanSingleton ℝ (-((‖z‖ ^ 2 + 4) ^ 2)⁻¹) ∘SL (innerSL ℝ) z) z
+but is expected to have type
+  @HasFDerivAt ℝ DenselyNormedField.toNontriviallyNormedField E inst✝¹.toAddCommGroup inst✝.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace ℝ Real.instAddCommGroup Semiring.toModule
+    PseudoMetricSpace.toUniformSpace.toTopologicalSpace (fun y => (‖y‖ ^ 2 + 4)⁻¹)
+    (2 • ContinuousLinearMap.toSpanSingleton ℝ (-((‖z‖ ^ 2 + 4) ^ 2)⁻¹) ∘SL (innerSL ℝ) z) z
+error: Poincare/Global/RoundSphereChart.lean:62:84: unsolved goals
+case e'_12
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+inst✝ : InnerProductSpace ℝ E
+v z : E
+r : ℝ := ‖z‖ ^ 2 + 4
+hrpos : 0 < r
+hnorm : HasFDerivAt (fun y => ‖y‖ ^ 2) (2 • (innerSL ℝ) z) z
+hinv :
+  HasFDerivAt (fun y => (‖y‖ ^ 2 + 4)⁻¹) (ContinuousLinearMap.toSpanSingleton ℝ (-(r ^ 2)⁻¹) ∘SL (2 • (innerSL ℝ) z)) z
+⊢ 4 • ContinuousLinearMap.id ℝ E + (2 • (innerSL ℝ) z).smulRight v =
+    4 • ContinuousLinearMap.id ℝ E + ContinuousLinearMap.smulRight 0 (id z) +
+      (((fun y => ‖y‖ ^ 2) - fun x => 4) z • 0 + (2 • (innerSL ℝ) z - 0).smulRight v)
+error: Poincare/Global/RoundSphereChart.lean:80:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (stereoInvFunAuxFDeriv ?v ?z) ?u
+in the target expression
+  stereoInvFunAux v u = ((fun y => (‖y‖ ^ 2 + 4)⁻¹) • fun y => 4 • y + (‖y‖ ^ 2 - 4) • v) u
+
+case e'_11
+E : Type u_1
+inst✝¹ : NormedAddCommGroup E
+inst✝ : InnerProductSpace ℝ E
+v z : E
+r : ℝ := ‖z‖ ^ 2 + 4
+hrpos : 0 < r
+hnorm : HasFDerivAt (fun y => ‖y‖ ^ 2) (2 • (innerSL ℝ) z) z
+hinv :
+  HasFDerivAt (fun y => (‖y‖ ^ 2 + 4)⁻¹) (ContinuousLinearMap.toSpanSingleton ℝ (-(r ^ 2)⁻¹) ∘SL (2 • (innerSL ℝ) z)) z
+hvec :
+  HasFDerivAt (fun y => 4 • y + (‖y‖ ^ 2 - 4) • v) (4 • ContinuousLinearMap.id ℝ E + (2 • (innerSL ℝ) z).smulRight v) z
+hprod :
+  HasFDerivAt ((fun y => (‖y‖ ^ 2 + 4)⁻¹) • fun y => 4 • y + (‖y‖ ^ 2 - 4) • v)
+    ((‖z‖ ^ 2 + 4)⁻¹ • (4 • ContinuousLinearMap.id ℝ E + (2 • (innerSL ℝ) z).smulRight v) +
+      (ContinuousLinearMap.toSpanSingleton ℝ (-(r ^ 2)⁻¹) ∘SL (2 • (innerSL ℝ) z)).smulRight
+        (4 • z + (‖z‖ ^ 2 - 4) • v))
+    z
+u : E
+hden : ‖z‖ ^ 2 + 4 ≠ 0
+hvcoeff :
+  16 * (((‖z‖ ^ 2 + 4) ^ 2)⁻¹ * ⟪z, u⟫) =
+    (‖z‖ ^ 2 + 4)⁻¹ * (2 * ⟪z, u⟫) +
+      (-(2 * (⟪z, u⟫ * (((‖z‖ ^ 2 + 4) ^ 2)⁻¹ * ‖z‖ ^ 2))) + 2 * (⟪z, u⟫ * (((‖z‖ ^ 2 + 4) ^ 2)⁻¹ * 4)))
+⊢ stereoInvFunAux v u = ((fun y => (‖y‖ ^ 2 + 4)⁻¹) • fun y => 4 • y + (‖y‖ ^ 2 - 4) • v) u
+error: Lean exited with code 1
+⚠ [3067/3070] Replayed Poincare.Global.SmoothInitialMetricDefinitions
+warning: Poincare/Global/SmoothInitialMetricDefinitions.lean:1:0: 'Mathlib.Geometry.Manifold.VectorBundle.SmoothSection' has been deprecated: please replace this import by

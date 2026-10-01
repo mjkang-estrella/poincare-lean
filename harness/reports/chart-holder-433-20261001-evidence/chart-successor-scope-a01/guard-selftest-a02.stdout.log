@@ -1,0 +1,295 @@
+{
+  "applied_operator_changes": 17,
+  "base": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "cases": [
+    {
+      "accepted": true,
+      "candidate_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "case": "starting_retained_api_h2_candidate",
+      "diagnostic": "accepted",
+      "expected_accept": true,
+      "passed": true
+    },
+    {
+      "accepted": true,
+      "candidate_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+      "case": "positive_all_nine_repairs",
+      "diagnostic": "accepted",
+      "expected_accept": true,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "ae49a154b41ddcadb9099fbf49ff78b7109858bf01116b50038892fe7de61f02",
+      "case": "missing_api_normalization",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "7cf028a0c58ee9fe286e3004cec52ca495129213ff981a555583524e619c01ef",
+      "case": "wrong_supplied_model",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "00982e45af0caa4e77ef14c937c6b2afb5df57ad4920b2e35d2880ce709d9a7c",
+      "case": "changed_h2_prior_repair",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "eea57efa002383a71689dfe9079e456bf7a4a01da8af3459c7e79e05f675e283",
+      "case": "changed_public_header",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "71176441213e1945e5e72513260c14370e316e034cabb23371d1e3e3d7ae4a26",
+      "case": "changed_local_header",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "d604aaf01fd67bea45dc06df069d73650797678a2029b4d759846a269e060c4a",
+      "case": "changed_import",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "80c53ca3fe6ec951b65f7889038b56a0953c0ae9fc87985a9c4ecac275b7f243",
+      "case": "changed_untouched_proof",
+      "diagnostic": "a byte outside the nine local proof regions changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "fd749499dd024a24ae57d5d1c5524acf54aa56f255d5d033f29868515506555e",
+      "case": "option_in_extDerivFun_apply_chart.h1",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_chart.h1",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "365153a1b7d1b1f24445956df6e5354db4104cf418e4f83ef2db12d305b91b64",
+      "case": "replacement_instance_in_extDerivFun_apply_chart.h1",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_apply_chart.h1",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "244a892e9ed7f0b7936b036fbfcb4f3d3c7d5c92177b8060ad3470948890076a",
+      "case": "option_in_extDerivFun_apply_chart.h2",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_chart.h2",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "f10f788394ea6a4769acf01cacf5dab46cd6c20c222718019eaa2a999cdbb577",
+      "case": "replacement_instance_in_extDerivFun_apply_chart.h2",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_apply_chart.h2",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "cfd11bdb65c78fed34694111c5b326efbcab2b22d0f84da9ee1d8072416514a4",
+      "case": "option_in_isLocallyConstant_of_extDerivFun_eq_zero.hInv",
+      "diagnostic": "declaration/scope command inserted: isLocallyConstant_of_extDerivFun_eq_zero.hInv",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "1a3f06412ba88930b150b2fcafc3a7e6fc348138166a4500d5530669a17faaf0",
+      "case": "replacement_instance_in_isLocallyConstant_of_extDerivFun_eq_zero.hInv",
+      "diagnostic": "forbidden token, option or replacement instance inserted: isLocallyConstant_of_extDerivFun_eq_zero.hInv",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "e5ca59269db2a85fead3f104cbe1c4d279643812b73d01dac23818585075d969",
+      "case": "option_in_isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime",
+      "diagnostic": "declaration/scope command inserted: isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "9d9cf32c1e717fbce55031c09e50b552e46349d3f2372183d4a047ba663cc1ed",
+      "case": "replacement_instance_in_isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime",
+      "diagnostic": "forbidden token, option or replacement instance inserted: isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "13ff474ef184e2b1be3bacaa4e71cb01cce401b1c083df20e4e0b0b6b42ca45b",
+      "case": "option_in_extDerivFun_apply_mlieBracket_chart.heq",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_mlieBracket_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "5f3d4e5f81dd2023c96cc5719e748fd21137af98f968963f7f06de4f55b230b9",
+      "case": "replacement_instance_in_extDerivFun_apply_mlieBracket_chart.heq",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_apply_mlieBracket_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "4be96e3a738770eaf045f05ca9b7a9aefb1b176e3719aebff980bdb0e6016ca1",
+      "case": "option_in_extDerivFun_apply_mlieBracket_chart.model_reduction",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_mlieBracket_chart.model_reduction",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "4125ddfaef6cd5373372aec04e02862bc9e72cab15f42de6372500519c2a1ec8",
+      "case": "replacement_instance_in_extDerivFun_apply_mlieBracket_chart.model_reduction",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_apply_mlieBracket_chart.model_reduction",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "2070c56d930957ccb1e96ba6335daf5d5289e1ab32fe3ff9ef8bc6a316c7add0",
+      "case": "option_in_extDerivFun_section_eventually_chart.heq",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_section_eventually_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "93464ac652d7fead2cfc5756bc81b33c2aaa21137e780347714fa2052af64da5",
+      "case": "replacement_instance_in_extDerivFun_section_eventually_chart.heq",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_section_eventually_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "dfdd57cdd465a97696cf7da60764e7d8742496b7eac07aa3b38d5a21eb6b18ad",
+      "case": "option_in_extDerivFun_extDerivFun_chart.heq",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_extDerivFun_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "2db105a1a036ded2f51a279f594e716db41f5cec2e3dbed098281260af19f4d1",
+      "case": "replacement_instance_in_extDerivFun_extDerivFun_chart.heq",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_extDerivFun_chart.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "43c311d90ed7bcfcd7cb71576e71376d15b1bf8ac7e1838fd3ed761bfd119269",
+      "case": "option_in_extDerivFun_apply_mlieBracket.heq",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_mlieBracket.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "9720ebb165d44284e1b810d1c31475bbe2364f652d93df4b3bcc60baf686380d",
+      "case": "replacement_instance_in_extDerivFun_apply_mlieBracket.heq",
+      "diagnostic": "forbidden token, option or replacement instance inserted: extDerivFun_apply_mlieBracket.heq",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "a3e6f34e48188338cbc2f148ed16e758aba04dc0638bf1c924bb41090de5e68f",
+      "case": "comment_inserted",
+      "diagnostic": "comment inserted into proof region: extDerivFun_apply_chart.h1",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "acecde01d6a15eae4a7169003a3799de6f4ab68700027d8dbdf22e6541624dbf",
+      "case": "declaration_escape",
+      "diagnostic": "declaration/scope command inserted: extDerivFun_apply_chart.h1",
+      "expected_accept": false,
+      "passed": true
+    }
+  ],
+  "file": "Poincare/ChartIdentification.lean",
+  "lean_invoked": false,
+  "mode": "self-test",
+  "original": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "original_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "passed": true,
+  "prior_h2_body": "exact mfderivWithin_range_extChartAt_symm (I := I) (x := x)",
+  "regions": [
+    {
+      "first": 90,
+      "last": 90,
+      "owner": "extDerivFun_apply_chart.h1"
+    },
+    {
+      "first": 93,
+      "last": 94,
+      "owner": "extDerivFun_apply_chart.h2"
+    },
+    {
+      "first": 198,
+      "last": 201,
+      "owner": "isLocallyConstant_of_extDerivFun_eq_zero.hInv"
+    },
+    {
+      "first": 211,
+      "last": 211,
+      "owner": "isLocallyConstant_of_extDerivFun_eq_zero.hzro_prime"
+    },
+    {
+      "first": 269,
+      "last": 270,
+      "owner": "extDerivFun_apply_mlieBracket_chart.heq"
+    },
+    {
+      "first": 306,
+      "last": 308,
+      "owner": "extDerivFun_apply_mlieBracket_chart.model_reduction"
+    },
+    {
+      "first": 349,
+      "last": 350,
+      "owner": "extDerivFun_section_eventually_chart.heq"
+    },
+    {
+      "first": 403,
+      "last": 404,
+      "owner": "extDerivFun_extDerivFun_chart.heq"
+    },
+    {
+      "first": 480,
+      "last": 481,
+      "owner": "extDerivFun_apply_mlieBracket.heq"
+    }
+  ],
+  "root": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "starting_dirty_source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "unfolding_changes": 3
+}

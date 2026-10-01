@@ -1,0 +1,4 @@
+  File "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/check-scope.py", line 95
+    b'      simpa only [L] using!\n        (isInvertible_mfderiv_extChartAt (I := I) (x := x) (y := y) hySrc :\n          (mfderiv I ð(â, E)\n            ((extChartAt I x : PartialEquiv M E) : M â E) y).IsInvertible)\n',
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: bytes can only contain ASCII literal characters

@@ -1,0 +1,25 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.CurvatureTensoriality",
+    "Poincare.Global.ConformalChristoffel",
+    "Poincare.Global.HeatCauchy",
+    "Poincare.Global.LeviCivitaTransport",
+    "Poincare.Global.RoundSphereChartMetric",
+    "Poincare.Global.ScalarVariation"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:52:34.766742+00:00",
+  "source_head": "c4936ee4692da0123ec7b80b4a6c5ea8f208edfc",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 1,
+  "seconds": 30.41212487220764,
+  "completed_at": "2026-10-01T03:53:05.194169+00:00",
+  "log_hashes": {
+    "stdout.log": "1de4bbb35e9491ba2e96075bc3b431503c216833b3f6d1b6203c0e54c5987591",
+    "stderr.log": "c4a27db198c4d8632369ee6102944ef46e83c20d685f7c17a6aaff9cfcfc710f"
+  }
+}

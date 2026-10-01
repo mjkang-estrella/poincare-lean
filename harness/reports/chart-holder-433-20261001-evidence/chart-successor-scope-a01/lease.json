@@ -1,0 +1,6 @@
+{
+  "owner": "/root/chart_successor_worker",
+  "allowed_file": "Poincare/ChartIdentification.lean",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "status": "allocated"
+}

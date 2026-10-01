@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a03.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "toolchain": "leanprover/lean4:v4.33.1",
+  "source_sha256": "d8845c3bfc95141fa7f003532039a7c55739306cc229a139f9ea011763c1f697",
+  "lake_manifest_sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+  "started_at": "2026-10-01T03:38:27.670767+00:00",
+  "invocation_kind": "cached direct Lean; no build"
+}

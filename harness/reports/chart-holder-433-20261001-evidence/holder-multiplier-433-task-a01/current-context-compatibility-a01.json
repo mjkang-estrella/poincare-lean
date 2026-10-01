@@ -1,0 +1,8 @@
+{
+  "initial_task_base": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "observed_current_head": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "pinned_definition_config_bytes_match": true,
+  "multiplier_source_matches_frozen_base": true,
+  "not_a_worker_acceptance": true,
+  "at": "2026-10-01T03:33:28.618331+00:00"
+}

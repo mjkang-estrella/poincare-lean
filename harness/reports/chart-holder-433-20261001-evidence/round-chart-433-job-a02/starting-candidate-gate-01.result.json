@@ -1,0 +1,17 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825747.728426,
+  "ended_epoch": 1790825759.6704168,
+  "elapsed_seconds": 11.941990852355957,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "stdout_sha256": "ad426f06ca63e30715b8d7de95cf643d41d520d16363fc4a7347bd80cdd3ba09",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

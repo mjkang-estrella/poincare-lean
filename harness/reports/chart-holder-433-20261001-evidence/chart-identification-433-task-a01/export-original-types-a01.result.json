@@ -1,0 +1,24 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/export-original-types-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "source_sha256": "25ce2208793c63a4bf207e1d76e674911a79808d01546afef62d0f9eab310880",
+  "lake_manifest_sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+  "started_at": "2026-10-01T03:16:49.610386+00:00",
+  "invocation_kind": "cached direct Lean; no build",
+  "exit_code": 0,
+  "seconds": 2.772069582948461,
+  "finished_at": "2026-10-01T03:16:52.382752+00:00",
+  "log_hashes": {
+    "export-original-types-a01.stdout.log": "7bafca1f47af5988235dd5a7ebb0e0ba153c3cab1ab106a15fcdd6b0b0bcbe14",
+    "export-original-types-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

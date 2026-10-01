@@ -1,0 +1,14 @@
+{
+  "job_id": "chart-identification-433-job-a02",
+  "task_id": "chart-identification-433-proof-successor",
+  "task_revision": 1,
+  "worker": "/root/chart_successor_worker",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "started_at": "2026-10-01T03:45:03.700764+00:00",
+  "authorization": "Parent /root delegated one exclusive ChartIdentification source lease and only nine additional proof regions; prior API+h2 patch retained",
+  "starting_source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "starting_diff_sha256": "3519ec0c9e4bf18ffd65520598064080d766dfa759d5dcbb73c9c0918e663794",
+  "task_sha256": "bbe582da6abf39fe8733464d85db115aa52cc2a4154394a814e973ece2721cd0",
+  "acceptance_owner": "/root",
+  "worker_may_accept_or_merge": false
+}

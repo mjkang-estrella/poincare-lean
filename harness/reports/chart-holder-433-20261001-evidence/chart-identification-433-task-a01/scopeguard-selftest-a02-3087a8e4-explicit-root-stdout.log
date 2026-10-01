@@ -1,0 +1,118 @@
+{
+  "allowed_original_proof_lines": [
+    62,
+    65
+  ],
+  "applied_operators": 17,
+  "base": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "cases": [
+    {
+      "accepted": true,
+      "candidate_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "case": "positive_one_line_lemma",
+      "diagnostic": "accepted",
+      "expected_accept": true,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "b7be32b222cb399e017544c37fd2a4dd046bbe09dd2591da44f87909078debc0",
+      "case": "missing_normalizations",
+      "diagnostic": "frozen suffix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "be0c97e8c3b1fa5cf3b84e7d2ab8b335656e1fa75a23190519c4652b12013518",
+      "case": "missing_application",
+      "diagnostic": "frozen suffix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "be43de10d67ffdc358743dbd6b10307e115fd45d7c0537ad5904909c3b9046aa",
+      "case": "missing_unfolding",
+      "diagnostic": "frozen suffix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "6207f4131089799767b06d09dcb4503167bbd971ca477b00b4171a218cb3da97",
+      "case": "wrong_model",
+      "diagnostic": "frozen suffix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "e2b5c819717069a191dca181f2166d086e8e2f03d0935f9864d3a0ad8a88ec2d",
+      "case": "import_change",
+      "diagnostic": "frozen prefix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "55edd6c65e739b3d13971391f271703f1e4b01f849b145fc116a439856c6951d",
+      "case": "unrelated_proof_change",
+      "diagnostic": "frozen prefix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "4bb9c73735da49fa4d1aadd0f323a9e94440c740bb8479e478aa4cf77f3d7ab3",
+      "case": "section_change",
+      "diagnostic": "frozen suffix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "9ceecc5c14be453a3e38508acd0c8c71331dfc6b2d759a11dbf9e67f182b8010",
+      "case": "h2_header_change",
+      "diagnostic": "frozen prefix changed",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "b692ec9bd8a74366a2c17007c87b3955d37ce32d3876aa8db9f51d473ccb0e10",
+      "case": "comment_in_proof",
+      "diagnostic": "comments inserted into permitted proof region",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "d2478c8d505634d57af95d9575087ef8ecb865b05f7c2bb1033b0b0339ff9d06",
+      "case": "extra_operator_in_proof",
+      "diagnostic": "unexpected mvfderiv occurrence",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "accepted": false,
+      "candidate_sha256": "1360c57def293381a1ab53e6772a49692de26b4cec9d49dbef6a16e3e8bb7b31",
+      "case": "declaration_in_proof_region",
+      "diagnostic": "declaration or scope command in proof region",
+      "expected_accept": false,
+      "passed": true
+    }
+  ],
+  "file": "Poincare/ChartIdentification.lean",
+  "lean_invoked": false,
+  "mode": "self-test",
+  "model_I_applications": 4,
+  "model_Iprime_applications": 13,
+  "original": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "passed": true,
+  "prefix_bytes": 2463,
+  "root": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "source_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "suffix_bytes": 23740,
+  "unfolding_identifiers": 3
+}

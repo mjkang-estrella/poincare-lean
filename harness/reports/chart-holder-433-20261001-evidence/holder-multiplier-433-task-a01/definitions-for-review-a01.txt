@@ -1,0 +1,1356 @@
+FILE Poincare/Global/ParabolicHolderMultiplier.lean
+import Poincare.Global.ParabolicSolutionGraph
+import Poincare.Global.RiemannianContext
+
+noncomputable section
+
+namespace Poincare.ParabolicHolderMultiplier
+
+open Set ParabolicHolder ParabolicSolutionGraph
+
+local notation "E" => ClosedSmoothModel 3
+local notation "Bilin" => E →L[ℝ] E →L[ℝ] ℝ
+local notation "e" => EuclideanSpace.basisFun (Fin 3) ℝ
+
+variable {α T : ℝ}
+
+/-- The first spatial derivative of the zero initial trace vanishes. -/
+theorem du_zero_trace (G : Graph («E» := E) α T) (hT : 0 < T) (x : E) :
+    G.du (0, x) = 0 := by
+  have h := G.hasFDeriv 0 ⟨le_rfl, hT.le⟩ x
+  simp only [G.zero_trace] at h
+  exact h.unique (hasFDerivAt_const (0 : ℝ) x)
+
+/-- The spatial Hessian of the zero initial trace vanishes. -/
+theorem ddu_zero_trace (G : Graph («E» := E) α T) (hT : 0 < T) (x : E) :
+    G.ddu (0, x) = 0 := by
+  have h := G.hasFDeriv_du 0 ⟨le_rfl, hT.le⟩ x
+  simp only [du_zero_trace G hT] at h
+  exact h.unique (hasFDerivAt_const (0 : E →L[ℝ] ℝ) x)
+
+/-- Comparison with time zero gives the short-time Hessian factor. -/
+theorem ddu_time_bound (G : Graph («E» := E) α T) (hT : 0 < T)
+    {t : ℝ} (ht : t ∈ Icc 0 T) (x : E) :
+    ‖G.ddu (t, x)‖ ≤ ‖G.ddu‖ * t ^ (α / 2) := by
+  have h := ParabolicHolder.holder_le G.ddu
+    (show (t, x) ∈ cylinder T from ⟨ht, mem_univ x⟩)
+    (show (0, x) ∈ cylinder T from ⟨⟨le_rfl, hT.le⟩, mem_univ x⟩)
+  have he : (Real.sqrt t) ^ α = t ^ (α / 2) := by
+    rw [Real.sqrt_eq_rpow, ← Real.rpow_mul ht.1]
+    congr 1
+    ring
+  simpa only [ddu_zero_trace G hT, sub_zero, parabolicDist, sub_self,
+    norm_zero, zero_add, abs_of_nonneg ht.1, he] using h
+
+/-- The Hessian sup norm is small on a short cylinder. -/
+theorem supNorm_ddu_le (G : Graph («E» := E) α T) (hα : 0 < α) (hT : 0 < T) :
+    supNorm (cylinder T) G.ddu ≤ T ^ (α / 2) * ‖G‖ := by
+  apply csSup_le (insert_nonempty _ _)
+  rintro r (rfl | ⟨p, rfl⟩)
+  · exact mul_nonneg (Real.rpow_nonneg hT.le _) (norm_nonneg _)
+  · calc
+      ‖G.ddu p‖ ≤ ‖G.ddu‖ * p.val.1 ^ (α / 2) := ddu_time_bound G hT p.property.1 p.val.2
+      _ ≤ ‖G‖ * T ^ (α / 2) := mul_le_mul (norm_ddu_le G)
+        (Real.rpow_le_rpow p.property.1.1 p.property.1.2 (by linarith))
+        (Real.rpow_nonneg p.property.1.1 _) (norm_nonneg G)
+      _ = _ := mul_comm _ _
+
+/-- Evaluation on two unit vectors does not increase the bilinear operator norm. -/
+theorem eval_norm_le (A : Bilin) {v w : E} (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    ‖A v w‖ ≤ ‖A‖ := by
+  simpa only [hv, hw, mul_one] using ContinuousLinearMap.le_opNorm₂ A v w
+
+/-- Bounded evaluation preserves the Hölder seminorm bound. -/
+theorem entry_holderBound (H : Y («E» := E) α T Bilin) {v w : E}
+    (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    HasHolderBound α (cylinder T) (fun p => H p v w)
+      (holderSeminorm α (cylinder T) H) := by
+  intro p hp q hq
+  have h := eval_norm_le (H p - H q) hv hw
+  simp only [ContinuousLinearMap.sub_apply] at h
+  exact h.trans (hasHolderBound_seminorm H p hp q hq)
+
+/-- A coordinate entry is a supported bounded Hölder function. -/
+def entry (H : Y («E» := E) α T Bilin) (v w : E)
+    (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) : Y («E» := E) α T ℝ :=
+  ofFunction (fun p => H p v w)
+    (fun p hp => by dsimp only; rw [zero_off H hp]; simp)
+    ⟨supNorm (cylinder T) H, fun p _ =>
+      (eval_norm_le (H p) hv hw).trans (le_supNorm H p)⟩
+    ⟨_, entry_holderBound H hv hw⟩
+
+@[simp] theorem entry_apply (H : Y («E» := E) α T Bilin) (v w : E)
+    (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) (p : ℝ × E) :
+    entry H v w hv hw p = H p v w := rfl
+
+/-- The entry's sup norm is bounded by the tensor's sup norm. -/
+theorem supNorm_entry_le (H : Y («E» := E) α T Bilin) (v w : E)
+    (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    supNorm (cylinder T) (entry H v w hv hw) ≤ supNorm (cylinder T) H := by
+  apply csSup_le (insert_nonempty _ _)
+  rintro r (rfl | ⟨p, rfl⟩)
+  · exact supNorm_nonneg H
+  · exact (eval_norm_le (H p) hv hw).trans (le_supNorm H p)
+
+/-- Unit coordinate evaluation has norm at most one on the Hölder space. -/
+theorem norm_entry_le (H : Y («E» := E) α T Bilin) (v w : E)
+    (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    ‖entry H v w hv hw‖ ≤ ‖H‖ := by
+  rw [ParabolicHolder.norm_eq H]
+  apply norm_le_of_bounds _ (supNorm_nonneg H) (holderSeminorm_nonneg H)
+  · intro p _
+    exact (eval_norm_le (H p) hv hw).trans (le_supNorm H p)
+  · exact entry_holderBound H hv hw
+
+/-- The split product estimate retains the small sup factor on the second term. -/
+theorem norm_mul_split (b h : Y («E» := E) α T ℝ) :
+    ‖b * h‖ ≤ supNorm (cylinder T) b * ‖h‖ +
+      holderSeminorm α (cylinder T) b * supNorm (cylinder T) h := by
+  have hb : ∀ p ∈ cylinder T,
+      ‖(b * h) p‖ ≤ supNorm (cylinder T) b * supNorm (cylinder T) h := by
+    intro p _
+    rw [mul_apply, norm_mul]
+    exact mul_le_mul (le_supNorm b p) (le_supNorm h p)
+      (norm_nonneg _) (supNorm_nonneg b)
+  have hh : HasHolderBound α (cylinder T) (b * h)
+      (supNorm (cylinder T) b * holderSeminorm α (cylinder T) h +
+        holderSeminorm α (cylinder T) b * supNorm (cylinder T) h) := by
+    intro p hp q hq
+    calc
+      ‖(b * h) p - (b * h) q‖ =
+          ‖b p * (h p - h q) + (b p - b q) * h q‖ := by
+        simp only [mul_apply]
+        congr 1
+        ring
+      _ ≤ ‖b p * (h p - h q)‖ + ‖(b p - b q) * h q‖ := norm_add_le _ _
+      _ = ‖b p‖ * ‖h p - h q‖ + ‖b p - b q‖ * ‖h q‖ := by
+        rw [norm_mul, norm_mul]
+      _ ≤ supNorm (cylinder T) b *
+            (holderSeminorm α (cylinder T) h * parabolicDist p q ^ α) +
+          (holderSeminorm α (cylinder T) b * parabolicDist p q ^ α) *
+            supNorm (cylinder T) h := by
+        apply add_le_add
+        · exact mul_le_mul (le_supNorm b p) (hasHolderBound_seminorm h p hp q hq)
+            (norm_nonneg _) (supNorm_nonneg b)
+        · exact mul_le_mul (hasHolderBound_seminorm b p hp q hq) (le_supNorm h q)
+            (norm_nonneg _) (mul_nonneg (holderSeminorm_nonneg b)
+              (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+      _ = _ := by ring
+  have hn := norm_le_of_bounds (b * h)
+    (mul_nonneg (supNorm_nonneg b) (supNorm_nonneg h))
+    (add_nonneg (mul_nonneg (supNorm_nonneg b) (holderSeminorm_nonneg h))
+      (mul_nonneg (holderSeminorm_nonneg b) (supNorm_nonneg h))) hb hh
+  rw [ParabolicHolder.norm_eq h]
+  nlinarith only [hn]
+
+/-- Evaluation commutes with finite sums in the Hölder carrier. -/
+theorem sum_apply {ι : Type*} (s : Finset ι) (f : ι → Y («E» := E) α T ℝ)
+    (p : ℝ × E) : (∑ i ∈ s, f i) p = ∑ i ∈ s, f i p := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp only [Finset.sum_empty]; rfl
+  | @insert a s ha ih => simp only [Finset.sum_insert ha, add_apply, ih]
+
+/-- The nine coefficient-Hessian products, constructed as a supported Hölder function. -/
+def forcing (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ) (G : Graph («E» := E) α T) :
+    Y («E» := E) α T ℝ := by
+  let y : Y («E» := E) α T ℝ := ∑ i, ∑ j,
+    b i j * entry G.ddu (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)
+  have he (p : ℝ × E) : y p = ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j) := by
+    simp only [y, sum_apply, mul_apply, entry_apply]
+  exact ofFunction (fun p => ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j))
+    (fun p hp => by dsimp only; rw [← he p]; exact zero_off y hp)
+    ⟨‖y‖, fun p _ => by dsimp only; rw [← he p]; exact ParabolicHolder.norm_le y p⟩
+    ⟨‖y‖, fun p hp q hq => by
+      dsimp only
+      rw [← he p, ← he q]
+      exact ParabolicHolder.holder_le y hp hq⟩
+
+@[simp] theorem forcing_apply (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) (p : ℝ × E) :
+    forcing b G p = ∑ i, ∑ j, b i j p * G.ddu p (e i) (e j) := rfl
+
+/-- The function construction agrees with the finite sum in the Hölder space. -/
+theorem forcing_eq_sum (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) :
+    forcing b G = ∑ i, ∑ j,
+      b i j * entry G.ddu (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j) := by
+  apply ParabolicHolder.ext
+  intro p _
+  simp only [forcing_apply, sum_apply, mul_apply, entry_apply]
+
+/-- A coefficient times one Hessian entry has the split short-cylinder bound. -/
+theorem norm_mul_ddu_entry_le (b : Y («E» := E) α T ℝ) (G : Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ : ℝ}
+    (hb : supNorm (cylinder T) b ≤ ε)
+    (hbα : holderSeminorm α (cylinder T) b ≤ Λ)
+    (v w : E) (hv : ‖v‖ = 1) (hw : ‖w‖ = 1) :
+    ‖b * entry G.ddu v w hv hw‖ ≤ ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖ := by
+  have hε : 0 ≤ ε := (supNorm_nonneg b).trans hb
+  have hΛ : 0 ≤ Λ := (holderSeminorm_nonneg b).trans hbα
+  have hn := (norm_entry_le G.ddu v w hv hw).trans (norm_ddu_le G)
+  have hs := (supNorm_entry_le G.ddu v w hv hw).trans (supNorm_ddu_le G hα hT)
+  calc
+    ‖b * entry G.ddu v w hv hw‖ ≤
+        supNorm (cylinder T) b * ‖entry G.ddu v w hv hw‖ +
+          holderSeminorm α (cylinder T) b * supNorm (cylinder T) (entry G.ddu v w hv hw) :=
+      norm_mul_split b _
+    _ ≤ ε * ‖G‖ + Λ * (T ^ (α / 2) * ‖G‖) :=
+      add_le_add (mul_le_mul hb hn (norm_nonneg _) hε)
+        (mul_le_mul hbα hs (supNorm_nonneg _) hΛ)
+    _ = _ := by ring
+
+/-- Summing the nine entries gives the frozen-coefficient multiplier estimate. -/
+theorem norm_forcing_le (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (G : Graph («E» := E) α T) (hα : 0 < α) (hT : 0 < T) {ε Λ : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ) :
+    ‖forcing b G‖ ≤ 9 * (ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖) := by
+  rw [forcing_eq_sum]
+  calc
+    _ ≤ ∑ i, ‖∑ j, b i j * entry G.ddu (e i) (e j)
+        (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)‖ := norm_sum_le _ _
+    _ ≤ ∑ i : Fin 3, ∑ j : Fin 3,
+        (ε * ‖G‖ + Λ * T ^ (α / 2) * ‖G‖) := by
+      apply Finset.sum_le_sum
+      intro i _
+      apply (norm_sum_le _ _).trans
+      apply Finset.sum_le_sum
+      intro j _
+      exact norm_mul_ddu_entry_le (b i j) G hα hT (hb i j) (hbα i j)
+        (e i) (e j) (OrthonormalBasis.norm_eq_one e i) (OrthonormalBasis.norm_eq_one e j)
+    _ = _ := by simp; ring
+
+/-- Composing the multiplier with a bounded solution map gives an elementwise error bound. -/
+theorem norm_error_le (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (S : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ C_S : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hS : ‖S‖ ≤ C_S) (f : Y («E» := E) α T ℝ) :
+    ‖forcing b (S f)‖ ≤ 9 * C_S * (ε + Λ * T ^ (α / 2)) * ‖f‖ := by
+  have hε : 0 ≤ ε := (supNorm_nonneg (b 0 0)).trans (hb 0 0)
+  have hΛ : 0 ≤ Λ := (holderSeminorm_nonneg (b 0 0)).trans (hbα 0 0)
+  have hpow : 0 ≤ T ^ (α / 2) := Real.rpow_nonneg hT.le _
+  have hSf : ‖S f‖ ≤ C_S * ‖f‖ :=
+    (S.le_opNorm f).trans (mul_le_mul_of_nonneg_right hS (norm_nonneg f))
+  calc
+    ‖forcing b (S f)‖ ≤ 9 * (ε * ‖S f‖ + Λ * T ^ (α / 2) * ‖S f‖) :=
+      norm_forcing_le b (S f) hα hT hb hbα
+    _ = 9 * (ε + Λ * T ^ (α / 2)) * ‖S f‖ := by ring
+    _ ≤ 9 * (ε + Λ * T ^ (α / 2)) * (C_S * ‖f‖) :=
+      mul_le_mul_of_nonneg_left hSf (by positivity)
+    _ = _ := by ring
+
+/-- Two quarter-size contributions give the required one-half error bound. -/
+theorem error_small (b : Fin 3 → Fin 3 → Y («E» := E) α T ℝ)
+    (S : Y («E» := E) α T ℝ →L[ℝ] Graph («E» := E) α T)
+    (hα : 0 < α) (hT : 0 < T) {ε Λ C_S : ℝ}
+    (hb : ∀ i j, supNorm (cylinder T) (b i j) ≤ ε)
+    (hbα : ∀ i j, holderSeminorm α (cylinder T) (b i j) ≤ Λ)
+    (hS : ‖S‖ ≤ C_S) (hε : 9 * C_S * ε ≤ 1 / 4)
+    (hΛ : 9 * C_S * Λ * T ^ (α / 2) ≤ 1 / 4)
+    (f : Y («E» := E) α T ℝ) :
+    ‖forcing b (S f)‖ ≤ (1 / 2) * ‖f‖ := by
+  apply (norm_error_le b S hα hT hb hbα hS f).trans
+  apply mul_le_mul_of_nonneg_right _ (norm_nonneg f)
+  nlinarith only [hε, hΛ]
+
+end Poincare.ParabolicHolderMultiplier
+
+
+FILE Poincare/Global/ParabolicSolutionGraph.lean
+import Poincare.Global.ParabolicHolderSpace
+import Mathlib.Analysis.Calculus.UniformLimitsDeriv
+import Mathlib.Analysis.Normed.Module.TransferInstance
+
+/-! The zero initial trace space of genuine parabolic derivative graphs. -/
+
+noncomputable section
+
+set_option synthInstance.maxHeartbeats 200000
+set_option maxHeartbeats 800000
+
+namespace Poincare.ParabolicSolutionGraph
+
+open Set Filter
+open scoped Topology
+open ParabolicHolder
+
+variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+
+structure Graph (α T : ℝ) where
+  u : Y (E := E) α T ℝ
+  ut : Y (E := E) α T ℝ
+  du : Y (E := E) α T (E →L[ℝ] ℝ)
+  ddu : Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ)
+  zero_trace : ∀ x : E, u (0, x) = 0
+  hasFDeriv : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasFDerivAt (fun z : E => u (t, z)) (du (t, x)) x
+  hasFDeriv_du : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasFDerivAt (fun z : E => du (t, z)) (ddu (t, x)) x
+  hasDeriv_time : ∀ t ∈ Icc 0 T, ∀ x : E,
+    HasDerivWithinAt (fun s : ℝ => u (s, x)) (ut (t, x)) (Icc 0 T) t
+
+abbrev Ambient (α T : ℝ) :=
+  WithLp 1 (WithLp 1 (Y (E := E) α T ℝ × Y (E := E) α T ℝ) ×
+    WithLp 1 (Y (E := E) α T (E →L[ℝ] ℝ) ×
+      Y (E := E) α T (E →L[ℝ] E →L[ℝ] ℝ)))
+
+def graphSubmodule (α T : ℝ) : Submodule ℝ (Ambient (E := E) α T) where
+  carrier := {v | (∀ x : E, v.fst.fst (0, x) = 0) ∧
+    (∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => v.fst.fst (t, z)) (v.snd.fst (t, x)) x) ∧
+    (∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => v.snd.fst (t, z)) (v.snd.snd (t, x)) x) ∧
+    (∀ t ∈ Icc 0 T, ∀ x : E,
+      HasDerivWithinAt (fun s : ℝ => v.fst.fst (s, x)) (v.fst.snd (t, x)) (Icc 0 T) t)}
+  zero_mem' := by
+    refine ⟨fun _ => rfl, ?_, ?_, ?_⟩
+    · intro t ht x; exact hasFDerivAt_const (0 : ℝ) x
+    · intro t ht x; exact hasFDerivAt_const (0 : E →L[ℝ] ℝ) x
+    · intro t ht x; exact hasDerivWithinAt_const t (Icc 0 T) (0 : ℝ)
+  add_mem' := by
+    intro v w hv hw
+    exact ⟨fun x => by change v.fst.fst (0,x) + w.fst.fst (0,x) = 0; rw [hv.1, hw.1, add_zero],
+      fun t ht x => (hv.2.1 t ht x).add (hw.2.1 t ht x),
+      fun t ht x => (hv.2.2.1 t ht x).add (hw.2.2.1 t ht x),
+      fun t ht x => (hv.2.2.2 t ht x).add (hw.2.2.2 t ht x)⟩
+  smul_mem' := by
+    intro c v hv
+    exact ⟨fun x => by change c • v.fst.fst (0,x) = 0; rw [hv.1, smul_zero],
+      fun t ht x => (hv.2.1 t ht x).const_smul c,
+      fun t ht x => (hv.2.2.1 t ht x).const_smul c,
+      fun t ht x => (hv.2.2.2 t ht x).const_smul c⟩
+
+variable {α T : ℝ}
+
+def graphEquiv : Graph (E := E) α T ≃ ↥(graphSubmodule (E := E) α T) where
+  toFun g := ⟨WithLp.toLp 1 (WithLp.toLp 1 (g.u, g.ut), WithLp.toLp 1 (g.du, g.ddu)),
+    g.zero_trace, g.hasFDeriv, g.hasFDeriv_du, g.hasDeriv_time⟩
+  invFun v := ⟨v.val.fst.fst, v.val.fst.snd, v.val.snd.fst, v.val.snd.snd,
+    v.property.1, v.property.2.1, v.property.2.2.1, v.property.2.2.2⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+instance instNormedAddCommGroup : NormedAddCommGroup (Graph (E := E) α T) :=
+  graphEquiv.normedAddCommGroup
+
+instance instModule : Module ℝ (Graph (E := E) α T) := graphEquiv.module ℝ
+
+instance instNormedSpace : NormedSpace ℝ (Graph (E := E) α T) := by
+  letI : NormedSpace ℝ (Ambient (E := E) α T) := inferInstance
+  exact graphEquiv.normedSpace ℝ
+
+theorem norm_eq (g : Graph (E := E) α T) :
+    ‖g‖ = ‖g.u‖ + ‖g.ut‖ + ‖g.du‖ + ‖g.ddu‖ := by
+  change ‖(graphEquiv g).val‖ = _
+  simp only [WithLp.prod_norm_eq_of_L1]
+  exact (add_assoc _ _ _).symm
+
+theorem norm_u_le (g : Graph (E := E) α T) : ‖g.u‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
+theorem norm_ut_le (g : Graph (E := E) α T) : ‖g.ut‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
+theorem norm_du_le (g : Graph (E := E) α T) : ‖g.du‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
+theorem norm_ddu_le (g : Graph (E := E) α T) : ‖g.ddu‖ ≤ ‖g‖ := by
+  rw [norm_eq]
+  have := norm_nonneg g.u
+  have := norm_nonneg g.ut
+  have := norm_nonneg g.du
+  have := norm_nonneg g.ddu
+  linarith
+
+theorem sup_u_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.u p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.u p).trans (norm_u_le g)
+
+theorem holder_u_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.u p - g.u q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.u hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_u_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
+theorem sup_ut_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.ut p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.ut p).trans (norm_ut_le g)
+
+theorem holder_ut_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.ut p - g.ut q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.ut hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_ut_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
+theorem sup_du_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.du p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.du p).trans (norm_du_le g)
+
+theorem holder_du_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.du p - g.du q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.du hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_du_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
+theorem sup_ddu_le (g : Graph (E := E) α T) (p : ℝ × E) :
+    ‖g.ddu p‖ ≤ ‖g‖ :=
+  (ParabolicHolder.norm_le g.ddu p).trans (norm_ddu_le g)
+
+theorem holder_ddu_le (g : Graph (E := E) α T) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖g.ddu p - g.ddu q‖ ≤ ‖g‖ * parabolicDist p q ^ α :=
+  (ParabolicHolder.holder_le g.ddu hp hq).trans
+    (mul_le_mul_of_nonneg_right (norm_ddu_le g)
+      (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+
+theorem time_bound (g : Graph (E := E) α T) {t : ℝ} (ht : t ∈ Icc 0 T)
+    (x : E) : ‖g.u (t, x)‖ ≤ t * ‖g.ut‖ := by
+  have h := Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+    (fun s hs => g.hasDeriv_time s hs x)
+    (fun s _ => ParabolicHolder.norm_le g.ut (s, x)) (convex_Icc (0 : ℝ) T)
+    (show (0 : ℝ) ∈ Icc 0 T from ⟨le_rfl, ht.1.trans ht.2⟩) ht
+  simpa [g.zero_trace x, Real.norm_of_nonneg ht.1, mul_comm] using h
+
+/-- Bundle four supported bounded Hölder functions with exactly the derivative relations. -/
+def ofDerivatives
+    (u : ℝ × E → ℝ)
+    (ut : ℝ × E → ℝ)
+    (du : ℝ × E → E →L[ℝ] ℝ)
+    (ddu : ℝ × E → E →L[ℝ] E →L[ℝ] ℝ)
+    (hu_off : ∀ p, p ∉ cylinder T → u p = 0)
+    (hu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖u p‖ ≤ M)
+    (hu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) u K)
+    (hut_off : ∀ p, p ∉ cylinder T → ut p = 0)
+    (hut_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖ut p‖ ≤ M)
+    (hut_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) ut K)
+    (hdu_off : ∀ p, p ∉ cylinder T → du p = 0)
+    (hdu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖du p‖ ≤ M)
+    (hdu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) du K)
+    (hddu_off : ∀ p, p ∉ cylinder T → ddu p = 0)
+    (hddu_bound : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖ddu p‖ ≤ M)
+    (hddu_holder : ∃ K : ℝ, HasHolderBound α (cylinder T) ddu K)
+    (hzero : ∀ x : E, u (0, x) = 0)
+    (hdu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => u (t, z)) (du (t, x)) x)
+    (hddu : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasFDerivAt (fun z : E => du (t, z)) (ddu (t, x)) x)
+    (hut : ∀ t ∈ Icc 0 T, ∀ x : E,
+      HasDerivWithinAt (fun s : ℝ => u (s, x)) (ut (t, x)) (Icc 0 T) t) :
+    Graph (E := E) α T where
+  u := ofFunction u hu_off hu_bound hu_holder
+  ut := ofFunction ut hut_off hut_bound hut_holder
+  du := ofFunction du hdu_off hdu_bound hdu_holder
+  ddu := ofFunction ddu hddu_off hddu_bound hddu_holder
+  zero_trace := hzero
+  hasFDeriv := hdu
+  hasFDeriv_du := hddu
+  hasDeriv_time := hut
+
+variable {F : Type*} [NormedAddCommGroup F] [NormedSpace ℝ F]
+
+omit [NormedSpace ℝ E] in
+theorem holder_tendstoUniformly {v : ℕ → Y (E := E) α T F} {w : Y (E := E) α T F}
+    (h : Tendsto v atTop (𝓝 w)) : TendstoUniformly (fun n p => v n p) w atTop := by
+  apply Metric.tendstoUniformly_iff.2
+  intro ε hε
+  filter_upwards [(Metric.tendsto_nhds.1 h) ε hε] with n hn p
+  have hb := Poincare.ParabolicHolder.norm_le (w - v n) p
+  change ‖w p - v n p‖ ≤ ‖w - v n‖ at hb
+  rw [dist_eq_norm]
+  exact hb.trans_lt (by simpa only [dist_eq_norm, norm_sub_rev] using hn)
+
+/-- Uniform convergence of the derivatives closes the derivative relation on a convex set. -/
+theorem closed_time_derivative {f d : ℕ → ℝ → ℝ} {g e : ℝ → ℝ} {s : Set ℝ}
+    (hs : Convex ℝ s) (hf : ∀ n t, t ∈ s → HasDerivWithinAt (f n) (d n t) s t)
+    (hfg : ∀ t ∈ s, Tendsto (fun n => f n t) atTop (𝓝 (g t)))
+    (hde : TendstoUniformlyOn d e atTop s) {x : ℝ} (hx : x ∈ s) :
+    HasDerivWithinAt g (e x) s x := by
+  rw [hasDerivWithinAt_iff_isLittleO, Asymptotics.isLittleO_iff]
+  intro ε hε
+  have hε4 : 0 < ε / 4 := by linarith
+  obtain ⟨N, hN⟩ := eventually_atTop.1 ((Metric.tendstoUniformlyOn_iff.1 hde) _ hε4)
+  have hnear (n : ℕ) (hn : N ≤ n) (y : ℝ) (hy : y ∈ s) :
+      ‖d n y - e y‖ ≤ ε / 4 := by
+    simpa only [dist_eq_norm, norm_sub_rev] using (hN n hn y hy).le
+  have hdiff (y : ℝ) (hy : y ∈ s) :
+      ‖(g y - f N y) - (g x - f N x)‖ ≤ (ε / 2) * ‖y - x‖ := by
+    apply le_of_tendsto (((hfg y hy).sub tendsto_const_nhds).sub
+      ((hfg x hx).sub tendsto_const_nhds)).norm
+    filter_upwards [eventually_ge_atTop N] with n hn
+    apply Convex.norm_image_sub_le_of_norm_hasDerivWithin_le
+      (fun z hz => (hf n z hz).sub (hf N z hz)) _ hs hx hy
+    intro z hz
+    calc
+      ‖d n z - d N z‖ ≤ ‖d n z - e z‖ + ‖e z - d N z‖ := norm_sub_le_norm_sub_add_norm_sub ..
+      _ ≤ ε / 2 := by rw [norm_sub_rev (e z)]; linarith [hnear n hn z hz, hnear N le_rfl z hz]
+  filter_upwards [(hf N x hx).isLittleO.bound hε4, self_mem_nhdsWithin] with y hy hys
+  have hlast : ‖(y - x) * (d N x - e x)‖ ≤ (ε / 4) * ‖y - x‖ := by
+    rw [norm_mul, mul_comm]
+    exact mul_le_mul_of_nonneg_right (hnear N le_rfl x hx) (norm_nonneg _)
+  calc
+    ‖g y - g x - (y - x) • e x‖ =
+        ‖((g y - f N y) - (g x - f N x)) +
+          (f N y - f N x - (y - x) • d N x) + (y - x) * (d N x - e x)‖ := by
+      congr 1
+      simp only [smul_eq_mul]
+      ring
+    _ ≤ ‖(g y - f N y) - (g x - f N x)‖ +
+        ‖f N y - f N x - (y - x) • d N x‖ + ‖(y - x) * (d N x - e x)‖ :=
+      (norm_add_le _ _).trans (add_le_add (norm_add_le _ _) le_rfl)
+    _ ≤ ε * ‖y - x‖ := by linarith [hdiff y hys]
+
+/-- All three derivative relations and the initial trace are closed in the jet norm. -/
+theorem isClosed_graphSubmodule :
+    IsClosed (graphSubmodule (E := E) α T : Set (Ambient (E := E) α T)) := by
+  apply isSeqClosed_iff_isClosed.1
+  intro v w hv hw
+  have cu : Continuous (fun z : Ambient (E := E) α T => z.fst.fst) :=
+    (WithLp.continuous_fst ..).comp (WithLp.continuous_fst ..)
+  have ct : Continuous (fun z : Ambient (E := E) α T => z.fst.snd) :=
+    (WithLp.continuous_snd ..).comp (WithLp.continuous_fst ..)
+  have cd : Continuous (fun z : Ambient (E := E) α T => z.snd.fst) :=
+    (WithLp.continuous_fst ..).comp (WithLp.continuous_snd ..)
+  have cdd : Continuous (fun z : Ambient (E := E) α T => z.snd.snd) :=
+    (WithLp.continuous_snd ..).comp (WithLp.continuous_snd ..)
+  have hu := holder_tendstoUniformly ((cu.tendsto w).comp hw)
+  have ht := holder_tendstoUniformly ((ct.tendsto w).comp hw)
+  have hd := holder_tendstoUniformly ((cd.tendsto w).comp hw)
+  have hdd := holder_tendstoUniformly ((cdd.tendsto w).comp hw)
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro x
+    apply tendsto_nhds_unique (hu.tendsto_at (0, x))
+    have heq : (fun n => (v n).fst.fst (0, x)) = fun _ : ℕ => (0 : ℝ) :=
+      funext fun n => (hv n).1 x
+    change Tendsto (fun n => (v n).fst.fst (0, x)) atTop (𝓝 0)
+    rw [heq]
+    exact tendsto_const_nhds
+  · intro t ht' x
+    exact hasFDerivAt_of_tendstoUniformly (hd.comp (fun z : E => (t, z)))
+      (fun n z => (hv n).2.1 t ht' z) (fun z => hu.tendsto_at (t, z)) x
+  · intro t ht' x
+    exact hasFDerivAt_of_tendstoUniformly (hdd.comp (fun z : E => (t, z)))
+      (fun n z => (hv n).2.2.1 t ht' z) (fun z => hd.tendsto_at (t, z)) x
+  · intro t ht' x
+    exact closed_time_derivative (convex_Icc 0 T)
+      (fun n s hs => (hv n).2.2.2 s hs x) (fun s _ => hu.tendsto_at (s, x))
+      (ht.comp (fun s : ℝ => (s, x))).tendstoUniformlyOn ht'
+
+instance instCompleteSpace : CompleteSpace (Graph (E := E) α T) := by
+  letI : CompleteSpace ↥(graphSubmodule (E := E) α T) :=
+    isClosed_graphSubmodule.isComplete.completeSpace_coe
+  let e : Graph (E := E) α T ≃ᵢ ↥(graphSubmodule (E := E) α T) :=
+    { graphEquiv with isometry_toFun := fun _ _ => rfl }
+  exact e.completeSpace
+
+end Poincare.ParabolicSolutionGraph
+
+
+FILE Poincare/Global/ParabolicHolderSpace.lean
+import Mathlib.Analysis.Normed.Lp.lpSpace
+import Mathlib.Analysis.Normed.Lp.ProdLp
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Tactic.Abel
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.Ring
+
+/-!
+The bounded parabolic Hölder space, with the sum norm.
+
+An element is represented by a bounded function, zero off the cylinder, and
+its bounded scaled differences. The graph equations determine the second
+component uniquely. Thus the carrier includes every bounded Hölder function,
+with no approximation or continuity condition. The graph is closed in the
+sum of two complete spaces of bounded functions.
+-/
+
+noncomputable section
+
+namespace Poincare.ParabolicHolder
+
+open Set
+open scoped ENNReal
+
+variable {E F : Type*} [NormedAddCommGroup E]
+  [NormedAddCommGroup F] [NormedSpace ℝ F]
+
+def parabolicDist (p q : ℝ × E) : ℝ :=
+  ‖p.2 - q.2‖ + Real.sqrt |p.1 - q.1|
+
+theorem parabolicDist_nonneg (p q : ℝ × E) : 0 ≤ parabolicDist p q := by
+  exact add_nonneg (norm_nonneg _) (Real.sqrt_nonneg _)
+
+theorem parabolicDist_symm (p q : ℝ × E) :
+    parabolicDist p q = parabolicDist q p := by
+  simp only [parabolicDist, norm_sub_rev, abs_sub_comm]
+
+theorem parabolicDist_pos {p q : ℝ × E} (h : p ≠ q) : 0 < parabolicDist p q := by
+  by_cases hx : p.2 = q.2
+  · have ht : p.1 ≠ q.1 := fun ht => h (Prod.ext ht hx)
+    exact add_pos_of_nonneg_of_pos (norm_nonneg _)
+      (Real.sqrt_pos.2 (abs_pos.2 (sub_ne_zero.2 ht)))
+  · exact add_pos_of_pos_of_nonneg (norm_pos_iff.2 (sub_ne_zero.2 hx))
+      (Real.sqrt_nonneg _)
+
+def cylinder (T : ℝ) : Set (ℝ × E) := Icc 0 T ×ˢ univ
+
+def HasHolderBound (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) (K : ℝ) : Prop :=
+  ∀ p ∈ S, ∀ q ∈ S, ‖f p - f q‖ ≤ K * parabolicDist p q ^ α
+
+/-- Distinct ordered pairs in the set; the diagonal contributes zero. -/
+def Pairs (S : Set (ℝ × E)) :=
+  {pq : (ℝ × E) × (ℝ × E) // pq.1 ∈ S ∧ pq.2 ∈ S ∧ pq.1 ≠ pq.2}
+
+/-- Inserting zero also specifies the seminorm on the empty set. -/
+def holderSeminorm (α : ℝ) (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun i : Pairs S =>
+    ‖f i.1.1 - f i.1.2‖ / parabolicDist i.1.1 i.1.2 ^ α))
+
+def supNorm (S : Set (ℝ × E)) (f : ℝ × E → F) : ℝ :=
+  sSup (insert 0 (range fun p : S => ‖f p‖))
+
+/-- The first factor stores values and the second stores scaled differences. -/
+abbrev Ambient (T : ℝ) (E F : Type*) [NormedAddCommGroup E] [NormedAddCommGroup F] :=
+  WithLp 1 (lp (fun _ : ℝ × E => F) ∞ × lp (fun _ : Pairs (cylinder (E := E) T) => F) ∞)
+
+def holderSubmodule (α T : ℝ) : Submodule ℝ (Ambient T E F) where
+  carrier := {v | (∀ p, p ∉ cylinder T → v.fst p = 0) ∧
+    ∀ i : Pairs (cylinder (E := E) T), v.snd i =
+      (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (v.fst i.1.1 - v.fst i.1.2)}
+  zero_mem' := by
+    constructor
+    · intro p _
+      rfl
+    · intro i
+      change (0 : F) = _ • (0 - 0)
+      simp
+  add_mem' := by
+    intro v w hv hw
+    constructor
+    · intro p hp
+      change v.fst p + w.fst p = 0
+      rw [hv.1 p hp, hw.1 p hp, add_zero]
+    · intro i
+      change v.snd i + w.snd i = _
+      rw [hv.2 i, hw.2 i, ← smul_add]
+      congr 1
+      change _ = (v.fst i.1.1 + w.fst i.1.1) - (v.fst i.1.2 + w.fst i.1.2)
+      abel
+  smul_mem' := by
+    intro c v hv
+    constructor
+    · intro p hp
+      change c • v.fst p = 0
+      rw [hv.1 p hp, smul_zero]
+    · intro i
+      change c • v.snd i = _
+      rw [hv.2 i, smul_comm]
+      congr 1
+      exact smul_sub c _ _
+
+/-- The graph subtype stores the boundedness witnesses in its two `lp` factors.
+The support equation selects the unique extension that is zero off the cylinder. -/
+abbrev Y (α T : ℝ) (F : Type*) [NormedAddCommGroup F] [NormedSpace ℝ F] :=
+  ↥(holderSubmodule (E := E) (F := F) α T)
+
+variable {α T : ℝ}
+
+instance instCoeFun : CoeFun (Y (E := E) α T F) (fun _ => ℝ × E → F) := ⟨fun f => f.val.fst⟩
+
+theorem zero_off (f : Y (E := E) α T F) {p : ℝ × E} (hp : p ∉ cylinder T) :
+    f p = 0 := f.property.1 p hp
+
+theorem increment_eq (f : Y (E := E) α T F) (i : Pairs (cylinder (E := E) T)) :
+    f.val.snd i = (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (f i.1.1 - f i.1.2) :=
+  f.property.2 i
+
+theorem increment_norm (f : Y (E := E) α T F) (i : Pairs (cylinder (E := E) T)) :
+    ‖f.val.snd i‖ = ‖f i.1.1 - f i.1.2‖ / parabolicDist i.1.1 i.1.2 ^ α := by
+  rw [increment_eq, norm_smul, Real.norm_of_nonneg
+    (inv_nonneg.2 (Real.rpow_pos_of_pos (parabolicDist_pos i.2.2.2) α).le)]
+  exact mul_comm _ _
+
+theorem norm_eq_parts (f : Y (E := E) α T F) :
+    ‖f‖ = ‖f.val.fst‖ + ‖f.val.snd‖ :=
+  WithLp.prod_norm_eq_of_L1 f.val
+
+theorem norm_le (f : Y (E := E) α T F) (p : ℝ × E) : ‖f p‖ ≤ ‖f‖ := by
+  rw [norm_eq_parts]
+  exact (lp.norm_apply_le_norm (by simp) f.val.fst p).trans
+    (le_add_of_nonneg_right (norm_nonneg _))
+
+theorem holder_le (f : Y (E := E) α T F) {p q : ℝ × E}
+    (hp : p ∈ cylinder T) (hq : q ∈ cylinder T) :
+    ‖f p - f q‖ ≤ ‖f‖ * parabolicDist p q ^ α := by
+  by_cases h : p = q
+  · subst q
+    simp only [sub_self, norm_zero]
+    exact mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (parabolicDist_nonneg p p) _)
+  · let i : Pairs (cylinder (E := E) T) := ⟨(p, q), hp, hq, h⟩
+    have hi := lp.norm_apply_le_norm (by simp : (∞ : ℝ≥0∞) ≠ 0) f.val.snd i
+    rw [increment_norm] at hi
+    have hbound : ‖f.val.snd‖ ≤ ‖f‖ := by
+      rw [norm_eq_parts]
+      exact le_add_of_nonneg_left (norm_nonneg _)
+    exact (div_le_iff₀ (Real.rpow_pos_of_pos (parabolicDist_pos h) α)).1
+      (hi.trans hbound)
+
+theorem bounded (f : Y (E := E) α T F) :
+    ∃ M : ℝ, ∀ p ∈ cylinder T, ‖f p‖ ≤ M := ⟨‖f‖, fun p _ => norm_le f p⟩
+
+theorem hasHolderBound (f : Y (E := E) α T F) :
+    HasHolderBound α (cylinder T) f ‖f‖ := fun _ hp _ hq => holder_le f hp hq
+
+theorem scaledDifference_norm (α : ℝ) (f : ℝ × E → F) {p q : ℝ × E} (h : p ≠ q) :
+    ‖(parabolicDist p q ^ α)⁻¹ • (f p - f q)‖ =
+      ‖f p - f q‖ / parabolicDist p q ^ α := by
+  rw [norm_smul, Real.norm_of_nonneg
+    (inv_nonneg.2 (Real.rpow_pos_of_pos (parabolicDist_pos h) α).le)]
+  exact mul_comm _ _
+
+/-- Construct an element from exactly the boundedness and Hölder witnesses. -/
+def ofFunction (f : ℝ × E → F) (hoff : ∀ p, p ∉ cylinder T → f p = 0)
+    (hb : ∃ M : ℝ, ∀ p ∈ cylinder T, ‖f p‖ ≤ M)
+    (hh : ∃ K : ℝ, HasHolderBound α (cylinder T) f K) : Y (E := E) α T F := by
+  let v : lp (fun _ : ℝ × E => F) ∞ := ⟨f, by
+    obtain ⟨M, hM⟩ := hb
+    apply memℓp_infty
+    refine ⟨max M 0, ?_⟩
+    rintro _ ⟨p, rfl⟩
+    dsimp only
+    by_cases hp : p ∈ cylinder T
+    · exact (hM p hp).trans (le_max_left _ _)
+    · rw [hoff p hp, norm_zero]
+      exact le_max_right _ _⟩
+  let w : lp (fun _ : Pairs (cylinder (E := E) T) => F) ∞ :=
+    ⟨fun i => (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (f i.1.1 - f i.1.2), by
+      obtain ⟨K, hK⟩ := hh
+      apply memℓp_infty
+      refine ⟨K, ?_⟩
+      rintro _ ⟨i, rfl⟩
+      dsimp only
+      rw [scaledDifference_norm α f i.2.2.2]
+      exact (div_le_iff₀ (Real.rpow_pos_of_pos (parabolicDist_pos i.2.2.2) α)).2
+        (hK _ i.2.1 _ i.2.2.1)⟩
+  exact ⟨WithLp.toLp 1 (v, w), hoff, fun _ => rfl⟩
+
+@[simp] theorem ofFunction_apply (f : ℝ × E → F) (hoff hb hh) (p : ℝ × E) :
+    ofFunction (α := α) (T := T) f hoff hb hh p = f p := rfl
+
+/-- The graph representation imposes exactly the three function-level conditions. -/
+theorem exists_rep_iff (f : ℝ × E → F) :
+    (∃ y : Y (E := E) α T F, ∀ p, y p = f p) ↔
+      (∀ p, p ∉ cylinder T → f p = 0) ∧
+      (∃ M : ℝ, ∀ p ∈ cylinder T, ‖f p‖ ≤ M) ∧
+      (∃ K : ℝ, HasHolderBound α (cylinder T) f K) := by
+  constructor
+  · rintro ⟨y, hy⟩
+    have hf : (y : ℝ × E → F) = f := funext hy
+    rw [← hf]
+    exact ⟨fun _ hp => zero_off y hp, bounded y, ‖y‖, hasHolderBound y⟩
+  · rintro ⟨hoff, hb, hh⟩
+    exact ⟨ofFunction f hoff hb hh, fun _ => rfl⟩
+
+@[simp] theorem zero_apply (p : ℝ × E) : (0 : Y (E := E) α T F) p = 0 := rfl
+
+@[simp] theorem add_apply (f g : Y (E := E) α T F) (p : ℝ × E) :
+    (f + g) p = f p + g p := rfl
+
+@[simp] theorem sub_apply (f g : Y (E := E) α T F) (p : ℝ × E) :
+    (f - g) p = f p - g p := rfl
+
+@[simp] theorem smul_apply (c : ℝ) (f : Y (E := E) α T F) (p : ℝ × E) :
+    (c • f) p = c • f p := rfl
+
+@[ext] theorem ext {f g : Y (E := E) α T F} (h : ∀ p ∈ cylinder T, f p = g p) :
+    f = g := by
+  have hval : f.val.fst = g.val.fst := by
+    apply lp.ext
+    funext p
+    by_cases hp : p ∈ cylinder T
+    · exact h p hp
+    · exact (zero_off f hp).trans (zero_off g hp).symm
+  apply Subtype.ext
+  apply (WithLp.equiv 1 _).injective
+  apply Prod.ext hval
+  apply lp.ext
+  funext i
+  change f.val.snd i = g.val.snd i
+  rw [increment_eq, increment_eq]
+  change _ • (f.val.fst _ - f.val.fst _) = _ • (g.val.fst _ - g.val.fst _)
+  rw [hval]
+
+theorem holderSeminorm_bddAbove (f : Y (E := E) α T F) :
+    BddAbove (insert 0 (range fun i : Pairs (cylinder (E := E) T) =>
+      ‖f i.1.1 - f i.1.2‖ / parabolicDist i.1.1 i.1.2 ^ α)) := by
+  refine ⟨‖f.val.snd‖, ?_⟩
+  rintro r (rfl | ⟨i, rfl⟩)
+  · exact norm_nonneg _
+  · dsimp only
+    rw [← increment_norm]
+    exact lp.norm_apply_le_norm (by simp) _ _
+
+theorem holderSeminorm_eq (f : Y (E := E) α T F) :
+    holderSeminorm α (cylinder T) f = ‖f.val.snd‖ := by
+  apply le_antisymm
+  · apply csSup_le (insert_nonempty _ _)
+    rintro r (rfl | ⟨i, rfl⟩)
+    · exact norm_nonneg _
+    · dsimp only
+      rw [← increment_norm]
+      exact lp.norm_apply_le_norm (by simp) _ _
+  · apply lp.norm_le_of_forall_le
+    · exact le_csSup (holderSeminorm_bddAbove f) (mem_insert _ _)
+    · intro i
+      rw [increment_norm]
+      exact le_csSup (holderSeminorm_bddAbove f) (mem_insert_of_mem _ (mem_range_self i))
+
+theorem supNorm_bddAbove (f : Y (E := E) α T F) :
+    BddAbove (insert 0 (range fun p : cylinder (E := E) T => ‖f p‖)) := by
+  refine ⟨‖f.val.fst‖, ?_⟩
+  rintro r (rfl | ⟨p, rfl⟩)
+  · exact norm_nonneg _
+  · exact lp.norm_apply_le_norm (by simp) _ _
+
+theorem supNorm_eq (f : Y (E := E) α T F) :
+    supNorm (cylinder T) f = ‖f.val.fst‖ := by
+  apply le_antisymm
+  · apply csSup_le (insert_nonempty _ _)
+    rintro r (rfl | ⟨p, rfl⟩)
+    · exact norm_nonneg _
+    · exact lp.norm_apply_le_norm (by simp) _ _
+  · have h0 : 0 ≤ supNorm (cylinder T) f :=
+      le_csSup (supNorm_bddAbove f) (mem_insert _ _)
+    apply lp.norm_le_of_forall_le h0
+    intro p
+    by_cases hp : p ∈ cylinder T
+    · exact le_csSup (supNorm_bddAbove f)
+        (mem_insert_of_mem _ (mem_range_self (⟨p, hp⟩ : cylinder T)))
+    · change ‖f p‖ ≤ _
+      rw [zero_off f hp, norm_zero]
+      exact h0
+
+/-- The norm is the requested sum, not the maximum norm on the ordinary product. -/
+theorem norm_eq (f : Y (E := E) α T F) :
+    ‖f‖ = supNorm (cylinder T) f + holderSeminorm α (cylinder T) f := by
+  rw [supNorm_eq, holderSeminorm_eq, norm_eq_parts]
+
+theorem norm_le_of_bounds (f : Y (E := E) α T F) {M K : ℝ} (hM : 0 ≤ M) (hK : 0 ≤ K)
+    (hb : ∀ p ∈ cylinder T, ‖f p‖ ≤ M) (hh : HasHolderBound α (cylinder T) f K) :
+    ‖f‖ ≤ M + K := by
+  rw [norm_eq_parts]
+  apply add_le_add
+  · apply lp.norm_le_of_forall_le hM
+    intro p
+    by_cases hp : p ∈ cylinder T
+    · exact hb p hp
+    · change ‖f p‖ ≤ M
+      simpa [zero_off f hp] using hM
+  · apply lp.norm_le_of_forall_le hK
+    intro i
+    rw [increment_norm]
+    exact (div_le_iff₀ (Real.rpow_pos_of_pos (parabolicDist_pos i.2.2.2) α)).2
+      (hh _ i.2.1 _ i.2.2.1)
+
+theorem isClosed_holderSubmodule :
+    IsClosed (holderSubmodule (E := E) (F := F) α T : Set (Ambient T E F)) := by
+  have ev₁ (p : ℝ × E) : Continuous (fun v : Ambient T E F => v.fst p) :=
+    (lp.evalCLM ℝ (fun _ : ℝ × E => F) ∞ p).continuous.comp
+      (WithLp.continuous_fst ..)
+  have ev₂ (i : Pairs (cylinder (E := E) T)) : Continuous (fun v : Ambient T E F => v.snd i) :=
+    (lp.evalCLM ℝ (fun _ : Pairs (cylinder (E := E) T) => F) ∞ i).continuous.comp
+      (WithLp.continuous_snd ..)
+  change IsClosed {v : Ambient T E F | (∀ p, p ∉ cylinder T → v.fst p = 0) ∧ _}
+  apply IsClosed.inter
+  · change IsClosed {v : Ambient T E F | ∀ p, p ∉ cylinder T → v.fst p = 0}
+    simpa only [iInter_ofPred] using
+      (isClosed_iInter fun p : ℝ × E => isClosed_iInter fun _ : p ∉ cylinder T =>
+        isClosed_eq (ev₁ p) (continuous_const : Continuous (fun _ : Ambient T E F => (0 : F))))
+  · change IsClosed {v : Ambient T E F | ∀ i : Pairs (cylinder (E := E) T),
+      v.snd i = (parabolicDist i.1.1 i.1.2 ^ α)⁻¹ • (v.fst i.1.1 - v.fst i.1.2)}
+    simpa only [iInter_ofPred, Pi.smul_apply, Pi.sub_apply] using
+      (isClosed_iInter fun i : Pairs (cylinder (E := E) T) => isClosed_eq (ev₂ i)
+        (((ev₁ i.1.1).sub (ev₁ i.1.2)).const_smul (parabolicDist i.1.1 i.1.2 ^ α)⁻¹))
+
+instance instCompleteSpace [CompleteSpace F] : CompleteSpace (Y (E := E) α T F) :=
+  isClosed_holderSubmodule.isComplete.completeSpace_coe
+
+theorem supNorm_nonneg (f : Y (E := E) α T F) : 0 ≤ supNorm (cylinder T) f := by
+  rw [supNorm_eq]
+  exact norm_nonneg _
+
+theorem holderSeminorm_nonneg (f : Y (E := E) α T F) :
+    0 ≤ holderSeminorm α (cylinder T) f := by
+  rw [holderSeminorm_eq]
+  exact norm_nonneg _
+
+theorem le_supNorm (f : Y (E := E) α T F) (p : ℝ × E) :
+    ‖f p‖ ≤ supNorm (cylinder T) f := by
+  rw [supNorm_eq]
+  exact lp.norm_apply_le_norm (by simp) _ _
+
+theorem hasHolderBound_seminorm (f : Y (E := E) α T F) :
+    HasHolderBound α (cylinder T) f (holderSeminorm α (cylinder T) f) := by
+  intro p hp q hq
+  rw [holderSeminorm_eq]
+  by_cases h : p = q
+  · subst q
+    simp only [sub_self, norm_zero]
+    exact mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (parabolicDist_nonneg p p) _)
+  · let i : Pairs (cylinder (E := E) T) := ⟨(p, q), hp, hq, h⟩
+    have hi := lp.norm_apply_le_norm (by simp : (∞ : ℝ≥0∞) ≠ 0) f.val.snd i
+    rw [increment_norm] at hi
+    exact (div_le_iff₀ (Real.rpow_pos_of_pos (parabolicDist_pos h) α)).1 hi
+
+/-- The product estimate keeps the two sup norms separate from the two seminorms. -/
+theorem product_holderBound (f g : Y (E := E) α T ℝ) :
+    HasHolderBound α (cylinder T) (fun p => f p * g p)
+      (supNorm (cylinder T) f * holderSeminorm α (cylinder T) g +
+        holderSeminorm α (cylinder T) f * supNorm (cylinder T) g) := by
+  intro p hp q hq
+  calc
+    ‖f p * g p - f q * g q‖ =
+        ‖f p * (g p - g q) + (f p - f q) * g q‖ := by congr 1; ring
+    _ ≤ ‖f p * (g p - g q)‖ + ‖(f p - f q) * g q‖ := norm_add_le _ _
+    _ = ‖f p‖ * ‖g p - g q‖ + ‖f p - f q‖ * ‖g q‖ := by rw [norm_mul, norm_mul]
+    _ ≤ supNorm (cylinder T) f *
+          (holderSeminorm α (cylinder T) g * parabolicDist p q ^ α) +
+        (holderSeminorm α (cylinder T) f * parabolicDist p q ^ α) *
+          supNorm (cylinder T) g := by
+      apply add_le_add
+      · exact mul_le_mul (le_supNorm f p) (hasHolderBound_seminorm g p hp q hq)
+          (norm_nonneg _) (supNorm_nonneg f)
+      · exact mul_le_mul (hasHolderBound_seminorm f p hp q hq) (le_supNorm g q)
+          (norm_nonneg _) (mul_nonneg (holderSeminorm_nonneg f)
+            (Real.rpow_nonneg (parabolicDist_nonneg p q) _))
+    _ = _ := by ring
+
+def pointwiseMul (f g : Y (E := E) α T ℝ) : Y (E := E) α T ℝ :=
+  ofFunction (fun p => f p * g p)
+    (fun p hp => by dsimp only; rw [zero_off f hp, zero_mul])
+    ⟨supNorm (cylinder T) f * supNorm (cylinder T) g, fun p _ => by
+      rw [norm_mul]
+      exact mul_le_mul (le_supNorm f p) (le_supNorm g p) (norm_nonneg _) (supNorm_nonneg f)⟩
+    ⟨_, product_holderBound f g⟩
+
+instance instMul : Mul (Y (E := E) α T ℝ) := ⟨pointwiseMul⟩
+
+@[simp] theorem mul_apply (f g : Y (E := E) α T ℝ) (p : ℝ × E) :
+    (f * g) p = f p * g p := rfl
+
+theorem norm_mul_le (f g : Y (E := E) α T ℝ) : ‖f * g‖ ≤ ‖f‖ * ‖g‖ := by
+  have hb : ‖f * g‖ ≤ supNorm (cylinder T) f * supNorm (cylinder T) g +
+      (supNorm (cylinder T) f * holderSeminorm α (cylinder T) g +
+        holderSeminorm α (cylinder T) f * supNorm (cylinder T) g) := by
+    apply norm_le_of_bounds (f * g)
+    · exact mul_nonneg (supNorm_nonneg f) (supNorm_nonneg g)
+    · exact add_nonneg
+        (mul_nonneg (supNorm_nonneg f) (holderSeminorm_nonneg g))
+        (mul_nonneg (holderSeminorm_nonneg f) (supNorm_nonneg g))
+    · intro p _
+      rw [mul_apply, norm_mul]
+      exact mul_le_mul (le_supNorm f p) (le_supNorm g p) (norm_nonneg _) (supNorm_nonneg f)
+    · exact product_holderBound f g
+  rw [norm_eq f, norm_eq g]
+  nlinarith [mul_nonneg (holderSeminorm_nonneg f) (holderSeminorm_nonneg g)]
+
+/-- Pointwise multiplication stays in the carrier, with the sharp norm bound. -/
+theorem mul_mem (f g : Y (E := E) α T ℝ) :
+    (∀ p, (f * g) p = f p * g p) ∧ ‖f * g‖ ≤ ‖f‖ * ‖g‖ :=
+  ⟨mul_apply f g, norm_mul_le f g⟩
+
+omit [NormedAddCommGroup E] in
+theorem cylinder_mono {T' : ℝ} (hT : T' ≤ T) :
+    cylinder (E := E) T' ⊆ cylinder T := by
+  intro p hp
+  exact ⟨⟨hp.1.1, hp.1.2.trans hT⟩, hp.2⟩
+
+/-- Restriction uses the zero extension on the smaller cylinder. -/
+def restrict {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F) : Y (E := E) α T' F := by
+  classical
+  exact ofFunction (fun p => if p ∈ cylinder T' then f p else 0)
+    (fun p hp => if_neg hp)
+    ⟨‖f‖, fun p hp => by dsimp only; rw [if_pos hp]; exact norm_le f p⟩
+    ⟨‖f‖, fun p hp q hq => by
+      dsimp only
+      rw [if_pos hp, if_pos hq]
+      exact holder_le f (cylinder_mono hT hp) (cylinder_mono hT hq)⟩
+
+@[simp] theorem restrict_apply {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F)
+    {p : ℝ × E} (hp : p ∈ cylinder T') : restrict hT f p = f p := by
+  classical
+  exact if_pos hp
+
+theorem restrict_le {T' : ℝ} (hT : T' ≤ T) (f : Y (E := E) α T F) :
+    ‖restrict hT f‖ ≤ ‖f‖ := by
+  rw [norm_eq f]
+  apply norm_le_of_bounds _ (supNorm_nonneg f) (holderSeminorm_nonneg f)
+  · intro p hp
+    rw [restrict_apply hT f hp]
+    exact le_supNorm f p
+  · intro p hp q hq
+    rw [restrict_apply hT f hp, restrict_apply hT f hq]
+    exact hasHolderBound_seminorm f p (cylinder_mono hT hp) q (cylinder_mono hT hq)
+
+end Poincare.ParabolicHolder
+
+
+FILE Poincare/Global/RiemannianContext.lean
+import Mathlib.Geometry.Manifold.Instances.Real
+import Mathlib.Geometry.Manifold.Riemannian.Basic
+import Mathlib.Topology.Connected.Clopen
+import Mathlib.Topology.MetricSpace.Basic
+
+/-!
+# Standard Riemannian context
+This module packages the project-level tier M1 context for a closed smooth
+Riemannian `n`-manifold.  The intended downstream variable section is:
+```lean
+open scoped Manifold ContDiff Bundle
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
+variable [ChartedSpace (EuclideanSpace ℝ (Fin n)) M]
+variable [IsManifold (𝓡 n) ∞ M]
+variable [CompactSpace M] [ConnectedSpace M]
+variable (g : Poincare.ClosedSmoothRiemannianMetric n M)
+```
+From the single metric variable `g`, use the definitions below as local
+instances when a downstream statement needs Mathlib's bundle or distance
+typeclasses.
+-/
+noncomputable section
+open Bundle Bornology
+open scoped Manifold ContDiff Bundle Topology ENNReal
+universe u
+namespace Poincare
+
+/-- The model vector space for a boundaryless smooth `n`-manifold. -/
+abbrev ClosedSmoothModel (n : ℕ) : Type :=
+  EuclideanSpace ℝ (Fin n)
+
+/-- The model-with-corners used for boundaryless smooth `n`-manifolds. -/
+abbrev closedSmoothModelWithCorners (n : ℕ) :
+    ModelWithCorners ℝ (ClosedSmoothModel n) (ClosedSmoothModel n) :=
+  𝓡 n
+
+/--
+A smooth Riemannian metric on the tangent bundle of a smooth `n`-manifold.
+
+This is the single non-typeclass metric variable used by the project context.
+All Mathlib bundle and distance typeclasses below are derived from this data.
+-/
+abbrev ClosedSmoothRiemannianMetric (n : ℕ) (M : Type u)
+    [TopologicalSpace M] [ChartedSpace (ClosedSmoothModel n) M]
+    [IsManifold (closedSmoothModelWithCorners n) ∞ M] :=
+  ContMDiffRiemannianMetric (closedSmoothModelWithCorners n) ∞ (ClosedSmoothModel n)
+    (fun x : M => TangentSpace (closedSmoothModelWithCorners n) x)
+
+namespace ClosedSmoothRiemannianMetric
+
+variable {n : ℕ} {M : Type u}
+variable [TopologicalSpace M]
+variable [ChartedSpace (ClosedSmoothModel n) M]
+variable [IsManifold (closedSmoothModelWithCorners n) ∞ M]
+
+/-- The tangent bundle family in the standard closed smooth context. -/
+abbrev tangentBundle : M → Type _ :=
+  fun x : M => TangentSpace (closedSmoothModelWithCorners n) x
+
+/-- Register the inner products supplied by a smooth tangent-bundle metric. -/
+@[reducible] def toRiemannianBundle (g : ClosedSmoothRiemannianMetric n M) :
+    RiemannianBundle (tangentBundle (n := n) (M := M)) :=
+  ⟨g.toRiemannianMetric⟩
+
+/-- A smooth metric gives Mathlib's smooth Riemannian-bundle typeclass. -/
+@[reducible] def toIsContMDiffRiemannianBundle (g : ClosedSmoothRiemannianMetric n M) :
+    letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+    IsContMDiffRiemannianBundle (closedSmoothModelWithCorners n) ∞
+      (ClosedSmoothModel n) (tangentBundle (n := n) (M := M)) := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  exact ⟨g.inner, g.contMDiff, fun _ _ _ => rfl⟩
+
+/-- A smooth metric gives Mathlib's continuous Riemannian-bundle typeclass. -/
+@[reducible] def toIsContinuousRiemannianBundle (g : ClosedSmoothRiemannianMetric n M) :
+    letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+    IsContinuousRiemannianBundle (ClosedSmoothModel n)
+      (tangentBundle (n := n) (M := M)) := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  exact ⟨g.inner, g.contMDiff.continuous, fun _ _ _ => rfl⟩
+
+/-- The pseudoemetric space induced by the Riemannian path-length construction. -/
+@[reducible] def toPseudoEMetricSpace [T2Space M] [CompactSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) :
+    PseudoEMetricSpace M := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  letI : IsContinuousRiemannianBundle (ClosedSmoothModel n)
+      (tangentBundle (n := n) (M := M)) := g.toIsContinuousRiemannianBundle
+  exact PseudoEMetricSpace.ofRiemannianMetric (closedSmoothModelWithCorners n) M
+
+/-- The emetric space induced by the Riemannian path-length construction. -/
+@[reducible] def toEMetricSpace [T2Space M] [CompactSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) :
+    EMetricSpace M := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  letI : IsContinuousRiemannianBundle (ClosedSmoothModel n)
+      (tangentBundle (n := n) (M := M)) := g.toIsContinuousRiemannianBundle
+  exact EMetricSpace.ofRiemannianMetric (closedSmoothModelWithCorners n) M
+
+/-- With the induced emetric, Mathlib's Riemannian-manifold predicate is definitional. -/
+@[reducible] def toIsRiemannianManifold [T2Space M] [CompactSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) :
+    letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+    letI : EMetricSpace M := g.toEMetricSpace
+    IsRiemannianManifold (closedSmoothModelWithCorners n) M := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  letI : EMetricSpace M := g.toEMetricSpace
+  exact ⟨fun _ _ => rfl⟩
+
+/-- The scalar-product section of a smooth tangent-bundle metric is smooth. -/
+theorem contMDiff_inner (g : ClosedSmoothRiemannianMetric n M) :
+    ContMDiff (closedSmoothModelWithCorners n)
+      ((closedSmoothModelWithCorners n).prod
+        𝓘(ℝ, (ClosedSmoothModel n) →L[ℝ] (ClosedSmoothModel n) →L[ℝ] ℝ))
+      ∞
+      (fun x : M =>
+        TotalSpace.mk' ((ClosedSmoothModel n) →L[ℝ] (ClosedSmoothModel n) →L[ℝ] ℝ)
+          x (g.inner x)) :=
+  g.contMDiff
+
+/-- Symmetry of the metric tensor in tangent fibers. -/
+theorem inner_symm (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v w : tangentBundle (n := n) (M := M) x) :
+    g.inner x v w = g.inner x w v :=
+  g.symm x v w
+
+/-- Positivity of the metric tensor on nonzero tangent vectors. -/
+theorem inner_pos (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    {v : tangentBundle (n := n) (M := M) x} (hv : v ≠ 0) :
+    0 < g.inner x v v :=
+  g.pos x v hv
+
+/-- Nonnegativity of the metric tensor on the diagonal. -/
+theorem inner_nonneg (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v : tangentBundle (n := n) (M := M) x) :
+    0 ≤ g.inner x v v := by
+  by_cases hv : v = 0
+  · simp [hv]
+  · exact (g.inner_pos x hv).le
+
+/-- The Riemannian unit ball in each tangent fiber is von Neumann bounded. -/
+theorem isVonNBounded_unitBall (g : ClosedSmoothRiemannianMetric n M) (x : M) :
+    IsVonNBounded ℝ {v : tangentBundle (n := n) (M := M) x | g.inner x v v < 1} :=
+  g.isVonNBounded x
+
+/-- After installing `g`, Mathlib's fiber inner product is the metric tensor. -/
+theorem fiber_inner_eq (g : ClosedSmoothRiemannianMetric n M) (x : M)
+    (v w : tangentBundle (n := n) (M := M) x) :
+    letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+    inner ℝ v w = g.inner x v w := by
+  rfl
+
+/-- Specialization of `ContMDiff.inner_bundle` to tangent vector fields. -/
+theorem contMDiff_fiber_inner (g : ClosedSmoothRiemannianMetric n M)
+    {V W : ∀ x : M, tangentBundle (n := n) (M := M) x}
+    (hV : ContMDiff (closedSmoothModelWithCorners n)
+      ((closedSmoothModelWithCorners n).prod 𝓘(ℝ, ClosedSmoothModel n)) ∞
+      (fun x : M => (V x : TotalSpace (ClosedSmoothModel n)
+        (tangentBundle (n := n) (M := M)))))
+    (hW : ContMDiff (closedSmoothModelWithCorners n)
+      ((closedSmoothModelWithCorners n).prod 𝓘(ℝ, ClosedSmoothModel n)) ∞
+      (fun x : M => (W x : TotalSpace (ClosedSmoothModel n)
+        (tangentBundle (n := n) (M := M))))) :
+    letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+    ContMDiff (closedSmoothModelWithCorners n) 𝓘(ℝ) ∞
+      (fun x : M => inner ℝ (V x) (W x)) := by
+  letI : RiemannianBundle (tangentBundle (n := n) (M := M)) := g.toRiemannianBundle
+  haveI : IsContMDiffRiemannianBundle (closedSmoothModelWithCorners n) ∞
+      (ClosedSmoothModel n) (tangentBundle (n := n) (M := M)) :=
+    g.toIsContMDiffRiemannianBundle
+  exact ContMDiff.inner_bundle hV hW
+
+/-- In the connected induced emetric, every extended distance is finite. -/
+theorem induced_edist_ne_top [T2Space M] [CompactSpace M] [ConnectedSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) (x y : M) :
+    letI : EMetricSpace M := g.toEMetricSpace
+    edist x y ≠ ⊤ := by
+  letI : EMetricSpace M := g.toEMetricSpace
+  have hclopen : IsClopen (Metric.eball x (⊤ : ℝ≥0∞)) :=
+    ⟨Metric.isClosed_eball_top, Metric.isOpen_eball⟩
+  have hnonempty : (Metric.eball x (⊤ : ℝ≥0∞)).Nonempty :=
+    ⟨x, Metric.mem_eball_self (by simp)⟩
+  have hy : y ∈ Metric.eball x (⊤ : ℝ≥0∞) := by
+    simp [hclopen.eq_univ hnonempty]
+  have hfinite : edist x y < ⊤ := by
+    simpa [edist_comm] using hy
+  exact hfinite.ne
+
+/-- The ordinary metric space induced by the connected Riemannian emetric. -/
+@[reducible] def toMetricSpace [T2Space M] [CompactSpace M] [ConnectedSpace M]
+    (g : ClosedSmoothRiemannianMetric n M) :
+    MetricSpace M := by
+  letI : EMetricSpace M := g.toEMetricSpace
+  exact EMetricSpace.toMetricSpace fun x y => g.induced_edist_ne_top x y
+
+end ClosedSmoothRiemannianMetric
+
+end Poincare
+
+
+FILE lean-toolchain
+leanprover/lean4:v4.33.1
+
+
+FILE lakefile.lean
+import Lake
+open Lake DSL
+
+package «poincare» where
+  -- This project is a scaffold. It is not a completed formal proof.
+
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git" @ "0df444a360eaa60ab8c11dca51a86af692955474"
+
+require DifferentialGeometry from git
+  "https://github.com/qinz1yang/differential-geometry.git" @ "7a48598d35109aa99d1cc678e2724c213cdf4ff3"
+
+@[default_target]
+lean_lib Poincare where
+  roots := #[`Poincare]
+
+-- Checked-in audit payloads (formerly shell heredocs). Not a default target:
+-- `lake build` is unchanged; `lake build PoincareAudit` elaborates the audit surface
+-- and Lake caches the result. See scripts/audit_payload_equivalence.py.
+lean_lib PoincareAudit where
+  srcDir := "audit"
+  roots := #[`PoincareAudit]
+
+
+FILE lake-manifest.json
+{"version": "1.2.0",
+ "packagesDir": ".lake/packages",
+ "packages":
+ [{"url": "https://github.com/qinz1yang/differential-geometry.git",
+   "type": "git",
+   "subDir": null,
+   "scope": "",
+   "rev": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+   "name": "DifferentialGeometry",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+   "inherited": false,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/mathlib4.git",
+   "type": "git",
+   "subDir": null,
+   "scope": "",
+   "rev": "0df444a360eaa60ab8c11dca51a86af692955474",
+   "name": "mathlib",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "0df444a360eaa60ab8c11dca51a86af692955474",
+   "inherited": false,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/plausible",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "b7eb3304aeae834b12dda98993a37f6a41f6f0bb",
+   "name": "plausible",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/LeanSearchClient",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "5f4d51b81cbd3f6b32b156bfad9056621a040404",
+   "name": "LeanSearchClient",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/import-graph",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "16f02aa7642864af59f1ff0e384a015994db9118",
+   "name": "importGraph",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/ProofWidgets4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "4be2e3d5087eeb272cf5a8853b8f9dd025ef5957",
+   "name": "proofwidgets",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.lean"},
+  {"url": "https://github.com/leanprover-community/aesop",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "3448c0bcc5ce01b2d1546e483ec3620e32df3d0e",
+   "name": "aesop",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/quote4",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "92c15be17b7caf78c2ad767ec40f89052d908d81",
+   "name": "Qq",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "master",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover-community/batteries",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover-community",
+   "rev": "4488d40d070b9700d4d5a6aa342f0d40c31b2a2d",
+   "name": "batteries",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "main",
+   "inherited": true,
+   "configFile": "lakefile.toml"},
+  {"url": "https://github.com/leanprover/lean4-cli",
+   "type": "git",
+   "subDir": null,
+   "scope": "leanprover",
+   "rev": "6130a47896ce867c6a4a55373441e59e565bad0f",
+   "name": "Cli",
+   "manifestFile": "lake-manifest.json",
+   "inputRev": "v4.33.0",
+   "inherited": true,
+   "configFile": "lakefile.toml"}],
+ "name": "poincare",
+ "lakeDir": ".lake",
+ "fixedToolchain": false}
+

@@ -1,0 +1,7 @@
+def stereoInvFunAux (w : E) : E :=
+  (‖w‖ ^ 2 + 4)⁻¹ • ((4 : ℝ) • w + (‖w‖ ^ 2 - 4) • v)
+
+@[simp]
+theorem stereoInvFunAux_apply (w : E) :
+    stereoInvFunAux v w = (‖w‖ ^ 2 + 4)⁻¹ • ((4 : ℝ) • w + (‖w‖ ^ 2 - 4) • v) :=
+  rfl

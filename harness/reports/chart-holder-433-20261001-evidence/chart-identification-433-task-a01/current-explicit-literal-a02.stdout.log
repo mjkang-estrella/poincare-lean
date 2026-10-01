@@ -1,0 +1,42 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:365: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:434: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:212: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:621: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:687: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:464: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:740: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:13:166: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitLiterals-a02.lean:12:0: error: unresolved or recovery placeholders in frozen literal mlieBracket_apply_chart
+CURRENT_LITERAL_ELAB_OK:mpullbackWithin_extChartAt_symm_self
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_chart
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_fixed_chart
+CURRENT_LITERAL_ELAB_OK:isLocallyConstant_of_extDerivFun_eq_zero
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_mlieBracket_chart
+CURRENT_LITERAL_ELAB_OK:mpullback_extChartAt_symm_apply
+CURRENT_LITERAL_ELAB_OK:extDerivFun_section_eventually_chart
+CURRENT_LITERAL_ELAB_OK:extDerivFun_extDerivFun_chart
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_mlieBracket

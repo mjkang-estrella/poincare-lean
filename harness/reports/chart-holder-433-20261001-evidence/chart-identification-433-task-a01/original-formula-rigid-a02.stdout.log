@@ -1,0 +1,72 @@
+AXIOM_SAFETY_CONTRACT_OK:mlieBracket_apply_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_fixed_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullback_extChartAt_symm_apply:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_section_eventually_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_extDerivFun_chart:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mlieBracket_apply_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_fixed_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:mpullback_extChartAt_symm_apply_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_section_eventually_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_extDerivFun_chart_eq:[propext, Classical.choice, Quot.sound]
+AXIOM_SAFETY_CONTRACT_OK:extDerivFun_apply_mlieBracket_eq:[propext, Classical.choice, Quot.sound]
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:23:49: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:25:12: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:20:10: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:29:20: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:30:54: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:25:42: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:31:45: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:18:26: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/OriginalFormulaFrozenProbe-a02.lean:592:0: error: unresolved or recovery placeholders in frozen type for mlieBracket_apply_chart
+RIGID_PROP_TYPE_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self:[u_1, u_2, u_3, u_4]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_chart:[u_1, u_2, u_3, u_4]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_fixed_chart:[u_1, u_2, u_3, u_4]
+RIGID_PROP_TYPE_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:mpullback_extChartAt_symm_apply:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_section_eventually_chart:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_extDerivFun_chart:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_mlieBracket:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:mlieBracket_apply_chart_eq:[u_5, u_6, u_7, u_8]
+RIGID_PROP_TYPE_CONTRACT_OK:mpullbackWithin_extChartAt_symm_self_eq:[u_5, u_6, u_7, u_8]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_chart_eq:[u_5, u_6, u_7, u_8]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_fixed_chart_eq:[u_5, u_6, u_7, u_8]
+RIGID_PROP_TYPE_CONTRACT_OK:isLocallyConstant_of_extDerivFun_eq_zero_eq:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_mlieBracket_chart_eq:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:mpullback_extChartAt_symm_apply_eq:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_section_eventually_chart_eq:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_extDerivFun_chart_eq:[u_5, u_6, u_7]
+RIGID_PROP_TYPE_CONTRACT_OK:extDerivFun_apply_mlieBracket_eq:[u_5, u_6, u_7]

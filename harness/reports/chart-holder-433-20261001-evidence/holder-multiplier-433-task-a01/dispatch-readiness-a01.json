@@ -1,0 +1,12 @@
+{
+  "status": "not_dispatchable",
+  "reason": "A distinct blind-readback reviewer must approve the production snapshot before the orchestrator adds statement_contract.review and changes Task status.",
+  "snapshot_sha256": "2a2179b0eb40b5c220379c54b683472a73d52f0aeeae048eeb473fe834cd94b9",
+  "needed_file_family_lease": [
+    "Poincare/Global/ParabolicHolderMultiplier.lean"
+  ],
+  "worker_branch_requirement": "codex/<task-name> in an isolated worktree",
+  "raw_explicit_transcript_must_not_enter_worker_context": true,
+  "rg_clean_scan_expected_exit_code": 1,
+  "supplementary_46_old_gate": "original-probe-a04.result.json"
+}

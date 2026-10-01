@@ -1,0 +1,17 @@
+Poincare/Global/RoundSphereChart.lean:81:11: warning: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+Poincare/Global/RoundSphereChart.lean:81:11: warning: This simp argument is unused:
+  ContinuousLinearMap.coe_comp'
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [r, ContinuousLinearMap.smulRight_apply, Function.comp_def, smul_add, add_smul, smul_smul,
+    sub_eq_add_neg, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/Global/RoundSphereChart.lean:82:41: warning: This simp argument is unused:
+  Function.comp_def
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [r, ContinuousLinearMap.coe_comp', ContinuousLinearMap.smulRight_apply, smul_add, add_smul, smul_smul,
+    sub_eq_add_neg, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

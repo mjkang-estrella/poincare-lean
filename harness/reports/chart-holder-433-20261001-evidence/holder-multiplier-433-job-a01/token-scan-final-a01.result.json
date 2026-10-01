@@ -1,0 +1,15 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/Global/ParabolicHolderMultiplier.lean"
+  ],
+  "started_at": "2026-10-01T03:50:49.189015+00:00",
+  "finished_at": "2026-10-01T03:50:49.195369+00:00",
+  "elapsed_seconds": 0.006360625033266842,
+  "exit_code": 1,
+  "passed": true,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

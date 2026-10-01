@@ -1,0 +1,14 @@
+{
+  "job_id": "round-chart-433-job-a02",
+  "task_id": "round-chart-433-preserve",
+  "task_revision": 3,
+  "predecessor": "round-chart-433-job-a01",
+  "base_commit": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "branch": "codex/round-chart-433-a01",
+  "worktree": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "owner": "/root/round_chart_resume",
+  "started": "2026-10-01T03:35:47.550790+00:00",
+  "old_exit_status": "unknown after interruption; not inferred",
+  "scope": "sole hasFDerivAt_stereoInvFunAuxFDeriv proof body",
+  "state": "running"
+}

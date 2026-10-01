@@ -1,0 +1,27 @@
+Poincare/ChartIdentification.lean:94:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, h1, h2, I.range_eq_univ, fderivWithin_univ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/ChartIdentification.lean:146:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/ChartIdentification.lean:316:0: warning: automatically included section variable(s) unused in theorem `mpullback_extChartAt_symm_apply`:
+  [CompleteSpace E']
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E'] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+Poincare/ChartIdentification.lean:383:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

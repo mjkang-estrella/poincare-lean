@@ -1,0 +1,37 @@
+✖ [2919/2921] Building Poincare.Global.ParabolicHolderMultiplier (6.7s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/ParabolicHolderMultiplier.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/ParabolicHolderMultiplier.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/ParabolicHolderMultiplier.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/ParabolicHolderMultiplier.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/ParabolicHolderMultiplier.setup.json --json
+error: Poincare/Global/ParabolicHolderMultiplier.lean:41:2: Type mismatch: After simplification, term
+  h
+ has type
+  ‖↑(WithLp.fst ↑G.ddu) (t, x) - 0‖ ≤ ‖G.ddu‖ * t ^ (α / 2)
+but is expected to have type
+  ‖↑(WithLp.fst ↑G.ddu) (t, x)‖ ≤ ‖G.ddu‖ * t ^ (α / 2)
+warning: Poincare/Global/ParabolicHolderMultiplier.lean:69:13: `ContinuousLinearMap.sub_apply` has been deprecated: Use `_root_.sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `_root_.sub_apply x`).
+error: Poincare/Global/ParabolicHolderMultiplier.lean:151:58: Ambiguous term
+  add_apply
+Possible interpretations:
+  _root_.add_apply : ∀ (f g : ?m.38) (x : ?m.39), (f + g) x = f x + g x
+  
+  ParabolicHolder.add_apply : ∀ (f g : Y ?m.43 ?m.44 ?m.39) (p : ℝ × ?m.38),
+    ↑(WithLp.fst ↑(f + g)) p = ↑(WithLp.fst ↑f) p + ↑(WithLp.fst ↑g) p
+error: Poincare/Global/ParabolicHolderMultiplier.lean:151:22: unsolved goals
+case insert
+α T : ℝ
+ι : Type u_1
+f : ι → Y α T ℝ
+p : ℝ × E
+a : ι
+s : Finset ι
+ha : a ∉ s
+ih : ↑(WithLp.fst ↑(∑ i ∈ s, f i)) p = ∑ i ∈ s, ↑(WithLp.fst ↑(f i)) p
+⊢ ↑(WithLp.fst ↑(f a + ∑ i ∈ s, f i)) p = ↑(WithLp.fst ↑(f a)) p + ∑ x ∈ s, ↑(WithLp.fst ↑(f x)) p
+warning: Poincare/Global/ParabolicHolderMultiplier.lean:151:69: This simp argument is unused:
+  ih
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [Finset.sum_insert ha, add_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+error: Lean exited with code 1

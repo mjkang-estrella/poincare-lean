@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825130.944194,
+  "ended_epoch": 1790825134.65026,
+  "elapsed_seconds": 3.7060658931732178,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

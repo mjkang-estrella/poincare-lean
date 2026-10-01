@@ -1,0 +1,34 @@
+{
+  "job_id": "chart-identification-433-job-a01",
+  "task_id": "chart-identification-433-preserve",
+  "task_revision": 3,
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "branch": "codex/chart-identification-433-a01",
+  "worktree": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "worker": "/root/chart_worker",
+  "ownership": [
+    "Poincare/ChartIdentification.lean"
+  ],
+  "started_at": "2026-10-01T03:31:19.158019+00:00",
+  "context_sha256": {
+    "README.md": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "HANDOFF.md": "5101630ada3d9dbf7a527e4d0a9c95fd6df694afc76d08581edeed849d46c534",
+    "docs/PROJECT_MAP.md": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "AGENTS.md": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "harness/v2/SPEC.md": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "Poincare/ChartIdentification.lean": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+    "Poincare/FlatModelConnection.lean": "6e44b9fea45a9d131f0fb33280e3765a86f85d1f876a37d85ac2f8fad93f864e",
+    "Poincare/RiemannCurvatureOperator.lean": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/blind-readback-a02.json": "4bdb4645e5102378c43b86040502cfad83ce5dfc19935fc9f1cdceee2a42b38c",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaFrozenProbe-a03.lean": "b7437b5903e583f1f210141b287fa273d49db690e7514f617e03f6423ccb500d",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean": "5f1e8a4c077d869ea2b1f221c0d9dcbb866aed957bfad31728bdf2db28332bab",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/definitions-for-review.txt": "c4f1567e0fa1838920a498595d11edee80e4d754bd5ef52c2b93437f25af2ef4",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py": "a826e3ac26da479da10e203ada73a6db23a5054c499696319b002af321a3166b",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/frozen-base.lean": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+    "harness/v2/state/upstream-verification-20260930/chart-api-generic-readonly-20261001-a01/report.md": "fdc5b67085478f758e5f501845ef758e6160733119f3852a2568d634264cab76",
+    "harness/v2/state/upstream-verification-20260930/chart-metric-next-migration-shapes-a01.md": "1fbe58f0d4143c6b2013d4644a0af5fdf7bfff1a10ec429883527f2a2e130ea4"
+  },
+  "source_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "task_acceptance_owned_by": "/root",
+  "scope_only": true
+}

@@ -1,0 +1,13 @@
+{
+  "started_epoch": 1790825130.944194,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,68 @@
+⚠ [2457/2492] Replayed Poincare.RiemannCurvatureOperator
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [2546/2547] Replayed Poincare.FlatModelConnection
+warning: Poincare/FlatModelConnection.lean:52:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:54:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:106:39: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+warning: Poincare/FlatModelConnection.lean:107:6: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+warning: Poincare/FlatModelConnection.lean:161:4: Try this: intro σ hσ x _
+⚠ [2547/2547] Replayed Poincare.ChartIdentification
+warning: Poincare/ChartIdentification.lean:94:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, h1, h2, I.range_eq_univ, fderivWithin_univ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/ChartIdentification.lean:146:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/ChartIdentification.lean:316:0: automatically included section variable(s) unused in theorem `mpullback_extChartAt_symm_apply`:
+  [CompleteSpace E']
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E'] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/ChartIdentification.lean:383:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Build completed successfully (2547 jobs).

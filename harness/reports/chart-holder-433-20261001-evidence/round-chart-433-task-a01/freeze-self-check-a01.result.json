@@ -1,0 +1,13 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825269.0020962,
+  "ended_epoch": 1790825269.035938,
+  "elapsed_seconds": 0.03384280204772949,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "python3",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/verify-freeze.py"
+  ],
+  "stdout_sha256": "5dfb2b2f6e5f26a2da1082f6455a1ea207fac9a2a2db4c7078ff5f5ff58e7f37",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

@@ -1,0 +1,9 @@
+{
+  "accepted_commit": "5a7588e26ad2defcca3688c1a5e811b2471342a3",
+  "base_commit": "338bd65f5ddf6ef18ba1b5e9b8bb933021c2808f",
+  "independent_gates": "harness/v2/state/upstream-verification-20260930/round-chart-root-independent-a01/result.json",
+  "source_sha256": "d35fe3d3398e796af25d920b568b98c73cbfd9b21d45eb5433bbb9d88018e67f",
+  "scope": "Only three normal elaborator tactic substitutions in one proof body. Actual stereographic inverse, conformal factor, derivative data, all eight types/universes and every other byte preserved.",
+  "core_assumption_effect": "Retained-root compatibility only. S already proved; independent universal Hamilton inputs/convergence unconstructed; final endpoint not constructed.",
+  "completion_certified": false
+}

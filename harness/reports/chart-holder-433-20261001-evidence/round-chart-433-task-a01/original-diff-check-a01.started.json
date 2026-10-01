@@ -1,0 +1,12 @@
+{
+  "started_epoch": 1790825130.944194,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "name": "gate-contract-pins-a01",
+  "recorded_at": "2026-10-01T03:46:57.191180+00:00",
+  "passed": true,
+  "checks": [
+    {
+      "check": "statement_contract_reused_unchanged",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "Poincare/FlatModelConnection.lean",
+      "sha256": "6e44b9fea45a9d131f0fb33280e3765a86f85d1f876a37d85ac2f8fad93f864e",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "Poincare/RiemannCurvatureOperator.lean",
+      "sha256": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/frozen-base.lean",
+      "sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+      "passed": true
+    },
+    {
+      "check": "definition_pin",
+      "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/definitions-for-review.txt",
+      "sha256": "c4f1567e0fa1838920a498595d11edee80e4d754bd5ef52c2b93437f25af2ef4",
+      "passed": true
+    },
+    {
+      "check": "review_report_pin",
+      "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/blind-readback-a02.json",
+      "sha256": "4bdb4645e5102378c43b86040502cfad83ce5dfc19935fc9f1cdceee2a42b38c",
+      "snapshot_sha256": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+      "passed": true
+    },
+    {
+      "check": "frozen_probe_pin",
+      "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaFrozenProbe-a03.lean",
+      "sha256": "b7437b5903e583f1f210141b287fa273d49db690e7514f617e03f6423ccb500d",
+      "passed": true
+    },
+    {
+      "check": "frozen_probe_pin",
+      "path": "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean",
+      "sha256": "5f1e8a4c077d869ea2b1f221c0d9dcbb866aed957bfad31728bdf2db28332bab",
+      "passed": true
+    },
+    {
+      "check": "single_tracked_source_edit",
+      "files": [
+        "Poincare/ChartIdentification.lean"
+      ],
+      "passed": true
+    }
+  ],
+  "review_object_keys": [
+    "schema_version",
+    "reviewer",
+    "method",
+    "snapshot_sha256",
+    "verdict",
+    "readback",
+    "findings"
+  ]
+}

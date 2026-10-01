@@ -1,0 +1,651 @@
+⚠ [2457/2494] Replayed Poincare.RiemannCurvatureOperator
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:129:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/RiemannCurvatureOperator.lean:154:10: This simp argument is unused:
+  extDerivFun
+
+Hint: Omit it from the simp argument list.
+  [apply] simp
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+⚠ [2790/2798] Replayed Poincare.FlatModelConnection
+warning: Poincare/FlatModelConnection.lean:52:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:54:8: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/FlatModelConnection.lean:106:39: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+warning: Poincare/FlatModelConnection.lean:107:6: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+warning: Poincare/FlatModelConnection.lean:161:4: Try this: intro σ hσ x _
+⚠ [2791/2798] Replayed Poincare.LeviCivitaUniqueness
+warning: Poincare/LeviCivitaUniqueness.lean:232:10: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+warning: Poincare/LeviCivitaUniqueness.lean:235:10: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+warning: Poincare/LeviCivitaUniqueness.lean:238:10: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+⚠ [2792/2798] Replayed Poincare.LocalConnectionRegularity
+warning: Poincare/LocalConnectionRegularity.lean:187:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:192:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:195:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/LocalConnectionRegularity.lean:183:0: automatically included section variable(s) unused in theorem `CovariantDerivative.contMDiffAt_mlieBracket_of_contMDiffAt_three`:
+  [T2Space M]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [T2Space M] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:268:44: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/LocalConnectionRegularity.lean:291:0: automatically included section variable(s) unused in theorem `CovariantDerivative.curvatureOp_congr_of_eventuallyEq`:
+  [CompleteSpace E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:332:0: automatically included section variable(s) unused in theorem `CovariantDerivative.curvatureTensorAt_congr_of_eventuallyEq`:
+  [CompleteSpace E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/LocalConnectionRegularity.lean:332:8: Overlapping instance parameters in `curvatureTensorAt_congr_of_eventuallyEq`:
+
+⚠️ There are 2 `[CompleteSpace E]` instances; one is sufficient.
+
+Note: This linter can be disabled with `set_option linter.overlappingInstances false`
+⚠ [2793/2798] Built Poincare.ChartIdentification (2.8s)
+warning: Poincare/ChartIdentification.lean:94:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, h1, h2, I.range_eq_univ, fderivWithin_univ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/ChartIdentification.lean:146:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/ChartIdentification.lean:316:0: automatically included section variable(s) unused in theorem `mpullback_extChartAt_symm_apply`:
+  [CompleteSpace E']
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace E'] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/ChartIdentification.lean:383:23: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+✖ [2797/2845] Building Poincare.CurvatureTensoriality (5.4s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/CurvatureTensoriality.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/CurvatureTensoriality.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/CurvatureTensoriality.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/CurvatureTensoriality.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/CurvatureTensoriality.setup.json --json
+warning: Poincare/CurvatureTensoriality.lean:40:21: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/CurvatureTensoriality.lean:40:33: Application type mismatch: The argument
+  f
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.101 ?m.103 ?m.106
+in the application
+  @extDerivFun ?m.101 ?m.102 ?m.103 ?m.104 ?m.105 ?m.106 ?m.107 f
+error: Poincare/CurvatureTensoriality.lean:40:40: Application type mismatch: The argument
+  y
+has type
+  ?m.114 → ?m.115
+but is expected to have type
+  M
+in the application
+  U y
+error: Poincare/CurvatureTensoriality.lean:46:37: unsolved goals
+E : Type u_1
+inst✝⁹ : NormedAddCommGroup E
+inst✝⁸ : NormedSpace ℝ E
+H : Type u_2
+inst✝⁷ : TopologicalSpace H
+I : ModelWithCorners ℝ E H
+M : Type u_3
+inst✝⁶ : TopologicalSpace M
+inst✝⁵ : ChartedSpace H M
+inst✝⁴ : FiniteDimensional ℝ E
+inst✝³ : T2Space M
+inst✝² : IsManifold I ∞ M
+inst✝¹ : I.Boundaryless
+inst✝ : CompleteSpace E
+f : M → ℝ
+x : M
+hf : ContMDiffAt I 𝓘(ℝ, ℝ) 2 f x
+U : (y : M) → TangentSpace I y
+hU : MDiffAt (T% U) x
+h : ContDiffAt ℝ 2 (↑(extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ ↑(extChartAt I x).symm) (↑(extChartAt I x) x)
+z : E
+⊢ ↑(chartAt ℝ (f x)) (f (↑(chartAt H x).symm (↑I.symm z))) = f (↑(chartAt H x).symm (↑I.symm z))
+warning: Poincare/CurvatureTensoriality.lean:113:38: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/CurvatureTensoriality.lean:113:50: Application type mismatch: The argument
+  f
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.615 ?m.617 ?m.620
+in the application
+  @extDerivFun ?m.615 ?m.616 ?m.617 ?m.618 ?m.619 ?m.620 ?m.621 f
+warning: Poincare/CurvatureTensoriality.lean:180:0: automatically included section variable(s) unused in theorem `CovariantDerivative.curvatureOp_zero_field`:
+  [FiniteDimensional ℝ E]
+  [T2Space M]
+  [I.Boundaryless]
+  [CompleteSpace E]
+  [cov.ContMDiffCovariantDerivative 1]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [FiniteDimensional ℝ
+  E] [T2Space M] [I.Boundaryless] [CompleteSpace E] [cov.ContMDiffCovariantDerivative 1] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: Poincare/CurvatureTensoriality.lean:223:50: unsolved goals
+E : Type u_1
+inst✝⁸ : NormedAddCommGroup E
+inst✝⁷ : NormedSpace ℝ E
+H : Type u_2
+inst✝⁶ : TopologicalSpace H
+I : ModelWithCorners ℝ E H
+M : Type u_3
+inst✝⁵ : TopologicalSpace M
+inst✝⁴ : ChartedSpace H M
+inst✝³ : FiniteDimensional ℝ E
+inst✝² : T2Space M
+inst✝¹ : IsManifold I ∞ M
+cov : CovariantDerivative I E (TangentSpace I)
+inst✝ : cov.ContMDiffCovariantDerivative 1
+X Y Z Z' : (y : M) → TangentSpace I y
+x : M
+hZ : ContMDiffAt I I.tangent 2 (fun y => ⟨y, Z y⟩) x
+hZ' : ContMDiffAt I I.tangent 2 (fun y => ⟨y, Z' y⟩) x
+hX : MDiffAt (T% X) x
+hY : MDiffAt (T% Y) x
+hcovD : IsCovariantDerivativeOn E ↑cov
+hZd : ∀ᶠ (y : M) in 𝓝 x, MDiffAt (T% Z) y
+hZ'd : ∀ᶠ (y : M) in 𝓝 x, MDiffAt (T% Z') y
+hZx : MDiffAt (T% Z) x
+hZ'x : MDiffAt (T% Z') x
+hZZ' : ContMDiffAt I I.tangent 2 (fun y => ⟨y, (Z + Z') y⟩) x
+W : (y : M) → TangentSpace I y
+y : M
+hZy : MDiffAt (T% Z) y
+hZ'y : MDiffAt (T% Z') y
+⊢ (↑cov Z y) (W y) + (↑cov Z' y) (W y) = (↑cov Z y) (W y) + (↑cov Z' y) (W y)
+warning: Poincare/CurvatureTensoriality.lean:259:13: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+error: Poincare/CurvatureTensoriality.lean:271:13: Type mismatch: After simplification, term
+  curvatureOp_zero_field cov
+ has type
+  @Eq (TangentSpace I x) (cov.curvatureOp X Y 0 x) 0
+but is expected to have type
+  @Eq (TangentSpace I x) (cov.curvatureOp X Y (fun y => 0) x) 0
+warning: Poincare/CurvatureTensoriality.lean:303:17: `Bundle.Trivialization.localFrame_coeff` has been deprecated: Use `Bundle.Trivialization.localFrameCoeff` instead
+warning: Poincare/CurvatureTensoriality.lean:304:5: `contMDiffAt_iff_localFrame_coeff` has been deprecated: Use `contMDiffAt_iff_localFrameCoeff` instead
+warning: Poincare/CurvatureTensoriality.lean:306:15: `Bundle.Trivialization.localFrame_coeff` has been deprecated: Use `Bundle.Trivialization.localFrameCoeff` instead
+error: Poincare/CurvatureTensoriality.lean:315:4: Type mismatch: After simplification, term
+  hy
+ has type
+  @Eq (TangentSpace I y) (D y) (∑ i, (localFrameCoeff I e b i y) (D y) • e.localFrame b i y)
+but is expected to have type
+  @Eq E (D y) (∑ x_1, (localFrame_coeff I e b x_1 y) (D y) • e.localFrame b x_1 y)
+warning: Poincare/CurvatureTensoriality.lean:322:17: `Bundle.Trivialization.localFrame_coeff` has been deprecated: Use `Bundle.Trivialization.localFrameCoeff` instead
+warning: Poincare/CurvatureTensoriality.lean:377:5: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:381:0: automatically included section variable(s) unused in theorem `CovariantDerivative.ricciBilinearAt_add_left`:
+  [I.Boundaryless]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [I.Boundaryless] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/CurvatureTensoriality.lean:387:0: automatically included section variable(s) unused in theorem `CovariantDerivative.ricciBilinearAt_smul_left`:
+  [I.Boundaryless]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [I.Boundaryless] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/CurvatureTensoriality.lean:403:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:404:8: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:405:9: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:408:5: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:409:5: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:423:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:424:39: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:427:5: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:459:8: automatically included section variable(s) unused in theorem `_private.Poincare.CurvatureTensoriality.0.CovariantDerivative.eventually_mdiffAt_of_contMDiffAt`:
+  [FiniteDimensional ℝ E]
+  [T2Space M]
+  [I.Boundaryless]
+  [CompleteSpace E]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [FiniteDimensional ℝ E] [T2Space M] [I.Boundaryless] [CompleteSpace E] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/CurvatureTensoriality.lean:478:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/CurvatureTensoriality.lean:482:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/CurvatureTensoriality.lean:485:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/CurvatureTensoriality.lean:488:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/CurvatureTensoriality.lean:543:10: `ContinuousLinearMap.sub_apply` has been deprecated: Use `sub_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.sub_apply` to `sub_apply x`).
+warning: Poincare/CurvatureTensoriality.lean:627:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:628:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:629:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:664:4: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/CurvatureTensoriality.lean:664:31: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+warning: Poincare/CurvatureTensoriality.lean:665:9: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/CurvatureTensoriality.lean:666:6: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  mfderiv% f x
+in the target expression
+  d% f x = d% f' x
+
+E : Type u_1
+inst✝⁹ : NormedAddCommGroup E
+inst✝⁸ : NormedSpace ℝ E
+H : Type u_2
+inst✝⁷ : TopologicalSpace H
+I : ModelWithCorners ℝ E H
+M : Type u_3
+inst✝⁶ : TopologicalSpace M
+inst✝⁵ : ChartedSpace H M
+inst✝⁴ : FiniteDimensional ℝ E
+inst✝³ : T2Space M
+inst✝² : IsManifold I ∞ M
+inst✝¹ : I.Boundaryless
+inst✝ : CompleteSpace E
+f f' : M → ℝ
+x : M
+h : f =ᶠ[𝓝 x] f'
+⊢ d% f x = d% f' x
+warning: Poincare/CurvatureTensoriality.lean:698:15: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/CurvatureTensoriality.lean:698:27: Application type mismatch: The argument
+  fun y' => ((g y') (Z y')) (W y')
+has type
+  M → ℝ
+but is expected to have type
+  ModelWithCorners ?m.375 ?m.377 ?m.380
+in the application
+  @extDerivFun ?m.375 ?m.376 ?m.377 ?m.378 ?m.379 ?m.380 ?m.381 fun y' => ((g y') (Z y')) (W y')
+warning: Poincare/CurvatureTensoriality.lean:759:35: This simp argument is unused:
+  LinearMap.coe_comp
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [LinearMap.comp_apply, LinearMap.neg_apply, Module.Dual.transpose_apply, LinearEquiv.coe_coe,
+    Function.comp_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/CurvatureTensoriality.lean:760:27: This simp argument is unused:
+  Function.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [LinearMap.comp_apply, LinearMap.neg_apply, Module.Dual.transpose_apply, LinearMap.coe_comp,
+    LinearEquiv.coe_coe]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/CurvatureTensoriality.lean:792:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/CurvatureTensoriality.lean:813:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:814:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:815:16: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:816:9: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:864:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:865:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:866:16: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:867:9: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:878:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:879:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:880:7: `FiberBundle.contMDiffAt_extend'` has been deprecated: Use `FiberBundle.contMDiffAt_extend` instead
+warning: Poincare/CurvatureTensoriality.lean:924:0: automatically included section variable(s) unused in theorem `CovariantDerivative.sectionalNumeratorAt_self`:
+  [FiniteDimensional ℝ E]
+  [T2Space M]
+  [I.Boundaryless]
+  [CompleteSpace E]
+  [cov.ContMDiffCovariantDerivative 1]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [FiniteDimensional ℝ
+  E] [T2Space M] [I.Boundaryless] [CompleteSpace E] [cov.ContMDiffCovariantDerivative 1] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+warning: Poincare/CurvatureTensoriality.lean:1029:8: declaration uses `sorry`
+error: Poincare/CurvatureTensoriality.lean:1029:8: (kernel) unknown constant 'CovariantDerivative.mdiffAt_extDerivFun_apply'
+error: Lean exited with code 1
+⚠ [2840/2845] Replayed Poincare.Global.RiemannianContext
+warning: Poincare/Global/RiemannianContext.lean:71:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:66:0: Definition `toIsContMDiffRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:79:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:74:0: Definition `toIsContinuousRiemannianBundle` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:106:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:107:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:100:0: Definition `toIsRiemannianManifold` is a proposition; use `theorem` instead of `def`
+
+Note: This linter can be disabled with `set_option linter.defProp false`
+warning: Poincare/Global/RiemannianContext.lean:167:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:168:2: Try this: 
+  haveI̵
+
+The goal is a proposition, so `have` is preferred over `haveI`.
+The difference between `have` and `haveI` is that `haveI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RiemannianContext.lean:178:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+ℹ [2987/2996] Replayed Poincare.Global.Statement
+info: Poincare/Global/Statement.lean:38:0: inferInstance : ChartedSpace (EuclideanSpace ℝ (Fin 3)) ↑(Metric.sphere 0 1)
+info: Poincare/Global/Statement.lean:42:0: inferInstance : IsManifold (𝓡 3) ∞ ↑(Metric.sphere 0 1)
+⚠ [2988/2996] Replayed Poincare.Global.RoundSphereMetric
+warning: Poincare/Global/RoundSphereMetric.lean:89:13: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+warning: Poincare/Global/RoundSphereMetric.lean:94:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:96:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:98:2: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+warning: Poincare/Global/RoundSphereMetric.lean:103:4: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+✖ [2989/2996] Building Poincare.RicciFlowEquation (2.6s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/RicciFlowEquation.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/RicciFlowEquation.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/RicciFlowEquation.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/RicciFlowEquation.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/RicciFlowEquation.setup.json --json
+warning: Poincare/RicciFlowEquation.lean:84:7: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+error: Poincare/RicciFlowEquation.lean:84:19: Application type mismatch: The argument
+  fun y => ((euclideanBundleMetric y) (Y y)) (Z y)
+has type
+  F → ℝ
+but is expected to have type
+  ModelWithCorners ?m.73 ?m.75 ?m.78
+in the application
+  @extDerivFun ?m.73 ?m.74 ?m.75 ?m.76 ?m.77 ?m.78 ?m.79 fun y => ((euclideanBundleMetric y) (Y y)) (Z y)
+warning: Poincare/RicciFlowEquation.lean:104:0: automatically included section variable(s) unused in theorem `flat_isLeviCivitaAt`:
+  [CompleteSpace F]
+  [FiniteDimensional ℝ F]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [CompleteSpace F] [FiniteDimensional ℝ F] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+error: Poincare/RicciFlowEquation.lean:157:35: Application type mismatch: The argument
+  ℝ
+has type
+  Type
+but is expected to have type
+  Trivialization ?m.50 TotalSpace.proj
+in the application
+  @Trivialization.symmL_apply ?m.48 ?m.49 ?m.50 ?m.51 ?m.52 ?m.53 ?m.54 ?m.55 ?m.56 ?m.57 ?m.58 ?m.59 ?m.60 ℝ
+error: Poincare/RicciFlowEquation.lean:154:36: unsolved goals
+F : Type u_4
+inst✝³ : NormedAddCommGroup F
+inst✝² : InnerProductSpace ℝ F
+inst✝¹ : CompleteSpace F
+inst✝ : FiniteDimensional ℝ F
+x : F
+w : TangentSpace 𝓘(ℝ, F) x
+x' : F
+⊢ (trivializationAt F (TangentSpace 𝓘(ℝ, F)) x).symm x' (↑(trivializationAt F (TangentSpace 𝓘(ℝ, F)) x) ⟨x, w⟩).2 = w
+error: Poincare/RicciFlowEquation.lean:171:4: `simp` made no progress
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    fun x => w
+  has type
+    F → TangentSpace 𝓘(ℝ, F) x
+  but is expected to have type
+    (x : F) → TangentSpace 𝓘(ℝ, F) x
+  in the application
+    ↑(flatCovariantDerivative ℝ F) fun x => w
+error: Lean exited with code 1
+⚠ [2994/3006] Built Poincare.Global.RoundSphereChart (3.5s)
+warning: Poincare/Global/RoundSphereChart.lean:81:11: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+warning: Poincare/Global/RoundSphereChart.lean:81:11: This simp argument is unused:
+  ContinuousLinearMap.coe_comp'
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [r, ContinuousLinearMap.smulRight_apply, Function.comp_def, smul_add, add_smul, smul_smul,
+    sub_eq_add_neg, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+warning: Poincare/Global/RoundSphereChart.lean:82:41: This simp argument is unused:
+  Function.comp_def
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [r, ContinuousLinearMap.coe_comp', ContinuousLinearMap.smulRight_apply, smul_add, add_smul, smul_smul,
+    sub_eq_add_neg, mul_assoc]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+✔ [3074/3081] Built Poincare.Global.HeatKernelPDEn (2.4s)
+⚠ [3075/3081] Replayed Poincare.Global.LeviCivita
+warning: Poincare/Global/LeviCivita.lean:53:8: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+✖ [3078/3081] Building Poincare.Global.RoundSphereChartMetric (2.7s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/RoundSphereChartMetric.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/RoundSphereChartMetric.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/RoundSphereChartMetric.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/RoundSphereChartMetric.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/RoundSphereChartMetric.setup.json --json
+error: Poincare/Global/RoundSphereChartMetric.lean:192:2: Type mismatch: After simplification, term
+  h
+ has type
+  @Eq ℝ
+    (((roundSphereMetric3_inner p)
+        ((mfderiv% ↑(chartAt RoundSphereModel3 x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) u))
+      ((mfderiv% ↑(chartAt RoundSphereModel3 x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) w))
+    (stereoInvFunAuxConformalFactor ↑((roundSphereChartModelEquiv x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) *
+      ⟪u, w⟫)
+but is expected to have type
+  @Eq ℝ
+    (((roundSphereMetric3_inner p)
+        ((mfderiv% ↑(chartAt RoundSphereModel3 x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) u))
+      ((mfderiv% ↑(chartAt RoundSphereModel3 x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) w))
+    (stereoInvFunAuxConformalFactor ↑((roundSphereChartModelEquiv x₀).symm (↑(chartAt RoundSphereModel3 x₀) p)) *
+      ⟪u, w⟫)
+error: Lean exited with code 1
+✔ [3079/3081] Built Poincare.Global.HeatApproxIdentity (2.1s)
+✖ [3080/3125] Building Poincare.Global.HeatCauchy (1.9s)
+trace: .> LEAN_PATH=/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Cli/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/batteries/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/Qq/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/aesop/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/proofwidgets/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/importGraph/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/plausible/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean:/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean /Users/mjkang/.elan/toolchains/leanprover--lean4---v4.33.1/bin/lean /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/Global/HeatCauchy.lean -o /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatCauchy.olean -i /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/lib/lean/Poincare/Global/HeatCauchy.ilean -c /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatCauchy.c --setup /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/build/ir/Poincare/Global/HeatCauchy.setup.json --json
+error: Poincare/Global/HeatCauchy.lean:71:4: Type mismatch: After simplification, term
+  Integrable.smul_of_top_left hker hf_top
+ has type
+  @Integrable ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace SeminormedAddGroup.toContinuousENorm E
+    measureSpaceOfInnerProductSpace.toMeasurableSpace ((fun y => heatKernel t (x - y)) * f) volume
+but is expected to have type
+  @Integrable ℝ PseudoMetricSpace.toUniformSpace.toTopologicalSpace SeminormedAddGroup.toContinuousENorm E
+    measureSpaceOfInnerProductSpace.toMeasurableSpace (fun y => heatKernel t (x - y) * f y) volume
+error: Lean exited with code 1
+⚠ [3086/3125] Replayed Poincare.MaximumPrinciple
+warning: Poincare/MaximumPrinciple.lean:58:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Poincare/MaximumPrinciple.lean:255:54: Variable name `ha` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _ha
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+warning: Poincare/MaximumPrinciple.lean:347:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Poincare/MaximumPrinciple.lean:471:2: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Poincare/MaximumPrinciple.lean:635:4: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```
+warning: Poincare/MaximumPrinciple.lean:626:16: This simp argument is unused:
+  Set.mem_sep_iff
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [hS, Set.mem_inter_iff, Set.mem_preimage]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Some required targets logged failures:
+- Poincare.CurvatureTensoriality
+- Poincare.RicciFlowEquation
+- Poincare.Global.RoundSphereChartMetric
+- Poincare.Global.HeatCauchy

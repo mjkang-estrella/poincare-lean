@@ -1,0 +1,13 @@
+Preserve Hölder multiplier bounds through Lean 4.33 elaboration
+
+Give the bilinear norm its explicit subtraction-by-zero equality, then
+reuse the original zero-trace and parabolic-distance argument. Qualify the
+Holder carrier addition lemma to resolve the new name ambiguity.
+
+Constraint: Only ddu_time_bound and sum_apply proof bodies may change.
+Scope-risk: narrow
+Reversibility: clean
+Confidence: high
+Tested: Frozen proof/source guard, direct Lean, and scoped multiplier build.
+Tested: All 19 rigid public types/universes and transitive axiom/safety checks.
+Tested: No-hit forbidden-token scan and git diff --check.

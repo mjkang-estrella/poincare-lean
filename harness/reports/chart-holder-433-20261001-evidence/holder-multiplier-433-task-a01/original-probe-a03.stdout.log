@@ -1,0 +1,107 @@
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.ddu_time_bound
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.ddu_zero_trace
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.du_zero_trace
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_1
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_10
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_11
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_12
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_13
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_2
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_3
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_4
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_5
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_6
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_7
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_8
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_9
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry.congr_simp
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_holderBound
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.error_small
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.eval_norm_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_1
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_10
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_11
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_12
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_13
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_2
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_3
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_4
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_5
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_6
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_7
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_8
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_9
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_eq_sum
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_entry_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_error_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_forcing_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_split
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.sum_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_ddu_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_entry_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.ddu_time_bound
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a03.lean:11:15: error: Application type mismatch: The argument
+  0
+has type
+  ℝ
+but is expected to have type
+  (fun x => Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ) (0, x)
+in the application
+  ↑(↑G.ddu).fst (0, x) = 0
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a03.lean:11:14: error: Application type mismatch: The argument
+  0
+has type
+  ℝ
+but is expected to have type
+  (fun x => Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ) (0, x)
+in the application
+  ↑(↑G.du).fst (0, x) = 0
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_1
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_10
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_11
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_12
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_13
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_2
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_3
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_4
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_5
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_6
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_7
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_8
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_9
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry.congr_simp
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_apply
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_holderBound
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.error_small
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.eval_norm_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_1
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_10
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_11
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_12
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_13
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_2
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_3
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_4
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_5
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_6
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_7
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_8
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_9
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_apply
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_eq_sum
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_entry_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_error_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_forcing_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_split
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.sum_apply
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_ddu_le
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_entry_le
+FROZEN_PUBLIC_INVENTORY_OK: 46 declarations

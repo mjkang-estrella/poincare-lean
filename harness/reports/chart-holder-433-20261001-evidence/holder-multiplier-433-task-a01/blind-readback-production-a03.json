@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/holder_clean_readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "37bdcbe8299f3d8c9849f72b3656ee40c96649bb16586868006c7f312f7d832a",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+      "mathematical_statement": "Let E = ClosedSmoothModel 3 = EuclideanSpace ℝ (Fin 3), the original three-dimensional Euclidean model with its Euclidean norm, and C_T = [0,T] × E. A field in Y(α,T;F) is an actual F-valued function on ℝ × E, vanishing off C_T, together with its scaled differences on distinct cylinder pairs; both components are bounded in the lp-infinity sense. Its canonical WithLp 1 norm is the sum sup_C_T ‖f‖ + [f]_{α,C_T}, where [f]_{α,C_T} is the supremum of zero and ‖f(p)-f(q)‖/(‖x-y‖+sqrt(|t-s|))^α over distinct p=(t,x), q=(s,y) in C_T. A Graph G contains u, ut, du, ddu in their respective Y spaces, zero initial u, and the stated spatial/time derivative relations. In particular, for every real α,T, every such G, and T>0, its first spatial derivative satisfies du(0,x)=0 as a continuous real-linear map E→ℝ for every x∈E. No positivity or upper bound on α is required by this declaration."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+      "mathematical_statement": "For all real α,T, every Graph G on the same E, and T>0, ddu(0,x)=0 for every x∈E, as a curried continuous real-bilinear form E→L[ℝ](E→L[ℝ]ℝ). Its first input is the spatial derivative direction in D(du); its second input is the argument of the resulting covector. There is no hypothesis restricting α."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.ddu_time_bound",
+      "mathematical_statement": "For every Graph G, T>0, every t∈[0,T], and x∈E, the operator norm of the bilinear form ddu(t,x) is at most ‖G.ddu‖ times t^(α/2), with Lean's real power. Here ‖G.ddu‖ is the full canonical Y norm, namely its cylinder supremum norm plus parabolic α-Hölder seminorm. The theorem has no α>0 hypothesis, and is stated only for times in the closed cylinder interval."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.supNorm_ddu_le",
+      "mathematical_statement": "If α>0 and T>0, every Graph G satisfies sup_{(t,x)∈C_T} ‖ddu(t,x)‖ ≤ T^(α/2) ‖G‖. The graph norm is the transported nested WithLp 1 sum norm: ‖G‖=‖u‖_Y+‖ut‖_Y+‖du‖_Y+‖ddu‖_Y. The supremum includes zero in its defining set. The inequality concerns the bilinear field's supremum norm, while the right side uses the full graph norm."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.eval_norm_le",
+      "mathematical_statement": "For every A:E→L[ℝ](E→L[ℝ]ℝ) and v,w∈E with ‖v‖=‖w‖=1, |A(v)(w)|≤‖A‖. This is iterated evaluation in the two actual continuous-linear-map slots, with the nested operator norm; no symmetry of A or identification with a matrix is assumed."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry_holderBound",
+      "mathematical_statement": "For any real α,T, any Bilin-valued H∈Y(α,T;Bilin), and unit v,w∈E, the scalar function p↦H(p)(v)(w) has parabolic α-Hölder bound [H]_{α,C_T} on C_T. Explicitly, for all p,q∈C_T, |H(p)(v)(w)-H(q)(v)(w)|≤[H]_{α,C_T}(‖p.2-q.2‖+sqrt(|p.1-q.1|))^α. There is no α or T positivity hypothesis here."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry",
+      "mathematical_statement": "For arbitrary real α,T, the declaration constructs a scalar Y(α,T;ℝ) field entry(H,v,w,hv,hw) from a Bilin-valued H∈Y(α,T;Bilin), v,w∈E, and proofs hv:‖v‖=1 and hw:‖w‖=1. Thus it has the same off-cylinder zero support, bounded value component, and bounded scaled-difference component required by Y. Its actual function value is fixed by entry_apply below; this function type alone is not an inequality or a solver theorem."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry_apply",
+      "mathematical_statement": "For every such H, v,w and their unit-norm proofs, and every p∈ℝ×E, entry(H,v,w,hv,hw)(p)=H(p)(v)(w). The identity holds on the entire domain, without a cylinder-membership or positivity premise, and fixes the computational scalar entry rather than merely its type."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.supNorm_entry_le",
+      "mathematical_statement": "For every H∈Y(α,T;Bilin) and unit v,w with their supplied proofs, sup_C_T |entry(H,v,w)(p)|≤sup_C_T ‖H(p)‖. Both suprema use the definition with zero inserted. No restrictions on α or T are added."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_entry_le",
+      "mathematical_statement": "For every H∈Y(α,T;Bilin) and unit v,w with their supplied proofs, ‖entry(H,v,w)‖_Y≤‖H‖_Y. Each Y norm is the canonical WithLp 1 sum of its value supremum norm and scaled-difference/Hölder seminorm, not a maximum or a separately chosen norm. No restrictions on α or T are added."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_mul_split",
+      "mathematical_statement": "For any real α,T and scalar b,h∈Y(α,T;ℝ), their scalar Y product satisfies ‖b h‖_Y≤sup_C_T |b| · ‖h‖_Y + [b]_{α,C_T} · sup_C_T |h|. The left side is the canonical sum norm; the bound separates the coefficient's supremum from its Hölder seminorm. There are no positivity hypotheses on α or T."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.sum_apply",
+      "mathematical_statement": "For any real α,T, any index type ι in universe u_1, any finite set s⊆ι, any f:ι→Y(α,T;ℝ), and every p∈ℝ×E, evaluation commutes with the finite sum: (∑_{i∈s} f(i))(p)=∑_{i∈s} f(i)(p). No cylinder-membership premise is present."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing",
+      "mathematical_statement": "For arbitrary real α,T, forcing maps a 3×3 family b:Fin 3→Fin 3→Y(α,T;ℝ) and a Graph G to a scalar field in Y(α,T;ℝ). Hence its output carries actual support off C_T and bounded value/scaled-difference components. Its actual computational field is fixed by forcing_apply below; the declaration does not assert a solution equation, invertibility, or any additional solver property."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing_apply",
+      "mathematical_statement": "For every such b,G and every p∈ℝ×E, forcing(b,G)(p)=∑_{i:Fin 3}∑_{j:Fin 3} b(i,j)(p) · ddu_G(p)(e_i)(e_j), where e_i is the standard Euclidean orthonormal basis of the original E. This is the literal nine-term coefficient contraction of the actual ddu bilinear field: i enters the derivative-direction slot and j the resulting covector slot. The formula holds globally, including off-cylinder points, without positivity assumptions."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing_eq_sum",
+      "mathematical_statement": "For every b,G, forcing(b,G)=∑_{i:Fin 3}∑_{j:Fin 3} b(i,j) · entry(G.ddu,e_i,e_j) as equality in the scalar Y space. The entry calls carry the standard basis vectors' norm-one proofs. This identifies the field itself with the nine scalar products, not just an estimate or a pointwise statement restricted to the cylinder. No positivity assumptions occur."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le",
+      "mathematical_statement": "If α>0 and T>0, b∈Y(α,T;ℝ), G is a Graph, and real ε,Λ satisfy sup_C_T |b|≤ε and [b]_{α,C_T}≤Λ, then for every unit v,w∈E with their supplied proofs, ‖b · entry(G.ddu,v,w)‖_Y≤ε ‖G‖+Λ T^(α/2) ‖G‖. The real bounds ε,Λ are quantified without separate sign hypotheses. The result uses the full scalar Y sum norm and full four-component graph sum norm; it makes no upper-bound assumption on α."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_forcing_le",
+      "mathematical_statement": "If α>0 and T>0, a 3×3 family b and Graph G satisfy uniform coefficient bounds sup_C_T |b(i,j)|≤ε and [b(i,j)]_{α,C_T}≤Λ for every i,j∈Fin 3, then ‖forcing(b,G)‖_Y≤9(ε ‖G‖+Λ T^(α/2) ‖G‖). The factor 9 counts all ordered basis-entry pairs. The conclusion concerns the literal forcing field established by forcing_apply and forcing_eq_sum, in the canonical scalar Y norm. ε,Λ are arbitrary real bounds in the hypotheses, with no separate sign assumptions."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_error_le",
+      "mathematical_statement": "Let α>0 and T>0, b be the same uniformly bounded 3×3 coefficient family, and S:Y(α,T;ℝ)→L[ℝ]Graph(α,T) be any continuous real-linear map with operator norm ‖S‖≤C_S. If the coefficient supremum bounds are ε and Hölder seminorm bounds are Λ, then for every scalar f∈Y, ‖forcing(b,S(f))‖_Y≤9 C_S(ε+Λ T^(α/2)) ‖f‖_Y. C_S is a real bound without a separate sign premise, and S has no asserted PDE-solving or inverse identity in this type. Its target operator norm uses the full graph sum norm."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.error_small",
+      "mathematical_statement": "Under α>0, T>0, the same uniform coefficient bounds ε,Λ, and the same continuous real-linear S with ‖S‖≤C_S, suppose additionally 9 C_S ε≤1/4 and 9 C_S Λ T^(α/2)≤1/4. Then for every f∈Y(α,T;ℝ), ‖forcing(b,S(f))‖_Y≤(1/2)‖f‖_Y. This is a smallness bound for the actual composed forcing field under both explicit scalar thresholds. It asserts neither existence of an inverse nor a solution to a core equation, and introduces no hypothesis that α≤1."
+    }
+  ],
+  "findings": []
+}

@@ -1,0 +1,14 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790825772.459999,
+  "ended_epoch": 1790825772.483378,
+  "elapsed_seconds": 0.023379802703857422,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

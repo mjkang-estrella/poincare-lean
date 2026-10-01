@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 10.705592155456543,
+  "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "log_hashes": {
+    "stdout.log": "5de99b5bac716225694000fe35039109401e5e5853463dd473692b60d451aaa7",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

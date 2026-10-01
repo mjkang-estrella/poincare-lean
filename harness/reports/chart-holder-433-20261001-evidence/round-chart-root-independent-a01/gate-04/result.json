@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/FrozenMigrationProbe.lean"
+  ],
+  "exit_code": 0,
+  "pass": true,
+  "seconds": 5.30127477645874,
+  "source_head": "5a7588e26ad2defcca3688c1a5e811b2471342a3",
+  "log_hashes": {
+    "stdout.log": "50bef188728373ca1b7b0542f8da38ce4f1f6ae833295bb04cc84a67fedc5075",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "results": [
+    {
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py"
+      ],
+      "started_at": "2026-10-01T03:50:11.942630+00:00",
+      "finished_at": "2026-10-01T03:50:12.035491+00:00",
+      "elapsed_seconds": 0.09270349994767457,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "4c3862ebccbece34dc70258389c10e63a597c840ef7e26d5af7660bfe8dc3ef1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      "started_at": "2026-10-01T03:50:12.036018+00:00",
+      "finished_at": "2026-10-01T03:50:20.188132+00:00",
+      "elapsed_seconds": 8.15208437491674,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "5ecdeba59adb00b65d2a3294be63cd25104c09ce4be9cde8c00aa8f6280f823e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ParabolicHolderMultiplier"
+      ],
+      "started_at": "2026-10-01T03:50:20.188704+00:00",
+      "finished_at": "2026-10-01T03:50:33.647978+00:00",
+      "elapsed_seconds": 13.459218958043493,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "7ffbf7965bcae26a9380406bcc6e93688d6910c4c53d62988a787433b9e0ddcb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean"
+      ],
+      "started_at": "2026-10-01T03:50:33.648493+00:00",
+      "finished_at": "2026-10-01T03:50:49.188402+00:00",
+      "elapsed_seconds": 15.539842874975875,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "7944a2237a81b2eb93bf9d67a2d0c7bd39dc58ee0640d6a8ad8ead54251e7f17",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      "started_at": "2026-10-01T03:50:49.189015+00:00",
+      "finished_at": "2026-10-01T03:50:49.195369+00:00",
+      "elapsed_seconds": 0.006360625033266842,
+      "exit_code": 1,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "started_at": "2026-10-01T03:50:49.195719+00:00",
+      "finished_at": "2026-10-01T03:50:49.220139+00:00",
+      "elapsed_seconds": 0.024431999889202416,
+      "exit_code": 0,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "all_passed": true
+}

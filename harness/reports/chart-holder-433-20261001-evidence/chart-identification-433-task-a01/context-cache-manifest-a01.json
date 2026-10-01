@@ -1,0 +1,93 @@
+{
+  "created_at": "2026-10-01T03:25:20.243030+00:00",
+  "files": [
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/Poincare/ChartIdentification.lean",
+      "sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+      "bytes": 26394
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/lean-toolchain",
+      "sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61",
+      "bytes": 29
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/lake-manifest.json",
+      "sha256": "ae0dcfcabbad6ac5299bf14de239ae1f0ef967b66b995bbf611ed80c303d26a1",
+      "bytes": 3119
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/.lake/build/lib/lean/Poincare/ChartIdentification.olean",
+      "sha256": "9c0b2f3229df548a17a2aa1d00a046be50119c6695138dff930a1433da4a004e",
+      "bytes": 977864
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/.lake/build/lib/lean/Poincare/ChartIdentification.trace",
+      "sha256": "31c1551ba60bb27b7bddd36e3e79ed73d0ea4b1d0f11d4ba477734595aa2c819",
+      "bytes": 3381
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/NormedSpace.lean",
+      "sha256": "e119ef5f515f8dee3384e3e6d56bf75e17dd08fc6dc0edeb7b23c375e00bfff1",
+      "bytes": 23795
+    },
+    {
+      "label": "original",
+      "path": "/Users/mjkang/Develop/poincare/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Geometry/Manifold/MFDeriv/NormedSpace.olean",
+      "sha256": "c05f6c352dbec42676dab6fa1a51c07d84a4c9a1584795fe702641d669a937d2",
+      "bytes": 587096
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/ChartIdentification.lean",
+      "sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+      "bytes": 26394
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/FlatModelConnection.lean",
+      "sha256": "6e44b9fea45a9d131f0fb33280e3765a86f85d1f876a37d85ac2f8fad93f864e",
+      "bytes": 8915
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/Poincare/RiemannCurvatureOperator.lean",
+      "sha256": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc",
+      "bytes": 15201
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71",
+      "bytes": 25
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411",
+      "bytes": 3527
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/NormedSpace.lean",
+      "sha256": "29c7411cf7bb0cf152d583e3510966982c46dd2745359833e6d8c3a11e49f104",
+      "bytes": 34370
+    },
+    {
+      "label": "current",
+      "path": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare/.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/Atlas.lean",
+      "sha256": "475a5a62fbabee2bbd1407b50d20d076a98f22497ddd7a0bee54232016a5e181",
+      "bytes": 19211
+    }
+  ],
+  "current_head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "current_status": "## codex/upstream-integration-433\n",
+  "original_head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "original_status": "## main...origin/main\n"
+}

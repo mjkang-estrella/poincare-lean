@@ -1,0 +1,13 @@
+{
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py"
+  ],
+  "started_at": "2026-10-01T03:50:11.942630+00:00",
+  "finished_at": "2026-10-01T03:50:12.035491+00:00",
+  "elapsed_seconds": 0.09270349994767457,
+  "exit_code": 0,
+  "passed": true,
+  "stdout_sha256": "4c3862ebccbece34dc70258389c10e63a597c840ef7e26d5af7660bfe8dc3ef1",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

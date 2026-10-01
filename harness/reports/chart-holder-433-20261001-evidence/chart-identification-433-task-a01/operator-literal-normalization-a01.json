@@ -1,0 +1,58 @@
+[
+  {
+    "name": "extDerivFun_apply_chart",
+    "occurrences_in_kernel_type": 1,
+    "existing_model": "I",
+    "scalar": "\ud835\udd5c",
+    "domain": "M",
+    "shared_formula": "(fun (g : M \u2192 \ud835\udd5c) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf \ud835\udd5c \ud835\udd5c) g z))"
+  },
+  {
+    "name": "extDerivFun_apply_fixed_chart",
+    "occurrences_in_kernel_type": 1,
+    "existing_model": "I",
+    "scalar": "\ud835\udd5c",
+    "domain": "M",
+    "shared_formula": "(fun (g : M \u2192 \ud835\udd5c) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf \ud835\udd5c \ud835\udd5c) g z))"
+  },
+  {
+    "name": "isLocallyConstant_of_extDerivFun_eq_zero",
+    "occurrences_in_kernel_type": 1,
+    "existing_model": "I",
+    "scalar": "Real",
+    "domain": "M",
+    "shared_formula": "(fun (g : M \u2192 Real) (z : M) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I (modelWithCornersSelf Real Real) g z))"
+  },
+  {
+    "name": "extDerivFun_apply_mlieBracket_chart",
+    "occurrences_in_kernel_type": 1,
+    "existing_model": "I'",
+    "scalar": "Real",
+    "domain": "N",
+    "shared_formula": "(fun (g : N \u2192 Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z))"
+  },
+  {
+    "name": "extDerivFun_section_eventually_chart",
+    "occurrences_in_kernel_type": 1,
+    "existing_model": "I'",
+    "scalar": "Real",
+    "domain": "N",
+    "shared_formula": "(fun (g : N \u2192 Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z))"
+  },
+  {
+    "name": "extDerivFun_extDerivFun_chart",
+    "occurrences_in_kernel_type": 2,
+    "existing_model": "I'",
+    "scalar": "Real",
+    "domain": "N",
+    "shared_formula": "(fun (g : N \u2192 Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z))"
+  },
+  {
+    "name": "extDerivFun_apply_mlieBracket",
+    "occurrences_in_kernel_type": 5,
+    "existing_model": "I'",
+    "scalar": "Real",
+    "domain": "N",
+    "shared_formula": "(fun (g : N \u2192 Real) (z : N) => (NormedSpace.fromTangentSpace (g z)).toContinuousLinearMap.comp (mfderiv I' (modelWithCornersSelf Real Real) g z))"
+  }
+]

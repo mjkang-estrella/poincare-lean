@@ -1,0 +1,18 @@
+{
+  "name": "gate-scope-a01",
+  "command": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:33:20.645877+00:00",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "finished_at": "2026-10-01T03:33:20.742290+00:00",
+  "exit_code": 0,
+  "duration_seconds": 0.0812563750660047,
+  "expected_exit": 0,
+  "passed": true,
+  "stdout_sha256": "7dba7656b8c054fded8ec67827c18d1370ed10f7cd41b41f3c63d6ce3a903cea",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

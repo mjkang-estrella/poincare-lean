@@ -1,0 +1,13 @@
+{
+  "job_id": "chart-identification-433-job-a02",
+  "task_id": "chart-identification-433-proof-successor",
+  "worker_outcome": "scoped_gates_passed_ready_for_parent_independent_review",
+  "finished_at": "2026-10-01T03:48:33.335878+00:00",
+  "commit": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "attempts": 1,
+  "full_builds_run": 0,
+  "scoped_builds_run": 1,
+  "parent_acceptance_pending": true,
+  "merged": false
+}

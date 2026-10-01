@@ -1,0 +1,8 @@
+Poincare.stereoInvFunAuxConformalFactor
+Poincare.stereoInvFunAuxFDeriv
+Poincare.stereoInvFunAuxFDeriv_apply
+Poincare.hasFDerivAt_stereoInvFunAuxFDeriv
+Poincare.fderiv_stereoInvFunAux
+Poincare.fderiv_stereoInvFunAux_comp_subtype
+Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal
+Poincare.inner_fderiv_stereoInvFunAux_comp_subtype

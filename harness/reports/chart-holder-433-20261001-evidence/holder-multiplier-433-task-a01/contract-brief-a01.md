@@ -1,0 +1,7 @@
+This proposed Task repairs two Lean 4.33 elaboration failures in the retained ParabolicHolderMultiplier module. The old theorem and definition contracts are exported from the cached old Lean 4.30 module at main 55e4859b54acb9044d7966a12df7a12afa8b52fd. The migration base is upstream integration 681e24e8fedf59c21b71747e90835567dc790e43. The diagnostic was produced at historical integration 757d0dda020470783afef7b0edfe1601da00274c and the current multiplier source is byte-identical to old main.
+
+Only the tactic bodies of ddu_time_bound and sum_apply may change. Their entire signatures and all other bytes, including imports, local models, basis, entry data, forcing data, support certificates, other proofs, short-time powers, norm estimates and numerical constants, remain frozen. The original Holder and Graph carriers retain the actual WithLp 1 sum norms. Model and dependent definitions plus toolchain and Lake configuration are pinned to the new integration context.
+
+The future consumer is the retained root integration using proved universal smoothability and the verified upstream smooth Poincare theorem. This compatibility Task does not discharge the independent universal Hamilton convergence input.
+
+A distinct agent must review the final literal/type/definition snapshot. This author's original-side compiler check is serialization validation and cannot approve the snapshot or accept a later worker Job. The orchestrator must rerun the worker scope and focused Lean/type/axiom/safety gates independently.

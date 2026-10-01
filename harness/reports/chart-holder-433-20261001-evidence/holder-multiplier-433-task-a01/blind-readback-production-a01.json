@@ -1,0 +1,88 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/holder_readback",
+  "method": "blind-readback",
+  "snapshot_sha256": "2a2179b0eb40b5c220379c54b683472a73d52f0aeeae048eeb473fe834cd94b9",
+  "verdict": "rejected",
+  "readback": [
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+      "mathematical_statement": "Let E be EuclideanSpace R (Fin 3), Q_T=[0,T] x E, and rho((t,x),(s,y))=||x-y||+sqrt(|t-s|). Y_alpha,T(F) consists of bounded F-valued functions on R x E that vanish outside Q_T, with finite rho-Hölder seminorm on Q_T; its canonical WithLp 1 norm is sup_Q_T ||f|| plus that seminorm. A Graph G bundles scalar u, time derivative ut, spatial derivative du, and the continuous bilinear second derivative ddu, all in these Y spaces, with u(0,x)=0, D_x u=du and D_x du=ddu on [0,T], and the within-[0,T] time derivative of u equal to ut. Its canonical nested WithLp 1 norm is ||u||_Y+||ut||_Y+||du||_Y+||ddu||_Y. For any real alpha,T, any such G and T>0, du(0,x)=0 for every x in E."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+      "mathematical_statement": "For any real alpha,T and Graph G over E, if T>0 then ddu(0,x) is the zero continuous bilinear map E -> E -> R for every x in E. Here ddu is genuinely D_x du: its first slot is the differentiation direction and its second slot evaluates the resulting covector."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.ddu_time_bound",
+      "mathematical_statement": "For any real alpha,T, Graph G, T>0, t in [0,T], and x in E, the bilinear operator norm of ddu(t,x) is at most ||G.ddu||_Y times the real power t^(alpha/2). This declaration has no assumption alpha>0 or alpha<=1."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.supNorm_ddu_le",
+      "mathematical_statement": "For Graph G, alpha>0 and T>0, the supremum over Q_T of the bilinear operator norm of ddu is at most T^(alpha/2) times ||G||, where the Graph norm is the sum of the four canonical Y norms. No upper bound on alpha is assumed."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.eval_norm_le",
+      "mathematical_statement": "For any continuous bilinear map A:E ->L[R] E ->L[R] R and unit vectors v,w in E, |A(v)(w)|<=||A||, with the norm on A the iterated continuous-linear-map operator norm."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry_holderBound",
+      "mathematical_statement": "For any real alpha,T, H in Y_alpha,T(E ->L[R] E ->L[R] R), and unit v,w in E, the scalar function p -> H(p)(v)(w) satisfies |H(p)(v)(w)-H(q)(v)(w)| <= [H]_alpha,Q_T rho(p,q)^alpha for all p,q in Q_T. The Hölder constant is the bilinear-field Hölder seminorm."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry",
+      "mathematical_statement": "For any real alpha,T, bilinear-valued H in Y_alpha,T, and specified unit vectors v,w, entry(H,v,w) is data in the scalar Y_alpha,T space. Thus it is a bounded function on all R x E, zero outside Q_T, with finite parabolic Hölder seminorm on Q_T. Its value is determined by entry_apply."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.entry_apply",
+      "mathematical_statement": "For any real alpha,T, H in the bilinear Y_alpha,T space, unit v,w with their unit-norm witnesses, and every p in R x E, entry(H,v,w)(p)=H(p)(v)(w). The equality includes points outside Q_T."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.supNorm_entry_le",
+      "mathematical_statement": "For any real alpha,T, bilinear-valued H in Y_alpha,T and unit v,w, sup_Q_T |entry(H,v,w)| <= sup_Q_T ||H||, with the right-hand norm the bilinear operator norm at each point."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_entry_le",
+      "mathematical_statement": "For any real alpha,T, bilinear-valued H in Y_alpha,T and unit v,w, ||entry(H,v,w)||_Y <= ||H||_Y. Each Y norm is the sum of the supremum norm and the parabolic Hölder seminorm, rather than a maximum or a surrogate norm."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_mul_split",
+      "mathematical_statement": "For any real alpha,T and scalar b,h in Y_alpha,T, their pointwise product satisfies ||b*h||_Y <= (sup_Q_T |b|)||h||_Y + [b]_alpha,Q_T (sup_Q_T |h|). No positivity or range condition on alpha or T appears in this declaration."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.sum_apply",
+      "mathematical_statement": "For any real alpha,T, any index type iota, finite set s in iota, family f:iota -> Y_alpha,T(R), and every p in R x E, evaluation of the finite Y sum equals the finite scalar sum: (sum_{i in s} f_i)(p)=sum_{i in s} f_i(p)."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing",
+      "mathematical_statement": "For any real alpha,T, a 3-by-3 family b_ij of scalar Y_alpha,T coefficients and Graph G determine forcing(b,G) as data in the scalar Y_alpha,T space. Consequently it has bounded values, vanishes outside Q_T, and has finite parabolic Hölder seminorm there. Its pointwise values are specified by forcing_apply."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing_apply",
+      "mathematical_statement": "For any real alpha,T, coefficients b_ij in scalar Y_alpha,T, Graph G, and every p in R x E, forcing(b,G)(p)=sum_{i,j in Fin 3} b_ij(p)*ddu(p)(e_i)(e_j), where e_i is the standard orthonormal Euclidean basis vector. These are the two actual bilinear slots of D_x du, giving nine ordered coefficient-Hessian products."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.forcing_eq_sum",
+      "mathematical_statement": "For any real alpha,T, coefficients b_ij in scalar Y_alpha,T and Graph G, forcing(b,G) equals sum_{i,j in Fin 3} b_ij*entry(G.ddu,e_i,e_j) as an equality of supported scalar Hölder-space elements, with the basis unit-vector witnesses supplied. Multiplication and summation are the pointwise Y operations."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le",
+      "mathematical_statement": "For scalar b in Y_alpha,T, Graph G, alpha>0 and T>0, if sup_Q_T |b|<=epsilon and [b]_alpha,Q_T<=Lambda, then for any unit v,w, ||b*entry(G.ddu,v,w)||_Y <= epsilon*||G|| + Lambda*T^(alpha/2)*||G||. Epsilon and Lambda are arbitrary real parameters constrained by those bounds; the bounds imply their nonnegativity. No upper bound on alpha or extra spatial support condition is assumed."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_forcing_le",
+      "mathematical_statement": "For a 3-by-3 family b_ij in scalar Y_alpha,T, Graph G, alpha>0 and T>0, if every coefficient has sup_Q_T |b_ij|<=epsilon and [b_ij]_alpha,Q_T<=Lambda, then ||forcing(b,G)||_Y <= 9*(epsilon*||G|| + Lambda*T^(alpha/2)*||G||). The factor nine counts all ordered pairs of the three Euclidean basis directions."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.norm_error_le",
+      "mathematical_statement": "For coefficients b_ij as above, alpha>0 and T>0, and any continuous R-linear map S:Y_alpha,T(R) ->L[R] Graph_alpha,T with ||S||<=C_S, the same coefficient supremum and seminorm bounds imply, for every f in scalar Y_alpha,T, ||forcing(b,S(f))||_Y <= 9*C_S*(epsilon+Lambda*T^(alpha/2))*||f||_Y. S is arbitrary bounded linear data; this statement supplies no PDE-solving or inverse identity for it."
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.error_small",
+      "mathematical_statement": "Under alpha>0, T>0, the coefficient bounds sup_Q_T |b_ij|<=epsilon and [b_ij]_alpha,Q_T<=Lambda for all i,j, and a continuous linear S with ||S||<=C_S, additionally assume 9*C_S*epsilon<=1/4 and 9*C_S*Lambda*T^(alpha/2)<=1/4. Then every scalar Hölder input f satisfies ||forcing(b,S(f))||_Y <= (1/2)*||f||_Y. This is an elementwise norm bound for the stated composition, without a theorem asserting solvability or a Poincare-conjecture conclusion."
+    }
+  ],
+  "findings": [
+    "Blindness was compromised in this attempt: reading the pinned semantic-context artifact /Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/definitions-for-review-a01.txt exposed the ParabolicHolderMultiplier proof implementation at the start of the file. The artifact SHA-256 is ad7a243b27ad1bbd56c5deaabb934dac2e428f16953d3341fabce97a8cdae498 and matches the snapshot pin. This readback cannot count as an independent blind approval. A fresh reviewer must receive proof-free context. The canonical runtime snapshot digest and all 12 pins were verified, resolving the six runtime/source pins against /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare and the six state-artifact pins against the central incremental-verification worktree. No builds or source edits were performed."
+  ]
+}

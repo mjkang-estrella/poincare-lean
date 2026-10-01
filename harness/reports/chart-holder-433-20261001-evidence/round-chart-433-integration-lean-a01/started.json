@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T03:39:45.550618+00:00",
+  "source_head": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

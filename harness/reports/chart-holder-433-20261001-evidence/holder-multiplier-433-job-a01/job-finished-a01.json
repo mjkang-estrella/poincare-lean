@@ -1,0 +1,19 @@
+{
+  "job_id": "holder-multiplier-433-job-a01",
+  "task_id": "holder-multiplier-433-preserve",
+  "task_revision": 3,
+  "base_commit": "57d31955ce2d06fb824280048f6e9f0c5de488c1",
+  "worker_commit": "856cf9425d03fbac5ce5504f567feb4d9e431717",
+  "finished_at": "2026-10-01T03:51:15.277498+00:00",
+  "exit_reason": "all_frozen_scoped_gates_passed",
+  "status": "ready_for_independent_orchestrator_review",
+  "accepted": false,
+  "final_patch_sha256": "21c4be628d2cd41cee785bf4f8f53f154d27491c436716fce108886f7ef308f9",
+  "source_sha256": "148eefa457f40f74835030b6ab4e15f9965c89539219f976395f38438e07d2d4",
+  "gate_receipt": "frozen-gate-final-a01.json",
+  "failed_attempts": [
+    "direct-lean-a01",
+    "direct-lean-a02"
+  ],
+  "full_build_or_completion_claim": false
+}

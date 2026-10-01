@@ -1,0 +1,12 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereChart.lean"
+  ],
+  "exit_code": 1,
+  "time": "2026-10-01T03:33:09.075451+00:00"
+}

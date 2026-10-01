@@ -1,0 +1,74 @@
+{
+  "finished_at": "2026-10-01T03:39:29.248016+00:00",
+  "checks": [
+    {
+      "name": "source-token-a01",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/ChartIdentification.lean"
+      ],
+      "exit_code": 1,
+      "passed": true,
+      "expected_exit": 1
+    },
+    {
+      "name": "diff-check-a01",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "passed": true,
+      "expected_exit": 0
+    },
+    {
+      "name": "source-preservation",
+      "passed": true,
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1"
+    }
+  ],
+  "artifacts": {
+    "bracket-replay-a03.started.json": "a6b5059b076337f382c2d2210539c56ed0d31208487faf7e0baf5768187d7b16",
+    "local-identities-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local-identities-a02.started.json": "c8f74e9f027d14ccff18e97635a1e83ecbf186f1e0f490b1189f4333d6f2944f",
+    "BracketReplay-a03.lean": "d8845c3bfc95141fa7f003532039a7c55739306cc229a139f9ea011763c1f697",
+    "bracket-replay-a01.stdout.log": "956442eb7655a4374ac13553cfd6abd6598fc7b7f931552a3bab6ec8114a9797",
+    "bracket-replay-a02.started.json": "642c6124bc07c17115ee8a031f2bf01433d45acfb35ac37a1db8848a103ccc33",
+    "local-identities-a01.result.json": "d81d99d2a1f33a103c8a8180934c4110e5c6f629b5670241743387e1ecbcc8a2",
+    "BracketReplay-a02.lean": "4afd9cb6c2fd1437ff578e1973a9833fc3b73032a47ebe8909f05904ef803911",
+    "LocalIdentities-a01.lean": "6d6a3e1d7fe2014d2a9228e57346586ad46d64b7634c17c4e25a7011560b128a",
+    "local-identities-a03.started.json": "f5c1d29d19bce8341ab99ff2e44f1d5cea7816f3ff74a9396312d82e4ebd3ae6",
+    "diff-check-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local-identities-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "report.md": "7a7733bf374f0a6d827315eda5ae8f76998f397840c5ddf86905b1040f9cefe1",
+    "proposed-regions-a01.json": "f515b15a799489992e836b1f46d2ce4a717fe452d0b9b201055fdbd7b7604280",
+    "analysis-start-a01.json": "40915c79a2034524fad5e56decbb95bf8fe1dfe44d779ac4673b8f300102e97e",
+    "run_probe.py": "fedccdeff6e3f2f0cce6a59a52a8ec71d61b98998fc8991b2cf9afafbaeae710",
+    "bracket-replay-a03.stdout.log": "c86b6476c8b9995fe8830fdf84bbc53e0294f7c362fe13c89fc83f7458d31358",
+    "local-identities-a02.result.json": "2a2e8f8e93b016a9399d93f22b366117ccc7bcb6da225d6b04af7344ea7bf58a",
+    "bracket-replay-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bracket-replay-a03.result.json": "48347786a94095cd4e81aa105e9bef32612a797ecfe25f1684d356525a2933fb",
+    "local-identities-a02.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-token-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bracket-replay-a01.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "local-identities-a01.stdout.log": "9ec93be3525d8958519b86c4c6f30fdc1cb9afc697f318775cf2ff99525e42b4",
+    "diff-check-a01.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bracket-replay-a01.result.json": "ed2126286edd4b4fbd7bb31fb8be6131868432fcccb0598ebd9a47b7255765aa",
+    "bracket-replay-a03.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bracket-replay-a02.result.json": "7a928871774d209cedc1a5d3d5b4021f767afdc93d851f6e5020288c6bd906d4",
+    "scope-error-map-a01.json": "8d6ac44fa18fd03e42dd386c63034b62ea5ddb42ff3d2cca0bf9795d1595f04e",
+    "local-identities-a03.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "BracketReplay-a01.lean": "9d60433541d27336bf18e4deeb167d9602488f7952ddd836f9f97a61bc8d5506",
+    "local-identities-a01.started.json": "cdaabd5c3654a9baeafd7a9c1bc23b7fbcfc48fdde9cf6c0e36d9db9ede5a47e",
+    "LocalIdentities-a02.lean": "6b45e7984b3f9324846700c0243fc6baf85d176ff1e428bf0f573c04cc792885",
+    "local-identities-a03.result.json": "b07112f54d46a5c5fff88d6727f737442b871c71a1023aad7a704b0c88e325ac",
+    "LocalIdentities-a03.lean": "6ea81f021e935178ee637106cd6d65ecdce0b1cc91c375ea30ce95fe294f164d",
+    "local-identities-a02.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source-token-a01.stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bracket-replay-a01.started.json": "a0af84ba2a8e9a30e0ff8652743d97a3aa5d8a962ab021e3bd72d30abab68923",
+    "bracket-replay-a02.stdout.log": "9833a953161b21c5d630a3fd69019c37005d8fee6e3c4cdf72a80e0f4c268b02"
+  }
+}

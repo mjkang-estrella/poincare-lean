@@ -1,0 +1,18 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:31:28.194077+00:00",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "finished_at": "2026-10-01T03:31:46.927329+00:00",
+  "exit_code": 1,
+  "duration_seconds": 18.71941154205706,
+  "stdout_sha256": "827e8e97c47429df2e8dbc5abcfdd976137e53e439c1e13de5e56d42a676c11c",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

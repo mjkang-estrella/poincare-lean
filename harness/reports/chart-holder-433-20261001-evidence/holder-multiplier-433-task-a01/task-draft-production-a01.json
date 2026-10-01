@@ -1,0 +1,312 @@
+{
+  "schema_version": "2.1",
+  "id": "holder-multiplier-433-preserve",
+  "revision": 1,
+  "status": "proposed",
+  "base_commit": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "objective": {
+    "title": "Preserve the original Holder multiplier interface on Lean 4.33",
+    "statement": "Repair only the ddu_time_bound and sum_apply tactic bodies indicated by the retained third-layer diagnostic, while all 19 handwritten public declaration types, universe parameters, hypotheses, models, norms, support and actual entry/forcing data remain exact. The retained root consumer uses proved universal smoothability and verified upstream smooth Poincare; this task does not close the independent universal Hamilton convergence input.",
+    "deliverables": [
+      "Original ParabolicHolderMultiplier module compiles with all 19 frozen production interface declarations and transitive safe permitted-axiom dependencies."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/ParabolicHolderMultiplier.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "lean-toolchain",
+      "lakefile.lean",
+      "lake-manifest.json",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/ParabolicHolderMultiplier.lean",
+      "Poincare/Global/ParabolicSolutionGraph.lean",
+      "Poincare/Global/ParabolicHolderSpace.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/blind-snapshot-production-a01.json",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/definitions-for-review-a01.txt",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/frozen-base.lean",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/allowed-proof-spans-a01.json",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/production-interface-metadata-a01.json",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/diagnostic-excerpt-a01.txt",
+      "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/contract-brief-a01.md"
+    ],
+    "symbols": [
+      "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+      "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+      "Poincare.ParabolicHolderMultiplier.ddu_time_bound",
+      "Poincare.ParabolicHolderMultiplier.supNorm_ddu_le",
+      "Poincare.ParabolicHolderMultiplier.eval_norm_le",
+      "Poincare.ParabolicHolderMultiplier.entry_holderBound",
+      "Poincare.ParabolicHolderMultiplier.entry",
+      "Poincare.ParabolicHolderMultiplier.entry_apply",
+      "Poincare.ParabolicHolderMultiplier.supNorm_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_mul_split",
+      "Poincare.ParabolicHolderMultiplier.sum_apply",
+      "Poincare.ParabolicHolderMultiplier.forcing",
+      "Poincare.ParabolicHolderMultiplier.forcing_apply",
+      "Poincare.ParabolicHolderMultiplier.forcing_eq_sum",
+      "Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_forcing_le",
+      "Poincare.ParabolicHolderMultiplier.norm_error_le",
+      "Poincare.ParabolicHolderMultiplier.error_small"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ParabolicHolderMultiplier"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ParabolicHolderMultiplier.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+      "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+      "Poincare.ParabolicHolderMultiplier.ddu_time_bound",
+      "Poincare.ParabolicHolderMultiplier.supNorm_ddu_le",
+      "Poincare.ParabolicHolderMultiplier.eval_norm_le",
+      "Poincare.ParabolicHolderMultiplier.entry_holderBound",
+      "Poincare.ParabolicHolderMultiplier.entry",
+      "Poincare.ParabolicHolderMultiplier.entry_apply",
+      "Poincare.ParabolicHolderMultiplier.supNorm_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_mul_split",
+      "Poincare.ParabolicHolderMultiplier.sum_apply",
+      "Poincare.ParabolicHolderMultiplier.forcing",
+      "Poincare.ParabolicHolderMultiplier.forcing_apply",
+      "Poincare.ParabolicHolderMultiplier.forcing_eq_sum",
+      "Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le",
+      "Poincare.ParabolicHolderMultiplier.norm_forcing_le",
+      "Poincare.ParabolicHolderMultiplier.norm_error_le",
+      "Poincare.ParabolicHolderMultiplier.error_small"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.ParabolicHolderMultiplier"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+        "lean_type": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} (OfNat.ofNat.{0} (nat_lit 0)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.du.{0} G))) (Prod.mk.{0, 0} (OfNat.ofNat.{0} (nat_lit 0)) x)) (OfNat.ofNat.{0} (nat_lit 0))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+        "lean_type": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} (OfNat.ofNat.{0} (nat_lit 0)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))) (Prod.mk.{0, 0} (OfNat.ofNat.{0} (nat_lit 0)) x)) (OfNat.ofNat.{0} (nat_lit 0))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.ddu_time_bound",
+        "lean_type": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) T → ∀ {t : Real}, Membership.mem.{0, 0} (Set.Icc.{0} ((0 : Real)) T) t → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Norm.norm.{0} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))) (Prod.mk.{0, 0} t x))) (HMul.hMul.{0, 0, 0} (Norm.norm.{0} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G)) (HPow.hPow.{0, 0, 0} t (HDiv.hDiv.{0, 0, 0} α ((2 : Real)))))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.supNorm_ddu_le",
+        "lean_type": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) α → LT.lt.{0} ((0 : Real)) T → LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))))) (HMul.hMul.{0, 0, 0} (HPow.hPow.{0, 0, 0} T (HDiv.hDiv.{0, 0, 0} α ((2 : Real)))) (Norm.norm.{0} G))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.eval_norm_le",
+        "lean_type": "∀ (A : ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real)) {v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))}, Eq.{1} (Norm.norm.{0} v) ((1 : Real)) → Eq.{1} (Norm.norm.{0} w) ((1 : Real)) → LE.le.{0} (Norm.norm.{0} (DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} A v) w)) (Norm.norm.{0} A)",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.entry_holderBound",
+        "lean_type": "∀ {α T : Real} (H : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real))) {v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))}, Eq.{1} (Norm.norm.{0} v) ((1 : Real)) → Eq.{1} (Norm.norm.{0} w) ((1 : Real)) → Poincare.ParabolicHolder.HasHolderBound.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (fun (p : Prod.{0, 0} Real (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3)))) => DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} H)) p) v) w) (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} H))))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.entry",
+        "lean_type": "{α T : Real} → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real)) → (v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) → Eq.{1} (Norm.norm.{0} v) ((1 : Real)) → Eq.{1} (Norm.norm.{0} w) ((1 : Real)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.entry_apply",
+        "lean_type": "∀ {α T : Real} (H : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real))) (v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (hv : Eq.{1} (Norm.norm.{0} v) ((1 : Real))) (hw : Eq.{1} (Norm.norm.{0} w) ((1 : Real))) (p : Prod.{0, 0} Real (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3)))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicHolderMultiplier.entry H v w hv hw))) p) (DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} H)) p) v) w)",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.supNorm_entry_le",
+        "lean_type": "∀ {α T : Real} (H : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real))) (v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (hv : Eq.{1} (Norm.norm.{0} v) ((1 : Real))) (hw : Eq.{1} (Norm.norm.{0} w) ((1 : Real))), LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicHolderMultiplier.entry H v w hv hw))))) (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} H))))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.norm_entry_le",
+        "lean_type": "∀ {α T : Real} (H : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) Real))) (v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (hv : Eq.{1} (Norm.norm.{0} v) ((1 : Real))) (hw : Eq.{1} (Norm.norm.{0} w) ((1 : Real))), LE.le.{0} (Norm.norm.{0} (Poincare.ParabolicHolderMultiplier.entry H v w hv hw)) (Norm.norm.{0} H)",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.norm_mul_split",
+        "lean_type": "∀ {α T : Real} (b h : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real), LE.le.{0} (Norm.norm.{0} (HMul.hMul.{0, 0, 0} b h)) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} b)))) (Norm.norm.{0} h)) (HMul.hMul.{0, 0, 0} (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} b)))) (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} h))))))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.sum_apply",
+        "lean_type": "∀ {α T : Real} {ι : Type u_1} (s : Finset.{u_1} ι) (f : ι → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (p : Prod.{0, 0} Real (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3)))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (∑ i ∈ s, f i))) p) (∑ i ∈ s, Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (f i))) p)",
+        "universes": [
+          "u_1"
+        ]
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.forcing",
+        "lean_type": "{α T : Real} → (Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) → Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.forcing_apply",
+        "lean_type": "∀ {α T : Real} (b : Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T) (p : Prod.{0, 0} Real (Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3)))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicHolderMultiplier.forcing b G))) p) (∑ i : Fin (OfNat.ofNat.{0} (nat_lit 3)), ∑ j : Fin (OfNat.ofNat.{0} (nat_lit 3)), HMul.hMul.{0, 0, 0} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))) p) (DFunLike.coe.{1, 1, 1} (DFunLike.coe.{1, 1, 1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))) p) (DFunLike.coe.{1, 1, 1} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) i)) (DFunLike.coe.{1, 1, 1} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) j)))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.forcing_eq_sum",
+        "lean_type": "∀ {α T : Real} (b : Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), Eq.{1} (Poincare.ParabolicHolderMultiplier.forcing b G) (∑ i : Fin (OfNat.ofNat.{0} (nat_lit 3)), ∑ j : Fin (OfNat.ofNat.{0} (nat_lit 3)), HMul.hMul.{0, 0, 0} (b i j) (Poincare.ParabolicHolderMultiplier.entry (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G) (DFunLike.coe.{1, 1, 1} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) i) (DFunLike.coe.{1, 1, 1} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) j) (OrthonormalBasis.norm_eq_one.{0, 0, 0} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) i) (OrthonormalBasis.norm_eq_one.{0, 0, 0} (EuclideanSpace.basisFun.{0, 0} (Fin (OfNat.ofNat.{0} (nat_lit 3))) Real) j)))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le",
+        "lean_type": "∀ {α T : Real} (b : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) α → LT.lt.{0} ((0 : Real)) T → ∀ {ε Λ : Real}, LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} b)))) ε → LE.le.{0} (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} b)))) Λ → ∀ (v w : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))) (hv : Eq.{1} (Norm.norm.{0} v) ((1 : Real))) (hw : Eq.{1} (Norm.norm.{0} w) ((1 : Real))), LE.le.{0} (Norm.norm.{0} (HMul.hMul.{0, 0, 0} b (Poincare.ParabolicHolderMultiplier.entry (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G) v w hv hw))) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} ε (Norm.norm.{0} G)) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} Λ (HPow.hPow.{0, 0, 0} T (HDiv.hDiv.{0, 0, 0} α ((2 : Real))))) (Norm.norm.{0} G)))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.norm_forcing_le",
+        "lean_type": "∀ {α T : Real} (b : Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) α → LT.lt.{0} ((0 : Real)) T → ∀ {ε Λ : Real}, (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) ε) → (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) Λ) → LE.le.{0} (Norm.norm.{0} (Poincare.ParabolicHolderMultiplier.forcing b G)) (HMul.hMul.{0, 0, 0} ((9 : Real)) (HAdd.hAdd.{0, 0, 0} (HMul.hMul.{0, 0, 0} ε (Norm.norm.{0} G)) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} Λ (HPow.hPow.{0, 0, 0} T (HDiv.hDiv.{0, 0, 0} α ((2 : Real))))) (Norm.norm.{0} G))))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.norm_error_le",
+        "lean_type": "∀ {α T : Real} (b : Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (S : ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T)), LT.lt.{0} ((0 : Real)) α → LT.lt.{0} ((0 : Real)) T → ∀ {ε Λ C_S : Real}, (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) ε) → (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) Λ) → LE.le.{0} (Norm.norm.{0} S) C_S → ∀ (f : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real), LE.le.{0} (Norm.norm.{0} (Poincare.ParabolicHolderMultiplier.forcing b (DFunLike.coe.{1, 1, 1} S f))) (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} ((9 : Real)) C_S) (HAdd.hAdd.{0, 0, 0} ε (HMul.hMul.{0, 0, 0} Λ (HPow.hPow.{0, 0, 0} T (HDiv.hDiv.{0, 0, 0} α ((2 : Real))))))) (Norm.norm.{0} f))",
+        "universes": []
+      },
+      {
+        "name": "Poincare.ParabolicHolderMultiplier.error_small",
+        "lean_type": "∀ {α T : Real} (b : Fin (OfNat.ofNat.{0} (nat_lit 3)) → Fin (OfNat.ofNat.{0} (nat_lit 3)) → Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (S : ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real) (Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T)), LT.lt.{0} ((0 : Real)) α → LT.lt.{0} ((0 : Real)) T → ∀ {ε Λ C_S : Real}, (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.supNorm.{0, 0} (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) ε) → (∀ (i j : Fin (OfNat.ofNat.{0} (nat_lit 3))), LE.le.{0} (Poincare.ParabolicHolder.holderSeminorm.{0, 0} α (Poincare.ParabolicHolder.cylinder.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) T) (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (b i j))))) Λ) → LE.le.{0} (Norm.norm.{0} S) C_S → LE.le.{0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} ((9 : Real)) C_S) ε) (HDiv.hDiv.{0, 0, 0} ((1 : Real)) ((4 : Real))) → LE.le.{0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} ((9 : Real)) C_S) Λ) (HPow.hPow.{0, 0, 0} T (HDiv.hDiv.{0, 0, 0} α ((2 : Real))))) (HDiv.hDiv.{0, 0, 0} ((1 : Real)) ((4 : Real))) → ∀ (f : Poincare.ParabolicHolder.Y.{0, 0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T Real), LE.le.{0} (Norm.norm.{0} (Poincare.ParabolicHolderMultiplier.forcing b (DFunLike.coe.{1, 1, 1} S f))) (HMul.hMul.{0, 0, 0} (HDiv.hDiv.{0, 0, 0} ((1 : Real)) ((2 : Real))) (Norm.norm.{0} f))",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/Global/ParabolicSolutionGraph.lean",
+        "sha256": "211136a7a3e57422b2e7f9c15d2a742664f4447626c8d2f9af5b6d84d331432f"
+      },
+      {
+        "path": "Poincare/Global/ParabolicHolderSpace.lean",
+        "sha256": "58aca9b369d387b5d4e2b8d02e7237cc2e1e7347d5c86c7ed6cef1249f9c450b"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/frozen-base.lean",
+        "sha256": "03321155abd7bc60ffebb120ac692e270fe30e6f6918c2bc4c9aa485eddd17a6"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/allowed-proof-spans-a01.json",
+        "sha256": "157243f5e59a3a2e386c6ba08560c2fba8ca2298b5de9af822e94e44f0f69d17"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/definitions-for-review-a01.txt",
+        "sha256": "ad7a243b27ad1bbd56c5deaabb934dac2e428f16953d3341fabce97a8cdae498"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/check-proof-scope-a02.py",
+        "sha256": "65ea5983607278181dc6a8fd7b9574d41aa1d0860e897fe71cacb28037d6aab7"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenProductionInterfaceProbe-a01.lean",
+        "sha256": "a7db5ed5dcdd77327ced94e68ea0763776699665edfa99738ea802dc7d799b57"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/production-interface-metadata-a01.json",
+        "sha256": "0e4b8613148c2fd17e07870bd85388190baef68bf84fbd5d07fc77b2f73b2b8f"
+      }
+    ],
+    "author": "/root/holder_multiplier_freeze"
+  },
+  "stop_conditions": [
+    "Any repair requires an import, data, signature, hypothesis, model, norm, support, time-domain, or other source change beyond the two permitted proof bodies.",
+    "A genuine resisting shape repeats after three distinct proof attempts; preserve exact compiler types and strongest verified partial result.",
+    "All scoped gates pass; preserve the final diff and compiler evidence for independent orchestrator acceptance."
+  ],
+  "budget": {
+    "max_attempts": 8,
+    "wall_clock_minutes": 120,
+    "max_output_tokens": 22000,
+    "disk_mb": 1024
+  }
+}

@@ -1,0 +1,16 @@
+Preserve chart derivative proofs under the current manifold API
+
+Keep the supplied models, scalar formula, chart domains and field directions
+while retaining the reviewed 17 applied derivative API substitutions and three
+unfolding-name changes. Use the inverse-chart identity and nine reviewed local
+proof repairs to reconcile nominal tangent dictionaries through ordinary
+expected-type elaboration, with no new transparency option or instance.
+
+Constraint: Frozen successor contract at ff3ca4b6; all other source bytes retained
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Direct Lean and lake build Poincare.ChartIdentification
+Tested: Both frozen 20-declaration type, universe, axiom, unsafe and partial probes
+Tested: Nine-region source guard and self-tests; forbidden-token scans; git diff --check
+Not-tested: Full root build and completion audit; parent independent acceptance pending

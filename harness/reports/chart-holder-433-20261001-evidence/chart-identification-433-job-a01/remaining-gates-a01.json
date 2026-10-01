@@ -1,0 +1,192 @@
+{
+  "all_passed": false,
+  "results": [
+    {
+      "name": "gate-build-a01",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.ChartIdentification"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:09.909964+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:17.845098+00:00",
+      "exit_code": 1,
+      "duration_seconds": 7.921136165969074,
+      "expected_exit": 0,
+      "passed": false,
+      "stdout_sha256": "aad18e9b377f4617e9c217ea1945b8c7d0a3dd8707b96881237f905398681f04",
+      "stderr_sha256": "c4a27db198c4d8632369ee6102944ef46e83c20d685f7c17a6aaff9cfcfc710f"
+    },
+    {
+      "name": "gate-formula-types-a01",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaFrozenProbe-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:17.845596+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:19.490663+00:00",
+      "exit_code": 1,
+      "duration_seconds": 1.6312808750662953,
+      "expected_exit": 0,
+      "passed": false,
+      "stdout_sha256": "b8b0fd5553334c04f370d9d13d90f4a11e24660c5b276d64a848246dbe6bfd56",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-explicit-types-a01",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:19.491131+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:20.645310+00:00",
+      "exit_code": 1,
+      "duration_seconds": 1.1398258339613676,
+      "expected_exit": 0,
+      "passed": false,
+      "stdout_sha256": "94a0d4defb77d6fffe01028f9e1edd6e31dfc40e65ab6cba5e03f2e458c9b483",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-scope-a01",
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:20.645877+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:20.742290+00:00",
+      "exit_code": 0,
+      "duration_seconds": 0.0812563750660047,
+      "expected_exit": 0,
+      "passed": true,
+      "stdout_sha256": "7dba7656b8c054fded8ec67827c18d1370ed10f7cd41b41f3c63d6ce3a903cea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-token-a01",
+      "command": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/ChartIdentification.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:20.742629+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:20.761321+00:00",
+      "exit_code": 1,
+      "duration_seconds": 0.0055459169670939445,
+      "expected_exit": 1,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-diff-a01",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:20.761744+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:20.796321+00:00",
+      "exit_code": 0,
+      "duration_seconds": 0.021812791004776955,
+      "expected_exit": 0,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-scope-selftest-a01",
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+        "--self-test"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:20.796738+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:20.882208+00:00",
+      "exit_code": 0,
+      "duration_seconds": 0.0727902080398053,
+      "expected_exit": 0,
+      "passed": true,
+      "stdout_sha256": "39b964c15038c4c8c2132905324b887e09da2431bf17bfb6ae04bdad1dd32c1c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-generic-formula-a01",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-api-generic-readonly-20261001-a01/current-generic-formula.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:20.882796+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:23.220004+00:00",
+      "exit_code": 0,
+      "duration_seconds": 2.323621833929792,
+      "expected_exit": 0,
+      "passed": true,
+      "stdout_sha256": "97de821d22f853d09034e1827bbbdfc4c39471afbdef0ec259b8dbed74d8fad6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "gate-h2-exact-a01",
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-api-generic-readonly-20261001-a01/current-inverse-exact-type.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+      "started_at": "2026-10-01T03:33:23.220480+00:00",
+      "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+      "source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+      "finished_at": "2026-10-01T03:33:25.454864+00:00",
+      "exit_code": 0,
+      "duration_seconds": 2.221720334026031,
+      "expected_exit": 0,
+      "passed": true,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "source_edits_stopped_after_direct_gate": true,
+  "no_completion_or_acceptance_claim": true
+}

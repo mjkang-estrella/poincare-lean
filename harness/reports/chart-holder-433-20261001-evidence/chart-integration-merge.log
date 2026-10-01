@@ -1,0 +1,3 @@
+[codex/upstream-integration-433 c4936ee4] Preserve chart derivative proofs under the current manifold API
+ Date: Wed Sep 30 20:48:00 2026 -0700
+ 1 file changed, 31 insertions(+), 35 deletions(-)

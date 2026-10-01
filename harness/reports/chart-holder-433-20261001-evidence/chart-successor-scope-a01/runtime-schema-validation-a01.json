@@ -1,0 +1,18 @@
+{
+  "recorded_at": "2026-10-01T03:42:10.989083+00:00",
+  "status": "pass",
+  "task_path": "harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/task.proposed-a01.json",
+  "task_sha256": "c3ac1369f4cbe4b26511683e4c978f0257e06dd5a5e9078e5f12f87624fddb6a",
+  "statement_contract_snapshot": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+  "previous_snapshot": "355b2fbf84d03afe1e431caf7a0873d9a80bed40aa56f33f2f2536c19fbefd45",
+  "checks": [
+    "runtime.validate_task",
+    "runtime.validate_statement_contract",
+    "runtime.validate_statement_readback",
+    "runtime.validate_statement_context_bytes"
+  ],
+  "strict_contract_unchanged": true,
+  "exact_declarations": 20,
+  "all_definition_hashes_match": true,
+  "parent_validation_and_dispatch_pending": true
+}

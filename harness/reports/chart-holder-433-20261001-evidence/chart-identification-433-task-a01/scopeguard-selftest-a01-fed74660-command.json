@@ -1,0 +1,28 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+        "--self-test"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "label": "default-root",
+      "timeout_seconds": 60
+    },
+    {
+      "argv": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/check-scope.py",
+        "--self-test",
+        "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+      "label": "explicit-root",
+      "timeout_seconds": 60
+    }
+  ],
+  "head_before": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "script_sha256": "b9ba7aac1c341b19775e833bca0b1e9db148e0aa49800e2e4c6ba87c21045cac",
+  "source_sha256_before": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb"
+}

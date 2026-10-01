@@ -1,0 +1,15 @@
+{
+  "reason": "Preserve the old successfully checked contextual CLM zero literals; only scalar contexts require Real numeral annotations.",
+  "changes": [
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.ddu_zero_trace",
+      "before": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))) (Prod.mk.{0, 0} ((0 : Real)) x)) ((0 : Real))",
+      "after": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} (OfNat.ofNat.{0} (nat_lit 0)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.ddu.{0} G))) (Prod.mk.{0, 0} (OfNat.ofNat.{0} (nat_lit 0)) x)) (OfNat.ofNat.{0} (nat_lit 0))"
+    },
+    {
+      "name": "Poincare.ParabolicHolderMultiplier.du_zero_trace",
+      "before": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} ((0 : Real)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.du.{0} G))) (Prod.mk.{0, 0} ((0 : Real)) x)) ((0 : Real))",
+      "after": "∀ {α T : Real} (G : Poincare.ParabolicSolutionGraph.Graph.{0} (E := Poincare.ClosedSmoothModel (3 : Nat)) α T), LT.lt.{0} (OfNat.ofNat.{0} (nat_lit 0)) T → ∀ (x : Poincare.ClosedSmoothModel (OfNat.ofNat.{0} (nat_lit 3))), Eq.{1} (Subtype.val.{1} (WithLp.fst.{0, 0} (Subtype.val.{1} (Poincare.ParabolicSolutionGraph.Graph.du.{0} G))) (Prod.mk.{0, 0} (OfNat.ofNat.{0} (nat_lit 0)) x)) (OfNat.ofNat.{0} (nat_lit 0))"
+    }
+  ]
+}

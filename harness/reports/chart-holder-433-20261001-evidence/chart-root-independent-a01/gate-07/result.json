@@ -1,0 +1,16 @@
+{
+  "command": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "exit_code": 1,
+  "pass": true,
+  "seconds": 0.005033969879150391,
+  "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "exit_code": 0,
+  "results": [
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/ChartIdentification.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 10.705592155456543,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "5de99b5bac716225694000fe35039109401e5e5853463dd473692b60d451aaa7",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.ChartIdentification"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 5.857728958129883,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "b0d6f0548bd9913c9bdfb30d6f026b4811a0a64f941032193ff8dc4280448dd8",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaFrozenProbe-a03.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 21.305681943893433,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentExplicitFrozenProbe-a03.lean"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 19.042470932006836,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "14e4f21e3e41c6fb2a3e1dd0ab7a5edd5959c3308e5559c0780b790e06bd7016",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/check-scope-a02.py"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.13424396514892578,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "86efb89da6067078e1cac429e00456a494422f0b258726bbaadd1bc5ded36394",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/check-scope-a02.py",
+        "--self-test"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.0913851261138916,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "dc29f6cd1767e1b3f578d0a39a9d3b3ee6f97c1df036a4276c7b1257004f5cb2",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/ChartIdentification.lean"
+      ],
+      "exit_code": 1,
+      "pass": true,
+      "seconds": 0.005033969879150391,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "pass": true,
+      "seconds": 0.04090595245361328,
+      "source_head": "5f5fb508d48fe275b92aaeda22d87f9c662f7ba0",
+      "log_hashes": {
+        "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ]
+}

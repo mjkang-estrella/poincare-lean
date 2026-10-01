@@ -1,0 +1,1 @@
+harness/v2/state/upstream-verification-20260930/chart-api-generic-readonly-20261001-a01/current-generic-formula.lean:8:22: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead

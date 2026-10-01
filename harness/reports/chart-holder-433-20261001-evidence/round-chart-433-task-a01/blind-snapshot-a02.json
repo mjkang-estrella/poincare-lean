@@ -1,0 +1,106 @@
+{
+  "imports": [
+    "Poincare.Global.RoundSphereChart"
+  ],
+  "declarations": [
+    {
+      "name": "Poincare.stereoInvFunAuxConformalFactor",
+      "lean_type": "{E : Type u_1} → [NormedAddCommGroup.{u_1} E] → E → Real",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.stereoInvFunAuxFDeriv",
+      "lean_type": "{E : Type u_1} → [inst : NormedAddCommGroup.{u_1} E] → [inst_1 : InnerProductSpace.{0, u_1} Real E] → E → E → ContinuousLinearMap.{0, 0, u_1, u_1} (RingHom.id.{0} Real) E E",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.stereoInvFunAuxFDeriv_apply",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z u : E), Eq.{u_1 + 1} ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) (HAdd.hAdd.{u_1, u_1, u_1} (HSub.hSub.{u_1, u_1, u_1} (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (4 : Real) (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real)))) u) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (8 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) z)) (HSMul.hSMul.{0, u_1, u_1} (HMul.hMul.{0, 0, 0} (HMul.hMul.{0, 0, 0} (16 : Real) (HPow.hPow.{0, 0, 0} (Inv.inv.{0} (HAdd.hAdd.{0, 0, 0} (HPow.hPow.{0, 0, 0} (Norm.norm.{u_1} z) (2 : Nat)) (4 : Real))) (2 : Nat))) (Inner.inner.{0, u_1} Real z u)) v))",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.hasFDerivAt_stereoInvFunAuxFDeriv",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), HasFDerivAt.{0, u_1, u_1} (stereoInvFunAux.{u_1} v) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z) z",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.fderiv_stereoInvFunAux",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v z : E), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (stereoInvFunAux.{u_1} v) z) (Poincare.stereoInvFunAuxFDeriv.{u_1} v z)",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.fderiv_stereoInvFunAux_comp_subtype",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E) (z : ↥(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{u_1 + 1} (fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) (ContinuousLinearMap.comp.{0, 0, 0, u_1, u_1, u_1} (Poincare.stereoInvFunAuxFDeriv.{u_1} v ↑z) (Submodule.subtypeL.{0, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))))",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.inner_stereoInvFunAuxFDeriv_of_mem_orthogonal",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] {v z u w : E}, Eq.{1} (Norm.norm.{u_1} v) (1 : Real) → Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) z → Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) u → Membership.mem.{u_1, u_1} (Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v))) w → Eq.{1} (Inner.inner.{0, u_1} Real ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) u) ((Poincare.stereoInvFunAuxFDeriv.{u_1} v z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} z) (Inner.inner.{0, u_1} Real u w))",
+      "universes": [
+        "u_1"
+      ]
+    },
+    {
+      "name": "Poincare.inner_fderiv_stereoInvFunAux_comp_subtype",
+      "lean_type": "∀ {E : Type u_1} [inst : NormedAddCommGroup.{u_1} E] [inst_1 : InnerProductSpace.{0, u_1} Real E] (v : E), Eq.{1} (Norm.norm.{u_1} v) (1 : Real) → ∀ (z u w : ↥(Submodule.orthogonal.{0, u_1} (Submodule.span.{0, u_1} Real (Singleton.singleton.{u_1, u_1} v)))), Eq.{1} (Inner.inner.{0, u_1} Real ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) u) ((fderiv.{0, u_1, u_1} Real (Function.comp.{u_1 + 1, u_1 + 1, u_1 + 1} (stereoInvFunAux.{u_1} v) Subtype.val.{u_1 + 1}) z) w)) (HMul.hMul.{0, 0, 0} (Poincare.stereoInvFunAuxConformalFactor.{u_1} ↑z) (Inner.inner.{0, u_1} Real u w))",
+      "universes": [
+        "u_1"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lakefile.lean",
+      "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Statement.lean",
+      "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "Poincare/Global/RoundSphereMetric.lean",
+      "sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541"
+    },
+    {
+      "path": "Poincare.lean",
+      "sha256": "4bde26abfe162616f63c805d01522d357fcec811447103db17c68c10a6e5f224"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/frozen-base.lean",
+      "sha256": "07a56718abd54fb15e55ce7e5497cffb2e3e59618fa7585a46fbc0caf71ea103"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/definitions-for-review.txt",
+      "sha256": "d1814907f5ba2863f5a9983247452512a786370c219830d1a61bf17c75f74fcf"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/check-scope-a02.py",
+      "sha256": "43a2cd6e874071e9b7b900aa594e6ce7801f3fbdea4d8b7ea9f3a53d457fe26d"
+    }
+  ],
+  "snapshot_sha256": "63070a6841f7c96c909d5fbdeff502112480698ee1c9d26c2b1592734a2c489c"
+}

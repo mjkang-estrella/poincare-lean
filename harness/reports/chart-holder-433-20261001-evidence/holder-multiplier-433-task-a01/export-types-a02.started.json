@@ -1,0 +1,13 @@
+{
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/export-types-a02.lean"
+  ],
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "started_at": "2026-10-01T03:21:31.176098+00:00",
+  "serialization": "compact full names and explicit source coercions; no pp.explicit or pp.all"
+}

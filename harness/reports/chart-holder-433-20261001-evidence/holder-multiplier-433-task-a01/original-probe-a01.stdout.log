@@ -1,0 +1,255 @@
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.ddu_time_bound
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.ddu_zero_trace
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.du_zero_trace
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_1
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_10
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_11
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_12
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_13
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_2
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_3
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_4
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_5
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_6
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_7
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_8
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_9
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry.congr_simp
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry_holderBound
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.error_small
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.eval_norm_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_1
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_10
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_11
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_12
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_13
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_2
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_3
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_4
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_5
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_6
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_7
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_8
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_9
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_eq_sum
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_entry_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_error_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_forcing_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_ddu_entry_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_mul_split
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.sum_apply
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_ddu_le
+AXIOM_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.supNorm_entry_le
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:57: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:9:6: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (?m.49 →L[ℝ] ?m.49 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.55 (?m.56 × ?m.57)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:6:9: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:7:1: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (?m.47 →L[ℝ] ?m.47 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.51 (?m.52 × ?m.53)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:6:9: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:7:1: error: Type mismatch
+  G.du
+has type
+  Poincare.ParabolicHolder.Y α T (?m.34 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.38 (?m.39 × ?m.40)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:12:4: error: typeclass instance problem is stuck
+  NormedAddCommGroup (?m.53 v w)
+
+Note: Lean will not try to resolve this typeclass instance problem because the type argument to `NormedAddCommGroup` contains metavariables. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_1
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:1641:0: error: unresolved metavariables in frozen type for Poincare.ParabolicHolderMultiplier.entry._proof_10
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:11:24: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:12:6: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.50 (?m.51 × ?m.52)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:28: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:18:16: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.68 (?m.69 × ?m.70)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:27: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:18:15: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.63 (?m.64 × ?m.65)
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_2
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_3
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_4
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_5
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_6
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_7
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_8
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.entry._proof_9
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:19:21: error: Application type mismatch: The argument
+  e_v
+has type
+  v = v_1
+but is expected to have type
+  1 = ?m.92
+in the application
+  e_v ▸ hv
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:19:46: error: Application type mismatch: The argument
+  e_w
+has type
+  w = w_1
+but is expected to have type
+  1 = ?m.97
+in the application
+  e_w ▸ hw
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:14:20: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:10: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:32: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.63 (?m.64 × ?m.65)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:11: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:33: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.75 (?m.76 × ?m.77)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:19:33: error: Type mismatch
+  b i j
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp (?m.191 b S i j) ((ℝ × ?m.187 b S i j → ?m.188 b S i j) × ?m.192 b S i j)
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.eval_norm_le
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:2:43: error: typeclass instance problem is stuck
+  NormedAddCommGroup ?m.16
+
+Note: Lean will not try to resolve this typeclass instance problem because the type argument to `NormedAddCommGroup` contains metavariables. This argument must be fully determined before Lean will try to resolve the typeclass.
+
+Hint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_1
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:41: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:20:38: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:21:32: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:21:54: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.116 (?m.117 × ?m.118)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:47: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:20:44: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:21:38: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:27:16: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:28:30: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:29:12: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.208 (?m.209 × ?m.210)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:47: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:20:44: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:21:38: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:30:35: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:30:75: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:31:19: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.218 (?m.219 × ?m.220)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:47: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:20:44: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:21:38: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:30:34: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:30:74: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:31:18: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.214 (?m.215 × ?m.216)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:2170:0: error: unresolved metavariables in frozen type for Poincare.ParabolicHolderMultiplier.forcing._proof_2
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_3
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_4
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_5
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_6
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_7
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing._proof_8
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:2331:0: error: unresolved metavariables in frozen type for Poincare.ParabolicHolderMultiplier.forcing._proof_9
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:41: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:11:31: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:13:0: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:13:22: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp ?m.78 (?m.79 × ?m.80)
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.forcing_eq_sum
+FROZEN_CONTRACT_OK: Poincare.ParabolicHolderMultiplier.norm_entry_le
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:19:33: error: Type mismatch
+  b i j
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp (?m.153 b S i j) ((ℝ × ?m.149 b S i j → ?m.150 b S i j) × ?m.154 b S i j)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:11: error: Type mismatch
+  b i j
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp (?m.127 b G i j) ((ℝ × ?m.123 b G i j → ?m.124 b G i j) × ?m.128 b G i j)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:14:9: error: Type mismatch
+  b
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp (?m.121 b G) ((ℝ × ?m.117 b G → ?m.118 b G) × ?m.122 b G)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:17:5: error: Type mismatch
+  h
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp (?m.76 b h) ((ℝ × ?m.73 b h → ?m.74 b h) × ?m.77 b h)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:7:8: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:59: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:9:8: error: Type mismatch
+  f i
+has type
+  Poincare.ParabolicHolder.Y α T ℝ
+but is expected to have type
+  WithLp ?m.33 (?m.34 × ?m.35)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:8:55: error: Type mismatch
+  G.ddu
+has type
+  Poincare.ParabolicHolder.Y α T (?m.43 →L[ℝ] ?m.43 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp (?m.49 G) ((ℝ × ?m.46 G → ?m.47 G) × ?m.50 G)
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/holder-multiplier-433-task-a01/FrozenMultiplierProbe-a01.lean:19:48: error: Type mismatch
+  H
+has type
+  Poincare.ParabolicHolder.Y α T (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ)
+but is expected to have type
+  WithLp (?m.74 H v w hv hw) ((ℝ × ?m.71 H v w hv hw → ?m.72 H v w hv hw) × ?m.75 H v w hv hw)
+FROZEN_PUBLIC_INVENTORY_OK: 46 declarations

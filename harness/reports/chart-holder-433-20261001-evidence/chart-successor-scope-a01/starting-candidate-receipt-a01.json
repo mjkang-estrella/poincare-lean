@@ -1,0 +1,14 @@
+{
+  "recorded_at": "2026-10-01T03:42:10.959795+00:00",
+  "base_commit": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "starting_source_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "starting_dirty_diff_sha256": "3519ec0c9e4bf18ffd65520598064080d766dfa759d5dcbb73c9c0918e663794",
+  "original_source_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "original_task_sha256": "e085e8c873dfa53888c3fe95b7e3946748af5d34b3c144743f160c67312eeafa",
+  "guard_path": "harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/check-scope-a02.py",
+  "guard_sha256": "76446e1f837785b3d9b60e7d8ceacd4956441c217a28dc5ea505e6246024d82a",
+  "public_statement_contract_reused_unchanged": true,
+  "strict_readback_reused_unchanged": true,
+  "scope_status": "proposed; parent validation and dispatch pending; no source edits"
+}

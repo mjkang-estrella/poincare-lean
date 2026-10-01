@@ -1,0 +1,47 @@
+[
+  {
+    "gate_error_line": 90,
+    "theorem_start": 83,
+    "theorem": "extDerivFun_apply_chart"
+  },
+  {
+    "gate_error_line": 92,
+    "theorem_start": 83,
+    "theorem": "extDerivFun_apply_chart"
+  },
+  {
+    "gate_error_line": 198,
+    "theorem_start": 161,
+    "theorem": "isLocallyConstant_of_extDerivFun_eq_zero"
+  },
+  {
+    "gate_error_line": 211,
+    "theorem_start": 161,
+    "theorem": "isLocallyConstant_of_extDerivFun_eq_zero"
+  },
+  {
+    "gate_error_line": 268,
+    "theorem_start": 253,
+    "theorem": "extDerivFun_apply_mlieBracket_chart"
+  },
+  {
+    "gate_error_line": 307,
+    "theorem_start": 253,
+    "theorem": "extDerivFun_apply_mlieBracket_chart"
+  },
+  {
+    "gate_error_line": 348,
+    "theorem_start": 337,
+    "theorem": "extDerivFun_section_eventually_chart"
+  },
+  {
+    "gate_error_line": 402,
+    "theorem_start": 389,
+    "theorem": "extDerivFun_extDerivFun_chart"
+  },
+  {
+    "gate_error_line": 479,
+    "theorem_start": 468,
+    "theorem": "extDerivFun_apply_mlieBracket"
+  }
+]

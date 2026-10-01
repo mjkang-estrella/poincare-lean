@@ -1,0 +1,13 @@
+{
+  "started_epoch": 1790824980.143265,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/export-types.lean"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

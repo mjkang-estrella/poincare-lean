@@ -1,0 +1,42 @@
+/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a01.lean:95:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, h1, h2, I.range_eq_univ, fderivWithin_univ]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a01.lean:147:23: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [mvfderiv, hcomp]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/Users/mjkang/.codex/worktrees/chart-identification-433/poincare/harness/v2/state/upstream-verification-20260930/chart-successor-scope-a01/BracketReplay-a01.lean:220:2: error: Type mismatch: After simplification, term
+  fderiv_apply_lieBracket_of_isSymmSndFDerivAt hFc hsymm (hpull Y hY) (hpull X hX)
+ has type
+  (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) (↑(extChartAt I' x) x))
+      (lieBracket ℝ (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) X)
+        (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) Y) (↑(extChartAt I' x) x)) =
+    (fderiv ℝ
+          (fun x_1 =>
+            (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) x_1) (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) Y x_1))
+          (↑(extChartAt I' x) x))
+        (X x) -
+      (fderiv ℝ
+          (fun x_1 =>
+            (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) x_1) (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) X x_1))
+          (↑(extChartAt I' x) x))
+        (Y x)
+but is expected to have type
+  (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) (↑(extChartAt I' x) x))
+      (lieBracketWithin ℝ (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) X)
+        (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) Y) univ (↑(extChartAt I' x) x)) =
+    (fderiv ℝ
+          (fun z => (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) z) (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) Y z))
+          (↑(extChartAt I' x) x))
+        (X x) -
+      (fderiv ℝ
+          (fun z => (fderiv ℝ (f ∘ ↑(extChartAt I' x).symm) z) (mpullback 𝓘(ℝ, E') I' (↑(extChartAt I' x).symm) X z))
+          (↑(extChartAt I' x) x))
+        (Y x)

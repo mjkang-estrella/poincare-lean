@@ -1,0 +1,23 @@
+{
+  "source_path": "Poincare/Global/ParabolicHolderMultiplier.lean",
+  "allowed_proof_bodies": [
+    {
+      "name": "ddu_time_bound",
+      "start_marker": "theorem ddu_time_bound",
+      "end_marker": "\n/-- The Hessian sup norm",
+      "body_start": 1244,
+      "body_end": 1675,
+      "header_sha256": "40a4c22d5d66b8ff3ff98cc255bc112db776a3acbdabf98e3095aeb11ee740fd",
+      "body_sha256": "f9364514552b2d6f6d6dace7b63545ae20a6458379099a02270ffc39c8a55d77"
+    },
+    {
+      "name": "sum_apply",
+      "start_marker": "theorem sum_apply",
+      "end_marker": "\n/-- The nine coefficient-Hessian products",
+      "body_start": 6740,
+      "body_end": 6918,
+      "header_sha256": "ca97361a1f1d16a8baa1cf61edf62deac6f4b55cd5a662cff611a79d81691866",
+      "body_sha256": "40801f57a84ae640d73a8fff09d4708ee85580119ebe8f1eea3ae348e2dc857d"
+    }
+  ]
+}

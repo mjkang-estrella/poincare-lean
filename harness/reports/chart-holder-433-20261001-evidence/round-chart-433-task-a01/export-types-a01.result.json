@@ -1,0 +1,15 @@
+{
+  "exit_code": 0,
+  "started_epoch": 1790824980.143265,
+  "ended_epoch": 1790824983.4612858,
+  "elapsed_seconds": 3.318020820617676,
+  "cwd": "/Users/mjkang/Develop/poincare",
+  "argv": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/round-chart-433-task-a01/export-types.lean"
+  ],
+  "stdout_sha256": "3191e5ca188e846b376c820fd418e01c9ed09ab55430b233917b700f941828df",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

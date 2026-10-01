@@ -1,0 +1,32 @@
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:263: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:477: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  ChartedSpace E (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:217: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  NormedAddCommGroup (TangentSpace I x)
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:721: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:mlieBracket_apply_chart
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:373: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:mpullbackWithin_extChartAt_symm_self
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:567: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_chart
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:18947: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_fixed_chart
+CURRENT_LITERAL_ELAB_OK:isLocallyConstant_of_extDerivFun_eq_zero
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:17:34: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:25:17270: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_mlieBracket_chart
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:454: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:mpullback_extChartAt_symm_apply
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:637: error: invalid coercion notation, expected type is not known
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:12:847: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:extDerivFun_section_eventually_chart
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/chart-identification-433-task-a01/CurrentFormulaLiterals-a01.lean:15:36: error: invalid coercion notation, expected type is not known
+CURRENT_LITERAL_ELAB_OK:extDerivFun_extDerivFun_chart
+CURRENT_LITERAL_ELAB_OK:extDerivFun_apply_mlieBracket

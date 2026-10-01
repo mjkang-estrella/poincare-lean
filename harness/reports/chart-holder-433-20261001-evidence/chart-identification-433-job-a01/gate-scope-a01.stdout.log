@@ -1,0 +1,21 @@
+{
+  "allowed_original_proof_lines": [
+    62,
+    65
+  ],
+  "applied_operators": 17,
+  "base": "681e24e8fedf59c21b71747e90835567dc790e43",
+  "candidate_sha256": "2e9280becdc909776f0fc3e216d74118b10b4f8ce155565e47210a9838539ac1",
+  "file": "Poincare/ChartIdentification.lean",
+  "lean_invoked": false,
+  "mode": "source-check",
+  "model_I_applications": 4,
+  "model_Iprime_applications": 13,
+  "original": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "passed": true,
+  "prefix_bytes": 2463,
+  "root": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "source_sha256": "efb4f9099267c5196736abf95201373f869cb16aad57c8395caee282430e42eb",
+  "suffix_bytes": 23740,
+  "unfolding_identifiers": 3
+}

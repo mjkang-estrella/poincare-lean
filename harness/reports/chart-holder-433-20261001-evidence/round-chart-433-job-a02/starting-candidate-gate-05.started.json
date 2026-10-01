@@ -1,0 +1,12 @@
+{
+  "started_epoch": 1790825772.459999,
+  "cwd": "/Users/mjkang/.codex/worktrees/round-chart-433/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

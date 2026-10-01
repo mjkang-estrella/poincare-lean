@@ -1,0 +1,22 @@
+{
+  "name": "gate-direct-a01",
+  "command": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:45:12.561136+00:00",
+  "finished_at": "2026-10-01T03:45:24.015633+00:00",
+  "exit_code": 0,
+  "duration_seconds": 11.45430345798377,
+  "expected_exit": 0,
+  "passed": true,
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "stdout_sha256": "5de99b5bac716225694000fe35039109401e5e5853463dd473692b60d451aaa7",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

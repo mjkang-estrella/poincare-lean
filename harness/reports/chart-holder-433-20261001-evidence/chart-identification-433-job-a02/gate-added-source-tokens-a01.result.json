@@ -1,0 +1,20 @@
+{
+  "name": "gate-added-source-tokens-a01",
+  "command": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom|postulate|native_decide|unsafe|partial|set_option|letI|haveI)\\b",
+    "Poincare/ChartIdentification.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/chart-identification-433/poincare",
+  "started_at": "2026-10-01T03:47:01.998595+00:00",
+  "finished_at": "2026-10-01T03:47:02.004275+00:00",
+  "exit_code": 1,
+  "duration_seconds": 0.005695250001735985,
+  "expected_exit": 1,
+  "passed": true,
+  "head": "ff3ca4b6dce6499f44ab09a0d3ef8dd80a9417dc",
+  "source_sha256": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}
