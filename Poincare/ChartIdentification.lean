@@ -59,10 +59,7 @@ theorem mpullbackWithin_extChartAt_symm_self
   rw [VectorField.mpullbackWithin]
   have h2 : mfderiv[range I] (extChartAt I x).symm (extChartAt I x x) =
       ContinuousLinearMap.id 𝕜 E := by
-    have hcomp := mfderivWithin_extChartAt_symm_comp_mfderiv_extChartAt'
-      (mem_extChartAt_source (I := I) x)
-    rw [mfderiv_extChartAt_self] at hcomp
-    simpa using hcomp
+    exact mfderivWithin_range_extChartAt_symm (I := I) (x := x)
   rw [h2]
   have key : ∀ v : TangentSpace I x,
       (ContinuousLinearMap.id 𝕜 E).inverse v = v := by
@@ -85,17 +82,16 @@ image.
 -/
 theorem extDerivFun_apply_chart {f : M → 𝕜} {x : M} (hf : MDiffAt f x)
     (v : TangentSpace I x) :
-    extDerivFun f x v =
+    mvfderiv I f x v =
       fderiv 𝕜 (f ∘ (extChartAt I x).symm) (extChartAt I x x) v := by
   have h1 : mfderiv% f x =
       fderivWithin 𝕜 (writtenInExtChartAt I 𝓘(𝕜, 𝕜) x f) (range I)
         (extChartAt I x x) := by
-    rw [mfderiv, if_pos hf]
+    exact hf.mfderiv
   have h2 : writtenInExtChartAt I 𝓘(𝕜, 𝕜) x f =
       f ∘ (extChartAt I x).symm := by
-    funext z
-    simp [writtenInExtChartAt]
-  simp only [extDerivFun, ContinuousLinearMap.comp_apply, h1, h2,
+    rfl
+  simp only [mvfderiv, ContinuousLinearMap.comp_apply, h1, h2,
     I.range_eq_univ, fderivWithin_univ]
   rfl
 
@@ -107,7 +103,7 @@ chart-pushed tangent vector.
 theorem extDerivFun_apply_fixed_chart {f : M → 𝕜} {x₀ y : M}
     (hy : y ∈ (extChartAt I x₀).source) (hf : MDiffAt f y)
     (v : TangentSpace I y) :
-    extDerivFun f y v =
+    mvfderiv I f y v =
       fderiv 𝕜 (f ∘ (extChartAt I x₀).symm) (extChartAt I x₀ y)
         (mfderiv% (extChartAt I x₀) y v) := by
   have hys : y ∈ (chartAt H x₀).source := by
@@ -147,7 +143,7 @@ theorem extDerivFun_apply_fixed_chart {f : M → 𝕜} {x₀ y : M}
       (mdifferentiableAt_extChartAt hys)]
     congr 1
     exact mfderiv_eq_fderiv
-  simp only [extDerivFun, ContinuousLinearMap.comp_apply, hcomp]
+  simp only [mvfderiv, ContinuousLinearMap.comp_apply, hcomp]
   rfl
 
 omit [IsManifold I 1 M] in
@@ -167,7 +163,7 @@ theorem isLocallyConstant_of_extDerivFun_eq_zero
     {M : Type*} [TopologicalSpace M] [ChartedSpace H M]
     [IsManifold I 1 M] [I.Boundaryless] {f : M → ℝ}
     (hf : ∀ x : M, MDifferentiableAt I 𝓘(ℝ) f x)
-    (hzero : ∀ x : M, ∀ w : TangentSpace I x, extDerivFun f x w = 0) :
+    (hzero : ∀ x : M, ∀ w : TangentSpace I x, mvfderiv I f x w = 0) :
     IsLocallyConstant f := by
   rw [IsLocallyConstant.iff_eventually_eq]
   intro x
@@ -198,7 +194,7 @@ theorem isLocallyConstant_of_extDerivFun_eq_zero
     let L : TangentSpace I y →L[ℝ] E :=
       mfderiv I 𝓘(ℝ, E) (e : M → E) y
     have hInv : L.IsInvertible := by
-      simpa [L, e, y] using
+      simpa only [L] using!
         (isInvertible_mfderiv_extChartAt (I := I) (x := x) (y := y) hySrc :
           (mfderiv I 𝓘(ℝ, E)
             ((extChartAt I x : PartialEquiv M E) : M → E) y).IsInvertible)
@@ -208,10 +204,10 @@ theorem isLocallyConstant_of_extDerivFun_eq_zero
     have hchart :=
       extDerivFun_apply_fixed_chart (I := I) (f := f) (x₀ := x) (y := y)
         (by simpa [e, y] using hySrc) (hf y) w
-    have hzro : extDerivFun f y w = 0 := hzero y w
+    have hzro : mvfderiv I f y w = 0 := hzero y w
     rw [hchart] at hzro
     have hzro' : fderiv ℝ F (e y) (L w) = 0 := by
-      simpa [F, L] using hzro
+      simpa only [F, L] using! hzro
     rw [hz_eq, hLv] at hzro'
     exact hzro'
   have hLevelOpen : IsOpen (e.target ∩ F ⁻¹' {F z0}) :=
@@ -256,7 +252,7 @@ derivatives, expressed through the chart at `x`.
 theorem extDerivFun_apply_mlieBracket_chart
     {f : N → ℝ} {X Y : Π y : N, TangentSpace I' y} {x : N}
     (hf : CMDiffAt 2 f x) (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
-    extDerivFun f x (mlieBracket I' X Y x) =
+    mvfderiv I' f x (mlieBracket I' X Y x) =
       fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
           (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm Y z))
         (extChartAt I' x x) (X x)
@@ -269,8 +265,7 @@ theorem extDerivFun_apply_mlieBracket_chart
     rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
     have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
         f ∘ (extChartAt I' x).symm := by
-      funext z
-      simp
+      rfl
     rwa [heq] at h
   have hsymm := hFc.isSymmSndFDerivAt (by simp)
   -- The pulled-back fields are differentiable at the chart image.
@@ -306,8 +301,12 @@ theorem extDerivFun_apply_mlieBracket_chart
   -- Reduce to the model space and apply the model identity.
   rw [extDerivFun_apply_chart (hf.mdifferentiableAt two_ne_zero),
     mlieBracket_apply_chart]
-  simp only [I'.range_eq_univ, lieBracketWithin_univ, mpullbackWithin_univ]
-  rw [fderiv_apply_lieBracket_of_isSymmSndFDerivAt hFc hsymm
+  simp only [I'.range_eq_univ, mpullbackWithin_univ]
+  have hbr := congrFun (lieBracketWithin_univ (𝕜 := ℝ)
+    (V := (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm X : E' → E'))
+    (W := (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm Y : E' → E')))
+    (extChartAt I' x x)
+  rw [hbr, fderiv_apply_lieBracket_of_isSymmSndFDerivAt hFc hsymm
     (hpull Y hY) (hpull X hX), hc X, hc Y]
 
 /--
@@ -339,7 +338,7 @@ representative.
 -/
 theorem extDerivFun_section_eventually_chart {f : N → ℝ} {x : N}
     (hf : CMDiffAt 2 f x) (U : Π z : N, TangentSpace I' z) :
-    ∀ᶠ y in 𝓝 x, extDerivFun f y (U y) =
+    ∀ᶠ y in 𝓝 x, mvfderiv I' f y (U y) =
       fderiv ℝ (f ∘ (extChartAt I' x).symm) (extChartAt I' x y)
         (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U
           (extChartAt I' x y)) := by
@@ -349,8 +348,7 @@ theorem extDerivFun_section_eventually_chart {f : N → ℝ} {x : N}
     rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
     have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
         f ∘ (extChartAt I' x).symm := by
-      funext z
-      simp
+      rfl
     rwa [heq] at h
   have hf1 : ∀ᶠ y in 𝓝 x, MDiffAt f y := by
     obtain ⟨v, hv, hfv⟩ :=
@@ -382,7 +380,7 @@ theorem extDerivFun_section_eventually_chart {f : N → ℝ} {x : N}
         (by rwa [extChartAt_source] at hys))]
     congr 1
     exact mfderiv_eq_fderiv
-  simp only [extDerivFun, ContinuousLinearMap.comp_apply, hcomp]
+  simp only [mvfderiv, ContinuousLinearMap.comp_apply, hcomp]
   rfl
 
 /--
@@ -393,7 +391,7 @@ theorem extDerivFun_extDerivFun_chart
     {f : N → ℝ} {U : Π y : N, TangentSpace I' y} {x : N}
     (hf : CMDiffAt 2 f x) (hU : MDiffAt (T% U) x)
     (v : TangentSpace I' x) :
-    extDerivFun (fun y ↦ extDerivFun f y (U y)) x v =
+    mvfderiv I' (fun y ↦ mvfderiv I' f y (U y)) x v =
       fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
           (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z))
         (extChartAt I' x x) v := by
@@ -403,8 +401,7 @@ theorem extDerivFun_extDerivFun_chart
     rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
     have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
         f ∘ (extChartAt I' x).symm := by
-      funext z
-      simp
+      rfl
     rwa [heq] at h
   have hinv : (mfderiv% (extChartAt I' x).symm
       (extChartAt I' x x)).IsInvertible := by
@@ -427,7 +424,7 @@ theorem extDerivFun_extDerivFun_chart
     have h := hU'.mpullback_vectorField_preimage hsm hinv le_rfl
     rw [preimage_univ, mdifferentiableWithinAt_univ] at h
     exact mdiffAt_vectorSpace_iff_differentiableAt.mp h
-  set g : N → ℝ := fun y ↦ extDerivFun f y (U y) with hg
+  set g : N → ℝ := fun y ↦ mvfderiv I' f y (U y) with hg
   set c : E' → ℝ := fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
     (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z) with hc
   have hgc : g =ᶠ[𝓝 x] c ∘ (extChartAt I' x) := by
@@ -471,17 +468,16 @@ manifold, `df([X,Y]) = X(Y f) - Y(X f)` at every point where `f` is `C²` and
 theorem extDerivFun_apply_mlieBracket
     {f : N → ℝ} {X Y : Π y : N, TangentSpace I' y} {x : N}
     (hf : CMDiffAt 2 f x) (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x) :
-    extDerivFun f x (mlieBracket I' X Y x) =
-      extDerivFun (fun y ↦ extDerivFun f y (Y y)) x (X x)
-        - extDerivFun (fun y ↦ extDerivFun f y (X y)) x (Y x) := by
+    mvfderiv I' f x (mlieBracket I' X Y x) =
+      mvfderiv I' (fun y ↦ mvfderiv I' f y (Y y)) x (X x)
+        - mvfderiv I' (fun y ↦ mvfderiv I' f y (X y)) x (Y x) := by
   have hFc : ContDiffAt ℝ 2 (f ∘ (extChartAt I' x).symm)
       (extChartAt I' x x) := by
     have h := (contMDiffAt_iff.mp hf).2
     rw [I'.range_eq_univ, contDiffWithinAt_univ] at h
     have heq : (extChartAt 𝓘(ℝ, ℝ) (f x)) ∘ f ∘ (extChartAt I' x).symm =
         f ∘ (extChartAt I' x).symm := by
-      funext z
-      simp
+      rfl
     rwa [heq] at h
   have hinv : (mfderiv% (extChartAt I' x).symm
       (extChartAt I' x x)).IsInvertible := by
@@ -508,12 +504,12 @@ theorem extDerivFun_apply_mlieBracket
     exact mdiffAt_vectorSpace_iff_differentiableAt.mp h
   -- The invariant iterated derivative equals the chart-side derivative.
   have hterm : ∀ (U V₀ : Π y : N, TangentSpace I' y), MDiffAt (T% U) x →
-      extDerivFun (fun y ↦ extDerivFun f y (U y)) x (V₀ x) =
+      mvfderiv I' (fun y ↦ mvfderiv I' f y (U y)) x (V₀ x) =
         fderiv ℝ (fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
             (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z))
           (extChartAt I' x x) (V₀ x) := by
     intro U V₀ hU
-    set g : N → ℝ := fun y ↦ extDerivFun f y (U y) with hg
+    set g : N → ℝ := fun y ↦ mvfderiv I' f y (U y) with hg
     set c : E' → ℝ := fun z ↦ fderiv ℝ (f ∘ (extChartAt I' x).symm) z
       (mpullback 𝓘(ℝ, E') I' (extChartAt I' x).symm U z) with hc
     have hgc : g =ᶠ[𝓝 x] c ∘ (extChartAt I' x) := by
