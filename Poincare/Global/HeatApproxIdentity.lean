@@ -126,6 +126,6 @@ theorem tendsto_heatSolution_nhdsGT_zero {f : E → ℝ} (hf : Integrable f)
     filter_upwards [eventually_mem_nhdsWithin] with t (ht : t ∈ Set.Ioi (0 : ℝ))
     exact gaussian_heat_integral_eq_heatSolution_of_pos (E := E) (Set.mem_Ioi.mp ht) f x
   have hreal := (Complex.continuous_re.tendsto ((f x : ℝ) : ℂ)).comp hcomplex
-  simpa using hreal
+  simpa only [Function.comp_def, Complex.ofReal_re] using hreal
 
 end Poincare
