@@ -1,0 +1,15 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/metric-pullback-433/poincare",
+  "argv": [
+    "git",
+    "diff",
+    "--check"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "757d0dda020470783afef7b0edfe1601da00274c",
+  "status": "## codex/metric-pullback-433-a01\n M Poincare/Global/SmoothInitialMetricLocalPullback.lean\n",
+  "source_sha256": "21223dc69e7349430677ef4bbaebc8b6d8bc18f0e957f382bbc7338c8330e251",
+  "started_at": "2026-10-01T01:45:39.630898+00:00"
+}

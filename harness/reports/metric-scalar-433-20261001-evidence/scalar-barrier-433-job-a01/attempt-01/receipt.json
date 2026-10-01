@@ -1,0 +1,113 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+  "head_after": "757d0dda020470783afef7b0edfe1601da00274c",
+  "status_after": "## codex/scalar-barrier-433-a01\n M Poincare/Global/ScalarCurvatureBarrier.lean\n",
+  "all_scoped_gates_passed": true,
+  "results": [
+    {
+      "name": "lean",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/ScalarCurvatureBarrier.lean"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:01:38.046603+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 17.84112108394038,
+      "completed_utc": "2026-10-01T02:01:55.887707+00:00",
+      "passed": true
+    },
+    {
+      "name": "scoped-build",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.ScalarCurvatureBarrier"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:01:55.888143+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 8.859210875001736,
+      "completed_utc": "2026-10-01T02:02:04.747308+00:00",
+      "passed": true
+    },
+    {
+      "name": "frozen-probe",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/FrozenMigrationProbe.lean"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:02:04.747878+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 21.880035124951974,
+      "completed_utc": "2026-10-01T02:02:26.627894+00:00",
+      "passed": true
+    },
+    {
+      "name": "scopeguard",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/check-scope.py"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:02:26.628474+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.04109762504231185,
+      "completed_utc": "2026-10-01T02:02:26.669520+00:00",
+      "passed": true
+    },
+    {
+      "name": "token-scan",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/ScalarCurvatureBarrier.lean"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:02:26.669992+00:00",
+      "exit_code": 1,
+      "elapsed_seconds": 0.006171333021484315,
+      "completed_utc": "2026-10-01T02:02:26.676122+00:00",
+      "passed": true
+    },
+    {
+      "name": "diff-check",
+      "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+      "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+      "started_utc": "2026-10-01T02:02:26.676383+00:00",
+      "exit_code": 0,
+      "elapsed_seconds": 0.03938858304172754,
+      "completed_utc": "2026-10-01T02:02:26.715737+00:00",
+      "passed": true
+    }
+  ]
+}

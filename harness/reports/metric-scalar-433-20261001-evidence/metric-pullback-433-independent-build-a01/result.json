@@ -1,0 +1,20 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.SmoothInitialMetricLocalPullback"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T01:58:50.301498+00:00",
+  "source_head": "76c8d66a49f80e6953a45282eaf70b47d9dc11a7",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 18.874752044677734,
+  "completed_at": "2026-10-01T01:59:09.188864+00:00",
+  "log_hashes": {
+    "stdout.log": "cdd6403391d6977fa36ca3b09627e3682ff1e1b6216c89e30a0bfa26f78efe84",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

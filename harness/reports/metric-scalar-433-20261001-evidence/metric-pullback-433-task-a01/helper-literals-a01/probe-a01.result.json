@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare",
+  "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "started_at": "2026-10-01T01:39:11.918620+00:00",
+  "exit_code": 1,
+  "finished_at": "2026-10-01T01:39:19.179699+00:00"
+}

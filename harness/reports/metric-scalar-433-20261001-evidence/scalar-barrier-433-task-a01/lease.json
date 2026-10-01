@@ -1,0 +1,11 @@
+{
+  "owner": "/root/upstream_endpoint_comparison",
+  "base": "757d0dda020470783afef7b0edfe1601da00274c",
+  "worktree": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "allowed_file": "Poincare/Global/ScalarCurvatureBarrier.lean",
+  "allowed_proofs": [
+    "hasDerivWithinAt_neg_inv",
+    "negative_reciprocal_growth_bound"
+  ],
+  "status": "allocated"
+}

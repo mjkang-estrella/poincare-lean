@@ -1,0 +1,3 @@
+[codex/upstream-integration-433 590bbe48] Preserve scalar Riccati barriers under Lean 4.33 elaboration
+ Date: Wed Sep 30 19:03:23 2026 -0700
+ 1 file changed, 3 insertions(+), 2 deletions(-)

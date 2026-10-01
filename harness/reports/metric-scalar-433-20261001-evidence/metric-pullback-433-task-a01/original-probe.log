@@ -1,0 +1,10 @@
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos
+harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe.lean:19:53: error: invalid coercion notation, expected type is not known
+harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe.lean:152:0: error: unresolved metavariables in frozen type for Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates
+harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe.lean:19:6: error: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe.lean:169:0: error: unresolved metavariables in frozen type for Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn

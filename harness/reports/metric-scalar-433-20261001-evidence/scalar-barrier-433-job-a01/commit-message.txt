@@ -1,0 +1,14 @@
+Preserve scalar Riccati barriers under Lean 4.33 elaboration
+
+Use convert! to resolve the original real derivative instances. Restrict
+negative-reciprocal continuity simplification to pointwise operations and
+elaborate its supplied proof against the expected type. All interval,
+right-derivative, sign, initial and jump premises retain their original source.
+
+Constraint: only the two approved scalar-barrier proof bodies may change
+Tested: scoped Lean; module build; sixteen frozen type and axiom checks
+Tested: surrounding-source byte guard; forbidden-token scan; git diff --check
+Not-tested: full root build and final completion audits
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean

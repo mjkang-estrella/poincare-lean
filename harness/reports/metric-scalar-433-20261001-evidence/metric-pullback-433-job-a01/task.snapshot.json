@@ -1,0 +1,182 @@
+{
+  "schema_version": "2.1",
+  "id": "metric-pullback-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "757d0dda020470783afef7b0edfe1601da00274c",
+  "objective": {
+    "title": "Preserve actual initial-metric coordinate pullback on Lean 4.33",
+    "statement": "Repair only localEuclideanInner_coordinates proof body, preserving all four exact original types/universes, chart-domain restrictions, smooth ENat.top regularity, actual both-slot metric pullback and every other source byte. The actual smooth initial-metric constructor and bundle consumers reuse this lemma. This enables retained full-root final endpoint integration; actual S remains discharged and H inputs/convergence are not newly constructed.",
+    "deliverables": [
+      "Unchanged coordinate proof compiles with exact type/axiom/safety and entire surrounding-source guards."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.lean",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/SmoothInitialMetricLocalPullback.lean",
+      "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/blind-readback-a02.json",
+      "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe-a02.lean",
+      "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/check-scope.py",
+      "harness/v2/state/upstream-verification-20260930/chart-metric-next-migration-shapes-a01.md",
+      "harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.SmoothInitialMetricLocalPullback"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/FrozenMigrationProbe-a02.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/check-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates",
+      "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.SmoothInitialMetricLocalPullback"
+    ],
+    "declarations": [
+      {
+        "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M) (v w : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x), Eq.{1} (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) v) w) (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) w) v)",
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M), Membership.mem.{u, u} (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p)) x → ∀ (v : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x), Ne.{1} v (0 : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x) → LT.lt.{0} (0 : Real) (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) v) v)",
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M),\n  Membership.mem.{u, u} (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p)) x →\n    let e := FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p;\n    let eR := FiberBundle.trivializationAt.{u, 0, 0} Real (fun (x : M) => Real) p;\n    Eq.{1} ((Bundle.Trivialization.continuousLinearMap.{0, 0, u, 0, 0, 0, 0} (RingHom.id.{0} Real) e (Bundle.Trivialization.continuousLinearMap.{0, 0, u, 0, 0, 0, 0} (RingHom.id.{0} Real) e eR)) (Bundle.TotalSpace.mk' (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) x (Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) : Bundle.TotalSpace (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) (fun y : M => TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] ℝ))).2 (innerSL.{0, 0} Real (E := Poincare.ClosedSmoothModel (3 : Nat)))",
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates",
+        "universes": [
+          "u"
+        ]
+      },
+      {
+        "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p : M), ContMDiffOn.{0, 0, 0, u, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (ModelWithCorners.prod.{0, 0, 0, 0, 0} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (modelWithCornersSelf.{0, 0} Real (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (3 : Nat)) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (3 : Nat)) Real)))) (((⊤ : ENat) : WithTop ENat)) (fun (x : M) => (Bundle.TotalSpace.mk' (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) x (Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) : Bundle.TotalSpace (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) (fun y : M => TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] ℝ))) (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p))",
+        "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn",
+        "universes": [
+          "u"
+        ]
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+        "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "ef9ba1970ffbe37390fee1a824da5c7f01e1f7785f79d8e8bbbfc76709b6d017",
+      "report_path": "harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/blind-readback-a02.json",
+      "report_sha256": "e30c6225e36a4f8283e5a594b47ba7030f9b43ea30cdf1bf49b4aab835ad1d51",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "Any repair needs data, import, definition, type/header/hypothesis/norm/time-domain changes beyond the proof-only scope.",
+    "The same genuine blocker repeats after three distinct proof attempts.",
+    "All scoped gates pass; preserve evidence and commit without accepting or merging."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 26000,
+    "disk_mb": 2048
+  }
+}

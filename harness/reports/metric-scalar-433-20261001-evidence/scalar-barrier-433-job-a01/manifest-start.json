@@ -1,0 +1,52 @@
+{
+  "label": "scalar-barrier-433-job-a01",
+  "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+  "branch": "codex/scalar-barrier-433-a01",
+  "started_utc": "2026-10-01T02:01:24.808843+00:00",
+  "ownership": "Only hasDerivWithinAt_neg_inv and negative_reciprocal_growth_bound proof bodies in Poincare/Global/ScalarCurvatureBarrier.lean",
+  "acceptance_authority": "/root",
+  "task_sha256": "88c356483fc9db5dd0ae66de82abbf5449eabe4e4167e5af737c9282b780c34a",
+  "context": [
+    {
+      "path": "README.md",
+      "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a"
+    },
+    {
+      "path": "HANDOFF.md",
+      "sha256": "80c808176a73d5584702dfb4e1b7650964a85584990df95012635a94f0008262"
+    },
+    {
+      "path": "docs/PROJECT_MAP.md",
+      "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69"
+    },
+    {
+      "path": "harness/v2/SPEC.md",
+      "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3"
+    },
+    {
+      "path": "Poincare/Global/ScalarCurvatureBarrier.lean",
+      "sha256": "1ea5483a83b3d7c3d8e6f3a184c56b5af97e9e096c10eba1dcfb7c48ef8517bc"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/blind-readback.json",
+      "sha256": "66036cce9eb203661423ae553339c1fe5b6a90635a49a1206ac317d6cd9f24ce"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/FrozenMigrationProbe.lean",
+      "sha256": "ea78fcde07d1521e99a6db3b5505e10a318a4dc76ee902b249e4e830d85b6350"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/check-scope.py",
+      "sha256": "bffba151b99249210630535823b133c6f4b22ab6e5f02deb171f31542197a722"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/third-layer-433-build-a01/stdout.log",
+      "sha256": "cdc25cce332d2be2d983f7ce5c16637e0e393730b3205886c767b8690b247330"
+    }
+  ]
+}

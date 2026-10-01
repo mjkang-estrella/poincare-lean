@@ -1,0 +1,54 @@
+{
+  "imports": [
+    "Poincare.Global.SmoothInitialMetricLocalPullback"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M) (v w : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x), Eq.{1} (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) v) w) (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) w) v)",
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm",
+      "universes": [
+        "u"
+      ]
+    },
+    {
+      "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M), Membership.mem.{u, u} (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p)) x → ∀ (v : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x), Ne.{1} v (0 : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x) → LT.lt.{0} (0 : Real) (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) v) v)",
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos",
+      "universes": [
+        "u"
+      ]
+    },
+    {
+      "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p x : M),\n  Membership.mem.{u, u} (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p)) x →\n    let e := FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p;\n    let eR := FiberBundle.trivializationAt.{u, 0, 0} Real (fun (x : M) => Real) p;\n    Eq.{1} ((Bundle.Trivialization.continuousLinearMap.{0, 0, u, 0, 0, 0, 0} (RingHom.id.{0} Real) e (Bundle.Trivialization.continuousLinearMap.{0, 0, u, 0, 0, 0, 0} (RingHom.id.{0} Real) e eR)) (Bundle.TotalSpace.mk' (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) x (Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) : Bundle.TotalSpace (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) (fun y : M => TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] ℝ))).2 (innerSL.{0, 0} Real (E := Poincare.ClosedSmoothModel (3 : Nat)))",
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates",
+      "universes": [
+        "u"
+      ]
+    },
+    {
+      "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (((⊤ : ENat) : WithTop ENat)) M] (p : M), ContMDiffOn.{0, 0, 0, u, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (ModelWithCorners.prod.{0, 0, 0, 0, 0} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (modelWithCornersSelf.{0, 0} Real (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (3 : Nat)) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (Poincare.ClosedSmoothModel (3 : Nat)) Real)))) (((⊤ : ENat) : WithTop ENat)) (fun (x : M) => (Bundle.TotalSpace.mk' (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) x (Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) : Bundle.TotalSpace (Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] Poincare.ClosedSmoothModel (3 : Nat) →L[ℝ] ℝ) (fun y : M => TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] TangentSpace (Poincare.closedSmoothModelWithCorners (3 : Nat)) y →L[ℝ] ℝ))) (Bundle.Trivialization.baseSet.{u, 0, u} (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p))",
+      "name": "Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    }
+  ],
+  "snapshot_sha256": "ef9ba1970ffbe37390fee1a824da5c7f01e1f7785f79d8e8bbbfc76709b6d017"
+}

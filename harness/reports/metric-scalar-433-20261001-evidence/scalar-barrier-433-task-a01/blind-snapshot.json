@@ -1,0 +1,110 @@
+{
+  "imports": [
+    "Poincare.Global.ScalarCurvatureBarrier"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {r : Real → Real} {dr t : Real} {s : Set.{0} Real}, HasDerivWithinAt.{0, 0} r dr s t → Ne.{1} (r t) (0 : Real) → HasDerivWithinAt.{0, 0} (fun (x : Real) => Neg.neg.{0} (Inv.inv.{0} (r x))) (HDiv.hDiv.{0, 0, 0} dr (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) s t",
+      "name": "Poincare.hasDerivWithinAt_neg_inv",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b κ : Real}, LE.le.{0} a b → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} a b) t → LT.lt.{0} (r t) (0 : Real)) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HSub.hSub.{0, 0, 0} b a)) (HSub.hSub.{0, 0, 0} (Neg.neg.{0} (Inv.inv.{0} (r b))) (Neg.neg.{0} (Inv.inv.{0} (r a))))",
+      "name": "Poincare.negative_reciprocal_growth_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b κ : Real}, LE.le.{0} a b → LE.le.{0} (0 : Real) κ → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → MonotoneOn.{0, 0} r (Set.Icc.{0} a b)",
+      "name": "Poincare.riccati_monotoneOn",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {r L : Real}, LT.lt.{0} r (0 : Real) → LT.lt.{0} (0 : Real) L → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} L)) r → LE.le.{0} L (Neg.neg.{0} (Inv.inv.{0} r))",
+      "name": "Poincare.negative_reciprocal_initial_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {r L : Real}, LT.lt.{0} r (0 : Real) → LT.lt.{0} (0 : Real) L → LE.le.{0} L (Neg.neg.{0} (Inv.inv.{0} r)) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} L)) r",
+      "name": "Poincare.lower_bound_of_negative_reciprocal_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b κ C : Real}, LE.le.{0} a b → LT.lt.{0} (0 : Real) κ → LT.lt.{0} (0 : Real) C → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} a b) t → LT.lt.{0} (r t) (0 : Real)) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ C))) (r a) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} b a))))) (r b)",
+      "name": "Poincare.riccati_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b κ C : Real}, LE.le.{0} a b → LT.lt.{0} (0 : Real) κ → LT.lt.{0} (0 : Real) C → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ C))) (r a) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} b a))))) (r b)",
+      "name": "Poincare.riccati_lower_barrier",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b C : Real}, LE.le.{0} a b → LT.lt.{0} (0 : Real) C → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} a b) t → LT.lt.{0} (r t) (0 : Real)) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} (2 / 3 : Real) (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) C))) (r a) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} b a))))) (r b)",
+      "name": "Poincare.three_dimensional_scalar_curvature_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {a b C : Real}, LE.le.{0} a b → LT.lt.{0} (0 : Real) C → ∀ (r dr : Real → Real), ContinuousOn.{0, 0} r (Set.Icc.{0} a b) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → HasDerivWithinAt.{0, 0} r (dr t) (Set.Ioi.{0} t) t) → (∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} a b) t → LE.le.{0} (HMul.hMul.{0, 0, 0} (2 / 3 : Real) (HPow.hPow.{0, 0, 0} (r t) (2 : Nat))) (dr t)) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) C))) (r a) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} b a))))) (r b)",
+      "name": "Poincare.three_dimensional_scalar_curvature_lower_barrier",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {κ : Real} (r dr : Nat → Real → Real) (start : Nat → Real) (n : Nat), (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), LT.lt.{0} k n → ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat), LE.le.{0} k n → LT.lt.{0} (r k (start k)) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LT.lt.{0} (r k t) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HSub.hSub.{0, 0, 0} (start n) (start (0 : Nat)))) (HSub.hSub.{0, 0, 0} (Neg.neg.{0} (Inv.inv.{0} (r n (start n)))) (Neg.neg.{0} (Inv.inv.{0} (r (0 : Nat) (start (0 : Nat))))))",
+      "name": "Poincare.segmented_negative_reciprocal_growth_bound",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {κ C : Real}, LT.lt.{0} (0 : Real) κ → LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real) (n : Nat), LE.le.{0} (0 : Real) (HSub.hSub.{0, 0, 0} (start n) (start (0 : Nat))) → (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), LT.lt.{0} k n → ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat), LE.le.{0} k n → LT.lt.{0} (r k (start k)) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LT.lt.{0} (r k t) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ C))) (r (0 : Nat) (start (0 : Nat))) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} (start n) (start (0 : Nat))))))) (r n (start n))",
+      "name": "Poincare.segmented_riccati_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {C : Real}, LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real) (n : Nat), LE.le.{0} (0 : Real) (HSub.hSub.{0, 0, 0} (start n) (start (0 : Nat))) → (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), LT.lt.{0} k n → ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat), LE.le.{0} k n → LT.lt.{0} (r k (start k)) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LT.lt.{0} (r k t) (0 : Real)) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat), LT.lt.{0} k n → ∀ (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} (2 / 3 : Real) (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LT.lt.{0} k n → LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) C))) (r (0 : Nat) (start (0 : Nat))) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} (start n) (start (0 : Nat))))))) (r n (start n))",
+      "name": "Poincare.three_dimensional_scalar_curvature_segmented_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {κ C : Real}, LT.lt.{0} (0 : Real) κ → LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real), (∀ (k : Nat), LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat), LT.lt.{0} (r k (start k)) (0 : Real)) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LT.lt.{0} (r k t) (0 : Real)) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ C))) (r (0 : Nat) (start (0 : Nat))) → ∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} t (start (0 : Nat))))))) (r k t)",
+      "name": "Poincare.segmented_riccati_pointwise_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {κ C : Real}, LT.lt.{0} (0 : Real) κ → LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real), (∀ (k : Nat), LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} κ (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ C))) (r (0 : Nat) (start (0 : Nat))) → ∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (Neg.neg.{0} (Inv.inv.{0} (HMul.hMul.{0, 0, 0} κ (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} t (start (0 : Nat))))))) (r k t)",
+      "name": "Poincare.segmented_riccati_pointwise_lower_barrier",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {C : Real}, LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real), (∀ (k : Nat), LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat), LT.lt.{0} (r k (start k)) (0 : Real)) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LT.lt.{0} (r k t) (0 : Real)) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} (2 / 3 : Real) (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) C))) (r (0 : Nat) (start (0 : Nat))) → ∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} t (start (0 : Nat))))))) (r k t)",
+      "name": "Poincare.three_dimensional_scalar_curvature_segmented_pointwise_lower_barrier_of_negative",
+      "universes": []
+    },
+    {
+      "lean_type": "∀ {C : Real}, LT.lt.{0} (0 : Real) C → ∀ (r dr : Nat → Real → Real) (start : Nat → Real), (∀ (k : Nat), LE.le.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) → (∀ (k : Nat), ContinuousOn.{0, 0} (r k) (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → HasDerivWithinAt.{0, 0} (r k) (dr k t) (Set.Ioi.{0} t) t) → (∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Ioo.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (HMul.hMul.{0, 0, 0} (2 / 3 : Real) (HPow.hPow.{0, 0, 0} (r k t) (2 : Nat))) (dr k t)) → (∀ (k : Nat), LE.le.{0} (r k (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) (r (HAdd.hAdd.{0, 0, 0} k (1 : Nat)) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat))))) → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) C))) (r (0 : Nat) (start (0 : Nat))) → ∀ (k : Nat) (t : Real), Membership.mem.{0, 0} (Set.Icc.{0} (start k) (start (HAdd.hAdd.{0, 0, 0} k (1 : Nat)))) t → LE.le.{0} (Neg.neg.{0} (HDiv.hDiv.{0, 0, 0} (3 : Real) (HMul.hMul.{0, 0, 0} (2 : Real) (HAdd.hAdd.{0, 0, 0} C (HSub.hSub.{0, 0, 0} t (start (0 : Nat))))))) (r k t)",
+      "name": "Poincare.three_dimensional_scalar_curvature_segmented_pointwise_lower_barrier",
+      "universes": []
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+    },
+    {
+      "path": "Poincare/Global/FiniteExtinctionSurgerySchedule.lean",
+      "sha256": "c6e236753b3ae67685c17f71e2b8843c00efecc1a6ded9917ce5d56d014d3c6c"
+    },
+    {
+      "path": "Poincare/Global/FiniteExtinctionInitialScale.lean",
+      "sha256": "3770fc8907f89856aad12cd3ee4a585be5138ddc3e26c868a257ca4bb7584141"
+    },
+    {
+      "path": "Poincare/Global/FiniteExtinctionIntegratingFactor.lean",
+      "sha256": "b918a9c23e46b9da5c61811994b91d89117af6af01a8666dc375ee6eda171705"
+    }
+  ],
+  "snapshot_sha256": "a5e240a1c1867adef5316ec43c6b11c5bdb06e9e55762bc7309e27eaeebdba22"
+}

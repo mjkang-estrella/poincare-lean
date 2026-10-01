@@ -1,0 +1,9 @@
+{
+  "copied_at": "2026-10-01T01:46:24.060103+00:00",
+  "source": "/Users/mjkang/.codex/worktrees/metric-pullback-433/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-job-a01",
+  "destination": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-job-a01",
+  "file_count": 64,
+  "all_copied_hashes_verified": true,
+  "commit": "9e468974dc2ff85db10aaef0ef9ce5d032ee1358",
+  "source_sha256": "21223dc69e7349430677ef4bbaebc8b6d8bc18f0e957f382bbc7338c8330e251"
+}

@@ -1,0 +1,21 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/metric-pullback-433/poincare",
+  "argv": [
+    "git",
+    "commit",
+    "--only",
+    "-F",
+    "harness/v2/state/upstream-verification-20260930/metric-pullback-433-job-a01/commit-message.txt",
+    "--",
+    "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+  ],
+  "head_before": "757d0dda020470783afef7b0edfe1601da00274c",
+  "head_after": "9e468974dc2ff85db10aaef0ef9ce5d032ee1358",
+  "started_at": "2026-10-01T01:45:43.787246+00:00",
+  "ended_at": "2026-10-01T01:45:43.905260+00:00",
+  "duration_seconds": 0.11784691701177508,
+  "exit_code": 0,
+  "source_before_sha256": "21223dc69e7349430677ef4bbaebc8b6d8bc18f0e957f382bbc7338c8330e251",
+  "source_after_sha256": "21223dc69e7349430677ef4bbaebc8b6d8bc18f0e957f382bbc7338c8330e251",
+  "status_after": "## codex/metric-pullback-433-a01\n"
+}

@@ -1,0 +1,11 @@
+{
+  "candidate": "a15e50291dfb2d7cbf026ce129ca37bc07ecf4ab",
+  "accepted": true,
+  "direct_lean": 0,
+  "scoped_build": 0,
+  "rigid_types_universes_axioms_safety": 0,
+  "all_source_outside_two_proof_bodies_byte_identical": true,
+  "all_original_scalar_flow_jump_assumptions_retained": true,
+  "S_remains_discharged": true,
+  "H_not_newly_constructed": true
+}

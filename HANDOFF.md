@@ -1,5 +1,43 @@
 # Handoff Snapshot
 
+## 2026-10-01 Metric coordinate and scalar barrier repairs accepted
+
+At mathematical-source590bbe48c99002319cf0417cc3f8ef0f2e7282cd, root independently
+accepted the one-body SmoothInitialMetricLocalPullback coordinate proof and two
+ScalarCurvatureBarrier proof-body repairs. Actual metric data/both slots,
+coordinate domain, smooth ENat.top, all public/private headers and scalar
+right-derivative/negativity/Riccati/initial/jump assumptions remain. Direct Lean,
+scoped builds, frozen exact type/universe/allowed-axiom/unsafe/partial checks,
+full surrounding-source guards and scans passed. Failed literal/proof attempts
+and independent evidence are in
+harness/reports/metric-scalar-433-20261001-evidence.
+
+The original upstream endpoint build a01 was authoritatively stopped by the
+interruption: handle85355 unknown, PIDs65764/65773 absent and no other wrapper/
+Lake/compiler process matched. Its exit status is unavailable, not assumed0
+or1, and no result was invented. Source/log hashes and stopped observation
+are preserved. The same clean pinned7a48598 command resumed from existing
+cache at endpoint-build-a02, root handle4314, wrapper99855/lake99864. These new
+processes are confirmed live; do not restart on a polling timeout. Agent
+monitor_upstream_verification owns readiness/unique exact smooth/endgame and
+final probes; root drains4314. a02 live logs were excluded from sealed evidence.
+
+Actual compatible smoothability S remains proved. Original universal Hamilton
+inputs/convergence and final reserved Poincare theorem remain unconstructed/
+absent; no full root or completion audit passed. Remaining recorded consumer
+scopes include ChartIdentification, HeatKernelPDEn, HeatApproxIdentity,
+ParabolicHolderMultiplier, RiemannianMetricInstanceTransportGeometric,
+RoundSphereChart and RicciFlowEquation. HeatKernelPDEn exact old public literals
+have passed original type/axiom checks but proof scope is not yet accepted.
+
+Exact first action: validate SAME resumed4314 processes/argv/source and terminal
+result, then check readiness of PoincareEndgame and its genuine smooth theorem
+before the final adapter using proved S. In parallel freeze/review the smallest
+remaining proof/API scope while preserving actual models/data/norms/hypotheses.
+Every old root import, canonical target and strict audit obligation remains.
+Finish retained full-root compatibility, successor context readback and all
+exact final completion gates at one clean stable HEAD before claiming the goal.
+
 ## 2026-09-30 Levi derivative normalization independently accepted
 
 At mathematical-source757d0dda020470783afef7b0edfe1601da00274c, root independently

@@ -1,0 +1,1 @@
+Original a01 handle/PIDs were authoritatively missing after interruption; no terminal result or exit status was invented. a02 resumes the same pinned command with existing cache. This is immutable start metadata only; active a02 logs/results remain outside this completed archive.

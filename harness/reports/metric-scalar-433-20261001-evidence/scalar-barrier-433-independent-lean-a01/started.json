@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/ScalarCurvatureBarrier.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "started_at": "2026-10-01T02:07:02.936507+00:00",
+  "source_head": "a15e50291dfb2d7cbf026ce129ca37bc07ecf4ab",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,398 @@
+worktree /Users/mjkang/Develop/poincare
+HEAD 55e4859b54acb9044d7966a12df7a12afa8b52fd
+branch refs/heads/main
+
+worktree /private/tmp/poincare-workers/finite-atlas-chart-pushforward
+HEAD f01f07fd7c3a485441b400221ab03537b22018e8
+branch refs/heads/worker/finite-atlas-chart-pushforward
+prunable gitdir file points to non-existent location
+
+worktree /private/tmp/poincare-workers/hamilton-auxiliary-combination
+HEAD 6c28d8eafa69b8ebb354a2b7506c57e62b7bbf2d
+branch refs/heads/worker/hamilton-auxiliary-combination
+prunable gitdir file points to non-existent location
+
+worktree /Users/mjkang/.codex/worktrees/completion-status-contract/poincare
+HEAD b7701374afd07122fdc5a813bd92b8b5b5176c50
+branch refs/heads/codex/completion-status-contract-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-actual-evolution-derivative/poincare
+HEAD a62ea3a1015ab60d4c045a503160a00d155eee45
+branch refs/heads/codex/core-actual-evolution-derivative-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-buffered-atlas/poincare
+HEAD faba70533af9da1f20248e6538c00de29d6944f5
+branch refs/heads/codex/core-buffered-atlas-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-c2-covariance/poincare
+HEAD 11cdec73a929fc8a494b0c96174c16c4c140694c
+branch refs/heads/codex/core-c2-covariance-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-centered-shrink/poincare
+HEAD 5bb3b5a0c4a2a8f3da31eb9d9640546d2246345e
+branch refs/heads/codex/core-centered-shrink-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-coordinates/poincare
+HEAD f8c486e81cdca5b95ec408943b162d01be468d29
+branch refs/heads/codex/core-chartlift-coordinates-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-metric-variation/poincare
+HEAD 327efda06544b3420d1d0fe9bf3ac58a0ccf3972
+branch refs/heads/codex/core-chartlift-metric-variation-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-overlap-jets/poincare
+HEAD a054e15415a322de5a4bddde7e175522a036fbe7
+branch refs/heads/codex/core-chartlift-overlap-jets-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-positivity/poincare
+HEAD 396f79895aeb264d768383d42c6f800dcc9a1841
+branch refs/heads/codex/core-chartlift-positivity-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-smoothness/poincare
+HEAD 85be752e11650dcbb84eccfe1ddbb4f5fa5fadd3
+branch refs/heads/codex/core-chartlift-smoothness-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-chartlift-support/poincare
+HEAD 12b7c24bff465720a54117d57ec0666acc3d3ee1
+branch refs/heads/codex/core-chartlift-support-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coeff-actual/poincare
+HEAD e9eefe01b53fce83ff60110fd17f48a5a08f371f
+branch refs/heads/codex/core-coeff-actual-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coeff-bridge/poincare
+HEAD 8b72c1c1a18d66c9483b4decd90c005c316f4110
+branch refs/heads/codex/core-coeff-bridge-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coeff-inverse-smooth/poincare
+HEAD ecc082f22a8c248bd973c446ce03407e47e5b2bc
+branch refs/heads/codex/core-coeff-inverse-smooth-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coeff-partial-smooth/poincare
+HEAD 34857052d034cfa40e17a31b105110a4d191476a
+branch refs/heads/codex/core-coeff-partial-smooth-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coeff-tensor-basis/poincare
+HEAD 0b6d9674b086f0a447433062657aa3a87b913e7a
+branch refs/heads/codex/core-coeff-tensor-basis-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coefficient-neighborhoods/poincare
+HEAD 85d08a9620e0b6b337dab2791c7e5ec59b1f732a
+branch refs/heads/codex/core-coefficient-neighborhoods-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-compact-extension/poincare
+HEAD 4f3212b760ef12f25fbc38cb39dc76b38708191f
+branch refs/heads/codex/core-compact-extension-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-compact-overlap/poincare
+HEAD 504ad0dedbd7bcad2c32bac21522177434a7d4dd
+branch refs/heads/codex/core-compact-overlap-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-constructed-covariance/poincare
+HEAD 8220d71e95466b7e0505857ef7c21b292bf8dc4d
+branch refs/heads/codex/core-constructed-covariance-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-coupled-forcing/poincare
+HEAD ed2692f31d37ea169e344fa783533a0c38480e94
+branch refs/heads/codex/core-coupled-forcing-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-deturck-lower-smooth/poincare
+HEAD c71b724b34eb6f25017076c6e1d99f71dba6a646
+branch refs/heads/codex/core-deturck-lower-smooth-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-differential-symmetry/poincare
+HEAD 38d377b27da688d2c64f9740e9e10058ed989800
+branch refs/heads/codex/core-differential-symmetry-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-dq-full/poincare
+HEAD 23d28b9d575b6892c8e937c4927eeb8aef65cd80
+branch refs/heads/codex/core-dq-full-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-dq-inverse/poincare
+HEAD f56bfc083f8742707ff47bfa3561df8253990c4b
+branch refs/heads/codex/core-dq-inverse-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-dq-joint/poincare
+HEAD 63de897428c9c032c77771fcbe5b0e40bbe2d908
+branch refs/heads/codex/core-dq-joint-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-dq-unit-matrix/poincare
+HEAD 57e7a8e4eadd6fe43e269c5d202661cd619faa6c
+branch refs/heads/codex/core-dq-unit-matrix-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-dq-unit/poincare
+HEAD 2f3e1890cd0319e5b89a66bb9798317524785408
+branch refs/heads/codex/core-dq-unit-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-finite-bounds/poincare
+HEAD 3023dddac0bf593dc5381c195980113386b0b082
+branch refs/heads/codex/core-finite-bounds-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-gated-transitions/poincare
+HEAD 9aceacdef593b21809687c6ca985b7326a76a3a3
+branch refs/heads/codex/core-gated-transitions-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-global-bound/poincare
+HEAD 3ddc6f2f50b958bce65fde4dd9b3769d23fa0eca
+branch refs/heads/codex/core-global-bound-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-global-producer/poincare
+HEAD 7d7847e8629e082616bc308fd9a021b2b78c16a7
+branch refs/heads/codex/core-global-producer-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-global-range/poincare
+HEAD 8a265ff72d71e9a047543a086358a1d7b70fda92
+branch refs/heads/codex/core-global-range-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-graph-chain-rule/poincare
+HEAD 8dab08ad141fdbc9faea4c55ec27621446821d37
+branch refs/heads/codex/core-graph-chain-rule-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-graph-pullback/poincare
+HEAD e7442fe8208b4e51d8fb606d298ff92fe8b34127
+branch refs/heads/codex/core-graph-pullback-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-graph-support/poincare
+HEAD faca9da7442e5de637c68b5a882d6a712f05da48
+branch refs/heads/codex/core-graph-support-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-graph-time-jets/poincare
+HEAD 870a6d5489834890df6b9714590aa55d7ef7755d
+branch refs/heads/codex/core-graph-time-jets-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-hessian-carrier/poincare
+HEAD f4a515611ea77441e4be14fe05a6f7d0a5698841
+branch refs/heads/codex/core-hessian-carrier-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-holder-pullback/poincare
+HEAD 17525d24e92ba10a583769a5fdb64fa1fd7ad6b3
+branch refs/heads/codex/core-holder-pullback-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-initial-metric-cone/poincare
+HEAD 4b3b42380e333dd8f33682d5f44b2bdf796d83c4
+branch refs/heads/codex/core-initial-metric-cone-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-initial-metric-existence/poincare
+HEAD ed1244c5a7932fdb9660b02396241d41a0007b8f
+branch refs/heads/codex/core-initial-metric-existence-a03
+
+worktree /Users/mjkang/.codex/worktrees/core-initial-metric-local/poincare
+HEAD 16e07d4c08bd00750dee8acca8a07ed4e61ea14a
+branch refs/heads/codex/core-initial-metric-local-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-inverse-regularity/poincare
+HEAD 8cee754a7fbe7e09f59d1dc04447d166774244f3
+branch refs/heads/codex/core-inverse-regularity-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-local-family-matrix-inverse/poincare
+HEAD c1336b97f20111594ff5dacf0b738b83ab1cbef8
+branch refs/heads/codex/core-local-family-matrix-inverse-a02
+
+worktree /Users/mjkang/.codex/worktrees/core-local-family/poincare
+HEAD 127725fb499b88b5b35654479d8859afeb8f4448
+branch refs/heads/codex/core-local-family-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-localization-hessian/poincare
+HEAD 7a28cc2931a4816df51b51cbb11291385602d5b8
+branch refs/heads/codex/core-localization-hessian-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-localization-localization/poincare
+HEAD 37572da63a314d277a3e3d46dc1946f54cb76ef0
+branch refs/heads/codex/core-localization-localization-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-localization-product/poincare
+HEAD a8d0adb0f386b8d8ac29547fe545c9dfe35eb2f4
+branch refs/heads/codex/core-localization-product-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-localization-realization/poincare
+HEAD 8e426cf0b5ec71d4e8bfb0a035a7da9233af47ec
+branch refs/heads/codex/core-localization-realization-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-parameter-jet/poincare
+HEAD 86b43a1892f20f4c34d0b236b13dc2eada23aa67
+branch refs/heads/codex/core-parameter-jet-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-pullback-twojet/poincare
+HEAD 34417fdb8fd4e5f9ffd07f4d0d781f8be38b221a
+branch refs/heads/codex/core-pullback-twojet-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-refined-atlas/poincare
+HEAD 36dfd00eb3f67ae378a06f1aa25371d0c335ea4d
+branch refs/heads/codex/core-refined-atlas-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare
+HEAD 8e3a69fffaf44b5c1b916995aba50253a7e1dd16
+branch refs/heads/codex/core-smoothability-upstream-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-compatibility/poincare
+HEAD c9477ffed629f9aa8ed762b6a894d6abaeff8da4
+branch refs/heads/codex/core-tensor-compatibility-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-graph-jet-import/poincare
+HEAD edf37045fc370051f284c94e206f86a50304a598
+branch refs/heads/codex/core-tensor-graph-jet-import-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-graph-jet/poincare
+HEAD 31c0b15217c68dcc13313e3071707f92517d61db
+branch refs/heads/codex/core-tensor-graph-jet-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-operator/poincare
+HEAD bf081dbc0895d451ffdf33e25487de832985276e
+branch refs/heads/codex/core-tensor-operator-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-values/poincare
+HEAD f05d498666472f54e2e0052e002c99edcc357690
+branch refs/heads/codex/core-tensor-values-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-tensor-weights/poincare
+HEAD b1e33ac07cec813e7ffbd7cc4c2044dda0fc095a
+branch refs/heads/codex/core-tensor-weights-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-unweighted-bound/poincare
+HEAD e580fdf6dde1a187b9f2263df095d414063e1b1b
+branch refs/heads/codex/core-unweighted-bound-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-unweighted-germ/poincare
+HEAD a45ff461a1d20e644dfd9b9d5ab6084233c68c29
+branch refs/heads/codex/core-unweighted-germ-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-vector-extension/poincare
+HEAD 16f31d65b619b20599921649a0563e88f53c4526
+branch refs/heads/codex/core-vector-extension-a01
+
+worktree /Users/mjkang/.codex/worktrees/core-Y-tensor-transport/poincare
+HEAD 57cad6fae83ef32c5a424c1d5b957624e829235c
+branch refs/heads/codex/core-Y-tensor-transport-a01
+
+worktree /Users/mjkang/.codex/worktrees/covering-433/poincare
+HEAD 0d2cfb6407176a056d25c3f16e423517c8f60cff
+branch refs/heads/codex/covering-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/flat-connection-433/poincare
+HEAD 0d2e599a5a674fa8f7ca63c9c4b5f046c41b2d83
+branch refs/heads/codex/flat-connection-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/focused-job-gates/poincare
+HEAD a87c80a6ff90952ad633b894ef6fc467e60c8ee6
+branch refs/heads/codex/focused-job-gates
+
+worktree /Users/mjkang/.codex/worktrees/formalization-until-6/poincare
+HEAD 64c9f999c9c699cb52e87ea36fad294d43b774d4
+branch refs/heads/codex/formalization-until-6
+
+worktree /Users/mjkang/.codex/worktrees/frozen-statement-contracts/poincare
+HEAD b6fd0aa7d6865696f69b1c03c82d507fd4b5f5d7
+branch refs/heads/codex/frozen-statement-contracts
+
+worktree /Users/mjkang/.codex/worktrees/geodesic-433/poincare
+HEAD 8159987d5047a98cea00ca1baeb0081979126405
+branch refs/heads/codex/geodesic-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/grounded-topology-consumer/poincare
+HEAD ed7052816a46ee5a2328364b421d411edd3f401f
+branch refs/heads/codex/grounded-topology-consumer
+
+worktree /Users/mjkang/.codex/worktrees/harness-throughput/poincare
+HEAD 3d8dc9f20a5b943d1fc55019ad968713947ca137
+branch refs/heads/codex/harness-throughput
+
+worktree /Users/mjkang/.codex/worktrees/heat-integral-433/poincare
+HEAD d8505155870d41803f39c728019ed4cd9f180c17
+branch refs/heads/codex/heat-integral-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/heat-pde-433/poincare
+HEAD 6bb85b1f72d2cf603cae7f97f2d106b9fc558c6f
+branch refs/heads/codex/heat-pde-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/holder-space-433/poincare
+HEAD 0eeafeb5dda18a7ed89c622223490f7d6f37d6b3
+branch refs/heads/codex/holder-space-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/incremental-verification/poincare
+HEAD 55e4859b54acb9044d7966a12df7a12afa8b52fd
+branch refs/heads/codex/poincare-completion
+
+worktree /Users/mjkang/.codex/worktrees/initial-metric-433/poincare
+HEAD e4b5e533609f2cfe8fdc7c660e7ea0bc870c7e02
+branch refs/heads/codex/initial-metric-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/levi-civita-433/poincare
+HEAD 495edaec9af03eee3fdc789393a66206f3525d04
+branch refs/heads/codex/levi-civita-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/maximum-principle-433/poincare
+HEAD 492b3c025d8df1f5d417e9f870b099f909a46072
+branch refs/heads/codex/maximum-principle-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/metric-pullback-433/poincare
+HEAD 9e468974dc2ff85db10aaef0ef9ce5d032ee1358
+branch refs/heads/codex/metric-pullback-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/minimal-stokes-imports/poincare
+HEAD bb679a16121c4299b1a7ff75018ee69e3ac03366
+branch refs/heads/codex/minimal-stokes-imports
+
+worktree /Users/mjkang/.codex/worktrees/poincare-interrupted-evidence
+HEAD 81cde04465ad1a0e6144c0d219e62d4cfd7ed7d3
+branch refs/heads/codex/allow-repeated-interrupted-task-block
+
+worktree /Users/mjkang/.codex/worktrees/proof-atlas-jacobian/poincare
+HEAD 9e50d3dcaccb3bc38fe6f5c31dbc75083c4d5277
+branch refs/heads/codex/proof-atlas-jacobian-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-hamilton-auxiliary/poincare
+HEAD 67635cce171f00d50bcbc35c58156fc9795f0f29
+branch refs/heads/codex/proof-hamilton-auxiliary-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-hamilton-cubic/poincare
+HEAD d52f1e26d74906c6cb64e41eaafdd9bf141fb342
+branch refs/heads/codex/proof-hamilton-cubic-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-metric-rescale-gradient/poincare
+HEAD 6dba1c34e7705d4234e5cd673b308dd898dbf4be
+branch refs/heads/codex/proof-metric-rescale-gradient-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-quotient-geometric/poincare
+HEAD 3fbec21aecc78d1161e5cc18230b78d8c6ad75c7
+branch refs/heads/codex/proof-quotient-geometric-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-quotient-hessian/poincare
+HEAD a57f0b3e9fe02d0a7becc4234154b96db4d58ce3
+branch refs/heads/codex/proof-quotient-hessian-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-quotient-mixed/poincare
+HEAD b5ea8173f4caf29d7094a0c29821c0146a240ce9
+branch refs/heads/codex/proof-quotient-mixed-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-smooth-germ-invertibility/poincare
+HEAD 01e3a4d1dec4fd7855f6d67587970d0a634e147e
+branch refs/heads/codex/proof-smooth-germ-invertibility-a01
+
+worktree /Users/mjkang/.codex/worktrees/proof-workflow-improvements/poincare
+HEAD 5d408763930e07ab9237c5c889056064bbe398ec
+branch refs/heads/codex/proof-workflow-improvements
+
+worktree /Users/mjkang/.codex/worktrees/recover-finite-atlas/poincare
+HEAD 8d45c1343724ffd01571ce6cf9290b8c4b2223ec
+branch refs/heads/codex/recover-finite-atlas-20260929
+
+worktree /Users/mjkang/.codex/worktrees/round-metric-433/poincare
+HEAD 177cdbcae5b2f6c019e4781ee03bcc7704b6f7a9
+branch refs/heads/codex/round-metric-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare
+HEAD 757d0dda020470783afef7b0edfe1601da00274c
+branch refs/heads/codex/scalar-barrier-433-a01
+
+worktree /Users/mjkang/.codex/worktrees/statement-433-migration/poincare
+HEAD 1d94e7669e9b37513385d66cbf14024db097de74
+branch refs/heads/codex/statement-433-migration-a01
+
+worktree /Users/mjkang/.codex/worktrees/theorem-dependency-registry/poincare
+HEAD 64351986f66e9654ea233d0eab90acd4ae57df4b
+branch refs/heads/codex/theorem-dependency-registry
+
+worktree /Users/mjkang/.codex/worktrees/upstream-integration-433/poincare
+HEAD 76c8d66a49f80e6953a45282eaf70b47d9dc11a7
+branch refs/heads/codex/upstream-integration-433
+

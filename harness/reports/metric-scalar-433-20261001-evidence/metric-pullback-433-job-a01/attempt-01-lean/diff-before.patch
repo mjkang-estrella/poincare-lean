@@ -1,0 +1,13 @@
+diff --git a/Poincare/Global/SmoothInitialMetricLocalPullback.lean b/Poincare/Global/SmoothInitialMetricLocalPullback.lean
+index d594d40c..7c50b86a 100644
+--- a/Poincare/Global/SmoothInitialMetricLocalPullback.lean
++++ b/Poincare/Global/SmoothInitialMetricLocalPullback.lean
+@@ -53,7 +53,7 @@ theorem localEuclideanInner_coordinates (p x : M)
+     (TangentSpace (closedSmoothModelWithCorners 3)) p
+   let eR := trivializationAt ℝ (fun _ : M ↦ ℝ) p
+   let eHom := e.continuousLinearMap (RingHom.id ℝ) eR
+-  have hxHom : x ∈ eHom.baseSet := by simpa [eHom, eR] using hx
++  have hxHom : x ∈ eHom.baseSet := by simpa [eHom, eR, e] using hx
+   ext a b
+   simp only [Trivialization.continuousLinearMap_apply, ContinuousLinearMap.comp_apply]
+   rw [Trivialization.continuousLinearMapAt_apply_of_mem ℝ eHom hxHom]

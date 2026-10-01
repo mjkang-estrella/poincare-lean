@@ -1,0 +1,25 @@
+commit 9e468974dc2ff85db10aaef0ef9ce5d032ee1358
+Author:     Myeongjin Kang <mj.kang@hey.com>
+AuthorDate: Wed Sep 30 18:45:43 2026 -0700
+Commit:     Myeongjin Kang <mj.kang@hey.com>
+CommitDate: Wed Sep 30 18:45:43 2026 -0700
+
+    Preserve metric pullback coordinates across Lean 4.33
+    
+    Unfold the existing proof-local tangent trivialization when simplifying the
+    Hom-trivialization base-set membership. Use the original chart-domain
+    hypothesis without adding another premise or changing the metric data.
+    
+    Keep all four exact declaration types, domain restrictions, smooth ENat.top
+    regularity, both pullback slots and every other source byte unchanged.
+    
+    Tested: Scoped Lean 4.33.1 compilation and local metric-pullback build
+    Tested: Four frozen exact type/universe and permitted axiom/safety checks
+    Tested: Byte guard for all source outside the permitted coordinate proof
+    Tested: Scoped forbidden-token scan and git diff --check
+    Not-tested: Full retained-root and completion audits, owned by orchestrator
+    Scope-risk: narrow
+    Reversibility: clean
+
+ Poincare/Global/SmoothInitialMetricLocalPullback.lean | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

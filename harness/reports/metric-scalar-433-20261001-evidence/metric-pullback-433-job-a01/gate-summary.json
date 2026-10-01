@@ -1,0 +1,15 @@
+{
+  "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+  "source_sha256": "21223dc69e7349430677ef4bbaebc8b6d8bc18f0e957f382bbc7338c8330e251",
+  "frozen_exact_type_universe_checks": 4,
+  "permitted_axiom_safety_closure_checks": 4,
+  "all_source_outside_coordinate_proof_body_byte_identical": true,
+  "actual_metric_definition_and_pinned_context_hashes_unchanged": true,
+  "original_domain_hypotheses_both_slots_and_smooth_ENat_top_preserved": true,
+  "forbidden_scan": "no matches, exit1",
+  "diff_check_exit": 0,
+  "changed_files": [
+    "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+  ],
+  "acceptance": "worker gates passed; independent root acceptance pending"
+}

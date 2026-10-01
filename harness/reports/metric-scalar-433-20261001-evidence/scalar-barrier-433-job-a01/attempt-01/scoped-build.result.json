@@ -1,0 +1,18 @@
+{
+  "name": "scoped-build",
+  "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "build",
+    "Poincare.Global.ScalarCurvatureBarrier"
+  ],
+  "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+  "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+  "started_utc": "2026-10-01T02:01:55.888143+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 8.859210875001736,
+  "completed_utc": "2026-10-01T02:02:04.747308+00:00",
+  "passed": true
+}

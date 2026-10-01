@@ -1,0 +1,11 @@
+{
+  "candidate": "9e468974dc2ff85db10aaef0ef9ce5d032ee1358",
+  "accepted": true,
+  "direct_lean": 0,
+  "scoped_build": 0,
+  "rigid_types_universes_axioms_safety": 0,
+  "entire_source_outside_one_proof_body_byte_identical": true,
+  "actual_metric_and_domain_hypotheses_unchanged": true,
+  "S_remains_discharged": true,
+  "H_unchanged": true
+}

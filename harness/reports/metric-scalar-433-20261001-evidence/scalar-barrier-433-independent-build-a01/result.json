@@ -1,0 +1,20 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.ScalarCurvatureBarrier"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T02:08:18.610015+00:00",
+  "source_head": "590bbe48c99002319cf0417cc3f8ef0f2e7282cd",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 8.399754047393799,
+  "completed_at": "2026-10-01T02:08:27.022633+00:00",
+  "log_hashes": {
+    "stdout.log": "f19ba199d9a4a238562daa837f7c5657a8af8a696bb0926d6e057f07632adf47",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

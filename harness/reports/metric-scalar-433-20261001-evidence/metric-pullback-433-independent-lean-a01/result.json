@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/SmoothInitialMetricLocalPullback.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/metric-pullback-433/poincare",
+  "started_at": "2026-10-01T01:48:50.378603+00:00",
+  "source_head": "9e468974dc2ff85db10aaef0ef9ce5d032ee1358",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 13.158908128738403,
+  "completed_at": "2026-10-01T01:49:03.550482+00:00",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

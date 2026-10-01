@@ -1,0 +1,54 @@
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_coordinates
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_contMDiffOn
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_symm
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricLocalPullback.localEuclideanInner_pos
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean:31:3: error: Application type mismatch: The argument
+  Poincare.closedSmoothModelWithCorners
+has type
+  (n : ℕ) → ModelWithCorners ℝ (Poincare.ClosedSmoothModel n) (Poincare.ClosedSmoothModel n)
+but is expected to have type
+  ModelWithCorners ?m.174 ?m.176 ?m.179
+in the application
+  @TangentSpace ?m.174 ?m.175 ?m.176 ?m.177 ?m.178 ?m.179 ?m.180 Poincare.closedSmoothModelWithCorners
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean:32:18: error: Application type mismatch: The argument
+  Poincare.closedSmoothModelWithCorners
+has type
+  (n : ℕ) → ModelWithCorners ℝ (Poincare.ClosedSmoothModel n) (Poincare.ClosedSmoothModel n)
+but is expected to have type
+  ModelWithCorners ?m.194 ?m.196 ?m.199
+in the application
+  @TangentSpace ?m.194 ?m.195 ?m.196 ?m.197 ?m.198 ?m.199 ?m.200 Poincare.closedSmoothModelWithCorners
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean:26:4: error: Application type mismatch: The argument
+  Poincare.closedSmoothModelWithCorners
+has type
+  (n : ℕ) → ModelWithCorners ℝ (Poincare.ClosedSmoothModel n) (Poincare.ClosedSmoothModel n)
+but is expected to have type
+  ModelWithCorners ?m.115 ?m.117 ?m.120
+in the application
+  @TangentSpace ?m.115 ?m.116 ?m.117 ?m.118 ?m.119 ?m.120 ?m.121 Poincare.closedSmoothModelWithCorners
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean:27:56: error: Application type mismatch: The argument
+  Poincare.closedSmoothModelWithCorners
+has type
+  (n : ℕ) → ModelWithCorners ℝ (Poincare.ClosedSmoothModel n) (Poincare.ClosedSmoothModel n)
+but is expected to have type
+  ModelWithCorners ?m.135 ?m.137 ?m.140
+in the application
+  @TangentSpace ?m.135 ?m.136 ?m.137 ?m.138 ?m.139 ?m.140 ?m.141 Poincare.closedSmoothModelWithCorners
+/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/metric-pullback-433-task-a01/helper-literals-a01/OriginalCorrectedProbe-a01.lean:169:0: error: stuck at solving universe constraint
+  u =?= max (max u ?u.80754) ?u.81831
+while trying to unify
+  Bundle.TotalSpace.{u, 0, max ?u.80754 ?u.81831}
+    (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ) fun y =>
+    sorryAx.{(max ?u.81831 ?u.80754) + 2} (Unit → Type (max ?u.81831 ?u.80754)) true
+      (Function.const Name ()
+        `harness.v2.state.upstream-verification-20260930.metric-pullback-433-task-a01.helper-literals-a01.OriginalCorrectedProbe-a01.25.54.28.21.54.21._sorry._@.harness.v2.state.upstream-verification-20260930.metric-pullback-433-task-a01.helper-literals-a01.OriginalCorrectedProbe-a01.1631396760._hygCtx._hyg.642) : Type
+    (max u ?u.80754 ?u.81831)
+with
+  Bundle.TotalSpace.{u, 0, max ?u.80754 ?u.81831}
+    (Poincare.ClosedSmoothModel 3 →L[ℝ] Poincare.ClosedSmoothModel 3 →L[ℝ] ℝ) fun y =>
+    sorryAx.{(max ?u.81831 ?u.80754) + 2} (Unit → Type (max ?u.81831 ?u.80754)) true
+      (Function.const Name ()
+        `harness.v2.state.upstream-verification-20260930.metric-pullback-433-task-a01.helper-literals-a01.OriginalCorrectedProbe-a01.25.54.28.21.54.21._sorry._@.harness.v2.state.upstream-verification-20260930.metric-pullback-433-task-a01.helper-literals-a01.OriginalCorrectedProbe-a01.1631396760._hygCtx._hyg.642) : Type
+    (max u ?u.80754 ?u.81831)

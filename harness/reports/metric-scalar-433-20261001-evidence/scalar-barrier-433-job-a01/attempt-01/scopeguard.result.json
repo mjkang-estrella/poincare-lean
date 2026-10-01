@@ -1,0 +1,15 @@
+{
+  "name": "scopeguard",
+  "cwd": "/Users/mjkang/.codex/worktrees/scalar-barrier-433/poincare",
+  "argv": [
+    "python3",
+    "harness/v2/state/upstream-verification-20260930/scalar-barrier-433-task-a01/check-scope.py"
+  ],
+  "base_sha": "757d0dda020470783afef7b0edfe1601da00274c",
+  "source_sha256": "5d1474a50c2522038d2e8230e395f777790445a4b9cedf42b0d8bf41409bbed3",
+  "started_utc": "2026-10-01T02:02:26.628474+00:00",
+  "exit_code": 0,
+  "elapsed_seconds": 0.04109762504231185,
+  "completed_utc": "2026-10-01T02:02:26.669520+00:00",
+  "passed": true
+}
