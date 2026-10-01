@@ -1052,3 +1052,4 @@ import Poincare.Global.ParabolicGraphSupport
 import Poincare.Global.ParabolicGraphTimeJets
 
 import Poincare.Global.SmoothabilityExistenceStatement
+import Poincare.Global.VerifiedSmoothability
