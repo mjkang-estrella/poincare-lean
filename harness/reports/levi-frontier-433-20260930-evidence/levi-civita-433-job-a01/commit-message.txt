@@ -1,0 +1,14 @@
+Preserve Levi-Civita assertions with the explicit derivative model
+
+Supply the original model I to Mathlib's renamed vector derivative at the
+six reviewed scalar call sites. The shared operator formula is unchanged;
+retain all uniqueness and Koszul proofs, torsion predicate, hypotheses,
+norms and connection data for retained-root integration.
+
+Constraint: Permit exactly six reviewed derivative API normalizations
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Direct Lean, scoped build, ten frozen type/axiom checks, byte guard
+Tested: Placeholder scan and git diff --check
+Not-tested: Retained-root and full completion audits

@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/levi-civita-433-api-a01/original-api-formula.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare",
+  "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "toolchain": "leanprover/lean4:v4.30.0-rc2",
+  "started_at": "2026-10-01T01:12:52.985748+00:00"
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/LeviCivitaUniqueness.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+  "started_at": "2026-10-01T01:28:34.187630+00:00",
+  "source_head": "495edaec9af03eee3fdc789393a66206f3525d04",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 2.969708204269409,
+  "completed_at": "2026-10-01T01:28:37.170891+00:00",
+  "log_hashes": {
+    "stdout.log": "c7e990eb827db07639345d52b72283c2b328b8681cb55c989651593eb65cbcfe",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

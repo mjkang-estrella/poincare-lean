@@ -1,0 +1,16 @@
+{
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/LeviCivitaUniqueness.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+  "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+  "head": "88f9d463817418be93153be8a137570854b9dad4",
+  "started_at": "2026-10-01T01:26:00.125086+00:00",
+  "exit_code": 0,
+  "finished_at": "2026-10-01T01:26:16.839068+00:00"
+}

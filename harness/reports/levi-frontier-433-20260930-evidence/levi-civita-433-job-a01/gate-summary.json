@@ -1,0 +1,103 @@
+{
+  "state": "worker-gates-passed-not-accepted",
+  "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+  "exact_normalizations": 6,
+  "frozen_type_receipts": 10,
+  "axiom_receipts": 10,
+  "source_sha256": "0dd63ed04403eb6bdb84aac0190082a186da7d195c101ac5f0fe566831c4d204",
+  "token_scan_exit_1_means_no_matches": true,
+  "gates": [
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.LeviCivitaUniqueness"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:29.042068+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-10-01T01:26:36.947874+00:00",
+      "gate": "build-a01"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:44.188753+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-10-01T01:26:44.210725+00:00",
+      "gate": "diff-check-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/levi-civita-433-task-a01/NormalizedFrozenProbe-a02.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:44.188766+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-10-01T01:26:56.354434+00:00",
+      "gate": "frozen-probe-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/LeviCivitaUniqueness.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:00.125086+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-10-01T01:26:16.839068+00:00",
+      "gate": "lean-a01"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/levi-civita-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:00.039810+00:00",
+      "exit_code": 0,
+      "finished_at": "2026-10-01T01:26:00.066002+00:00",
+      "gate": "scope-a01"
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/LeviCivitaUniqueness.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+      "base_commit": "88f9d463817418be93153be8a137570854b9dad4",
+      "head": "88f9d463817418be93153be8a137570854b9dad4",
+      "started_at": "2026-10-01T01:26:44.188743+00:00",
+      "exit_code": 1,
+      "finished_at": "2026-10-01T01:26:44.195075+00:00",
+      "gate": "token-scan-a01"
+    }
+  ]
+}

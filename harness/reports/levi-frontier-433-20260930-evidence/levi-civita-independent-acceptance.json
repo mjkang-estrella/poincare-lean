@@ -1,0 +1,12 @@
+{
+  "candidate": "495edaec9af03eee3fdc789393a66206f3525d04",
+  "accepted": true,
+  "same_old_current_scalar_operator_formula_proved_by_rfl": true,
+  "six_only_model_preserving_API_substitutions": true,
+  "all_proof_bodies_and_other_data_byte_identical": true,
+  "direct_lean": 0,
+  "scoped_build": 0,
+  "exact_normalized_types_universes_axioms_safety": 0,
+  "new_core_closure": [],
+  "S_still_discharged": true
+}

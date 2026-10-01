@@ -1,5 +1,41 @@
 # Handoff Snapshot
 
+## 2026-09-30 Levi derivative normalization independently accepted
+
+At mathematical-source757d0dda020470783afef7b0edfe1601da00274c, root independently
+accepted exactly six old extDerivFun f -> mvfderiv I f calls in
+LeviCivitaUniqueness. The original supplied model and scalar derivative formula
+are preserved; old/current formula equality passed by rfl. All actual proof
+bodies, TorsionFreeAt, other source, norms and hypotheses stay byte-identical.
+Direct Lean, scoped build, all ten rigid normalized types/universes and allowed
+axiom/unsafe/partial gates, full-source guard and scans passed. Full evidence
+and the next scoped compiler result are in
+harness/reports/levi-frontier-433-20260930-evidence.
+
+The next read-only immediate-consumer build ended with exact errors in
+ChartIdentification, HeatKernelPDEn, HeatApproxIdentity, ParabolicHolderMultiplier,
+RiemannianMetricInstanceTransportGeometric, ScalarCurvatureBarrier,
+RoundSphereChart, SmoothInitialMetricLocalPullback and RicciFlowEquation.
+No failures were accepted or bypassed. A source-only inventory isolates the
+metric-pullback coordinate proof and chart inverse/derivative API normalization.
+The first coordinates type serialization needs explicit dependent families;
+resolve it against original checked types before new blind review/dispatch.
+
+Compatible smoothability S remains genuinely proved on this branch. Original
+Hamilton inputs/convergence remain unconstructed independently. The reserved
+final theorem is absent, full root/strict contract migration remains pending,
+and the same upstream endpoint source build is live (root85355,
+wrapper65764/lake65773). No complete-Poincare claim is made.
+
+Exact first action: validate that same live handle and terminal result, then
+inspect rootstate metric-pullback-433-task-a01/helper-literals-a01 and the
+chart-metric-next-migration-shapes-a01 report. Freeze/review one data-preserving
+proof/API scope at a time; retain all old root imports, canonical target,
+strict obligations and failed evidence. Use proved S plus an independently
+verified smooth Poincare producer for the unconditional final endpoint only
+once the latter is genuinely checked; finish every completion gate at one
+clean stable HEAD before claiming the goal.
+
 ## 2026-09-30 Heat proof compatibility independently accepted
 
 At mathematical-sourcec556cb33b05be305e6b93ad946b1f15881c4bbb2, root independently

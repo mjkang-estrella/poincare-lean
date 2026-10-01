@@ -1,0 +1,16 @@
+def MetricCompatibleAt (x : M) : Prop :=
+  ∀ {Y Z : Π y : M, TangentSpace I y},
+    MDiffAt (T% Y) x → MDiffAt (T% Z) x →
+      ∀ v : TangentSpace I x,
+        mvfderiv I (fun y ↦ g y (Y y) (Z y)) x v =
+          g x (cov Y x v) (Z x) + g x (Y x) (cov Z x v)
+
+/--
+Pointwise torsion-freeness of a connection: the symmetry defect of the
+covariant derivative is the Lie bracket at `x`.
+-/
+def TorsionFreeAt (x : M) : Prop :=
+  ∀ {X Y : Π y : M, TangentSpace I y},
+    MDiffAt (T% X) x → MDiffAt (T% Y) x →
+      cov Y x (X x) - cov X x (Y x) = VectorField.mlieBracket I X Y x
+

@@ -1,0 +1,28 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.BianchiIdentity",
+    "Poincare.ChartIdentification",
+    "Poincare.Global.HeatApproxIdentity",
+    "Poincare.Global.HeatKernelPDEn",
+    "Poincare.Global.ParabolicGraphSupport",
+    "Poincare.Global.ParabolicHolderMultiplier",
+    "Poincare.Global.ParabolicSpatialPullbackChainRule",
+    "Poincare.Global.RiemannianMetricInstanceTransportGeometric",
+    "Poincare.Global.RoundSphereChart",
+    "Poincare.Global.ScalarCurvatureBarrier",
+    "Poincare.Global.SmoothInitialMetricLocalPullback",
+    "Poincare.Global.SmoothInitialMetricPositiveCone",
+    "Poincare.Global.SmoothabilityFiniteAtlasNerveReduction",
+    "Poincare.Global.VolumeFiniteness",
+    "Poincare.RicciFlowEquation",
+    "Poincare.RicciFlowInterface"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T01:30:00.135549+00:00",
+  "source_head": "757d0dda020470783afef7b0edfe1601da00274c",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

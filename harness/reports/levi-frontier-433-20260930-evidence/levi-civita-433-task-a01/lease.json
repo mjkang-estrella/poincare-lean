@@ -1,0 +1,8 @@
+{
+  "owner": "/root/migration_root_inventory",
+  "base": "88f9d463817418be93153be8a137570854b9dad4",
+  "worktree": "/Users/mjkang/.codex/worktrees/levi-civita-433/poincare",
+  "allowed_file": "Poincare/LeviCivitaUniqueness.lean",
+  "scope": "Only six explicit-model scalar derivative substitutions",
+  "status": "allocated"
+}

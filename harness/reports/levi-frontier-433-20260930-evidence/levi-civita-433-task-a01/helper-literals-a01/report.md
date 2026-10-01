@@ -1,0 +1,11 @@
+# Levi-Civita original normalized literal evidence, helper a01
+
+Original environment is clean `55e4859b54acb9044d7966a12df7a12afa8b52fd`, Lean 4.30.0-rc2, cwd `/Users/mjkang/.codex/worktrees/incremental-verification/poincare`. No source, existing snapshot, existing probe or context pin was edited. No helper agent or full build was used.
+
+The normalized original ten-declaration probe now exits 0. `probe-a01.result.json` records exact argv/cwd/commit/toolchain/time/exit. Its stdout records all ten `FROZEN_CONTRACT_OK` and all ten `AXIOM_CONTRACT_OK` receipts. The original synthetic-metavariable rejection, rigid universe arity/order, `isDefEq`, transitive allowed-axiom and unsafe/partial checks remain byte-identical outside the four corrected literal strings.
+
+The four corrected literals are MetricCompatibleAt, TorsionFreeAt, leviCivita_unique_at and koszul_formula. Their ambiguous partially applied `(TangentSpace.{u_1, 0, u_2, u_3} I)` families are replaced by `(fun y : M => TangentSpace.{u_1, 0, u_2, u_3} I y)`. The two uniqueness conclusion applications and one Koszul application use explicit `CovariantDerivative.toFun cov` projections instead of context-free upward coercion notation. Those projections are the original connection's application map, not a new connection or data change.
+
+Every I/E/H/M parameter, original universe list/order, hypothesis and norm instance is preserved. The six already passing literals are unchanged verbatim, including leviCivita_unique_at_values. The actual shared derivative formula `(fun (f : M → ℝ) (z : M) => (NormedSpace.fromTangentSpace (f z)).toContinuousLinearMap.comp (mfderiv I 𝓘(ℝ, ℝ) f z))` remains unchanged. No statement was omitted, weakened, coerced to a different conclusion or hidden behind unresolved metavariables.
+
+`corrected-literal-set-a01.json` supplies all ten successful literal records without invented definition/review pins. `literal-corrections.json` and `probe-serialization-only.diff` preserve exact before/after serialization changes. This is original-environment serialization evidence. Root owns the corrected snapshot and workflow_postmortem owns the later independent blind read-back; no 4.33 proof acceptance or final endpoint acceptance is claimed.

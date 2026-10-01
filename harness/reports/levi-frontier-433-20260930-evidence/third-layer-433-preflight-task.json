@@ -1,0 +1,26 @@
+{
+  "base": "757d0dda020470783afef7b0edfe1601da00274c",
+  "objective": "Read-only exact retained-root immediate consumer compatibility after checked foundations and Levi normalization. No source edits or full default build.",
+  "targets": [
+    "Poincare.BianchiIdentity",
+    "Poincare.ChartIdentification",
+    "Poincare.Global.HeatApproxIdentity",
+    "Poincare.Global.HeatKernelPDEn",
+    "Poincare.Global.ParabolicGraphSupport",
+    "Poincare.Global.ParabolicHolderMultiplier",
+    "Poincare.Global.ParabolicSpatialPullbackChainRule",
+    "Poincare.Global.RiemannianMetricInstanceTransportGeometric",
+    "Poincare.Global.RoundSphereChart",
+    "Poincare.Global.ScalarCurvatureBarrier",
+    "Poincare.Global.SmoothInitialMetricLocalPullback",
+    "Poincare.Global.SmoothInitialMetricPositiveCone",
+    "Poincare.Global.SmoothabilityFiniteAtlasNerveReduction",
+    "Poincare.Global.VolumeFiniteness",
+    "Poincare.RicciFlowEquation",
+    "Poincare.RicciFlowInterface"
+  ],
+  "excluded_already_verified": "VerifiedSmoothability already passed direct fresh-artifact/exact type/axiom gates; avoid concurrent duplicate source-building its large upstream closure while original endpoint build is live. Full integration gate still required.",
+  "core_status": "Actual S discharged; H input/convergence and final PC remain unproved.",
+  "allowed_source_edits": [],
+  "stop": "Record resisting compiler shapes before reviewed scope."
+}
