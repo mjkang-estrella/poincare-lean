@@ -32,7 +32,7 @@ theorem hasDerivWithinAt_neg_inv
     {r : ℝ → ℝ} {dr t : ℝ} {s : Set ℝ}
     (h : HasDerivWithinAt r dr s t) (hne : r t ≠ 0) :
     HasDerivWithinAt (fun x => -(r x)⁻¹) (dr / (r t) ^ 2) s t := by
-  convert (h.inv hne).neg using 1 <;> ring
+  convert! (h.inv hne).neg using 1 <;> ring
 
 /-- If a negative function satisfies `r' ≥ κ r²`, its negative reciprocal
 grows at least linearly with slope `κ`. -/
@@ -48,7 +48,8 @@ theorem negative_reciprocal_growth_bound
   let q : ℝ → ℝ := fun t => -(r t)⁻¹
   let dq : ℝ → ℝ := fun t => dr t / (r t) ^ 2
   have hqcont : ContinuousOn q (Set.Icc a b) := by
-    simpa [q] using (hcont.inv₀ (fun t ht => (hneg t ht).ne)).neg
+    simpa only [q, Pi.neg_apply, Pi.inv_apply] using!
+      (hcont.inv₀ (fun t ht => (hneg t ht).ne)).neg
   have hqderiv : ∀ t ∈ Set.Ioo a b,
       HasDerivWithinAt q (dq t) (Set.Ioi t) t := by
     intro t ht
