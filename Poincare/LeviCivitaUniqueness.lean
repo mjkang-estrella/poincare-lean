@@ -36,7 +36,7 @@ def MetricCompatibleAt (x : M) : Prop :=
   ∀ {Y Z : Π y : M, TangentSpace I y},
     MDiffAt (T% Y) x → MDiffAt (T% Z) x →
       ∀ v : TangentSpace I x,
-        extDerivFun (fun y ↦ g y (Y y) (Z y)) x v =
+        mvfderiv I (fun y ↦ g y (Y y) (Z y)) x v =
           g x (cov Y x v) (Z x) + g x (Y x) (cov Z x v)
 
 /--
@@ -130,12 +130,12 @@ theorem leviCivita_unique_at_values
     (hc : ∀ {Y Z : Π y : M, TangentSpace I y},
       MDiffAt (T% Y) x → MDiffAt (T% Z) x →
         ∀ v : TangentSpace I x,
-          extDerivFun (fun y ↦ g y (Y y) (Z y)) x v =
+          mvfderiv I (fun y ↦ g y (Y y) (Z y)) x v =
             g x (cov Y v) (Z x) + g x (Y x) (cov Z v))
     (hc' : ∀ {Y Z : Π y : M, TangentSpace I y},
       MDiffAt (T% Y) x → MDiffAt (T% Z) x →
         ∀ v : TangentSpace I x,
-          extDerivFun (fun y ↦ g y (Y y) (Z y)) x v =
+          mvfderiv I (fun y ↦ g y (Y y) (Z y)) x v =
             g x (cov' Y v) (Z x) + g x (Y x) (cov' Z v))
     (ht : ∀ {X Y : Π y : M, TangentSpace I y},
       MDiffAt (T% X) x → MDiffAt (T% Y) x →
@@ -218,9 +218,9 @@ theorem koszul_formula
     (hX : MDiffAt (T% X) x) (hY : MDiffAt (T% Y) x)
     (hZ : MDiffAt (T% Z) x) :
     2 * g x (cov Y x (X x)) (Z x) =
-      extDerivFun (fun y ↦ g y (Y y) (Z y)) x (X x)
-        + extDerivFun (fun y ↦ g y (X y) (Z y)) x (Y x)
-        - extDerivFun (fun y ↦ g y (X y) (Y y)) x (Z x)
+      mvfderiv I (fun y ↦ g y (Y y) (Z y)) x (X x)
+        + mvfderiv I (fun y ↦ g y (X y) (Z y)) x (Y x)
+        - mvfderiv I (fun y ↦ g y (X y) (Y y)) x (Z x)
         + g x (VectorField.mlieBracket I X Y x) (Z x)
         - g x (VectorField.mlieBracket I X Z x) (Y x)
         - g x (VectorField.mlieBracket I Y Z x) (X x) := by
