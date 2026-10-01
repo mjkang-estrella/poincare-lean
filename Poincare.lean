@@ -1050,3 +1050,5 @@ import Poincare.Global.BufferedUnweightedGraphTransportGerm
 import Poincare.Global.ParabolicGraphSupport
 
 import Poincare.Global.ParabolicGraphTimeJets
+
+import Poincare.Global.SmoothabilityExistenceStatement

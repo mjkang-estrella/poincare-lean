@@ -7,6 +7,9 @@ package «poincare» where
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4.git" @ "0df444a360eaa60ab8c11dca51a86af692955474"
 
+require DifferentialGeometry from git
+  "https://github.com/qinz1yang/differential-geometry.git" @ "7a48598d35109aa99d1cc678e2724c213cdf4ff3"
+
 @[default_target]
 lean_lib Poincare where
   roots := #[`Poincare]
