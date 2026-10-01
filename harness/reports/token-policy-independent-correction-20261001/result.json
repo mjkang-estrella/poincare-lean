@@ -1,0 +1,28 @@
+{
+  "source_head": "597dd53170ec1f12cc7c5d94213051c7d4566820",
+  "command": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom|postulate)\\b|native_decide",
+    "Poincare/Global/HeatKernelPDEn.lean",
+    "Poincare/Global/HeatApproxIdentity.lean",
+    "Poincare/Global/RoundSphereChart.lean",
+    "Poincare/ChartIdentification.lean",
+    "Poincare/Global/ParabolicHolderMultiplier.lean"
+  ],
+  "pattern_codepoints": [
+    92,
+    98,
+    40
+  ],
+  "exit_code": 1,
+  "pass": true,
+  "finding": "Some prepared Task regexes encoded two backslashes; actual single word-boundary scan independently executed now. Mathematical type/axiom/source guards remain unchanged.",
+  "source_hashes": {
+    "Poincare/Global/HeatKernelPDEn.lean": "f27fd01db68ab2c7690b8516fdef504bba91fb9c4074514d55a0c29f77831a35",
+    "Poincare/Global/HeatApproxIdentity.lean": "e156d8408d09a16e83a91cc87597022b0565755a19587e59249b1cc296919738",
+    "Poincare/Global/RoundSphereChart.lean": "d35fe3d3398e796af25d920b568b98c73cbfd9b21d45eb5433bbb9d88018e67f",
+    "Poincare/ChartIdentification.lean": "87837de15a778da5c137decbdd9dcbf086b3fcb40171c5f42c643d3876468489",
+    "Poincare/Global/ParabolicHolderMultiplier.lean": "148eefa457f40f74835030b6ab4e15f9965c89539219f976395f38438e07d2d4"
+  }
+}

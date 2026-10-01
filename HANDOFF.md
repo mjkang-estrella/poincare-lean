@@ -1,5 +1,22 @@
 # Handoff Snapshot
 
+## 2026-10-01 UTC Verification command correction
+
+An actual single-backslash word-boundary scan with postulate/native_decide was
+independently rerun on all five newly accepted source modules and found no
+forbidden tokens. Some prepared command arrays had escaped boundaries twice;
+their no-match status alone was insufficient. The corrected command bytes,
+codepoints, source hashes and receipt are in
+harness/reports/token-policy-independent-correction-20261001. Exact Lean
+type/axiom/safety and whole-source gates remain unchanged. Future Task arrays
+must use the actual single-boundary pattern, preserving older failed evidence.
+
+Metric transport's candidate compiles with data guards and safety checks, but
+its raw original kernel payload gate fails on removed
+OpenPartialHomeomorph.toPartialEquiv. No commit/acceptance was issued. A precise
+old/current projection mapping is under review; preserve original payload and
+obtain fresh binding/readback before using a successor probe.
+
 ## 2026-10-01 UTC Chart and Hessian identities independently preserved
 
 At mathematical-source eee0cd4b5cf35680d0b5db3ac8062eaa5de11895, root independently accepted and integrated
