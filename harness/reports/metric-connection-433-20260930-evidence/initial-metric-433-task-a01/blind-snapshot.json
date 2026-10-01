@@ -1,0 +1,47 @@
+{
+  "imports": [
+    "Poincare.Global.SmoothInitialMetricDefinitions"
+  ],
+  "declarations": [
+    {
+      "lean_type": "(V : Type v) → [inst : NormedAddCommGroup.{v} V] → [inst_1 : NormedSpace.{0, v} Real V] → Set.{v} (ContinuousLinearMap.{0, 0, v, v} (RingHom.id.{0} Real) V (ContinuousLinearMap.{0, 0, v, 0} (RingHom.id.{0} Real) V Real))",
+      "name": "Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms",
+      "universes": [
+        "v"
+      ]
+    },
+    {
+      "lean_type": "{M : Type u} → [inst : TopologicalSpace.{u} M] → [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] → [IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (↑Top.top.{0}) M] → M → (x : M) → ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x) Real)",
+      "name": "Poincare.SmoothInitialMetricDefinitions.localEuclideanInner",
+      "universes": [
+        "u"
+      ]
+    },
+    {
+      "lean_type": "∀ {M : Type u} [inst : TopologicalSpace.{u} M] [inst_1 : ChartedSpace.{0, u} (Poincare.ClosedSmoothModel (3 : Nat)) M] [inst_2 : IsManifold.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) (↑Top.top.{0}) M] (p x : M) (a b : TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat)) x), Eq.{1} (((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner.{u} p x) a) b) (Inner.inner.{0, 0} Real ((Bundle.Trivialization.continuousLinearMapAt.{0, u, 0, 0} Real (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p) x) a) ((Bundle.Trivialization.continuousLinearMapAt.{0, u, 0, 0} Real (FiberBundle.trivializationAt.{u, 0, 0} (Poincare.ClosedSmoothModel (3 : Nat)) (TangentSpace.{0, 0, 0, u} (Poincare.closedSmoothModelWithCorners (3 : Nat))) p) x) b))",
+      "name": "Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply",
+      "universes": [
+        "u"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+    },
+    {
+      "path": "Poincare/Global/RiemannianContext.lean",
+      "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/definitions-for-review.txt",
+      "sha256": "bbb12426349e87f2ff89cc90c873942877e224b6feb94c1425b87ac0455d747c"
+    }
+  ],
+  "snapshot_sha256": "bbbcafce3b2fa6165a8882699ba15af5f4a32f2b5d45b85bff81f0d5d42fb9ff"
+}

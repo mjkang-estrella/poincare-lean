@@ -1,5 +1,33 @@
 # Handoff Snapshot
 
+## 2026-09-30 Metric and connection proof repairs accepted
+
+At mathematical-source345ff34dc2231f0425d7eaeef246f0010d4d7ca6, root independently
+accepted the initial Euclidean-inner application proof, four round-metric proof
+bodies, and four flat-connection proof/certificate bodies on the aligned branch.
+All exact public types/universes, smooth ENat.top regularity, computational
+metric/connection data and untouched source are preserved. Scoped direct Lean,
+builds, frozen type/allowed-axiom/unsafe/partial and byteguards passed. A distinct
+agent freshly reviewed and rechecked the root-authored round-metric candidate.
+Failed type-serialization and compiler attempts are retained in
+harness/reports/metric-connection-433-20260930-evidence.
+
+The upstream Moise producer is now independently accepted at pinned release
+7a48598d35109aa99d1cc678e2724c213cdf4ff3: genuine replacement smooth atlas on
+any compact T2 topological3-manifold, same topology, exact standard three axioms,
+and transitive unsafe/partial check passed. This is external proof reuse.
+The actual local coreS adapter is under separate reviewed development on
+codex/core-smoothability-upstream-a01; do not claim its independent acceptance
+from the producer alone. Original Hamilton inputs/convergence and final theorem
+remain unproved here. Full root/contract/compiler migration remains incomplete.
+
+First action: finish independent acceptance of that actual local S theorem,
+then integrate its preserved interface/wiring and pinned dependency; continue
+the SAME still-running upstream PC build (root85355, wrapper65764/lake65773).
+Exact remaining consumer compiler scopes from the recorded layer are
+HeatKernelPDE, HeatKernelIntegral and LeviCivitaUniqueness. Do not weaken their
+data/types or old strict contracts. No full4.33 completion audit has passed.
+
 ## 2026-09-30 Covering and chart-ODE migration accepted
 
 At clean mathematical-source commit8c50c7dac3f80ad5464f3aa42ab9a2a0559b258c,

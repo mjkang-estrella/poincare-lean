@@ -1,0 +1,124 @@
+Poincare/FlatModelConnection.lean:52:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/FlatModelConnection.lean:54:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/FlatModelConnection.lean:65:19: warning: `extDerivFun` has been deprecated: Use `mvfderiv` instead
+Poincare/FlatModelConnection.lean:65:8: error: `simp` made no progress
+Poincare/FlatModelConnection.lean:82:4: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  lieBracketWithin ?m.71 ?m.76 ?m.77 univ
+in the target expression
+  lieBracketWithin 𝕜 V W univ = lieBracket 𝕜 V W
+
+𝕜 : Type u_1
+inst✝² : NontriviallyNormedField 𝕜
+E : Type u_2
+inst✝¹ : NormedAddCommGroup E
+inst✝ : NormedSpace 𝕜 E
+V W : (x : E) → TangentSpace 𝓘(𝕜, E) x
+⊢ lieBracketWithin 𝕜 V W univ = lieBracket 𝕜 V W
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    V
+  has type
+    (x : E) → TangentSpace 𝓘(𝕜, E) x
+  but is expected to have type
+    E → E
+  in the application
+    lieBracketWithin 𝕜 V
+Poincare/FlatModelConnection.lean:103:37: warning: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+Poincare/FlatModelConnection.lean:104:4: warning: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+Poincare/FlatModelConnection.lean:106:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((fderiv 𝕜 (fderiv 𝕜 Z) x) (V x)) (W x)
+in the target expression
+  (fderiv 𝕜 Z x ∘SL fderiv 𝕜 W x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (W x)) (V x) -
+        (fderiv 𝕜 Z x ∘SL fderiv 𝕜 V x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (V x)) (W x) -
+      ((fderiv 𝕜 Z x) ((fderiv 𝕜 W x) (V x)) - (fderiv 𝕜 Z x) ((fderiv 𝕜 V x) (W x))) =
+    0
+
+𝕜 : Type u_1
+inst✝² : NontriviallyNormedField 𝕜
+E : Type u_2
+inst✝¹ : NormedAddCommGroup E
+inst✝ : NormedSpace 𝕜 E
+V W Z : (x : E) → TangentSpace 𝓘(𝕜, E) x
+x : E
+hV : DifferentiableAt 𝕜 V x
+hW : DifferentiableAt 𝕜 W x
+hZ' : DifferentiableAt 𝕜 (fderiv 𝕜 Z) x
+hsymm : IsSymmSndFDerivAt 𝕜 Z x
+⊢ (fderiv 𝕜 Z x ∘SL fderiv 𝕜 W x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (W x)) (V x) -
+        (fderiv 𝕜 Z x ∘SL fderiv 𝕜 V x + (fderiv 𝕜 (fderiv 𝕜 Z) x).flip (V x)) (W x) -
+      ((fderiv 𝕜 Z x) ((fderiv 𝕜 W x) (V x)) - (fderiv 𝕜 Z x) ((fderiv 𝕜 V x) (W x))) =
+    0
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Z
+  has type
+    (x : E) → TangentSpace 𝓘(𝕜, E) x
+  but is expected to have type
+    E → E
+  in the application
+    fderiv 𝕜 Z
+Poincare/FlatModelConnection.lean:103:37: warning: This simp argument is unused:
+  ContinuousLinearMap.add_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.coe_comp', Function.comp_apply,
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/FlatModelConnection.lean:104:4: warning: This simp argument is unused:
+  ContinuousLinearMap.coe_comp'
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, Function.comp_apply,
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/FlatModelConnection.lean:104:35: warning: This simp argument is unused:
+  Function.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    ContinuousLinearMap.flip_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/FlatModelConnection.lean:105:4: warning: This simp argument is unused:
+  ContinuousLinearMap.flip_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply, ContinuousLinearMap.coe_comp',
+    Function.comp_apply, map_sub]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/FlatModelConnection.lean:142:2: error: `simp` made no progress
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    Y
+  has type
+    F → F
+  but is expected to have type
+    (x : F) → TangentSpace 𝓘(ℝ, F) x
+  in the application
+    ↑(flatCovariantDerivative ℝ F) Y
+Poincare/FlatModelConnection.lean:159:4: warning: Try this: intro σ hσ x _

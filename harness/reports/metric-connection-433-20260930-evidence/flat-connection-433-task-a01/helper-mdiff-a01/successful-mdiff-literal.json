@@ -1,0 +1,8 @@
+{
+  "lean_type": "∀ {𝕜 : Type u_1} [NontriviallyNormedField 𝕜] {E : Type u_2} [NormedAddCommGroup E] [NormedSpace 𝕜 E] {σ : ∀ x : E, TangentSpace 𝓘(𝕜, E) x} {x : E}, MDifferentiableAt 𝓘(𝕜, E) (𝓘(𝕜, E).prod 𝓘(𝕜, E)) (fun y : E => (Bundle.TotalSpace.mk' E y (σ y) : Bundle.TotalSpace E (fun y : E => TangentSpace 𝓘(𝕜, E) y))) x ↔ DifferentiableAt 𝕜 σ x",
+  "name": "mdiffAt_vectorSpace_iff_differentiableAt",
+  "universes": [
+    "u_1",
+    "u_2"
+  ]
+}

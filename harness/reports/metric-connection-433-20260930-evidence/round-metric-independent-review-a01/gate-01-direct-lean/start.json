@@ -1,0 +1,18 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/round-metric-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereMetric.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "status": "## codex/round-metric-433-a01\n M Poincare/Global/RoundSphereMetric.lean\n",
+  "source_sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541",
+  "started_at": "2026-10-01T00:52:36.881554+00:00"
+}

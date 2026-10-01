@@ -1,0 +1,13 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.SmoothInitialMetricDefinitions"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T00:49:06.318664+00:00",
+  "source_head": "9db6e92eb429624e145962c580d5cbe40aaa0a75",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

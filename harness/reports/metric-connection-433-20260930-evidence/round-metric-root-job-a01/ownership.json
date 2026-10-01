@@ -1,0 +1,8 @@
+{
+  "owner": "/root",
+  "base": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "worker_dispatch": "Two agent dispatches rejected by thread limit; no worker started. Root owns the sealed reviewed proof-only scope.",
+  "allowed_file": "Poincare/Global/RoundSphereMetric.lean",
+  "data_guard": "round-metric-433-task-a01/check-scope.py",
+  "source_sha256": "db0348dda2abdbc511df11a1f33047266e8911768abd1edf98de5bba2e9d1359"
+}

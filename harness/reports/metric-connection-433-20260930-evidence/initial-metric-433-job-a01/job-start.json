@@ -1,0 +1,11 @@
+{
+  "base_sha": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "cwd": "/Users/mjkang/.codex/worktrees/initial-metric-433/poincare",
+  "started_at": "2026-09-30T22:05:15.382757+00:00",
+  "branch": "codex/initial-metric-433-a01",
+  "status": "## codex/initial-metric-433-a01\n",
+  "scope": "Only localEuclideanInner_apply proof body in Poincare/Global/SmoothInitialMetricDefinitions.lean",
+  "acceptance_authority": "root orchestrator",
+  "helper_agents": "forbidden by Task dispatch",
+  "referenced_frozen_base_matches_actual_source": true
+}

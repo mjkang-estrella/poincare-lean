@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/RoundSphereMetric.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/round-metric-433/poincare",
+  "started_at": "2026-09-30T22:09:23.896598+00:00",
+  "source_head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "owner": "/root/upstream_endpoint_comparison",
+  "base": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "worktree": "/Users/mjkang/.codex/worktrees/round-metric-433/poincare",
+  "allowed_file": "Poincare/Global/RoundSphereMetric.lean",
+  "scope": "Only four proof bodies recorded by check-scope.py may change. Preserve every alias, inclusion derivative, metric tensor/model function, private instance, bundled metric constructor and other proof byte-for-byte.",
+  "status": "allocated"
+}

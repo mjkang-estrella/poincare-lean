@@ -1,0 +1,72 @@
+AXIOM_CONTRACT_OK: Poincare.RoundSphere3
+AXIOM_CONTRACT_OK: Poincare.RoundSphereAmbient4
+AXIOM_CONTRACT_OK: Poincare.RoundSphereModel3
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inclusionDeriv
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_apply
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_mfderiv_eq
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_symm
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_pos
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_isVonNBounded
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_modelInner
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_modelInner_eq
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_modelInner_contDiff
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_contMDiff
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3
+AXIOM_CONTRACT_OK: Poincare.roundSphereMetric3_inner_eq
+FROZEN_CONTRACT_OK: Poincare.RoundSphere3
+FROZEN_CONTRACT_OK: Poincare.RoundSphereAmbient4
+FROZEN_CONTRACT_OK: Poincare.RoundSphereModel3
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inclusionDeriv
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner_apply
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:9:4: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HMod
+    ((I : ModelWithCorners ?m.44 ?m.46 ?m.49) →
+      {M : Type ?u.635619} →
+        [inst : TopologicalSpace M] →
+          [inst_1 : ChartedSpace ?m.49 M] →
+            {E' : Type ?u.635618} →
+              [inst_2 : NormedAddCommGroup E'] →
+                [inst_3 : NormedSpace ?m.44 E'] →
+                  {H' : Type ?u.635617} →
+                    [inst_4 : TopologicalSpace H'] →
+                      (I' : ModelWithCorners ?m.44 E' H') →
+                        {M' : Type ?u.635616} →
+                          [inst_5 : TopologicalSpace M'] →
+                            [inst_6 : ChartedSpace H' M'] →
+                              (f : M → M') → (x : M) → TangentSpace I x →L[?m.44] TangentSpace I' (f x))
+    (EuclideanSpace ℝ (Fin 4)) ?m.55
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:10:28: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  HMod
+    ((I : ModelWithCorners ?m.59 ?m.61 ?m.64) →
+      {M : Type ?u.716080} →
+        [inst : TopologicalSpace M] →
+          [inst_1 : ChartedSpace ?m.64 M] →
+            {E' : Type ?u.716079} →
+              [inst_2 : NormedAddCommGroup E'] →
+                [inst_3 : NormedSpace ?m.59 E'] →
+                  {H' : Type ?u.716078} →
+                    [inst_4 : TopologicalSpace H'] →
+                      (I' : ModelWithCorners ?m.59 E' H') →
+                        {M' : Type ?u.716077} →
+                          [inst_5 : TopologicalSpace M'] →
+                            [inst_6 : ChartedSpace H' M'] →
+                              (f : M → M') → (x : M) → TangentSpace I x →L[?m.59] TangentSpace I' (f x))
+    (EuclideanSpace ℝ (Fin 4)) ?m.70
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:555:0: error: unresolved metavariables in frozen type for Poincare.roundSphereMetric3_inner_mfderiv_eq
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner_symm
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner_pos
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner_isVonNBounded
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_modelInner
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_modelInner_eq
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:657:0: error: frozen type mismatch for Poincare.roundSphereMetric3_modelInner_contDiff: actual ContDiff ℝ (↑⊤)
+  Poincare.roundSphereMetric3_modelInner, expected ContDiff ℝ ⊤ Poincare.roundSphereMetric3_modelInner
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:16:46: error: Invalid `⟨...⟩` notation: The expected type of this term could not be determined
+harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe.lean:674:0: error: unresolved metavariables in frozen type for Poincare.roundSphereMetric3_inner_contMDiff
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3
+FROZEN_CONTRACT_OK: Poincare.roundSphereMetric3_inner_eq

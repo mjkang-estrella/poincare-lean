@@ -1,0 +1,10 @@
+{
+  "base_sha": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "cwd": "/Users/mjkang/.codex/worktrees/round-metric-433/poincare",
+  "started_at": "2026-10-01T00:51:45.782402+00:00",
+  "source_sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541",
+  "status": "## codex/round-metric-433-a01\n M Poincare/Global/RoundSphereMetric.lean\n",
+  "scope": "Independent read-only review; no builds, source mutation, merge, commit or acceptance",
+  "source_author": "root orchestrator",
+  "reviewer": "exact_target_migration"
+}

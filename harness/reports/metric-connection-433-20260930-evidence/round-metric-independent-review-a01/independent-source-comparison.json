@@ -1,0 +1,86 @@
+{
+  "method": "Independent declaration block comparison, preserving all unchanged blocks and all changed-proof headers",
+  "allowed_proofs": [
+    "roundSphereMetric3_inner_apply",
+    "roundSphereMetric3_inner_mfderiv_eq",
+    "roundSphereMetric3_modelInner_contDiff",
+    "roundSphereMetric3_inner_contMDiff"
+  ],
+  "declarations": [
+    {
+      "name": "RoundSphere3",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "RoundSphereAmbient4",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "RoundSphereModel3",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereAmbient4_finrank_fact",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inclusionDeriv",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inner",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_apply",
+      "header_byte_identical": true,
+      "proof_body_changed": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_mfderiv_eq",
+      "header_byte_identical": true,
+      "proof_body_changed": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_symm",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_pos",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_isVonNBounded",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_modelInner",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_modelInner_eq",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_modelInner_contDiff",
+      "header_byte_identical": true,
+      "proof_body_changed": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_contMDiff",
+      "header_byte_identical": true,
+      "proof_body_changed": true
+    },
+    {
+      "name": "roundSphereMetric3",
+      "whole_declaration_byte_identical": true
+    },
+    {
+      "name": "roundSphereMetric3_inner_eq",
+      "whole_declaration_byte_identical": true
+    }
+  ],
+  "all_other_declarations_unchanged": true,
+  "imports_preamble_unchanged": true,
+  "candidate_sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541"
+}

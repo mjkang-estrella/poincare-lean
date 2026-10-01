@@ -1,0 +1,4 @@
+Poincare/Global/SmoothInitialMetricDefinitions.lean:1:0: warning: 
+'Mathlib.Geometry.Manifold.VectorBundle.SmoothSection' has been deprecated: please replace this import by
+
+import Mathlib.Geometry.Manifold.VectorBundle.ContMDiffSection

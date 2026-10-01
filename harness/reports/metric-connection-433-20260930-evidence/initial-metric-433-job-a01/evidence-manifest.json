@@ -1,0 +1,320 @@
+{
+  "commit": "e4b5e533609f2cfe8fdc7c660e7ea0bc870c7e02",
+  "files": [
+    {
+      "path": "attempt-01-lean/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "attempt-01-lean/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "attempt-01-lean/final.json",
+      "bytes": 801,
+      "sha256": "9518e0ee2211913fbc86579cfd1eb820bebbf3f3260c06463c53d6df5679ede6"
+    },
+    {
+      "path": "attempt-01-lean/output.log",
+      "bytes": 237,
+      "sha256": "0d91715aa9b999563d2f2c03be471ddf531038aca7dcbf055eb0a013ddf0e5a7"
+    },
+    {
+      "path": "attempt-01-lean/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "attempt-01-lean/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "attempt-01-lean/start.json",
+      "bytes": 573,
+      "sha256": "4a0ed9efe0d7ce6acc8f26ebeb2defb8a9a90083e31d034550834c64d387ee87"
+    },
+    {
+      "path": "candidate-final.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "commit-message.txt",
+      "bytes": 880,
+      "sha256": "0935963e6f8a49a1a8c2dfe7105874650237d87d17bca680ce969e4977f9fe6e"
+    },
+    {
+      "path": "commit-record.txt",
+      "bytes": 1281,
+      "sha256": "fb70eb36de6477906779d33b81d13852eef36b211c9d7a159d0cd32a083f6545"
+    },
+    {
+      "path": "commit.txt",
+      "bytes": 41,
+      "sha256": "2183229d333cf98ae40b557dadf9d992a62a5d9fc2eb2934e2b5525d09329681"
+    },
+    {
+      "path": "committed-final.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "context-manifest.json",
+      "bytes": 2193,
+      "sha256": "87f49b60963af93c9187e52529cfde3bfe6e4c0f23a1c70f9c96cb7fe17474c2"
+    },
+    {
+      "path": "gate-02-scoped-build/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-02-scoped-build/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-02-scoped-build/final.json",
+      "bytes": 786,
+      "sha256": "698e735633056490061a8299da691678d97caf0b488152f9ab61c4c74d09882d"
+    },
+    {
+      "path": "gate-02-scoped-build/output.log",
+      "bytes": 3592,
+      "sha256": "1c39e20e95c3ec65d49ced9b1437c940a35ab6eb771cea07ac9484e0634edfe9"
+    },
+    {
+      "path": "gate-02-scoped-build/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-02-scoped-build/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-02-scoped-build/start.json",
+      "bytes": 558,
+      "sha256": "88c4ab923abffe8576d9669a82a08c4ca888d1b1e8d766ad17976fa6ad625e97"
+    },
+    {
+      "path": "gate-03-frozen-probe/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-03-frozen-probe/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-03-frozen-probe/final.json",
+      "bytes": 855,
+      "sha256": "ab9857f74445fd5affec9f570bfeb1463b2cdf68f3a69e9433a69c0c8d48b2c1"
+    },
+    {
+      "path": "gate-03-frozen-probe/output.log",
+      "bytes": 511,
+      "sha256": "f263a2842a03dad3763e3c0ffeef2d8ee067f5322d4e40fc56486bd401ddcc60"
+    },
+    {
+      "path": "gate-03-frozen-probe/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-03-frozen-probe/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-03-frozen-probe/start.json",
+      "bytes": 627,
+      "sha256": "bc4cd4e59017b92fbb72eb6f0852631076bd5fefc0471ef76eb32bc3fd7e227a"
+    },
+    {
+      "path": "gate-04-scope-data/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-04-scope-data/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-04-scope-data/final.json",
+      "bytes": 785,
+      "sha256": "174c9d8a45c43c70f0cac401bf83ae0d95b5ffdf8d2b9012ccc60007e0d8eec7"
+    },
+    {
+      "path": "gate-04-scope-data/output.log",
+      "bytes": 99,
+      "sha256": "909ff3aa54d582a7696aaea887ac2135d7b43f7d8d76a51aad609ca8d3dcba06"
+    },
+    {
+      "path": "gate-04-scope-data/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-04-scope-data/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-04-scope-data/start.json",
+      "bytes": 555,
+      "sha256": "4aaccc0d6b7323bdf82b6379b0ece3a94326cda20fc41fd188f13932d1d92d7a"
+    },
+    {
+      "path": "gate-05-forbidden-scan/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-05-forbidden-scan/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-05-forbidden-scan/final.json",
+      "bytes": 798,
+      "sha256": "acd67d74c396a1c7dfb8f5856a002836c45e8cf13ad19af8ba0de247955f4cb5"
+    },
+    {
+      "path": "gate-05-forbidden-scan/output.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gate-05-forbidden-scan/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-05-forbidden-scan/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-05-forbidden-scan/start.json",
+      "bytes": 568,
+      "sha256": "5f876fe75eadf85d9f264818968ca9fcc7a9c4ff0fb5dc7a3abbaee444114436"
+    },
+    {
+      "path": "gate-06-diff-check/diff-after.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-06-diff-check/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "gate-06-diff-check/final.json",
+      "bytes": 710,
+      "sha256": "3603cf54c2ffa00b2b72717babd508e3da16ef3dba5b3eb7303bfbac3ba21d53"
+    },
+    {
+      "path": "gate-06-diff-check/output.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "gate-06-diff-check/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-06-diff-check/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "gate-06-diff-check/start.json",
+      "bytes": 480,
+      "sha256": "bfa0267e022c77cf3a510dac40bd7e1c6410024bcfa908244ea0538459284fec"
+    },
+    {
+      "path": "gate-summary.json",
+      "bytes": 645,
+      "sha256": "9bd8e0af7af860031587454a98d7e0bd9cfff3db5ea76db0776f92997cbb7768"
+    },
+    {
+      "path": "initial-recorded-failure.log",
+      "bytes": 152819,
+      "sha256": "87a8e3bdd5df54e0b104b3508b4b1033e1613a5bbe513cd6d2a5a265d08ba359"
+    },
+    {
+      "path": "job-start.json",
+      "bytes": 540,
+      "sha256": "0ef63ce5db65df761a0b607314f3b9c33a065971a7ace242f3e71599d8f5a2df"
+    },
+    {
+      "path": "post-commit-status.txt",
+      "bytes": 32,
+      "sha256": "01ec09b523de4e8a9e3268d4903f08a9c085dc18e8dddf46765212fd2ee9a1e4"
+    },
+    {
+      "path": "report.md",
+      "bytes": 3155,
+      "sha256": "ccabf98e1773090a25982237008e2135e6b5caa2221f8e2a415370922f0eb7bd"
+    },
+    {
+      "path": "run_evidence.py",
+      "bytes": 1981,
+      "sha256": "83a93d97cac3774577f863fe0eb87cf012ce48eef83e4c6cf0da1045635a7903"
+    },
+    {
+      "path": "scoped-commit/diff-after.patch",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "scoped-commit/diff-before.patch",
+      "bytes": 684,
+      "sha256": "f4f8065044879c5fcba1f4976572269ed5cdf4eb236d7510781903bea7f0279d"
+    },
+    {
+      "path": "scoped-commit/final.json",
+      "bytes": 834,
+      "sha256": "8311028b0207cbad027d089873fc5c9e30eac37e3863e39d5d7a2fd4137cd5e6"
+    },
+    {
+      "path": "scoped-commit/output.log",
+      "bytes": 153,
+      "sha256": "80d855075744c318a67bb53f5849da15cb2eb37c89828a4b3073b346d393d4a4"
+    },
+    {
+      "path": "scoped-commit/source-after.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "scoped-commit/source-before.lean",
+      "bytes": 1860,
+      "sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+    },
+    {
+      "path": "scoped-commit/start.json",
+      "bytes": 661,
+      "sha256": "a7d1f35c6dc2b89accec23333cca28387a4a247e2f4fae0d99b1e19c31c5db2e"
+    },
+    {
+      "path": "source-base.lean",
+      "bytes": 1912,
+      "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013"
+    },
+    {
+      "path": "task.snapshot.json",
+      "bytes": 7686,
+      "sha256": "0b940a7cebe6a63aaa63eb01978250a0b8c0e5c9f33509365f26934f38eb94cb"
+    }
+  ]
+}

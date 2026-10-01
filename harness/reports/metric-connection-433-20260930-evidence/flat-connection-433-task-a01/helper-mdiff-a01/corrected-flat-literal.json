@@ -1,0 +1,8 @@
+{
+  "lean_type": "(𝕜 : Type u_1) → [inst : NontriviallyNormedField.{u_1} 𝕜] → (E : Type u_2) → [inst_1 : NormedAddCommGroup.{u_2} E] → [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] → CovariantDerivative.{u_1, u_2, u_2, u_2, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) E (fun x : E => TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x)",
+  "name": "flatCovariantDerivative",
+  "universes": [
+    "u_1",
+    "u_2"
+  ]
+}

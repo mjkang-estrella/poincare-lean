@@ -1,0 +1,96 @@
+diff --git a/Poincare/FlatModelConnection.lean b/Poincare/FlatModelConnection.lean
+index 4f72ce04..3505d525 100644
+--- a/Poincare/FlatModelConnection.lean
++++ b/Poincare/FlatModelConnection.lean
+@@ -54,17 +54,19 @@ def flatCovariantDerivative :
+         letI : NormedSpace 𝕜 (TangentSpace 𝓘(𝕜, E) x) := ‹NormedSpace 𝕜 E›
+         exact fderiv_add h1 h2
+       leibniz := by
+-        intro σ g x hσ hg _
+-        have h1 := mdiffAt_vectorSpace_iff_differentiableAt.mp hσ
+-        have h2 : DifferentiableAt 𝕜 g x :=
+-          mdifferentiableAt_iff_differentiableAt.mp hg
+-        have h3 := (h2.hasFDerivAt.smul h1.hasFDerivAt).fderiv
+-        refine h3.trans ?_
+-        congr 1
+-        ext v
+-        simp only [extDerivFun, mfderiv_eq_fderiv,
+-          ContinuousLinearMap.smulRight_apply]
+-        rfl }
++        set_option backward.isDefEq.respectTransparency false in
++          intro σ g x hσ hg _
++          have h1 := mdiffAt_vectorSpace_iff_differentiableAt.mp hσ
++          have h2 : DifferentiableAt 𝕜 g x :=
++            mdifferentiableAt_iff_differentiableAt.mp hg
++          have h3 := (h2.hasFDerivAt.smul h1.hasFDerivAt).fderiv
++          refine h3.trans ?_
++          congr 1
++          ext v
++          change (fderiv 𝕜 g x v) • σ x =
++            (mfderiv 𝓘(𝕜, E) 𝓘(𝕜, 𝕜) g x v) • σ x
++          rw [mfderiv_eq_fderiv]
++          rfl }
+ 
+ @[simp]
+ lemma flatCovariantDerivative_apply
+@@ -78,9 +80,9 @@ The model-space Lie bracket is the ordinary vector-field Lie bracket.
+ lemma mlieBracket_vectorSpace_eq
+     (V W : Π x : E, TangentSpace 𝓘(𝕜, E) x) :
+     mlieBracket 𝓘(𝕜, E) V W = lieBracket 𝕜 V W := by
+-  rw [← mlieBracketWithin_univ, mlieBracketWithin_eq_lieBracketWithin,
+-    lieBracketWithin_univ]
+-
++  set_option backward.isDefEq.respectTransparency false in
++    rw [← mlieBracketWithin_univ, mlieBracketWithin_eq_lieBracketWithin,
++      lieBracketWithin_univ]
+ /--
+ **Euclidean space is flat.**  The Riemann curvature operator of the flat
+ connection vanishes at every point where the field `Z` is differentiable with
+@@ -94,18 +96,18 @@ theorem flatCovariantDerivative_curvatureOp_eq_zero
+     (hsymm : IsSymmSndFDerivAt 𝕜 Z x) :
+     CovariantDerivative.curvatureOp (flatCovariantDerivative 𝕜 E) V W Z x
+       = 0 := by
+-  rw [CovariantDerivative.curvatureOp_apply]
+-  show (fderiv 𝕜 (fun y ↦ (fderiv 𝕜 Z y) (W y)) x) (V x)
+-      - (fderiv 𝕜 (fun y ↦ (fderiv 𝕜 Z y) (V y)) x) (W x)
+-      - (fderiv 𝕜 Z x) (mlieBracket 𝓘(𝕜, E) V W x) = (0 : E)
+-  rw [fderiv_clm_apply hZ' hW, fderiv_clm_apply hZ' hV,
+-    mlieBracket_vectorSpace_eq]
+-  simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply,
+-    ContinuousLinearMap.coe_comp', Function.comp_apply,
+-    ContinuousLinearMap.flip_apply, map_sub]
+-  rw [hsymm (V x) (W x)]
+-  abel
+-
++  set_option backward.isDefEq.respectTransparency false in
++    rw [CovariantDerivative.curvatureOp_apply]
++    show (fderiv 𝕜 (fun y ↦ (fderiv 𝕜 Z y) (W y)) x) (V x)
++        - (fderiv 𝕜 (fun y ↦ (fderiv 𝕜 Z y) (V y)) x) (W x)
++        - (fderiv 𝕜 Z x) (mlieBracket 𝓘(𝕜, E) V W x) = (0 : E)
++    rw [fderiv_clm_apply hZ' hW, fderiv_clm_apply hZ' hV,
++      mlieBracket_vectorSpace_eq]
++    simp only [VectorField.lieBracket, ContinuousLinearMap.add_apply,
++      ContinuousLinearMap.coe_comp', Function.comp_apply,
++      ContinuousLinearMap.flip_apply, map_sub]
++    rw [hsymm (V x) (W x)]
++    abel
+ /-! ## The flat connection is Levi-Civita for the Euclidean metric
+ 
+ The two defining properties of the Levi-Civita connection — vanishing torsion
+@@ -137,11 +139,11 @@ theorem flatCovariantDerivative_inner_compatible
+     fderiv ℝ (fun y ↦ ⟪Y y, Z y⟫) x v =
+       ⟪Z x, flatCovariantDerivative ℝ F Y x v⟫ +
+         ⟪Y x, flatCovariantDerivative ℝ F Z x v⟫ := by
+-  rw [fderiv_inner_apply ℝ hY hZ v,
+-    real_inner_comm (Z x) (fderiv ℝ Y x v)]
+-  simp only [flatCovariantDerivative_apply]
+-  exact add_comm _ _
+-
++  set_option backward.isDefEq.respectTransparency false in
++    rw [fderiv_inner_apply ℝ hY hZ v,
++      real_inner_comm (Z x) (fderiv ℝ Y x v)]
++    simp only [flatCovariantDerivative_apply]
++    exact add_comm _ _
+ /-! ## Smoothness of the flat connection -/
+ 
+ open Bundle in

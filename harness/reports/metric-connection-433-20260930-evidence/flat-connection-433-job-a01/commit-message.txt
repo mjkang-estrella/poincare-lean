@@ -1,0 +1,13 @@
+Preserve the flat connection across Lean 4.33 proof changes
+
+Normalize the scalar model derivative in the Leibniz certificate and use
+proof-local transparency for the existing bracket, curvature, and inner
+product calculations. Keep the connection map and every frozen public
+interface unchanged for retained-root integration.
+
+Constraint: Preserve connection data and all 14 frozen public types
+Confidence: high
+Scope-risk: narrow
+Reversibility: clean
+Tested: Direct Lean, scoped build, frozen types/axioms, byte guard, token scan
+Not-tested: Retained-root integration and full completion audits

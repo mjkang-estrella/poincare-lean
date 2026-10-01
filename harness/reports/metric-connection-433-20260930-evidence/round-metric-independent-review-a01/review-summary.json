@@ -1,0 +1,20 @@
+{
+  "reviewer": "exact_target_migration",
+  "candidate_author": "root orchestrator",
+  "base_sha": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "source_sha256": "3708d528df92dd840e68f48c7f458c341cc8093b1f692cd503b31e77edd51541",
+  "scoped_direct_lean_exit": 0,
+  "frozen_type_universe_checks": 16,
+  "permitted_axiom_safety_checks": 16,
+  "task_guard_exit": 0,
+  "independent_declaration_blocks_checked": 17,
+  "only_four_proof_bodies_changed": true,
+  "computational_data_other_proofs_imports_instances_and_headers_preserved": true,
+  "genuine_chart_neighborhood_membership_used_for_both_symmL_apply_rewrites": true,
+  "smooth_order_preserved": "ENat.top coerced into WithTop ENat",
+  "forbidden_scan": "no matches, exit1",
+  "diff_check_exit": 0,
+  "build": "Not duplicated; root reported existing scoped build exit0/artifact ready",
+  "acceptance": "Not performed; scoped review has no actionable findings",
+  "captured_at": "2026-10-01T00:53:44.556819+00:00"
+}

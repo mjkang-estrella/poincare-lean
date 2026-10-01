@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "c457bbb2d327cff6c2899b1196c8089bb9b2852e76d2665358c2bd32732d5ed5",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.RoundSphere3",
+      "mathematical_statement": "RoundSphere3 is a fixed Type0, defined as the unit metric sphere centered at 0 in Euclidean real 4-space. It is a subtype, with no declaration universe parameters or variable manifold input. This declaration supplies the standard sphere carrier only."
+    },
+    {
+      "name": "Poincare.RoundSphereAmbient4",
+      "mathematical_statement": "RoundSphereAmbient4 is the fixed Type0 EuclideanSpace R (Fin 4), namely real Euclidean 4-space. It has no declaration universe parameters or hypotheses."
+    },
+    {
+      "name": "Poincare.RoundSphereModel3",
+      "mathematical_statement": "RoundSphereModel3 is the fixed Type0 EuclideanSpace R (Fin 3), namely real Euclidean 3-space used as the smooth sphere model. It has no declaration universe parameters or hypotheses."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inclusionDeriv",
+      "mathematical_statement": "For each explicit x in the fixed unit 3-sphere, roundSphereMetric3_inclusionDeriv gives a continuous real linear map from the tangent space at x, modeled by modelWithCornersSelf R Euclidean3, to Euclidean4. The supplied definition is the manifold derivative at x of the subtype inclusion into Euclidean4, using the sphere and ambient models. The type alone asserts neither injectivity nor any norm bound. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner",
+      "mathematical_statement": "For each explicit x in the fixed unit 3-sphere, roundSphereMetric3_inner gives a continuous real bilinear form on its tangent fiber. The supplied definition pulls back the Euclidean4 inner product along roundSphereMetric3_inclusionDeriv x. This declaration is the bilinear-form datum; symmetry, positivity and smoothness are separate interfaces below. There are no declaration universe parameters or arbitrary-manifold hypotheses."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_apply",
+      "mathematical_statement": "For every explicit sphere point x and explicit tangent vectors v,w at x, roundSphereMetric3_inner(x)(v,w) equals the Euclidean real inner product of inclusionDeriv(x)(v) and inclusionDeriv(x)(w). This is the exact pullback evaluation identity, with no declaration universe parameters. It makes no separate curvature or Einstein claim."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_mfderiv_eq",
+      "mathematical_statement": "For every explicit sphere point x and explicit tangent vectors v,w at x, the inner form equals the ambient real inner product of the manifold derivative of the subtype inclusion applied to v and that derivative applied to w. The derivative uses the sphere model 𝓡 3 and the Euclidean4 self model, and both outputs are explicitly shown to lie in RoundSphereAmbient4. This restates the same pullback form directly in terms of mfderiv, rather than asserting a different metric or derivative. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_symm",
+      "mathematical_statement": "For every explicit sphere point x and explicit tangent vectors v,w at x, roundSphereMetric3_inner(x)(v,w)=roundSphereMetric3_inner(x)(w,v). This is symmetry of the pointwise tangent bilinear form on the fixed standard sphere. It is unconditional and has no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_pos",
+      "mathematical_statement": "For every explicit sphere point x and every implicit tangent vector v at x, if v is nonzero then roundSphereMetric3_inner(x)(v,v)>0. This is positive definiteness of the tangent form, with real zero and inherited tangent-vector normed structures. There are no declaration universe parameters, no uniform numerical lower bound, and no curvature assertion."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_isVonNBounded",
+      "mathematical_statement": "For each explicit sphere point x, the set of tangent vectors v with roundSphereMetric3_inner(x)(v,v)<1 is von Neumann bounded over R in that tangent fiber. The threshold is the real number 1. This asserts boundedness at each point, not an exported uniform bound across all points or a curvature estimate. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_modelInner",
+      "mathematical_statement": "roundSphereMetric3_modelInner takes an explicit continuous real linear map D : Euclidean3 -> Euclidean4 and returns a continuous real bilinear form on Euclidean3. Its supplied definition is the pullback form (v,w) |-> inner R (D(v)) (D(w)). D is arbitrary; injectivity and positive definiteness are not asserted for every D, and degenerate maps are permitted. All carriers are fixed in Type0, with no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_modelInner_eq",
+      "mathematical_statement": "For every explicit continuous real linear D : Euclidean3 -> Euclidean4, roundSphereMetric3_modelInner D equals the displayed continuous-linear-map composition built from innerSL R, precompR, flip and D. With the supplied definition, this is the same pullback form (v,w) |-> inner R (D(v)) (D(w)) as an equality of bilinear-map data. It is not a reflexive proof-equality companion and gives no injectivity or positivity condition on arbitrary D. There are no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_modelInner_contDiff",
+      "mathematical_statement": "The map D |-> roundSphereMetric3_modelInner D between the fixed real normed spaces of continuous linear maps and continuous bilinear forms is smooth, with regularity order explicitly ENat.top coerced into WithTop ENat. This is C-infinity regularity, not the outer top of WithTop interpreted as analytic regularity. It holds for all D without injectivity or norm bounds and has no declaration universe parameters."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_contMDiff",
+      "mathematical_statement": "The section x |-> Bundle.TotalSpace.mk' x (roundSphereMetric3_inner x) of the tangent-bilinear-form bundle over the fixed unit sphere is manifold smooth. Its domain model is 𝓡 3 and its bundle total-space model is the product of 𝓡 3 with the self model of continuous real bilinear forms on Euclidean3. The regularity order is explicitly ENat.top coerced into WithTop ENat, meaning C-infinity rather than the outer analytic top. This is smoothness of a bundle section, not merely an ambient function into one globally identified fiber. There are no declaration universe parameters or exported curvature estimates."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3",
+      "mathematical_statement": "roundSphereMetric3 is actual ClosedSmoothRiemannianMetric 3 data on the fixed standard unit sphere. The supplied definition sets its inner form to roundSphereMetric3_inner and supplies symmetry, positive definiteness, bounded tangent unit balls and manifold smoothness. The pinned RiemannianContext defines this metric type as a smooth Riemannian metric on the tangent bundle with the Euclidean3 model. This constructs a metric on this particular sphere, with no arbitrary manifold input and no declaration universe parameters. The exported type does not state curvature values, the Einstein equation, a Ricci-flow solution, or global geodesic completeness."
+    },
+    {
+      "name": "Poincare.roundSphereMetric3_inner_eq",
+      "mathematical_statement": "The entire inner-form section stored in roundSphereMetric3 equals roundSphereMetric3_inner. This is equality of the metric data field with the separately defined tangent bilinear form, retaining all sphere points as function arguments. It is not equality of a proof with itself. There are no declaration universe parameters or additional curvature/flow conclusions."
+    }
+  ],
+  "findings": []
+}

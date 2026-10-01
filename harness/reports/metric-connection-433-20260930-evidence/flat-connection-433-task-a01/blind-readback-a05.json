@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "37bf0ea80223bc6de621acf38e5a8d2594562e9ad85530d5fe6d40dc4b9284c5",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "flatCovariantDerivative_contMDiff",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K : Type u_1, an implicit normed additive group E : Type u_2 with NormedSpace K E, and arbitrary implicit order k : WithTop ENat, the flatCovariantDerivative K E satisfies CovariantDerivative.ContMDiffCovariantDerivative at order k. This is the manifold-regularity predicate for that connection on E with the self model, not regularity of arbitrary vector fields. No completeness or finite-dimensionality assumptions occur, and K is not restricted to R. The order k is arbitrary, rather than a particular printed infinity value. No curvature, torsion, metric or global-manifold existence result is asserted by this interface."
+    },
+    {
+      "name": "mdiffAt_vectorSpace_iff_differentiableAt",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K : Type u_1 and normed K-vector space E : Type u_2, implicit tangent section sigma : (x : E) -> TangentSpace I(K,E) x and implicit x : E, manifold differentiability at x of the total-space section y |-> Bundle.TotalSpace.mk' E y (sigma(y)), from self model I(K,E) to its product with itself, is equivalent to ordinary K-Frechet differentiability of sigma at x. The tangent-family base and bundle codomain are explicitly E. On this vector-space manifold the tangent fibers identify with E. This is an equivalence, with no differentiability assumed in advance, and no completeness, finite-dimensionality, metric or nonflat-manifold hypothesis."
+    },
+    {
+      "name": "flatCovariantDerivative",
+      "mathematical_statement": "For explicit nontrivially normed field K : Type u_1 and explicit normed K-vector space E : Type u_2, with their normed-field, normed-group and normed-space instances implicit, flatCovariantDerivative K E is CovariantDerivative data on the self-model manifold E and its tangent family x |-> TangentSpace I(K,E) x. The supplied definition applies to a section sigma at x by fderiv K sigma x. No completeness, finite-dimensionality or inner product is required. This is the standard flat connection on a vector-space model, not construction of a Levi-Civita connection or curvature data for an arbitrary manifold."
+    },
+    {
+      "name": "flatCovariantDerivative_apply",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K and normed K-vector space E, every explicit tangent section sigma and explicit point x satisfy (flatCovariantDerivative K E)(sigma)(x) = fderiv K sigma x. There is no differentiability hypothesis: the equality uses the library's total fderiv definition, so it must not be read as asserting that sigma is differentiable. No completeness, finite-dimensionality, metric or global regularity assumptions occur."
+    },
+    {
+      "name": "mlieBracket_vectorSpace_eq",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K and normed K-vector space E, every explicit tangent vector fields V,W on the self-model manifold E have manifold Lie bracket mlieBracket I(K,E) V W equal to the ordinary vector-space Lie bracket lieBracket K V W as whole fields. No differentiability assumptions are present in this identity of the defined bracket functions; it does not assert smoothness or differentiability of V,W. Completeness, finite-dimensionality and metric hypotheses are absent."
+    },
+    {
+      "name": "flatCovariantDerivative_curvatureOp_eq_zero",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K and normed K-vector space E, implicit tangent fields V,W,Z and implicit x : E, assume V and W are K-differentiable at x, the map fderiv K Z is K-differentiable at x, and IsSymmSndFDerivAt K Z x. Under exactly these pointwise regularity and second-Frechet-derivative symmetry premises, curvatureOp(flatCovariantDerivative K E)(V,W,Z)(x)=0 in the tangent fiber at x. No global C2 hypothesis, completeness or finite-dimensionality is stated. There is no separate DifferentiableAt K Z x premise in the displayed type. This is zero curvature for the standard flat connection under its stated test-field premises, not flatness of an arbitrary metric manifold."
+    },
+    {
+      "name": "flatCovariantDerivative_torsion_eq_zero",
+      "mathematical_statement": "For independent universes u_1,u_2, an implicit nontrivially normed field K and normed K-vector space E, additionally assume CompleteSpace K, CompleteSpace E and FiniteDimensional K E. Then the entire torsion section of flatCovariantDerivative K E equals the zero section of continuous K-bilinear tangent-valued maps, at all base points x : E. The completeness and finite-dimensionality hypotheses are explicit and retained even if another formulation might avoid them. No real-scalar restriction or inner product is imposed. This states torsion-freeness of the model connection, not an arbitrary connection or manifold."
+    },
+    {
+      "name": "flatCovariantDerivative_inner_compatible",
+      "mathematical_statement": "For an implicit real inner-product space F : Type u_3 with NormedAddCommGroup F and InnerProductSpace R F instances, implicit Y,Z : F -> F and implicit x : F, assume Y and Z are real-Frechet differentiable at x. For every explicit direction v : F, fderiv R (y |-> inner R (Y(y)) (Z(y))) x applied to v equals inner R (Z(x)) ((flatCovariantDerivative R F Y x)(v)) plus inner R (Y(x)) ((flatCovariantDerivative R F Z x)(v)). The order of the arguments in the first inner product is as displayed. No completeness or finite-dimensionality is required. This is compatibility with the fixed vector-space inner product and the flat connection, not compatibility with a variable metric on a general manifold. The sole declaration universe is u_3."
+    },
+    {
+      "name": "flatCovariantDerivative_eq",
+      "mathematical_statement": "flatCovariantDerivative at universe application {u_4,u_3} equals itself as the entire data-valued connection-construction function. In this application u_4 is the scalar-field universe and u_3 is the vector-space universe, although the companion declaration lists universes u_3,u_4. All explicit field and vector-space parameters and implicit normed instances remain in the same function. This is reflexive equality of the definition, not a new connection property or equality to a different construction."
+    },
+    {
+      "name": "mdiffAt_vectorSpace_iff_differentiableAt_eq",
+      "mathematical_statement": "The fully explicit proof function @mdiffAt_vectorSpace_iff_differentiableAt at universes {u_3,u_4} equals itself. These refer respectively to the scalar-field and vector-space universes of the original theorem. All implicit type, instance, section and point arguments remain inside that same proof function. This is reflexive self-equality and gives no new differentiability equivalence or hypothesis discharge."
+    },
+    {
+      "name": "flatCovariantDerivative_apply_eq",
+      "mathematical_statement": "The fully explicit proof function @flatCovariantDerivative_apply at universes {u_3,u_4}, respectively scalar-field and vector-space universes, equals itself. Its implicit types and normed instances, explicit section and point, and full application-identity conclusion remain the same. This is reflexive proof-function equality only, not differentiability of the supplied section or a different implementation."
+    },
+    {
+      "name": "flatCovariantDerivative_curvatureOp_eq_zero_eq",
+      "mathematical_statement": "The fully explicit proof function @flatCovariantDerivative_curvatureOp_eq_zero at universes {u_3,u_4}, respectively scalar-field and vector-space universes, equals itself. All original field and normed-space instances, implicit vector fields and point, pointwise differentiability and symmetry hypotheses, and curvature-zero conclusion are retained in that same function. This reflexive equality adds no curvature result and removes no assumptions."
+    },
+    {
+      "name": "flatCovariantDerivative_torsion_eq_zero_eq",
+      "mathematical_statement": "The fully explicit proof function @flatCovariantDerivative_torsion_eq_zero at universes {u_3,u_4}, respectively scalar-field and vector-space universes, equals itself. It retains the original normed instances, completeness of the field and space, finite-dimensionality, and entire torsion-section equality. This is reflexive self-equality, not an independent torsion theorem or a relaxation of its hypotheses."
+    },
+    {
+      "name": "flatCovariantDerivative_inner_compatible_eq",
+      "mathematical_statement": "The fully explicit proof function @flatCovariantDerivative_inner_compatible at its single universe u_3 equals itself. The real scalar field, F in universe u_3, normed-group and inner-product-space instances, implicit Y,Z,x, differentiability premises, explicit direction and inner-product derivative formula all remain inside the same function. This is reflexive self-equality, with no additional metric compatibility or derivative conclusion."
+    }
+  ],
+  "findings": []
+}

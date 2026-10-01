@@ -1,0 +1,3 @@
+[codex/upstream-integration-433 345ff34d] Preserve the flat connection across Lean 4.33 proof changes
+ Date: Wed Sep 30 17:53:12 2026 -0700
+ 1 file changed, 33 insertions(+), 31 deletions(-)

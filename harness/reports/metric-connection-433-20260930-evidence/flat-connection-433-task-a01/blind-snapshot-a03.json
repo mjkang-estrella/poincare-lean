@@ -1,0 +1,136 @@
+{
+  "imports": [
+    "Poincare.FlatModelConnection"
+  ],
+  "declarations": [
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {k : WithTop.{0} ENat}, CovariantDerivative.ContMDiffCovariantDerivative.{u_1, u_2, u_2, u_2, u_2, u_2} (flatCovariantDerivative.{u_1, u_2} 𝕜 E) k",
+      "name": "flatCovariantDerivative_contMDiff",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [NontriviallyNormedField 𝕜] {E : Type u_2} [NormedAddCommGroup E] [NormedSpace 𝕜 E] {σ : ∀ x : E, TangentSpace 𝓘(𝕜, E) x} {x : E}, MDifferentiableAt 𝓘(𝕜, E) (𝓘(𝕜, E).prod 𝓘(𝕜, E)) (fun y : E => (Bundle.TotalSpace.mk' E y (σ y) : Bundle.TotalSpace E (TangentSpace 𝓘(𝕜, E)))) x ↔ DifferentiableAt 𝕜 σ x",
+      "name": "mdiffAt_vectorSpace_iff_differentiableAt",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "(𝕜 : Type u_1) → [inst : NontriviallyNormedField.{u_1} 𝕜] → (E : Type u_2) → [inst_1 : NormedAddCommGroup.{u_2} E] → [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] → CovariantDerivative.{u_1, u_2, u_2, u_2, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) E (TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E))",
+      "name": "flatCovariantDerivative",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] (σ : (x : E) → TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x) (x : E), Eq.{u_2 + 1} ((flatCovariantDerivative.{u_1, u_2} 𝕜 E) σ x) (fderiv.{u_1, u_2, u_2} 𝕜 σ x)",
+      "name": "flatCovariantDerivative_apply",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] (V W : (x : E) → TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x), Eq.{u_2 + 1} (VectorField.mlieBracket.{u_1, u_2, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) V W) (VectorField.lieBracket.{u_1, u_2} 𝕜 V W)",
+      "name": "mlieBracket_vectorSpace_eq",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] {V W Z : (x : E) → TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x} {x : E}, DifferentiableAt.{u_1, u_2, u_2} 𝕜 V x → DifferentiableAt.{u_1, u_2, u_2} 𝕜 W x → DifferentiableAt.{u_1, u_2, u_2} 𝕜 (fderiv.{u_1, u_2, u_2} 𝕜 Z) x → IsSymmSndFDerivAt.{u_1, u_2, u_2} 𝕜 Z x → Eq.{u_2 + 1} (CovariantDerivative.curvatureOp.{u_1, u_2, u_2, u_2} (flatCovariantDerivative.{u_1, u_2} 𝕜 E) V W Z x) (0 : TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x)",
+      "name": "flatCovariantDerivative_curvatureOp_eq_zero",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {𝕜 : Type u_1} [inst : NontriviallyNormedField.{u_1} 𝕜] {E : Type u_2} [inst_1 : NormedAddCommGroup.{u_2} E] [inst_2 : NormedSpace.{u_1, u_2} 𝕜 E] [inst_3 : CompleteSpace.{u_1} 𝕜] [inst_4 : CompleteSpace.{u_2} E] [inst_5 : FiniteDimensional.{u_1, u_2} 𝕜 E], Eq.{u_2 + 1} (CovariantDerivative.torsion.{u_1, u_2, u_2, u_2} (flatCovariantDerivative.{u_1, u_2} 𝕜 E)) (0 : (x : E) → ContinuousLinearMap.{u_1, u_1, u_2, u_2} (RingHom.id.{u_1} 𝕜) (TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x) (ContinuousLinearMap.{u_1, u_1, u_2, u_2} (RingHom.id.{u_1} 𝕜) (TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x) (TangentSpace.{u_2, u_1, u_2, u_2} (modelWithCornersSelf.{u_1, u_2} 𝕜 E) x)))",
+      "name": "flatCovariantDerivative_torsion_eq_zero",
+      "universes": [
+        "u_1",
+        "u_2"
+      ]
+    },
+    {
+      "lean_type": "∀ {F : Type u_3} [inst : NormedAddCommGroup.{u_3} F] [inst_1 : InnerProductSpace.{0, u_3} Real F] {Y Z : F → F} {x : F}, DifferentiableAt.{0, u_3, u_3} Real Y x → DifferentiableAt.{0, u_3, u_3} Real Z x → ∀ (v : F), Eq.{1} ((fderiv.{0, u_3, 0} Real (fun (y : F) => Inner.inner.{0, u_3} Real (Y y) (Z y)) x) v) (HAdd.hAdd.{0, 0, 0} (Inner.inner.{0, u_3} Real (Z x) (((flatCovariantDerivative.{0, u_3} Real F) Y x) v)) (Inner.inner.{0, u_3} Real (Y x) (((flatCovariantDerivative.{0, u_3} Real F) Z x) v)))",
+      "name": "flatCovariantDerivative_inner_compatible",
+      "universes": [
+        "u_3"
+      ]
+    },
+    {
+      "lean_type": "Eq.{max (u_3 + 2) (u_4 + 2)} flatCovariantDerivative.{u_4, u_3} flatCovariantDerivative.{u_4, u_3}",
+      "name": "flatCovariantDerivative_eq",
+      "universes": [
+        "u_3",
+        "u_4"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @mdiffAt_vectorSpace_iff_differentiableAt.{u_3, u_4} @mdiffAt_vectorSpace_iff_differentiableAt.{u_3, u_4}",
+      "name": "mdiffAt_vectorSpace_iff_differentiableAt_eq",
+      "universes": [
+        "u_3",
+        "u_4"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @flatCovariantDerivative_apply.{u_3, u_4} @flatCovariantDerivative_apply.{u_3, u_4}",
+      "name": "flatCovariantDerivative_apply_eq",
+      "universes": [
+        "u_3",
+        "u_4"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @flatCovariantDerivative_curvatureOp_eq_zero.{u_3, u_4} @flatCovariantDerivative_curvatureOp_eq_zero.{u_3, u_4}",
+      "name": "flatCovariantDerivative_curvatureOp_eq_zero_eq",
+      "universes": [
+        "u_3",
+        "u_4"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @flatCovariantDerivative_torsion_eq_zero.{u_3, u_4} @flatCovariantDerivative_torsion_eq_zero.{u_3, u_4}",
+      "name": "flatCovariantDerivative_torsion_eq_zero_eq",
+      "universes": [
+        "u_3",
+        "u_4"
+      ]
+    },
+    {
+      "lean_type": "Eq.{0} @flatCovariantDerivative_inner_compatible.{u_3} @flatCovariantDerivative_inner_compatible.{u_3}",
+      "name": "flatCovariantDerivative_inner_compatible_eq",
+      "universes": [
+        "u_3"
+      ]
+    }
+  ],
+  "definition_files": [
+    {
+      "path": "lean-toolchain",
+      "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+    },
+    {
+      "path": "lake-manifest.json",
+      "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+    },
+    {
+      "path": "Poincare/RiemannCurvatureOperator.lean",
+      "sha256": "6dc3e6d0d30e708bf288c31d46f7b225139b98a0e797de13ecbf9279c4bd67cc"
+    },
+    {
+      "path": "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/definitions-for-review.txt",
+      "sha256": "9f8f0d9d084de0d1cc562bb6528d0b62748afad2fb6e9395158189609fab86ce"
+    }
+  ],
+  "snapshot_sha256": "e43dac3623d96cc7c9f87d7c42b57e9f789e118953f36971c7488b8e655f2df4"
+}

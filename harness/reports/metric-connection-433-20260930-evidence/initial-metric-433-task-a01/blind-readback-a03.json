@@ -1,0 +1,22 @@
+{
+  "schema_version": "1.0",
+  "reviewer": "/root/workflow_postmortem",
+  "method": "blind-readback",
+  "snapshot_sha256": "baa78d89843c61d284c869b169f14b8a0d746b8f93c1fb8b75ce7b4ff9111d40",
+  "verdict": "approved",
+  "readback": [
+    {
+      "name": "Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms",
+      "mathematical_statement": "For an explicit V : Type v with implicit NormedAddCommGroup V and NormedSpace R V instances, positiveSymmetricBilinearForms V is the set of continuous real bilinear forms q : V ->L[R] V ->L[R] R satisfying q(a,b)=q(b,a) for all a,b and q(a,a)>0 for every nonzero a. The sole universe is v. The declaration defines a set; it asserts no existence, openness, convexity, coercive uniform lower bound, unit-ball bound, dimension or completeness property."
+    },
+    {
+      "name": "Poincare.SmoothInitialMetricDefinitions.localEuclideanInner",
+      "mathematical_statement": "For an implicit M : Type u with a topology, a charted-space structure modeled on Euclidean real 3-space, and IsManifold at the smooth regularity order obtained by coercing ENat.top into WithTop ENat, localEuclideanInner takes a chart center p : M and any x : M and returns a continuous real bilinear form on the tangent space at x. Its supplied definition pulls back the standard Euclidean inner product by the continuousLinearMapAt R x of the tangent-bundle trivialization centered at p. M is implicit; p and x are explicit; the sole universe is u. No Hausdorff, second-countability, compactness, connectedness, or x-in-chart-domain assumption is present. The coordinate map is defined at all x, but this type alone makes no global nondegeneracy or positive-definiteness assertion and does not construct a global Riemannian metric."
+    },
+    {
+      "name": "Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply",
+      "mathematical_statement": "For an implicit topological smooth 3-manifold M : Type u in the same Euclidean model, with smooth order explicitly ENat.top coerced into WithTop ENat, every explicit p,x : M and every explicit tangent vectors a,b at x satisfy localEuclideanInner(p,x)(a,b)=inner R (A(a)) (A(b)), where A is the continuousLinearMapAt R x of the tangent-bundle trivializationAt the Euclidean model centered at p. This is the exact pullback evaluation identity, with sole universe u. There is no chart-domain, compactness or positivity hypothesis and no assertion that A is invertible at every x. It does not supply a universal metric-existence theorem."
+    }
+  ],
+  "findings": []
+}

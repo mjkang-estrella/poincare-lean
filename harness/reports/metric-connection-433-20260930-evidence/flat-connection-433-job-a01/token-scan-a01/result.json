@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "rg",
+    "-n",
+    "\\b(sorry|admit|axiom)\\b|native_decide",
+    "Poincare/FlatModelConnection.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+  "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "started_at": "2026-10-01T00:52:21.677120+00:00",
+  "finished_at": "2026-10-01T00:52:21.683222+00:00",
+  "exit_code": 1
+}

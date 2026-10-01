@@ -1,0 +1,15 @@
+{
+  "base_sha": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "source_sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d",
+  "frozen_types_and_universe_arities": 3,
+  "permitted_axiom_and_safety_closures": 3,
+  "surrounding_source_data_imports_instances_headers_byte_preserved": true,
+  "pinned_definition_context_hashes_unchanged": true,
+  "forbidden_scan": "no matches, exit1",
+  "diff_check_exit": 0,
+  "changed_files": [
+    "Poincare/Global/SmoothInitialMetricDefinitions.lean"
+  ],
+  "scope": "Only localEuclideanInner_apply proof body",
+  "acceptance": "worker gates passed; independent root acceptance pending"
+}

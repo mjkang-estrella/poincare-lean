@@ -1,0 +1,257 @@
+{
+  "schema_version": "2.1",
+  "id": "round-metric-433-preserve",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "objective": {
+    "title": "Preserve round-metric exact interfaces while repairing Lean 4.33 proof elaboration",
+    "statement": "Only four proof bodies recorded by check-scope.py may change. Preserve every alias, inclusion derivative, metric tensor/model function, private instance, bundled metric constructor and other proof byte-for-byte. This enables retained-root final verified-upstream endpoint integration; RoundSphereCurvature and sphere metric transport/recognition consumers reuse these actual existing proofs. It does not construct independent core Hamilton inputs or discharge smoothability. No new conditional package, hypothesis, norm or data change.",
+    "deliverables": [
+      "The unchanged interfaces and data compile with exact frozen type/axiom/safety/body guards."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/RoundSphereMetric.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/RiemannianContext.lean",
+      "lean-toolchain",
+      "lake-manifest.json",
+      "lakefile.toml",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/RoundSphereMetric.lean",
+      "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/blind-readback-a03.json",
+      "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe-a03.lean",
+      "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/definitions-for-review.txt",
+      "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/check-scope.py",
+      "harness/v2/state/upstream-verification-20260930/metric-connection-migration-shapes-a01.md",
+      "harness/v2/state/upstream-verification-20260930/second-layer-433-build-a01/stdout.log"
+    ],
+    "symbols": [
+      "Poincare.RoundSphere3",
+      "Poincare.RoundSphereAmbient4",
+      "Poincare.RoundSphereModel3",
+      "Poincare.roundSphereMetric3_inclusionDeriv",
+      "Poincare.roundSphereMetric3_inner",
+      "Poincare.roundSphereMetric3_inner_apply",
+      "Poincare.roundSphereMetric3_inner_mfderiv_eq",
+      "Poincare.roundSphereMetric3_inner_symm",
+      "Poincare.roundSphereMetric3_inner_pos",
+      "Poincare.roundSphereMetric3_inner_isVonNBounded",
+      "Poincare.roundSphereMetric3_modelInner",
+      "Poincare.roundSphereMetric3_modelInner_eq",
+      "Poincare.roundSphereMetric3_modelInner_contDiff",
+      "Poincare.roundSphereMetric3_inner_contMDiff",
+      "Poincare.roundSphereMetric3",
+      "Poincare.roundSphereMetric3_inner_eq"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/RoundSphereMetric.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.Global.RoundSphereMetric"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe-a03.lean"
+      ],
+      [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/check-scope.py"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/RoundSphereMetric.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.RoundSphere3",
+      "Poincare.RoundSphereAmbient4",
+      "Poincare.RoundSphereModel3",
+      "Poincare.roundSphereMetric3_inclusionDeriv",
+      "Poincare.roundSphereMetric3_inner",
+      "Poincare.roundSphereMetric3_inner_apply",
+      "Poincare.roundSphereMetric3_inner_mfderiv_eq",
+      "Poincare.roundSphereMetric3_inner_symm",
+      "Poincare.roundSphereMetric3_inner_pos",
+      "Poincare.roundSphereMetric3_inner_isVonNBounded",
+      "Poincare.roundSphereMetric3_modelInner",
+      "Poincare.roundSphereMetric3_modelInner_eq",
+      "Poincare.roundSphereMetric3_modelInner_contDiff",
+      "Poincare.roundSphereMetric3_inner_contMDiff",
+      "Poincare.roundSphereMetric3",
+      "Poincare.roundSphereMetric3_inner_eq"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.RoundSphereMetric"
+    ],
+    "declarations": [
+      {
+        "lean_type": "Type",
+        "name": "Poincare.RoundSphere3",
+        "universes": []
+      },
+      {
+        "lean_type": "Type",
+        "name": "Poincare.RoundSphereAmbient4",
+        "universes": []
+      },
+      {
+        "lean_type": "Type",
+        "name": "Poincare.RoundSphereModel3",
+        "universes": []
+      },
+      {
+        "lean_type": "(x : Poincare.RoundSphere3) → ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x) Poincare.RoundSphereAmbient4",
+        "name": "Poincare.roundSphereMetric3_inclusionDeriv",
+        "universes": []
+      },
+      {
+        "lean_type": "(x : Poincare.RoundSphere3) → ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x) (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) (TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x) Real)",
+        "name": "Poincare.roundSphereMetric3_inner",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (x : Poincare.RoundSphere3) (v w : TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x), Eq.{1} (((Poincare.roundSphereMetric3_inner x) v) w) (Inner.inner.{0, 0} Real ((Poincare.roundSphereMetric3_inclusionDeriv x) v) ((Poincare.roundSphereMetric3_inclusionDeriv x) w))",
+        "name": "Poincare.roundSphereMetric3_inner_apply",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (x : Poincare.RoundSphere3) (v w : TangentSpace (𝓡 3) x), Poincare.roundSphereMetric3_inner x v w = inner ℝ (show Poincare.RoundSphereAmbient4 from mfderiv (𝓡 3) 𝓘(ℝ, Poincare.RoundSphereAmbient4) ((↑) : Poincare.RoundSphere3 → Poincare.RoundSphereAmbient4) x v) (show Poincare.RoundSphereAmbient4 from mfderiv (𝓡 3) 𝓘(ℝ, Poincare.RoundSphereAmbient4) ((↑) : Poincare.RoundSphere3 → Poincare.RoundSphereAmbient4) x w)",
+        "name": "Poincare.roundSphereMetric3_inner_mfderiv_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (x : Poincare.RoundSphere3) (v w : TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x), Eq.{1} (((Poincare.roundSphereMetric3_inner x) v) w) (((Poincare.roundSphereMetric3_inner x) w) v)",
+        "name": "Poincare.roundSphereMetric3_inner_symm",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (x : Poincare.RoundSphere3) {v : TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x}, Ne.{1} v (0 : TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x) → LT.lt.{0} (0 : Real) (((Poincare.roundSphereMetric3_inner x) v) v)",
+        "name": "Poincare.roundSphereMetric3_inner_pos",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (x : Poincare.RoundSphere3), Bornology.IsVonNBounded.{0, 0} Real (setOf.{0} fun (v : TangentSpace.{0, 0, 0, 0} (modelWithCornersSelf.{0, 0} Real (EuclideanSpace.{0, 0} Real (Fin (3 : Nat)))) x) => LT.lt.{0} (((Poincare.roundSphereMetric3_inner x) v) v) (1 : Real))",
+        "name": "Poincare.roundSphereMetric3_inner_isVonNBounded",
+        "universes": []
+      },
+      {
+        "lean_type": "ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) Poincare.RoundSphereModel3 Poincare.RoundSphereAmbient4 → ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) Poincare.RoundSphereModel3 (ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) Poincare.RoundSphereModel3 Real)",
+        "name": "Poincare.roundSphereMetric3_modelInner",
+        "universes": []
+      },
+      {
+        "lean_type": "∀ (D : ContinuousLinearMap.{0, 0, 0, 0} (RingHom.id.{0} Real) Poincare.RoundSphereModel3 Poincare.RoundSphereAmbient4), Eq.{1} (Poincare.roundSphereMetric3_modelInner D) (ContinuousLinearMap.comp.{0, 0, 0, 0, 0, 0} ((ContinuousLinearMap.flip.{0, 0, 0, 0, 0, 0} (ContinuousLinearMap.precompR.{0, 0, 0, 0, 0} Poincare.RoundSphereModel3 (innerSL.{0, 0} Real))) D) D)",
+        "name": "Poincare.roundSphereMetric3_modelInner_eq",
+        "universes": []
+      },
+      {
+        "lean_type": "ContDiff ℝ ((⊤ : ENat) : WithTop ENat) Poincare.roundSphereMetric3_modelInner",
+        "name": "Poincare.roundSphereMetric3_modelInner_contDiff",
+        "universes": []
+      },
+      {
+        "lean_type": "ContMDiff (𝓡 3) ((𝓡 3).prod 𝓘(ℝ, (EuclideanSpace ℝ (Fin 3)) →L[ℝ] (EuclideanSpace ℝ (Fin 3)) →L[ℝ] ℝ)) ((⊤ : ENat) : WithTop ENat) (fun x : Poincare.RoundSphere3 => Bundle.TotalSpace.mk' ((EuclideanSpace ℝ (Fin 3)) →L[ℝ] (EuclideanSpace ℝ (Fin 3)) →L[ℝ] ℝ) x (Poincare.roundSphereMetric3_inner x))",
+        "name": "Poincare.roundSphereMetric3_inner_contMDiff",
+        "universes": []
+      },
+      {
+        "lean_type": "Poincare.ClosedSmoothRiemannianMetric.{0} (3 : Nat) Poincare.RoundSphere3",
+        "name": "Poincare.roundSphereMetric3",
+        "universes": []
+      },
+      {
+        "lean_type": "Eq.{1} (Bundle.ContMDiffRiemannianMetric.inner.{0, 0, 0, 0, 0} Poincare.roundSphereMetric3) Poincare.roundSphereMetric3_inner",
+        "name": "Poincare.roundSphereMetric3_inner_eq",
+        "universes": []
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "6ea424e8f8ce058cff2d6bb6ee7699c6a7cb6972c3c7e83745f97fd854ad0299"
+      },
+      {
+        "path": "Poincare/Global/RiemannianContext.lean",
+        "sha256": "735a43227e216688b739d8a09ca613da72f07f3acfe3b4f5d8d7feaab662705a"
+      },
+      {
+        "path": "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/definitions-for-review.txt",
+        "sha256": "65792c8d325700eb9cd650e036b9c36115a57da21fc01683adff51fb897db096"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "c457bbb2d327cff6c2899b1196c8089bb9b2852e76d2665358c2bd32732d5ed5",
+      "report_path": "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/blind-readback-a03.json",
+      "report_sha256": "26858d5ce2f0046ce9cb7df8410055b0b4e3f52d3cd6ac8fe59c7c8824ca3854",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "A repair needs any change outside the explicitly permitted proof bodies, to data/definitions/types/universes/hypotheses/norms.",
+    "The same genuine blocker persists after three distinct proof attempts.",
+    "All scoped gates pass, preserve evidence and commit without merging or accepting."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 26000,
+    "disk_mb": 2048
+  }
+}

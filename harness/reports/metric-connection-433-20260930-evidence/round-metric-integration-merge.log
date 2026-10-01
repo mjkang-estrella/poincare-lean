@@ -1,0 +1,3 @@
+[codex/upstream-integration-433 5ab61e73] Preserve round metric data through Lean 4.33 proof elaboration
+ Date: Wed Sep 30 17:55:08 2026 -0700
+ 1 file changed, 16 insertions(+), 7 deletions(-)

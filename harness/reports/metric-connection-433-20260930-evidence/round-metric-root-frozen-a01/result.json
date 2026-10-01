@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/round-metric-433-task-a01/FrozenMigrationProbe-a03.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/round-metric-433/poincare",
+  "started_at": "2026-10-01T00:52:19.825851+00:00",
+  "source_head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 19.813899040222168,
+  "completed_at": "2026-10-01T00:52:39.654302+00:00",
+  "log_hashes": {
+    "stdout.log": "e12f19b9c94924477f864357bddc366eb45851a80c2554c78338225f54ef0915",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

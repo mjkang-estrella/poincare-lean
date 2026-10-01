@@ -1,0 +1,26 @@
+commit e4b5e533609f2cfe8fdc7c660e7ea0bc870c7e02
+Author:     Myeongjin Kang <mj.kang@hey.com>
+AuthorDate: Wed Sep 30 15:07:22 2026 -0700
+Commit:     Myeongjin Kang <mj.kang@hey.com>
+CommitDate: Wed Sep 30 15:07:22 2026 -0700
+
+    Preserve initial-metric evaluation across the Lean 4.33 migration
+    
+    Use definitional reflexivity for the existing both-slot Euclidean pullback
+    evaluation. The simplifier no longer closes this application identity,
+    while the unchanged construction reduces directly to the stated inner product.
+    
+    Only the localEuclideanInner_apply proof body changes. Preserve the positive
+    cone, actual tangent trivialization, both-slot pullback, and all smooth
+    regularity hypotheses and exact declaration types.
+    
+    Tested: Scoped Lean 4.33.1 compilation and initial-metric module build
+    Tested: Three frozen exact type/universe and permitted axiom/safety checks
+    Tested: Byte guard for all source outside the permitted proof body
+    Tested: Scoped forbidden-token scan and git diff --check
+    Not-tested: Full retained-root and completion audits, owned by orchestrator
+    Scope-risk: narrow
+    Reversibility: clean
+
+ Poincare/Global/SmoothInitialMetricDefinitions.lean | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

@@ -1,0 +1,3 @@
+Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms
+Poincare.SmoothInitialMetricDefinitions.localEuclideanInner
+Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply

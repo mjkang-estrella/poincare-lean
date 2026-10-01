@@ -1,0 +1,46 @@
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.localEuclideanInner
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms
+harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/FrozenMigrationProbe.lean:107:0: error: frozen type mismatch for Poincare.SmoothInitialMetricDefinitions.localEuclideanInner: actual {M : Type u} →
+  [inst : TopologicalSpace M] →
+    [inst_1 : ChartedSpace (Poincare.ClosedSmoothModel 3) M] →
+      [IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] →
+        M →
+          (x : M) →
+            TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ]
+              TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ]
+                ℝ, expected {M : Type u} →
+  [inst : TopologicalSpace M] →
+    [inst_1 : ChartedSpace (Poincare.ClosedSmoothModel 3) M] →
+      [IsManifold (Poincare.closedSmoothModelWithCorners 3) ⊤ M] →
+        M →
+          (x : M) →
+            TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ]
+              TangentSpace (Poincare.closedSmoothModelWithCorners 3) x →L[ℝ] ℝ
+harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/FrozenMigrationProbe.lean:124:0: error: frozen type mismatch for Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply: actual ∀ {M : Type u}
+  [inst : TopologicalSpace M] [inst_1 : ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [inst_2 : IsManifold (Poincare.closedSmoothModelWithCorners 3) (↑⊤) M] (p x : M)
+  (a b : TangentSpace (Poincare.closedSmoothModelWithCorners 3) x),
+  ((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x) a) b =
+    inner ℝ
+      ((Bundle.Trivialization.continuousLinearMapAt ℝ
+          (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (Poincare.closedSmoothModelWithCorners 3)) p)
+          x)
+        a)
+      ((Bundle.Trivialization.continuousLinearMapAt ℝ
+          (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (Poincare.closedSmoothModelWithCorners 3)) p)
+          x)
+        b), expected ∀ {M : Type u} [inst : TopologicalSpace M] [inst_1 : ChartedSpace (Poincare.ClosedSmoothModel 3) M]
+  [inst_2 : IsManifold (Poincare.closedSmoothModelWithCorners 3) ⊤ M] (p x : M)
+  (a b : TangentSpace (Poincare.closedSmoothModelWithCorners 3) x),
+  ((Poincare.SmoothInitialMetricDefinitions.localEuclideanInner p x) a) b =
+    inner ℝ
+      ((Bundle.Trivialization.continuousLinearMapAt ℝ
+          (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (Poincare.closedSmoothModelWithCorners 3)) p)
+          x)
+        a)
+      ((Bundle.Trivialization.continuousLinearMapAt ℝ
+          (trivializationAt (Poincare.ClosedSmoothModel 3) (TangentSpace (Poincare.closedSmoothModelWithCorners 3)) p)
+          x)
+        b)

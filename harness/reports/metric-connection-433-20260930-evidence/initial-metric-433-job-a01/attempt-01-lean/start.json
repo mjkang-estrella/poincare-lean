@@ -1,0 +1,18 @@
+{
+  "cwd": "/Users/mjkang/.codex/worktrees/initial-metric-433/poincare",
+  "argv": [
+    "env",
+    "LEAN_NUM_THREADS=1",
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/SmoothInitialMetricDefinitions.lean"
+  ],
+  "env_overrides": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "status": "## codex/initial-metric-433-a01\n M Poincare/Global/SmoothInitialMetricDefinitions.lean\n",
+  "source_sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d",
+  "started_at": "2026-09-30T22:05:15.586647+00:00"
+}

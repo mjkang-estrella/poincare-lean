@@ -1,0 +1,13 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/helper-mdiff-a01/isolated-mdiff-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare",
+  "head": "55e4859b54acb9044d7966a12df7a12afa8b52fd",
+  "started_at": "2026-09-30T22:04:35.216734+00:00",
+  "finished_at": "2026-09-30T22:04:37.551312+00:00",
+  "exit_code": 0
+}

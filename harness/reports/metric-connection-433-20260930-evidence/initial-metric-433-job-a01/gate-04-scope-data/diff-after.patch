@@ -1,0 +1,12 @@
+diff --git a/Poincare/Global/SmoothInitialMetricDefinitions.lean b/Poincare/Global/SmoothInitialMetricDefinitions.lean
+index ddc69446..cdc28ba1 100644
+--- a/Poincare/Global/SmoothInitialMetricDefinitions.lean
++++ b/Poincare/Global/SmoothInitialMetricDefinitions.lean
+@@ -38,6 +38,6 @@ theorem localEuclideanInner_apply (p x : M)
+           (TangentSpace (closedSmoothModelWithCorners 3)) p).continuousLinearMapAt ℝ x a)
+         ((trivializationAt (ClosedSmoothModel 3)
+           (TangentSpace (closedSmoothModelWithCorners 3)) p).continuousLinearMapAt ℝ x b) := by
+-  simp [localEuclideanInner, ContinuousLinearMap.precomp]
++  rfl
+ 
+ end Poincare.SmoothInitialMetricDefinitions

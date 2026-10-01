@@ -1,0 +1,6 @@
+variable {𝕜 : Type*} [NontriviallyNormedField 𝕜]
+  {E : Type*} [NormedAddCommGroup E] [NormedSpace 𝕜 E]
+
+def flatCovariantDerivative :
+    CovariantDerivative 𝓘(𝕜, E) E (TangentSpace 𝓘(𝕜, E) : E → Type _) where
+  toFun σ x := fderiv 𝕜 σ x

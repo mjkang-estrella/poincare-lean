@@ -1,0 +1,9 @@
+{
+  "copied_at": "2026-09-30T22:08:11.145368+00:00",
+  "source": "/Users/mjkang/.codex/worktrees/initial-metric-433/poincare/harness/v2/state/upstream-verification-20260930/initial-metric-433-job-a01",
+  "destination": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/initial-metric-433-job-a01",
+  "file_count": 64,
+  "all_copied_hashes_verified": true,
+  "commit": "e4b5e533609f2cfe8fdc7c660e7ea0bc870c7e02",
+  "source_sha256": "1b29589b21f52853984eefeee75935264b9ff149e36ff1e62c70913b702be74d"
+}

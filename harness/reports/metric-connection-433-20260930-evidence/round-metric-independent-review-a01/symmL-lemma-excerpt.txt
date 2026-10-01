@@ -1,0 +1,5 @@
+
+@[simp]
+theorem symmL_apply (e : Trivialization F (π F E)) [e.IsLinear R] {b : B} (hb : b ∈ e.baseSet)
+    (y : F) : e.symmL R b y = e.symm b y :=
+  e.toPretrivialization.symmₗ_apply R hb y

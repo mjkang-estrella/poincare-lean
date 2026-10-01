@@ -1,0 +1,6 @@
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.localEuclideanInner
+AXIOM_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.localEuclideanInner_apply
+FROZEN_CONTRACT_OK: Poincare.SmoothInitialMetricDefinitions.positiveSymmetricBilinearForms
+harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/FrozenMigrationProbe-a02.lean:107:0: error: <input>:1:213: expected ')'
+harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/FrozenMigrationProbe-a02.lean:124:0: error: <input>:1:218: expected ')'

@@ -1,0 +1,17 @@
+Preserve initial-metric evaluation across the Lean 4.33 migration
+
+Use definitional reflexivity for the existing both-slot Euclidean pullback
+evaluation. The simplifier no longer closes this application identity,
+while the unchanged construction reduces directly to the stated inner product.
+
+Only the localEuclideanInner_apply proof body changes. Preserve the positive
+cone, actual tangent trivialization, both-slot pullback, and all smooth
+regularity hypotheses and exact declaration types.
+
+Tested: Scoped Lean 4.33.1 compilation and initial-metric module build
+Tested: Three frozen exact type/universe and permitted axiom/safety checks
+Tested: Byte guard for all source outside the permitted proof body
+Tested: Scoped forbidden-token scan and git diff --check
+Not-tested: Full retained-root and completion audits, owned by orchestrator
+Scope-risk: narrow
+Reversibility: clean

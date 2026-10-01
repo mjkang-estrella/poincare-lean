@@ -1,0 +1,9 @@
+{
+  "candidate": "e4b5e533609f2cfe8fdc7c660e7ea0bc870c7e02",
+  "accepted": true,
+  "direct_lean": 0,
+  "scoped_build": 0,
+  "frozen_type_axiom_safety_checks": 0,
+  "data_and_full_surrounding_source_guard_passed": true,
+  "new_core_assumptions_discharged": []
+}

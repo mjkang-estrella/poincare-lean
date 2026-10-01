@@ -1,0 +1,89 @@
+Poincare/Global/RoundSphereMetric.lean:89:13: warning: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+Poincare/Global/RoundSphereMetric.lean:94:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:96:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:98:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:103:4: warning: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+Poincare/Global/RoundSphereMetric.lean:210:58: warning: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+Poincare/Global/RoundSphereMetric.lean:199:38: error: unsolved goals
+x₀ : RoundSphere3
+Dcoord : RoundSphere3 → RoundSphereModel3 →L[ℝ] RoundSphereAmbient4 :=
+  inTangentCoordinates (𝓡 3) 𝓘(ℝ, RoundSphereAmbient4) id Subtype.val roundSphereMetric3_inclusionDeriv x₀
+hD : ContMDiffAt (𝓡 3) 𝓘(ℝ, RoundSphereModel3 →L[ℝ] RoundSphereAmbient4) ∞ Dcoord x₀
+hmodel :
+  ContMDiffAt (𝓡 3) 𝓘(ℝ, RoundSphereModel3 →L[ℝ] RoundSphereModel3 →L[ℝ] ℝ) ∞
+    (fun x => roundSphereMetric3_modelInner (Dcoord x)) x₀
+x : RoundSphere3
+hx : x ∈ (chartAt RoundSphereModel3 x₀).source
+hx_triv : x ∈ (trivializationAt RoundSphereModel3 (fun x => TangentSpace (𝓡 3) x) x₀).baseSet
+v w : EuclideanSpace ℝ (Fin 3)
+⊢ inner ℝ ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x v))
+      ((mfderiv% Subtype.val x) ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x w)) =
+    inner ℝ
+      ((1 ∘SL
+          mfderiv% Subtype.val x ∘SL
+            Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+        v)
+      ((1 ∘SL
+          mfderiv% Subtype.val x ∘SL
+            Trivialization.symmL ℝ (trivializationAt (EuclideanSpace ℝ (Fin 3)) (TangentSpace (𝓡 3)) x₀) x)
+        w)
+Poincare/Global/RoundSphereMetric.lean:210:26: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp +instances only [ContinuousLinearMap.one_apply, Trivialization.symmL_apply _ hx_triv]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/Global/RoundSphereMetric.lean:210:58: warning: This simp argument is unused:
+  ContinuousLinearMap.one_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp +instances only [ContinuousLinearMap.comp_apply, Trivialization.symmL_apply _ hx_triv]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/Global/RoundSphereMetric.lean:211:6: warning: This simp argument is unused:
+  Trivialization.symmL_apply _ hx_triv
+
+Hint: Omit it from the simp argument list.
+  [apply] simp +instances only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.one_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`

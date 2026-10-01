@@ -1,0 +1,62 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "e5fa2a447a634ff709c1ba147d57a8cb7c364555e3dbcfc8008ca810263cc091",
+    "bytes": 227276
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+    "sha256": "4bbbb318618c58e9446e0808255ee0cb42fdeb45dffe2300d3a4d0f61553f013",
+    "bytes": 1912
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/blind-readback-a03.json",
+    "sha256": "a7198cb6a2f8795114c5df4297b8003ddd7cb70b94b08895f07b2b35a12c02fd",
+    "bytes": 2561
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/FrozenMigrationProbe-a03.lean",
+    "sha256": "7459b0d4faa4a646c503e0d1aeee1ce33a2fb9da20b7e5cce74907607b243c82",
+    "bytes": 8757
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/definitions-for-review.txt",
+    "sha256": "bbb12426349e87f2ff89cc90c873942877e224b6feb94c1425b87ac0455d747c",
+    "bytes": 1365
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/initial-metric-433-task-a01/check-scope.py",
+    "sha256": "952997167386bae736f04ef84dfbcf25e1570f0d0fcacee8e6fb0d8f3d9a011b",
+    "bytes": 785
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/metric-connection-migration-shapes-a01.md",
+    "sha256": "1b153584bd21be8105b36ddbc949c9a1f0950d708a6bcef195bda58772697028",
+    "bytes": 5630
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/second-layer-433-build-a01/stdout.log",
+    "sha256": "87a8e3bdd5df54e0b104b3508b4b1033e1613a5bbe513cd6d2a5a265d08ba359",
+    "bytes": 152819
+  }
+]

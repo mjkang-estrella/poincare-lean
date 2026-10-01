@@ -1,0 +1,8 @@
+{
+  "owner": "/root/exact_target_migration",
+  "base": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "worktree": "/Users/mjkang/.codex/worktrees/initial-metric-433/poincare",
+  "allowed_file": "Poincare/Global/SmoothInitialMetricDefinitions.lean",
+  "scope": "Only localEuclideanInner_apply proof body may change. Preserve positive cone and both-slot Euclidean pullback definitions entirely.",
+  "status": "allocated"
+}

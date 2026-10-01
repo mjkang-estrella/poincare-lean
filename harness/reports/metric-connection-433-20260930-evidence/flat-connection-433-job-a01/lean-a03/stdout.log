@@ -1,0 +1,51 @@
+Poincare/FlatModelConnection.lean:52:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/FlatModelConnection.lean:54:8: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/FlatModelConnection.lean:56:17: error: unsolved goals
+case e_a
+𝕜 : Type u_1
+inst✝² : NontriviallyNormedField 𝕜
+E : Type u_2
+inst✝¹ : NormedAddCommGroup E
+inst✝ : NormedSpace 𝕜 E
+σ : (x : E) → TangentSpace 𝓘(𝕜, E) x
+g : E → 𝕜
+x : E
+hσ : MDiffAt (T% σ) x
+hg : MDiffAt g x
+hx✝ : autoParam (x ∈ univ) IsCovariantDerivativeOn._auto_3
+h1 : DifferentiableAt 𝕜 σ x
+h2 : DifferentiableAt 𝕜 g x
+h3 : fderiv 𝕜 (g • σ) x = g x • fderiv 𝕜 σ x + (fderiv 𝕜 g x).smulRight (σ x)
+v : E
+⊢ (fderiv 𝕜 g x) v • σ x =
+    ((↑{ toFun := fun v => v, map_add' := ⋯, map_smul' := ⋯, invFun := fun v => v, left_inv := ⋯, right_inv := ⋯,
+                continuous_toFun := ⋯, continuous_invFun := ⋯ } ∘SL
+            fderiv 𝕜 g x).smulRight
+        (σ x))
+      v
+Poincare/FlatModelConnection.lean:67:49: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [mvfderiv, mfderiv_eq_fderiv, NormedSpace.fromTangentSpace, ContinuousLinearMap.smulRight_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/FlatModelConnection.lean:104:39: warning: `ContinuousLinearMap.add_apply` has been deprecated: Use `add_apply` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.add_apply` to `add_apply x`).
+Poincare/FlatModelConnection.lean:105:6: warning: `ContinuousLinearMap.coe_comp'` has been deprecated: Use `ContinuousLinearMap.coe_comp` instead
+Poincare/FlatModelConnection.lean:159:4: warning: Try this: intro σ hσ x _

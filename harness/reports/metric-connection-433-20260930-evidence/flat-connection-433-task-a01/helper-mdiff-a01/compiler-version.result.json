@@ -1,0 +1,10 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "--version"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare",
+  "exit_code": 0
+}

@@ -1,0 +1,239 @@
+{
+  "state": "worker-gates-passed-not-accepted",
+  "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+  "source_sha256": "6e44b9fea45a9d131f0fb33280e3765a86f85d1f876a37d85ac2f8fad93f864e",
+  "frozen_type_receipts": 14,
+  "axiom_receipts": 14,
+  "token_scan_exit_1_means_no_matches": true,
+  "gates": [
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:49:19.276418+00:00",
+      "finished_at": "2026-10-01T00:49:31.824126+00:00",
+      "exit_code": 1,
+      "gate": "baseline-lean-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "build",
+        "Poincare.FlatModelConnection"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:52:02.246270+00:00",
+      "finished_at": "2026-10-01T00:52:09.848792+00:00",
+      "exit_code": 0,
+      "gate": "build-a01"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:52:21.677125+00:00",
+      "finished_at": "2026-10-01T00:52:21.725324+00:00",
+      "exit_code": 0,
+      "gate": "diff-check-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/FrozenMigrationProbe-a05.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:52:21.677110+00:00",
+      "finished_at": "2026-10-01T00:52:37.255398+00:00",
+      "exit_code": 0,
+      "gate": "frozen-probe-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:49:48.003216+00:00",
+      "finished_at": "2026-10-01T00:49:50.893087+00:00",
+      "exit_code": 1,
+      "gate": "lean-a01"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:50:25.824892+00:00",
+      "finished_at": "2026-10-01T00:50:35.032229+00:00",
+      "exit_code": 1,
+      "gate": "lean-a02"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:12.955711+00:00",
+      "finished_at": "2026-10-01T00:51:15.695239+00:00",
+      "exit_code": 1,
+      "gate": "lean-a03"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:37.797843+00:00",
+      "finished_at": "2026-10-01T00:51:40.539874+00:00",
+      "exit_code": 1,
+      "gate": "lean-a04"
+    },
+    {
+      "argv": [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:48.503122+00:00",
+      "finished_at": "2026-10-01T00:51:51.205121+00:00",
+      "exit_code": 0,
+      "gate": "lean-a05"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:49:47.921306+00:00",
+      "finished_at": "2026-10-01T00:49:47.947435+00:00",
+      "exit_code": 0,
+      "gate": "scope-a01"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:50:25.748028+00:00",
+      "finished_at": "2026-10-01T00:50:25.773333+00:00",
+      "exit_code": 0,
+      "gate": "scope-a02"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:12.877943+00:00",
+      "finished_at": "2026-10-01T00:51:12.902964+00:00",
+      "exit_code": 0,
+      "gate": "scope-a03"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:37.722438+00:00",
+      "finished_at": "2026-10-01T00:51:37.746577+00:00",
+      "exit_code": 0,
+      "gate": "scope-a04"
+    },
+    {
+      "argv": [
+        "python3",
+        "harness/v2/state/upstream-verification-20260930/flat-connection-433-task-a01/check-scope.py"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:51:48.424932+00:00",
+      "finished_at": "2026-10-01T00:51:48.450050+00:00",
+      "exit_code": 0,
+      "gate": "scope-a05"
+    },
+    {
+      "argv": [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/FlatModelConnection.lean"
+      ],
+      "cwd": "/Users/mjkang/.codex/worktrees/flat-connection-433/poincare",
+      "base_commit": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "head": "37628ffa5cf60c2ab90994452279aaf1bc82dab4",
+      "started_at": "2026-10-01T00:52:21.677120+00:00",
+      "finished_at": "2026-10-01T00:52:21.683222+00:00",
+      "exit_code": 1,
+      "gate": "token-scan-a01"
+    }
+  ]
+}

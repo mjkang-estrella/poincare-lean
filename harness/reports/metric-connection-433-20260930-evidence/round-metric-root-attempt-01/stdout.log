@@ -1,0 +1,88 @@
+Poincare/Global/RoundSphereMetric.lean:58:51: error: unsolved goals
+x : RoundSphere3
+v w : TangentSpace (𝓡 3) x
+⊢ ((({ toFun := fun f => f ∘SL mfderiv% Subtype.val x, map_add' := ⋯, map_smul' := ⋯, cont := ⋯ } ∘SL innerSL ℝ) ∘SL
+          mfderiv% Subtype.val x)
+        v)
+      w =
+    inner ℝ ((mfderiv% Subtype.val x) v) ((mfderiv% Subtype.val x) w)
+Poincare/Global/RoundSphereMetric.lean:61:4: warning: This simp argument is unused:
+  ContinuousLinearMap.comp_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [roundSphereMetric3_inclusionDeriv, ContinuousLinearMap.precomp, innerSL_apply_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/Global/RoundSphereMetric.lean:61:36: warning: This simp argument is unused:
+  innerSL_apply_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [roundSphereMetric3_inclusionDeriv, ContinuousLinearMap.precomp, ContinuousLinearMap.comp_apply]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Poincare/Global/RoundSphereMetric.lean:91:13: warning: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+Poincare/Global/RoundSphereMetric.lean:96:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:98:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:100:2: warning: Try this: 
+  letI̵
+
+The goal is a proposition, so `let` is preferred over `letI`.
+The difference between `let` and `letI` is that `letI` inlines the value.
+But this is not relevant for proofs because of proof irrelevance.
+
+Note: This linter can be disabled with `set_option linter.style.haveILetI false`
+Poincare/Global/RoundSphereMetric.lean:105:4: warning: `mfderiv_coe_sphere_injective` has been deprecated: Use `injective_mvfderiv_subtypeVal_sphere` instead
+
+Note: The updated constant has a different type:
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)), Function.Injective ⇑(d% Subtype.val v)
+instead of
+  ∀ {E : Type u_1} [inst : NormedAddCommGroup E] [inst_1 : InnerProductSpace ℝ E] {n : ℕ}
+    [inst_2 : Fact (Module.finrank ℝ E = n + 1)] (v : ↑(Metric.sphere 0 1)),
+    Function.Injective ⇑(mfderiv% Subtype.val v)
+Poincare/Global/RoundSphereMetric.lean:212:47: warning: `ContinuousLinearMap.one_apply` has been deprecated: Use `one_apply_eq_self` instead
+
+Note: The updated constant is in a different namespace. Dot notation may need to be changed (e.g., from `x.one_apply` to `one_apply_eq_self x`).
+Poincare/Global/RoundSphereMetric.lean:212:4: error: `simp` made no progress
+
+Note: The target expression is not type-correct under the `implicit` transparency level, which may have triggered the failure. This is usually caused by unfolding of semireducible definitions in prior tactic steps. Use `set_option linter.tacticCheckInstances true` to investigate the source of the issue.
+Full error:
+  Application type mismatch: The argument
+    mfderiv% Subtype.val x
+  has type
+    @ContinuousLinearMap ℝ ℝ Field.toSemifield.toDivisionSemiring.toSemiring
+      Field.toSemifield.toDivisionSemiring.toSemiring (RingHom.id ℝ) (TangentSpace (𝓡 3) x)
+      (instTopologicalSpaceTangentSpace (𝓡 3) x) (instAddCommGroupTangentSpace (𝓡 3) x).toAddCommMonoid
+      (TangentSpace 𝓘(ℝ, RoundSphereAmbient4) ↑x) (instTopologicalSpaceTangentSpace 𝓘(ℝ, RoundSphereAmbient4) ↑x)
+      (instAddCommGroupTangentSpace 𝓘(ℝ, RoundSphereAmbient4) ↑x).toAddCommMonoid (instModuleTangentSpace (𝓡 3) x)
+      (instModuleTangentSpace 𝓘(ℝ, RoundSphereAmbient4) ↑x)
+  but is expected to have type
+    @ContinuousLinearMap ℝ ℝ Real.semiring Real.semiring (RingHom.id ℝ) (TangentSpace (𝓡 3) x)
+      (instTopologicalSpaceTangentSpace (𝓡 3) x) (instAddCommGroupTangentSpace (𝓡 3) x).toAddCommMonoid
+      RoundSphereAmbient4 (PiLp.topologicalSpace 2 fun x => ℝ)
+      (WithLp.instAddCommGroup 2 ((i : Fin 4) → (fun x => ℝ) i)).toAddCommMonoid (instModuleTangentSpace (𝓡 3) x)
+      (WithLp.instModule 2 ℝ ((i : Fin 4) → (fun x => ℝ) i))
+  in the application
+    ⇑(mfderiv% Subtype.val x)

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "build",
+    "Poincare.Global.RoundSphereMetric",
+    "Poincare.FlatModelConnection"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T00:56:53.067364+00:00",
+  "source_head": "345ff34dc2231f0425d7eaeef246f0010d4d7ca6",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 22.22612190246582,
+  "completed_at": "2026-10-01T00:57:15.306525+00:00",
+  "log_hashes": {
+    "stdout.log": "1eee6a45982f97964d273d5309d1a0f0824fb03b2028fc54e3694950337b2877",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
