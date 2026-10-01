@@ -1,0 +1,16 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-o",
+    ".lake/build/lib/lean/Poincare/Global/VerifiedSmoothability.olean",
+    "Poincare/Global/VerifiedSmoothability.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T01:07:01.113923+00:00",
+  "source_head": "8c5cc915fc0b59614fbc0af6fe38b3f8f431ded6",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

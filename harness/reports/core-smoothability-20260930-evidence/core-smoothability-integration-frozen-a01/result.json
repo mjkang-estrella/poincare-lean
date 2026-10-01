@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/FrozenSmoothabilityProbe.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/upstream-integration-433/poincare",
+  "started_at": "2026-10-01T01:07:21.799799+00:00",
+  "source_head": "8c5cc915fc0b59614fbc0af6fe38b3f8f431ded6",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 17.74173903465271,
+  "completed_at": "2026-10-01T01:07:39.555162+00:00",
+  "log_hashes": {
+    "stdout.log": "d729fef33d4950d50e0921fec18cc1256e55bd3aba57d2da9bb02dce9a627f26",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

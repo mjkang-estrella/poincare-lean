@@ -1,0 +1,8 @@
+{
+  "path": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/build/lib/lean/Poincare/Global/VerifiedSmoothability.olean",
+  "sha256": "45af72be1835c54379fb1c1cd9349822c14f17c75f661061cb41dd22c3bd1fe0",
+  "size": 11704,
+  "mtime_ns": 1790816389081521473,
+  "produced_by_root_command": "env LEAN_NUM_THREADS=1 lake env lean -o .lake/build/lib/lean/Poincare/Global/VerifiedSmoothability.olean Poincare/Global/VerifiedSmoothability.lean",
+  "artifact_root_exit": 0
+}

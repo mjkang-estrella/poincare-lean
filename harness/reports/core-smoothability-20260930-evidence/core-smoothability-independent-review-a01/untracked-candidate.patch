@@ -1,0 +1,28 @@
+diff --git a/Poincare/Global/VerifiedSmoothability.lean b/Poincare/Global/VerifiedSmoothability.lean
+new file mode 100644
+index 00000000..13857476
+--- /dev/null
++++ b/Poincare/Global/VerifiedSmoothability.lean
+@@ -0,0 +1,22 @@
++import Poincare.Global.SmoothabilityExistenceStatement
++import DifferentialGeometry.Topology.PiecewiseLinear.Moise352Producer
++
++/-!
++Compatible smooth-atlas existence from the pinned DifferentialGeometry Moise
++proof, released under Apache-2.0 at7a48598d35109aa99d1cc678e2724c213cdf4ff3.
++This is credited upstream proof reuse. The topology and the existing local
++obligation are unchanged; no sphere or Hamilton premise is supplied.
++-/
++
++open scoped Manifold ContDiff
++
++universe u
++
++namespace Poincare
++
++theorem existsSmoothabilitySmoothManifoldStatement :
++    ExistsSmoothabilitySmoothManifoldStatement.{u} := by
++  intro M _top _t2 _charted _simplyConnected _compact
++  exact DifferentialGeometry.Topology.PiecewiseLinear.exists_isManifold_three (M := M)
++
++end Poincare

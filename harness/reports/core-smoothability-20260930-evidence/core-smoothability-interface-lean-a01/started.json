@@ -1,0 +1,16 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-o",
+    ".lake/build/lib/lean/Poincare/Global/SmoothabilityExistenceStatement.olean",
+    "Poincare/Global/SmoothabilityExistenceStatement.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "started_at": "2026-10-01T00:55:55.516683+00:00",
+  "source_head": "9db6e92eb429624e145962c580d5cbe40aaa0a75",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

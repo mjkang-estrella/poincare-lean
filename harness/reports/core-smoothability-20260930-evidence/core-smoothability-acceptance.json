@@ -1,0 +1,14 @@
+{
+  "core_assumption_discharged": "Poincare.ExistsSmoothabilitySmoothManifoldStatement.{u}",
+  "theorem": "Poincare.existsSmoothabilitySmoothManifoldStatement.{u}",
+  "proof_candidate": "8e3a69fffaf44b5c1b916995aba50253a7e1dd16",
+  "integration_head": "8c5cc915fc0b59614fbc0af6fe38b3f8f431ded6",
+  "independent_lean_and_exact_type_axiom_safety_checks": 0,
+  "exact_definition_and_root_import_preservation": true,
+  "attribution": "Pinned DifferentialGeometry Moise theorem, verified source proof reuse",
+  "remaining_core_obligations": [
+    "UniversalHamiltonFrontInputsStatement.{u,v}",
+    "UniversalHamiltonConvergenceStatement.{u}"
+  ],
+  "final_completion": false
+}

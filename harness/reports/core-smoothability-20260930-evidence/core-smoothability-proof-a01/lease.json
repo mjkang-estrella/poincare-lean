@@ -1,0 +1,7 @@
+{
+  "owner": "/root",
+  "base": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "worktree": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "allowed_file": "Poincare/Global/VerifiedSmoothability.lean",
+  "status": "allocated"
+}

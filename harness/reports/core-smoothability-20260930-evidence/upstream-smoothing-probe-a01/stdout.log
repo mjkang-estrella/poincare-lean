@@ -1,0 +1,6 @@
+DifferentialGeometry.Topology.PiecewiseLinear.exists_isManifold_three.{u} {M : Type u} [TopologicalSpace M] [T2Space M]
+  [CompactSpace M] [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] : ∃ C, IsManifold (𝓡 3) ∞ M
+'DifferentialGeometry.Topology.PiecewiseLinear.exists_isManifold_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+UPSTREAM_AXIOM_CONTRACT_OK: DifferentialGeometry.Topology.PiecewiseLinear.exists_isManifold_three

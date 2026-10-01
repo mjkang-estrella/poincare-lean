@@ -1,0 +1,12 @@
+{
+  "proof_commit": "8e3a69fffaf44b5c1b916995aba50253a7e1dd16",
+  "base": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "source_sha256": "3e392581041df9dc56c3c9e5247a4bdbfc49b8a42a1b8eb8cb3cc021556bba99",
+  "direct_lean": 0,
+  "fresh_artifact": 0,
+  "frozen_exact_type_and_alias": 0,
+  "transitive_allowed_axioms_and_unsafe_partial": 0,
+  "separate_independent_review": 0,
+  "core": "ExistsSmoothabilitySmoothManifoldStatement.{u}",
+  "final_endpoint_complete": false
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/preflight-type.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "started_at": "2026-10-01T00:57:32.099867+00:00",
+  "source_head": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

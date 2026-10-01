@@ -1,0 +1,39 @@
+{
+  "base_sha": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "pre_move_ref": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade^",
+  "moved_definition_and_rfl_block_byte_identical": true,
+  "moved_block_sha256": "e0bc3ff25246e26ba5d63cc78eb7a46735351816877dbc323d4909848f34c864",
+  "bridge_remainder_byte_identical_with_required_import_added": true,
+  "old_root_import_sequence_preserved": true,
+  "old_root_import_count": 1039,
+  "new_root_import_count": 1040,
+  "VerifiedSmoothability_root_wiring_pending": true,
+  "canonical_statement_module_unchanged_from_pre_move": true,
+  "canonical_threeSphere_and_target_blocks_unchanged_from_a3b03ff": true,
+  "producer_source_artifact_trace_provenance": [
+    {
+      "local": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.lean",
+      "resolved": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.lean",
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.lean",
+      "archived": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.lean",
+      "sha256": "cdd66d048afed7ab54ac76641c99a1751743a472d170f374f5cdd9ea388b3482",
+      "all_three_match_verified_manifest": true
+    },
+    {
+      "local": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.olean",
+      "resolved": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.olean",
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.olean",
+      "archived": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.olean",
+      "sha256": "8db36fc9c1ae262254907ee230eac39c9896b3940b4732286fe7152f48fdc787",
+      "all_three_match_verified_manifest": true
+    },
+    {
+      "local": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.trace",
+      "resolved": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare/.lake/packages/DifferentialGeometry/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.trace",
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.trace",
+      "archived": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.trace",
+      "sha256": "320e827d6439f380a4e324110c72fdbb57075a148392fc70d5676a8937fd0985",
+      "all_three_match_verified_manifest": true
+    }
+  ]
+}

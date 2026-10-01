@@ -1,5 +1,48 @@
 # Handoff Snapshot
 
+## 2026-09-30 Actual compatible smoothability obligation discharged
+
+At clean mathematical-source8c5cc915fc0b59614fbc0af6fe38b3f8f431ded6,
+Lean checks Poincare.existsSmoothabilitySmoothManifoldStatement :
+Poincare.ExistsSmoothabilitySmoothManifoldStatement.{u}. This is the genuine
+unchanged core S: on the supplied compact T2 simply connected topological
+3-manifold and same topology, construct a replacement charted-space structure
+carrying smooth ENat.top regularity. No supplied smooth atlas, sphere recognition,
+Hamilton/convergence premise or new assumption is used. Standard axioms are
+exactly propext/Classical.choice/Quot.sound, with transitive unsafe/partial
+rejection passed. Root and a distinct agent independently reran actual literal,
+universe/old-alias and axiom/safety checks; aligned integration reran them too.
+
+This is credited proof reuse from DifferentialGeometry Moise producer at
+7a48598d35109aa99d1cc678e2724c213cdf4ff3, pinned under Lean4.33.1/Mathlib0df444a.
+Source, olean and trace hashes match independently checked archived evidence.
+The original existence definition and equality proof were moved byte-for-byte
+into SmoothabilityExistenceStatement.lean, preserving public names/topology;
+TopologicalCompletionBridge keeps every other byte except the required import
+and removal of that same block. All original root imports and the actual
+canonical Poincare.Statement module remain. VerifiedSmoothability is imported
+by the root. The full root still has unrelated migration failures and has not
+passed final completion. CURRENT_STATUS describes an older production snapshot.
+
+Completed evidence is in harness/reports/core-smoothability-20260930-evidence.
+Core S is discharged. UniversalHamiltonFrontInputsStatement.{u,v} and
+UniversalHamiltonConvergenceStatement.{u} remain unconstructed independently.
+The reserved Poincare.poincare_conjecture is absent. The next topological proof
+will use the proved S to select its actual smooth atlas, then a separately
+verified smooth Poincare producer. Do not assume that pending producer.
+
+Exact first action: revalidate the SAME upstream PC build/session85355,
+wrapper65764/lake65773, and its terminal result. Agentmonitor_upstream_verification
+owns the unique exact endpoint/axiom probe after actual source-build success;
+root drains the original handle. Do not restart a live build. Once the smooth
+endgame theorem is genuinely compiled, independently check its actual type/
+standard axioms and then freeze/review the unconditional final adapter using S.
+In parallel repair exact remaining HeatKernelPDE, HeatKernelIntegral and
+LeviCivitaUniqueness compiler errors under data/type-preserving contracts, then
+migrate the old strict pilot contract through a fresh independent readback.
+Final goal still requires the entire retained root and every completion gate
+on one clean stable HEAD; no completed-PC claim follows from S alone.
+
 ## 2026-09-30 Metric and connection proof repairs accepted
 
 At mathematical-source345ff34dc2231f0425d7eaeef246f0010d4d7ca6, root independently

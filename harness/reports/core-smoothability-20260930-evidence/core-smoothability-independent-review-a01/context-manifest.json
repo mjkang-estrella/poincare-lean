@@ -1,0 +1,42 @@
+[
+  {
+    "path": "README.md",
+    "sha256": "0892e4d804df03d1754790063215900c51f9b06a1756c04e1edf3f20a379dc9a",
+    "bytes": 6731
+  },
+  {
+    "path": "HANDOFF.md",
+    "sha256": "e5fa2a447a634ff709c1ba147d57a8cb7c364555e3dbcfc8008ca810263cc091",
+    "bytes": 227276
+  },
+  {
+    "path": "docs/PROJECT_MAP.md",
+    "sha256": "79d273f3c8981747065e96745e242ab5a3cd829f8c35b1b0345cf9e5ec3e8e4f",
+    "bytes": 6906
+  },
+  {
+    "path": "AGENTS.md",
+    "sha256": "bc51cd378aa449df071ad083b90422eaeaf134ba5ab107eed4cb644bf2e99a69",
+    "bytes": 4621
+  },
+  {
+    "path": "harness/v2/SPEC.md",
+    "sha256": "a923136665b5cafad4a6e5165240645099f82eee8d1d93add38e196e1aa68de3",
+    "bytes": 22137
+  },
+  {
+    "path": "Poincare/Global/SmoothabilityExistenceStatement.lean",
+    "sha256": "6818f06a3df1ab8a46eaf6612c8a70d5c2070c2e87180e76474a905903573935",
+    "bytes": 1416
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/blind-readback.json",
+    "sha256": "4d65eeba4c6fc27b0be49e382bae42567572e7f61bf44ab259c407ff6d21855c",
+    "bytes": 2116
+  },
+  {
+    "path": "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/FrozenSmoothabilityProbe.lean",
+    "sha256": "3c04ebf6dbf3528b4cdb802c92bac254a837951ccebcac23c1dabc9437d6bd88",
+    "bytes": 2785
+  }
+]

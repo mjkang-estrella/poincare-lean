@@ -1,0 +1,49 @@
+{
+  "observed_at": "2026-10-01T00:49:39.280354+00:00",
+  "source_head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+  "clean_source": true,
+  "files": [
+    {
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.lean",
+      "copy": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.lean",
+      "sha256": "cdd66d048afed7ab54ac76641c99a1751743a472d170f374f5cdd9ea388b3482",
+      "size": 1652,
+      "mtime": 1790788082.1321585
+    },
+    {
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.olean",
+      "copy": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.olean",
+      "sha256": "8db36fc9c1ae262254907ee230eac39c9896b3940b4732286fe7152f48fdc787",
+      "size": 60632,
+      "mtime": 1790815674.2031724
+    },
+    {
+      "original": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification/.lake/build/lib/lean/DifferentialGeometry/Topology/PiecewiseLinear/Moise352Producer.trace",
+      "copy": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/Moise352Producer.trace",
+      "sha256": "320e827d6439f380a4e324110c72fdbb57075a148392fc70d5676a8937fd0985",
+      "size": 4850,
+      "mtime": 1790815674.3223495
+    },
+    {
+      "original": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/UpstreamSmoothingProbe-a01.lean",
+      "copy": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/UpstreamSmoothingProbe-a01.lean",
+      "sha256": "8df1b87c4fa4e698b8b40bdf4254b15ef1b2fb3c974a643ec659f3ebf9b488e8",
+      "size": 1570,
+      "mtime": 1790815778.8772113
+    },
+    {
+      "original": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/run_verification.py",
+      "copy": "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/upstream-smoothing-source-evidence-a01/run_verification.py",
+      "sha256": "582f4b23a4c728244775c9b05932755bf8b9755650617159a196a82bae49b68d",
+      "size": 1199,
+      "mtime": 1790788487.274765
+    }
+  ],
+  "probe_kind": "literal universal smoothing producer type plus allowed axioms and unsafe/partial transitive graph; no simply-connected hypothesis",
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/UpstreamSmoothingProbe-a01.lean"
+  ]
+}

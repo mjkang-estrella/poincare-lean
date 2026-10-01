@@ -1,0 +1,21 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "/Users/mjkang/.codex/worktrees/incremental-verification/poincare/harness/v2/state/upstream-verification-20260930/UpstreamSmoothingProbe-a01.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/external-reviews/poincare-20260930/dg-v013-verification",
+  "started_at": "2026-10-01T00:49:45.214769+00:00",
+  "source_head": "7a48598d35109aa99d1cc678e2724c213cdf4ff3",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 23.61344313621521,
+  "completed_at": "2026-10-01T00:50:08.841736+00:00",
+  "log_hashes": {
+    "stdout.log": "b2d30a3922678e7beedbfd30963b3d73211a2485ab126a473aa3d8d43acc8009",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

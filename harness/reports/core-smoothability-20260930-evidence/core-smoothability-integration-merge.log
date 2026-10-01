@@ -1,0 +1,8 @@
+[codex/upstream-integration-433 fab9ad16] Expose the unchanged smoothability obligation to a verified producer
+ Date: Wed Sep 30 17:57:31 2026 -0700
+ 5 files changed, 54 insertions(+), 29 deletions(-)
+ create mode 100644 Poincare/Global/SmoothabilityExistenceStatement.lean
+[codex/upstream-integration-433 8c5cc915] Discharge compatible smoothability with the verified Moise producer
+ Date: Wed Sep 30 18:05:14 2026 -0700
+ 2 files changed, 23 insertions(+)
+ create mode 100644 Poincare/Global/VerifiedSmoothability.lean

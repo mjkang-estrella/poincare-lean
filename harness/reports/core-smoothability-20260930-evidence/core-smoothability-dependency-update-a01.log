@@ -1,0 +1,4 @@
+info: DifferentialGeometry: cloning https://github.com/qinz1yang/differential-geometry.git
+info: DifferentialGeometry: checking out revision '7a48598d35109aa99d1cc678e2724c213cdf4ff3'
+info: toolchain not updated; already up-to-date
+info: mathlib: running post-update hooks

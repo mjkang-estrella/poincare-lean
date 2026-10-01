@@ -1,0 +1,154 @@
+{
+  "schema_version": "2.1",
+  "id": "core-smoothability-verified-producer",
+  "revision": 1,
+  "status": "ready",
+  "base_commit": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "objective": {
+    "title": "Discharge the actual existence-shaped smoothability obligation",
+    "statement": "Construct Poincare.existsSmoothabilitySmoothManifoldStatement at the unchanged existing ExistsSmoothabilitySmoothManifoldStatement using the independently verified pinned Moise producer. No supplied smooth atlas, sphere recognition, Hamilton/convergence or new assumptions. This closes core S; the subsequent topological endpoint chooses its actual smooth atlas and applies a verified smooth Poincare theorem. Credit upstream proof reuse.",
+    "deliverables": [
+      "An unconditional actual theorem at the frozen core S type, with only permitted foundational axioms and no unsafe/partial dependencies."
+    ]
+  },
+  "scope": {
+    "allowed_paths": [
+      "Poincare/Global/VerifiedSmoothability.lean"
+    ],
+    "forbidden_paths": [
+      "Poincare.lean",
+      "Poincare/Statement.lean",
+      "Poincare/Global/SmoothabilityExistenceStatement.lean",
+      "Poincare/Global/TopologicalCompletionBridge.lean",
+      "lakefile.lean",
+      "lake-manifest.json",
+      "lean-toolchain",
+      "scripts/**",
+      "audit/**",
+      "harness/v2/contracts/**"
+    ]
+  },
+  "context": {
+    "files": [
+      "README.md",
+      "HANDOFF.md",
+      "docs/PROJECT_MAP.md",
+      "AGENTS.md",
+      "harness/v2/SPEC.md",
+      "Poincare/Global/SmoothabilityExistenceStatement.lean",
+      "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/blind-readback.json",
+      "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/FrozenSmoothabilityProbe.lean"
+    ],
+    "symbols": [
+      "Poincare.existsSmoothabilitySmoothManifoldStatement"
+    ],
+    "depends_on": []
+  },
+  "acceptance": {
+    "commands": [
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "Poincare/Global/VerifiedSmoothability.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "-o",
+        ".lake/build/lib/lean/Poincare/Global/VerifiedSmoothability.olean",
+        "Poincare/Global/VerifiedSmoothability.lean"
+      ],
+      [
+        "env",
+        "LEAN_NUM_THREADS=1",
+        "lake",
+        "env",
+        "lean",
+        "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/FrozenSmoothabilityProbe.lean"
+      ],
+      [
+        "rg",
+        "-n",
+        "\\b(sorry|admit|axiom)\\b|native_decide",
+        "Poincare/Global/VerifiedSmoothability.lean"
+      ],
+      [
+        "git",
+        "diff",
+        "--check"
+      ]
+    ],
+    "forbidden_added_tokens": [
+      "sorry",
+      "admit",
+      "axiom",
+      "postulate",
+      "native_decide"
+    ],
+    "required_declarations": [
+      "Poincare.existsSmoothabilitySmoothManifoldStatement"
+    ]
+  },
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.VerifiedSmoothability"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.existsSmoothabilitySmoothManifoldStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M] [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] [SimplyConnectedSpace M] [CompactSpace M], ∃ C : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M, letI := C; IsManifold (𝓡 3) ((⊤ : ENat) : WithTop ENat) M"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/SmoothabilityExistenceStatement.lean",
+        "sha256": "6818f06a3df1ab8a46eaf6612c8a70d5c2070c2e87180e76474a905903573935"
+      },
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+      },
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "6f02e0cb20c3d95283c353f1342fcc63bcf10ed896eb94981b68dd3ac86abb5e",
+      "report_path": "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/blind-readback.json",
+      "report_sha256": "4d65eeba4c6fc27b0be49e382bae42567572e7f61bf44ab259c407ff6d21855c",
+      "verdict": "approved"
+    }
+  },
+  "stop_conditions": [
+    "The pinned verified producer cannot supply the frozen actual S type without any extra assumption or definition change.",
+    "A required source change falls outside the proof-only scope.",
+    "The exact theorem/type/axiom and source gates pass; preserve evidence before independent acceptance."
+  ],
+  "budget": {
+    "max_attempts": 15,
+    "wall_clock_minutes": 180,
+    "max_output_tokens": 26000,
+    "disk_mb": 2048
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "Poincare/Global/VerifiedSmoothability.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "started_at": "2026-10-01T00:59:12.941917+00:00",
+  "source_head": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  }
+}

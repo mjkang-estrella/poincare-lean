@@ -1,0 +1,9 @@
+{
+  "base_sha": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "cwd": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "started_at": "2026-10-01T01:01:58.941913+00:00",
+  "source_sha256": "3e392581041df9dc56c3c9e5247a4bdbfc49b8a42a1b8eb8cb3cc021556bba99",
+  "status": "## codex/core-smoothability-upstream-a01\n?? Poincare/Global/VerifiedSmoothability.lean\n",
+  "scope": "Read-only independent coreS proof review; no source edits/builds/commit/merge/acceptance",
+  "reviewer": "exact_target_migration"
+}

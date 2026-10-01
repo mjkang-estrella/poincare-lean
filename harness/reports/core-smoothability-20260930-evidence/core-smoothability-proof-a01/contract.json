@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "statement_contract": {
+    "imports": [
+      "Poincare.Global.VerifiedSmoothability"
+    ],
+    "declarations": [
+      {
+        "name": "Poincare.existsSmoothabilitySmoothManifoldStatement",
+        "universes": [
+          "u"
+        ],
+        "lean_type": "∀ (M : Type u) [TopologicalSpace M] [T2Space M] [ChartedSpace (EuclideanSpace ℝ (Fin 3)) M] [SimplyConnectedSpace M] [CompactSpace M], ∃ C : ChartedSpace (EuclideanSpace ℝ (Fin 3)) M, letI := C; IsManifold (𝓡 3) ((⊤ : ENat) : WithTop ENat) M"
+      }
+    ],
+    "definition_files": [
+      {
+        "path": "Poincare/Global/SmoothabilityExistenceStatement.lean",
+        "sha256": "6818f06a3df1ab8a46eaf6612c8a70d5c2070c2e87180e76474a905903573935"
+      },
+      {
+        "path": "Poincare/Statement.lean",
+        "sha256": "6d47b786da5f6e5ead1eea7293c24e7d3903c07011eee1e9909b97bdc19d30e7"
+      },
+      {
+        "path": "lean-toolchain",
+        "sha256": "3aac669c7a910ec2389f4e4f921b605adf6ebf2d1e0c9b9cd0be4d33f3f5db71"
+      },
+      {
+        "path": "lake-manifest.json",
+        "sha256": "1d7b430e56fad6141cc360d6684f8259ec40e8412bb9017a34e741e78dea4411"
+      },
+      {
+        "path": "lakefile.lean",
+        "sha256": "35024779083c3c1ab283349fe94cf6e7e8a59658132f05bc9ef8479d11d7e398"
+      }
+    ],
+    "author": "/root",
+    "review": {
+      "reviewer": "/root/workflow_postmortem",
+      "method": "blind-readback",
+      "snapshot_sha256": "6f02e0cb20c3d95283c353f1342fcc63bcf10ed896eb94981b68dd3ac86abb5e",
+      "report_path": "harness/v2/state/upstream-verification-20260930/core-smoothability-proof-a01/blind-readback.json",
+      "report_sha256": "4d65eeba4c6fc27b0be49e382bae42567572e7f61bf44ab259c407ff6d21855c",
+      "verdict": "approved"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "lake",
+    "env",
+    "lean",
+    "-o",
+    ".lake/build/lib/lean/Poincare/Global/VerifiedSmoothability.olean",
+    "Poincare/Global/VerifiedSmoothability.lean"
+  ],
+  "cwd": "/Users/mjkang/.codex/worktrees/core-smoothability-upstream/poincare",
+  "started_at": "2026-10-01T00:59:44.212712+00:00",
+  "source_head": "c8423a94bc63198b6f5cc59f2b9b1407b1f70ade",
+  "environment": {
+    "LEAN_NUM_THREADS": "1"
+  },
+  "exit_code": 0,
+  "seconds": 4.975559234619141,
+  "completed_at": "2026-10-01T00:59:49.202253+00:00",
+  "log_hashes": {
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
