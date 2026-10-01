@@ -56,8 +56,7 @@ theorem roundSphereMetric3_inner_apply (x : RoundSphere3)
     roundSphereMetric3_inner x v w =
       inner ℝ (roundSphereMetric3_inclusionDeriv x v)
         (roundSphereMetric3_inclusionDeriv x w) := by
-  rw [roundSphereMetric3_inner]
-  simp [roundSphereMetric3_inclusionDeriv, ContinuousLinearMap.precomp]
+  rfl
 
 theorem roundSphereMetric3_inner_mfderiv_eq (x : RoundSphere3)
     (v w : TangentSpace (𝓡 3) x) :
@@ -69,7 +68,7 @@ theorem roundSphereMetric3_inner_mfderiv_eq (x : RoundSphere3)
         (show RoundSphereAmbient4 from
           mfderiv (𝓡 3) 𝓘(ℝ, RoundSphereAmbient4)
             ((↑) : RoundSphere3 → RoundSphereAmbient4) x w) := by
-  simpa [roundSphereMetric3_inclusionDeriv] using roundSphereMetric3_inner_apply x v w
+  simpa [roundSphereMetric3_inclusionDeriv] using! roundSphereMetric3_inner_apply x v w
 
 theorem roundSphereMetric3_inner_symm (x : RoundSphere3)
     (v w : TangentSpace (𝓡 3) x) :
@@ -156,10 +155,10 @@ theorem roundSphereMetric3_modelInner_contDiff :
       ContDiff ℝ ∞
         (fun D : RoundSphereModel3 →L[ℝ] RoundSphereAmbient4 =>
           inner ℝ (D v) (D w)) := by
-    simpa using (contDiff_inner (𝕜 := ℝ) (E := RoundSphereAmbient4) (n := ∞)).comp
+    simpa using! (contDiff_inner (𝕜 := ℝ) (E := RoundSphereAmbient4) (n := ∞)).comp
       (hv.prodMk hw)
   simpa [roundSphereMetric3_modelInner, ContinuousLinearMap.precomp, innerSL_apply_apply]
-    using hinner
+    using! hinner
 
 theorem roundSphereMetric3_inner_contMDiff :
     ContMDiff (𝓡 3)
@@ -187,7 +186,7 @@ theorem roundSphereMetric3_inner_contMDiff :
           ((↑) : RoundSphere3 → RoundSphereAmbient4) x₀ :=
       (contMDiff_coe_sphere (m := ∞) (n := 3)
         (E := RoundSphereAmbient4)) x₀
-    simpa [Dcoord, roundSphereMetric3_inclusionDeriv] using
+    simpa [Dcoord, roundSphereMetric3_inclusionDeriv] using!
       (hcoe.mfderiv_const (I := 𝓡 3) (I' := 𝓘(ℝ, RoundSphereAmbient4))
         (m := ∞) (n := ∞) (by simp))
   have hmodel :
@@ -208,7 +207,17 @@ theorem roundSphereMetric3_inner_contMDiff :
     simp [Dcoord, roundSphereMetric3_modelInner, roundSphereMetric3_inner_apply,
       roundSphereMetric3_inclusionDeriv, inTangentCoordinates,
       ContinuousLinearMap.inCoordinates, ContinuousLinearMap.precomp]
-    rfl)
+    change inner ℝ
+      (roundSphereMetric3_inclusionDeriv x
+        ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x v))
+      (roundSphereMetric3_inclusionDeriv x
+        ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symm x w)) =
+      inner ℝ
+      (roundSphereMetric3_inclusionDeriv x
+        ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symmL ℝ x v))
+      (roundSphereMetric3_inclusionDeriv x
+        ((trivializationAt RoundSphereModel3 (TangentSpace (𝓡 3)) x₀).symmL ℝ x w))
+    rw [Trivialization.symmL_apply _ hx_triv, Trivialization.symmL_apply _ hx_triv])
 
 noncomputable def roundSphereMetric3 : ClosedSmoothRiemannianMetric 3 RoundSphere3 where
   inner := roundSphereMetric3_inner
