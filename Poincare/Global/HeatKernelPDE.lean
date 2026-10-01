@@ -21,7 +21,7 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 private lemma heatKernel_time_exponent_hasDerivAt {c t : ℝ} (ht : t ≠ 0) :
     HasDerivAt (fun τ : ℝ ↦ (-c) / (4 * τ)) (c / (4 * t ^ 2)) t := by
-  convert ((hasDerivAt_inv ht).const_mul (-(c / 4))) using 1
+  convert! ((hasDerivAt_inv ht).const_mul (-(c / 4))) using 1
   · ext τ
     ring
   · field_simp [pow_two]
@@ -53,7 +53,7 @@ theorem hasDerivAt_heatKernel_time [FiniteDimensional ℝ E] {t : ℝ} (ht : 0 <
       HasDerivAt (fun τ : ℝ ↦ Real.exp (-(‖x‖ ^ 2) / (4 * τ)))
         (Real.exp (-(‖x‖ ^ 2) / (4 * t)) * (‖x‖ ^ 2 / (4 * t ^ 2))) t :=
     (heatKernel_time_exponent_hasDerivAt (c := ‖x‖ ^ 2) ht.ne').exp
-  simpa [heatKernel] using hnorm.mul hexp
+  simpa [heatKernel] using! hnorm.mul hexp
 
 /-- The positive-time derivative as a `deriv` equality. -/
 theorem deriv_heatKernel_time [FiniteDimensional ℝ E] {t : ℝ} (ht : 0 < t) (x : E) :
@@ -77,8 +77,8 @@ theorem heatKernel_real_eq (t x : ℝ) :
 private lemma heatKernelReal_space_exponent_hasDerivAt {t x : ℝ} (ht : t ≠ 0) :
     HasDerivAt (fun y : ℝ ↦ -(y ^ 2) / (4 * t)) (-(x / (2 * t))) x := by
   have hsq : HasDerivAt (fun y : ℝ ↦ y ^ 2) (2 * x) x := by
-    simpa using (hasDerivAt_id x).pow 2
-  convert hsq.neg.div_const (4 * t) using 1
+    simpa using! (hasDerivAt_id x).pow 2
+  convert! hsq.neg.div_const (4 * t) using 1
   · field_simp [ht]
     ring
 
@@ -89,7 +89,7 @@ private lemma hasDerivAt_heatKernelReal_space {t x : ℝ} (ht : t ≠ 0) :
       HasDerivAt (fun y : ℝ ↦ Real.exp (-(y ^ 2) / (4 * t)))
         (Real.exp (-(x ^ 2) / (4 * t)) * (-(x / (2 * t)))) x :=
     (heatKernelReal_space_exponent_hasDerivAt (t := t) ht).exp
-  simpa [heatKernelReal, mul_assoc] using
+  simpa [heatKernelReal, mul_assoc] using!
     ((hasDerivAt_const x ((4 * Real.pi * t) ^ (-(1 : ℝ) / 2))).mul hexp)
 
 private lemma deriv_heatKernelReal_space {t x : ℝ} (ht : t ≠ 0) :
@@ -102,8 +102,8 @@ private lemma hasDerivAt_heatKernelReal_space_deriv {t x : ℝ} (ht : t ≠ 0) :
       (heatKernelReal t x * (x ^ 2 / (4 * t ^ 2) - 1 / (2 * t))) x := by
   have hk := hasDerivAt_heatKernelReal_space (t := t) (x := x) ht
   have hlin : HasDerivAt (fun y : ℝ ↦ -(y / (2 * t))) (-(1 / (2 * t))) x := by
-    simpa using ((hasDerivAt_id x).div_const (2 * t)).neg
-  convert hk.mul hlin using 1
+    simpa using! ((hasDerivAt_id x).div_const (2 * t)).neg
+  convert! hk.mul hlin using 1
   field_simp [ht]
   ring
 
